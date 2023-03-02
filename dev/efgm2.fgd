@@ -46,5 +46,54 @@
     "For instance, a player spawning at a raid spawn with the group 'west' can only extract at extracts with the group 'west'."+
     "Leave blank to make the player spawned here be able to extract anywhere."
 
+]
+
+@PointClass base(Targetname) = efgm_extract : "Extract"
+[
+
+    extractTime(integer)       : "Extract Time"             : 7                                     : "How long it takes to finish extracting once you've started extracting."
+
+    extractName(string)        : "Extract Name"             : ""                                    : "Used by players to find extract locations. Make the name appropriate; name the extract according to what a player would look for in order to find it. (e.g. Power Station Gate, Road to Bunker, Southwestern Checkpoint, Gooey Helipad, etc.)"
+
+    disabledMessage(string)    : "Disabled Message"         : "This extract is currently disabled!" : "This is the message displayed to anyone attempting to extract if the extract is disabled. If the extract is enabled by an event, listing that event here would be a good idea. You can leave this blank if the extract is guranteed."
+
+    extractGroup(string)       : "Extract Group"            : ""                                    : "Group of spawns which can use this extract. See efgm_raid_spawn for more details. Leave blank if anybody can use it."
+
+    accessibility(choices)      : "Extract Accessibility"   : 0                                     : "Availability of this extract to types of players. Also, it's called segregation internally because accessibility sounds too similar to availability, which is already an option. Sorry America!" =
+    [
+        0 : "Any"
+        1 : "PMC"
+        2 : "Scav"
+    ]
+
+    // Outputs
+    output    OnPlayerExtract(void)     :   "Fires when a player extracts."
+
+    output    OnExtractEnabled(void)    :   "Fires when the extract gets enabled."
+
+    output    OnExtractDisabled(void)   :   "Fires when the extract gets disabled."
+
+    // Inputs
+    input EnableExtract(void)           :   "Enables the extract."
+
+    input DisableExtract(void)          :   "Disables the extract."
+
+    input ToggleExtract(void)           :   "Does exactly what it sounds like."
+
+
+    input StartExtractingPlayer(void)   :   "As this is not a trigger no more, this input will signal for a given player to begin extracting."
+
+    input StopExtractingPlayer(void)    :   "Stops a player from extracting."
+
+
+    input ChangeDisabledMessage(string) :   "Changes the disabled message. Good for extracts with multiple prerequisites ig. Maybe with like a train, it could be changed from 'route power to track' to 'wait for train'."
+    
+    spawnflags(flags) =
+    [
+        // <flag value 2^i> : "Checkbox Display Text" : <0 for false on default, 1 for true>
+
+        1 : "Start Disabled"            : 0
+        2 : "Is Extract Guranteed"      : 1
+    ]
 
 ]
