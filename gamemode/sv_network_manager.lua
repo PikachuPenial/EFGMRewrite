@@ -1,0 +1,106 @@
+function GM:Initialize()
+
+    sql.Query( "CREATE TABLE IF NOT EXISTS PlayerData64 ( SteamID INTEGER, Key TEXT, Value TEXT);" )
+
+    sql.LastError()
+
+end
+
+-- Important functions
+
+function SetPlayerData(steamID64, key, value)
+
+    local query = sql.Query( "SELECT Value FROM PlayerData64 WHERE SteamID = " .. steamID64 .. " AND Key = " .. SQLStr( key ) .. ";" )
+
+    sql.LastError()
+
+    if query == nil then
+
+        -- If we need to make a new PData entry
+
+        sql.Query( "INSERT INTO PlayerData64 ( SteamID, Key, Value ) VALUES( " .. steamID64 .. ", " .. SQLStr( key ) .. ", " .. SQLStr( value ) .. ");" )
+
+    end
+
+    if query != nil then
+
+        -- If we need to update an existing entry
+
+        sql.Query( "UPDATE PlayerData64 SET Value = " .. SQLStr( value ) .. " WHERE SteamID = " .. steamID64 .. " AND Key = " .. SQLStr( key ) .. ";" )
+
+    end
+
+    sql.LastError()
+
+end
+
+function GetPlayerData(steamID64, key)
+
+    local query = sql.QueryValue( "SELECT Value FROM PlayerData64 WHERE SteamID = " .. steamID64 .. " AND Key = " .. SQLStr( key ) .. ";" )
+
+    sql.LastError()
+
+    return query
+
+end
+
+-- Network stuff
+
+-- shortening of whatever the fuck happened in the init.lua file of the og efgm, that shit did NOT need to be 919 lines ong
+function InitializeNetworkBool(ply, key, value)
+    v = tobool(value)
+    pdata = tobool(ply:GetPData(key))
+    if pdata == nil then
+		ply:SetNWBool(key, v)
+	else
+		ply:SetNWBool(key, pdata)
+	end
+end
+
+function InitializeNetworkInt(ply, key, value)
+    v = tonumber(value)
+    pdata = tonumber(ply:GetPData(key))
+    if pdata == nil then
+		ply:SetNWInt(key, v)
+	else
+		ply:SetNWInt(key, pdata)
+	end
+end
+
+function InitializeNetworkFloat(ply, key, value)
+    v = tonumber(value)
+    pdata = tonumber(ply:GetPData(key))
+    if pdata == nil then
+		ply:SetNWFloat(key, v)
+	else
+		ply:SetNWFloat(key, pdata)
+	end
+end
+
+function InitializeNetworkString(ply, key, value)
+    pdata = ply:GetPData(key)
+    if pdata == nil then
+		ply:SetNWString(key, value)
+	else
+		ply:SetNWString(key, pdata)
+	end
+end
+
+-- Temporary debug shit
+
+function DumpTable(tableName)
+
+    local query = sql.Query( "SELECT * FROM " .. SQLStr( tableName ) .. ";" )
+
+    sql.LastError()
+
+    return query
+end
+
+function DropTable(tableName)
+
+    sql.Query( "DROP TABLE " .. SQLStr( tableName ) .. ";" )
+
+    sql.Query( "CREATE TABLE IF NOT EXISTS PlayerData64 ( SteamID INTEGER, Key TEXT, Value TEXT);" )
+
+end

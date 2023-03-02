@@ -1,0 +1,9 @@
+"efgm2"
+{
+	"base"		"base"
+	"title"		"Metatable Hell"
+	"maps"		"^efgm_"
+	"workshopid"	"2792129130"
+	"category"	"pvp"
+	"menusystem"	"1"
+}
