@@ -12,15 +12,5 @@ pmcSpawns = for k, v in pairs(spawns) do if v.SpawnType != 2 then table.insert(p
 scavSpawns = for k, v in pairs(spawns) do if v.SpawnType != 1 then table.insert(pmcSpawns, v) end
 
 function SetPlayerStatus(player, spawnGroup, status)
-	for iter, v in pairs( playerStatusTable ) do
-
-		if v[1] == player then
-
-			v[2] = spawnGroup
-
-			v[3] = status
-
-		end
-
-	end
+	
 end

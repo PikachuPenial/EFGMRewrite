@@ -27,7 +27,7 @@ concommand.Add("efgm_debug_dumpraidtable", GetEntireFuckingRaidStatusTable)
 
 local function DeleteTable(ply, cmd, args)
 
-    DropTable("PlayerData64")
+    DropTable()
 
 end
 concommand.Add("efgm_debug_deleteraidtable", DeleteTable)

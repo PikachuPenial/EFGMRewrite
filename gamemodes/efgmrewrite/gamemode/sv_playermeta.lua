@@ -5,15 +5,23 @@ if not playerMeta then Error("Could not find player table") return end
 
 function playerMeta:GetRaidStatus()
 
-    local status = GetPlayerData( self:SteamID64(), "RaidStatus" ) or playerStatus.LOBBY
+    local status = self:GetNWInt("PlayerRaidStatus", 0)
+    local spawnGroup = self:GetNWString("PlayerSpawnGroup", "")
 
-    return status
+    return status, spawnGroup
 
 end
 
 
-function playerMeta:SetRaidStatus(status)
+function playerMeta:SetRaidStatus(status, spawnGroup)
 
-    SetPlayerData(self:SteamID64(), "RaidStatus", status)
+    self:SetNWInt("PlayerRaidStatus", status)
+    self:SetNWString("PlayerSpawnGroup", spawnGroup)
+
+end
+
+function playerMeta:IsInRaid()
+
+    return self:GetNWInt("PlayerRaidStatus", 0) != 0
 
 end

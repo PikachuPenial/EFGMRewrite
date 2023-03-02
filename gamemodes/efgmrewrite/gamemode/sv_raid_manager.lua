@@ -37,6 +37,12 @@ function Raid:StartRaid()
 
     self.Status = raidStatus.ACTIVE
 
+    local raidInterface = ents.FindByClass( "efgm_raid_interface" )
+
+    if raidInterface != nil then Error("Your map should probably have a efgm_raid_interface you dumbass.") return end
+
+    self.CurrentTime = raidInterface.RaidTime
+
     -- a ton of shit else
 
     timer.Create("RaidTimerDecrement", 1, 0, DecrementTimer)
@@ -59,11 +65,21 @@ function Raid:EndRaid()
 
 end
 
-function Raid:SpawnPlayer(player)
+function Raid:SpawnPlayer(player, status)
 
-    -- im afraid to touch this yet due to ptsd
+    if RAID.Status != raidStatus.ACTIVE then print("raid isnt active") return end
+
+    if !ply:IsPlayer() then print("What kind of player tries to enter the raid? No player, no player at all.") return end
+
+    if !ply:IsInRaid() then print("great ive fucking broke the gamemode again goddamn it") return end
+
+    -- im afraid to touch this yet due to ptsd (but here we go yippee)
 
     print("spawning player")
+
+    spawn = GetValidRaidSpawn(status) -- todo: this
+
+    player:SetRaidStatus(status, spawn.SpawnGroup)
 
 end
 

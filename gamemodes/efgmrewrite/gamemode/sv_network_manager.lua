@@ -97,9 +97,9 @@ function DumpTable(tableName)
     return query
 end
 
-function DropTable(tableName)
+function DropTable()
 
-    sql.Query( "DROP TABLE " .. SQLStr( tableName ) .. ";" )
+    sql.Query( "DROP TABLE PlayerData64;" )
 
     sql.Query( "CREATE TABLE IF NOT EXISTS PlayerData64 ( SteamID INTEGER, Key TEXT, Value TEXT);" )
 

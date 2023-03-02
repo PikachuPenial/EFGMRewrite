@@ -27,15 +27,11 @@ function ENT:AcceptInput(name, ply, caller, data)
 
     if name == "StartRaid" then
 
-        if RAID.Status != raidStatus.PENDING then return end
-
         RAID:StartRaid()
 
     end
 
     if name == "EndRaid" then
-
-        if RAID.Status != raidStatus.ACTIVE then return end
         
         RAID:EndRaid()
 
@@ -51,11 +47,7 @@ function ENT:AcceptInput(name, ply, caller, data)
 
     if name == "RaidAddPlayer" then
 
-        if RAID.Status != raidStatus.ACTIVE then print("raid isnt active") return end
-
-        if !ply:IsPlayer() then print("what kind of player tries to enter the raid, no player, no player at all") return end
-
-        RAID:SpawnPlayer(ply)
+        RAID:SpawnPlayer(ply, playerStatus.PMC)
 
     end
 
