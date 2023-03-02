@@ -1,0 +1,50 @@
+//-------------------------------------------------------------------------
+//
+// Game data for Escape From Garry's Mod Rewrite
+//
+//-------------------------------------------------------------------------
+
+@include "base.fgd"
+@include "halflife2.fgd"
+
+@PointClass base(Targetname) = efgm_raid_interface : "Raid System Interface"
+[
+    
+    // Key Values
+    raid_time(integer) : "Raid Time" : 1500 : "The time the raid lasts, in seconds."
+
+    //Inputs
+    input StartRaid(void) : "Tells the raid system to begin the fucking raid already. Can be triggered by whatever, get creative."
+
+    input EndRaid(void) : "Tells the raid system to end the raid. Instantly. Maybe use this for like a map with a nuke or something. Again, get creative."
+
+    input SetRaidTime(integer) : "Does exactly what you think it does. Useful for adding pressure to extract. Do I really have to say it?"
+    
+    input RaidAddPlayer(void) : "Tells the raid system to add a player into an ongoing raid. Smart spawnz."
+
+    // Outputs
+    output OnRaidStart(void) : "This fires when the raid starts. Useful for spawning shit in the map, enabling / disabling extracts, or doing other things."
+
+    output OnRaidEnd(void) : "Fires when the raid ends. Useful for resetting the map, or doing similar types of utmost trollage."
+
+]
+
+@PointClass base(Targetname, PlayerClass, Angles) studio("models/editor/playerstart.mdl") = efgm_raid_spawn : "Player Spawn"
+[
+
+    // Key Values
+
+    spawn_type(choices) : "Spawn Type" : 0 : "Type of player that can spawn here. PMC spawns a PMC just whenever, Player Scav spawns player scavs whenever I add them, and Any spawns both." =
+    [
+        0 : "Any"
+        1 : "PMC"
+        2 : "Player Scav"
+    ]
+
+    spawn_group(string) : "Spawn Group" : "" :
+    "Spawn groups are used in conjunction with extracts to give each player different extraction points depending on their spawn location."+
+    "For instance, a player spawning at a raid spawn with the group 'west' can only extract at extracts with the group 'west'."+
+    "Leave blank to make the player spawned here be able to extract anywhere."
+
+
+]
