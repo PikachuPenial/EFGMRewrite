@@ -11,6 +11,7 @@ ENT.Accessibility = 0
 
 ENT.IsDisabled = false 
 ENT.IsGuranteed = true
+ENT.InstantExtract = false
 
 function ENT:KeyValue(key, value)
 	if key == "extractTime" then
@@ -56,6 +57,8 @@ function ENT:Initialize()
 	-- Similarly, if flags and 2 share the same second digit, then the "Is Extract Guranteed" flag is checked.
 	self.IsGuranteed = bit.band(flags, 2) == 2
 
+	self.InstantExtract = bit.band(flags, 4) == 4
+
 end
 
 function ENT:AcceptInput(name, activator, caller, data)
@@ -72,12 +75,57 @@ function ENT:AcceptInput(name, activator, caller, data)
 		self.IsDisabled = !self.IsDisabled
 	end
 
-	if name == "StartExtractingPlayer" && !self.IsDisabled then
-		-- do shit here eventually
+	if activator:IsInRaid() then
+
+		if name == "StartExtractingPlayer" && !self.IsDisabled then
+			self:StartExtract(activator)
+		end
+
+		if name == "StopExtractingPlayer" then
+			self:StopExtract(activator)
+		end
+
 	end
 
-	if name == "StopExtractingPlayer" then
-		-- do shit here eventually also
+end
+
+function ENT:StartExtract(ply)
+
+	ply:PrintMessage( HUD_PRINTCENTER, "Extracting" )
+
+	if self.InstantExtract then self:Extract(ply) return end
+
+end
+
+function ENT:StopExtract(ply)
+
+end
+
+function ENT:Extract(ply)
+
+	lobbySpawns = ents.FindByClass("efgm_lobby_spawn") -- shuffles a table of all the lobby spawns
+
+	local possibleSpawns = {}
+
+	local playerExtracted = false
+
+	if !lobbySpawns and #lobbySpawns == 0 then error("no lobby spawns nigga") return end
+
+	for k, v in ipairs(lobbySpawns) do
+		
+		if v:CanSpawn(ply) then
+
+			table.insert(possibleSpawns, v)
+
+		end
+
 	end
+
+	if #possibleSpawns == 0 then return end
+
+	local randomSpawn = BetterRandom(possibleSpawns)
+
+	ply:SetRaidStatus(playerStatus.LOBBY, "")
+	ply:Teleport(randomSpawn:GetPos(), randomSpawn:GetAngles(), Vector(0, 0, 0))
 
 end

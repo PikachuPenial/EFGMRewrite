@@ -48,6 +48,12 @@
 
 ]
 
+@PointClass base(Targetname, PlayerClass, Angles) studio("models/editor/playerstart.mdl") = efgm_lobby_spawn : "Lobby Spawn"
+[
+    // basically just a glorified info_target lol
+]
+
+
 @PointClass base(Targetname) = efgm_extract : "Extract"
 [
 
@@ -94,6 +100,7 @@
 
         1 : "Start Disabled"            : 0
         2 : "Is Extract Guranteed"      : 1
+        4 : "Instant Extract"           : 0
     ]
 
 ]

@@ -25,3 +25,19 @@ function playerMeta:IsInRaid()
     return self:GetNWInt("PlayerRaidStatus", 0) != 0
 
 end
+
+function playerMeta:Teleport(position, angles, velocity)
+
+    -- shortening the extract and raid manager logic lol, not necessary but fun ig idfk
+
+    self:SetPos(position)
+
+    if angles == nil then return end
+
+	self:SetEyeAngles(angles)
+
+    if velocity == nil then return end
+    
+	self:SetAbsVelocity(velocity)
+
+end
