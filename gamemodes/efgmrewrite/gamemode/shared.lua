@@ -1,7 +1,7 @@
 GM.Name = "Escape From Garry's Mod 2"
-GM.Author = "Porty & maybe penial idk yet"
+GM.Author = "Penial & Porty"
 GM.Email = "piss off"
-GM.Website = "piss on"
+GM.Website = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 
 -- lua enum approx because fuck me and fuck you (and fuck ttt because thats how im learning metatables, please refer to words 5 through 9)
 
@@ -21,6 +21,7 @@ raidStatus = {
     ENDED = 2
 }
 
+include("sh_debug_handler.lua")
 include("sh_playermeta.lua")
 
 hook.Add("Initialize", "Optimization", function()

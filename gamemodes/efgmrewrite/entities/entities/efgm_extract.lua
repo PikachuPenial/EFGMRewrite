@@ -75,7 +75,7 @@ function ENT:AcceptInput(name, activator, caller, data)
 		self.IsDisabled = !self.IsDisabled
 	end
 
-	if activator:IsInRaid() then
+	if activator:IsInRaid() && !self.IsDisabled then
 
 		if name == "StartExtractingPlayer" && !self.IsDisabled then
 			self:StartExtract(activator)
@@ -91,6 +91,7 @@ end
 
 function ENT:StartExtract(ply)
 
+	-- debug, will replace later once i make a fancy UI system
 	ply:PrintMessage( HUD_PRINTCENTER, "Extracting" )
 
 	if self.InstantExtract then self:Extract(ply) return end

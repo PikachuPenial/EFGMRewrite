@@ -1,4 +1,4 @@
-"efgm2"
+"efgmrewrite"
 {
 	"base"		"base"
 	"title"		"Metatable Hell"
