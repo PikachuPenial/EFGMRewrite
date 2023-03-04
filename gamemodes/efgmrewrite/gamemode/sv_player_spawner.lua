@@ -48,9 +48,4 @@ function GetValidRaidSpawn(status) -- status: 0 = lobby, 1 = pmc, 2 = scav (assu
         return BetterRandom( scavSpawns )
     end
     
-    --local first_spawn_entity = BetterRandom(spawns)
-    --print(first_spawn_entity:GetPos())
-
-    -- return BetterRandom(spawns)
-    
 end

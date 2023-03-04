@@ -80,9 +80,7 @@ function Raid:SpawnPlayer(ply, status)
     spawn = GetValidRaidSpawn(status) -- done: this
 
     ply:SetRaidStatus(status, spawn.SpawnGroup)
-
-    ply:SetPos(spawn:GetPos())
-    ply:SetEyeAngles(spawn:GetAngles())
+	ply:Teleport(spawn:GetPos(), spawn:GetAngles(), Vector(0, 0, 0))
 
 end
 
