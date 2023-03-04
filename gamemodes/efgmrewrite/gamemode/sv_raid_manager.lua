@@ -39,7 +39,7 @@ function Raid:StartRaid()
 
     local raidInterface = ents.FindByClass( "efgm_raid_interface" )
 
-    if raidInterface != nil then Error("Your map should probably have a efgm_raid_interface you dumbass.") return end
+    if raidInterface == nil then Error("Your map should probably have a efgm_raid_interface you dumbass.") return end
 
     self.CurrentTime = raidInterface.RaidTime
 
@@ -65,7 +65,7 @@ function Raid:EndRaid()
 
 end
 
-function Raid:SpawnPlayer(player, status)
+function Raid:SpawnPlayer(ply, status)
 
     if RAID.Status != raidStatus.ACTIVE then print("raid isnt active") return end
 
@@ -77,9 +77,12 @@ function Raid:SpawnPlayer(player, status)
 
     print("spawning player")
 
-    spawn = GetValidRaidSpawn(status) -- todo: this
+    spawn = GetValidRaidSpawn(status) -- done: this
 
-    player:SetRaidStatus(status, spawn.SpawnGroup)
+    ply:SetRaidStatus(status, spawn.SpawnGroup)
+
+    ply:SetPos(spawn:GetPos())
+    ply:SetEyeAngles(spawn:GetAngles())
 
 end
 
