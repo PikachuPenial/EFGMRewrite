@@ -47,3 +47,14 @@ local function DebugStartRaid(ply, cmd, args)
 
 end
 concommand.Add("efgm_debug_startraid", DebugStartRaid)
+
+local function DebugEndRaid(ply, cmd, args)
+
+    -- what i said on GEFRST 999x
+
+    RAID:EndRaid()
+
+    GetRaidInfo()
+
+end
+concommand.Add("efgm_debug_endraid", DebugEndRaid)

@@ -1,15 +1,13 @@
 
 -- Define raid metatable
-local Raid = {
+local Raid = {}
 
-    Status =        raidStatus.PENDING,
+Raid.Status = raidStatus.PENDING -- uses sh_enums enums, peep it neighbor
+Raid.StartingTime = 1200 -- placeholder, uses seconds
+Raid.CurrentTime = 1200 -- the fuck did i mean placeholder
+Raid.PlayersInRaid = {} -- [SteamID64] = Player
 
-    StartingTime =  1200, -- placeholder, uses seconds
-    CurrentTime =   1200
-
-}
-
--- Initialization function ()
+-- Initialization function
 
 function Raid:Initialize(o)
     -- i don't pretend to know what's going on here despite chatgpt explaining it to me but it works so its probably fine
@@ -59,6 +57,10 @@ function Raid:EndRaid()
 
     -- kill players in raid, idk what else
 
+    for k, v in ipairs(self.PlayersInRaid) do
+        v:Kill()
+    end
+
     if timer.Exists("RaidTimerDecrement") then timer.Remove("RaidTimerDecrement") end
 
     print("Raid Ended!")
@@ -82,8 +84,26 @@ function Raid:SpawnPlayer(ply, status)
     ply:SetRaidStatus(status, spawn.SpawnGroup)
 	ply:Teleport(spawn:GetPos(), spawn:GetAngles(), Vector(0, 0, 0))
 
+    self:AddPlayer(ply)
+
 end
 
--- Actually making the global RAID object
+function Raid:AddPlayer(ply)
+
+    local steamid = tonumber( ply:SteamID64() )
+
+    self.PlayersInRaid[steamid] = ply
+
+end
+
+function Raid:RemovePlayer(ply)
+
+    local steamid = tonumber( ply:SteamID64() )
+
+    self.PlayersInRaid[steamid] = nil
+
+end
+
+-- Actually making the global RAID object (just finding out none of this initialization shit is necessary, still good to know though if i manage to get to making ui without putting a gun into my mouth first)
 
 RAID = Raid:Initialize()

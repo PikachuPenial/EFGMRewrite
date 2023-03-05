@@ -30,6 +30,7 @@ end
 function GM:PlayerDeath(victim, inflictor, attacker)
 
     victim:ResetRaidStatus()
+    RAID:RemovePlayer(victim)
 
     -- do nwints and shit for kd and idfk ill find it out when the actual important shit is done haha port i said port he said it guys
 

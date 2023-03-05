@@ -3,27 +3,11 @@ GM.Author = "Penial & Porty"
 GM.Email = "piss off"
 GM.Website = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 
--- lua enum approx because fuck me and fuck you (and fuck ttt because thats how im learning metatables, please refer to words 5 through 9)
-
--- player status
-
-playerStatus = {
-    LOBBY = 0,
-    PMC = 1,
-    SCAV = 2
-}
-
--- raid status
-
-raidStatus = {
-    PENDING = 0,
-    ACTIVE = 1,
-    ENDED = 2
-}
-
 include("sh_debug_handler.lua")
+include("sh_enums.lua")
 include("sh_playermeta.lua")
 
+-- thanks penicillin
 hook.Add("Initialize", "Optimization", function()
     hook.Remove("PlayerTick", "TickWidgets")
     if SERVER and timer.Exists("CheckHookTimes") then timer.Remove("CheckHookTimes") end
