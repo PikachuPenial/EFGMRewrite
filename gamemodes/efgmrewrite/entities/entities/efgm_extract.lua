@@ -6,7 +6,7 @@ ENT.Base = "base_point"
 ENT.ExtractTime = 10
 ENT.ExtractName = ""
 ENT.DisabledMessage = ""
-ENT.ExtractGroup = "All"
+ENT.ExtractGroup = ""
 ENT.Accessibility = 0
 
 ENT.IsDisabled = false 
@@ -57,6 +57,7 @@ function ENT:Initialize()
 	-- Similarly, if flags and 2 share the same second digit, then the "Is Extract Guranteed" flag is checked.
 	self.IsGuranteed = bit.band(flags, 2) == 2
 
+	-- You can guess what's happening here. Do it, guess, pussy.
 	self.InstantExtract = bit.band(flags, 4) == 4
 
 end
@@ -75,9 +76,13 @@ function ENT:AcceptInput(name, activator, caller, data)
 		self.IsDisabled = !self.IsDisabled
 	end
 
-	if activator:IsInRaid() && !self.IsDisabled then
+	if !activator:IsPlayer() then print("What kind of player tries to extract? Not funny, not funny at all.") return end
 
-		if name == "StartExtractingPlayer" && !self.IsDisabled then
+	if activator:IsInRaid() && activator:CompareSpawnGroup(self.ExtractGroup) && !self.IsDisabled then
+
+		if name == "StartExtractingPlayer" then
+			--print("Player's name is " .. activator:GetName())
+
 			self:StartExtract(activator)
 		end
 
@@ -91,20 +96,53 @@ end
 
 function ENT:StartExtract(ply)
 
+	--print("Player's name is " .. ply:GetName())
+
 	-- debug, will replace later once i make a fancy UI system
 	ply:PrintMessage( HUD_PRINTCENTER, "Extracting" )
 
-	if self.InstantExtract then self:Extract(ply) return end
+	if self.InstantExtract then self.Extract(ply) return end
+
+	-- defines the timerName as for example "ExTimer_90071996842377216214"
+	-- completely useless and fucking unreadable for normal (and maybe even autistic) people but nevertheless useful for consistently identifying timers
+	local timerName = "ExTimer_" .. ply:SteamID64() .. self:EntIndex()
+
+	-- if player's already extracting somehow
+	if timer.Exists(timerName) then return end
+
+	-- actual extract logic
+
+	timer.Create(timerName, self.ExtractTime, 1, function()
+	
+		-- extract logic (uses a . because it doesn't use the entity name or self, im smart i know)
+		-- great that just broke more shit, i love lua and coding
+
+		self.Extract(ply)
+	end)
 
 end
 
 function ENT:StopExtract(ply)
 
+	ply:PrintMessage( HUD_PRINTCENTER, "Stopping extracting" )
+
+	-- read StartExtract you lazy ass
+	local timerName = "ExTimer_" .. ply:SteamID64() .. self:EntIndex()
+
+	-- if player somehow hasnt begun extracting yet (okay listen i watched a portal 2 speedrunning explained video and now im afraid people are going to purposefully push the limits of the source engine just to ratfuck my gamemode)
+	if !timer.Exists(timerName) then return end
+
+	-- actual stop extract logic
+
+	timer.Remove(timerName)
+
 end
 
-function ENT:Extract(ply)
+function ENT.Extract(ply)
 
-	lobbySpawns = ents.FindByClass("efgm_lobby_spawn") -- shuffles a table of all the lobby spawns
+	--print("Player's name is " .. ply:GetName())
+
+	lobbySpawns = ents.FindByClass("efgm_lobby_spawn") -- gets a table of all the lobby spawns
 
 	local possibleSpawns = {}
 
@@ -112,6 +150,7 @@ function ENT:Extract(ply)
 
 	if !lobbySpawns and #lobbySpawns == 0 then error("no lobby spawns nigga") return end
 
+	-- all this is done so that players spawn in random spots bc yeah it was really that important
 	for k, v in ipairs(lobbySpawns) do
 		
 		if v:CanSpawn(ply) then
