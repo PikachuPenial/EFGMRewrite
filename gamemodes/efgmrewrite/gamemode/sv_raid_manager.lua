@@ -27,6 +27,8 @@ local function DecrementTimer()
 
     if RAID.CurrentTime <= 0 then RAID:EndRaid() return end
 
+    SetGlobalFloat("GlobalRaidTimer", self.CurrentTime)
+
 end
 
 function Raid:StartRaid()
@@ -40,6 +42,8 @@ function Raid:StartRaid()
     if raidInterface == nil then Error("Your map should probably have a efgm_raid_interface you dumbass.") return end
 
     self.CurrentTime = raidInterface.RaidTime
+
+    SetGlobalFloat("GlobalRaidTimer", self.CurrentTime)
 
     -- a ton of shit else
 
@@ -57,7 +61,8 @@ function Raid:EndRaid()
 
     -- kill players in raid, idk what else
 
-    for k, v in ipairs(self.PlayersInRaid) do
+    PrintTable(self.PlayersInRaid)
+    for k, v in pairs(self.PlayersInRaid) do
         v:Kill()
     end
 
@@ -90,7 +95,7 @@ end
 
 function Raid:AddPlayer(ply)
 
-    local steamid = tonumber( ply:SteamID64() )
+    local steamid = ply:SteamID64()
 
     self.PlayersInRaid[steamid] = ply
 
@@ -98,7 +103,7 @@ end
 
 function Raid:RemovePlayer(ply)
 
-    local steamid = tonumber( ply:SteamID64() )
+    local steamid = ply:SteamID64()
 
     self.PlayersInRaid[steamid] = nil
 

@@ -148,7 +148,7 @@ function ENT.Extract(ply)
 
 	local playerExtracted = false
 
-	if !lobbySpawns and #lobbySpawns == 0 then error("no lobby spawns nigga") return end
+	if !lobbySpawns and #lobbySpawns == 0 then error("no lobby spawns") return end
 
 	-- all this is done so that players spawn in random spots bc yeah it was really that important
 	for k, v in ipairs(lobbySpawns) do
