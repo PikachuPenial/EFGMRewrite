@@ -1,24 +1,25 @@
 
+-- UI is a global table containing all other UI elements
+-- May make functions to modify all elements in the table idk though
+-- maybe should rename it from menu manager to cl_ui.lua or something idk
+UI = {}
 
--- todo
+function UI.InitializeFrame(title, x, y, width, height, isVisible, isDraggable, hasCloseButton, shouldPopup, isSizeable)
 
--- create ui element class
--- other stuff idk
+    -- bigass function that MAY make initializing DFrames easier
+    -- just does basic shit
+    -- also uses . instead of : because it doesn't use or need "self" (so more of a field than a function)
 
-UIElement = {
-    x = 0,
-    y = 0,
-    width = 0,
-    height = 0,
-    title = "",
-    isVisible = true,
-    isDraggable = true,
-    showCloseButton = true
-}
+    local dframe = vgui.Create("DFrame")
+    dframe:SetPos( x, y ) 
+    dframe:SetSize( width, height ) 
+    dframe:SetTitle( title ) 
+    dframe:SetVisible( isVisible ) 
+    dframe:SetDraggable( isDraggable ) 
+    dframe:ShowCloseButton( hasCloseButton ) 
+    dframe:SetSizable( isSizeable )
+    if shouldPopup == true then dframe:MakePopup() end
 
-function UIElement:CreateNewElement(object)
-  object = object or {}
-  setmetatable(object, self)
-  self.__index = self
-  return object
+    return dframe
+
 end

@@ -59,10 +59,9 @@ local function DrawCompass()
     end
 
 end
-
--- Register the DrawCompass function to be called every frame using the HUDPaint hook.
 hook.Add("HUDPaint", "DrawCompass", DrawCompass)
 
+-- idk what this does
 function HideHud(name)
 	for k, v in pairs({"CHudHealth", "CHudBattery", "CHudAmmo", "CHudSecondaryAmmo"}) do
 		if name == v then
@@ -71,3 +70,137 @@ function HideHud(name)
 	end
 end
 hook.Add("HUDShouldDraw", "HideDefaultHud", HideHud)
+
+-- draw health panel
+
+local function DrawEditMenuPanel()
+
+    UI.MenuEditPanel = UI.InitializeFrame("Menu Edit Panel", 15, 315, 200, 450, true, true, true, true, false)
+
+    function UI.MenuEditPanel:OnClose()
+        UI.MenuEditPanel = nil
+    end
+
+    -- im gonna refactor all this shit once i actually figure out what the fuck im doing
+
+    local nameEntry = vgui.Create("DTextEntry", UI.MenuEditPanel)
+    nameEntry:DockMargin(5, 25, 5, 5)
+    nameEntry:Dock(TOP)
+    nameEntry:SetSize(0, 20)
+    nameEntry:SetPlaceholderText("Name for new panel")
+
+    UI.MenuEditPanel.NameEntry = nameEntry
+
+    local xEntry = vgui.Create("DTextEntry", UI.MenuEditPanel)
+    xEntry:DockMargin(5, 25, 5, 5)
+    xEntry:Dock(TOP)
+    xEntry:SetSize(0, 20)
+    xEntry:SetPlaceholderText("X position for new panel")
+    xEntry:SetNumeric(true)
+
+    UI.MenuEditPanel.XEntry = xEntry
+
+    local yEntry = vgui.Create("DTextEntry", UI.MenuEditPanel)
+    yEntry:DockMargin(5, 25, 5, 5)
+    yEntry:Dock(TOP)
+    yEntry:SetSize(0, 20)
+    yEntry:SetPlaceholderText("Y position for new panel")
+    yEntry:SetNumeric(true)
+
+    UI.MenuEditPanel.YEntry = yEntry
+
+    local widthEntry = vgui.Create("DTextEntry", UI.MenuEditPanel)
+    widthEntry:DockMargin(5, 25, 5, 5)
+    widthEntry:Dock(TOP)
+    widthEntry:SetSize(0, 20)
+    widthEntry:SetPlaceholderText("Width of new panel")
+    widthEntry:SetNumeric(true)
+
+    UI.MenuEditPanel.WidthEntry = widthEntry
+
+    local heightEntry = vgui.Create("DTextEntry", UI.MenuEditPanel)
+    heightEntry:DockMargin(5, 25, 5, 5)
+    heightEntry:Dock(TOP)
+    heightEntry:SetSize(0, 20)
+    heightEntry:SetPlaceholderText("Height of new panel")
+    heightEntry:SetNumeric(true)
+
+    UI.MenuEditPanel.HeightEntry = heightEntry
+
+    function UI.MenuEditPanel:Think()
+
+        if UI.CreatedPanel == nil then return end
+        if vgui.GetKeyboardFocus() != UI.CreatedPanel then return end
+
+        -- values from the panel to enter into the entries
+        local x, y = UI.CreatedPanel:GetPos()
+        local w, h = UI.CreatedPanel:GetSize()
+
+        -- entering those into the entries
+
+        UI.MenuEditPanel.XEntry:SetValue(x)
+        UI.MenuEditPanel.YEntry:SetValue(y)
+        UI.MenuEditPanel.WidthEntry:SetValue(w)
+        UI.MenuEditPanel.HeightEntry:SetValue(h)
+
+    end
+
+    local createButton = vgui.Create("DButton", UI.MenuEditPanel)
+    createButton:DockMargin(5, 5, 5, 5)
+    createButton:Dock(BOTTOM)
+    createButton:SetSize(0, 20)
+    createButton:SetText("Create Panel")
+    
+    UI.MenuEditPanel.CreateButton = createButton
+
+    function UI.MenuEditPanel.CreateButton:DoClick()
+
+        if UI.CreatedPanel != nil then
+            UI.CreatedPanel:Remove()
+            UI.CreatedPanel = nil
+        end
+
+        -- values from entries to make the panel
+        local name, x, y, w, h = UI.MenuEditPanel.NameEntry:GetText(), UI.MenuEditPanel.XEntry:GetInt(), UI.MenuEditPanel.YEntry:GetInt(), UI.MenuEditPanel.WidthEntry:GetInt(), UI.MenuEditPanel.HeightEntry:GetInt()
+
+        UI.CreatedPanel = UI.InitializeFrame(name, x, y, w, h, true, true, true, true, true)
+
+    end
+
+    local copyButton = vgui.Create("DButton", UI.MenuEditPanel)
+    copyButton:DockMargin(5, 5, 5, 5)
+    copyButton:Dock(BOTTOM)
+    copyButton:SetSize(0, 20)
+    copyButton:SetText("Copy UI.InitializePanel() Info")
+
+    UI.MenuEditPanel.CopyButton = copyButton
+
+    function UI.MenuEditPanel.CopyButton:DoClick()
+
+        if UI.CreatedPanel == nil then return end
+
+        -- values from entries
+        local name, x, y, w, h = UI.MenuEditPanel.NameEntry:GetText(), UI.MenuEditPanel.XEntry:GetInt(), UI.MenuEditPanel.YEntry:GetInt(), UI.MenuEditPanel.WidthEntry:GetInt(), UI.MenuEditPanel.HeightEntry:GetInt()
+
+        local copy = string.Replace(name, " ", "") .. " = UI.InitializePanel("  .. name .. ", "  .. x .. ", "  .. y .. ", "  .. w .. ", "  .. h .. ", true, true, true, true, true)"
+
+        SetClipboardText(copy)
+
+    end
+
+end
+
+-- shitty showspare1 offbrand because i really don't want to start with the net library today
+hook.Add("Think", "MySpare1Function", function()
+    if input.IsKeyDown(KEY_F3) then
+
+        --print("showing spare 1")
+        
+        if UI.MenuEditPanel != nil then return end
+
+        DrawEditMenuPanel()
+
+    end
+end)
+
+-- UI.HealthPanel = UI.InitializeFrame("none lmao", 15, 315, 500, 300, true, false, false, true, false)
