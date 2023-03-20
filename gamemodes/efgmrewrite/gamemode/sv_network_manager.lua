@@ -86,6 +86,24 @@ function InitializeNetworkString(ply, key, value)
 	end
 end
 
+-- basically the same thing but with leaving
+
+function UninitializeNetworkBool(ply, key)
+    ply:SetPData(key, ply:GetNWBool(key))
+end
+
+function UninitializeNetworkInt(ply, key)
+    ply:SetPData(key, ply:GetNWInt(key))
+end
+
+function UninitializeNetworkFloat(ply, key)
+    ply:SetPData(key, ply:GetNWFloat(key))
+end
+
+function UninitializeNetworkString(ply, key)
+    ply:SetPData(key, ply:GetNWString(key))
+end
+
 -- Temporary debug shit
 
 function DumpTable(tableName)

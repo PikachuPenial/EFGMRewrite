@@ -24,6 +24,12 @@ include("sv_raid_manager.lua")
 function GM:PlayerInitialSpawn(ply)
 
     -- setup nwints and custom pdatas
+    
+    InitializeNetworkInt(ply, "PlayerLevel", 0)
+
+end
+
+function GM:PlayerDisconnected(ply)
 
 end
 

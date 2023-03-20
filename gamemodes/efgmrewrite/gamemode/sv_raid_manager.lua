@@ -27,7 +27,7 @@ local function DecrementTimer()
 
     if RAID.CurrentTime <= 0 then RAID:EndRaid() return end
 
-    SetGlobalFloat("GlobalRaidTimer", self.CurrentTime)
+    SetGlobalInt("RaidTimeLeft", RAID.CurrentTime)
 
 end
 
@@ -43,7 +43,7 @@ function Raid:StartRaid()
 
     self.CurrentTime = raidInterface.RaidTime
 
-    SetGlobalFloat("GlobalRaidTimer", self.CurrentTime)
+    SetGlobalInt("RaidTimeLeft", self.CurrentTime)
 
     -- a ton of shit else
 
@@ -58,6 +58,8 @@ function Raid:EndRaid()
     if self.Status != raidStatus.ACTIVE then return end
 
     self.Status = raidStatus.ENDED
+
+    SetGlobalInt("RaidTimeLeft", -2)
 
     -- kill players in raid, idk what else
 
@@ -112,3 +114,5 @@ end
 -- Actually making the global RAID object (just finding out none of this initialization shit is necessary, still good to know though if i manage to get to making ui without putting a gun into my mouth first)
 
 RAID = Raid:Initialize()
+
+SetGlobalInt("RaidTimeLeft", -1)

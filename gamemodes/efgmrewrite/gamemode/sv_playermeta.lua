@@ -12,7 +12,6 @@ function playerMeta:GetRaidStatus()
 
 end
 
-
 function playerMeta:SetRaidStatus(status, spawnGroup)
 
     self:SetNWInt("PlayerRaidStatus", status)
@@ -60,4 +59,14 @@ function playerMeta:CompareSpawnGroup(compareGroup)
 
     return spawnGroup == compareGroup
 
+end
+
+-- pdata64
+
+function playerMeta:SetPData64(key, value)
+    SetPlayerData(playerMeta:SteamID64(), tostring(key), tostring(value))
+end
+
+function playerMeta:GetPData64(key)
+    GetPlayerData(playerMeta:SteamID64(), tostring(key))
 end
