@@ -212,7 +212,14 @@ hook.Add("HUDShouldDraw", "HideDefaultHud", HideHud)
 
 -- end
 
--- will be able to make custom panels and shit
+-- will be able to make custom panels and shit (im giving up on this, im keeping it here because
+-- one day i might grow a pair and work on it some more, but it seems like lua just does not
+-- want to fucking work inside this function, how the fuck does a dmenu open automatically
+-- and set itself to nil, i just do not fucking understand, chatgpt couldnt tell me how to
+-- fix it, and when i told it i was gonna move to a cabin in alaska so i didnt have to
+-- work on this fucking function anymore, it told me to reach out on the "community
+-- forums", what fucking community forums, r/Glua has been restricted for a good year
+-- because why the fuck not, im gonna go play ksp and try to forget this ever happened)
 local function DrawEditMenuPanel()
 
     if MenuInfoPanel then return end
@@ -235,33 +242,31 @@ local function DrawEditMenuPanel()
     tree:SetSize(200, 0)
     
     local newDMenu = DermaMenu()
-    newDMenu:AddOption("Add Argument", function()
-        
-    end)
+
+    newDMenu:AddOption("Add Argument", DockNewPanel)
 
     local clickedNode = nil
 
     local function DockNewPanel(dockedPanel, dockEnum)
-        if !dockedPanel then return end
+        print("im in hell") return
         dockedPanel:Dock(dockEnum)
     end
 
     local dockOptionsSub, dockOptions = newDMenu:AddSubMenu("Docking Options:")
 
-    local dockTop = dockOptionsSub:AddOption("Dock TOP", DockNewPanel(clickedNode, TOP))
-    local dockBottom = dockOptionsSub:AddOption("Dock BOTTOM", DockNewPanel(clickedNode, BOTTOM))
-    local dockFill = dockOptionsSub:AddOption("Dock FILL", DockNewPanel(clickedNode, FILL))
+    dockOptionsSub:AddOption("Dock TOP", DockNewPanel)
+    dockOptionsSub:AddOption("Dock BOTTOM", DockNewPanel)
+    dockOptionsSub:AddOption("Dock FILL", DockNewPanel)
 
-    local dockLeft = dockOptionsSub:AddOption("Dock LEFT", DockNewPanel(clickedNode, LEFT))
-    local dockRight = dockOptionsSub:AddOption("Dock RIGHT", DockNewPanel(clickedNode, RIGHT))
-    local dockNone = dockOptionsSub:AddOption("Dock NODOCK", DockNewPanel(clickedNode, NODOCK))
+    dockOptionsSub:AddOption("Dock LEFT", DockNewPanel)
+    dockOptionsSub:AddOption("Dock RIGHT", DockNewPanel)
+    dockOptionsSub:AddOption("Dock NODOCK", DockNewPanel)
 
     tree.DoRightClick = function( s, newNode )
+        print(tostring(newDMenu))
         newDMenu:Open()
         clickedNode = newNode
     end
-
-    newDMenu:Hide()
 
     local function Refresh()
         MenuInfoPanel:InvalidateLayout()
