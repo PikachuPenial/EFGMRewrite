@@ -1,5 +1,5 @@
 AddCSLuaFile("cl_hud.lua")
--- AddCSLuaFile("cl_inventory_manager.lua")
+AddCSLuaFile("cl_menu.lua")
 -- AddCSLuaFile("cl_keybinds.lua")
 AddCSLuaFile("cl_menu_manager.lua")
 -- AddCSLuaFile("cl_progression_menu.lua")

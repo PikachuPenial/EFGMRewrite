@@ -80,6 +80,7 @@ local function DebugRaidTime()
         time = string.FormattedTime( raidTime, "%2i:%02i" ) -- thanks titanmod for raid time formatting
     end
 
+    surface.SetFont("DermaLarge")
     surface.DrawText(time)
 
 end
@@ -383,34 +384,9 @@ local function DrawEditMenuPanel()
 
 end
 
--- shitty showspare1 offbrand because i really don't want to start with the net library today
-hook.Add("Think", "MySpare1Function", function()
-    if input.IsKeyDown(KEY_F3) then
-
-        --print("showing spare 1")
-        
-        DrawEditMenuPanel()
-
-    end
-end)
-
-
 local function DrawSellMenuPanel()
 
     -- placeholder shop menu, i want it to be like STALKER / Tarkov type menu where you can sell and buy at the same time
     -- coding with cookie clicker open in the background goes hard
 
 end
-
--- shitty showspare2 offbrand because i really don't want to use the net library yet
-hook.Add("Think", "MySpare2Function", function()
-    if input.IsKeyDown(KEY_F4) then
-
-        --print("showing spare 1")
-        
-        if UI.MenuEditPanel != nil then return end
-
-        DrawEditMenuPanel()
-
-    end
-end)
