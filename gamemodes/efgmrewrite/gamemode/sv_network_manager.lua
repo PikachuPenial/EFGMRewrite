@@ -48,8 +48,8 @@ end
 
 -- shortening of whatever the fuck happened in the init.lua file of the og efgm, that shit did NOT need to be 919 lines ong
 function InitializeNetworkBool(ply, key, value)
-    v = tobool(value)
-    pdata = tobool(ply:GetPData(key))
+    local v = tobool(value)
+    local pdata = tobool(ply:GetPData(key))
     if pdata == nil then
 		ply:SetNWBool(key, v)
 	else
@@ -58,8 +58,8 @@ function InitializeNetworkBool(ply, key, value)
 end
 
 function InitializeNetworkInt(ply, key, value)
-    v = tonumber(value)
-    pdata = tonumber(ply:GetPData(key))
+    local v = tonumber(value)
+    local pdata = tonumber(ply:GetPData(key))
     if pdata == nil then
 		ply:SetNWInt(key, v)
 	else
@@ -68,8 +68,8 @@ function InitializeNetworkInt(ply, key, value)
 end
 
 function InitializeNetworkFloat(ply, key, value)
-    v = tonumber(value)
-    pdata = tonumber(ply:GetPData(key))
+    local v = tonumber(value)
+    local pdata = tonumber(ply:GetPData(key))
     if pdata == nil then
 		ply:SetNWFloat(key, v)
 	else
@@ -78,7 +78,7 @@ function InitializeNetworkFloat(ply, key, value)
 end
 
 function InitializeNetworkString(ply, key, value)
-    pdata = ply:GetPData(key)
+    local pdata = ply:GetPData(key)
     if pdata == nil then
 		ply:SetNWString(key, value)
 	else

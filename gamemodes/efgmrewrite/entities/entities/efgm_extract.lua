@@ -44,7 +44,7 @@ function ENT:Initialize()
 	-- (by default 2, or 00000010, as the first digit (start disabled) starts false or 0, and the second digit (is guranteed) starts true or 1)
 	local flags = tonumber( self:GetSpawnFlags() )
 
-	print("self:GetSpawnFlags() = " .. flags)
+	-- print("self:GetSpawnFlags() = " .. flags)
 
 	-- Bit.band is a "and" operation. For example, take 3 and 5, written in binary as 00000011 (2 + 1) and 00000101 (4 + 1) respectively.
 	-- A bitwise "and" operation on 3 and 5 would return 1, as they both share the first digit, which is 1.

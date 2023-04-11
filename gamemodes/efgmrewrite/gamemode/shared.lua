@@ -5,6 +5,7 @@ GM.Website = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 
 include("sh_debug_handler.lua")
 include("sh_enums.lua")
+include("sh_loot_tables.lua")
 include("sh_playermeta.lua")
 
 -- thanks penicillin
