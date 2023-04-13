@@ -10,6 +10,10 @@ local function ShopTransaction(ply, cmd, args)
 
     local transactionProfit = 0
 
+    local isTransactionValid = true -- isn't valid if player doesnt have a weapon they're trying to buy, or they don't have a weapon they're trying to sell
+
+    local buyGuns, sellGuns = {}, {}
+
     -- args will be formatted like args[1] == "+|gunname1" args[2] == "-|gunname2"
     -- + meaning buy, - meaning sell
     -- using that you can calculate the total money earned / lost by the transaction, that way you can sell
@@ -19,11 +23,13 @@ local function ShopTransaction(ply, cmd, args)
     for k, v in pairs(args) do
         -- v == "+/-|gunname"
 
-        print(v)
+        -- print(v)
+
+        local shouldAdd = true
 
         local vSplit = string.Split(v, "|") -- [1] == "+" or "-", [2] == "gunname"
 
-        print("vSplit[1], vSplit[2] = " .. vSplit[1] .. ", " .. vSplit[2])
+        -- print("vSplit[1], vSplit[2] = " .. vSplit[1] .. ", " .. vSplit[2])
 
         local gunInfo = LOOT[1][vSplit[2]]
 
@@ -31,25 +37,33 @@ local function ShopTransaction(ply, cmd, args)
 
             if vSplit[1] == "+" then -- buying from the shop
 
-                if !ply:HasWeapon(vSplit[2]) then
+                if ply:HasWeapon(vSplit[2]) then isTransactionValid = false end
+                
+                if !table.IsEmpty(buyGuns) then
+                    for l, b in ipairs(buyGuns) do
+                        if b == vSplit[2] then shouldAdd = false end
+                    end
+                end
 
-                    print("buying " .. vSplit[2])
-
+                if shouldAdd then
                     transactionProfit = transactionProfit - gunInfo[2]
-                    ply:Give(vSplit[2])
-
+                    table.insert(buyGuns, vSplit[2])
                 end
     
             elseif vSplit[1] == "-" then -- selling from inventory
 
-                if ply:HasWeapon(vSplit[2]) then
+                if !ply:HasWeapon(vSplit[2]) then isTransactionValid = false end
 
-                    print("selling " .. vSplit[2])
-                    
-                    transactionProfit = transactionProfit + gunInfo[2]
-                    ply:StripWeapon(vSplit[2])
-
+                if !table.IsEmpty(sellGuns) then
+                    for l, b in ipairs(sellGuns) do
+                        if b == vSplit[2] then shouldAdd = false end
+                    end
                 end
+
+                if shouldAdd then
+                    transactionProfit = transactionProfit + gunInfo[2]
+                    table.insert(sellGuns, vSplit[2])
+                end 
                 
             end
 
@@ -57,10 +71,23 @@ local function ShopTransaction(ply, cmd, args)
 
     end
 
-    print("Transaction complete, gained " .. transactionProfit .. " capitalism points!") -- debug
-    print("You now have " .. currentMoney + transactionProfit .. " capital lmao.")
+    if !isTransactionValid then print("transaction not valid") return end -- the player has the shit they wanna sell and doesnt have shit they wanna buy
+    if currentMoney + transactionProfit < 0 then print("not enough money") return end -- if the player has enough money
+
+    if !table.IsEmpty(buyGuns) then
+        for k, v in ipairs(buyGuns) do
+            ply:Give(v)
+        end
+    end
+
+    if !table.IsEmpty(sellGuns) then
+        for k, v in ipairs(sellGuns) do
+            ply:StripWeapon(v)
+        end
+    end
 
     ply:SetNWInt("PlayerMoney", currentMoney + transactionProfit)
+    ply:PrintMessage(HUD_PRINTCENTER, "Transaction complete, it had a profit of $" .. transactionProfit .. ", and you now have $" .. currentMoney + transactionProfit .. ".")
 
 end
 concommand.Add("efgm_transaction", ShopTransaction)
