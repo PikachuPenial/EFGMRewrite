@@ -24,17 +24,17 @@ local function DrawCompass()
     fadeDistMultiplier = 20
     fadeDistance = (width / 2) / fadeDistMultiplier
 
-	local adv_compass_tbl = {
-		[0] = "N",
-		[45] = "NE",
-		[90] = "E",
-		[135] = "SE",
-		[180] = "S",
-		[225] = "SW",
-		[270] = "W",
-		[315] = "NW",
-		[360] = "N"
-	}
+    local adv_compass_tbl = {
+        [0] = "N",
+        [45] = "NE",
+        [90] = "E",
+        [135] = "SE",
+        [180] = "S",
+        [225] = "SW",
+        [270] = "W",
+        [315] = "NW",
+        [360] = "N"
+    }
 
     for i = math.Round(-ang.y) % 360, (math.Round(-ang.y) % 360) + numOfLines do
 
@@ -76,7 +76,7 @@ local function DebugRaidTime()
         time = "Raid Pending!"
     elseif raidTime == -2 then
         time = "Raid Ended!"
-    else 
+    else
         time = string.FormattedTime( raidTime, "%2i:%02i" ) -- thanks titanmod for raid time formatting
     end
 
@@ -88,11 +88,11 @@ hook.Add("HUDPaint", "DrawTimer", DebugRaidTime)
 
 -- idk what this does
 function HideHud(name)
-	for k, v in pairs({"CHudHealth", "CHudBattery", "CHudAmmo", "CHudSecondaryAmmo"}) do
-		if name == v then
-			return false
-		end
-	end
+    for k, v in pairs({"CHudHealth", "CHudBattery", "CHudAmmo", "CHudSecondaryAmmo", "CHudCrosshair"}) do
+        if name == v then
+            return false
+        end
+    end
 end
 hook.Add("HUDShouldDraw", "HideDefaultHud", HideHud)
 
@@ -284,7 +284,7 @@ local function DrawEditMenuPanel()
     initializeFrameButton:SetText("Create Frame")
 
     local function CreateNewPanel( panelType, parent, x, y, w, h)
-        
+ 
         print("making panel and shit")
 
         local newPanel = vgui.Create(panelType, parent)
@@ -310,7 +310,7 @@ local function DrawEditMenuPanel()
         panelCreatorFrame:SetDraggable(true)
         panelCreatorFrame:Center()
         panelCreatorFrame:MakePopup()
-        
+
         local container0 = vgui.Create("DPanel", panelCreatorFrame)
         container0:Dock(TOP)
         container0:SetSize(0, 20)

@@ -49,42 +49,42 @@ end
 
 function GM:PlayerInitialSpawn(ply)
 
-    -- setup nwints and custom pdatas (these only use regular pdata for now)
-    
-    InitializeNetworkInt(ply, "PlayerLevel", 0)
-    InitializeNetworkInt(ply, "PlayerMoney", 0)
+	-- setup nwints and custom pdatas (these only use regular pdata for now)
+
+	InitializeNetworkInt(ply, "PlayerLevel", 0)
+	InitializeNetworkInt(ply, "PlayerMoney", 0)
 
 
 end
 
 local function UninitializeAll(ply)
 
-    UninitializeNetworkInt(ply, "PlayerLevel")
-    UninitializeNetworkInt(ply, "PlayerMoney")
+	UninitializeNetworkInt(ply, "PlayerLevel")
+	UninitializeNetworkInt(ply, "PlayerMoney")
 
 end
 
 function GM:PlayerDisconnected(ply)
 
-    UninitializeAll(ply)
+	UninitializeAll(ply)
 
 end
 
 function GM:ShutDown()
 
-    for k, v in pairs(player.GetHumans()) do
-        
-        UninitializeAll(v)
+	for k, v in pairs(player.GetHumans()) do
 
-    end
+		UninitializeAll(v)
+
+	end
 
 end
 
 function GM:PlayerDeath(victim, inflictor, attacker)
 
-    victim:ResetRaidStatus()
-    RAID:RemovePlayer(victim)
+	victim:ResetRaidStatus()
+	RAID:RemovePlayer(victim)
 
-    -- do nwints and shit for kd and idfk ill find it out when the actual im(port)ant shit is done haha port i said port he said it guys
+	-- do nwints and shit for kd and idfk ill find it out when the actual im(port)ant shit is done haha port i said port he said it guys
 
 end
