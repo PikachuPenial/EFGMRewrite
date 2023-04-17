@@ -21,6 +21,32 @@ include("sv_raid_manager.lua")
 -- include("sv_stash_managerlua")
 -- include("sv_task_manager.lua")
 
+function GM:Initialize()
+
+	print("Escape From Garry's Mod Rewrite has been initialized on " .. game.GetMap())
+
+end
+
+function GM:PlayerSpawn(ply)
+
+	ply:SetGravity(.72)
+	ply:SetMaxHealth(100)
+	ply:SetRunSpeed(230)
+	ply:SetWalkSpeed(140)
+	ply:SetJumpPower(140)
+
+	ply:SetLadderClimbSpeed(70)
+	ply:SetSlowWalkSpeed(78)
+
+	ply:SetCrouchedWalkSpeed(0.45)
+	ply:SetDuckSpeed(0.53)
+	ply:SetUnDuckSpeed(0.53)
+
+	ply:SetupHands()
+	ply:AddEFlags(EFL_NO_DAMAGE_FORCES) -- disables knockback being applied when damage is taken
+
+end
+
 function GM:PlayerInitialSpawn(ply)
 
     -- setup nwints and custom pdatas (these only use regular pdata for now)

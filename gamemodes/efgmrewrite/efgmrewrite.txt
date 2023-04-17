@@ -6,4 +6,17 @@
 	"workshopid"	"2792129130"
 	"category"	"pvp"
 	"menusystem"	"1"
+
+	"settings"
+	{
+		1
+		{
+			"name"		"efgm_derivesbox"
+			"text"		"Derive Sandbox"
+			"help"		"Hooks the sandbox gamemode into EFGM, allowing for things like the spawn menu to be accessed. Used for development purposes."
+			"type"		"CheckBox"
+			"default"	"0"
+			"singleplayer"
+		}
+	}
 }

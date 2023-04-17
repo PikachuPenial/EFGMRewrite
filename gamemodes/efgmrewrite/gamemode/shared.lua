@@ -36,3 +36,5 @@ hook.Add("Initialize", "Optimization", function()
         hook.Remove("PostDrawEffects", "RenderHalos")
     end
 end)
+
+if GetConVar("efgm_derivesbox"):GetInt() == 1 then DeriveGamemode("sandbox") end -- this will enable the spawn menu as well as countless other things that you do not want users to have access too, please leave this off unless you know what you are doing
