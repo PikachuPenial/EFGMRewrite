@@ -1,7 +1,9 @@
 AddCSLuaFile("cl_hud.lua")
-AddCSLuaFile("cl_menu.lua")
+AddCSLuaFile("cl_init.lua")
 -- AddCSLuaFile("cl_keybinds.lua")
+AddCSLuaFile("cl_menu_alias.lua")
 AddCSLuaFile("cl_menu_manager.lua")
+AddCSLuaFile("cl_menu.lua")
 -- AddCSLuaFile("cl_progression_menu.lua")
 AddCSLuaFile("cl_raid_info.lua")
 -- AddCSLuaFile("cl_scoreboard.lua")
@@ -10,8 +12,17 @@ AddCSLuaFile("cl_raid_info.lua")
 
 AddCSLuaFile("shared.lua")
 AddCSLuaFile("config.lua")
+AddCSLuaFile("sh_debug_handler.lua")
+AddCSLuaFile("sh_enums.lua")
+AddCSLuaFile("sh_loot_tables.lua")
+AddCSLuaFile("sh_playermeta.lua")
+
 include("shared.lua")
 include("config.lua")
+include("sh_debug_handler.lua")
+include("sh_enums.lua")
+include("sh_loot_tables.lua")
+include("sh_playermeta.lua")
 
 include("sv_concommands.lua")
 include("sv_network_manager.lua")
@@ -42,9 +53,9 @@ function GM:PlayerSpawn(ply)
 
 	ply:SetCrouchedWalkSpeed(0.45)
 	ply:SetDuckSpeed(0.48)
-	ply:SetUnDuckSpeed(0.48
-)
+	ply:SetUnDuckSpeed(0.48)
 
+	ply:SetModel("models/player/Group01/male_07.mdl")
 	ply:SetupHands()
 	ply:AddEFlags(EFL_NO_DAMAGE_FORCES) -- disables knockback being applied when damage is taken
 
