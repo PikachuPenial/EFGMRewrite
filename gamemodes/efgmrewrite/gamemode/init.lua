@@ -9,7 +9,9 @@ AddCSLuaFile("cl_raid_info.lua")
 -- AddCSLuaFile("cl_stash_menu.lua")
 
 AddCSLuaFile("shared.lua")
+AddCSLuaFile("config.lua")
 include("shared.lua")
+include("config.lua")
 
 include("sv_concommands.lua")
 include("sv_network_manager.lua")
@@ -39,11 +41,15 @@ function GM:PlayerSpawn(ply)
 	ply:SetSlowWalkSpeed(78)
 
 	ply:SetCrouchedWalkSpeed(0.45)
-	ply:SetDuckSpeed(0.53)
-	ply:SetUnDuckSpeed(0.53)
+	ply:SetDuckSpeed(0.48)
+	ply:SetUnDuckSpeed(0.48
+)
 
 	ply:SetupHands()
 	ply:AddEFlags(EFL_NO_DAMAGE_FORCES) -- disables knockback being applied when damage is taken
+
+	ply:Give(debugPrimWep[math.random(#debugPrimWep)])
+	ply:Give(debugSecWep[math.random(#debugSecWep)])
 
 end
 
