@@ -17,6 +17,11 @@ AddCSLuaFile("sh_enums.lua")
 AddCSLuaFile("sh_loot_tables.lua")
 AddCSLuaFile("sh_playermeta.lua")
 
+-- Intel shit
+
+AddCSLuaFile("intel/cl_intel.lua")
+AddCSLuaFile("intel/info_concrete.lua")
+
 include("shared.lua")
 include("config.lua")
 include("sh_debug_handler.lua")
@@ -29,9 +34,9 @@ include("sv_network_manager.lua")
 include("sv_player_spawner.lua")
 include("sv_playermeta.lua")
 include("sv_raid_manager.lua")
--- include("sv_shop_manager.lua")
+include("sv_shop_manager.lua")
 -- include("sv_skill_manager.lua")
--- include("sv_stash_managerlua")
+include("sv_stash_manager.lua")
 -- include("sv_task_manager.lua")
 
 function GM:Initialize()
