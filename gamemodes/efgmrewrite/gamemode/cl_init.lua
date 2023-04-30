@@ -12,7 +12,7 @@ include("cl_menu.lua")
 include("cl_raid_info.lua")
 -- include("cl_scoreboard.lua")
 -- include("cl_shop_menu.lua")
--- include("cl_stash_menu.lua")
+include("cl_stash_manager.lua")
 
 -- Intel shit
 
@@ -85,4 +85,18 @@ hook.Add("StartCommand", "AltlookBlockShoot", function(ply, cmd)
 
     if !holdingbind(ply) or isinsights(ply) or ply:ShouldDrawLocalPlayer() then return end
     cmd:RemoveKey(IN_ATTACK)
+end)
+
+-- testing network shat
+
+net.Receive( "SendClientStash", function(len, ply)
+
+    local bytes = net.ReadUInt( 16 ) -- Gets back the amount of bytes our data has
+	local compStash = net.ReadData( bytes ) -- Gets back our compressed message
+
+	local jsonStash = util.Decompress( compStash ) -- Decompresses our message
+    local playerStash = util.JSONToTable(jsonStash)
+
+	PrintTable( playerStash )
+
 end)

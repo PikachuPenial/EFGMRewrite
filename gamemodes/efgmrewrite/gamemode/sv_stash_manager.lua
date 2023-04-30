@@ -1,9 +1,28 @@
 
+util.AddNetworkString( "SendClientStash" )
+
 STASH = {}
 
 hook.Add("Initialize", "StashInit", function()
 
     sql.Query( "CREATE TABLE IF NOT EXISTS Stash ( ItemName TEXT, ItemCount INTEGER, ItemType INTEGER, ItemOwner INTEGER );" )
+
+end)
+
+hook.Add("PlayerInitialSpawn", "SendClientStash", function(ply) -- sends a client their stash on joining the server (i have no idea how this is gonna work when like 20 people join after a map switch)
+
+    local playerStash = STASH.GetPlayerStashLimited( ply:SteamID64() )
+
+    if playerStash == nil then return end
+
+    local jsonStash = util.TableToJSON( playerStash )
+    local compStash = util.Compress( jsonStash )
+    local bytes = #compStash
+
+    net.Start("SendClientStash")
+    net.WriteUInt( bytes, 16 ) -- Writes the amount of bytes we have. Needed to read the data
+    net.WriteData( compStash, bytes ) -- Writes the datas
+    net.Send(ply)
 
 end)
 
@@ -26,7 +45,21 @@ end
 
 function STASH.GetPlayerStash(plyID)
 
-    return sql.Query( "SELECT ItemName, ItemCount, ItemType, ItemOwner FROM Stash WHERE ItemOwner = " .. plyID .. " ORDER BY ItemCount DESC;" )
+    local query = sql.Query( "SELECT ItemName, ItemCount, ItemType, ItemOwner FROM Stash WHERE ItemOwner = " .. plyID .. " ORDER BY ItemCount DESC;" )
+    
+    if query == "NULL" then return nil end
+
+    return query
+
+end
+
+function STASH.GetPlayerStashLimited(plyID)
+
+    local query = sql.Query( "SELECT ItemName, ItemCount FROM Stash WHERE ItemOwner = ".. plyID ..";" )
+
+    if query == "NULL" then return nil end
+
+    return query
 
 end
 
@@ -138,9 +171,6 @@ concommand.Add("efgm_stash_transaction", function(ply, cmd, args)
         if v == "+" then table.insert(withdraws, args[k + 1])
         elseif v == "-" then table.insert(deposits, args[k + 1]) end
     end
-
-    -- PrintTable(deposits)
-    -- PrintTable(withdraws)
 
     STASH.Transaction(ply, deposits, withdraws)
 

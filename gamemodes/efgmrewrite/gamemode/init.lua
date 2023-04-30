@@ -8,7 +8,7 @@ AddCSLuaFile("cl_menu.lua")
 AddCSLuaFile("cl_raid_info.lua")
 -- AddCSLuaFile("cl_scoreboard.lua")
 -- AddCSLuaFile("cl_shop_menu.lua")
--- AddCSLuaFile("cl_stash_menu.lua")
+AddCSLuaFile("cl_stash_manager.lua")
 
 AddCSLuaFile("shared.lua")
 AddCSLuaFile("config.lua")
