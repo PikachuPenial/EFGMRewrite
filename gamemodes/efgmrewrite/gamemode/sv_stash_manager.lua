@@ -26,8 +26,11 @@ hook.Add("PlayerInitialSpawn", "SendClientStash", function(ply) -- sends a clien
 
 end)
 
-function STASH.StashHasItem(plyID, item) -- returns true if the player has an item in their stash, returns false if they dont
-    if sql.Query( "SELECT ItemName FROM Stash WHERE ItemOwner = ".. plyID .." AND ItemName = ".. sql.SQLStr(item) ..";" ) == nil then
+function STASH.StashHasItem(plyID, item, type) -- returns true if the player has an item in their stash, returns false if they dont
+
+    if type == nil then type = 1 end
+
+    if sql.Query( "SELECT ItemName FROM Stash WHERE ItemOwner = ".. plyID .." AND ItemName = ".. sql.SQLStr(item) .." AND ItemType = ".. type ..";" ) == nil then
         return false
     else    
         return true
@@ -55,7 +58,7 @@ end
 
 function STASH.GetPlayerStashLimited(plyID)
 
-    local query = sql.Query( "SELECT ItemName, ItemCount FROM Stash WHERE ItemOwner = ".. plyID ..";" )
+    local query = sql.Query( "SELECT ItemName, ItemCount, ItemType FROM Stash WHERE ItemOwner = ".. plyID ..";" )
 
     if query == "NULL" then return nil end
 
@@ -92,7 +95,8 @@ function STASH.Transaction(ply, deposits, withdraws)
         
         transItems = transItems + 1 -- adding because this will add to the stash
 
-        if !ply:HasWeapon(v) then isTransactionValid = false end
+        -- instead of this i'll probably make a function like validtransaction[itemtype] to handle these but im lazy
+        if !ply:HasWeapon(v.ItemName) then isTransactionValid = false end
 
     end
 
@@ -100,7 +104,7 @@ function STASH.Transaction(ply, deposits, withdraws)
         
         transItems = transItems - 1 -- subtracting because this will take from the stash
 
-        if !STASH.StashHasItem(owner, v) then isTransactionValid = false end
+        if !STASH.StashHasItem(owner, v.ItemName) then isTransactionValid = false end
 
     end
 
@@ -112,19 +116,19 @@ function STASH.Transaction(ply, deposits, withdraws)
     if !table.IsEmpty(deposits) then -- insert or update depending on if the count > 0
         for k, v in ipairs(deposits) do
 
-            local count = STASH.StashItemCount(owner, v)
+            local count = STASH.StashItemCount(owner, v.ItemName)
 
             if count > 0 then -- update
                 
-                sql.Query( "UPDATE Stash SET ItemCount = ".. count + 1 .." WHERE ItemOwner = ".. owner .." AND ItemName = ".. sql.SQLStr(v) ..";" )
+                sql.Query( "UPDATE Stash SET ItemCount = ".. count + 1 .." WHERE ItemOwner = ".. owner .." AND ItemName = ".. sql.SQLStr(v.ItemName) .." AND ItemType = ".. v.ItemType ..";" )
                 
             else -- insert
 
-                sql.Query( "INSERT INTO Stash (ItemName, ItemCount, ItemType, ItemOwner) VALUES (".. SQLStr(v) ..", 1, 1, ".. owner ..");" )
+                sql.Query( "INSERT INTO Stash (ItemName, ItemCount, ItemType, ItemOwner) VALUES (".. SQLStr(v.ItemName) ..", 1, ".. v.ItemType ..", ".. owner ..");" )
 
             end
 
-            ply:StripWeapon(v)
+            ply:StripWeapon(v.ItemName)
 
         end
     end
@@ -132,19 +136,19 @@ function STASH.Transaction(ply, deposits, withdraws)
     if !table.IsEmpty(withdraws) then -- delete row or decrement the count
         for k, v in ipairs(withdraws) do
 
-            local count = STASH.StashItemCount(owner, v)
+            local count = STASH.StashItemCount(owner, v.ItemName)
 
             if count > 1 then -- update
                 
-                sql.Query( "UPDATE Stash SET ItemCount = ".. count - 1 .." WHERE ItemOwner = ".. owner .." AND ItemName = ".. sql.SQLStr(v) ..";" )
+                sql.Query( "UPDATE Stash SET ItemCount = ".. count - 1 .." WHERE ItemOwner = ".. owner .." AND ItemName = ".. sql.SQLStr(v.ItemName) .." AND ItemType = ".. v.ItemType ..";" )
                 
             else -- remove
 
-                sql.Query( "DELETE FROM Stash WHERE ItemOwner = ".. owner .." AND ItemName = ".. sql.SQLStr(v) ..";" )
+                sql.Query( "DELETE FROM Stash WHERE ItemOwner = ".. owner .." AND ItemName = ".. sql.SQLStr(v.ItemName) .." AND ItemType = ".. v.ItemType ..";" )
 
             end
 
-            ply:Give(v)
+            ply:Give(v.ItemName)
 
         end
     end
@@ -155,21 +159,32 @@ end
 
 concommand.Add("efgm_stash_transaction", function(ply, cmd, args)
 
-    -- args is like [1] == +, [2] == "weapon_name", [3] == -, [4] == "weapon_name2" so no vSplit woohoo
-    -- also + being to take from the stash (withdraw), and - being to put into the stash (deposit) because thats an established convention from the fucking shop end my life
-    -- also also this shit isnt in concommands because fuck oop and its expectation of encapsulation of state and fuck you
-    
-    -- stash transaction will handle stash itself
+    -- updating these separately is fucking annoying but unless i get a third type of transaction i prefer this tbh
 
-    -- separate args into deposits table and withdraws table
+    local deposits = {} -- ["ItemName"] and ["ItemType"]
+    local withdraws = {} -- same
 
-    local deposits = {}
-    local withdraws = {}
-
+    -- cmd == -/+, type (number), weapon_name
     for k, v in ipairs(args) do
-        -- god i wish lua had fucking switches (i could easily make my own)
-        if v == "+" then table.insert(withdraws, args[k + 1])
-        elseif v == "-" then table.insert(deposits, args[k + 1]) end
+        if v == "+" then
+
+            local tbl = {}
+            tbl.ItemType = tonumber( args[k + 1] )
+            tbl.ItemCount = tonumber( args[k + 2] )
+            tbl.ItemName = args[k + 3]
+
+            table.insert(withdraws, tbl)
+
+        elseif v == "-" then
+
+            local tbl = {}
+            tbl.ItemType = tonumber( args[k + 1] )
+            tbl.ItemCount = tonumber( args[k + 2] )
+            tbl.ItemName = args[k + 3]
+
+            table.insert(deposits, tbl)
+
+        end
     end
 
     STASH.Transaction(ply, deposits, withdraws)
