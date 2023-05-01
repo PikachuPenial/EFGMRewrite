@@ -1,1 +1,2 @@
 -- task systems go here
+-- there probably won't be actual tasks, at the most contracts (daily's and weekly's) and achievements (titanmod style shit with cosmetic rewards and shop unlocks)

@@ -8,18 +8,26 @@ function ShopTransaction(ply, buy, sell)
 
     local currentMoney = ply:GetNWInt("PlayerMoney", nil)
     if currentMoney == nil then return end
+
     local transactionProfit = 0
 
     local isTransactionValid = true -- isn't valid if player doesnt have a weapon they're trying to buy, or they don't have a weapon they're trying to sell
 
     for k, v in pairs(buy) do
 
-        local gunInfo = LOOT[1][v]
+        local gunInfo = LOOT[v.ItemType][v.ItemName]
 
         if gunInfo != nil then
             
-            if ply:HasWeapon(v) then isTransactionValid = false end
-            transactionProfit = transactionProfit - gunInfo[2]
+            transactionProfit = transactionProfit - LOOT.FUNCTIONS.GetCost[v.ItemType](v.ItemName, v.ItemCount)
+
+            if LOOT.FUNCTIONS.PlayerHasItem[v.ItemType](ply, v.ItemName, v.ItemCount) then
+                isTransactionValid = false
+            end
+
+        else
+
+            isTransactionValid = false
 
         end
 
@@ -27,29 +35,39 @@ function ShopTransaction(ply, buy, sell)
 
     for k, v in pairs(sell) do
 
-        local gunInfo = LOOT[1][v]
+        local gunInfo = LOOT[v.ItemType][v.ItemName]
 
         if gunInfo != nil then
 
-            if !ply:HasWeapon(v) then isTransactionValid = false end
-            transactionProfit = transactionProfit + gunInfo[2]
+            transactionProfit = transactionProfit + (LOOT.FUNCTIONS.GetCost[v.ItemType](v.ItemName, v.ItemCount) * sellMultiplier)
+
+            if !LOOT.FUNCTIONS.PlayerHasItem[v.ItemType](ply, v.ItemName, v.ItemCount) then
+                isTransactionValid = false
+            end
+
+        else
+
+            isTransactionValid = false
 
         end
+
         
     end
+
+    transactionProfit = math.floor(transactionProfit)
 
     if !isTransactionValid then print("transaction not valid") return end -- the player has the shit they wanna sell and doesnt have shit they wanna buy
     if currentMoney + transactionProfit < 0 then ply:PrintMessage(HUD_PRINTCENTER, "Transaction failed, you need $".. -transactionProfit - currentMoney .." more!") return end -- if the player has enough money
 
     if !table.IsEmpty(buy) then
         for k, v in ipairs(buy) do
-            ply:Give(v)
+            LOOT.FUNCTIONS.GiveItem[v.ItemType](ply, v.ItemName, v.ItemCount)
         end
     end
    
     if !table.IsEmpty(sell) then
         for k, v in ipairs(sell) do
-            ply:StripWeapon(v)
+            LOOT.FUNCTIONS.TakeItem[v.ItemType](ply, v.ItemName, v.ItemCount)
         end
     end
 
@@ -59,13 +77,40 @@ function ShopTransaction(ply, buy, sell)
 end
 concommand.Add("efgm_shop_transaction", function(ply, cmd, args)
 
+    if ply:IsInRaid() then return end
+
+    -- TODO: disallow selling / buying multiple of one item type
+
     local buy = {}
     local sell = {}
 
+    -- cmd == -/+, type (number), count, weapon_name
     for k, v in ipairs(args) do
-        -- god i wish lua had fucking switches (i could easily make my own)
-        if v == "+" then table.insert(buy, args[k + 1])
-        elseif v == "-" then table.insert(sell, args[k + 1]) end
+        if v == "+" then
+
+            local tbl = {}
+            tbl.ItemType = tonumber( args[k + 1] )
+            tbl.ItemCount = tonumber( args[k + 2] )
+            tbl.ItemName = args[k + 3]
+
+            if tbl.ItemCount < 1 then return end
+            if tbl.ItemCount != 1 && tbl.ItemType == 1 then return end -- if a weapon has a count other than 1 bc you can only hold 1 of each weapon
+
+            table.insert(buy, tbl)
+
+        elseif v == "-" then
+
+            local tbl = {}
+            tbl.ItemType = tonumber( args[k + 1] )
+            tbl.ItemCount = tonumber( args[k + 2] )
+            tbl.ItemName = args[k + 3]
+
+            if tbl.ItemCount < 1 then return end
+            if tbl.ItemCount != 1 && tbl.ItemType == 1 then return end -- if a weapon has a count other than 1 bc you can only hold 1 of each weapon
+
+            table.insert(sell, tbl)
+
+        end
     end
 
     ShopTransaction(ply, buy, sell)

@@ -1,4 +1,6 @@
 
+sellMultiplier = 1 -- placeholder basically
+
 LOOT = {}
 
 -- currently half life 2 because no weapons yet
@@ -44,7 +46,7 @@ LOOT[2]["AR2AltFire"]           = {3, 400, 1}
 
 LOOT.FUNCTIONS = {}
 
-LOOT.FUNCTIONS.CheckExists = {}
+LOOT.FUNCTIONS.CheckExists = {} -- idk why i thought this was needed (and it doesnt even fucking work)
 
 LOOT.FUNCTIONS.CheckExists[1] = function(item)-- weapons
     return weapons.Get( item ) != nil -- if it equals nil then the weapon aint a weapon
@@ -88,4 +90,16 @@ end
 LOOT.FUNCTIONS.GiveItem[2] = function(ply, item, count) -- ammo
     if count == nil then count = 1 end
     ply:GiveAmmo(count, item, false)
+end
+
+LOOT.FUNCTIONS.GetCost = {}
+
+LOOT.FUNCTIONS.GetCost[1] = function(item, count) -- weapons
+    return LOOT[1][item][2] -- LOOT.Weapons.WeaponName.Cost (count dont matter)
+end
+
+
+LOOT.FUNCTIONS.GetCost[2] = function(item, count) -- ammo
+    if count == nil then count = 1 end
+    return (LOOT[2][item][2] / LOOT[2][item][3]) * count -- gets cost per bullet multiplied by the amount of bullets your rat ass wants
 end

@@ -99,18 +99,15 @@ function STASH.Transaction(ply, deposits, withdraws)
             isTransactionValid = false
         end
 
-        if !LOOT.FUNCTIONS.CheckExists[v.ItemType](v.ItemName) then
-            isTransactionValid = false
-        end
-
     end
 
     for k, v in ipairs(withdraws) do -- check if stash has the shit
         
         transItems = transItems - v.ItemCount -- subtracting because this will take from the stash
 
-        if !STASH.StashHasItem(owner, v.ItemName, v.ItemType) then isTransactionValid = false end
-        if !LOOT.FUNCTIONS.CheckExists[v.ItemType](v.ItemName) then isTransactionValid = false end
+        if !STASH.StashHasItem(owner, v.ItemName, v.ItemType) then
+            isTransactionValid = false
+        end
 
     end
 
@@ -164,6 +161,8 @@ function STASH.Transaction(ply, deposits, withdraws)
 end
 
 concommand.Add("efgm_stash_transaction", function(ply, cmd, args)
+
+    if ply:IsInRaid() then return end
 
     -- updating these separately is fucking annoying but unless i get a third type of transaction i prefer this tbh
     -- TODO: disallow selling / buying multiple of one item type
