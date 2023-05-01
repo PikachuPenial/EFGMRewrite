@@ -28,8 +28,6 @@ end)
 
 function STASH.StashHasItem(plyID, item, type) -- returns true if the player has an item in their stash, returns false if they dont
 
-    if type == nil then type = 1 end
-
     if sql.Query( "SELECT ItemName FROM Stash WHERE ItemOwner = ".. plyID .." AND ItemName = ".. sql.SQLStr(item) .." AND ItemType = ".. type ..";" ) == nil then
         return false
     else    
@@ -82,10 +80,11 @@ function STASH.Transaction(ply, deposits, withdraws)
     -- Declaring variables
 
     local owner = ply:SteamID64()
-    local transactionCount = 0 -- positive if transaction adds more than it takes, etc
-    local maxItems = 4 -- number for testing, can increase / decrease whenever
+    
     local transItems = 0 -- trans is short for transaction eat shit lgbt community
     local stashItems = STASH.StashTotalCount(owner)
+
+    local maxItems = 4 -- number for testing, can increase / decrease whenever (ima have this on hold until i get around to making clientside ui)
 
     local isTransactionValid = true
 
@@ -93,23 +92,30 @@ function STASH.Transaction(ply, deposits, withdraws)
 
     for k, v in ipairs(deposits) do -- check if player has the shit
         
-        transItems = transItems + 1 -- adding because this will add to the stash
+        transItems = transItems + v.ItemCount -- adding because this will add to the stash
 
         -- instead of this i'll probably make a function like validtransaction[itemtype] to handle these but im lazy
-        if !ply:HasWeapon(v.ItemName) then isTransactionValid = false end
+        if !LOOT.FUNCTIONS.PlayerHasItem[v.ItemType](ply, v.ItemName, v.ItemCount) then
+            isTransactionValid = false
+        end
+
+        if !LOOT.FUNCTIONS.CheckExists[v.ItemType](v.ItemName) then
+            isTransactionValid = false
+        end
 
     end
 
     for k, v in ipairs(withdraws) do -- check if stash has the shit
         
-        transItems = transItems - 1 -- subtracting because this will take from the stash
+        transItems = transItems - v.ItemCount -- subtracting because this will take from the stash
 
-        if !STASH.StashHasItem(owner, v.ItemName) then isTransactionValid = false end
+        if !STASH.StashHasItem(owner, v.ItemName, v.ItemType) then isTransactionValid = false end
+        if !LOOT.FUNCTIONS.CheckExists[v.ItemType](v.ItemName) then isTransactionValid = false end
 
     end
 
     if !isTransactionValid then print("transaction not valid") return end -- the player has the shit they wanna sell and doesnt have shit they wanna buy
-    if transItems + stashItems > maxItems then ply:PrintMessage(HUD_PRINTCENTER, "Stash transaction failed, your stash can only hold 4 items, but you tried to hold ".. transItems + stashItems .."!") return end
+    -- if transItems + stashItems > maxItems then ply:PrintMessage(HUD_PRINTCENTER, "Stash transaction failed, your stash can only hold 4 items, but you tried to hold ".. transItems + stashItems .."!") return end
 
     -- Transaction logic
 
@@ -120,15 +126,15 @@ function STASH.Transaction(ply, deposits, withdraws)
 
             if count > 0 then -- update
                 
-                sql.Query( "UPDATE Stash SET ItemCount = ".. count + 1 .." WHERE ItemOwner = ".. owner .." AND ItemName = ".. sql.SQLStr(v.ItemName) .." AND ItemType = ".. v.ItemType ..";" )
+                sql.Query( "UPDATE Stash SET ItemCount = ".. count + v.ItemCount .." WHERE ItemOwner = ".. owner .." AND ItemName = ".. sql.SQLStr(v.ItemName) .." AND ItemType = ".. v.ItemType ..";" )
                 
             else -- insert
 
-                sql.Query( "INSERT INTO Stash (ItemName, ItemCount, ItemType, ItemOwner) VALUES (".. SQLStr(v.ItemName) ..", 1, ".. v.ItemType ..", ".. owner ..");" )
+                sql.Query( "INSERT INTO Stash (ItemName, ItemCount, ItemType, ItemOwner) VALUES (".. SQLStr(v.ItemName) ..", ".. v.ItemCount ..", ".. v.ItemType ..", ".. owner ..");" )
 
             end
 
-            ply:StripWeapon(v.ItemName)
+            LOOT.FUNCTIONS.TakeItem[v.ItemType](ply, v.ItemName, v.ItemCount)
 
         end
     end
@@ -138,9 +144,9 @@ function STASH.Transaction(ply, deposits, withdraws)
 
             local count = STASH.StashItemCount(owner, v.ItemName)
 
-            if count > 1 then -- update
+            if count > v.ItemCount then -- update
                 
-                sql.Query( "UPDATE Stash SET ItemCount = ".. count - 1 .." WHERE ItemOwner = ".. owner .." AND ItemName = ".. sql.SQLStr(v.ItemName) .." AND ItemType = ".. v.ItemType ..";" )
+                sql.Query( "UPDATE Stash SET ItemCount = ".. count - v.ItemCount .." WHERE ItemOwner = ".. owner .." AND ItemName = ".. sql.SQLStr(v.ItemName) .." AND ItemType = ".. v.ItemType ..";" )
                 
             else -- remove
 
@@ -148,7 +154,7 @@ function STASH.Transaction(ply, deposits, withdraws)
 
             end
 
-            ply:Give(v.ItemName)
+            LOOT.FUNCTIONS.GiveItem[v.ItemType](ply, v.ItemName, v.ItemCount)
 
         end
     end
@@ -160,11 +166,12 @@ end
 concommand.Add("efgm_stash_transaction", function(ply, cmd, args)
 
     -- updating these separately is fucking annoying but unless i get a third type of transaction i prefer this tbh
+    -- TODO: disallow selling / buying multiple of one item type
 
     local deposits = {} -- ["ItemName"] and ["ItemType"]
     local withdraws = {} -- same
 
-    -- cmd == -/+, type (number), weapon_name
+    -- cmd == -/+, type (number), count, weapon_name
     for k, v in ipairs(args) do
         if v == "+" then
 
@@ -172,6 +179,9 @@ concommand.Add("efgm_stash_transaction", function(ply, cmd, args)
             tbl.ItemType = tonumber( args[k + 1] )
             tbl.ItemCount = tonumber( args[k + 2] )
             tbl.ItemName = args[k + 3]
+
+            if tbl.ItemCount < 1 then return end
+            if tbl.ItemCount != 1 && tbl.ItemType == 1 then return end -- if a weapon has a count other than 1 bc you can only hold 1 of each weapon
 
             table.insert(withdraws, tbl)
 
@@ -182,12 +192,18 @@ concommand.Add("efgm_stash_transaction", function(ply, cmd, args)
             tbl.ItemCount = tonumber( args[k + 2] )
             tbl.ItemName = args[k + 3]
 
+            if tbl.ItemCount < 1 then return end
+            if tbl.ItemCount != 1 && tbl.ItemType == 1 then return end -- if a weapon has a count other than 1 bc you can only hold 1 of each weapon
+
             table.insert(deposits, tbl)
 
         end
     end
 
     STASH.Transaction(ply, deposits, withdraws)
+
+    -- im tired of calling this every fucking time
+    ply:ConCommand("efgm_debug_getstash")
 
 end)
 

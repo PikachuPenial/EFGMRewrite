@@ -94,7 +94,7 @@ function HideHud(name)
         end
     end
 end
-hook.Add("HUDShouldDraw", "HideDefaultHud", HideHud)
+-- hook.Add("HUDShouldDraw", "HideDefaultHud", HideHud)
 
 -- local function DrawEditMenuPanel()
 
