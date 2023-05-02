@@ -46,7 +46,7 @@ end
 
 function STASH.GetPlayerStash(plyID)
 
-    local query = sql.Query( "SELECT ItemName, ItemCount, ItemType, ItemOwner FROM Stash WHERE ItemOwner = " .. plyID .. " ORDER BY ItemCount DESC;" )
+    local query = sql.Query( "SELECT ItemName, ItemCount, ItemType, ItemOwner FROM Stash WHERE ItemOwner = " .. plyID .. " ORDER BY ItemType ASC, ItemCount DESC;" )
     
     if query == "NULL" then return nil end
 
@@ -94,7 +94,6 @@ function STASH.Transaction(ply, deposits, withdraws)
         
         transItems = transItems + v.ItemCount -- adding because this will add to the stash
 
-        -- instead of this i'll probably make a function like validtransaction[itemtype] to handle these but im lazy
         if !LOOT.FUNCTIONS.PlayerHasItem[v.ItemType](ply, v.ItemName, v.ItemCount) then
             isTransactionValid = false
         end
@@ -106,6 +105,10 @@ function STASH.Transaction(ply, deposits, withdraws)
         transItems = transItems - v.ItemCount -- subtracting because this will take from the stash
 
         if !STASH.StashHasItem(owner, v.ItemName, v.ItemType) then
+            isTransactionValid = false
+        end
+
+        if LOOT.FUNCTIONS.PlayerHasItem[v.ItemType](ply, v.ItemName, v.ItemCount) && v.ItemType == 1 then
             isTransactionValid = false
         end
 
@@ -163,12 +166,12 @@ end
 concommand.Add("efgm_stash_transaction", function(ply, cmd, args)
 
     if ply:IsInRaid() then return end
-
-    -- updating these separately is fucking annoying but unless i get a third type of transaction i prefer this tbh
-    -- TODO: disallow selling / buying multiple of one item type
-
+    
     local deposits = {} -- ["ItemName"] and ["ItemType"]
+    local dpChecks = {}
+
     local withdraws = {} -- same
+    local wdChecks = {}
 
     -- cmd == -/+, type (number), count, weapon_name
     for k, v in ipairs(args) do
@@ -179,10 +182,15 @@ concommand.Add("efgm_stash_transaction", function(ply, cmd, args)
             tbl.ItemCount = tonumber( args[k + 2] )
             tbl.ItemName = args[k + 3]
 
-            if tbl.ItemCount < 1 then return end
-            if tbl.ItemCount != 1 && tbl.ItemType == 1 then return end -- if a weapon has a count other than 1 bc you can only hold 1 of each weapon
+            if wdChecks[tbl.ItemName] == nil then
 
-            table.insert(withdraws, tbl)
+                if tbl.ItemCount < 1 then return end
+                if tbl.ItemCount != 1 && tbl.ItemType == 1 then return end -- if a weapon has a count other than 1 bc you can only hold 1 of each weapon
+    
+                table.insert(withdraws, tbl)
+                wdChecks[tbl.ItemName] = 1
+
+            end
 
         elseif v == "-" then
 
@@ -191,10 +199,15 @@ concommand.Add("efgm_stash_transaction", function(ply, cmd, args)
             tbl.ItemCount = tonumber( args[k + 2] )
             tbl.ItemName = args[k + 3]
 
-            if tbl.ItemCount < 1 then return end
-            if tbl.ItemCount != 1 && tbl.ItemType == 1 then return end -- if a weapon has a count other than 1 bc you can only hold 1 of each weapon
+            if dpChecks[tbl.ItemName] == nil then
 
-            table.insert(deposits, tbl)
+                if tbl.ItemCount < 1 then return end
+                if tbl.ItemCount != 1 && tbl.ItemType == 1 then return end -- if a weapon has a count other than 1 bc you can only hold 1 of each weapon
+    
+                table.insert(deposits, tbl)
+                dpChecks[tbl.ItemName] = 1
+
+            end
 
         end
     end

@@ -21,7 +21,7 @@ function ShopTransaction(ply, buy, sell)
             
             transactionProfit = transactionProfit - LOOT.FUNCTIONS.GetCost[v.ItemType](v.ItemName, v.ItemCount)
 
-            if LOOT.FUNCTIONS.PlayerHasItem[v.ItemType](ply, v.ItemName, v.ItemCount) then
+            if LOOT.FUNCTIONS.PlayerHasItem[v.ItemType](ply, v.ItemName, v.ItemCount) && v.ItemType == 1 then -- if player has the gun
                 isTransactionValid = false
             end
 
@@ -51,7 +51,6 @@ function ShopTransaction(ply, buy, sell)
 
         end
 
-        
     end
 
     transactionProfit = math.floor(transactionProfit)
@@ -79,10 +78,11 @@ concommand.Add("efgm_shop_transaction", function(ply, cmd, args)
 
     if ply:IsInRaid() then return end
 
-    -- TODO: disallow selling / buying multiple of one item type
+    local sell = {} -- ["ItemName"] and ["ItemType"]
+    local slChecks = {}
 
-    local buy = {}
-    local sell = {}
+    local buy = {} -- same
+    local byChecks = {}
 
     -- cmd == -/+, type (number), count, weapon_name
     for k, v in ipairs(args) do
@@ -93,10 +93,15 @@ concommand.Add("efgm_shop_transaction", function(ply, cmd, args)
             tbl.ItemCount = tonumber( args[k + 2] )
             tbl.ItemName = args[k + 3]
 
-            if tbl.ItemCount < 1 then return end
-            if tbl.ItemCount != 1 && tbl.ItemType == 1 then return end -- if a weapon has a count other than 1 bc you can only hold 1 of each weapon
+            if byChecks[tbl.ItemName] == nil then
 
-            table.insert(buy, tbl)
+                if tbl.ItemCount < 1 then return end
+                if tbl.ItemCount != 1 && tbl.ItemType == 1 then return end -- if a weapon has a count other than 1 bc you can only hold 1 of each weapon
+    
+                table.insert(buy, tbl)
+                byChecks[tbl.ItemName] = 1
+
+            end
 
         elseif v == "-" then
 
@@ -105,10 +110,15 @@ concommand.Add("efgm_shop_transaction", function(ply, cmd, args)
             tbl.ItemCount = tonumber( args[k + 2] )
             tbl.ItemName = args[k + 3]
 
-            if tbl.ItemCount < 1 then return end
-            if tbl.ItemCount != 1 && tbl.ItemType == 1 then return end -- if a weapon has a count other than 1 bc you can only hold 1 of each weapon
+            if slChecks[tbl.ItemName] == nil then
 
-            table.insert(sell, tbl)
+                if tbl.ItemCount < 1 then return end
+                if tbl.ItemCount != 1 && tbl.ItemType == 1 then return end -- if a weapon has a count other than 1 bc you can only hold 1 of each weapon
+    
+                table.insert(sell, tbl)
+                slChecks[tbl.ItemName] = 1
+
+            end
 
         end
     end
