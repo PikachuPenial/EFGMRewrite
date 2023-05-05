@@ -304,14 +304,9 @@ function Menu.OpenTab.Shop()
 
     end
 
-    local sellerInventory = vgui.Create("DIconLayout", sellerInventoryScroller)
-    sellerInventory:Dock(FILL)
-    sellerInventory:SetSpaceY(5)
-    sellerInventory:SetSpaceX(5)
-
     local buyScroller = vgui.Create("DScrollPanel", sellerBackground)
     buyScroller:Dock(TOP)
-    buyScroller:SetSize(0, 150)
+    buyScroller:SetSize(0, 200)
     buyScroller.Paint = function(s, w, h)
 
         surface.SetDrawColor(MenuAlias.secondaryColor)
@@ -319,10 +314,17 @@ function Menu.OpenTab.Shop()
 
     end
 
-    local buyList = vgui.Create("DIconLayout", buyScroller)
-    buyList:Dock(FILL)
-    buyList:SetSpaceY(5)
-    buyList:SetSpaceX(5)
+    local sellerInventory = vgui.Create("DIconLayout", sellerInventoryScroller)
+    sellerInventory:Dock(FILL)
+    sellerInventory:SetSpaceY(5)
+    sellerInventory:SetSpaceX(5)
+    sellerInventory:SetPaintBackgroundEnabled(true)
+
+    local buyInventory = vgui.Create("DIconLayout", buyScroller)
+    buyInventory:Dock(FILL)
+    buyInventory:SetSpaceY(5)
+    buyInventory:SetSpaceX(5)
+    buyInventory:SetPaintBackgroundEnabled(true)
 
     -- PLAYER (Inventory on left)
 
@@ -347,14 +349,9 @@ function Menu.OpenTab.Shop()
 
     end
 
-    local playerInventory = vgui.Create("DIconLayout", playerInventoryScroller)
-    playerInventory:Dock(FILL)
-    playerInventory:SetSpaceY(5)
-    playerInventory:SetSpaceX(5)
-
     local sellScroller = vgui.Create("DScrollPanel", playerBackground)
     sellScroller:Dock(TOP)
-    sellScroller:SetSize(0, 150)
+    sellScroller:SetSize(0, 200)
     sellScroller.Paint = function(s, w, h)
 
         surface.SetDrawColor(MenuAlias.secondaryColor)
@@ -362,50 +359,25 @@ function Menu.OpenTab.Shop()
 
     end
 
-    local sellList = vgui.Create("DIconLayout", sellScroller)
-    sellList:Dock(FILL)
-    sellList:SetSpaceY(5)
-    sellList:SetSpaceX(5)
+    local playerInventory = vgui.Create("DIconLayout", playerInventoryScroller)
+    playerInventory:Dock(FILL)
+    playerInventory:SetSpaceY(5)
+    playerInventory:SetSpaceX(5)
+    playerInventory:SetPaintBackgroundEnabled(true)
+
+    local sellInventory = vgui.Create("DIconLayout", sellScroller)
+    sellInventory:Dock(FILL)
+    sellInventory:SetSpaceY(5)
+    sellInventory:SetSpaceX(5)
+    sellInventory:SetPaintBackgroundEnabled(true)
 
     -- Filling out the lists
 
     -- seller inventory
 
     for k, v in pairs(LOOT[1]) do
-        
-        local displayName, model, tier, category, price = LOOT.FUNCTIONS.GetShopIconInfo[1](k)
-
-        local tempTierColor = {}
-        tempTierColor[1] = Color(30, 180, 20)
-        tempTierColor[2] = Color(40, 30, 220)
-        tempTierColor[3] = Color(220, 30, 30)
-
-        local icon = vgui.Create("SpawnIcon", sellerInventory)
-        icon:SetModel(model)
-        icon:SetTooltip(displayName .." (".. category ..")")
-        icon:SetSize(75, 75)
-        function icon:Paint(w, h) 
-
-            surface.SetDrawColor(tempTierColor[tier])
-            surface.DrawRect(0, 0, w, h)
-
-            surface.SetDrawColor(MenuAlias.secondaryColor)
-            surface.DrawRect(5, 5, w - 10, h - 10)
-
-            draw.SimpleText(displayName, "DermaDefaultBold", w / 2, 7, MenuAlias.blackColor, TEXT_ALIGN_CENTER)
-            draw.SimpleText(price, "DermaDefaultBold", w / 2, h - 7, MenuAlias.blackColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
-
-            -- I'm just now looking at the old custom_menu.lua script, AND EVERY SINGLE FUCKING FRAME, FOR EVERY ICON VISIBLE ON THE MENU, THERE WAS A FOR LOOP CALLED ON THE ENTIRE FUCKING WEAPONS ARRAY
-            -- hey penial if i stop making github commits its because ive keeled over and died in my seat from shock
-
-        end
-        function icon:DoClick()
-
-            print(displayName)
-
-        end
-
-        sellerInventory:Add(icon)
+            
+        Menu.DrawInventoryIcon(k, sellerInventory, buyInventory)
 
     end
 
@@ -414,39 +386,62 @@ function Menu.OpenTab.Shop()
     for k, v in pairs(LocalPlayer():GetWeapons()) do
 
         local weapon = v:GetClass()
-        
+            
+        Menu.DrawInventoryIcon(weapon, playerInventory, sellInventory)
+
+    end
+
+    -- icons cannot be transferred between layouts without these
+    -- im genuinely serious, try it, remove them and clicked icons will dissappear
+    -- like what the fuck
+
+    local icon1 = buyInventory:Add("DPanel")
+    icon1:SetSize(75, 75)
+
+    local icon2 = sellInventory:Add("DPanel")
+    icon2:SetSize(75, 75)
+
+end
+
+function Menu.DrawInventoryIcon(weapon, iconLayout, secondaryLayout)
+
+    if LOOT.FUNCTIONS.GetCost[1](weapon) != nil then
+
+        print(weapon.." isnt nil")
+
+        local icon = iconLayout:Add("SpawnIcon")
+        icon:SetSize(75, 75)
+
+        local tempTierColor = {}
+        tempTierColor[1] = Color(30, 180, 20)
+        tempTierColor[2] = Color(40, 30, 220)
+        tempTierColor[3] = Color(220, 30, 30)
+
         local displayName, model, tier, category, price = LOOT.FUNCTIONS.GetShopIconInfo[1](weapon)
+        local color = tempTierColor[tier]
 
-        if price != nil then
+        icon:SetModel(model)
+        icon:SetTooltip(displayName .." (".. category ..")")
 
-            local tempTierColor = {}
-            tempTierColor[1] = Color(30, 180, 20)
-            tempTierColor[2] = Color(40, 30, 220)
-            tempTierColor[3] = Color(220, 30, 30)
-    
-            local icon = vgui.Create("SpawnIcon", playerInventory)
-            icon:SetModel(model)
-            icon:SetTooltip(displayName .." (".. category ..")")
-            icon:SetSize(75, 75)
-            function icon:Paint(w, h) 
-    
-                surface.SetDrawColor(tempTierColor[tier])
-                surface.DrawRect(0, 0, w, h)
-    
-                surface.SetDrawColor(MenuAlias.secondaryColor)
-                surface.DrawRect(5, 5, w - 10, h - 10)
-    
-                draw.SimpleText(displayName, "DermaDefaultBold", w / 2, 7, MenuAlias.blackColor, TEXT_ALIGN_CENTER)
-                draw.SimpleText(price, "DermaDefaultBold", w / 2, h - 7, MenuAlias.blackColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
-    
-            end
-            function icon:DoClick()
-    
-                print(displayName)
-    
-            end
-    
-            playerInventory:Add(icon)
+        function icon:Paint(w, h)
+
+            surface.SetDrawColor(color)
+            surface.DrawRect(0, 0, w, h)
+        
+            surface.SetDrawColor(MenuAlias.secondaryColor)
+            surface.DrawRect(5, 5, w - 10, h - 10)
+        
+            draw.SimpleText(displayName, "DermaDefaultBold", w / 2, 7, MenuAlias.blackColor, TEXT_ALIGN_CENTER)
+            draw.SimpleText(price, "DermaDefaultBold", w / 2, h - 7, MenuAlias.blackColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+
+        end
+        function icon:DoClick()
+            
+            Menu.DrawInventoryIcon(weapon, secondaryLayout, iconLayout)
+
+            print(displayName)
+
+            icon:Remove()
 
         end
 

@@ -122,8 +122,7 @@ end
 
 
 LOOT.FUNCTIONS.PlayerHasItem[2] = function(ply, item, count) -- ammo
-    if count == nil then count = 1 end
-    return ply:GetAmmoCount(item) >= count
+    return ply:GetAmmoCount(item) >= count or 1
 end
 
 LOOT.FUNCTIONS.TakeItem = {}
@@ -134,9 +133,9 @@ end
 
 
 LOOT.FUNCTIONS.TakeItem[2] = function(ply, item, count) -- ammo
-    if count == nil then count = 1 end
-    ply:RemoveAmmo(count, item)
+    ply:RemoveAmmo(count or 1, item)
 end
+
 
 LOOT.FUNCTIONS.GiveItem = {}
 
@@ -146,9 +145,9 @@ end
 
 
 LOOT.FUNCTIONS.GiveItem[2] = function(ply, item, count) -- ammo
-    if count == nil then count = 1 end
-    ply:GiveAmmo(count, item, false)
+    ply:GiveAmmo(count or 1, item, false)
 end
+
 
 LOOT.FUNCTIONS.GetCost = {}
 
@@ -158,9 +157,9 @@ end
 
 
 LOOT.FUNCTIONS.GetCost[2] = function(item, count) -- ammo
-    if count == nil then count = 1 end
-    return (LOOT[2][item][2] / LOOT[2][item][3]) * count -- gets cost per bullet multiplied by the amount of bullets your rat ass wants
+    return (LOOT[2][item][2] / LOOT[2][item][3]) * count or 1 -- gets cost per bullet multiplied by the amount of bullets your rat ass wants
 end
+
 
 LOOT.FUNCTIONS.AddItems = {} -- returns count
 
@@ -169,11 +168,9 @@ LOOT.FUNCTIONS.AddItems[1] = function(count1, count2) -- weapons
 end
 
 LOOT.FUNCTIONS.AddItems[2] = function(count1, count2) -- ammo
-    if count1 == nil then count1 = 1 end
-    if count2 == nil then count2 = 1 end
-
-    return count1 + count2 -- gets cost per bullet multiplied by the amount of bullets your rat ass wants
+    return count1 or 1 + count2 or 1 -- gets cost per bullet multiplied by the amount of bullets your rat ass wants
 end
+
 
 LOOT.FUNCTIONS.GetStashIconInfo = {}
 
@@ -212,6 +209,7 @@ LOOT.FUNCTIONS.GetStashIconInfo[2] = function(item)
     return displayName or item, model or "errorlol", tier, category
 
 end
+
 
 LOOT.FUNCTIONS.GetShopIconInfo = {}
 
