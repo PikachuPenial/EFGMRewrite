@@ -55,6 +55,12 @@ function Menu:Initialize( openTab )
 
     self.MenuFrame.LowerPanel = lowerPanel
 
+    local contents = vgui.Create("DPanel", Menu.MenuFrame.LowerPanel)
+    contents:Dock(FILL)
+    contents.Paint = nil
+
+    Menu.MenuFrame.LowerPanel.Contents = contents
+
     local statsTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
     statsTab:Dock(LEFT)
     statsTab:SetSize(180, 0)
@@ -72,7 +78,8 @@ function Menu:Initialize( openTab )
     intelTab:SetText("Intel")
 
     function intelTab:DoClick()
-
+        Menu.MenuFrame.LowerPanel.Contents:Remove()
+        Menu.OpenTab.Intel()
     end
 
     self.MenuFrame.TabParentPanel.IntelTab = intelTab
@@ -83,16 +90,50 @@ function Menu:Initialize( openTab )
     shopTab:SetText("Shop")
 
     function shopTab:DoClick()
-
+        Menu.MenuFrame.LowerPanel.Contents:Remove()
+        Menu.OpenTab.Shop()
     end
 
     self.MenuFrame.TabParentPanel.ShopTab = shopTab
 
-    local entryList = vgui.Create("DCategoryList", self.MenuFrame.LowerPanel)
+end
+
+-- called to either initialize or open the menu
+function Menu:Open( openTab )
+
+    if self.IsInitialized then
+        
+        -- if table's initialized (open it)
+
+        if self.IsOpen then return end
+
+        self.MenuFrame:Show()
+
+    else
+
+        -- if it aint
+
+        self:Initialize( openTab )
+
+    end
+
+end
+
+Menu.OpenTab = {}
+
+function Menu.OpenTab.Intel()
+
+    local contents = vgui.Create("DPanel", Menu.MenuFrame.LowerPanel)
+    contents:Dock(FILL)
+    contents.Paint = nil
+
+    Menu.MenuFrame.LowerPanel.Contents = contents
+
+    local entryList = vgui.Create("DCategoryList", contents)
     entryList:Dock(LEFT)
     entryList:SetSize(200, 0)
 
-    local entryPanel = vgui.Create("DPanel", self.MenuFrame.LowerPanel)
+    local entryPanel = vgui.Create("DPanel", contents)
     entryPanel:Dock(FILL)
     function entryPanel:Paint(w, h)
         surface.SetDrawColor(50, 50, 50)
@@ -225,26 +266,189 @@ function Menu:Initialize( openTab )
 
     end
 
-    self.MenuFrame.LowerPanel.EntryList = entryList
-
 end
 
--- called to either initialize or open the menu
-function Menu:Open( openTab )
+function Menu.OpenTab.Shop()
 
-    if self.IsInitialized then
+    local contents = vgui.Create("DPanel", Menu.MenuFrame.LowerPanel)
+    contents:Dock(FILL)
+    contents.Paint = function(s, w, h)
+
+        surface.SetDrawColor(MenuAlias.secondaryColor)
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
+    Menu.MenuFrame.LowerPanel.Contents = contents
+
+    -- SELLER (Inventory on right)
+
+    local sellerBackground = vgui.Create("DPanel", contents)
+    sellerBackground:Dock(LEFT)
+    sellerBackground:SetSize(650, 0)
+    sellerBackground:DockPadding(unpack(MenuAlias.margins))
+    sellerBackground.Paint = function(s, w, h)
+
+        surface.SetDrawColor(MenuAlias.primaryColor)
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
+    local sellerInventoryScroller = vgui.Create("DScrollPanel", sellerBackground)
+    sellerInventoryScroller:Dock(BOTTOM)
+    sellerInventoryScroller:SetSize(0, 450)
+    sellerInventoryScroller.Paint = function(s, w, h)
+
+        surface.SetDrawColor(MenuAlias.secondaryColor)
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
+    local sellerInventory = vgui.Create("DIconLayout", sellerInventoryScroller)
+    sellerInventory:Dock(FILL)
+    sellerInventory:SetSpaceY(5)
+    sellerInventory:SetSpaceX(5)
+
+    local buyScroller = vgui.Create("DScrollPanel", sellerBackground)
+    buyScroller:Dock(TOP)
+    buyScroller:SetSize(0, 150)
+    buyScroller.Paint = function(s, w, h)
+
+        surface.SetDrawColor(MenuAlias.secondaryColor)
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
+    local buyList = vgui.Create("DIconLayout", buyScroller)
+    buyList:Dock(FILL)
+    buyList:SetSpaceY(5)
+    buyList:SetSpaceX(5)
+
+    -- PLAYER (Inventory on left)
+
+    local playerBackground = vgui.Create("DPanel", contents)
+    playerBackground:Dock(RIGHT)
+    playerBackground:SetSize(650, 0)
+    playerBackground:DockPadding(unpack(MenuAlias.margins))
+    playerBackground.Paint = function(s, w, h)
+
+        surface.SetDrawColor(MenuAlias.primaryColor)
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
+    local playerInventoryScroller = vgui.Create("DScrollPanel", playerBackground)
+    playerInventoryScroller:Dock(BOTTOM)
+    playerInventoryScroller:SetSize(0, 450)
+    playerInventoryScroller.Paint = function(s, w, h)
+
+        surface.SetDrawColor(MenuAlias.secondaryColor)
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
+    local playerInventory = vgui.Create("DIconLayout", playerInventoryScroller)
+    playerInventory:Dock(FILL)
+    playerInventory:SetSpaceY(5)
+    playerInventory:SetSpaceX(5)
+
+    local sellScroller = vgui.Create("DScrollPanel", playerBackground)
+    sellScroller:Dock(TOP)
+    sellScroller:SetSize(0, 150)
+    sellScroller.Paint = function(s, w, h)
+
+        surface.SetDrawColor(MenuAlias.secondaryColor)
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
+    local sellList = vgui.Create("DIconLayout", sellScroller)
+    sellList:Dock(FILL)
+    sellList:SetSpaceY(5)
+    sellList:SetSpaceX(5)
+
+    -- Filling out the lists
+
+    -- seller inventory
+
+    for k, v in pairs(LOOT[1]) do
         
-        -- if table's initialized (open it)
+        local displayName, model, tier, category, price = LOOT.FUNCTIONS.GetShopIconInfo[1](k)
 
-        if self.IsOpen then return end
+        local tempTierColor = {}
+        tempTierColor[1] = Color(30, 180, 20)
+        tempTierColor[2] = Color(40, 30, 220)
+        tempTierColor[3] = Color(220, 30, 30)
 
-        self.MenuFrame:Show()
+        local icon = vgui.Create("SpawnIcon", sellerInventory)
+        icon:SetModel(model)
+        icon:SetTooltip(displayName .." (".. category ..")")
+        icon:SetSize(75, 75)
+        function icon:Paint(w, h) 
 
-    else
+            surface.SetDrawColor(tempTierColor[tier])
+            surface.DrawRect(0, 0, w, h)
 
-        -- if it aint
+            surface.SetDrawColor(MenuAlias.secondaryColor)
+            surface.DrawRect(5, 5, w - 10, h - 10)
 
-        self:Initialize( openTab )
+            draw.SimpleText(displayName, "DermaDefaultBold", w / 2, 7, MenuAlias.blackColor, TEXT_ALIGN_CENTER)
+            draw.SimpleText(price, "DermaDefaultBold", w / 2, h - 7, MenuAlias.blackColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+
+            -- I'm just now looking at the old custom_menu.lua script, AND EVERY SINGLE FUCKING FRAME, FOR EVERY ICON VISIBLE ON THE MENU, THERE WAS A FOR LOOP CALLED ON THE ENTIRE FUCKING WEAPONS ARRAY
+            -- hey penial if i stop making github commits its because ive keeled over and died in my seat from shock
+
+        end
+        function icon:DoClick()
+
+            print(displayName)
+
+        end
+
+        sellerInventory:Add(icon)
+
+    end
+
+    -- player inventory
+
+    for k, v in pairs(LocalPlayer():GetWeapons()) do
+
+        local weapon = v:GetClass()
+        
+        local displayName, model, tier, category, price = LOOT.FUNCTIONS.GetShopIconInfo[1](weapon)
+
+        if price != nil then
+
+            local tempTierColor = {}
+            tempTierColor[1] = Color(30, 180, 20)
+            tempTierColor[2] = Color(40, 30, 220)
+            tempTierColor[3] = Color(220, 30, 30)
+    
+            local icon = vgui.Create("SpawnIcon", playerInventory)
+            icon:SetModel(model)
+            icon:SetTooltip(displayName .." (".. category ..")")
+            icon:SetSize(75, 75)
+            function icon:Paint(w, h) 
+    
+                surface.SetDrawColor(tempTierColor[tier])
+                surface.DrawRect(0, 0, w, h)
+    
+                surface.SetDrawColor(MenuAlias.secondaryColor)
+                surface.DrawRect(5, 5, w - 10, h - 10)
+    
+                draw.SimpleText(displayName, "DermaDefaultBold", w / 2, 7, MenuAlias.blackColor, TEXT_ALIGN_CENTER)
+                draw.SimpleText(price, "DermaDefaultBold", w / 2, h - 7, MenuAlias.blackColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+    
+            end
+            function icon:DoClick()
+    
+                print(displayName)
+    
+            end
+    
+            playerInventory:Add(icon)
+
+        end
 
     end
 
