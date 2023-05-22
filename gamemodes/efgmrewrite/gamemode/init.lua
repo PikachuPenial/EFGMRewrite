@@ -7,7 +7,7 @@ AddCSLuaFile("cl_menu.lua")
 -- AddCSLuaFile("cl_progression_menu.lua")
 AddCSLuaFile("cl_raid_info.lua")
 -- AddCSLuaFile("cl_scoreboard.lua")
--- AddCSLuaFile("cl_shop_menu.lua")
+AddCSLuaFile("cl_shop_manager.lua")
 AddCSLuaFile("cl_stash_manager.lua")
 
 AddCSLuaFile("shared.lua")

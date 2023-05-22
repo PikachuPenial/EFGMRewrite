@@ -129,6 +129,111 @@ function Menu.OpenTab.Intel()
 
     Menu.MenuFrame.LowerPanel.Contents = contents
 
+    local mainEntryList = vgui.Create("DCategoryList", contents)
+    mainEntryList:Dock(LEFT)
+    mainEntryList:SetSize(180, 0)
+
+    local subEntryList = vgui.Create("DIconLayout", contents)
+    subEntryList:Dock(LEFT)
+    subEntryList:SetSize(180, 0)
+
+    local entryPanel = vgui.Create("DPanel", contents)
+    entryPanel:Dock(FILL)
+    function entryPanel:Paint(w, h)
+        surface.SetDrawColor(50, 50, 50)
+        surface.DrawRect(0, 0, w, h)
+    end
+
+    local entryStats = vgui.Create("DPanel", entryPanel)
+    entryStats:Dock(TOP)
+    entryStats:SetSize(0, 40)
+    entryStats.Paint = nil
+
+    local entryTextDisplay = vgui.Create("DPanel", entryPanel)
+    entryTextDisplay:Dock(FILL)
+    entryTextDisplay.Paint = nil
+
+    local function DrawEntry(entryName, entryText, stats)
+
+        print(#stats)
+        entryStats:SetSize(0, #stats * 40)
+
+        function entryStats:Paint(w, h)
+            
+            for k, v in ipairs(stats) do
+
+                surface.SetDrawColor(190, 190, 190)
+                if k % 2 == 1 then 
+                    surface.SetDrawColor(210, 210, 210)
+                end
+                
+                surface.DrawRect(0, (k - 1) * 40, w, 40)
+
+                local text = markup.Parse( "<font=DermaLarge><color=0,0,0>\n\n" .. v .. "</color></font>", w - 40 )
+                text:Draw(20, (k - 1) * 40 + 5)
+
+            end
+
+        end
+    
+        function entryTextDisplay:Paint(w, h)
+
+            -- chatgpt hallucinated an entire fucking function to get this shit to wrap, apologised profusely when called out on its artificial bs, but then told me about markup thanks chatgpt
+
+            local text = markup.Parse( "<font=DermaLarge><color=50,212,50>" .. entryName .. "</color></font><font=DermaLarge><color=255,255,255>\n\n" .. entryText .. "</color></font>", w - 40 )
+            text:Draw(20, 20)
+
+        end
+
+    end
+
+    -- Entries
+
+    for k1, v1 in pairs(Intel) do
+
+        local category = mainEntryList:Add(k1)
+        category:DoExpansion(false)
+
+        for k2, v2 in pairs(v1) do
+
+            print(v2.Name)
+
+            local entry = category:Add(v2.Name)
+            function entry:DoClick()
+            
+                print("Clicked " .. v2.Name)
+                subEntryList:Clear()
+                DrawEntry(v2.Name, v2.Description, v2.Stats)
+
+                for k3, v3 in ipairs(v2.Children) do -- jesus christ
+                    
+                    local subEntry = subEntryList:Add("DButton")
+                    subEntry:SetSize(180, 20)
+                    subEntry:SetText(v3.Name)
+                    function subEntry:DoClick()
+
+                        DrawEntry(v3.Name, v3.Description, v3.Stats)
+
+                    end
+
+                end
+
+            end
+
+        end
+        
+    end
+
+end
+
+function Menu.OpenTab.IntelOld()
+
+    local contents = vgui.Create("DPanel", Menu.MenuFrame.LowerPanel)
+    contents:Dock(FILL)
+    contents.Paint = nil
+
+    Menu.MenuFrame.LowerPanel.Contents = contents
+
     local entryList = vgui.Create("DCategoryList", contents)
     entryList:Dock(LEFT)
     entryList:SetSize(200, 0)
@@ -165,7 +270,7 @@ function Menu.OpenTab.Intel()
                 
                 surface.DrawRect(0, (k - 1) * 40, w, 40)
 
-                local text = markup.Parse( "<font=DermaLarge><color=0,0,0>\n\n" .. v .. "</color></font>", w - 40 )
+                local text = markup.Parse( "<font=DermaLarge><color=0,0,0>\n\n" .. text .. "</color></font>", w - 40 )
                 text:Draw(20, (k - 1) * 40 + 5)
 
             end
@@ -320,11 +425,11 @@ function Menu.OpenTab.Shop()
     sellerInventory:SetSpaceX(5)
     sellerInventory:SetPaintBackgroundEnabled(true)
 
-    local buyInventory = vgui.Create("DIconLayout", buyScroller)
-    buyInventory:Dock(FILL)
-    buyInventory:SetSpaceY(5)
-    buyInventory:SetSpaceX(5)
-    buyInventory:SetPaintBackgroundEnabled(true)
+    -- local buyInventory = vgui.Create("DIconLayout", buyScroller)
+    -- buyInventory:Dock(FILL)
+    -- buyInventory:SetSpaceY(5)
+    -- buyInventory:SetSpaceX(5)
+    -- buyInventory:SetPaintBackgroundEnabled(true)
 
     -- PLAYER (Inventory on left)
 
@@ -365,11 +470,57 @@ function Menu.OpenTab.Shop()
     playerInventory:SetSpaceX(5)
     playerInventory:SetPaintBackgroundEnabled(true)
 
-    local sellInventory = vgui.Create("DIconLayout", sellScroller)
-    sellInventory:Dock(FILL)
-    sellInventory:SetSpaceY(5)
-    sellInventory:SetSpaceX(5)
-    sellInventory:SetPaintBackgroundEnabled(true)
+    -- local sellInventory = vgui.Create("DIconLayout", sellScroller)
+    -- sellInventory:Dock(FILL)
+    -- sellInventory:SetSpaceY(5)
+    -- sellInventory:SetSpaceX(5)
+    -- sellInventory:SetPaintBackgroundEnabled(true)
+
+    local function DrawInventoryIcon(item, type, iconLayout, secondaryLayout)
+
+        if LOOT.FUNCTIONS.CheckExists[type](item) then
+    
+            print(item.." isnt nil")
+    
+            local icon = iconLayout:Add("SpawnIcon")
+            icon:SetSize(75, 75)
+    
+            local tempTierColor = {}
+            tempTierColor[1] = Color(30, 180, 20)
+            tempTierColor[2] = Color(40, 30, 220)
+            tempTierColor[3] = Color(220, 30, 30)
+    
+            local displayName, model, tier, category, price = LOOT.FUNCTIONS.GetShopIconInfo[type](item)
+            local color = tempTierColor[tier]
+    
+            icon:SetModel(model)
+            icon:SetTooltip(displayName .." (".. category ..")")
+    
+            function icon:Paint(w, h)
+    
+                surface.SetDrawColor(color)
+                surface.DrawRect(0, 0, w, h)
+            
+                surface.SetDrawColor(MenuAlias.secondaryColor)
+                surface.DrawRect(5, 5, w - 10, h - 10)
+            
+                draw.SimpleText(displayName, "DermaDefaultBold", w / 2, 7, MenuAlias.blackColor, TEXT_ALIGN_CENTER)
+                draw.SimpleText(price, "DermaDefaultBold", w / 2, h - 7, MenuAlias.blackColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+    
+            end
+            function icon:DoClick()
+                
+                Menu.DrawInventoryIcon(item, type, secondaryLayout, iconLayout)
+    
+                print(displayName)
+    
+                icon:Remove()
+    
+            end
+    
+        end
+    
+    end
 
     -- Filling out the lists
 
@@ -377,7 +528,13 @@ function Menu.OpenTab.Shop()
 
     for k, v in pairs(LOOT[1]) do
             
-        Menu.DrawInventoryIcon(k, sellerInventory, buyInventory)
+        Menu.DrawInventoryIcon(k, 1, sellerInventory, buyInventory)
+
+    end
+
+    for k, v in pairs(LOOT[2]) do
+            
+        Menu.DrawInventoryIcon(k, 2, sellerInventory, buyInventory)
 
     end
 
@@ -387,9 +544,16 @@ function Menu.OpenTab.Shop()
 
         local weapon = v:GetClass()
             
-        Menu.DrawInventoryIcon(weapon, playerInventory, sellInventory)
+        Menu.DrawInventoryIcon(weapon, 1, playerInventory, sellInventory)
 
     end
+
+    for k, v in pairs(LocalPlayer():GetAmmo()) do
+
+        Menu.DrawInventoryIcon(game.GetAmmoName(k), 2, playerInventory, sellInventory)
+
+    end
+
 
     -- icons cannot be transferred between layouts without these
     -- im genuinely serious, try it, remove them and clicked icons will dissappear
@@ -400,52 +564,6 @@ function Menu.OpenTab.Shop()
 
     local icon2 = sellInventory:Add("DPanel")
     icon2:SetSize(75, 75)
-
-end
-
-function Menu.DrawInventoryIcon(weapon, iconLayout, secondaryLayout)
-
-    if LOOT.FUNCTIONS.GetCost[1](weapon) != nil then
-
-        print(weapon.." isnt nil")
-
-        local icon = iconLayout:Add("SpawnIcon")
-        icon:SetSize(75, 75)
-
-        local tempTierColor = {}
-        tempTierColor[1] = Color(30, 180, 20)
-        tempTierColor[2] = Color(40, 30, 220)
-        tempTierColor[3] = Color(220, 30, 30)
-
-        local displayName, model, tier, category, price = LOOT.FUNCTIONS.GetShopIconInfo[1](weapon)
-        local color = tempTierColor[tier]
-
-        icon:SetModel(model)
-        icon:SetTooltip(displayName .." (".. category ..")")
-
-        function icon:Paint(w, h)
-
-            surface.SetDrawColor(color)
-            surface.DrawRect(0, 0, w, h)
-        
-            surface.SetDrawColor(MenuAlias.secondaryColor)
-            surface.DrawRect(5, 5, w - 10, h - 10)
-        
-            draw.SimpleText(displayName, "DermaDefaultBold", w / 2, 7, MenuAlias.blackColor, TEXT_ALIGN_CENTER)
-            draw.SimpleText(price, "DermaDefaultBold", w / 2, h - 7, MenuAlias.blackColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
-
-        end
-        function icon:DoClick()
-            
-            Menu.DrawInventoryIcon(weapon, secondaryLayout, iconLayout)
-
-            print(displayName)
-
-            icon:Remove()
-
-        end
-
-    end
 
 end
 

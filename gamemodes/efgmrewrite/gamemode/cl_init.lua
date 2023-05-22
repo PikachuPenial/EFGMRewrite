@@ -11,13 +11,14 @@ include("cl_menu.lua")
 -- include("cl_progression_menu.lua")
 include("cl_raid_info.lua")
 -- include("cl_scoreboard.lua")
--- include("cl_shop_menu.lua")
+include("cl_shop_manager.lua")
 include("cl_stash_manager.lua")
 
 -- Intel shit
 
 include("intel/cl_intel.lua")
 include("intel/info_concrete.lua")
+include("intel/info_ravine.lua")
 
 -- free look
 local freelooking = false

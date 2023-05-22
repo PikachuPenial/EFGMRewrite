@@ -24,3 +24,13 @@ Features that sound cool and are doable idk
 - Achievement conditions will match its reward (like cqb kills for a shotgun, long kills for a sniper, etc)
 - The idea is that you can complete these at your own pace, as unlike tasks they wouldnt be required for progression, or just 100% them if you want idk
 - If I ever get around to doing this, I might call the gun unlocks something else like "contracts" or something
+
+	New map to replace efgm_belmont
+
+- I just got this idea earlier and idk it sounds cool and wanna write it down
+- Set in a military facility inside of and across a ravine inside a snowy mountain
+- The facility would get power via a hydroelectric dam, that runs off of water flowing down the ravine
+- The facility would be roughly belmont sized (as far as like walkable space) with 2-3 levels, varying from claustrophobic hallways located inside the mountain to catwalks going across and parallel to the river
+- Would be a few places of interest, like a shooting range, power station, military storage, civilian housing and cafeterias and shit, maybe even a helipad on top of the facility
+
+

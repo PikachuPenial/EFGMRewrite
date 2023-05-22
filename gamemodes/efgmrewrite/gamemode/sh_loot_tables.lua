@@ -3,8 +3,6 @@ sellMultiplier = 1 -- placeholder basically
 
 LOOT = {}
 
--- currently half life 2 because no weapons yet
-
 -- types:
 -- 1 == weapon
 -- 2 == ammo
@@ -15,15 +13,6 @@ LOOT = {}
 
 -- WEAPONS
 LOOT[1] = {}
-LOOT[1]["weapon_crowbar"]           = {1, 50,  0, 9}
-LOOT[1]["weapon_pistol"]            = {1, 100, 0, 8}
-LOOT[1]["weapon_357"]               = {2, 200, 3, 8}
-LOOT[1]["weapon_shotgun"]           = {2, 200, 2, 5}
-LOOT[1]["weapon_smg1"]              = {2, 300, 4, 6}
-LOOT[1]["weapon_ar2"]               = {3, 500, 5, 2}
-LOOT[1]["weapon_rpg"]               = {3, 650, 5, 1}
-LOOT[1]["weapon_crossbow"]          = {3, 350, 4, 7}
-
 LOOT[1]["arc9_eft_glock19x"]        = {1, 100, 0, 8}
 LOOT[1]["arc9_eft_fn57"]            = {1, 150, 0, 8}
 LOOT[1]["arc9_eft_glock17"]         = {1, 100, 0, 8}
@@ -62,16 +51,16 @@ LOOT[1]["arc9_eft_ak101"]           = {3, 500, 5, 2}
 -- AMMUNITION
 
 LOOT[2] = {}
-LOOT[2]["Pistol"]                   = {1, 40, 18, 1}
-LOOT[2]["357"]                      = {2, 75, 6, 1}
-LOOT[2]["Buckshot"]                 = {2, 80, 6, 1}
-LOOT[2]["SMG1"]                     = {2, 90, 45, 1}
-LOOT[2]["AR2"]                      = {3, 200, 30, 1}
-LOOT[2]["RPG_Round"]                = {3, 400, 1, 1}
-LOOT[2]["XBowBolt"]                 = {3, 90, 1, 1}
+LOOT[2]["Pistol"]                   = {1, 40, 18, 2}
+LOOT[2]["357"]                      = {2, 75, 6, 2}
+LOOT[2]["Buckshot"]                 = {2, 80, 6, 2}
+LOOT[2]["SMG1"]                     = {2, 90, 45, 2}
+LOOT[2]["AR2"]                      = {3, 200, 30, 2}
+LOOT[2]["RPG_Round"]                = {3, 400, 1, 2}
+LOOT[2]["XBowBolt"]                 = {3, 90, 1, 2}
 
-LOOT[2]["SMG1_Grenade"]             = {3, 550, 1, 2}
-LOOT[2]["AR2AltFire"]               = {3, 400, 1, 2}
+LOOT[2]["SMG1_Grenade"]             = {3, 550, 1, 3}
+LOOT[2]["AR2AltFire"]               = {3, 400, 1, 3}
 
 concommand.Add("efgm_debug_shoplist", function(ply, cmd, args)
 
@@ -104,14 +93,14 @@ LOOT.CATEGORIES[2][3] = "Alternate Fire"
 
 LOOT.FUNCTIONS = {}
 
-LOOT.FUNCTIONS.CheckExists = {} -- idk why i thought this was needed (and it doesnt even fucking work)
+LOOT.FUNCTIONS.CheckExists = {} -- ok its needed now
 
 LOOT.FUNCTIONS.CheckExists[1] = function(item)-- weapons
-    return weapons.Get( item ) != nil -- if it equals nil then the weapon aint a weapon
+    return LOOT[1][item] != nil -- if it equals nil then the weapon aint a weapon
 end
 
 LOOT.FUNCTIONS.CheckExists[2] = function(item) -- ammo
-    return game.GetAmmoID( item ) != -1 -- if it equals -1 then the ammo just does not exist
+    return LOOT[2][item] != -1 -- if it equals -1 then the ammo just does not exist
 end
 
 LOOT.FUNCTIONS.PlayerHasItem = {}
@@ -157,7 +146,8 @@ end
 
 
 LOOT.FUNCTIONS.GetCost[2] = function(item, count) -- ammo
-    return (LOOT[2][item][2] / LOOT[2][item][3]) * count or 1 -- gets cost per bullet multiplied by the amount of bullets your rat ass wants
+    local costPerBullet = LOOT[2][item][2] / LOOT[2][item][3]
+    return costPerBullet * (count or 1) -- gets cost per bullet multiplied by the amount of bullets your rat ass wants
 end
 
 
@@ -247,7 +237,7 @@ LOOT.FUNCTIONS.GetShopIconInfo[2] = function(item)
 
     category = LOOT.CATEGORIES[2][lootInfo[4]] or 1
 
-    price = (lootInfo[2] / lootInfo[3]) or nil
+    price = lootInfo[2] or 0
 
     return displayName or item, model or "errorlol", tier, category, price
 
