@@ -2,6 +2,8 @@ Will add to this if need be
 
 DONE:
 
+- Stat tracking
+
 TODO (in no order whatsoever):
 
 - Finish shop UI
@@ -12,7 +14,6 @@ TODO (in no order whatsoever):
 - Built in reporting / banning feature
 - Map votes
 - HC mode (this is a planned feature now)
-- Stat tracking
 - Contracts (per-map missions)
 - Achievements (all time)
 - Custom banners / tags

@@ -88,7 +88,7 @@ hook.Add("StartCommand", "AltlookBlockShoot", function(ply, cmd)
     cmd:RemoveKey(IN_ATTACK)
 end)
 
--- testing network shat
+-- random shit idk where to put anywhere else
 
 net.Receive( "SendClientStash", function(len, ply)
 
