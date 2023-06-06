@@ -19,22 +19,6 @@ local function GetStatus(ply, cmd, args)
 end
 concommand.Add("efgm_debug_getraidstatus", GetStatus)
 
-local function GetEntireFuckingRaidStatusTable(ply, cmd, args)
-
-    -- this shit has got to be removed before anybody gets a hold of it jesus christ
-
-    PrintTable( DumpTable("PlayerData64") )
-
-end
-concommand.Add("efgm_debug_dumpraidtable", GetEntireFuckingRaidStatusTable)
-
-local function DeleteTable(ply, cmd, args)
-
-    DropTable()
-
-end
-concommand.Add("efgm_debug_deleteraidtable", DeleteTable)
-
 local function GetRaidInfo(ply, cmd, args)
 
     print(RAID.Status .. " " .. RAID.StartingTime .. " " .. RAID.CurrentTime)

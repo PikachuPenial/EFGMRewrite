@@ -114,6 +114,7 @@ function DumpTable(tableName)
 
     return query
 end
+concommand.Add("efgm_debug_dumpraidtable", DumpTable)
 
 function DropTable()
 
@@ -122,3 +123,4 @@ function DropTable()
     sql.Query( "CREATE TABLE IF NOT EXISTS PlayerData64 ( SteamID INTEGER, Key TEXT, Value TEXT);" )
 
 end
+concommand.Add("efgm_debug_deleteraidtable", DropTable)

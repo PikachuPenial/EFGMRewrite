@@ -1,0 +1,19 @@
+Will add to this if need be
+
+DONE:
+
+TODO (in no order whatsoever):
+
+- Finish shop UI
+- Stash UI
+- Smart Spawnz
+- Team system
+- Translation / localization system (maybe disco elysium style quick switch idk)
+- Built in reporting / banning feature
+- Map votes
+- HC mode (this is a planned feature now)
+- Stat tracking
+- Contracts (per-map missions)
+- Achievements (all time)
+- Custom banners / tags
+- Nice looking HUD

@@ -35,9 +35,8 @@ include("sv_player_spawner.lua")
 include("sv_playermeta.lua")
 include("sv_raid_manager.lua")
 include("sv_shop_manager.lua")
--- include("sv_skill_manager.lua")
+include("sv_stats.lua")
 include("sv_stash_manager.lua")
--- include("sv_task_manager.lua")
 
 function GM:Initialize()
 
@@ -66,39 +65,6 @@ function GM:PlayerSpawn(ply)
 
 	ply:Give(debugPrimWep[math.random(#debugPrimWep)])
 	ply:Give(debugSecWep[math.random(#debugSecWep)])
-
-end
-
-function GM:PlayerInitialSpawn(ply)
-
-	-- setup nwints and custom pdatas (these only use regular pdata for now)
-
-	InitializeNetworkInt(ply, "PlayerLevel", 0)
-	InitializeNetworkInt(ply, "PlayerMoney", 0)
-
-
-end
-
-local function UninitializeAll(ply)
-
-	UninitializeNetworkInt(ply, "PlayerLevel")
-	UninitializeNetworkInt(ply, "PlayerMoney")
-
-end
-
-function GM:PlayerDisconnected(ply)
-
-	UninitializeAll(ply)
-
-end
-
-function GM:ShutDown()
-
-	for k, v in pairs(player.GetHumans()) do
-
-		UninitializeAll(v)
-
-	end
 
 end
 

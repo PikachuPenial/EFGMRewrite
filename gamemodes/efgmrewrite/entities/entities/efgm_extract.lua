@@ -117,7 +117,7 @@ function ENT:StartExtract(ply)
 		-- extract logic (uses a . because it doesn't use the entity name or self, im smart i know)
 		-- great that just broke more shit, i love lua and coding
 
-		self.Extract(ply)
+		self:Extract(ply)
 	end)
 
 end
@@ -138,7 +138,7 @@ function ENT:StopExtract(ply)
 
 end
 
-function ENT.Extract(ply)
+function ENT:Extract(ply)
 
 	--print("Player's name is " .. ply:GetName())
 
@@ -167,5 +167,7 @@ function ENT.Extract(ply)
 
 	ply:SetRaidStatus(playerStatus.LOBBY, "")
 	ply:Teleport(randomSpawn:GetPos(), randomSpawn:GetAngles(), Vector(0, 0, 0))
+
+    hook.Run("PlayerExtraction", ply, self.ExtractTime, self.IsGuranteed)
 
 end
