@@ -27,7 +27,7 @@ function ENT:AcceptInput(name, ply, caller, data)
 
     if name == "StartRaid" then
 
-        RAID:StartRaid()
+        RAID:StartRaid(self.RaidTime)
 
     end
 

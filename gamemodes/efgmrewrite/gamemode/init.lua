@@ -4,7 +4,6 @@ AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("cl_menu_alias.lua")
 AddCSLuaFile("cl_menu_manager.lua")
 AddCSLuaFile("cl_menu.lua")
--- AddCSLuaFile("cl_progression_menu.lua")
 AddCSLuaFile("cl_raid_info.lua")
 -- AddCSLuaFile("cl_scoreboard.lua")
 AddCSLuaFile("cl_shop_manager.lua")
@@ -21,9 +20,11 @@ AddCSLuaFile("sh_playermeta.lua")
 
 AddCSLuaFile("intel/cl_intel.lua")
 AddCSLuaFile("intel/info_concrete.lua")
+AddCSLuaFile("intel/info_ravine.lua")
 
 include("shared.lua")
 include("config.lua")
+
 include("sh_debug_handler.lua")
 include("sh_enums.lua")
 include("sh_loot_tables.lua")
@@ -35,8 +36,8 @@ include("sv_player_spawner.lua")
 include("sv_playermeta.lua")
 include("sv_raid_manager.lua")
 include("sv_shop_manager.lua")
-include("sv_stats.lua")
 include("sv_stash_manager.lua")
+include("sv_stats.lua")
 
 function GM:Initialize()
 
@@ -70,7 +71,6 @@ end
 
 function GM:PlayerDeath(victim, inflictor, attacker)
 
-	victim:ResetRaidStatus()
 	RAID:RemovePlayer(victim)
 
 	-- do nwints and shit for kd and idfk ill find it out when the actual im(port)ant shit is done haha port i said port he said it guys

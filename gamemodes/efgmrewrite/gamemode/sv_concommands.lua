@@ -21,7 +21,7 @@ concommand.Add("efgm_debug_getraidstatus", GetStatus)
 
 local function GetRaidInfo(ply, cmd, args)
 
-    print(RAID.Status .. " " .. RAID.StartingTime .. " " .. RAID.CurrentTime)
+    print(GetGlobalInt("RaidStatus") .. " " .. GetGlobalInt("RaidTimeLeft"))
 
 end
 concommand.Add("efgm_debug_getraidinfo", GetRaidInfo)

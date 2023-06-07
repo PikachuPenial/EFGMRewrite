@@ -1,82 +1,146 @@
 
--- Define raid metatable
-local Raid = {}
+RAID = {}
 
-Raid.Status = raidStatus.PENDING -- uses sh_enums enums, peep it neighbor
-Raid.StartingTime = 1200 -- placeholder, uses seconds
-Raid.CurrentTime = 1200 -- the fuck did i mean placeholder
-Raid.PlayersInRaid = {} -- [SteamID64] = Player
+RAID.VoteTime = 90
+RAID.PlayersInRaid = {} -- [SteamID64] = Player
 
--- Initialization function
+RAID.MapPool = {["efgm_concrete"] = 0, ["efgm_ravine_interior"] = 0} -- only two rn ["map"] = numberofvotes
 
-function Raid:Initialize(o)
-    -- i don't pretend to know what's going on here despite chatgpt explaining it to me but it works so its probably fine
-    o = o or {}
-    setmetatable(o, self)
-    self.__index = self
-    return o
-end
+SetGlobalInt("RaidTimeLeft", -1)
+SetGlobalInt("RaidStatus", raidStatus.PENDING) -- uses sh_enums
 
 -- Various useful raid functions
 
 local function DecrementTimer()
 
-    if RAID.Status != raidStatus.ACTIVE then return end
+    SetGlobalInt("RaidTimeLeft", GetGlobalInt("RaidTimeLeft") - 1)
 
-    RAID.CurrentTime = RAID.CurrentTime - 1
+    if GetGlobalInt("RaidTimeLeft") <= 0 && GetGlobalInt("RaidStatus") == raidStatus.ACTIVE then RAID:EndRaid() return end
+    if GetGlobalInt("RaidTimeLeft") <= 0 && GetGlobalInt("RaidStatus") == raidStatus.ENDED then RAID:EndVote() return end
 
-    if RAID.CurrentTime <= 0 then RAID:EndRaid() return end
-
-    SetGlobalInt("RaidTimeLeft", RAID.CurrentTime)
+    hook.Run("RaidTimerTick", GetGlobalInt("RaidTimeLeft"))
 
 end
 
-function Raid:StartRaid()
+function RAID:StartRaid(raidTime)
 
-    if self.Status != raidStatus.PENDING then return end
+    if GetGlobalInt("RaidStatus") != raidStatus.PENDING then return end
 
-    self.Status = raidStatus.ACTIVE
+    SetGlobalInt("RaidStatus", raidStatus.ACTIVE)
+    SetGlobalInt("RaidTimeLeft", raidTime)
 
-    local raidInterface = ents.FindByClass( "efgm_raid_interface" )
-
-    if raidInterface == nil then Error("Your map should probably have a efgm_raid_interface you dumbass.") return end
-
-    self.CurrentTime = raidInterface.RaidTime
-
-    SetGlobalInt("RaidTimeLeft", self.CurrentTime)
-
-    -- a ton of shit else
+    -- a ton of shit else (actually not that much ig)
 
     timer.Create("RaidTimerDecrement", 1, 0, DecrementTimer)
 
     print("Raid Started!")
 
+    hook.Run("StartedRaid")
+
 end
 
-function Raid:EndRaid()
+function RAID:EndRaid()
 
-    if self.Status != raidStatus.ACTIVE then return end
+    if GetGlobalInt("RaidStatus") != raidStatus.ACTIVE then return end
 
-    self.Status = raidStatus.ENDED
-
-    SetGlobalInt("RaidTimeLeft", -2)
+    SetGlobalInt("RaidStatus", raidStatus.ENDED)
+    SetGlobalInt("RaidTimeLeft", self.VoteTime)
 
     -- kill players in raid, idk what else
 
-    PrintTable(self.PlayersInRaid)
+    -- PrintTable(self.PlayersInRaid)
     for k, v in pairs(self.PlayersInRaid) do
         v:Kill()
     end
 
-    if timer.Exists("RaidTimerDecrement") then timer.Remove("RaidTimerDecrement") end
-
     print("Raid Ended!")
+
+    hook.Run("EndedRaid")
+
+    -- Thanks penal code
+    if #player.GetHumans() == 0 then
+
+        local tbl = {}
+
+        for k, v in pairs(self.MapPool) do table.insert(tbl, k) end
+
+        RunConsoleCommand("changelevel", tbl[math.random(#tbl)])
+
+        return
+
+    end
+
+    timer.Adjust("RaidTimerDecrement", 1, self.VoteTime) -- fuck you timer.Adjust
+
+    self:BroadcastOptions(self.MapPool)
+
+    print("vote started")
 
 end
 
-function Raid:SpawnPlayer(ply, status)
+function RAID:EndVote()
 
-    if RAID.Status != raidStatus.ACTIVE then print("raid isnt active") return end
+    local maxVote = 0
+    local mapTable = {}
+
+    for k, v in pairs(self.MapPool) do -- getting the max vote
+        
+        if v > maxVote then
+            
+            maxVote = v
+
+        end
+
+    end
+
+    for k, v in pairs(self.MapPool) do -- getting every map with the max vote into a table
+        
+        if v == maxVote then
+            
+            table.insert(mapTable, k)
+
+        end
+
+    end
+
+    RunConsoleCommand("changelevel", mapTable[math.random(#mapTable)]) -- will eventually carry over everybody's weapons and ammo and shit
+
+end
+
+function RAID:SubmitVote(ply, vote)
+    
+    if self.MapPool[vote] == nil then return end
+
+    self.MapPool[vote] = self.MapPool[vote] + 1
+
+    ply:SetNWBool("HasVoted", true)
+
+    ply:PrintMessage(HUD_PRINTTALK, "Your vote of ".. vote .." has been counted!")
+
+end
+concommand.Add("efgm_vote", function(ply, cmd, args)
+
+    if ply:GetNWBool("HasVoted", false) == true then return end
+    if GetGlobalInt("RaidStatus") != raidStatus.ENDED then return end
+
+    RAID:SubmitVote(ply, args[1])
+
+end)
+
+util.AddNetworkString("VoteableMaps")
+function RAID:BroadcastOptions(maps)
+
+    net.Start("VoteableMaps")
+    net.WriteTable(maps)
+    net.Broadcast()
+
+end
+
+-- Player Functions
+
+function RAID:SpawnPlayer(ply, status)
+
+    if GetGlobalInt("RaidStatus") != raidStatus.ACTIVE then print("raid isnt active") return end
 
     if !ply:IsPlayer() then print("What kind of player tries to enter the raid? No player, no player at all.") return end
 
@@ -95,24 +159,19 @@ function Raid:SpawnPlayer(ply, status)
 
 end
 
-function Raid:AddPlayer(ply)
+function RAID:AddPlayer(ply)
 
-    local steamid = ply:SteamID64()
+    local steamID = ply:SteamID64()
 
-    self.PlayersInRaid[steamid] = ply
-
-end
-
-function Raid:RemovePlayer(ply)
-
-    local steamid = ply:SteamID64()
-
-    self.PlayersInRaid[steamid] = nil
+    self.PlayersInRaid[steamID] = ply
 
 end
 
--- Actually making the global RAID object (just finding out none of this initialization shit is necessary, still good to know though if i manage to get to making ui without putting a gun into my mouth first)
+function RAID:RemovePlayer(ply)
 
-RAID = Raid:Initialize()
+    local steamID = ply:SteamID64()
+    self.PlayersInRaid[steamID] = nil
 
-SetGlobalInt("RaidTimeLeft", -1)
+	ply:ResetRaidStatus()
+
+end

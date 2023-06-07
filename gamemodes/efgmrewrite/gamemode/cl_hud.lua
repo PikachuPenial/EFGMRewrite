@@ -64,37 +64,34 @@ hook.Add("HUDPaint", "DrawCompass", DrawCompass)
 local function DebugRaidTime()
 
     surface.SetTextColor(Color(255, 255, 255))
+    surface.SetFont("DermaLarge")
     surface.SetTextPos(20 * MenuAlias.widthRatio, 300 * MenuAlias.heightRatio)
 
     -- time logic
 
     local raidTime = GetGlobalInt("RaidTimeLeft", -1)
+    local raidStatus = GetGlobalInt("RaidStatus", 0)
 
-    local time = ""
+    local tempStatusTable = {
+        [0] = "Raid Pending",
+        [1] = "Raid Active",
+        [2] = "Raid Over"
+    }
 
-    if raidTime == -1 then
-        time = "Raid Pending!"
-    elseif raidTime == -2 then
-        time = "Raid Ended!"
-    else
-        time = string.FormattedTime( raidTime, "%2i:%02i" ) -- thanks titanmod for raid time formatting
-    end
-
-    surface.SetFont("DermaLarge")
-    surface.DrawText(time)
+    surface.DrawText( string.FormattedTime( raidTime, "%2i:%02i" ) .. "\n" .. tempStatusTable[raidStatus] )
 
 end
 hook.Add("HUDPaint", "DrawTimer", DebugRaidTime)
 
--- idk what this does
 function HideHud(name)
-    for k, v in pairs({"CHudHealth", "CHudBattery", "CHudAmmo", "CHudSecondaryAmmo", "CHudCrosshair"}) do
+    -- full: {"CHudHealth", "CHudBattery", "CHudAmmo", "CHudSecondaryAmmo", "CHudCrosshair"}
+    for k, v in pairs({"CHudBattery", "CHudCrosshair"}) do
         if name == v then
             return false
         end
     end
 end
--- hook.Add("HUDShouldDraw", "HideDefaultHud", HideHud)
+hook.Add("HUDShouldDraw", "HideDefaultHud", HideHud)
 
 -- local function DrawEditMenuPanel()
 
@@ -390,3 +387,12 @@ local function DrawSellMenuPanel()
     -- coding with cookie clicker open in the background goes hard
 
 end
+
+net.Receive("VoteableMaps", function(len)
+
+    local tbl = net.ReadTable()
+
+    LocalPlayer():PrintMessage(HUD_PRINTCENTER, "Look in the console and (efgm_vote mapname) for a map, im not good at UI so fuck you.")
+    PrintTable(tbl)
+
+end)

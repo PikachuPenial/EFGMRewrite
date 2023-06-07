@@ -78,6 +78,14 @@ concommand.Add("efgm_shop_transaction", function(ply, cmd, args)
 
     if ply:IsInRaid() then return end
 
+    if args[1] == nil then
+        
+        ply:PrintMessage(HUD_PRINTCONSOLE, "Format: efgm_shop_transaction +/- itemType(integer) itemCount(integer) itemName(integer)")
+
+        return
+
+    end
+
     local sell = {} -- ["ItemName"] and ["ItemType"]
     local slChecks = {}
 
