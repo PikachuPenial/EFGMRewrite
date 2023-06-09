@@ -1,3 +1,10 @@
+AddCSLuaFile("shared.lua")
+AddCSLuaFile("config.lua")
+AddCSLuaFile("sh_debug_handler.lua")
+AddCSLuaFile("sh_enums.lua")
+AddCSLuaFile("sh_loot_tables.lua")
+AddCSLuaFile("sh_playermeta.lua")
+
 AddCSLuaFile("cl_hud.lua")
 AddCSLuaFile("cl_init.lua")
 -- AddCSLuaFile("cl_keybinds.lua")
@@ -8,13 +15,6 @@ AddCSLuaFile("cl_raid_info.lua")
 -- AddCSLuaFile("cl_scoreboard.lua")
 AddCSLuaFile("cl_shop_manager.lua")
 AddCSLuaFile("cl_stash_manager.lua")
-
-AddCSLuaFile("shared.lua")
-AddCSLuaFile("config.lua")
-AddCSLuaFile("sh_debug_handler.lua")
-AddCSLuaFile("sh_enums.lua")
-AddCSLuaFile("sh_loot_tables.lua")
-AddCSLuaFile("sh_playermeta.lua")
 
 -- Intel shit
 
@@ -53,7 +53,7 @@ function GM:PlayerSpawn(ply)
 	ply:SetWalkSpeed(140)
 	ply:SetJumpPower(140)
 
-	ply:SetLadderClimbSpeed(70)
+	ply:SetLadderClimbSpeed(120)
 	ply:SetSlowWalkSpeed(78)
 
 	ply:SetCrouchedWalkSpeed(0.45)

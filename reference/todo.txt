@@ -3,6 +3,7 @@ Will add to this if need be
 DONE:
 
 - Stat tracking
+- Map votes
 
 TODO (in no order whatsoever):
 
@@ -12,7 +13,6 @@ TODO (in no order whatsoever):
 - Team system
 - Translation / localization system (maybe disco elysium style quick switch idk)
 - Built in reporting / banning feature
-- Map votes
 - HC mode (this is a planned feature now)
 - Contracts (per-map missions)
 - Achievements (all time)

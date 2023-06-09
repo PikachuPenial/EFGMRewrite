@@ -67,7 +67,8 @@ function Menu:Initialize( openTab )
     statsTab:SetText(LocalPlayer():Name())
 
     function statsTab:DoClick()
-
+        Menu.MenuFrame.LowerPanel.Contents:Remove()
+        Menu.OpenTab.Stats()
     end
 
     self.MenuFrame.TabParentPanel.StatsTab = statsTab
@@ -425,11 +426,11 @@ function Menu.OpenTab.Shop()
     sellerInventory:SetSpaceX(5)
     sellerInventory:SetPaintBackgroundEnabled(true)
 
-    -- local buyInventory = vgui.Create("DIconLayout", buyScroller)
-    -- buyInventory:Dock(FILL)
-    -- buyInventory:SetSpaceY(5)
-    -- buyInventory:SetSpaceX(5)
-    -- buyInventory:SetPaintBackgroundEnabled(true)
+    local buyInventory = vgui.Create("DIconLayout", buyScroller)
+    buyInventory:Dock(FILL)
+    buyInventory:SetSpaceY(5)
+    buyInventory:SetSpaceX(5)
+    buyInventory:SetPaintBackgroundEnabled(true)
 
     -- PLAYER (Inventory on left)
 
@@ -470,100 +471,50 @@ function Menu.OpenTab.Shop()
     playerInventory:SetSpaceX(5)
     playerInventory:SetPaintBackgroundEnabled(true)
 
-    -- local sellInventory = vgui.Create("DIconLayout", sellScroller)
-    -- sellInventory:Dock(FILL)
-    -- sellInventory:SetSpaceY(5)
-    -- sellInventory:SetSpaceX(5)
-    -- sellInventory:SetPaintBackgroundEnabled(true)
+    local sellInventory = vgui.Create("DIconLayout", sellScroller)
+    sellInventory:Dock(FILL)
+    sellInventory:SetSpaceY(5)
+    sellInventory:SetSpaceX(5)
+    sellInventory:SetPaintBackgroundEnabled(true)
 
-    local function DrawInventoryIcon(item, type, iconLayout, secondaryLayout)
+    -- MIDDLE ROW
 
-        if LOOT.FUNCTIONS.CheckExists[type](item) then
-    
-            print(item.." isnt nil")
-    
-            local icon = iconLayout:Add("SpawnIcon")
-            icon:SetSize(75, 75)
-    
-            local tempTierColor = {}
-            tempTierColor[1] = Color(30, 180, 20)
-            tempTierColor[2] = Color(40, 30, 220)
-            tempTierColor[3] = Color(220, 30, 30)
-    
-            local displayName, model, tier, category, price = LOOT.FUNCTIONS.GetShopIconInfo[type](item)
-            local color = tempTierColor[tier]
-    
-            icon:SetModel(model)
-            icon:SetTooltip(displayName .." (".. category ..")")
-    
-            function icon:Paint(w, h)
-    
-                surface.SetDrawColor(color)
-                surface.DrawRect(0, 0, w, h)
-            
-                surface.SetDrawColor(MenuAlias.secondaryColor)
-                surface.DrawRect(5, 5, w - 10, h - 10)
-            
-                draw.SimpleText(displayName, "DermaDefaultBold", w / 2, 7, MenuAlias.blackColor, TEXT_ALIGN_CENTER)
-                draw.SimpleText(price, "DermaDefaultBold", w / 2, h - 7, MenuAlias.blackColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
-    
-            end
-            function icon:DoClick()
-                
-                Menu.DrawInventoryIcon(item, type, secondaryLayout, iconLayout)
-    
-                print(displayName)
-    
-                icon:Remove()
-    
-            end
-    
-        end
-    
-    end
+    local purchaseInfoPanel = vgui.Create("DPanel", contents)
+    purchaseInfoPanel:Dock(TOP)
+    purchaseInfoPanel:SetSize(0, 200)
+    purchaseInfoPanel.Paint = function(s, w, h)
 
-    -- Filling out the lists
-
-    -- seller inventory
-
-    for k, v in pairs(LOOT[1]) do
-            
-        Menu.DrawInventoryIcon(k, 1, sellerInventory, buyInventory)
+        surface.SetDrawColor(MenuAlias.secondaryColor)
+        surface.DrawRect(0, 0, w, h)
 
     end
 
-    for k, v in pairs(LOOT[2]) do
-            
-        Menu.DrawInventoryIcon(k, 2, sellerInventory, buyInventory)
+    local purchaseButton = vgui.Create("DButton", purchaseInfoPanel)
+    purchaseButton:Dock(TOP)
+    purchaseButton:SetText("DEAL")
+    function purchaseButton:DoClick()
 
     end
 
-    -- player inventory
+    -- ima do this shit later
 
-    for k, v in pairs(LocalPlayer():GetWeapons()) do
+end
 
-        local weapon = v:GetClass()
-            
-        Menu.DrawInventoryIcon(weapon, 1, playerInventory, sellInventory)
+function Menu.OpenTab.Stats()
+
+    local contents = vgui.Create("DPanel", Menu.MenuFrame.LowerPanel)
+    contents:Dock(FILL)
+    contents:DockPadding(10, 10, 10, 10)
+    contents.Paint = function(s, w, h)
+
+        surface.SetDrawColor(MenuAlias.secondaryColor)
+        surface.DrawRect(0, 0, w, h)
 
     end
 
-    for k, v in pairs(LocalPlayer():GetAmmo()) do
+    Menu.MenuFrame.LowerPanel.Contents = contents
 
-        Menu.DrawInventoryIcon(game.GetAmmoName(k), 2, playerInventory, sellInventory)
-
-    end
-
-
-    -- icons cannot be transferred between layouts without these
-    -- im genuinely serious, try it, remove them and clicked icons will dissappear
-    -- like what the fuck
-
-    local icon1 = buyInventory:Add("DPanel")
-    icon1:SetSize(75, 75)
-
-    local icon2 = sellInventory:Add("DPanel")
-    icon2:SetSize(75, 75)
+    local playerPanel = vgui.Create()
 
 end
 

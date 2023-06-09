@@ -6,6 +6,12 @@ include("cl_menu_manager.lua")
 include("cl_menu_alias.lua")
 -- include("cl_keybinds.lua")
 
+include("config.lua")
+include("sh_debug_handler.lua")
+include("sh_enums.lua")
+include("sh_loot_tables.lua")
+include("sh_playermeta.lua")
+
 include("cl_hud.lua")
 include("cl_menu.lua")
 -- include("cl_progression_menu.lua")
