@@ -7,39 +7,27 @@ SHOP = {} -- collection of functions and utilities
 SHOP.BuyOrders = {} -- stores item count, name, type
 SHOP.SellOrders = {} -- these basically will compress down to a command
 
--- adding orders
-
-function SHOP:AddBuyOrder(itemType, itemCount, itemName)
+function SHOP:AddOrder(itemName, itemType, itemCount, isBuyOrder)
 
     local order = {}
     order.ItemType = itemType
     order.ItemCount = itemCount
 
-    self.BuyOrders[itemName] = order
+    if isBuyOrder == true then
+        self.BuyOrders[itemName] = order
+    else
+        self.SellOrders[itemName] = order
+    end
 
 end
 
-function SHOP:AddSellOrder(itemType, itemCount, itemName)
+function SHOP:RemoveOrder(itemName, isBuyOrder)
 
-    local order = {}
-    order.ItemType = itemType
-    order.ItemCount = itemCount
-
-    self.SellOrders[itemName] = order
-
-end
-
--- removing orders
-
-function SHOP:RemoveBuyOrder(itemName)
-
-    self.BuyOrders[itemName] = nil
-
-end
-
-function SHOP:RemoveSellOrder(itemName)
-
-    self.SellOrders[itemName] = nil
+    if isBuyOrder == true then
+        self.BuyOrders[itemName] = nil
+    else
+        self.SellOrders[itemName] = nil
+    end
 
 end
 
@@ -49,8 +37,6 @@ function SHOP:WipeOrders()
     table.Empty( self.SellOrders )
 
 end
-
--- funny order compilation
 
 function SHOP:CompileOrders() -- returns the "+ 1 1 weapon_name - 2 64 ammo" shit to use in a command
 

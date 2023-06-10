@@ -497,6 +497,79 @@ function Menu.OpenTab.Shop()
     end
 
     -- ima do this shit later
+    -- fucking hell its later
+
+    local playerInventory = {} -- self[itemname] = table, table.count = int, table.type = int, table.transferring = bool
+
+    for k, v in pairs(LocalPlayer():GetWeapons()) do
+        
+        local wep = v:GetClass()
+
+        if LOOT.FUNCTIONS.CheckExists[1](wep) then
+            
+            playerInventory[wep] = {}
+            playerInventory[wep].count = 1
+            playerInventory[wep].type = 1
+            playerInventory[wep].transferring = false
+
+        end
+
+    end
+
+    for k, v in pairs(LocalPlayer():GetAmmo()) do
+        
+        local ammo = game.GetAmmoName(k)
+
+        if LOOT.FUNCTIONS.CheckExists[2](ammo) then
+            
+            playerInventory[ammo] = {}
+            playerInventory[ammo].count = v
+            playerInventory[ammo].type = 2
+            playerInventory[ammo].transferring = false
+
+        end
+
+    end
+
+    local sellerInventory = {}
+
+    for k, v in pairs(LOOT[1]) do -- buyable weapons
+
+        sellerInventory[k] = {}
+        sellerInventory[k].count = -1
+        sellerInventory[k].type = 1
+        sellerInventory[k].transferring = false
+        
+    end
+
+    for k, v in pairs(LOOT[2]) do -- buyable ammo
+
+        sellerInventory[k] = {}
+        sellerInventory[k].count = -1
+        sellerInventory[k].type = 2
+        sellerInventory[k].transferring = false
+        
+    end
+
+    local function transferItem(itemName, itemType, itemCount, inventory, isBuying)
+
+        if inventory[itemName] == nil then return end
+
+        inventory[itemName].transferring = !inventory[itemName].transferring
+
+        if inventory[itemName].transferring == true then
+            
+            SHOP:AddOrder(itemName, itemType, itemCount, isBuying)
+
+        else
+
+            SHOP:RemoveOrder(itemName, isBuying)
+
+        end
+
+    end
+
+    -- actual menu shit (im bored this is for later)
 
 end
 
@@ -514,7 +587,13 @@ function Menu.OpenTab.Stats()
 
     Menu.MenuFrame.LowerPanel.Contents = contents
 
-    local playerPanel = vgui.Create()
+    local importantStats = vgui.Create("DPanel", contents)
+    importantStats:Dock(TOP)
+    importantStats:SetSize(0, 300)
+
+    local playerPanel = vgui.Create("DPanel", contents)
+    playerPanel:Dock(LEFT)
+    playerPanel:SetSize(400, 0)
 
 end
 

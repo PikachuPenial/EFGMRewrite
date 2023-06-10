@@ -1,4 +1,6 @@
 
+-- TODO ASAP: SEPARATE LOOT FOR SPAWNING AND LOOT FOR PURCHASE
+
 sellMultiplier = 1 -- placeholder basically
 
 LOOT = {}
@@ -6,8 +8,7 @@ LOOT = {}
 -- types:
 -- 1 == weapon
 -- 2 == ammo
--- 3 == utility
--- 4 == special (for cluster strikes, airdrops, idk ill get creative)
+-- 3 == entities
 
 -- format: array[type][weapon] = {tier(1 to 3), cost, buyLevel}
 
@@ -100,7 +101,7 @@ LOOT.FUNCTIONS.CheckExists[1] = function(item)-- weapons
 end
 
 LOOT.FUNCTIONS.CheckExists[2] = function(item) -- ammo
-    return LOOT[2][item] != -1 -- if it equals -1 then the ammo just does not exist
+    return LOOT[2][item] != nil -- if it equals nil then the ammo just does not exist
 end
 
 LOOT.FUNCTIONS.PlayerHasItem = {}
