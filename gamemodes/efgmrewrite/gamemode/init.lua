@@ -39,6 +39,8 @@ include("sv_shop_manager.lua")
 include("sv_stash_manager.lua")
 include("sv_stats.lua")
 
+HostID = 0 -- will be set if it's a p2p server
+
 function GM:Initialize()
 
 	print("Escape From Garry's Mod Rewrite has been initialized on " .. game.GetMap())
@@ -69,10 +71,19 @@ function GM:PlayerSpawn(ply)
 
 end
 
+hook.Add("PlayerInitialSpawn", "InitFirstSpawn", function(ply)
+
+    if !ply:IsListenServerHost() then return end
+        
+    HostID = ply:SteamID64()
+
+end)
+
 function GM:PlayerDeath(victim, inflictor, attacker)
 
 	RAID:RemovePlayer(victim)
 
 	-- do nwints and shit for kd and idfk ill find it out when the actual im(port)ant shit is done haha port i said port he said it guys
+    -- i did the important shit in sv_stats.lua guys guys i said port again i fucking did it
 
 end

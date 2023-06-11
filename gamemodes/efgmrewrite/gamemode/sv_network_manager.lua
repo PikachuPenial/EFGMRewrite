@@ -1,126 +1,86 @@
-function GM:Initialize()
 
-    sql.Query( "CREATE TABLE IF NOT EXISTS PlayerData64 ( SteamID INTEGER, Key TEXT, Value TEXT);" )
+-- Eat shit penial i stole your titanmod code save manager code
+hook.Add("Initialize", "PDataInitialize", function()
 
-    sql.LastError()
+    sql.Query( "CREATE TABLE IF NOT EXISTS EFGMPlayerData64 ( SteamID INTEGER, Key TEXT, Value TEXT);" )
 
-end
+end)
 
--- Important functions
-
+-- Important shit (I renamed playerdata64 so it can't conflict with titanmod)
 function SetPlayerData(steamID64, key, value)
 
-    local query = sql.Query( "SELECT Value FROM PlayerData64 WHERE SteamID = " .. steamID64 .. " AND Key = " .. SQLStr( key ) .. ";" )
+    local query = sql.Query("SELECT Value FROM EFGMPlayerData64 WHERE SteamID = " .. steamID64 .. " AND Key = " .. SQLStr( key ) .. ";")
 
-    sql.LastError()
+    --If we need to make a new PData entry.
+    if query == nil then sql.Query("INSERT INTO EFGMPlayerData64 ( SteamID, Key, Value ) VALUES( " .. steamID64 .. ", " .. SQLStr( key ) .. ", " .. SQLStr( value ) .. ");")
 
-    if query == nil then
-
-        -- If we need to make a new PData entry
-
-        sql.Query( "INSERT INTO PlayerData64 ( SteamID, Key, Value ) VALUES( " .. steamID64 .. ", " .. SQLStr( key ) .. ", " .. SQLStr( value ) .. ");" )
-
-    end
-
-    if query != nil then
-
-        -- If we need to update an existing entry
-
-        sql.Query( "UPDATE PlayerData64 SET Value = " .. SQLStr( value ) .. " WHERE SteamID = " .. steamID64 .. " AND Key = " .. SQLStr( key ) .. ";" )
-
-    end
-
-    sql.LastError()
+    --If we need to update an existing entry.
+    else sql.Query("UPDATE EFGMPlayerData64 SET Value = " .. SQLStr( value ) .. " WHERE SteamID = " .. steamID64 .. " AND Key = " .. SQLStr( key ) .. ";") end
 
 end
 
 function GetPlayerData(steamID64, key)
 
-    local query = sql.QueryValue( "SELECT Value FROM PlayerData64 WHERE SteamID = " .. steamID64 .. " AND Key = " .. SQLStr( key ) .. ";" )
-
-    sql.LastError()
+    local query = sql.QueryValue("SELECT Value FROM EFGMPlayerData64 WHERE SteamID = " .. steamID64 .. " AND Key = " .. SQLStr( key ) .. ";")
 
     return query
 
 end
 
--- Network stuff
-
--- shortening of whatever the fuck happened in the init.lua file of the og efgm, that shit did NOT need to be 919 lines ong
+-- Network shit
 function InitializeNetworkBool(ply, key, value)
-    local v = tobool(value)
-    local pdata = tobool(ply:GetPData(key))
-    if pdata == nil then
-		ply:SetNWBool(key, v)
-	else
-		ply:SetNWBool(key, pdata)
-	end
+
+    local pdata = GetPlayerData(ply:SteamID64(), key)
+
+    ply:SetNWBool(key, tobool( pdata or value or false ))
+
 end
 
 function InitializeNetworkInt(ply, key, value)
-    local v = tonumber(value)
-    local pdata = tonumber(ply:GetPData(key))
-    if pdata == nil then
-		ply:SetNWInt(key, v)
-	else
-		ply:SetNWInt(key, pdata)
-	end
+
+    local pdata = GetPlayerData(ply:SteamID64(), key)
+
+    ply:SetNWInt(key, tonumber( pdata or value or 1 ))
+
 end
 
 function InitializeNetworkFloat(ply, key, value)
-    local v = tonumber(value)
-    local pdata = tonumber(ply:GetPData(key))
-    if pdata == nil then
-		ply:SetNWFloat(key, v)
-	else
-		ply:SetNWFloat(key, pdata)
-	end
+
+    local pdata = GetPlayerData(ply:SteamID64(), key)
+
+    ply:SetNWFloat(key, tonumber( pdata or value or 1 ))
+
 end
 
 function InitializeNetworkString(ply, key, value)
-    local pdata = ply:GetPData(key)
-    if pdata == nil then
-		ply:SetNWString(key, value)
-	else
-		ply:SetNWString(key, pdata)
-	end
+
+    local pdata = GetPlayerData(ply:SteamID64(), key)
+
+    ply:SetNWString(key, pdata or value or "")
+
 end
 
--- basically the same thing but with leaving
-
+-- HostID is defined in the init as the listen host's id to free up network variable space
 function UninitializeNetworkBool(ply, key)
-    ply:SetPData(key, ply:GetNWBool(key))
+
+    SetPlayerData(ply:SteamID64() or HostID, key, ply:GetNWBool(key))
+
 end
 
 function UninitializeNetworkInt(ply, key)
-    ply:SetPData(key, ply:GetNWInt(key))
+
+    SetPlayerData(ply:SteamID64() or HostID, key, ply:GetNWInt(key))
+
 end
 
 function UninitializeNetworkFloat(ply, key)
-    ply:SetPData(key, ply:GetNWFloat(key))
+
+    SetPlayerData(ply:SteamID64() or HostID, key, ply:GetNWFloat(key))
+
 end
 
 function UninitializeNetworkString(ply, key)
-    ply:SetPData(key, ply:GetNWString(key))
-end
 
--- Temporary debug shit
-
-function DumpTable(tableName)
-
-    local query = sql.Query( "SELECT * FROM " .. SQLStr( tableName ) .. ";" )
-
-    sql.LastError()
-
-    return query
-end
-concommand.Add("efgm_debug_dumpraidtable", DumpTable)
-
-function DropTable()
-
-    sql.Query( "DROP TABLE PlayerData64;" )
-
-    sql.Query( "CREATE TABLE IF NOT EXISTS PlayerData64 ( SteamID INTEGER, Key TEXT, Value TEXT);" )
+    SetPlayerData(ply:SteamID64() or HostID, key, ply:GetNWString(key))
 
 end
-concommand.Add("efgm_debug_deleteraidtable", DropTable)
