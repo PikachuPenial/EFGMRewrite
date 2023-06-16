@@ -112,7 +112,7 @@ end
 
 
 LOOT.FUNCTIONS.PlayerHasItem[2] = function(ply, item, count) -- ammo
-    return ply:GetAmmoCount(item) >= count or 1
+    return ply:GetAmmoCount(item) >= (count or 1)
 end
 
 LOOT.FUNCTIONS.TakeItem = {}

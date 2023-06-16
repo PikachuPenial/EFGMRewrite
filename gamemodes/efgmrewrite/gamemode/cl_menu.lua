@@ -403,34 +403,14 @@ function Menu.OpenTab.Shop()
     local sellerInventoryScroller = vgui.Create("DScrollPanel", sellerBackground)
     sellerInventoryScroller:Dock(BOTTOM)
     sellerInventoryScroller:SetSize(0, 450)
-    sellerInventoryScroller.Paint = function(s, w, h)
-
-        surface.SetDrawColor(MenuAlias.secondaryColor)
-        surface.DrawRect(0, 0, w, h)
-
-    end
+    sellerInventoryScroller.Paint = nil
 
     local buyScroller = vgui.Create("DScrollPanel", sellerBackground)
     buyScroller:Dock(TOP)
     buyScroller:SetSize(0, 200)
-    buyScroller.Paint = function(s, w, h)
+    buyScroller.Paint = nil
 
-        surface.SetDrawColor(MenuAlias.secondaryColor)
-        surface.DrawRect(0, 0, w, h)
-
-    end
-
-    local sellerInventory = vgui.Create("DIconLayout", sellerInventoryScroller)
-    sellerInventory:Dock(FILL)
-    sellerInventory:SetSpaceY(5)
-    sellerInventory:SetSpaceX(5)
-    sellerInventory:SetPaintBackgroundEnabled(true)
-
-    local buyInventory = vgui.Create("DIconLayout", buyScroller)
-    buyInventory:Dock(FILL)
-    buyInventory:SetSpaceY(5)
-    buyInventory:SetSpaceX(5)
-    buyInventory:SetPaintBackgroundEnabled(true)
+    local sellerInventoryPanel, buyInventoryPanel = {}, {}
 
     -- PLAYER (Inventory on left)
 
@@ -448,34 +428,14 @@ function Menu.OpenTab.Shop()
     local playerInventoryScroller = vgui.Create("DScrollPanel", playerBackground)
     playerInventoryScroller:Dock(BOTTOM)
     playerInventoryScroller:SetSize(0, 450)
-    playerInventoryScroller.Paint = function(s, w, h)
-
-        surface.SetDrawColor(MenuAlias.secondaryColor)
-        surface.DrawRect(0, 0, w, h)
-
-    end
+    playerInventoryScroller.Paint = nil
 
     local sellScroller = vgui.Create("DScrollPanel", playerBackground)
     sellScroller:Dock(TOP)
     sellScroller:SetSize(0, 200)
-    sellScroller.Paint = function(s, w, h)
+    sellScroller.Paint = nil
 
-        surface.SetDrawColor(MenuAlias.secondaryColor)
-        surface.DrawRect(0, 0, w, h)
-
-    end
-
-    local playerInventory = vgui.Create("DIconLayout", playerInventoryScroller)
-    playerInventory:Dock(FILL)
-    playerInventory:SetSpaceY(5)
-    playerInventory:SetSpaceX(5)
-    playerInventory:SetPaintBackgroundEnabled(true)
-
-    local sellInventory = vgui.Create("DIconLayout", sellScroller)
-    sellInventory:Dock(FILL)
-    sellInventory:SetSpaceY(5)
-    sellInventory:SetSpaceX(5)
-    sellInventory:SetPaintBackgroundEnabled(true)
+    local playerInventoryPanel, sellInventoryPanel = {}, {}
 
     -- MIDDLE ROW
 
@@ -499,13 +459,17 @@ function Menu.OpenTab.Shop()
     -- ima do this shit later
     -- fucking hell its later
 
+    SHOP:WipeOrders()
+
     local playerInventory = {} -- self[itemname] = table, table.count = int, table.type = int, table.transferring = bool
+
+    local sellerInventory = {}
 
     for k, v in pairs(LocalPlayer():GetWeapons()) do
         
         local wep = v:GetClass()
 
-        if LOOT.FUNCTIONS.CheckExists[1](wep) then
+        if CheckExists[1](wep) then
             
             playerInventory[wep] = {}
             playerInventory[wep].count = 1
@@ -520,7 +484,7 @@ function Menu.OpenTab.Shop()
         
         local ammo = game.GetAmmoName(k)
 
-        if LOOT.FUNCTIONS.CheckExists[2](ammo) then
+        if CheckExists[2](ammo) then
             
             playerInventory[ammo] = {}
             playerInventory[ammo].count = v
@@ -531,35 +495,30 @@ function Menu.OpenTab.Shop()
 
     end
 
-    local sellerInventory = {}
-
-    for k, v in pairs(LOOT[1]) do -- buyable weapons
+    for k, v in pairs(ITEMS) do
 
         sellerInventory[k] = {}
         sellerInventory[k].count = -1
-        sellerInventory[k].type = 1
+        sellerInventory[k].type = v[1]
         sellerInventory[k].transferring = false
         
     end
 
-    for k, v in pairs(LOOT[2]) do -- buyable ammo
-
-        sellerInventory[k] = {}
-        sellerInventory[k].count = -1
-        sellerInventory[k].type = 2
-        sellerInventory[k].transferring = false
-        
-    end
-
-    local function transferItem(itemName, itemType, itemCount, inventory, isBuying)
+    local function transferItem(itemName, itemCount, inventory, isBuying)
 
         if inventory[itemName] == nil then return end
 
-        inventory[itemName].transferring = !inventory[itemName].transferring
+        itemCount = itemCount or inventory[itemName].itemCount
 
-        if inventory[itemName].transferring == true then
+        local transferBool = inventory[itemName].transferring
+
+        inventory[itemName].transferring = !transferBool
+
+        print("Transferring " .. itemName .. " == ".. tostring(inventory[itemName].transferring) .."!")
+
+        if !transferBool == true then
             
-            SHOP:AddOrder(itemName, itemType, itemCount, isBuying)
+            SHOP:AddOrder(itemName, inventory[itemName].itemType, itemCount, isBuying)
 
         else
 
@@ -569,7 +528,143 @@ function Menu.OpenTab.Shop()
 
     end
 
-    -- actual menu shit (im bored this is for later)
+    -- actual menu shit
+
+    local function drawInventoryIcon(item, type, invPanel)
+    
+        local icon = invPanel:Add("SpawnIcon")
+        icon:SetSize(75, 75)
+
+        local displayName, model, category, price = GetShopIconInfo[type](item)
+
+        icon:SetModel(model)
+        icon:SetTooltip(displayName .." (".. revCat[category] ..")")
+
+        function icon:Paint(w, h)
+
+            surface.SetDrawColor(MenuAlias.secondaryColor)
+            surface.DrawRect(5, 5, w - 10, h - 10)
+        
+            draw.SimpleText(displayName, "DermaDefaultBold", w / 2, 7, MenuAlias.blackColor, TEXT_ALIGN_CENTER)
+            draw.SimpleText(price, "DermaDefaultBold", w / 2, h - 7, MenuAlias.blackColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+
+        end
+
+        return icon
+    
+    end
+
+    function drawInventories()
+
+        sellerInventoryPanel = vgui.Create("DIconLayout", sellerInventoryScroller)
+        sellerInventoryPanel:Dock(FILL)
+        sellerInventoryPanel:SetSpaceY(5)
+        sellerInventoryPanel:SetSpaceX(5)
+        sellerInventoryPanel:SetPaintBackgroundEnabled(true)
+        sellerInventoryPanel.Paint = function(self, w, h)
+
+            surface.SetDrawColor(Color(255, 0, 0))
+            surface.DrawRect(0, 0, w, h)
+
+        end
+
+        buyInventoryPanel = vgui.Create("DIconLayout", buyScroller)
+        buyInventoryPanel:Dock(FILL)
+        buyInventoryPanel:SetSpaceY(5)
+        buyInventoryPanel:SetSpaceX(5)
+        buyInventoryPanel:SetPaintBackgroundEnabled(true)
+        buyInventoryPanel.Paint = function(self, w, h)
+
+            surface.SetDrawColor(Color(255, 0, 0))
+            surface.DrawRect(0, 0, w, h)
+
+        end
+
+        playerInventoryPanel = vgui.Create("DIconLayout", playerInventoryScroller)
+        playerInventoryPanel:Dock(FILL)
+        playerInventoryPanel:SetSpaceY(5)
+        playerInventoryPanel:SetSpaceX(5)
+        playerInventoryPanel:SetPaintBackgroundEnabled(true)
+        playerInventoryPanel.Paint = function(self, w, h)
+
+            surface.SetDrawColor(Color(255, 0, 0))
+            surface.DrawRect(0, 0, w, h)
+
+        end
+
+        sellInventoryPanel = vgui.Create("DIconLayout", sellScroller)
+        sellInventoryPanel:Dock(FILL)
+        sellInventoryPanel:SetSpaceY(5)
+        sellInventoryPanel:SetSpaceX(5)
+        sellInventoryPanel:SetPaintBackgroundEnabled(true)
+        sellInventoryPanel.Paint = function(self, w, h)
+
+            surface.SetDrawColor(Color(255, 0, 0))
+            surface.DrawRect(0, 0, w, h)
+
+        end
+
+        for k, v in pairs(playerInventory) do
+            
+            local icon = {}
+
+            if v.transferring == false then
+
+                icon = drawInventoryIcon(k, v.type, playerInventoryPanel)
+            
+            else
+
+                print(k.." is transferring!")
+
+                icon = drawInventoryIcon(k, v.type, sellInventoryPanel)
+                
+            end
+
+            function icon:DoClick()
+                transferItem(k, nil, playerInventory, false)
+                redrawInventories()
+            end
+
+        end
+
+        for k, v in pairs(sellerInventory) do
+            
+            local icon = {}
+
+            if v.transferring == false then
+
+                icon = drawInventoryIcon(k, v.type, sellerInventoryPanel)
+            
+            else
+
+                print(k.." is transferring!")
+
+                icon = drawInventoryIcon(k, v.type, buyInventoryPanel)
+                
+            end
+
+            function icon:DoClick()
+                transferItem(k, count, sellerInventory, true)
+                redrawInventories()
+            end
+            
+        end
+
+    end
+
+    function redrawInventories()
+
+        sellerInventoryPanel:Remove()
+        playerInventoryPanel:Remove()
+
+        buyInventoryPanel:Remove()
+        sellInventoryPanel:Remove()
+
+        drawInventories()
+
+    end
+
+    drawInventories()
 
 end
 

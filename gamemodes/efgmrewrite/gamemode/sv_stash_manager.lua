@@ -26,9 +26,9 @@ hook.Add("PlayerInitialSpawn", "SendClientStash", function(ply) -- sends a clien
 
 end)
 
-function STASH.StashHasItem(plyID, item, type) -- returns true if the player has an item in their stash, returns false if they dont
+function STASH.StashHasItem(plyID, item, type, count) -- returns true if the player has an item in their stash, returns false if they dont
 
-    if sql.Query( "SELECT ItemName FROM Stash WHERE ItemOwner = ".. plyID .." AND ItemName = ".. sql.SQLStr(item) .." AND ItemType = ".. type ..";" ) == nil then
+    if sql.Query( "SELECT ItemName FROM Stash WHERE ItemOwner = ".. plyID .." AND ItemName = ".. sql.SQLStr(item) .." AND ItemType = ".. type .." AND ItemCount >= ".. count ..";" ) == nil then
         return false
     else    
         return true
@@ -94,7 +94,7 @@ function STASH.Transaction(ply, deposits, withdraws)
         
         transItems = transItems + v.ItemCount -- adding because this will add to the stash
 
-        if !LOOT.FUNCTIONS.PlayerHasItem[v.ItemType](ply, v.ItemName, v.ItemCount) then
+        if !PlayerHasItem[v.ItemType](ply, v.ItemName, v.ItemCount) then
             isTransactionValid = false
         end
 
@@ -104,17 +104,17 @@ function STASH.Transaction(ply, deposits, withdraws)
         
         transItems = transItems - v.ItemCount -- subtracting because this will take from the stash
 
-        if !STASH.StashHasItem(owner, v.ItemName, v.ItemType) then
+        if !STASH.StashHasItem(owner, v.ItemName, v.ItemType, v.ItemCount) then
             isTransactionValid = false
         end
 
-        if LOOT.FUNCTIONS.PlayerHasItem[v.ItemType](ply, v.ItemName, v.ItemCount) && v.ItemType == 1 then
+        if PlayerHasItem[v.ItemType](ply, v.ItemName, v.ItemCount) && v.ItemType == 1 then
             isTransactionValid = false
         end
 
     end
 
-    if !isTransactionValid then print("transaction not valid") return end -- the player has the shit they wanna sell and doesnt have shit they wanna buy
+    if isTransactionValid == false then print("transaction not valid") return end -- the player has the shit they wanna sell and doesnt have shit they wanna buy
     -- if transItems + stashItems > maxItems then ply:PrintMessage(HUD_PRINTCENTER, "Stash transaction failed, your stash can only hold 4 items, but you tried to hold ".. transItems + stashItems .."!") return end
 
     -- Transaction logic
@@ -134,7 +134,7 @@ function STASH.Transaction(ply, deposits, withdraws)
 
             end
 
-            LOOT.FUNCTIONS.TakeItem[v.ItemType](ply, v.ItemName, v.ItemCount)
+            TakeItem[v.ItemType](ply, v.ItemName, v.ItemCount)
 
         end
     end
@@ -154,7 +154,7 @@ function STASH.Transaction(ply, deposits, withdraws)
 
             end
 
-            LOOT.FUNCTIONS.GiveItem[v.ItemType](ply, v.ItemName, v.ItemCount)
+            GiveItem[v.ItemType](ply, v.ItemName, v.ItemCount)
 
         end
     end

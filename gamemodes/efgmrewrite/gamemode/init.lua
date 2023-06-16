@@ -4,6 +4,7 @@ AddCSLuaFile("sh_debug_handler.lua")
 AddCSLuaFile("sh_enums.lua")
 AddCSLuaFile("sh_loot_tables.lua")
 AddCSLuaFile("sh_playermeta.lua")
+AddCSLuaFile("sh_shop_table.lua")
 
 AddCSLuaFile("cl_hud.lua")
 AddCSLuaFile("cl_init.lua")
@@ -29,15 +30,18 @@ include("sh_debug_handler.lua")
 include("sh_enums.lua")
 include("sh_loot_tables.lua")
 include("sh_playermeta.lua")
+include("sh_shop_table.lua")
 
 include("sv_concommands.lua")
 include("sv_network_manager.lua")
 include("sv_player_spawner.lua")
 include("sv_playermeta.lua")
 include("sv_raid_manager.lua")
+include("sv_save_manager.lua")
 include("sv_shop_manager.lua")
 include("sv_stash_manager.lua")
 include("sv_stats.lua")
+include("sv_wipe_manager.lua")
 
 HostID = 0 -- will be set if it's a p2p server
 
@@ -66,8 +70,19 @@ function GM:PlayerSpawn(ply)
 	ply:SetupHands()
 	ply:AddEFlags(EFL_NO_DAMAGE_FORCES) -- disables knockback being applied when damage is taken
 
-	ply:Give(debugPrimWep[math.random(#debugPrimWep)])
-	ply:Give(debugSecWep[math.random(#debugSecWep)])
+    local loadoutData = SAVE.RetrieveData(ply)
+
+    if loadoutData == nil then
+
+        ply:Give(debugPrimWep[math.random(#debugPrimWep)])
+        ply:Give(debugSecWep[math.random(#debugSecWep)])
+
+    else
+
+        SAVE.EquipPlayer(ply, loadoutData)
+        SAVE.WipePlayerData(ply)
+        
+    end
 
 end
 
@@ -75,7 +90,7 @@ hook.Add("PlayerInitialSpawn", "InitFirstSpawn", function(ply)
 
     if !ply:IsListenServerHost() then return end
         
-    HostID = ply:SteamID64()
+    HostID = tonumber( ply:SteamID64() )
 
 end)
 

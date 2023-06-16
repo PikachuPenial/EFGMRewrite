@@ -1,7 +1,7 @@
 "efgmrewrite"
 {
 	"base"		"base"
-	"title"		"Metatable Hell"
+	"title"		"EFGM Rewrite"
 	"maps"		"^efgm_"
 	"workshopid"	"2792129130"
 	"category"	"pvp"

@@ -15,13 +15,13 @@ function ShopTransaction(ply, buy, sell)
 
     for k, v in pairs(buy) do
 
-        local gunInfo = LOOT[v.ItemType][v.ItemName]
+        local gunInfo = ITEMS[v.ItemName]
 
         if gunInfo != nil then
             
-            transactionProfit = transactionProfit - LOOT.FUNCTIONS.GetCost[v.ItemType](v.ItemName, v.ItemCount)
+            transactionProfit = transactionProfit - GetCost[v.ItemType](v.ItemName, v.ItemCount)
 
-            if LOOT.FUNCTIONS.PlayerHasItem[v.ItemType](ply, v.ItemName, v.ItemCount) && v.ItemType == 1 then -- if player has the gun
+            if PlayerHasItem[v.ItemType](ply, v.ItemName, v.ItemCount) && v.ItemType == 1 then -- if player has the gun
                 isTransactionValid = false
             end
 
@@ -35,13 +35,13 @@ function ShopTransaction(ply, buy, sell)
 
     for k, v in pairs(sell) do
 
-        local gunInfo = LOOT[v.ItemType][v.ItemName]
+        local gunInfo = ITEMS[v.ItemName]
 
         if gunInfo != nil then
 
-            transactionProfit = transactionProfit + (LOOT.FUNCTIONS.GetCost[v.ItemType](v.ItemName, v.ItemCount) * sellMultiplier)
+            transactionProfit = transactionProfit + (GetCost[v.ItemType](v.ItemName, v.ItemCount) * sellMultiplier)
 
-            if !LOOT.FUNCTIONS.PlayerHasItem[v.ItemType](ply, v.ItemName, v.ItemCount) then
+            if !PlayerHasItem[v.ItemType](ply, v.ItemName, v.ItemCount) then
                 isTransactionValid = false
             end
 
@@ -60,13 +60,13 @@ function ShopTransaction(ply, buy, sell)
 
     if !table.IsEmpty(buy) then
         for k, v in ipairs(buy) do
-            LOOT.FUNCTIONS.GiveItem[v.ItemType](ply, v.ItemName, v.ItemCount)
+            GiveItem[v.ItemType](ply, v.ItemName, v.ItemCount)
         end
     end
    
     if !table.IsEmpty(sell) then
         for k, v in ipairs(sell) do
-            LOOT.FUNCTIONS.TakeItem[v.ItemType](ply, v.ItemName, v.ItemCount)
+            TakeItem[v.ItemType](ply, v.ItemName, v.ItemCount)
         end
     end
 
@@ -100,6 +100,8 @@ concommand.Add("efgm_shop_transaction", function(ply, cmd, args)
             tbl.ItemType = tonumber( args[k + 1] )
             tbl.ItemCount = tonumber( args[k + 2] )
             tbl.ItemName = args[k + 3]
+
+            PrintTable(tbl)
 
             if byChecks[tbl.ItemName] == nil then
 

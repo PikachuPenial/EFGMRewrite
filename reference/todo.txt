@@ -1,20 +1,53 @@
-Will add to this if need be
+Will add to this if need be (mostly for motivation to finish the thing but also useful)
 
-DONE:
+-- DONE --
 
-- Stat tracking
-- Map votes
+    Store loadouts (weapon and ammo information) of non-in-raid people who quit
+    Split loot and shop item table
+    Fix bug where infinite ammo can be put in stash
+    Unique PData
+    Map votes
+    Stat tracking
 
-TODO (in no order whatsoever):
+-- TODO --
 
-- Finish shop UI
-- Stash UI
-- Smart Spawnz
-- Team system
-- Translation / localization system (maybe disco elysium style quick switch idk)
-- Built in reporting / banning feature
-- HC mode (this is a planned feature now)
-- Contracts (per-map missions)
-- Achievements (all time)
-- Custom banners / tags
-- Nice looking HUD
+Right Now:
+
+    Give the titanmod discord an update on efgm rewrite development
+    - At least one guy is excited about it
+    - Literally nobody on that server knows what's going on with development
+    - My communication has been dogwater up to this point tbh no cap frfr
+
+Before playtesting:
+
+    Store health of people who quit
+    Wipe system
+    Finish shop UI
+    Stash UI
+
+Before public release:
+
+    Smart Spawnz
+    Team system
+    HC mode (this is a planned feature now)
+    Contracts (per-map missions)
+    Nice looking HUD
+
+Post-release:
+
+    Translation / localization system
+    Built in reporting / banning feature
+    Achievements (all time)
+    Custom banners / tags
+
+-- MAPS TODO -- 
+
+Before playtesting:
+
+    Finish blocking out ravine
+    Dev texturize concrete (so it can be edited easier during playtests)
+    Maybe make concrete bunker a separate map idk
+
+Before public release:
+
+Post-release:
