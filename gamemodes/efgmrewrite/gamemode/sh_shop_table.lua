@@ -92,7 +92,6 @@ GiveItem[1] = function(ply, item, count) -- weapons
     ply:Give(item, true)
 end
 
-
 GiveItem[2] = function(ply, item, count) -- ammo
     ply:GiveAmmo(count or 1, item, false)
 end
@@ -104,9 +103,8 @@ GetCost[1] = function(item, count) -- weapons
     return ITEMS[item][3] -- ITEMS.Weapons.WeaponName.Cost (count dont matter)
 end
 
-
 GetCost[2] = function(item, count) -- ammo
-    local costPerBullet = ITEMS[item][3] / ITEMS[2][5]
+    local costPerBullet = ITEMS[item][3] / ITEMS[item][5]
     return math.ceil(costPerBullet * (count or 1)) -- gets cost per bullet multiplied by the amount of bullets your rat ass wants
 end
 
@@ -146,16 +144,14 @@ end
 
 GetShopIconInfo[2] = function(item)
 
-    print(item)
-
-    local displayName, model, category, price
+    local displayName, category, price
 
     local lootInfo = ITEMS[item] or {}
 
     category = lootInfo[2] or 1
 
-    price = lootInfo[3]
+    price = GetCost[2](item, 1)
 
-    return displayName or item, model or "errorlol", category, price
+    return displayName or item, models[item] or "errorlol", category, price
 
 end

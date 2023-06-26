@@ -452,16 +452,14 @@ function Menu.OpenTab.Shop()
     local purchaseButton = vgui.Create("DButton", purchaseInfoPanel)
     purchaseButton:Dock(TOP)
     purchaseButton:SetText("DEAL")
-    function purchaseButton:DoClick()
-
-    end
+    purchaseButton:SetConsoleCommand("efgm_shop_transaction", SHOP:CompileOrders())
 
     -- ima do this shit later
     -- fucking hell its later
 
     SHOP:WipeOrders()
 
-    local playerInventory = {} -- self[itemname] = table, table.count = int, table.type = int, table.transferring = bool
+    local playerInventory = {} -- self[itemname] = table, table.count = int, table.type = int, table.transferCount = int (should be under or equal to count)
 
     local sellerInventory = {}
 
@@ -474,7 +472,7 @@ function Menu.OpenTab.Shop()
             playerInventory[wep] = {}
             playerInventory[wep].count = 1
             playerInventory[wep].type = 1
-            playerInventory[wep].transferring = false
+            playerInventory[wep].transferCount = 0
 
         end
 
@@ -489,7 +487,7 @@ function Menu.OpenTab.Shop()
             playerInventory[ammo] = {}
             playerInventory[ammo].count = v
             playerInventory[ammo].type = 2
-            playerInventory[ammo].transferring = false
+            playerInventory[ammo].transferCount = 0
 
         end
 
@@ -500,37 +498,79 @@ function Menu.OpenTab.Shop()
         sellerInventory[k] = {}
         sellerInventory[k].count = -1
         sellerInventory[k].type = v[1]
-        sellerInventory[k].transferring = false
+        sellerInventory[k].transferCount = 0
         
     end
 
-    local function transferItem(itemName, itemCount, inventory, isBuying)
+    local function transferItem(itemName, itemType, transferCount, inventory, isBuying)
 
         if inventory[itemName] == nil then return end
 
-        itemCount = itemCount or inventory[itemName].itemCount
-
-        local transferBool = inventory[itemName].transferring
-
-        inventory[itemName].transferring = !transferBool
-
-        print("Transferring " .. itemName .. " == ".. tostring(inventory[itemName].transferring) .."!")
-
-        if !transferBool == true then
-            
-            SHOP:AddOrder(itemName, inventory[itemName].itemType, itemCount, isBuying)
-
-        else
+        inventory[itemName].transferCount = transferCount
+        
+        if transferCount == 0 then
 
             SHOP:RemoveOrder(itemName, isBuying)
+
+        elseif transferCount == -1 then
+        
+            SHOP:AddOrder(itemName, itemType, 1, isBuying)
+
+        else
+            
+            SHOP:AddOrder(itemName, itemType, transferCount, isBuying)
 
         end
 
     end
 
-    -- actual menu shit
+end
 
-    local function drawInventoryIcon(item, type, invPanel)
+function Menu.OpenTab.Stats()
+
+    local contents = vgui.Create("DPanel", Menu.MenuFrame.LowerPanel)
+    contents:Dock(FILL)
+    contents:DockPadding(10, 10, 10, 10)
+    contents.Paint = function(s, w, h)
+
+        surface.SetDrawColor(MenuAlias.secondaryColor)
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
+    Menu.MenuFrame.LowerPanel.Contents = contents
+
+    local importantStats = vgui.Create("DPanel", contents)
+    importantStats:Dock(TOP)
+    importantStats:SetSize(0, 300)
+
+    local playerPanel = vgui.Create("DPanel", contents)
+    playerPanel:Dock(LEFT)
+    playerPanel:SetSize(400, 0)
+
+end
+
+-- shitty showspare2 offbrand because i really don't want to use the net library yet
+hook.Add("Think", "MySpare2Function", function()
+    if input.IsKeyDown(KEY_F4) then
+
+        -- print("showing spare 1")
+        
+        Menu:Open("Intel")
+
+    end
+end)
+
+-- menu shit for later
+--[[ {
+
+    local countNames = {
+
+        [-1] = "A lot"
+
+    }
+
+    local function drawInventoryIcon(item, type, count, invPanel)
     
         local icon = invPanel:Add("SpawnIcon")
         icon:SetSize(75, 75)
@@ -538,15 +578,15 @@ function Menu.OpenTab.Shop()
         local displayName, model, category, price = GetShopIconInfo[type](item)
 
         icon:SetModel(model)
-        icon:SetTooltip(displayName .." (".. revCat[category] ..")")
+        icon:SetTooltip(displayName .." (".. revCat[category] ..")\n$"..price)
 
         function icon:Paint(w, h)
 
             surface.SetDrawColor(MenuAlias.secondaryColor)
-            surface.DrawRect(5, 5, w - 10, h - 10)
+            surface.DrawRect(5, 5, w, h)
         
             draw.SimpleText(displayName, "DermaDefaultBold", w / 2, 7, MenuAlias.blackColor, TEXT_ALIGN_CENTER)
-            draw.SimpleText(price, "DermaDefaultBold", w / 2, h - 7, MenuAlias.blackColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+            draw.SimpleText(countNames[count] or count, "DermaDefaultBold", w / 2, h - 7, MenuAlias.blackColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
 
         end
 
@@ -606,49 +646,121 @@ function Menu.OpenTab.Shop()
 
         for k, v in pairs(playerInventory) do
             
-            local icon = {}
+            local iconP, iconT = {} -- shitty solution but idc (p meaning primary, t meaning transfer)
 
-            if v.transferring == false then
+            if v.transferCount == 0 then -- if not transferring
 
-                icon = drawInventoryIcon(k, v.type, playerInventoryPanel)
+                iconP = drawInventoryIcon(k, v.type, v.count, playerInventoryPanel)
+
+                function iconP:DoClick()
+    
+                    transferItem(k, v.type, v.count, playerInventory, false)
+                    redrawInventories()
+    
+                end
             
-            else
+            elseif v.transferCount == v.count then -- if transferring everything
 
-                print(k.." is transferring!")
+                -- print(k.." is transferring!")
 
-                icon = drawInventoryIcon(k, v.type, sellInventoryPanel)
+                iconT = drawInventoryIcon(k, v.type, v.transferCount, sellInventoryPanel)
+
+                function iconT:DoClick()
+    
+                    transferItem(k, v.type, 0, playerInventory, false)
+                    redrawInventories()
+    
+                end
+            
+            else -- if partial transfer
+
+                iconT = drawInventoryIcon(k, v.type, v.transferCount, sellInventoryPanel)
+
+                function iconT:DoClick()
+    
+                    transferItem(k, v.type, 0, playerInventory, false)
+                    redrawInventories()
+    
+                end
+
+                iconP = drawInventoryIcon(k, v.type, v.count - v.transferCount, playerInventoryPanel)
+
+                function iconP:DoClick()
+    
+                    transferItem(k, v.type, v.count, playerInventory, false)
+                    redrawInventories()
+    
+                end
                 
-            end
-
-            function icon:DoClick()
-                transferItem(k, nil, playerInventory, false)
-                redrawInventories()
             end
 
         end
 
         for k, v in pairs(sellerInventory) do
             
-            local icon = {}
+            local iconP, iconT = {} -- shitty solution but idc (p meaning primary, t meaning transfer)
 
-            if v.transferring == false then
+            if v.transferCount == 0 then -- if not transferring
 
-                icon = drawInventoryIcon(k, v.type, sellerInventoryPanel)
+                iconP = drawInventoryIcon(k, v.type, v.count, sellerInventoryPanel)
+
+                function iconP:DoClick()
+    
+                    transferItem(k, v.type, 1, sellerInventory, false)
+                    redrawInventories()
+    
+                end
             
-            else
+            elseif v.transferCount == v.count then -- if transferring everything
 
-                print(k.." is transferring!")
+                -- print(k.." is transferring!")
 
-                icon = drawInventoryIcon(k, v.type, buyInventoryPanel)
+                iconT = drawInventoryIcon(k, v.type, v.transferCount, buyInventoryPanel)
+
+                function iconT:DoClick()
+    
+                    transferItem(k, v.type, 0, sellerInventory, false)
+                    redrawInventories()
+    
+                end
+            
+            else -- if partial transfer
+
+                iconT = drawInventoryIcon(k, v.type, v.transferCount, buyInventoryPanel)
+
+                function iconT:DoClick()
+    
+                    transferItem(k, v.type, 0, sellerInventory, false)
+                    redrawInventories()
+    
+                end
+
+                iconP = drawInventoryIcon(k, v.type, v.count - v.transferCount, sellerInventoryPanel)
+
+                function iconP:DoClick()
+    
+                    transferItem(k, v.type, 1, sellerInventory, false)
+                    redrawInventories()
+    
+                end
                 
-            end
-
-            function icon:DoClick()
-                transferItem(k, count, sellerInventory, true)
-                redrawInventories()
             end
             
         end
+
+        -- i hate this awfulness
+        
+        local contentWidth1, contentHeight1 = sellerInventoryPanel:GetContentSize()
+        sellerInventoryScroller:GetCanvas():SetSize(contentWidth1, contentHeight1)
+        
+        local contentWidth2, contentHeight2 = buyInventoryPanel:GetContentSize()
+        buyScroller:GetCanvas():SetSize(contentWidth2, contentHeight2)
+        
+        local contentWidth3, contentHeight3 = playerInventoryPanel:GetContentSize()
+        playerInventoryScroller:GetCanvas():SetSize(contentWidth3, contentHeight3)
+        
+        local contentWidth4, contentHeight4 = sellInventoryPanel:GetContentSize()
+        sellScroller:GetCanvas():SetSize(contentWidth4, contentHeight4)
 
     end
 
@@ -664,41 +776,4 @@ function Menu.OpenTab.Shop()
 
     end
 
-    drawInventories()
-
-end
-
-function Menu.OpenTab.Stats()
-
-    local contents = vgui.Create("DPanel", Menu.MenuFrame.LowerPanel)
-    contents:Dock(FILL)
-    contents:DockPadding(10, 10, 10, 10)
-    contents.Paint = function(s, w, h)
-
-        surface.SetDrawColor(MenuAlias.secondaryColor)
-        surface.DrawRect(0, 0, w, h)
-
-    end
-
-    Menu.MenuFrame.LowerPanel.Contents = contents
-
-    local importantStats = vgui.Create("DPanel", contents)
-    importantStats:Dock(TOP)
-    importantStats:SetSize(0, 300)
-
-    local playerPanel = vgui.Create("DPanel", contents)
-    playerPanel:Dock(LEFT)
-    playerPanel:SetSize(400, 0)
-
-end
-
--- shitty showspare2 offbrand because i really don't want to use the net library yet
-hook.Add("Think", "MySpare2Function", function()
-    if input.IsKeyDown(KEY_F4) then
-
-        --print("showing spare 1")
-        
-        Menu:Open("Intel")
-
-    end
-end)
+} ]]

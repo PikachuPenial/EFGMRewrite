@@ -19,6 +19,9 @@ function SHOP:AddOrder(itemName, itemType, itemCount, isBuyOrder)
         self.SellOrders[itemName] = order
     end
 
+    print("Added or edited order: "..itemName)
+    PrintTable(order)
+
 end
 
 function SHOP:RemoveOrder(itemName, isBuyOrder)

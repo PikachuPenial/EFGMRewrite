@@ -38,3 +38,20 @@ revCat = {}
 for k, v in pairs(cat) do
     revCat[v] = k
 end
+
+models = {
+
+    -- k == itemname, v == modelpath
+
+    ["Pistol"] = "models/Items/BoxSRounds.mdl",
+    ["357"] = "models/Items/357ammo.mdl",
+    ["Buckshot"] = "models/Items/BoxBuckshot.mdl",
+    ["SMG1"] = "models/Items/BoxMRounds.mdl",
+    ["AR2"] = "models/Items/combine_rifle_cartridge01.mdl",
+    ["RPG_Round"] = "models/items/ammocrate_rockets.mdl",
+    ["XBowBolt"] = "models/Items/CrossbowRounds.mdl",
+    ["SMG1_Grenade"] = "models/Items/AR2_Grenade.mdl",
+    ["AR2AltFire"] = "models/Items/combine_rifle_ammo01.mdl",
+
+}
+
