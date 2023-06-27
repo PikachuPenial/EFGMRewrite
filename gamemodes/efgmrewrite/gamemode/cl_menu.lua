@@ -387,142 +387,214 @@ function Menu.OpenTab.Shop()
 
     Menu.MenuFrame.LowerPanel.Contents = contents
 
-    -- SELLER (Inventory on right)
+    -- { SELLER (Inventory on right)
 
-    local sellerBackground = vgui.Create("DPanel", contents)
-    sellerBackground:Dock(LEFT)
-    sellerBackground:SetSize(650, 0)
-    sellerBackground:DockPadding(unpack(MenuAlias.margins))
-    sellerBackground.Paint = function(s, w, h)
+        local sellerBackground = vgui.Create("DPanel", contents)
+        sellerBackground:Dock(LEFT)
+        sellerBackground:SetSize(650, 0)
+        sellerBackground:DockPadding(unpack(MenuAlias.margins))
+        sellerBackground.Paint = function(s, w, h)
 
-        surface.SetDrawColor(MenuAlias.primaryColor)
-        surface.DrawRect(0, 0, w, h)
+            surface.SetDrawColor(MenuAlias.primaryColor)
+            surface.DrawRect(0, 0, w, h)
 
-    end
+        end
 
-    local sellerInventoryScroller = vgui.Create("DScrollPanel", sellerBackground)
-    sellerInventoryScroller:Dock(BOTTOM)
-    sellerInventoryScroller:SetSize(0, 450)
-    sellerInventoryScroller.Paint = nil
+        local sellerInventoryScroller = vgui.Create("DScrollPanel", sellerBackground)
+        sellerInventoryScroller:Dock(BOTTOM)
+        sellerInventoryScroller:SetSize(0, 450)
+        sellerInventoryScroller.Paint = nil
 
-    local buyScroller = vgui.Create("DScrollPanel", sellerBackground)
-    buyScroller:Dock(TOP)
-    buyScroller:SetSize(0, 200)
-    buyScroller.Paint = nil
+        local buyScroller = vgui.Create("DScrollPanel", sellerBackground)
+        buyScroller:Dock(TOP)
+        buyScroller:SetSize(0, 200)
+        buyScroller.Paint = nil
 
-    local sellerInventoryPanel, buyInventoryPanel = {}, {}
+        local sellerInventoryPanel, buyInventoryPanel = {}, {}
 
-    -- PLAYER (Inventory on left)
+    -- }
 
-    local playerBackground = vgui.Create("DPanel", contents)
-    playerBackground:Dock(RIGHT)
-    playerBackground:SetSize(650, 0)
-    playerBackground:DockPadding(unpack(MenuAlias.margins))
-    playerBackground.Paint = function(s, w, h)
+    -- { PLAYER (Inventory on left)
 
-        surface.SetDrawColor(MenuAlias.primaryColor)
-        surface.DrawRect(0, 0, w, h)
+        local playerBackground = vgui.Create("DPanel", contents)
+        playerBackground:Dock(RIGHT)
+        playerBackground:SetSize(650, 0)
+        playerBackground:DockPadding(unpack(MenuAlias.margins))
+        playerBackground.Paint = function(s, w, h)
 
-    end
+            surface.SetDrawColor(MenuAlias.primaryColor)
+            surface.DrawRect(0, 0, w, h)
 
-    local playerInventoryScroller = vgui.Create("DScrollPanel", playerBackground)
-    playerInventoryScroller:Dock(BOTTOM)
-    playerInventoryScroller:SetSize(0, 450)
-    playerInventoryScroller.Paint = nil
+        end
 
-    local sellScroller = vgui.Create("DScrollPanel", playerBackground)
-    sellScroller:Dock(TOP)
-    sellScroller:SetSize(0, 200)
-    sellScroller.Paint = nil
+        local playerInventoryScroller = vgui.Create("DScrollPanel", playerBackground)
+        playerInventoryScroller:Dock(BOTTOM)
+        playerInventoryScroller:SetSize(0, 450)
+        playerInventoryScroller.Paint = nil
 
-    local playerInventoryPanel, sellInventoryPanel = {}, {}
+        local sellScroller = vgui.Create("DScrollPanel", playerBackground)
+        sellScroller:Dock(TOP)
+        sellScroller:SetSize(0, 200)
+        sellScroller.Paint = nil
 
-    -- MIDDLE ROW
+        local playerInventoryPanel, sellInventoryPanel = {}, {}
 
-    local purchaseInfoPanel = vgui.Create("DPanel", contents)
-    purchaseInfoPanel:Dock(TOP)
-    purchaseInfoPanel:SetSize(0, 200)
-    purchaseInfoPanel.Paint = function(s, w, h)
+    -- }
 
-        surface.SetDrawColor(MenuAlias.secondaryColor)
-        surface.DrawRect(0, 0, w, h)
+    -- { MIDDLE ROW
 
-    end
+        local purchaseInfoPanel = vgui.Create("DPanel", contents)
+        purchaseInfoPanel:Dock(TOP)
+        purchaseInfoPanel:SetSize(0, 200)
+        purchaseInfoPanel.Paint = function(s, w, h)
 
-    local purchaseButton = vgui.Create("DButton", purchaseInfoPanel)
-    purchaseButton:Dock(TOP)
-    purchaseButton:SetText("DEAL")
-    purchaseButton:SetConsoleCommand("efgm_shop_transaction", SHOP:CompileOrders())
+            surface.SetDrawColor(MenuAlias.secondaryColor)
+            surface.DrawRect(0, 0, w, h)
+
+        end
+
+        local purchaseButton = vgui.Create("DButton", purchaseInfoPanel)
+        purchaseButton:Dock(TOP)
+        purchaseButton:SetText("DEAL")
+        purchaseButton:SetConsoleCommand("efgm_shop_transaction", SHOP:CompileOrders())
+
+    -- }
 
     -- ima do this shit later
     -- fucking hell its later
 
-    SHOP:WipeOrders()
+    local lotToLimit = {
+        [-1] = transferLimit -- setting arbitrary transfer limit to 500
+    }
+    local transferLimit = 500
 
-    local playerInventory = {} -- self[itemname] = table, table.count = int, table.type = int, table.transferCount = int (should be under or equal to count)
+    -- { INVENTORY INITIALIZATION
 
-    local sellerInventory = {}
+        local inv = {}
 
-    for k, v in pairs(LocalPlayer():GetWeapons()) do
-        
-        local wep = v:GetClass()
+        function inv.NewInventory()
 
-        if CheckExists[1](wep) then
-            
-            playerInventory[wep] = {}
-            playerInventory[wep].count = 1
-            playerInventory[wep].type = 1
-            playerInventory[wep].transferCount = 0
+            local inventory = {}
 
-        end
+            function inventory:AddItem(item, type, count, tCount)
 
-    end
+                self[item] = {}
 
-    for k, v in pairs(LocalPlayer():GetAmmo()) do
-        
-        local ammo = game.GetAmmoName(k)
+                self[item].count = count
+                self[item].type = type
+                self[item].tCount = tCount or 0
 
-        if CheckExists[2](ammo) then
-            
-            playerInventory[ammo] = {}
-            playerInventory[ammo].count = v
-            playerInventory[ammo].type = 2
-            playerInventory[ammo].transferCount = 0
+            end
 
-        end
+            function inventory:TransferItem(item, tCount)
 
-    end
+                if self[item] == nil then return end
 
-    for k, v in pairs(ITEMS) do
+                self[item].tCount = math.Clamp( tCount, 0, lotToLimit[ self[ item ].count ] )
 
-        sellerInventory[k] = {}
-        sellerInventory[k].count = -1
-        sellerInventory[k].type = v[1]
-        sellerInventory[k].transferCount = 0
-        
-    end
+            end
 
-    local function transferItem(itemName, itemType, transferCount, inventory, isBuying)
+            function inventory:RemoveItem(item)
 
-        if inventory[itemName] == nil then return end
+                if self[item] == nil then return end
 
-        inventory[itemName].transferCount = transferCount
-        
-        if transferCount == 0 then
+                self[item] = nil
 
-            SHOP:RemoveOrder(itemName, isBuying)
+            end
 
-        elseif transferCount == -1 then
-        
-            SHOP:AddOrder(itemName, itemType, 1, isBuying)
+            function inventory:EditCount(item, count)
 
-        else
-            
-            SHOP:AddOrder(itemName, itemType, transferCount, isBuying)
+                if self[item] == nil then return end
+
+                if count == 0 then self:RemoveItem(item) return end
+
+                self[item].count = count
+                self[item].tCount = 0
+                
+            end
+
+            return inventory
 
         end
 
-    end
+        playerInventory = inv.NewInventory() -- self[itemname] = table, table.count = int, table.type = int, table.transferCount = int (should be under or equal to count)
+
+        sellerInventory = inv.NewInventory()
+
+        function playerInventory:TransferItem(item, tCount)
+
+            if self[item] == nil then return end
+
+            self[item].tCount = tCount
+            
+            if tCount == 0 then
+
+                SHOP:RemoveOrder(item, false)
+
+            elseif tCount > 0 && tCount <= transferLimit then
+                
+                SHOP:AddOrder(item, self[item].type, tCount, false)
+
+            end
+
+        end
+
+        function sellerInventory:TransferItem(item, tCount)
+
+            if self[item] == nil then return end
+
+            self[item].tCount = tCount
+            
+            if tCount == 0 then
+
+                SHOP:RemoveOrder(item, true)
+
+            elseif tCount > 0 && tCount <= transferLimit then
+                
+                SHOP:AddOrder(item, self[item].type, tCount, true)
+
+            end
+
+        end
+
+        for k, v in pairs(LocalPlayer():GetWeapons()) do
+            
+            local wep = v:GetClass()
+
+            if CheckExists[1](wep) then
+                
+                playerInventory:AddItem(wep, 1, 1)
+
+            end
+
+        end
+
+        for k, v in pairs(LocalPlayer():GetAmmo()) do
+            
+            local ammo = game.GetAmmoName(k)
+
+            if CheckExists[2](ammo) then
+                
+                playerInventory:AddItem(ammo, 2, v)
+
+            end
+
+        end
+
+        for k, v in pairs(ITEMS) do
+                
+            sellerInventory:AddItem(k, v[1], -1)
+
+            sellerInventory[k] = {}
+            sellerInventory[k].count = -1
+            sellerInventory[k].type = v[1]
+            sellerInventory[k].transferCount = 0
+            
+        end
+
+    -- }
+
+    
 
 end
 
