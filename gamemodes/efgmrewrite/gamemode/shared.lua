@@ -3,6 +3,11 @@ GM.Author = "Penial & Porty"
 GM.Email = "piss off"
 GM.Website = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 
+if CLIENT then
+    CreateClientConVar("efgm_music", 1, true, false, "Enable/disable the music", 0, 1)
+    CreateClientConVar("efgm_musicvolume", 1, true, false, "Increase or lower the volume of the music", 0, 2)
+end
+
 -- thanks penicillin
 hook.Add("Initialize", "Optimization", function()
     hook.Remove("PlayerTick", "TickWidgets")

@@ -6,6 +6,8 @@ Menu = {}
 Menu.IsInitialized  = false
 Menu.IsOpen         = false
 
+Menu.MusicList = {"sound/music/menu_01.mp4", "sound/music/menu_02.mp4", "sound/music/menu_03.mp4", "sound/music/menu_04.mp4"}
+
 -- called non-globally to initialize the menu, that way it can only be initialized once by Menu:Open()
 -- also openTab is the name of the tab it should open to
 function Menu:Initialize( openTab )
