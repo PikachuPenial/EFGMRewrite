@@ -1,11 +1,11 @@
 Features that sound cool and are doable idk
 
-	Separate day and night maps
+    Separate day and night maps
 
 - self explanatory
 - every 1 or maybe 2 matches, time gets switched (go from playing on day maps to night maps or vice versa)
 
-	Hardcore raids (assuming voting system will be changed to only featuring 2-3 maps to play on)
+    Hardcore raids (assuming voting system will be changed to only featuring 2-3 maps to play on)
 
 - 15-20% chance one map that can be voted on will be marked as "Hardcore"
 
@@ -17,7 +17,7 @@ Features that sound cool and are doable idk
 - Raid interface will have an output if the raid is hardcore, so the map may change in other ways (imagine a labs map where in hardcore mode a ton of garage doors start shut, leading to a few intense chokepoints around the map where players fight to move between sections)
 - Maybe disable extracts (and the way to them) for the first half or third of a raid, leading to fucking stacked loot goblins duking it out before they can leave
 
-	Achievement system (tasks but not)
+    Achievement system (tasks but not)
 
 - Achievements won't reset with wipes
 - Each achievement will have conditions and a reward, such as a player model, scoreboard cosmetic (idk yet), or achievement-only gun unlock
@@ -25,7 +25,7 @@ Features that sound cool and are doable idk
 - The idea is that you can complete these at your own pace, as unlike tasks they wouldnt be required for progression, or just 100% them if you want idk
 - If I ever get around to doing this, I might call the gun unlocks something else like "contracts" or something
 
-	New map to replace efgm_belmont
+    New map to replace efgm_belmont
 
 - I just got this idea earlier and idk it sounds cool and wanna write it down
 - Set in a military facility inside of and across a ravine inside a snowy mountain
@@ -33,4 +33,34 @@ Features that sound cool and are doable idk
 - The facility would be roughly belmont sized (as far as like walkable space) with 2-3 levels, varying from claustrophobic hallways located inside the mountain to catwalks going across and parallel to the river
 - Would be a few places of interest, like a shooting range, power station, military storage, civilian housing and cafeterias and shit, maybe even a helipad on top of the facility
 
+    Shitty skill idea
 
+- OG skills were kinda dogshit (they worked mostly in the background, they didn't do much, most players probably didnt pay attention to them)
+- I've been playing way too much fucking disco elysium so that might influence this
+
+- So basically instead of skills, you got one or two slots each corresponding to general gameplay elements (combat, movement, maybe one
+related to loot / buying / selling / stashing)
+- These slots begin locked, but every 5-10 levels you get a point to unlock a specific slot in a specific category
+- As you play the game, doing ___ thing ___ amount of times will unlock different "skills" to put into slots
+- Each skill will belong to a specific category, and it show you a name, description, temporary bonus / debuff, and a requirement to complete
+- When you put a skill into a slot, that temporary effect instantly applies, and you're stuck with it until you either remove the skill,
+which will reset progress on it, or until you complete the requirement (e.g get 20 pmc kills)
+- When you complete the requirement, the description updates, and the effect is replaced with new effect(s)
+- The new effect(s) are not shown to the player until they complete the requirement of the skill, making the system a kind of gamble that
+isn't necessary to progress, but fun and rewarding to play around with
+- If you don't like the skill's permanent effect, you can remove it using up a slot point
+- Literally just the DE thought cabinet
+
+- If that made no fucking sense whatsoever, here's an example of a skill I thought of earlier:
+Unorthodox Methods of Extraction (takes up a movement slot)
+
+Description: something about extracts being hard to find
+
+Unlock requirement: Be at least level 15 and used extracts with requirements 5 times
+
+Requirement to complete: Extract 15 times using extracts with requirements (like the usec heli or getaway driver)
+
+Temporary effect (shown to the player on skill unlock, removed upon requirement completion): extracts take 50% longer
+
+Permanent effect (not shown to the player until requirement completion, given on requirement completion): New extracts are availible
+for you on each map (basically scav extracts) but extracting takes 20% longer

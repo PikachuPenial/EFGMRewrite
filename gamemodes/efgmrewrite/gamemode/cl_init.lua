@@ -10,7 +10,7 @@ include("config.lua")
 include("sh_debug.lua")
 include("sh_enums.lua")
 include("sh_loot_tables.lua")
-include("sh_playermeta.lua")
+include("sh_raid_manager.lua")
 include("sh_shop_table.lua")
 
 include("cl_hud.lua")

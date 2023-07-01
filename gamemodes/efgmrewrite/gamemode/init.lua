@@ -3,7 +3,7 @@ AddCSLuaFile("config.lua")
 AddCSLuaFile("sh_debug.lua")
 AddCSLuaFile("sh_enums.lua")
 AddCSLuaFile("sh_loot_tables.lua")
-AddCSLuaFile("sh_playermeta.lua")
+AddCSLuaFile("sh_raid_manager.lua")
 AddCSLuaFile("sh_shop_table.lua")
 
 AddCSLuaFile("cl_hud.lua")
@@ -29,14 +29,12 @@ include("config.lua")
 include("sh_debug.lua")
 include("sh_enums.lua")
 include("sh_loot_tables.lua")
-include("sh_playermeta.lua")
+include("sh_raid_manager.lua")
 include("sh_shop_table.lua")
 
 include("sv_concommands.lua")
 include("sv_network_manager.lua")
 include("sv_player_spawner.lua")
-include("sv_playermeta.lua")
-include("sv_raid_manager.lua")
 include("sv_save_manager.lua")
 include("sv_shop_manager.lua")
 include("sv_stash_manager.lua")
@@ -83,6 +81,8 @@ function GM:PlayerSpawn(ply)
         SAVE.WipePlayerData(ply)
         
     end
+
+	ply:SetRaidStatus(0, "")
 
 end
 

@@ -76,7 +76,7 @@ function ShopTransaction(ply, buy, sell)
 end
 concommand.Add("efgm_shop_transaction", function(ply, cmd, args)
 
-    if ply:IsInRaid() then return end
+    if !ply:CompareStatus(0) then return end
 
     if args[1] == nil then
         

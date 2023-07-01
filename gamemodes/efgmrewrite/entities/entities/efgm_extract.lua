@@ -76,12 +76,12 @@ function ENT:AcceptInput(name, activator, caller, data)
 		self.IsDisabled = !self.IsDisabled
 	end
 
-	if !activator:IsPlayer() then print("What kind of player tries to extract? Not funny, not funny at all.") return end
+	if !activator:IsPlayer() then print("A bot just tried to extract smh") return end
 
-	if activator:IsInRaid() && activator:CompareSpawnGroup(self.ExtractGroup) && !self.IsDisabled then
+	if !activator:CompareStatus(0) && activator:CompareSpawnGroup(self.ExtractGroup) && !self.IsDisabled then
 
 		if name == "StartExtractingPlayer" then
-			--print("Player's name is " .. activator:GetName())
+			print("Player's name is " .. activator:GetName())
 
 			self:StartExtract(activator)
 		end
@@ -99,7 +99,7 @@ function ENT:StartExtract(ply)
 	--print("Player's name is " .. ply:GetName())
 
 	-- debug, will replace later once i make a fancy UI system
-	ply:PrintMessage( HUD_PRINTCENTER, "Extracting" )
+	ply:PrintMessage( HUD_PRINTCENTER, "Extracting (".. self.ExtractTime .." Seconds)" )
 
 	if self.InstantExtract then self.Extract(ply) return end
 
@@ -113,11 +113,9 @@ function ENT:StartExtract(ply)
 	-- actual extract logic
 
 	timer.Create(timerName, self.ExtractTime, 1, function()
-	
-		-- extract logic (uses a . because it doesn't use the entity name or self, im smart i know)
-		-- great that just broke more shit, i love lua and coding
 
 		self:Extract(ply)
+
 	end)
 
 end
@@ -165,7 +163,7 @@ function ENT:Extract(ply)
 
 	local randomSpawn = BetterRandom(possibleSpawns)
 
-	ply:SetRaidStatus(playerStatus.LOBBY, "")
+	RAID:RemovePlayer(ply)
 	ply:Teleport(randomSpawn:GetPos(), randomSpawn:GetAngles(), Vector(0, 0, 0))
 
     hook.Run("PlayerExtraction", ply, self.ExtractTime, self.IsGuranteed)

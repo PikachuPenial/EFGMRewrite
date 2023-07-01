@@ -2,6 +2,9 @@ Will add to this if need be (mostly for motivation to finish the thing but also 
 
 -- DONE --
 
+    Dev texturize concrete for easier editing in future playtesting
+    Rewrite all the old player raid status stuff
+    Extract printing (WIP)
     Debug system
     Wipe system
     Store loadouts (weapon and ammo information) of non-in-raid people who quit
@@ -11,24 +14,21 @@ Will add to this if need be (mostly for motivation to finish the thing but also 
     Map votes
     Stat tracking
 
-
 -- TODO --
 
-Right Now:
+Right Now: (in order of importance)
+
+    Give the titanmod discord an update on efgm rewrite development (i fucking love pr)
+    Menu music
+    Personal stats tab (this wipe and all time)
 
 Before playtesting:
 
-    Give the titanmod discord an update on efgm rewrite development
-    - At least one guy is excited about it
-    - Literally nobody on that server knows what's going on with development
-    - My communication has been dogwater up to this point tbh no cap frfr
-
-    Tarkov menu music
+    Finish shop UI (ive given up for now, i really need to figure this shit out)
     Post-raid screen
-    Personal stats tab (this wipe and all time)
-    Finish shop UI
     Stash UI
     Smart Spawnz
+    Proper extract list menu (like tarky <3)
 
 Before public release:
 
@@ -40,7 +40,12 @@ Before public release:
 Post-release:
 
     Translation / localization system
-    Built in reporting / banning feature
+    Feedback feature
+    - In raid, press a keybind to queue up a feedback submission
+    - When you extract or die, your queued submissions come up with info like the coords, the map, and the raid time
+    - You can write a description, include info like type of feedback, is it good or bad, coords, and stuff like that
+    - Reports get kept in an sql table so eventually the devs may get to see your report about a small corner of a new map being textured wrong
+    - Notifications if a dev fixes your report for idk positive feedback
     Achievements (all time)
     Custom banners / tags
 
@@ -49,7 +54,6 @@ Post-release:
 Before playtesting:
 
     Finish blocking out ravine
-    Dev texturize concrete (so it can be edited easier during playtests)
     Maybe make concrete bunker a separate map idk
 
 Before public release:

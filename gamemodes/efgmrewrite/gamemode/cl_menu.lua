@@ -8,6 +8,26 @@ Menu.IsOpen         = false
 
 Menu.MusicList = {"sound/music/menu_01.mp4", "sound/music/menu_02.mp4", "sound/music/menu_03.mp4", "sound/music/menu_04.mp4"}
 
+local conditions = {}
+
+function conditions.Intel()
+
+    return true
+
+end
+
+function conditions.Shop()
+
+    return LocalPlayer():CompareStatus(0)
+
+end
+
+function conditions.Stats()
+
+    return true
+
+end
+
 -- called non-globally to initialize the menu, that way it can only be initialized once by Menu:Open()
 -- also openTab is the name of the tab it should open to
 function Menu:Initialize( openTab )
@@ -63,41 +83,53 @@ function Menu:Initialize( openTab )
 
     Menu.MenuFrame.LowerPanel.Contents = contents
 
-    local statsTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
-    statsTab:Dock(LEFT)
-    statsTab:SetSize(180, 0)
-    statsTab:SetText(LocalPlayer():Name())
+    if conditions.Stats() then
 
-    function statsTab:DoClick()
-        Menu.MenuFrame.LowerPanel.Contents:Remove()
-        Menu.OpenTab.Stats()
+        local statsTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
+        statsTab:Dock(LEFT)
+        statsTab:SetSize(180, 0)
+        statsTab:SetText(LocalPlayer():Name())
+    
+        function statsTab:DoClick()
+            Menu.MenuFrame.LowerPanel.Contents:Remove()
+            Menu.OpenTab.Stats()
+        end
+    
+        self.MenuFrame.TabParentPanel.StatsTab = statsTab
+        
     end
 
-    self.MenuFrame.TabParentPanel.StatsTab = statsTab
+    if conditions.Intel() then
 
-    local intelTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
-    intelTab:Dock(LEFT)
-    intelTab:SetSize(60, 0)
-    intelTab:SetText("Intel")
-
-    function intelTab:DoClick()
-        Menu.MenuFrame.LowerPanel.Contents:Remove()
-        Menu.OpenTab.Intel()
+        local intelTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
+        intelTab:Dock(LEFT)
+        intelTab:SetSize(60, 0)
+        intelTab:SetText("Intel")
+    
+        function intelTab:DoClick()
+            Menu.MenuFrame.LowerPanel.Contents:Remove()
+            Menu.OpenTab.Intel()
+        end
+    
+        self.MenuFrame.TabParentPanel.IntelTab = intelTab
+        
     end
 
-    self.MenuFrame.TabParentPanel.IntelTab = intelTab
+    if conditions.Shop() then
 
-    local shopTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
-    shopTab:Dock(LEFT)
-    shopTab:SetSize(60, 0)
-    shopTab:SetText("Shop")
-
-    function shopTab:DoClick()
-        Menu.MenuFrame.LowerPanel.Contents:Remove()
-        Menu.OpenTab.Shop()
+        local shopTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
+        shopTab:Dock(LEFT)
+        shopTab:SetSize(60, 0)
+        shopTab:SetText("Shop")
+    
+        function shopTab:DoClick()
+            Menu.MenuFrame.LowerPanel.Contents:Remove()
+            Menu.OpenTab.Shop()
+        end
+    
+        self.MenuFrame.TabParentPanel.ShopTab = shopTab
+        
     end
-
-    self.MenuFrame.TabParentPanel.ShopTab = shopTab
 
 end
 
@@ -229,153 +261,6 @@ function Menu.OpenTab.Intel()
 
 end
 
-function Menu.OpenTab.IntelOld()
-
-    local contents = vgui.Create("DPanel", Menu.MenuFrame.LowerPanel)
-    contents:Dock(FILL)
-    contents.Paint = nil
-
-    Menu.MenuFrame.LowerPanel.Contents = contents
-
-    local entryList = vgui.Create("DCategoryList", contents)
-    entryList:Dock(LEFT)
-    entryList:SetSize(200, 0)
-
-    local entryPanel = vgui.Create("DPanel", contents)
-    entryPanel:Dock(FILL)
-    function entryPanel:Paint(w, h)
-        surface.SetDrawColor(50, 50, 50)
-        surface.DrawRect(0, 0, w, h)
-    end
-
-    local entryStats = vgui.Create("DPanel", entryPanel)
-    entryStats:Dock(TOP)
-    entryStats:SetSize(0, 40)
-    entryStats.Paint = nil
-
-    local entryTextDisplay = vgui.Create("DPanel", entryPanel)
-    entryTextDisplay:Dock(FILL)
-    entryTextDisplay.Paint = nil
-
-    local function DrawEntry(entryColor, entryName, entryText, stats)
-
-        print(#stats)
-        entryStats:SetSize(0, #stats * 40)
-
-        function entryStats:Paint(w, h)
-            
-            for k, v in ipairs(stats) do
-
-                surface.SetDrawColor(180, 180, 180)
-                if k % 2 == 1 then 
-                    surface.SetDrawColor(210, 210, 210)
-                end
-                
-                surface.DrawRect(0, (k - 1) * 40, w, 40)
-
-                local text = markup.Parse( "<font=DermaLarge><color=0,0,0>\n\n" .. text .. "</color></font>", w - 40 )
-                text:Draw(20, (k - 1) * 40 + 5)
-
-            end
-
-        end
-    
-        function entryTextDisplay:Paint(w, h)
-
-            -- chatgpt hallucinated an entire fucking function to get this shit to wrap, apologised profusely when called out on its artificial bs, but then told me about markup thanks chatgpt
-
-            local text = markup.Parse( "<font=DermaLarge><color=" .. tostring( entryColor ) .. ">" .. entryName .. "</color></font><font=DermaLarge><color=255,255,255>\n\n" .. entryText .. "</color></font>", w - 40 )
-            text:Draw(20, 20)
-
-        end
-
-    end
-
-    local starterCategory = vgui.Create("DCollapsibleCategory", entryList)
-    starterCategory:Dock(FILL)
-    starterCategory:SetLabel("Getting Started")
-    function starterCategory:Paint(w, h) surface.SetDrawColor(190, 40, 40) surface.DrawRect(0, 0, w, h) end
-    starterCategory:DoExpansion(false)
-
-    local mapCategory = vgui.Create("DCollapsibleCategory", entryList)
-    mapCategory:Dock(FILL)
-    mapCategory:SetLabel("Maps")
-    function mapCategory:Paint(w, h) surface.SetDrawColor(190, 40, 40) surface.DrawRect(0, 0, w, h) end
-    mapCategory:DoExpansion(false)
-
-    local mechanicsCategory = vgui.Create("DCollapsibleCategory", entryList)
-    mechanicsCategory:Dock(FILL)
-    mechanicsCategory:SetLabel("Advanced Mechanics")
-    function mechanicsCategory:Paint(w, h) surface.SetDrawColor(190, 40, 40) surface.DrawRect(0, 0, w, h) end
-    mechanicsCategory:DoExpansion(false)
-
-    entryList:AddItem(starterCategory)
-    entryList:AddItem(mapCategory)
-    entryList:AddItem(mechanicsCategory)
-
-    for k, v1 in pairs(Intel) do
-
-        local mapTab = vgui.Create("DCollapsibleCategory", mapCategory)
-        mapTab:SetLabel(v1.FancyMapName)
-        mapTab:Dock(TOP)
-        function mapTab:Paint(w, h)
-            surface.SetDrawColor(v1.IntelColor)
-            surface.DrawRect(0, 0, w, h)
-        end
-        mapTab:DoExpansion(false)
-
-        local mapInfo = mapTab:Add("Info")
-        mapInfo.DoClick = function()
-            -- make shit show up
-            print("clicked " .. v1.FancyMapName)
-
-            local tbl = {}
-            tbl[1] = "Raid Time | " .. v1.RaidTime .. " Minutes"
-            tbl[2] = "Map Size | " .. v1.Size
-            
-            DrawEntry(v1.IntelColor, v1.FancyMapName, v1.Description .. "\n\n" .. v1.Features .. "\n\n" .. v1.ExfilsDescription, tbl)
-        end
-        mapInfo.Paint = nil
-
-        local extractTab = vgui.Create("DCollapsibleCategory", mapTab)
-        extractTab:SetLabel("Extracts")
-        extractTab:Dock(TOP)
-        extractTab.Paint = nil
-        extractTab:DoExpansion(false)
-
-        for k, v2 in pairs(v1.Extractions) do
-
-            local exfil = extractTab:Add(v2.Name)
-            exfil.DoClick = function()
-                -- make shit show up
-                print("clicked " .. v2.Name)
-
-                local tbl = {}
-                tbl[1] = "Extract Time | " .. v2.Time .. " Seconds"
-
-                if v2.IsGuranteed then
-                    tbl[2] = "Universal | True"
-                else
-                    tbl[2] = "Universal | False"
-                end
-
-                if v2.Conditions == "" then
-                    tbl[3] = "Has Conditions | False"
-                else
-                    tbl[3] = "Has Conditions | True"
-                end
-                
-
-                DrawEntry(v1.IntelColor, v2.Name, v2.Description .. "\n\n" .. v2.Conditions, tbl)
-            end
-            exfil.Paint = nil
-
-        end
-
-    end
-
-end
-
 function Menu.OpenTab.Shop()
 
     local contents = vgui.Create("DPanel", Menu.MenuFrame.LowerPanel)
@@ -388,6 +273,8 @@ function Menu.OpenTab.Shop()
     end
 
     Menu.MenuFrame.LowerPanel.Contents = contents
+
+    local sellerInventoryPanel, buyInventoryPanel, playerInventoryPanel, sellInventoryPanel = {}, {}, {}, {}
 
     -- { SELLER (Inventory on right)
 
@@ -411,8 +298,6 @@ function Menu.OpenTab.Shop()
         buyScroller:Dock(TOP)
         buyScroller:SetSize(0, 200)
         buyScroller.Paint = nil
-
-        local sellerInventoryPanel, buyInventoryPanel = {}, {}
 
     -- }
 
@@ -439,8 +324,6 @@ function Menu.OpenTab.Shop()
         sellScroller:SetSize(0, 200)
         sellScroller.Paint = nil
 
-        local playerInventoryPanel, sellInventoryPanel = {}, {}
-
     -- }
 
     -- { MIDDLE ROW
@@ -464,11 +347,26 @@ function Menu.OpenTab.Shop()
 
     -- ima do this shit later
     -- fucking hell its later
+    
+    local transferLimit = {}
+    transferLimit[1] = 1
+    transferLimit[2] = 500
 
-    local lotToLimit = {
-        [-1] = transferLimit -- setting arbitrary transfer limit to 500
+    local lotToLimit = {}
+
+    lotToLimit[1] = {
+        [-1] = transferLimit[1] -- setting arbitrary transfer limit to 500
     }
-    local transferLimit = 500
+
+    lotToLimit[2] = {
+        [-1] = transferLimit[2] -- setting arbitrary transfer limit to 500
+    }
+
+    local countNames = {
+
+        [-1] = "A lot"
+
+    }
 
     -- { INVENTORY INITIALIZATION
 
@@ -525,6 +423,8 @@ function Menu.OpenTab.Shop()
 
         function playerInventory:TransferItem(item, tCount)
 
+            print("transferring "..item.." with transfer count of "..tCount)
+
             if self[item] == nil then return end
 
             self[item].tCount = tCount
@@ -542,6 +442,8 @@ function Menu.OpenTab.Shop()
         end
 
         function sellerInventory:TransferItem(item, tCount)
+
+            print("transferring "..item.." with transfer count of "..tCount)
 
             if self[item] == nil then return end
 
@@ -596,7 +498,188 @@ function Menu.OpenTab.Shop()
 
     -- }
 
+    local function drawIcon(item, type, count, iconLayout)
+
+        if !CheckExists[type](item) then return end
+
+        local displayName, model, category, price = GetShopIconInfo[type](item)
+
+        local iconPanel = iconLayout:Add("DPanel")
+        iconPanel:SetSize(120, 120)
+
+        function iconPanel:Paint(w, h)
+
+            surface.SetDrawColor(MenuAlias.secondaryColor)
+            surface.DrawRect(5, 5, w, h)
+
+            draw.SimpleText(displayName, "DermaDefaultBold", w / 2, 7, MenuAlias.blackColor, TEXT_ALIGN_CENTER)
+            draw.SimpleText(countNames[count] or count, "DermaDefaultBold", w / 2, h - 7, MenuAlias.blackColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+
+        end
+
+        iconPanel.spawnButton = vgui.Create("SpawnIcon", iconPanel)
+        iconPanel.spawnButton:SetSize(80, 80)
+        iconPanel.spawnButton:Center()
+        iconPanel.spawnButton:SetModel(model)
+        iconPanel.spawnButton:SetTooltip(displayName .." (".. revCat[category] ..")\n$"..price)
+
+        return iconPanel
+
+    end
+
+    local function shitFart(item, itemType, itemCount, itemTCount, iconLayoutP, iconLayoutT, inventory) -- i really dont know what else to call it
     
+        local iconP, iconT = {} -- shitty solution but idc (p meaning primary, t meaning transfer)
+
+        if itemTCount == 0 then -- if not transferring
+
+            iconP = drawIcon(item, itemType, itemCount, iconLayoutP)
+
+            function iconP.spawnButton:DoClick()
+
+                inventory:TransferItem( item, math.random(0, math.min( lotToLimit[itemCount] or itemCount, transferLimit ) ) )
+                redrawMenus()
+
+            end
+        
+        elseif itemTCount == itemCount then -- if transferring everything
+            
+            iconT = drawIcon(item, itemType, itemTCount, iconLayoutT)
+
+            function iconT.spawnButton:DoClick()
+
+                inventory:TransferItem( item, math.random(0, math.min( lotToLimit[itemCount] or itemCount, transferLimit ) ) )
+                redrawMenus()
+
+            end
+        
+        else -- if partial transfer
+
+            iconT = drawIcon(item, itemType, itemTCount, iconLayoutT)
+
+            function iconT.spawnButton:DoClick()
+
+                inventory:TransferItem( item, math.random(0, math.min( lotToLimit[itemCount] or itemCount, transferLimit ) ) )
+                redrawMenus()
+
+            end
+
+            iconP = drawIcon(item, itemType, math.Clamp( itemCount - itemTCount, -1, transferLimit ), iconLayoutP)
+
+            function iconP.spawnButton:DoClick()
+
+                inventory:TransferItem( item, math.random(0, math.min( lotToLimit[itemCount] or itemCount, transferLimit ) ) )
+                redrawMenus()
+
+            end
+            
+        end
+
+    end
+
+    function drawMenu()
+
+        --{ BULLSHIT
+
+            sellerInventoryPanel = vgui.Create("DIconLayout", sellerInventoryScroller)
+            sellerInventoryPanel:Dock(FILL)
+            sellerInventoryPanel:SetSpaceY(5)
+            sellerInventoryPanel:SetSpaceX(5)
+            sellerInventoryPanel:SetPaintBackgroundEnabled(true)
+            sellerInventoryPanel.Paint = function(self, w, h)
+
+                surface.SetDrawColor(Color(255, 0, 0))
+                surface.DrawRect(0, 0, w, h)
+
+            end
+
+            buyInventoryPanel = vgui.Create("DIconLayout", buyScroller)
+            buyInventoryPanel:Dock(FILL)
+            buyInventoryPanel:SetSpaceY(5)
+            buyInventoryPanel:SetSpaceX(5)
+            buyInventoryPanel:SetPaintBackgroundEnabled(true)
+            buyInventoryPanel.Paint = function(self, w, h)
+
+                surface.SetDrawColor(Color(255, 0, 0))
+                surface.DrawRect(0, 0, w, h)
+
+            end
+
+            playerInventoryPanel = vgui.Create("DIconLayout", playerInventoryScroller)
+            playerInventoryPanel:Dock(FILL)
+            playerInventoryPanel:SetSpaceY(5)
+            playerInventoryPanel:SetSpaceX(5)
+            playerInventoryPanel:SetPaintBackgroundEnabled(true)
+            playerInventoryPanel.Paint = function(self, w, h)
+
+                surface.SetDrawColor(Color(255, 0, 0))
+                surface.DrawRect(0, 0, w, h)
+
+            end
+
+            sellInventoryPanel = vgui.Create("DIconLayout", sellScroller)
+            sellInventoryPanel:Dock(FILL)
+            sellInventoryPanel:SetSpaceY(5)
+            sellInventoryPanel:SetSpaceX(5)
+            sellInventoryPanel:SetPaintBackgroundEnabled(true)
+            sellInventoryPanel.Paint = function(self, w, h)
+
+                surface.SetDrawColor(Color(255, 0, 0))
+                surface.DrawRect(0, 0, w, h)
+
+            end
+
+        --}
+
+        for k, v in pairs(playerInventory) do
+            
+            if(type(v)) == "table" then
+
+                shitFart(k, v.type, v.count, v.tCount or 0, playerInventoryPanel, sellInventoryPanel, playerInventory)
+
+            end
+
+        end
+
+        for k, v in pairs(sellerInventory) do
+            
+            if(type(v)) == "table" then
+
+                shitFart(k, v.type, v.count, v.tCount or 0, sellerInventoryPanel, buyInventoryPanel, sellerInventory)
+                
+            end
+            
+        end
+        
+        -- i hate this awfulness
+        
+        local contentWidth1, contentHeight1 = sellerInventoryPanel:GetContentSize()
+        sellerInventoryScroller:GetCanvas():SetSize(contentWidth1, contentHeight1)
+        
+        local contentWidth2, contentHeight2 = buyInventoryPanel:GetContentSize()
+        buyScroller:GetCanvas():SetSize(contentWidth2, contentHeight2)
+        
+        local contentWidth3, contentHeight3 = playerInventoryPanel:GetContentSize()
+        playerInventoryScroller:GetCanvas():SetSize(contentWidth3, contentHeight3)
+        
+        local contentWidth4, contentHeight4 = sellInventoryPanel:GetContentSize()
+        sellScroller:GetCanvas():SetSize(contentWidth4, contentHeight4)
+
+    end
+
+    function redrawMenus()
+
+        sellerInventoryPanel:Remove()
+        playerInventoryPanel:Remove()
+
+        buyInventoryPanel:Remove()
+        sellInventoryPanel:Remove()
+
+        drawMenu()
+
+    end
+
+    drawMenu()
 
 end
 
@@ -624,7 +707,7 @@ function Menu.OpenTab.Stats()
 
 end
 
--- shitty showspare2 offbrand because i really don't want to use the net library yet
+-- shitty showspare2 offbrand because i really don't want to use the net library yet (todo: remove bc concommands do this better)
 hook.Add("Think", "MySpare2Function", function()
     if input.IsKeyDown(KEY_F4) then
 
@@ -633,6 +716,14 @@ hook.Add("Think", "MySpare2Function", function()
         Menu:Open("Intel")
 
     end
+end)
+
+concommand.Add("efgm_gamemenu", function(ply, cmd, args)
+    
+    local tab = args[1] -- tab currently does jack
+
+    Menu:Open(tab)
+
 end)
 
 -- menu shit for later

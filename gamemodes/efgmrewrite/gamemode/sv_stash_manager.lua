@@ -165,7 +165,7 @@ end
 
 concommand.Add("efgm_stash_transaction", function(ply, cmd, args)
 
-    if ply:IsInRaid() then return end
+    if !ply:CompareStatus(0) then return end
     
     local deposits = {} -- ["ItemName"] and ["ItemType"]
     local dpChecks = {}

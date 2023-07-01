@@ -11,7 +11,7 @@ end)
 
 hook.Add("PlayerDisconnected", "SaveDisconnect", function(ply)
 
-    if ply:IsInRaid() != false then return end
+    if !ply:CompareStatus(0) then return end
 
     SAVE.StoreData(ply)
 
@@ -21,7 +21,7 @@ hook.Add("ShutDown", "SaveShutdown", function()
 
     for k, ply in pairs(player.GetHumans()) do
         
-        if ply:IsInRaid() != false then return end
+        if !ply:CompareStatus(0) then return end
 
         SAVE.StoreData(ply)
 
