@@ -27,6 +27,12 @@ include("intel/cl_intel.lua")
 include("intel/info_concrete.lua")
 include("intel/info_ravine.lua")
 
+-- fonts
+surface.CreateFont("Bender24", {
+	font = "Bender",
+	size = 24,
+} )
+
 -- free look
 local freelooking = false
 concommand.Add("+freelook", function(ply, cmd, args) freelooking = true end)

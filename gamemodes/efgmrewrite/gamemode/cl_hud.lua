@@ -1,6 +1,3 @@
--- Create a new font for the compass using the surface.CreateFont function.
--- This font will be used to draw the compass text.
-
 -- Define a function to draw the compass.
 local function DrawCompass()
 
@@ -9,19 +6,17 @@ local function DrawCompass()
 
     -- Get the player's current eye angles, which will be used to determine the direction they are facing.
     local ang = ply:EyeAngles()
-
-    surface.SetFont("DermaDefaultBold")
-    surface.SetTextPos(100, 100)
-    draw.SimpleText(tostring(ang.y), "DermaLarge", 100, 100, Color(0, 0, 0))
+    local color = Color(255, 255, 255)
+    --draw.SimpleText(tostring(math.Round(ang.y)), "Bender24", ScrW() / 2, 50, color, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)   i got rid of this because it looked like horseshit, maybe have a fade in the center of the compass and have the actual angle there, idk its 3am im not fucking with this
+    surface.SetDrawColor(color)
+    surface.DrawLine(ScrW() / 2, 0, ScrW() / 2, 6)
 
     local compassX, compassY = ScrW() * 0.5, ScrH() * 0
-    local width, height = ScrW() * 2, ScrH() * 0.05
-
-    local color = Color(255, 255, 255)
+    local width, height = ScrW() * 0.5, 10
 
     spacing = (width * 1) / 360
     numOfLines = width / spacing
-    fadeDistMultiplier = 20
+    fadeDistMultiplier = 75
     fadeDistance = (width / 2) / fadeDistMultiplier
 
     local adv_compass_tbl = {
@@ -45,13 +40,10 @@ local function DrawCompass()
 
         local i_offset = -(math.Round(i - 0 - (numOfLines / 2))) % 360
 
-        if i_offset % 15 == 0 and i_offset >= 0 then
+        if i_offset % 45 == 0 and i_offset >= 0 then
             local a = i_offset
             local text = adv_compass_tbl[360 - (a % 360)] and adv_compass_tbl[360 - (a % 360)] or 360 - (a % 360)
-            local font = "DermaLarge"
-
-            surface.SetDrawColor(Color(color.r, color.g, color.b, calculation))
-            surface.DrawLine(x, compassY, x, compassY + height * 0.5)
+            local font = "Bender24"
 
             draw.SimpleText(text, font, x, compassY + height * 0.6, Color(color.r, color.g, color.b, calculation), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
         end
