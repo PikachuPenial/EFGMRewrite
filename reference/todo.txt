@@ -29,11 +29,12 @@ Before playtesting:
     Stash UI
     Smart Spawnz
     Proper extract list menu (like tarky <3)
+    Inventory system (equippable slots, inventory tab)
+    Backpack on ground
 
 Before public release:
 
     Team system
-    HC mode (this is a planned feature now)
     Contracts (per-map missions)
     Nice looking HUD
 

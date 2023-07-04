@@ -28,7 +28,7 @@ local ravine = {
 
             },
 
-            Description = "A helicopter on a helipad, you aren't taking the helipad back to the hideout / commune."
+            Description = "A helicopter on a helipad, you aren't taking the helipad back to the hideout."
 
         },
 
@@ -50,7 +50,7 @@ local ravine = {
 
         [3] = {
 
-            Name = "Nate Higgers",
+            Name = "Test extract",
 
             Stats = {
 
@@ -60,7 +60,7 @@ local ravine = {
 
             },
 
-            Description = "Man im running out of ideas to test the new intel system with"
+            Description = "Yeah i changed the name"
 
         }
 

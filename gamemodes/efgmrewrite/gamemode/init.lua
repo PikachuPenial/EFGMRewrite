@@ -41,7 +41,7 @@ include("sv_stash_manager.lua")
 include("sv_stats.lua")
 include("sv_wipe_manager.lua")
 
-HostID = 0 -- will be set if it's a p2p server
+HostID = nil -- will be set if it's a p2p server (holy fucking shit i really didnt set it to nil)
 
 function GM:Initialize()
 

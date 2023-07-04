@@ -12,8 +12,8 @@ debugSecWep = {"arc9_eft_fn57", "arc9_eft_glock17", "arc9_eft_glock18c", "arc9_e
 -- server convars
 if SERVER then
     -- modifiers
-    local modif = "RecoilAutoControlMult\t0\nSpreadMultSights\t0\nVisualRecoilMult\t0.4\nRecoilMult\t0.5 "
-    --RunConsoleCommand("arc9_modifiers", modif) gotta make this work before the game is even playable lol
+    local modif = "RecoilAutoControlMult\\t0\\nSpreadMultSights\\t0\\nVisualRecoilMult\\t0.4\\nRecoilMult\\t0.5 "
+    RunConsoleCommand("arc9_modifiers", modif) -- gotta make this work before the game is even playable lol
     RunConsoleCommand("arc9_mod_adstime", "1")
     RunConsoleCommand("arc9_mod_bodydamagecancel", "1")
     RunConsoleCommand("arc9_mod_damage", "1")

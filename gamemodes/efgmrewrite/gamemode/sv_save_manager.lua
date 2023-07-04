@@ -92,7 +92,7 @@ function SAVE.EquipPlayer(ply, data)
         
         if tonumber( v.ItemType ) == 1 then
 
-            ply:Give(v.ItemName)
+            ply:Give(v.ItemName, true)
         
         elseif tonumber( v.ItemType ) == 2 then
 
