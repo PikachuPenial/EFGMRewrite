@@ -75,6 +75,26 @@ local function DebugRaidTime()
 end
 hook.Add("HUDPaint", "DrawTimer", DebugRaidTime)
 
+function DrawTarget()
+    return false
+end
+hook.Add("HUDDrawTargetID", "HidePlayerInfo", DrawTarget)
+
+function DrawAmmoInfo()
+    return false
+end
+hook.Add("HUDAmmoPickedUp", "AmmoPickedUp", DrawAmmoInfo)
+
+function DrawWeaponInfo()
+    return false
+end
+hook.Add("HUDWeaponPickedUp", "WeaponPickedUp", DrawWeaponInfo)
+
+function DrawItemInfo()
+    return false
+end
+hook.Add("HUDItemPickedUp", "ItemPickedUp", DrawItemInfo)
+
 function HideHud(name)
     -- full: {"CHudHealth", "CHudBattery", "CHudAmmo", "CHudSecondaryAmmo", "CHudCrosshair"}
     for k, v in pairs({"CHudBattery", "CHudCrosshair"}) do
