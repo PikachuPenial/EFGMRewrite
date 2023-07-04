@@ -6,8 +6,8 @@ blockads = true
 blockshoot = true
 
 -- weapon arrays for gameplay testing purposes
-debugPrimWep = {"arc9_eft_sag_ak545", "arc9_eft_sag_ak545short", "arc9_eft_vpo136", "arc9_eft_vpo209", "arc9_eft_ak101", "arc9_eft_ak102", "arc9_eft_ak103", "arc9_eft_ak104", "arc9_eft_ak105", "arc9_eft_ak74", "arc9_eft_ak74m", "arc9_eft_akm", "arc9_eft_akms", "arc9_eft_aks74", "arc9_eft_aks74u", "arc9_eft_ash12", "arc9_eft_rd704", "arc9_eft_rpk16", "arc9_eft_mp18", "arc9_eft_saiga12k", "arc9_eft_toz106", "arc9_eft_ai_axmc", "arc9_eft_fn_p90", "arc9_eft_pp1901", "arc9_eft_saiga9"}
-debugSecWep = {"arc9_eft_fn57", "arc9_eft_glock17", "arc9_eft_glock18c", "arc9_eft_glock19x", "arc9_eft_rsh12"}
+debugPrimWep = {"arc9_eft_adar15", "arc9_eft_tx15", "arc9_eft_sag_ak545", "arc9_eft_sag_ak545short", "arc9_eft_vpo136", "arc9_eft_vpo209", "arc9_eft_ak101", "arc9_eft_ak102", "arc9_eft_ak103", "arc9_eft_ak104", "arc9_eft_ak105", "arc9_eft_ak74", "arc9_eft_ak74m", "arc9_eft_akm", "arc9_eft_akms", "arc9_eft_aks74", "arc9_eft_aks74u", "arc9_eft_ash12", "arc9_eft_m4a1", "arc9_eft_hk416", "arc9_eft_rd704", "arc9_eft_rpk16", "arc9_eft_m3super90", "arc9_eft_mp18", "arc9_eft_saiga12k", "arc9_eft_toz106", "arc9_eft_ai_axmc", "arc9_eft_fn_p90", "arc9_eft_ump", "arc9_eft_pp1901", "arc9_eft_saiga9", "arc9_eft_sr2m"}
+debugSecWep = {"arc9_eft_m9a3", "arc9_eft_fn57", "arc9_eft_glock17", "arc9_eft_glock18c", "arc9_eft_glock19x", "arc9_eft_usp", "arc9_eft_rsh12", "arc9_eft_sr1mp"}
 
 -- server convars
 if SERVER then
