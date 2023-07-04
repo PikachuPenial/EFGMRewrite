@@ -12,7 +12,7 @@ debugSecWep = {"arc9_eft_m9a3", "arc9_eft_fn57", "arc9_eft_glock17", "arc9_eft_g
 -- server convars
 if SERVER then
     -- modifiers
-    local modif = "RecoilAutoControlMult\\t0\\nSpreadMultSights\\t0\\nVisualRecoilMult\\t0.4\\nRecoilMult\\t0.5 "
+    local modif = "RecoilAutoControlMult\\t0\\nSpreadMultSights\\t0\\nVisualRecoilMult\\t0.25\\nRecoilMult\\t0.35 "
     RunConsoleCommand("arc9_modifiers", modif) -- gotta make this work before the game is even playable lol
     RunConsoleCommand("arc9_mod_adstime", "1")
     RunConsoleCommand("arc9_mod_bodydamagecancel", "1")
@@ -28,7 +28,7 @@ if SERVER then
     RunConsoleCommand("arc9_mod_visualrecoil", "1")
 
     -- damage falloff (in meters)
-    RunConsoleCommand("arc9_eft_mindmgrange", "1000")
+    RunConsoleCommand("arc9_eft_mindmgrange", "200")
     RunConsoleCommand("arc9_eft_mindmgrange_sg", "100")
     RunConsoleCommand("arc9_eft_mult_338", "0.75")
     RunConsoleCommand("arc9_eft_mult_bigrifle", "0.75")
@@ -75,12 +75,12 @@ end
 if CLIENT then
     -- controls
     RunConsoleCommand("arc9_toggleads", "0")
-    RunConsoleCommand("arc9_autolean", "0")
+    RunConsoleCommand("arc9_autolean", "1")
     RunConsoleCommand("arc9_autoreload", "0")
-    RunConsoleCommand("arc9_togglelean", "1")
+    RunConsoleCommand("arc9_togglelean", "0")
     RunConsoleCommand("arc9_togglepeek", "0")
     RunConsoleCommand("arc9_togglepeek_reset", "0")
-    RunConsoleCommand("arc9_togglebreath", "1")
+    RunConsoleCommand("arc9_togglebreath", "0")
 
     -- hud
     RunConsoleCommand("arc9_hud_arc9", "0")
@@ -94,7 +94,7 @@ if CLIENT then
     RunConsoleCommand("arc9_hud_arc9", "0")
     RunConsoleCommand("arc9_killfeed_enable", "1")
     RunConsoleCommand("arc9_killfeed_dynamic", "1")
-    RunConsoleCommand("arc9_killfeed_color", "1")
+    RunConsoleCommand("arc9_killfeed_color", "0")
     RunConsoleCommand("arc9_breath_hud", "1")
     RunConsoleCommand("arc9_breath_pp", "1")
     RunConsoleCommand("arc9_breath_sfx", "1")
@@ -130,7 +130,7 @@ if CLIENT then
     RunConsoleCommand("arc9_fx_rtblur", "0")
     RunConsoleCommand("arc9_fx_adsblur", "0")
     RunConsoleCommand("arc9_eject_fx", "0")
-    RunConsoleCommand("arc9_eject_time", "0")
+    RunConsoleCommand("arc9_eject_time", "-1")
     RunConsoleCommand("arc9_muzzle_light", "1")
     RunConsoleCommand("arc9_muzzle_others", "1")
 
@@ -152,6 +152,6 @@ if CLIENT then
 
     -- caching
     RunConsoleCommand("arc9_precache_allsounds_onstartup", "1")
-    RunConsoleCommand("arc9_precache_attsmodels_onstartup", "1")
-    RunConsoleCommand("arc9_precache_wepmodels_onstartup", "1")
+    RunConsoleCommand("arc9_precache_attsmodels_onstartup", "0")
+    RunConsoleCommand("arc9_precache_wepmodels_onstartup", "0")
 end

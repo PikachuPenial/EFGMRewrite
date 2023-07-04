@@ -1,31 +1,14 @@
 include("shared.lua")
-include("config.lua")
 
--- important ones first so lua doesnt get mad
-include("cl_menu_manager.lua")
-include("cl_menu_alias.lua")
--- include("cl_keybinds.lua")
-
-include("config.lua")
-include("sh_debug.lua")
-include("sh_enums.lua")
-include("sh_loot_tables.lua")
-include("sh_raid_manager.lua")
-include("sh_shop_table.lua")
-
-include("cl_hud.lua")
-include("cl_menu.lua")
--- include("cl_progression_menu.lua")
-include("cl_raid_info.lua")
--- include("cl_scoreboard.lua")
-include("cl_shop_manager.lua")
-include("cl_stash_manager.lua")
+for _, v in ipairs(file.Find("gamemodes/efgmrewrite/gamemode/client/*.lua", "GAME", "nameasc")) do
+    include("client/" .. v)
+end
 
 -- Intel shit
 
-include("intel/cl_intel.lua")
-include("intel/info_concrete.lua")
-include("intel/info_ravine.lua")
+for _, v in ipairs(file.Find("gamemodes/efgmrewrite/gamemode/intel/*.lua", "GAME", "nameasc")) do
+    include("intel/" .. v)
+end
 
 -- fonts
 surface.CreateFont("Bender24", {

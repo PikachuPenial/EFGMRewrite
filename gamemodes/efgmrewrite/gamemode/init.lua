@@ -1,45 +1,29 @@
-AddCSLuaFile("shared.lua")
-AddCSLuaFile("config.lua")
-AddCSLuaFile("sh_debug.lua")
-AddCSLuaFile("sh_enums.lua")
-AddCSLuaFile("sh_loot_tables.lua")
-AddCSLuaFile("sh_raid_manager.lua")
-AddCSLuaFile("sh_shop_table.lua")
-
-AddCSLuaFile("cl_hud.lua")
 AddCSLuaFile("cl_init.lua")
--- AddCSLuaFile("cl_keybinds.lua")
-AddCSLuaFile("cl_menu_alias.lua")
-AddCSLuaFile("cl_menu_manager.lua")
-AddCSLuaFile("cl_menu.lua")
-AddCSLuaFile("cl_raid_info.lua")
--- AddCSLuaFile("cl_scoreboard.lua")
-AddCSLuaFile("cl_shop_manager.lua")
-AddCSLuaFile("cl_stash_manager.lua")
-
--- Intel shit
-
-AddCSLuaFile("intel/cl_intel.lua")
-AddCSLuaFile("intel/info_concrete.lua")
-AddCSLuaFile("intel/info_ravine.lua")
-
+AddCSLuaFile("shared.lua")
 include("shared.lua")
-include("config.lua")
 
-include("sh_debug.lua")
-include("sh_enums.lua")
-include("sh_loot_tables.lua")
-include("sh_raid_manager.lua")
-include("sh_shop_table.lua")
+for _, v in ipairs(file.Find("gamemodes/efgmrewrite/gamemode/client/*.lua", "GAME", "nameasc")) do
+	print("client/" .. v)
+	AddCSLuaFile("client/" .. v)
+end
 
-include("sv_concommands.lua")
-include("sv_network_manager.lua")
-include("sv_player_spawner.lua")
-include("sv_save_manager.lua")
-include("sv_shop_manager.lua")
-include("sv_stash_manager.lua")
-include("sv_stats.lua")
-include("sv_wipe_manager.lua")
+for _, v in ipairs(file.Find("gamemodes/efgmrewrite/gamemode/shared/*.lua", "GAME", "nameasc")) do
+	print("shared/" .. v)
+	AddCSLuaFile("shared/" .. v)
+	include("shared/" .. v)
+end
+
+for _, v in ipairs(file.Find("gamemodes/efgmrewrite/gamemode/server/*.lua", "GAME", "nameasc")) do
+	print("server/" .. v)
+	include("server/" .. v)
+end
+
+-- intel shit
+
+for _, v in ipairs(file.Find("gamemodes/efgmrewrite/gamemode/intel/*.lua", "GAME", "nameasc")) do
+	print("intel/" .. v)
+	AddCSLuaFile("intel/" .. v)
+end
 
 HostID = nil -- will be set if it's a p2p server (holy fucking shit i really didnt set it to nil)
 
@@ -101,4 +85,8 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	-- do nwints and shit for kd and idfk ill find it out when the actual im(port)ant shit is done haha port i said port he said it guys
     -- i did the important shit in sv_stats.lua guys guys i said port again i fucking did it
 
+end
+
+function GM:ScalePlayerDamage(target, hitgroup, dmginfo)
+	dmginfo:ScaleDamage(1)
 end
