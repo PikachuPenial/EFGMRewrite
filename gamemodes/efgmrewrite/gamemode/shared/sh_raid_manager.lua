@@ -180,59 +180,7 @@ if SERVER then
 
     --}
 
-    --{ MISCELLANEOUS
-
-        function RAID.GetCurrentExtracts(ply)
-        
-            if ply:GetNWInt("PlayerRaidStatus", 0) == 0 then return nil end
-
-            local extracts = {}
-        
-            for k, v in pairs( ents.FindByClass("efgm_extract") ) do
-        
-                if ply:CompareSpawnGroup(v.ExtractGroup) then
-
-                    local tbl = {}
-                    tbl.ExtractName = v.ExtractName
-                    tbl.ExtractTime = v.ExtractTime
-                    tbl.IsGuranteed = v.IsGuranteed
-
-                    table.insert(extracts, tbl)
-
-                end
-
-            end
-
-            return extracts
-
-        end
-
-    --}
-
     --{ CONSOLE COMMANDS
-
-        concommand.Add("efgm_print_extracts", function(ply, cmd, args)
-            
-            local extracts = RAID.GetCurrentExtracts(ply)
-
-            if extracts == nil then return end
-            
-            local extractNames = "Your available extract locations are:"
-
-            for k, v in pairs( extracts ) do
-
-                extractNames = extractNames .. "\n" .. v.ExtractName
-
-                if v.IsGuranteed then
-                    extractNames = extractNames .. " (Status: Available)"
-                else
-                    extractNames = extractNames .. " (Status: Unknown)"
-                end
-            end
-
-            ply:PrintMessage(HUD_PRINTCENTER, extractNames)
-
-        end)
 
         local function ChangeStatus(ply, cmd, args)
 
@@ -285,6 +233,62 @@ if SERVER then
     --}
 
 end
+
+if CLIENT then
+
+    concommand.Add("efgm_print_extracts", function(ply, cmd, args)
+            
+        local extracts = RAID.GetCurrentExtracts(ply)
+
+        if extracts == nil then return end
+        
+        local extractNames = "Your available extract locations are:"
+
+        for k, v in pairs( extracts ) do
+
+            extractNames = extractNames .. "\n" .. v.ExtractName
+
+            if v.IsGuranteed then
+                extractNames = extractNames .. " (Status: Available)"
+            else
+                extractNames = extractNames .. " (Status: Unknown)"
+            end
+        end
+
+        ply:PrintMessage(HUD_PRINTCENTER, extractNames)
+
+    end)
+    
+end
+
+    --{ MISCELLANEOUS
+
+        function RAID.GetCurrentExtracts(ply)
+            
+            if ply:CompareStatus(0) then return nil end
+
+            local extracts = {}
+        
+            for k, v in pairs( ents.FindByClass("efgm_extract") ) do
+        
+                if ply:CompareSpawnGroup(v.ExtractGroup) then
+
+                    local tbl = {}
+                    tbl.ExtractName = v.ExtractName
+                    tbl.ExtractTime = v.ExtractTime
+                    tbl.IsGuranteed = v.IsGuranteed
+
+                    table.insert(extracts, tbl)
+
+                end
+
+            end
+
+            return extracts
+
+        end
+
+    --}
 
 -- meta shat
 

@@ -64,3 +64,46 @@ function SHOP:CompileOrders() -- returns the "+ 1 1 weapon_name - 2 64 ammo" shi
     return command
 
 end
+
+concommand.Add("efgm_debug_getinventory", function(ply, cmd, args)
+
+    local weps = {}
+    local ammo = {}
+
+    local rawWeapons = ply:GetWeapons()
+    local rawAmmo = ply:GetAmmo()
+
+    for k, v in pairs(rawWeapons) do
+
+        local wep = v:GetClass()
+
+        local lmao = {}
+        lmao[-1] = "Nothing"
+
+        local ammo1 = lmao[ v:GetPrimaryAmmoType() ] or game.GetAmmoName(v:GetPrimaryAmmoType())
+        local ammo2 = lmao[ v:GetSecondaryAmmoType() ] or game.GetAmmoName(v:GetSecondaryAmmoType())
+
+        table.insert(weps, wep.." (Primary: ".. ammo1 ..", Secondary: ".. ammo2 ..")")
+
+    end
+
+    for k, v in pairs(rawAmmo) do
+        
+        ammo[game.GetAmmoName(k)] = v
+
+    end
+
+    print("Weapons:")
+    PrintTable(weps)
+    print("Ammo:")
+    PrintTable(ammo)
+
+end)
+
+concommand.Add("efgm_transaction_shop", function(ply, cmd, args)
+
+    net.Start("RequestTransactionShop", false)
+    net.WriteTable(args)
+    net.SendToServer()
+
+end)

@@ -11,6 +11,11 @@ debugSecWep = {"arc9_eft_m9a3", "arc9_eft_fn57", "arc9_eft_glock17", "arc9_eft_g
 
 -- server convars
 if SERVER then
+
+    local infAmmo = {} -- arena mode switches
+    infAmmo[true] = "1"
+    infAmmo[false] = "0"
+
     -- modifiers
     local modif = "RecoilAutoControlMult\\t0\\nSpreadMultSights\\t0\\nVisualRecoilMult\\t0.25\\nRecoilMult\\t0.35 "
     RunConsoleCommand("arc9_modifiers", modif) -- gotta make this work before the game is even playable lol
@@ -40,7 +45,7 @@ if SERVER then
     RunConsoleCommand("arc9_eft_mult_shotgun", "0.5")
 
     -- mechanics
-    RunConsoleCommand("arc9_infinite_ammo", "1")
+    RunConsoleCommand("arc9_infinite_ammo", infAmmo[isArena])
     RunConsoleCommand("arc9_realrecoil", "1")
     RunConsoleCommand("arc9_lean", "1")
     RunConsoleCommand("arc9_mod_sway", "1")

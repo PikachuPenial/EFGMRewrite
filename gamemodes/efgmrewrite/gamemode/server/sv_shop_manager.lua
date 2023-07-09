@@ -2,6 +2,8 @@
 -- basically just handles transactions and shit
 -- eventually there might be deals and shit to encourage rats to go in with underused and extremely shit guns that nobody buys, but im to sleepy for that
 
+util.AddNetworkString("RequestTransactionShop")
+
 function ShopTransaction(ply, buy, sell)
 
     -- will be like buy and sell mixed into one
@@ -13,15 +15,15 @@ function ShopTransaction(ply, buy, sell)
 
     local isTransactionValid = true -- isn't valid if player doesnt have a weapon they're trying to buy, or they don't have a weapon they're trying to sell
 
-    for k, v in pairs(buy) do
+    for k, v in pairs(buy.contents) do
 
-        local gunInfo = ITEMS[v.ItemName]
+        local gunInfo = ITEMS[k]
 
         if gunInfo != nil then
             
-            transactionProfit = transactionProfit - GetCost[v.ItemType](v.ItemName, v.ItemCount)
+            transactionProfit = transactionProfit - GetCost[v.type](k, v.count)
 
-            if PlayerHasItem[v.ItemType](ply, v.ItemName, v.ItemCount) && v.ItemType == 1 then -- if player has the gun
+            if PlayerHasItem[v.type](ply, k, v.count) && v.type == 1 then -- if player has the gun
                 isTransactionValid = false
             end
 
@@ -33,15 +35,15 @@ function ShopTransaction(ply, buy, sell)
 
     end
 
-    for k, v in pairs(sell) do
+    for k, v in pairs(sell.contents) do
 
-        local gunInfo = ITEMS[v.ItemName]
+        local gunInfo = ITEMS[k]
 
         if gunInfo != nil then
 
-            transactionProfit = transactionProfit + (GetCost[v.ItemType](v.ItemName, v.ItemCount) * sellMultiplier)
+            transactionProfit = transactionProfit + (GetCost[v.type](k, v.count) * sellMultiplier)
 
-            if !PlayerHasItem[v.ItemType](ply, v.ItemName, v.ItemCount) then
+            if !PlayerHasItem[v.type](ply, k, v.count) then
                 isTransactionValid = false
             end
 
@@ -58,15 +60,15 @@ function ShopTransaction(ply, buy, sell)
     if !isTransactionValid then print("transaction not valid") return end -- the player has the shit they wanna sell and doesnt have shit they wanna buy
     if currentMoney + transactionProfit < 0 then ply:PrintMessage(HUD_PRINTCENTER, "Transaction failed, you need $".. -transactionProfit - currentMoney .." more!") return end -- if the player has enough money
 
-    if !table.IsEmpty(buy) then
-        for k, v in ipairs(buy) do
-            GiveItem[v.ItemType](ply, v.ItemName, v.ItemCount)
+    if !table.IsEmpty(buy.contents) then
+        for k, v in pairs(buy.contents) do
+            GiveItem[v.type](ply, k, v.count)
         end
     end
    
-    if !table.IsEmpty(sell) then
-        for k, v in ipairs(sell) do
-            TakeItem[v.ItemType](ply, v.ItemName, v.ItemCount)
+    if !table.IsEmpty(sell.contents) then
+        for k, v in pairs(sell.contents) do
+            TakeItem[v.type](ply, k, v.count)
         end
     end
 
@@ -74,59 +76,52 @@ function ShopTransaction(ply, buy, sell)
     ply:PrintMessage(HUD_PRINTCENTER, "Shop transaction complete, it had a profit of $" .. transactionProfit .. ", and you now have $" .. currentMoney + transactionProfit .. ".")
 
 end
-concommand.Add("efgm_shop_transaction", function(ply, cmd, args)
+
+net.Receive("RequestTransactionShop", function(len, ply)
 
     if !ply:CompareStatus(0) then return end
+    
+    local args = net.ReadTable()
 
     if args[1] == nil then
         
-        ply:PrintMessage(HUD_PRINTCONSOLE, "Format: efgm_shop_transaction +/- itemType(integer) itemCount(integer) itemName(integer)")
+        ply:PrintMessage(HUD_PRINTCONSOLE, "Format: efgm_transaction_shop +/- itemType(integer) itemCount(integer) itemName(integer)")
 
         return
 
     end
 
-    local sell = {} -- ["ItemName"] and ["ItemType"]
-    local slChecks = {}
-
-    local buy = {} -- same
-    local byChecks = {}
+    local buy, sell = INV(), INV()
 
     -- cmd == -/+, type (number), count, weapon_name
     for k, v in ipairs(args) do
         if v == "+" then
 
-            local tbl = {}
-            tbl.ItemType = tonumber( args[k + 1] )
-            tbl.ItemCount = tonumber( args[k + 2] )
-            tbl.ItemName = args[k + 3]
+            local type = tonumber( args[k + 1] )
+            local count = tonumber( args[k + 2] )
+            local name = args[k + 3]
 
-            PrintTable(tbl)
+            if buy.contents[name] == nil then
 
-            if byChecks[tbl.ItemName] == nil then
-
-                if tbl.ItemCount < 1 then return end
-                if tbl.ItemCount != 1 && tbl.ItemType == 1 then return end -- if a weapon has a count other than 1 bc you can only hold 1 of each weapon
+                if count < 1 then return end
+                if count != 1 && type == 1 then return end
     
-                table.insert(buy, tbl)
-                byChecks[tbl.ItemName] = 1
+                buy:AddItem(name, type, count)
 
             end
 
         elseif v == "-" then
 
-            local tbl = {}
-            tbl.ItemType = tonumber( args[k + 1] )
-            tbl.ItemCount = tonumber( args[k + 2] )
-            tbl.ItemName = args[k + 3]
+            local type = tonumber( args[k + 1] )
+            local count = tonumber( args[k + 2] )
+            local name = args[k + 3]
 
-            if slChecks[tbl.ItemName] == nil then
+            if sell.contents[name] == nil then
 
-                if tbl.ItemCount < 1 then return end
-                if tbl.ItemCount != 1 && tbl.ItemType == 1 then return end -- if a weapon has a count other than 1 bc you can only hold 1 of each weapon
+                if count < 1 then return end
+                if count != 1 && type == 1 then return end
     
-                table.insert(sell, tbl)
-                slChecks[tbl.ItemName] = 1
+                sell:AddItem(name, type, count)
 
             end
 

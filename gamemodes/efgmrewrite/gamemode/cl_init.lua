@@ -1,5 +1,9 @@
 include("shared.lua")
 
+for _, v in ipairs(file.Find("gamemodes/efgmrewrite/gamemode/shared/*.lua", "GAME", "nameasc")) do
+	include("shared/" .. v)
+end
+
 for _, v in ipairs(file.Find("gamemodes/efgmrewrite/gamemode/client/*.lua", "GAME", "nameasc")) do
     include("client/" .. v)
 end

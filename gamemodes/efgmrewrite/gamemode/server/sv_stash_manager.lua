@@ -1,6 +1,8 @@
 
 util.AddNetworkString( "SendClientStash" )
 
+util.AddNetworkString("RequestTransactionStash")
+
 STASH = {}
 
 hook.Add("Initialize", "StashInit", function()
@@ -80,144 +82,79 @@ function STASH.Transaction(ply, deposits, withdraws)
     -- Declaring variables
 
     local owner = ply:SteamID64()
-    
-    local transItems = 0 -- trans is short for transaction eat shit lgbt community
-    local stashItems = STASH.StashTotalCount(owner)
-
-    local maxItems = 4 -- number for testing, can increase / decrease whenever (ima have this on hold until i get around to making clientside ui)
-
     local isTransactionValid = true
 
     -- Transaction validity checks
 
-    for k, v in ipairs(deposits) do -- check if player has the shit
+    for k, v in pairs(deposits.contents) do -- check if player has the shit
         
-        transItems = transItems + v.ItemCount -- adding because this will add to the stash
-
-        if !PlayerHasItem[v.ItemType](ply, v.ItemName, v.ItemCount) then
+        if !PlayerHasItem[v.type](ply, k, v.count) then
             isTransactionValid = false
         end
 
     end
 
-    for k, v in ipairs(withdraws) do -- check if stash has the shit
+    for k, v in pairs(withdraws.contents) do -- check if stash has the shit
         
-        transItems = transItems - v.ItemCount -- subtracting because this will take from the stash
-
-        if !STASH.StashHasItem(owner, v.ItemName, v.ItemType, v.ItemCount) then
+        if !STASH.StashHasItem(owner, k, v.type, v.count) then
             isTransactionValid = false
         end
 
-        if PlayerHasItem[v.ItemType](ply, v.ItemName, v.ItemCount) && v.ItemType == 1 then
+        if PlayerHasItem[v.type](ply, k, v.count) && v.type == 1 then
             isTransactionValid = false
         end
 
     end
 
     if isTransactionValid == false then print("transaction not valid") return end -- the player has the shit they wanna sell and doesnt have shit they wanna buy
-    -- if transItems + stashItems > maxItems then ply:PrintMessage(HUD_PRINTCENTER, "Stash transaction failed, your stash can only hold 4 items, but you tried to hold ".. transItems + stashItems .."!") return end
 
     -- Transaction logic
 
-    if !table.IsEmpty(deposits) then -- insert or update depending on if the count > 0
-        for k, v in ipairs(deposits) do
+    if !table.IsEmpty(deposits.contents) then -- insert or update depending on if the count > 0
+        for k, v in pairs(deposits.contents) do
 
-            local count = STASH.StashItemCount(owner, v.ItemName)
+            local count = STASH.StashItemCount(owner, k)
 
             if count > 0 then -- update
                 
-                sql.Query( "UPDATE Stash SET ItemCount = ".. count + v.ItemCount .." WHERE ItemOwner = ".. owner .." AND ItemName = ".. sql.SQLStr(v.ItemName) .." AND ItemType = ".. v.ItemType ..";" )
+                sql.Query( "UPDATE Stash SET ItemCount = ".. count + v.count .." WHERE ItemOwner = ".. owner .." AND ItemName = ".. sql.SQLStr(k) .." AND ItemType = ".. v.type ..";" )
                 
             else -- insert
 
-                sql.Query( "INSERT INTO Stash (ItemName, ItemCount, ItemType, ItemOwner) VALUES (".. SQLStr(v.ItemName) ..", ".. v.ItemCount ..", ".. v.ItemType ..", ".. owner ..");" )
+                sql.Query( "INSERT INTO Stash (ItemName, ItemCount, ItemType, ItemOwner) VALUES (".. SQLStr(k) ..", ".. v.count ..", ".. v.type ..", ".. owner ..");" )
 
             end
 
-            TakeItem[v.ItemType](ply, v.ItemName, v.ItemCount)
+            TakeItem[v.type](ply, k, v.count)
 
         end
     end
 
-    if !table.IsEmpty(withdraws) then -- delete row or decrement the count
-        for k, v in ipairs(withdraws) do
+    if !table.IsEmpty(withdraws.contents) then -- delete row or decrement the count
+        for k, v in pairs(withdraws.contents) do
 
-            local count = STASH.StashItemCount(owner, v.ItemName)
+            local count = STASH.StashItemCount(owner, k)
 
-            if count > v.ItemCount then -- update
+            print("doing shat")
+
+            if count > v.count then -- update
                 
-                sql.Query( "UPDATE Stash SET ItemCount = ".. count - v.ItemCount .." WHERE ItemOwner = ".. owner .." AND ItemName = ".. sql.SQLStr(v.ItemName) .." AND ItemType = ".. v.ItemType ..";" )
+                sql.Query( "UPDATE Stash SET ItemCount = ".. count - v.count .." WHERE ItemOwner = ".. owner .." AND ItemName = ".. sql.SQLStr(k) .." AND ItemType = ".. v.type ..";" )
                 
             else -- remove
 
-                sql.Query( "DELETE FROM Stash WHERE ItemOwner = ".. owner .." AND ItemName = ".. sql.SQLStr(v.ItemName) .." AND ItemType = ".. v.ItemType ..";" )
+                sql.Query( "DELETE FROM Stash WHERE ItemOwner = ".. owner .." AND ItemName = ".. sql.SQLStr(k) ..";" )
 
             end
 
-            GiveItem[v.ItemType](ply, v.ItemName, v.ItemCount)
+            GiveItem[v.type](ply, k, v.count)
 
         end
     end
 
-    ply:PrintMessage(HUD_PRINTCENTER, "Stash transaction complete, you deposited ".. #deposits .." item(s) and withdrew ".. #withdraws .." item(s).")
+    ply:PrintMessage(HUD_PRINTCENTER, "Stash transaction complete, you deposited ".. table.Count(deposits.contents) .." item(s) and withdrew ".. table.Count(withdraws.contents) .." item(s).")
 
 end
-
-concommand.Add("efgm_stash_transaction", function(ply, cmd, args)
-
-    if !ply:CompareStatus(0) then return end
-    
-    local deposits = {} -- ["ItemName"] and ["ItemType"]
-    local dpChecks = {}
-
-    local withdraws = {} -- same
-    local wdChecks = {}
-
-    -- cmd == -/+, type (number), count, weapon_name
-    for k, v in ipairs(args) do
-        if v == "+" then
-
-            local tbl = {}
-            tbl.ItemType = tonumber( args[k + 1] )
-            tbl.ItemCount = tonumber( args[k + 2] )
-            tbl.ItemName = args[k + 3]
-
-            if wdChecks[tbl.ItemName] == nil then
-
-                if tbl.ItemCount < 1 then return end
-                if tbl.ItemCount != 1 && tbl.ItemType == 1 then return end -- if a weapon has a count other than 1 bc you can only hold 1 of each weapon
-    
-                table.insert(withdraws, tbl)
-                wdChecks[tbl.ItemName] = 1
-
-            end
-
-        elseif v == "-" then
-
-            local tbl = {}
-            tbl.ItemType = tonumber( args[k + 1] )
-            tbl.ItemCount = tonumber( args[k + 2] )
-            tbl.ItemName = args[k + 3]
-
-            if dpChecks[tbl.ItemName] == nil then
-
-                if tbl.ItemCount < 1 then return end
-                if tbl.ItemCount != 1 && tbl.ItemType == 1 then return end -- if a weapon has a count other than 1 bc you can only hold 1 of each weapon
-    
-                table.insert(deposits, tbl)
-                dpChecks[tbl.ItemName] = 1
-
-            end
-
-        end
-    end
-
-    STASH.Transaction(ply, deposits, withdraws)
-
-    -- im tired of calling this every fucking time
-    ply:ConCommand("efgm_debug_getstash")
-
-end)
 
 concommand.Add("efgm_debug_resetstash", function(ply, cmd, args)
 
@@ -233,5 +170,66 @@ concommand.Add("efgm_debug_getstash", function(ply, cmd, args)
     if tbl == nil then return print("Stash is empty, or doesn't exist. Eat shit.") end
 
     PrintTable( tbl )
+
+end)
+
+net.Receive("RequestTransactionStash", function(len, ply)
+
+    if !ply:CompareStatus(0) then return end
+    
+    local args = net.ReadTable()
+
+    if args[1] == nil then
+        
+        ply:PrintMessage(HUD_PRINTCONSOLE, "Format: efgm_transaction_stash +/- itemType(integer) itemCount(integer) itemName(integer)")
+
+        return
+
+    end
+
+    local deposits, withdraws = INV(), INV()
+
+    -- cmd == -/+, type (number), count, weapon_name
+    for k, v in ipairs(args) do
+        if v == "+" then
+
+            local name = args[k + 3]
+
+            if withdraws.contents[name] == nil then
+
+                local type = tonumber( args[k + 1] )
+                local count = tonumber( args[k + 2] )
+
+                if count < 1 then return end
+                if count != 1 && type == 1 then return end
+    
+                withdraws:AddItem(name, type, count)
+                print(table.Count(withdraws.contents) or 0)
+                PrintTable(withdraws.contents or {})
+
+            end
+
+        elseif v == "-" then
+
+            local name = args[k + 3]
+
+            if deposits.contents[name] == nil then
+
+                local type = tonumber( args[k + 1] )
+                local count = tonumber( args[k + 2] )
+
+                if count < 1 then return end
+                if count != 1 && type == 1 then return end
+    
+                deposits:AddItem(name, type, count)
+                print(table.Count(deposits.contents) or 0)
+                PrintTable(deposits.contents or {})
+
+            end
+
+        end
+    end
+
+    STASH.Transaction(ply, deposits, withdraws)
 
 end)

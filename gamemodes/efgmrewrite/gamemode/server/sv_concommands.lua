@@ -8,22 +8,3 @@ local function GetNetworkInt(ply, cmd, args)
 
 end
 concommand.Add("efgm_debug_getint", GetNetworkInt)
-
-concommand.Add("efgm_debug_getinventory", function(ply, cmd, args)
-
-    local weps = ply:GetWeapons()
-    local ammo = {}
-    local tbl = ply:GetAmmo()
-
-    for k, v in pairs(tbl) do
-        
-        ammo[game.GetAmmoName(k)] = v
-
-    end
-
-    print("Weapons:")
-    PrintTable(weps)
-    print("Ammo:")
-    PrintTable(ammo)
-
-end)

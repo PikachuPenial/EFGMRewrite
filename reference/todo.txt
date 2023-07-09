@@ -2,6 +2,8 @@ Will add to this if need be (mostly for motivation to finish the thing but also 
 
 -- DONE --
 
+    Make some console commands client-side and use the net system
+    Shared inventory framework
     Dev texturize concrete for easier editing in future playtesting
     Rewrite all the old player raid status stuff
     Extract printing (WIP)
@@ -19,6 +21,7 @@ Will add to this if need be (mostly for motivation to finish the thing but also 
 Right Now: (in order of importance)
 
     Give the titanmod discord an update on efgm rewrite development (i fucking love pr)
+    (Maybe) make a universal transaction framework (would help if tradeups or player trading were added)
     Menu music
     Personal stats tab (this wipe and all time)
 

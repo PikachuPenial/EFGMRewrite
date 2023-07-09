@@ -10,24 +10,6 @@ Menu.MusicList = {"sound/music/menu_01.mp4", "sound/music/menu_02.mp4", "sound/m
 
 local conditions = {}
 
-function conditions.Intel()
-
-    return true
-
-end
-
-function conditions.Shop()
-
-    return LocalPlayer():CompareStatus(0)
-
-end
-
-function conditions.Stats()
-
-    return true
-
-end
-
 -- called non-globally to initialize the menu, that way it can only be initialized once by Menu:Open()
 -- also openTab is the name of the tab it should open to
 function Menu:Initialize( openTab )
@@ -83,53 +65,40 @@ function Menu:Initialize( openTab )
 
     Menu.MenuFrame.LowerPanel.Contents = contents
 
-    if conditions.Stats() then
+    local statsTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
+    statsTab:Dock(LEFT)
+    statsTab:SetSize(180, 0)
+    statsTab:SetText(LocalPlayer():Name())
 
-        local statsTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
-        statsTab:Dock(LEFT)
-        statsTab:SetSize(180, 0)
-        statsTab:SetText(LocalPlayer():Name())
-    
-        function statsTab:DoClick()
-            Menu.MenuFrame.LowerPanel.Contents:Remove()
-            Menu.OpenTab.Stats()
-        end
-    
-        self.MenuFrame.TabParentPanel.StatsTab = statsTab
-        
+    function statsTab:DoClick()
+        Menu.MenuFrame.LowerPanel.Contents:Remove()
+        Menu.OpenTab.Stats()
     end
 
-    if conditions.Intel() then
+    local intelTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
+    intelTab:Dock(LEFT)
+    intelTab:SetSize(90, 0)
+    intelTab:SetText("Intel")
 
-        local intelTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
-        intelTab:Dock(LEFT)
-        intelTab:SetSize(60, 0)
-        intelTab:SetText("Intel")
-    
-        function intelTab:DoClick()
-            Menu.MenuFrame.LowerPanel.Contents:Remove()
-            Menu.OpenTab.Intel()
-        end
-    
-        self.MenuFrame.TabParentPanel.IntelTab = intelTab
-        
+    function intelTab:DoClick()
+        Menu.MenuFrame.LowerPanel.Contents:Remove()
+        Menu.OpenTab.Intel()
     end
 
-    if conditions.Shop() then
-
-        local shopTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
-        shopTab:Dock(LEFT)
-        shopTab:SetSize(60, 0)
-        shopTab:SetText("Shop")
+    local inventoryTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
+    inventoryTab:Dock(LEFT)
+    inventoryTab:SetSize(90, 0)
+    inventoryTab:SetText("Inventory")
     
-        function shopTab:DoClick()
-            Menu.MenuFrame.LowerPanel.Contents:Remove()
-            Menu.OpenTab.Shop()
-        end
+    local contractsTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
+    contractsTab:Dock(LEFT)
+    contractsTab:SetSize(90, 0)
+    contractsTab:SetText("Contracts")
     
-        self.MenuFrame.TabParentPanel.ShopTab = shopTab
-        
-    end
+    local unlocksTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
+    unlocksTab:Dock(LEFT)
+    unlocksTab:SetSize(90, 0)
+    unlocksTab:SetText("Unlocks")
 
 end
 
@@ -190,27 +159,35 @@ function Menu.OpenTab.Intel()
 
     local function DrawEntry(entryName, entryText, stats)
 
-        print(#stats)
-        entryStats:SetSize(0, #stats * 40)
+        if stats != nil then
 
-        function entryStats:Paint(w, h)
-            
-            for k, v in ipairs(stats) do
+            entryStats:SetSize(0, #stats * 40)
 
-                surface.SetDrawColor(190, 190, 190)
-                if k % 2 == 1 then 
-                    surface.SetDrawColor(210, 210, 210)
-                end
+            function entryStats:Paint(w, h)
                 
-                surface.DrawRect(0, (k - 1) * 40, w, 40)
+                for k, v in ipairs(stats) do
 
-                local text = markup.Parse( "<font=DermaLarge><color=0,0,0>\n\n" .. v .. "</color></font>", w - 40 )
-                text:Draw(20, (k - 1) * 40 + 5)
+                    surface.SetDrawColor(190, 190, 190)
+                    if k % 2 == 1 then 
+                        surface.SetDrawColor(210, 210, 210)
+                    end
+                    
+                    surface.DrawRect(0, (k - 1) * 40, w, 40)
+
+                    local text = markup.Parse( "<font=DermaLarge><color=0,0,0>\n\n" .. v .. "</color></font>", w - 40 )
+                    text:Draw(20, (k - 1) * 40 + 5)
+
+                end
 
             end
 
+        else
+
+            entryStats:SetSize(0, 0)
+            entryStats.Paint = nil
+            
         end
-    
+
         function entryTextDisplay:Paint(w, h)
 
             -- chatgpt hallucinated an entire fucking function to get this shit to wrap, apologised profusely when called out on its artificial bs, but then told me about markup thanks chatgpt
@@ -369,53 +346,6 @@ function Menu.OpenTab.Shop()
     }
 
     -- { INVENTORY INITIALIZATION
-
-        local inv = {}
-
-        function inv.NewInventory()
-
-            local inventory = {}
-
-            function inventory:AddItem(item, type, count, tCount)
-
-                self[item] = {}
-
-                self[item].count = count
-                self[item].type = type
-                self[item].tCount = tCount or 0
-
-            end
-
-            function inventory:TransferItem(item, tCount)
-
-                if self[item] == nil then return end
-
-                self[item].tCount = math.Clamp( tCount, 0, lotToLimit[ self[ item ].count ] )
-
-            end
-
-            function inventory:RemoveItem(item)
-
-                if self[item] == nil then return end
-
-                self[item] = nil
-
-            end
-
-            function inventory:EditCount(item, count)
-
-                if self[item] == nil then return end
-
-                if count == 0 then self:RemoveItem(item) return end
-
-                self[item].count = count
-                self[item].tCount = 0
-                
-            end
-
-            return inventory
-
-        end
 
         playerInventory = inv.NewInventory() -- self[itemname] = table, table.count = int, table.type = int, table.transferCount = int (should be under or equal to count)
 

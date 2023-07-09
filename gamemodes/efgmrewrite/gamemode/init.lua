@@ -1,16 +1,19 @@
+
+isArena = GetConVar("efgm_arenamode"):GetInt() == 1 or false
+
 AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 include("shared.lua")
-
-for _, v in ipairs(file.Find("gamemodes/efgmrewrite/gamemode/client/*.lua", "GAME", "nameasc")) do
-	print("client/" .. v)
-	AddCSLuaFile("client/" .. v)
-end
 
 for _, v in ipairs(file.Find("gamemodes/efgmrewrite/gamemode/shared/*.lua", "GAME", "nameasc")) do
 	print("shared/" .. v)
 	AddCSLuaFile("shared/" .. v)
 	include("shared/" .. v)
+end
+
+for _, v in ipairs(file.Find("gamemodes/efgmrewrite/gamemode/client/*.lua", "GAME", "nameasc")) do
+	print("client/" .. v)
+	AddCSLuaFile("client/" .. v)
 end
 
 for _, v in ipairs(file.Find("gamemodes/efgmrewrite/gamemode/server/*.lua", "GAME", "nameasc")) do
@@ -56,8 +59,16 @@ function GM:PlayerSpawn(ply)
 
     if loadoutData == nil then
 
-        ply:Give(debugPrimWep[math.random(#debugPrimWep)])
-        ply:Give(debugSecWep[math.random(#debugSecWep)])
+        if isArena then
+
+            ply:Give(debugPrimWep[math.random(#debugPrimWep)])
+            ply:Give(debugSecWep[math.random(#debugSecWep)])
+        
+        else
+
+            ply:Give("arc9_eft_m9a3")
+        
+        end
 
     else
 
