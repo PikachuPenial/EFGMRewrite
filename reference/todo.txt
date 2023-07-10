@@ -2,6 +2,7 @@ Will add to this if need be (mostly for motivation to finish the thing but also 
 
 -- DONE --
 
+    Port factory
     Make some console commands client-side and use the net system
     Shared inventory framework
     Dev texturize concrete for easier editing in future playtesting
@@ -20,13 +21,15 @@ Will add to this if need be (mostly for motivation to finish the thing but also 
 
 Right Now: (in order of importance)
 
-    Give the titanmod discord an update on efgm rewrite development (i fucking love pr)
+    Fix the extract list not working
     (Maybe) make a universal transaction framework (would help if tradeups or player trading were added)
     Menu music
     Personal stats tab (this wipe and all time)
+    Port belmont and customs to rewrite
 
 Before playtesting:
 
+    Give the titanmod discord an update on efgm rewrite development (i fucking love pr)
     Finish shop UI (ive given up for now, i really need to figure this shit out)
     Post-raid screen
     Stash UI

@@ -1,6 +1,9 @@
 
 RAID = RAID or {}
 
+local plyMeta = FindMetaTable( "Player" )
+if not plyMeta then Error("Could not find player table") return end
+
 if SERVER then
 
     RAID.VoteTime = 90
@@ -138,6 +141,33 @@ if SERVER then
 
         end
 
+        function RAID.GetCurrentExtracts(ply)
+                
+            if ply:CompareStatus(0) then return nil end
+    
+            local extracts = {}
+    
+            for k, v in pairs( ents.FindByClass("efgm_extract") ) do
+    
+                print(v)
+    
+                if ply:CompareSpawnGroup(v.ExtractGroup) then
+    
+                    local tbl = {}
+                    tbl.ExtractName = v.ExtractName
+                    tbl.ExtractTime = v.ExtractTime
+                    tbl.IsGuranteed = v.IsGuranteed
+    
+                    table.insert(extracts, tbl)
+    
+                end
+    
+            end
+    
+            return extracts
+    
+        end
+
     --}
 
     --{ PLAYER FUNCTIONS
@@ -232,6 +262,23 @@ if SERVER then
 
     --}
 
+    function plyMeta:SetRaidStatus(status, spawnGroup)
+
+        self:SetNWInt( "PlayerRaidStatus", status or 0 )
+        self:SetNWString("PlayerSpawnGroup", spawnGroup or self:GetNWString( "PlayerSpawnGroup", "" ) )
+
+    end
+
+    function plyMeta:Teleport(position, angles, velocity)
+
+        -- shortening the extract and raid manager logic lol, not necessary but fun ig idfk
+
+        self:SetPos(position)
+        self:SetEyeAngles(angles)
+        self:SetLocalVelocity(velocity)
+
+    end
+
 end
 
 if CLIENT then
@@ -261,63 +308,12 @@ if CLIENT then
     
 end
 
-    --{ MISCELLANEOUS
-
-        function RAID.GetCurrentExtracts(ply)
-            
-            if ply:CompareStatus(0) then return nil end
-
-            local extracts = {}
-        
-            for k, v in pairs( ents.FindByClass("efgm_extract") ) do
-        
-                if ply:CompareSpawnGroup(v.ExtractGroup) then
-
-                    local tbl = {}
-                    tbl.ExtractName = v.ExtractName
-                    tbl.ExtractTime = v.ExtractTime
-                    tbl.IsGuranteed = v.IsGuranteed
-
-                    table.insert(extracts, tbl)
-
-                end
-
-            end
-
-            return extracts
-
-        end
-
-    --}
-
--- meta shat
-
-local plyMeta = FindMetaTable( "Player" )
-if not plyMeta then Error("Could not find player table") return end
-
 function plyMeta:GetRaidStatus()
 
     local status = self:GetNWInt("PlayerRaidStatus", 0)
     local spawnGroup = self:GetNWString("PlayerSpawnGroup", "")
 
     return status, spawnGroup
-
-end
-
-function plyMeta:SetRaidStatus(status, spawnGroup)
-
-    self:SetNWInt( "PlayerRaidStatus", status or 0 )
-    self:SetNWString("PlayerSpawnGroup", spawnGroup or self:GetNWString( "PlayerSpawnGroup", "" ) )
-
-end
-
-function plyMeta:Teleport(position, angles, velocity)
-
-    -- shortening the extract and raid manager logic lol, not necessary but fun ig idfk
-
-    self:SetPos(position)
-	self:SetEyeAngles(angles)
-	self:SetLocalVelocity(velocity)
 
 end
 

@@ -87,17 +87,3 @@ hook.Add("StartCommand", "AltlookBlockShoot", function(ply, cmd)
     if !holdingbind(ply) or isinsights(ply) or ply:ShouldDrawLocalPlayer() then return end
     cmd:RemoveKey(IN_ATTACK)
 end)
-
--- random shit idk where to put anywhere else
-
-net.Receive( "SendClientStash", function(len, ply)
-
-    local bytes = net.ReadUInt( 16 ) -- Gets back the amount of bytes our data has
-	local compStash = net.ReadData( bytes ) -- Gets back our compressed message
-
-	local jsonStash = util.Decompress( compStash ) -- Decompresses our message
-    local playerStash = util.JSONToTable(jsonStash)
-
-	PrintTable( playerStash )
-
-end)

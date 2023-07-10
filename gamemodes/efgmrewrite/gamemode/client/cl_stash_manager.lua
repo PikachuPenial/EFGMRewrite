@@ -10,3 +10,18 @@ concommand.Add("efgm_transaction_stash", function(ply, cmd, args)
     net.SendToServer()
 
 end)
+
+concommand.Add("efgm_debug_printstash", function(ply, cmd, args)
+
+    net.Start("RequestClientStash")
+    net.SendToServer()
+
+end)
+
+net.Receive("SendClientStash", function(len, ply)
+    
+    local stash = net.ReadTable()
+
+    PrintTable(stash)
+
+end)

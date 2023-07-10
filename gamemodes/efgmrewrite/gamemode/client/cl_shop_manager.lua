@@ -65,7 +65,7 @@ function SHOP:CompileOrders() -- returns the "+ 1 1 weapon_name - 2 64 ammo" shi
 
 end
 
-concommand.Add("efgm_debug_getinventory", function(ply, cmd, args)
+concommand.Add("efgm_debug_printinventory", function(ply, cmd, args)
 
     local weps = {}
     local ammo = {}

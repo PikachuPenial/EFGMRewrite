@@ -1,7 +1,7 @@
 
+util.AddNetworkString( "RequestClientStash" )
 util.AddNetworkString( "SendClientStash" )
-
-util.AddNetworkString("RequestTransactionStash")
+util.AddNetworkString( "RequestTransactionStash" )
 
 STASH = {}
 
@@ -13,20 +13,23 @@ end)
 
 hook.Add("PlayerInitialSpawn", "SendClientStash", function(ply) -- sends a client their stash on joining the server (i have no idea how this is gonna work when like 20 people join after a map switch)
 
-    local playerStash = STASH.GetPlayerStashLimited( ply:SteamID64() )
-
-    if playerStash == nil then return end
-
-    local jsonStash = util.TableToJSON( playerStash )
-    local compStash = util.Compress( jsonStash )
-    local bytes = #compStash
-
-    net.Start("SendClientStash")
-    net.WriteUInt( bytes, 16 ) -- Writes the amount of bytes we have. Needed to read the data
-    net.WriteData( compStash, bytes ) -- Writes the datas
-    net.Send(ply)
+    STASH.SendToClient(ply)
 
 end)
+
+function STASH.SendToClient(ply)
+
+    local stash = STASH.GetPlayerStashLimited(ply:SteamID64())
+
+    if stash != nil then
+        
+        net.Start("SendClientStash")
+        net.WriteTable(stash)
+        net.Send(ply)
+
+    end
+
+end
 
 function STASH.StashHasItem(plyID, item, type, count) -- returns true if the player has an item in their stash, returns false if they dont
 
@@ -163,16 +166,6 @@ concommand.Add("efgm_debug_resetstash", function(ply, cmd, args)
 
 end)
 
-concommand.Add("efgm_debug_getstash", function(ply, cmd, args)
-
-    local tbl = STASH.GetPlayerStash(ply:SteamID64())
-
-    if tbl == nil then return print("Stash is empty, or doesn't exist. Eat shit.") end
-
-    PrintTable( tbl )
-
-end)
-
 net.Receive("RequestTransactionStash", function(len, ply)
 
     if !ply:CompareStatus(0) then return end
@@ -231,5 +224,11 @@ net.Receive("RequestTransactionStash", function(len, ply)
     end
 
     STASH.Transaction(ply, deposits, withdraws)
+
+end)
+
+net.Receive("RequestClientStash", function(len, ply)
+
+    STASH.SendToClient(ply)
 
 end)
