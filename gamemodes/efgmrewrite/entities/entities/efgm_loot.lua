@@ -53,9 +53,9 @@ function ENT:SelectItem()
 
     local tbl = {}
 
-    for weaponName, info in pairs(lootTable) do
+    for k, v in pairs(lootTable) do
         
-        if info[1] == self.LootTier then table.insert(tbl, weaponName) end
+        if v[1] == self.LootTier then table.insert(tbl, k) end
 
     end
 

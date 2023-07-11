@@ -5,6 +5,8 @@ local plyMeta = FindMetaTable( "Player" )
 if not plyMeta then Error("Could not find player table") return end
 
 if SERVER then
+    
+    util.AddNetworkString( "RequestExtracts" )
 
     RAID.VoteTime = 90
     RAID.PlayersInRaid = {} -- [SteamID64] = Player
@@ -279,12 +281,8 @@ if SERVER then
 
     end
 
-end
-
-if CLIENT then
-
-    concommand.Add("efgm_print_extracts", function(ply, cmd, args)
-            
+    net.Receive("RequestExtracts", function(len, ply)
+    
         local extracts = RAID.GetCurrentExtracts(ply)
 
         if extracts == nil then return end
@@ -303,6 +301,17 @@ if CLIENT then
         end
 
         ply:PrintMessage(HUD_PRINTCENTER, extractNames)
+
+    end)
+
+end
+
+if CLIENT then
+
+    concommand.Add("efgm_print_extracts", function(ply, cmd, args)
+            
+        net.Start("RequestExtracts")
+        net.SendToServer()
 
     end)
     

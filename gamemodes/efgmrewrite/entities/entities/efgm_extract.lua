@@ -99,7 +99,7 @@ function ENT:StartExtract(ply)
 	--print("Player's name is " .. ply:GetName())
 
 	-- debug, will replace later once i make a fancy UI system
-	ply:PrintMessage( HUD_PRINTCENTER, "Extracting (".. self.ExtractTime .." Seconds)" )
+	ply:PrintMessage( HUD_PRINTCENTER, "Extracting using ".. self.ExtractName .." (".. self.ExtractTime .." Seconds)" )
 
 	if self.InstantExtract then self.Extract(ply) return end
 

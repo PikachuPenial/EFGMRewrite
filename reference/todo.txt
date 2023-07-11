@@ -2,6 +2,8 @@ Will add to this if need be (mostly for motivation to finish the thing but also 
 
 -- DONE --
 
+    (for playtesting) backpack on ground that stores the inventory of whoever died, and gives it instantly to whoever interacts with it
+    Fix the extract list not working
     Port factory
     Make some console commands client-side and use the net system
     Shared inventory framework
@@ -21,15 +23,15 @@ Will add to this if need be (mostly for motivation to finish the thing but also 
 
 Right Now: (in order of importance)
 
-    Fix the extract list not working
-    (Maybe) make a universal transaction framework (would help if tradeups or player trading were added)
-    Menu music
+    Fix potential glitch where player inventory doesn't save
     Personal stats tab (this wipe and all time)
-    Port belmont and customs to rewrite
+    Menu music
 
 Before playtesting:
 
+    (Maybe) make a universal transaction framework (would help if tradeups or player trading were added)
     Give the titanmod discord an update on efgm rewrite development (i fucking love pr)
+    Port belmont and customs to rewrite
     Finish shop UI (ive given up for now, i really need to figure this shit out)
     Post-raid screen
     Stash UI

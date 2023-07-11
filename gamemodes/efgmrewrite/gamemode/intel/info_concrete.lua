@@ -4,8 +4,7 @@ local concrete = {
 
     Stats = {
         [1] = "Raid Time = 15 Minutes",
-        [2] = "Map Size = Medium",
-        [3] = "Hardcore Mode = Available"
+        [2] = "Map Size = Medium"
     },
 
     Description = "A large and once thriving city, now abandoned by both the military and civilians. " ..

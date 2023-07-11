@@ -96,6 +96,12 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	-- do nwints and shit for kd and idfk ill find it out when the actual im(port)ant shit is done haha port i said port he said it guys
     -- i did the important shit in sv_stats.lua guys guys i said port again i fucking did it
 
+    local backpack = ents.Create("efgm_backpack")
+    backpack:SetPos(victim:GetPos())
+    backpack:Spawn()
+    backpack:Activate()
+    backpack:SetContents( victim:GetInventory(), victim )
+
 end
 
 function GM:ScalePlayerDamage(target, hitgroup, dmginfo)

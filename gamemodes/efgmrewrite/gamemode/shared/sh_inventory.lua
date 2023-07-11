@@ -1,9 +1,12 @@
 -- file handles inventory systems (inventories, related functions, item creation and manipulation, sql integration, etc)
 -- eventually this'll make the shop and stash system very easy to implement
 
+local plyMeta = FindMetaTable( "Player" )
+if not plyMeta then Error("Could not find player table") return end
+
 INV = {}
 
-function INV.__call( self, minCount ) -- __call just means doing just "INV" or "INV(args)" would run this function
+function INV.__call( self, minCount ) -- __call just means doing just "INV(args)" would run this function
 
     local inventory = {}
 
@@ -38,4 +41,52 @@ end
 
 setmetatable(INV, INV)
 
-print("Doing inventory shat")
+if SERVER then
+
+    function plyMeta:GetInventory(blacklist)
+    
+        blacklist = blacklist or {}
+    
+        -- blacklist is just a lookup table basically
+    
+        local inventory = INV()
+    
+        for k, v in pairs(self:GetWeapons()) do
+    
+            local wep = v:GetClass()
+    
+            if blacklist[wep] != true then
+    
+                inventory:AddItem(wep, 1, 1)
+                
+            end
+            
+        end
+    
+        for k, v in pairs(self:GetAmmo()) do
+    
+            if blacklist[game.GetAmmoName(k)] != true then
+    
+                inventory:AddItem(game.GetAmmoName(k), 2, v)
+    
+            end
+            
+        end
+    
+        return inventory
+    
+    end
+
+    function plyMeta:GiveInventory(inventory)
+
+        if inventory.contents == nil then return end
+
+        for k, v in pairs(inventory.contents) do
+            
+            GiveItem[v.type](self, k, v.count)
+
+        end
+
+    end
+    
+end

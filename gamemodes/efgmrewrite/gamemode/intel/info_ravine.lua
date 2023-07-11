@@ -5,8 +5,7 @@ local ravine = {
 
     Stats = {
         [1] = "Raid Time = 20 Minutes",
-        [2] = "Map Size = Medium",
-        [3] = "Hardcore Mode = Available"
+        [2] = "Map Size = Medium"
     },
 
     Description = "A huge broken down facility, set in a ravine. Although the hydroelectric dam still generates power from the river below, " ..
