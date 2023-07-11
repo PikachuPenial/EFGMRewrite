@@ -117,12 +117,12 @@ end
 
 GiveItem = {}
 
-GiveItem[1] = function(ply, item, count) -- weapons
+GiveItem[1] = function(ply, item, count, hidePopup) -- weapons
     ply:Give(item, true)
 end
 
-GiveItem[2] = function(ply, item, count) -- ammo
-    ply:GiveAmmo(count or 1, item, false)
+GiveItem[2] = function(ply, item, count, hidePopup) -- ammo
+    ply:GiveAmmo(count or 1, item, hidePopup or true)
 end
 
 

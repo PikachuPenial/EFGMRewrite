@@ -72,6 +72,8 @@ if SERVER then
             end
             
         end
+
+        if table.IsEmpty( inventory.contents ) then return nil end
     
         return inventory
     
@@ -79,13 +81,27 @@ if SERVER then
 
     function plyMeta:GiveInventory(inventory)
 
-        if inventory.contents == nil then return end
+        if inventory == nil then return nil end
+
+        local remainingInventory = INV()
 
         for k, v in pairs(inventory.contents) do
             
-            GiveItem[v.type](self, k, v.count)
+            if self:HasWeapon(k) && v.type == 1 then
+
+                remainingInventory:AddItem(k, 1, 1)
+
+            else
+
+                GiveItem[v.type](self, k, v.count, false)
+                
+            end
 
         end
+
+        if table.IsEmpty( remainingInventory.contents ) then return nil end
+
+        return remainingInventory
 
     end
     

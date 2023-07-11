@@ -41,11 +41,27 @@ function ENT:Use(activator)
 
     if !activator:IsPlayer() then return end
 
-    activator:GiveInventory(backpackInventory)
+    if table.IsEmpty( backpackInventory ) then
+    
+        self:Remove()
+
+        return
+    
+    end
+
+    local remainingInventory = activator:GiveInventory(backpackInventory)
 
     print(activator:GetName() .. " looted " .. backpackInventoryName)
 
-    self:Remove()
+    if remainingInventory == nil then
+    
+        self:Remove()
+
+    else
+
+        backpackInventory = remainingInventory
+        
+    end
 
 end
 

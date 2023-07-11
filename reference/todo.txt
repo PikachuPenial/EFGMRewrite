@@ -2,7 +2,7 @@ Will add to this if need be (mostly for motivation to finish the thing but also 
 
 -- DONE --
 
-    (for playtesting) backpack on ground that stores the inventory of whoever died, and gives it instantly to whoever interacts with it
+    Backpack on ground that stores the inventory of whoever died, and gives it instantly to whoever interacts with it (for playtesting) 
     Fix the extract list not working
     Port factory
     Make some console commands client-side and use the net system
@@ -23,8 +23,8 @@ Will add to this if need be (mostly for motivation to finish the thing but also 
 
 Right Now: (in order of importance)
 
-    Fix potential glitch where player inventory doesn't save
     Personal stats tab (this wipe and all time)
+    Track shit like xp, money, etc
     Menu music
 
 Before playtesting:
