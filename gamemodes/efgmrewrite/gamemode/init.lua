@@ -107,3 +107,9 @@ end
 function GM:ScalePlayerDamage(target, hitgroup, dmginfo)
 	dmginfo:ScaleDamage(1)
 end
+
+hook.Add( "PlayerShouldTakeDamage", "AntiLobbyKill", function(victim, attacker) 
+	
+	return !victim:CompareStatus(0)
+
+end )
