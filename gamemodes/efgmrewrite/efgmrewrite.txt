@@ -16,8 +16,9 @@
 			"help"		"Hooks the sandbox gamemode into EFGM, allowing for things like the spawn menu to be accessed. Used for development purposes."
 			"type"		"CheckBox"
 			"default"	"0"
-			"singleplayer"
+			"singleplayer"	"true"
 		}
+
 		2
 		{
 			"name"		"efgm_arenamode"
@@ -25,7 +26,8 @@
 			"help"		"Enables features such as infinite ammo, spawning with loadouts, etc. Keep disabled for the classic EFGM experience."
 			"type"		"CheckBox"
 			"default"	"0"
-			"singleplayer"
+			"singleplayer"	"true
 		}
+
 	}
 }
