@@ -97,6 +97,14 @@ end)
 
 hook.Add("PlayerDisconnected", "PlayerUninitializeStats", function(ply)
 
+    ply:SetNWBool("FreshWipe", false)
+
+    if !ply:CompareStatus(0) then
+
+        ply:SetNWInt("Quits", ply:GetNWInt("Quits", 0) + 1)
+        
+    end
+
 	Stats.UninitializeAll(ply)
 
 end)

@@ -2,6 +2,8 @@ Will add to this if need be (mostly for motivation to finish the thing but also 
 
 -- DONE --
 
+    Track shit like xp, money, etc
+    Make loadout saving use the inventory framework
     Fix players being able to farm each other in the lobby
     Backpack on ground that stores the inventory of whoever died, and gives it instantly to whoever interacts with it (for playtesting) 
     Fix the extract list not working
@@ -24,16 +26,16 @@ Will add to this if need be (mostly for motivation to finish the thing but also 
 
 Right Now: (in order of importance)
 
-    Fix the but where you couldn't go into the raid for some reason in ravine
     Personal stats tab (this wipe and all time)
-    Track shit like xp, money, etc
+    Add medkit weapon
+    Keybind customization menu
+    Menu music
 
 Before playtesting:
 
-    Keybind customization menu
-    Menu music
-    (Maybe) make a universal transaction framework (would help if tradeups or player trading were added)
+    Display to player extracting the time before extract (maybe global float)
     Give the titanmod discord an update on efgm rewrite development (i fucking love pr)
+    (Maybe) make a universal transaction framework (would help if tradeups or player trading were added)
     Port belmont and customs to rewrite
     Finish shop UI (ive given up for now, i really need to figure this shit out)
     Post-raid screen

@@ -36,6 +36,28 @@ function GM:Initialize()
 
 end
 
+local defaultLoadout = INV()
+defaultLoadout:AddItem("arc9_eft_m9a3", 1, 1)
+defaultLoadout:AddItem("weapon_crowbar", 1, 1)
+-- no ammo bc dupe lmao
+
+local blacklist = {}
+blacklist["arc9_eft_m9a3"] = true
+blacklist["weapon_crowbar"] = true
+
+local function GetArenaLoadout()
+
+    local loadout = INV()
+
+    -- infinite ammo btw
+    loadout:AddItem(debugPrimWep[math.random(#debugPrimWep)], 1, 1)
+    loadout:AddItem(debugSecWep[math.random(#debugSecWep)], 1, 1)
+    loadout:AddItem("weapon_crowbar", 1, 1)
+
+    return loadout
+
+end
+
 function GM:PlayerSpawn(ply)
 
 	ply:SetGravity(.72)
@@ -55,26 +77,29 @@ function GM:PlayerSpawn(ply)
 	ply:SetupHands()
 	ply:AddEFlags(EFL_NO_DAMAGE_FORCES) -- disables knockback being applied when damage is taken
 
-    local loadoutData = SAVE.RetrieveData(ply)
+    local loadoutData = LOADOUT.RetrieveData(ply)
 
-    if loadoutData == nil then
+    if isArena then
 
-        if isArena then
-
-            ply:Give(debugPrimWep[math.random(#debugPrimWep)])
-            ply:Give(debugSecWep[math.random(#debugSecWep)])
-        
-        else
-
-            ply:Give("arc9_eft_m9a3")
-        
-        end
-
+        ply:GiveInventory( GetArenaLoadout() )
+    
     else
 
-        SAVE.EquipPlayer(ply, loadoutData)
-        SAVE.WipePlayerData(ply)
-        
+        if loadoutData == nil then
+
+            ply:GiveInventory(defaultLoadout)
+    
+        else
+    
+            LOADOUT.WipePlayerData(ply)
+    
+            -- print("Loadout Data:")
+            -- PrintTable(loadoutData.contents)
+    
+            ply:GiveInventory(loadoutData)
+            
+        end
+    
     end
 
 	ply:SetRaidStatus(0, "")
@@ -100,7 +125,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
     backpack:SetPos(victim:GetPos())
     backpack:Spawn()
     backpack:Activate()
-    backpack:SetContents( victim:GetInventory(), victim )
+    backpack:SetContents( victim:GetInventory( blacklist ), victim )
 
 end
 

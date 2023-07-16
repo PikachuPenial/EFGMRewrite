@@ -23,7 +23,7 @@ local factory = {
 
             },
 
-            Description = "Gate 0"
+            Description = "A rusted metal gate located at the southeastern corner of the factory."
 
         },
 
@@ -39,7 +39,7 @@ local factory = {
 
             },
 
-            Description = "Gate 3"
+            Description = "A rusted metal gate located at the southwestern corner of the factory."
 
         },
 
@@ -55,7 +55,7 @@ local factory = {
 
             },
 
-            Description = "Camera Bunker Door"
+            Description = "A hermetic door located in the underground tunnel system, roughly in the southern part of the factory."
 
         },
 
@@ -71,7 +71,7 @@ local factory = {
 
             },
 
-            Description = "Cellars"
+            Description = "A hermetic door located in the underground tunnel system, specifically under the area with the forklifts in the northwestern corner of the location."
 
         },
 
@@ -87,7 +87,7 @@ local factory = {
 
             },
 
-            Description = "Med Tent Gate"
+            Description = "A rusted metal gate, located behind a white medical tent in the northeastern corner of the map."
 
         }
 

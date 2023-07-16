@@ -304,6 +304,39 @@ if SERVER then
 
     end)
 
+    hook.Add("PlayerExtraction", "RaidExtract", function(ply, extractTime, isExtractGuranteed)
+
+        --print("Player's name is " .. ply:GetName())
+    
+        lobbySpawns = ents.FindByClass("efgm_lobby_spawn") or {} -- gets a table of all the lobby spawns
+    
+        local possibleSpawns = {}
+    
+        local playerExtracted = false
+    
+        if table.IsEmpty(lobbySpawns) then error("no lobby spawns eat shit") return end
+    
+        -- all this is done so that players spawn in random spots bc yeah it was really that important
+        for k, v in ipairs(lobbySpawns) do
+            
+            if v:CanSpawn(ply) then
+    
+                table.insert(possibleSpawns, v)
+    
+            end
+    
+        end
+    
+        if #possibleSpawns == 0 then return end
+    
+        local randomSpawn = BetterRandom(possibleSpawns)
+    
+        RAID:RemovePlayer(ply)
+        ply:Teleport(randomSpawn:GetPos(), randomSpawn:GetAngles(), Vector(0, 0, 0))
+        ply:SetHealth( ply:GetMaxHealth() ) -- heals the player to full so dumb shit like quitting and rejoining to get max hp doesn't happen
+    
+    end)
+
 end
 
 if CLIENT then

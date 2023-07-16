@@ -5,18 +5,6 @@ Features that sound cool and are doable idk
 - self explanatory
 - every 1 or maybe 2 matches, time gets switched (go from playing on day maps to night maps or vice versa)
 
-    Hardcore raids (assuming voting system will be changed to only featuring 2-3 maps to play on)
-
-- 15-20% chance one map that can be voted on will be marked as "Hardcore"
-
-- Differences between normal raids:
-- Raid time is cut in half (maybe even less)
-- Loot has twice the chance to spawn, and loot table is better
-- No free gun or equipment
-- "Free" extracts (extracts that don't have to be activated) are disabled
-- Raid interface will have an output if the raid is hardcore, so the map may change in other ways (imagine a labs map where in hardcore mode a ton of garage doors start shut, leading to a few intense chokepoints around the map where players fight to move between sections)
-- Maybe disable extracts (and the way to them) for the first half or third of a raid, leading to fucking stacked loot goblins duking it out before they can leave
-
     Achievement system (tasks but not)
 
 - Achievements won't reset with wipes
@@ -51,16 +39,9 @@ isn't necessary to progress, but fun and rewarding to play around with
 - If you don't like the skill's permanent effect, you can remove it using up a slot point
 - Literally just the DE thought cabinet
 
-- If that made no fucking sense whatsoever, here's an example of a skill I thought of earlier:
-Unorthodox Methods of Extraction (takes up a movement slot)
+    Reworked raid xp calculation
 
-Description: something about extracts being hard to find
-
-Unlock requirement: Be at least level 15 and used extracts with requirements 5 times
-
-Requirement to complete: Extract 15 times using extracts with requirements (like the usec heli or getaway driver)
-
-Temporary effect (shown to the player on skill unlock, removed upon requirement completion): extracts take 50% longer
-
-Permanent effect (not shown to the player until requirement completion, given on requirement completion): New extracts are availible
-for you on each map (basically scav extracts) but extracting takes 20% longer
+- The server keeps track of player's xp and money they accumulate in the raid (from looting, kills, etc) and doesn't give it to them instantly
+- Different ways of leaving affects the amount of xp and money you get
+- Like using an extract could give you 100% of xp and money, but dying might only give you 50%
+- Maybe different extracts could multiply it more, like 120% for a non-guranteed extract or something

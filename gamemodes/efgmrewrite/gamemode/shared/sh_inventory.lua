@@ -31,7 +31,20 @@ function INV.__call( self, minCount ) -- __call just means doing just "INV(args)
         if count < self.minCount then self:RemoveItem(item) return end
 
         self.contents[item].count = count
-        self.contents[item].tCount = 0
+        
+    end
+
+    return inventory
+
+end
+
+function INV.SQLToInventory(sqlData)
+
+    local inventory = INV()
+
+    for k, v in pairs( sqlData ) do
+
+        inventory:AddItem(v.ItemName, tonumber( v.ItemType ), tonumber( v.ItemCount ))
         
     end
 
@@ -74,7 +87,10 @@ if SERVER then
         end
 
         if table.IsEmpty( inventory.contents ) then return nil end
-    
+
+        -- print("Getting inventory of " .. self:GetName())
+        -- PrintTable(inventory.contents)
+
         return inventory
     
     end
@@ -86,6 +102,9 @@ if SERVER then
         local remainingInventory = INV()
 
         for k, v in pairs(inventory.contents) do
+
+            -- print(k..":")
+            -- PrintTable(v)
             
             if self:HasWeapon(k) && v.type == 1 then
 
@@ -93,13 +112,16 @@ if SERVER then
 
             else
 
-                GiveItem[v.type](self, k, v.count, false)
+                GiveItem[v.type](self, k, v.count)
                 
             end
 
         end
 
         if table.IsEmpty( remainingInventory.contents ) then return nil end
+
+        -- print("Giving inventory to " .. self:GetName())
+        -- PrintTable(remainingInventory.contents)
 
         return remainingInventory
 

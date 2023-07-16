@@ -28,6 +28,14 @@ end
 
 function ENT:SetContents(inventory, ply)
 
+    if inventory == nil then
+    
+        self:Remove()
+
+        return
+        
+    end
+
     if ply != nil then
 
         backpackInventoryName = ply:GetName()
