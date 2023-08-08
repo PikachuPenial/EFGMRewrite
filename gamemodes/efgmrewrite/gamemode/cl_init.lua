@@ -20,6 +20,32 @@ surface.CreateFont("Bender24", {
 	size = 24,
 } )
 
+hook.Add( "PostDrawTranslucentRenderables", "Boxxie", function()
+
+    local origin = Vector(256, 128, 196)
+    local start = Vector(-128, -128, -128)
+
+    local outlineOG = (origin * Vector(1, 1, 0)) + Vector(0, 0, start.z + 8)
+    local outlineST = (start * Vector(1, 1, 0)) + Vector(0, 0, -8)
+
+    render.SetColorMaterial() -- white material for easy coloring
+
+    cam.IgnoreZ( false )
+    render.DrawBox( origin, angle_zero, start, -start, color_white ) -- draws the box 
+    cam.IgnoreZ( false )
+
+    local ang = LocalPlayer():EyeAngles()
+    ang:RotateAroundAxis(ang:Forward(), 90)
+    ang:RotateAroundAxis(ang:Right(), 90)
+ 
+    cam.IgnoreZ( true )
+        cam.Start3D2D(origin, ang, 1)
+            draw.WordBox(0, 0, 0, math.Round(origin:Distance(LocalPlayer():GetPos()) * 0.01905, 0) .. "m", "DermaLarge", Color(0, 0, 0, 40), Color(0, 0, 0, 255))
+        cam.End3D2D() 
+    cam.IgnoreZ( false )
+
+end )
+
 -- free look
 local freelooking = false
 concommand.Add("+freelook", function(ply, cmd, args) freelooking = true end)
