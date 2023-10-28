@@ -109,7 +109,7 @@ hook.Add("PlayerDisconnected", "PlayerUninitializeStats", function(ply)
 
 end)
 
-hook.Add("ShutDown", "ServerUninitializeStats", function(ply)-- the wiki gives a scary warning about steamid64 not working with this hook so if i ever implement better pdata thats gonna be a problem
+hook.Add("ShutDown", "ServerUninitializeStats", function(ply)
 
 	for k, v in pairs(player.GetHumans()) do
 

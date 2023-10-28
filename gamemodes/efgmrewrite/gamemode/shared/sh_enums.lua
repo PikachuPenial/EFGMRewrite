@@ -54,4 +54,3 @@ models = {
     ["AR2AltFire"] = "models/Items/combine_rifle_ammo01.mdl",
 
 }
-

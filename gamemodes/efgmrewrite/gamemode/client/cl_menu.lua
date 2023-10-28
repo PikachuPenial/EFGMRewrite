@@ -3,9 +3,6 @@
 -- this is not a panel, but a collection of panels and supporting functions
 Menu = {}
 
-Menu.IsInitialized  = false
-Menu.IsOpen         = false
-
 Menu.MusicList = {"sound/music/menu_01.mp4", "sound/music/menu_02.mp4", "sound/music/menu_03.mp4", "sound/music/menu_04.mp4"}
 
 local conditions = {}
@@ -13,8 +10,6 @@ local conditions = {}
 -- called non-globally to initialize the menu, that way it can only be initialized once by Menu:Open()
 -- also openTab is the name of the tab it should open to
 function Menu:Initialize( openTab )
-
-    self.IsInitialized = true
 
     local menuFrame = vgui.Create("DFrame")
     menuFrame:SetSize( 1500, 800 ) 
@@ -105,21 +100,13 @@ end
 -- called to either initialize or open the menu
 function Menu:Open( openTab )
 
-    if self.IsInitialized then
-        
-        -- if table's initialized (open it)
+    if self.MenuFrame != nil then 
 
-        if self.IsOpen then return end
-
-        self.MenuFrame:Show()
-
-    else
-
-        -- if it aint
-
-        self:Initialize( openTab )
+        self.MenuFrame:Remove()
 
     end
+
+    self:Initialize( openTab )
 
 end
 
@@ -627,14 +614,60 @@ function Menu.OpenTab.Stats()
 
     Menu.MenuFrame.LowerPanel.Contents = contents
 
-    local importantStats = vgui.Create("DPanel", contents)
+    local importantStatsSP = vgui.Create("DScrollPanel", contents)
+    importantStatsSP:Dock(LEFT)
+    importantStatsSP:SetSize(400, 0)
+
+    local importantStats = vgui.Create("DPanel", importantStatsSP)
     importantStats:Dock(TOP)
-    importantStats:SetSize(0, 300)
+    importantStats:SetSize(0, 500)
 
-    local playerPanel = vgui.Create("DPanel", contents)
-    playerPanel:Dock(LEFT)
-    playerPanel:SetSize(400, 0)
+    local playerInfo = vgui.Create("DPanel", contents)
+    playerInfo:Dock(TOP)
+    playerInfo:SetSize(0, 300)
 
+    -- only temporary, I gotta find a way to automate this shit
+
+    local stats = {}
+    
+    stats.Level = LocalPlayer():GetNWInt("Level")
+    stats.Experience = LocalPlayer():GetNWInt("Experience")
+	stats.MoneyEarned = LocalPlayer():GetNWInt("MoneyEarned")
+	stats.MoneySpent = LocalPlayer():GetNWInt("MoneySpent")
+	stats.Time = LocalPlayer():GetNWInt("Time")
+
+	stats.Kills = LocalPlayer():GetNWInt("Kills")
+	stats.Deaths = LocalPlayer():GetNWInt("Deaths")
+	stats.DamageGiven = LocalPlayer():GetNWInt("DamageGiven")
+	stats.DamageRecieved = LocalPlayer():GetNWInt("DamageRecieved")
+	stats.DamageHealed = LocalPlayer():GetNWInt("DamageHealed")
+
+	stats.Extractions = LocalPlayer():GetNWInt("Extractions")
+	stats.Quits = LocalPlayer():GetNWInt("Quits")
+	stats.FullRaids = LocalPlayer():GetNWInt("FullRaids")
+
+    local height = 0
+
+    for k, v in pairs(stats) do
+        
+        local statEntry = vgui.Create("DPanel", importantStats)
+        statEntry:Dock(TOP)
+        statEntry:SetSize(0, 30)
+        function statEntry:Paint(w, h)
+
+            draw.SimpleText(k.." = "..v, "DermaDefault", 15, 15, MenuAlias.blackColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+
+        end
+
+        height = height + 30
+
+        print(k)
+
+    end
+
+    local cw, ch = importantStats:GetContentSize()
+    importantStatsSP:GetCanvas():SetSize( cw, height )
+    
 end
 
 -- shitty showspare2 offbrand because i really don't want to use the net library yet (todo: remove bc concommands do this better)
