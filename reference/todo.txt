@@ -24,15 +24,17 @@ Will add to this if need be (mostly for motivation to finish the thing but also 
 
 -- TODO --
 
-Right Now: (in order of importance)
+Right Now:
 
-    Personal stats tab (this wipe and all time)
-    Add medkit weapon
+    Rework inventory
+        - Stash: Grid of slots, can be upgraded if need be
+        - Shop: Grid of slots, unlimited stack size
+        - Inventory: Main slots (primary, secondary, etc) with different blacklists (knifes only in knife slot, etc), and backpack with grid of slots
+        - Items: All are 1x1 (more like rust / minecraft than tarkov / stalker), each with manually defined information (stack size, weapon type, etc) or defaults
+
+Planned Eventually:
+
     Keybind customization menu
-    Menu music
-
-Before playtesting:
-
     Display to player extracting the time before extract (maybe global float)
     Give the titanmod discord an update on efgm rewrite development (i fucking love pr)
     (Maybe) make a universal transaction framework (would help if tradeups or player trading were added)
@@ -42,17 +44,9 @@ Before playtesting:
     Stash UI
     Smart Spawnz
     Proper extract list menu (like tarky <3)
-    Inventory system (equippable slots, inventory tab)
-    Backpack on ground
-
-Before public release:
-
     Team system
     Contracts (per-map missions)
     Nice looking HUD
-
-Post-release:
-
     Translation / localization system
     Feedback feature
     - In raid, press a keybind to queue up a feedback submission
@@ -65,11 +59,13 @@ Post-release:
 
 -- MAPS TODO -- 
 
-Before playtesting:
+Planned Eventually:
 
-    Finish blocking out ravine
-    Maybe make concrete bunker a separate map idk
+    Ravine - Right now, the map is really shit, and I don't remember adding anything helping.
+    Because it could just be fundamentally shit, I could try spending like an hour making 2 or 3 other layouts, and just fucking around with them.
+    I'll probably do that actually, it sounds more fun than sleeping tbh
 
-Before public release:
-
-Post-release:
+    Concrete - Just fuck off with it.
+    I'm ready to just admit that I don't know how to make a bad map better, and nothing I do to concrete is gonna improve it.
+    In future though, I should probably just try to come up with an actually good idea and just execute it to the best of my ability,
+    instead of copy pasting a bunch of buildings and making that playable

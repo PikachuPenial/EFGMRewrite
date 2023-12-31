@@ -1,1 +1,0 @@
--- keep track of info relating to the raid and gamemode and whatnot

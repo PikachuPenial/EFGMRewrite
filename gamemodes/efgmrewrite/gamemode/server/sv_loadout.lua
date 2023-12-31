@@ -5,7 +5,11 @@ LOADOUT = {} -- i fucking love encapsulation of state
 
 hook.Add("Initialize", "SaveInitialize", function()
 
-    sql.Query( "CREATE TABLE IF NOT EXISTS EFGMSaveData ( ItemName TEXT, ItemCount INTEGER, ItemType INTEGER, ItemOwner INTEGER );" ) -- basically stash but yk savedata
+    -- ok so imagine for the locationinformation, like the first bit could be 1 to designate a weapon slot
+    -- (like 5 or 10100000 would be for secondary or something)
+    -- and if it was 0 it could just be to store the position of regular backpack slots
+    -- (maybe 0yxyxyxy, so 20 or 00101000 would store the coords (3, 0))
+    sql.Query( "CREATE TABLE IF NOT EXISTS EFGMSaveData ( LocationInformation INTEGER, Name TEXT, Count INTEGER, Type INTEGER, Owner INTEGER );" ) -- basically stash but yk savedata
 
 end)
 

@@ -77,30 +77,7 @@ function GM:PlayerSpawn(ply)
 	ply:SetupHands()
 	ply:AddEFlags(EFL_NO_DAMAGE_FORCES) -- disables knockback being applied when damage is taken
 
-    local loadoutData = LOADOUT.RetrieveData(ply)
-
-    if isArena then
-
-        ply:GiveInventory( GetArenaLoadout() )
-    
-    else
-
-        if loadoutData == nil then
-
-            ply:GiveInventory(defaultLoadout)
-    
-        else
-    
-            LOADOUT.WipePlayerData(ply)
-    
-            -- print("Loadout Data:")
-            -- PrintTable(loadoutData.contents)
-    
-            ply:GiveInventory(loadoutData)
-            
-        end
-    
-    end
+    LOADOUT.EquipLoadout(ply)
 
 	ply:SetRaidStatus(0, "")
 

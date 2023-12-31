@@ -84,6 +84,11 @@ function Menu:Initialize( openTab )
     inventoryTab:Dock(LEFT)
     inventoryTab:SetSize(90, 0)
     inventoryTab:SetText("Inventory")
+
+    function inventoryTab:DoClick()
+        Menu.MenuFrame.LowerPanel.Contents:Remove()
+        Menu.OpenTab.Inventory()
+    end
     
     local contractsTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
     contractsTab:Dock(LEFT)
@@ -111,6 +116,16 @@ function Menu:Open( openTab )
 end
 
 Menu.OpenTab = {}
+
+function Menu.OpenTab.Inventory()
+
+    local contents = vgui.Create("DPanel", Menu.MenuFrame.LowerPanel)
+    contents:Dock(FILL)
+    contents.Paint = nil
+
+    Menu.MenuFrame.LowerPanel.Contents = contents
+
+end
 
 function Menu.OpenTab.Intel()
 
