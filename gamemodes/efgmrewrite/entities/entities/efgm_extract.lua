@@ -41,7 +41,7 @@ function ENT:Initialize()
 	-- bitwise operation for flags yipp fucking ee (will require some explanation)
 
 	-- returns integer that is a representation of all the flags in binary
-	-- (by default 2, or 00000010, as the first digit (start disabled) starts false or 0, and the second digit (is guranteed) starts true or 1)
+	-- (this is, by default 2, or 00000010, as the first digit (start disabled) starts false or 0, and the second digit (is guranteed) starts true or 1)
 	local flags = tonumber( self:GetSpawnFlags() )
 
 	-- print("self:GetSpawnFlags() = " .. flags)
@@ -62,35 +62,58 @@ function ENT:Initialize()
 
 end
 
-function ENT:AcceptInput(name, activator, caller, data)
+function ENT:AcceptInput(name, ply, caller, data)
 	
-	if name == "EnableExtract" then
-		self.IsDisabled = false
-	end
+	if name == "EnableExtract" then self.IsDisabled = false end
 
 	if name == "DisableExtract" then
-		self.IsDisabled = true
-	end
+
+        self.IsDisabled = true
+
+        for k, v in ipairs( player.GetHumans() ) do
+
+            self:TriggerOutput("StopExtractingPlayer", ply)
+            
+        end
+
+    end
 
 	if name == "ToggleExtract" then
-		self.IsDisabled = !self.IsDisabled
-	end
 
-	if !activator:IsPlayer() then print("A bot just tried to extract smh") return end
+        if self.IsDisabled then
+            
+            self:TriggerOutput("EnableExtract", ply)
 
-	if !activator:CompareStatus(0) && activator:CompareSpawnGroup(self.ExtractGroup) && !self.IsDisabled then
+        else
 
-		if name == "StartExtractingPlayer" then
-			print("Player's name is " .. activator:GetName())
+            self:TriggerOutput("DisableExtract", ply)
 
-			self:StartExtract(activator)
-		end
+        end
 
-		if name == "StopExtractingPlayer" then
-			self:StopExtract(activator)
-		end
+    end
 
-	end
+    if name == "StartExtractingPlayer" && ply:IsPlayer() then
+    
+        if ply:CompareStatus(0) or !ply:CompareSpawnGroup(self.ExtractGroup) then return end
+
+        if self.IsDisabled then
+        
+            ply:PrintMessage( HUD_PRINTCENTER, self.DisabledMessage )
+
+        else
+            
+            print("Player's name is " .. ply:GetName())
+            self:StartExtract(ply)
+
+        end
+
+    end
+
+    if name == "StopExtractingPlayer" && !self.IsDisabled && ply:IsPlayer() then
+
+        if !ply:CompareStatus(0) then self:StopExtract(ply) end
+
+    end
 
 end
 

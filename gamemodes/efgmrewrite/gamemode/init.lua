@@ -77,7 +77,8 @@ function GM:PlayerSpawn(ply)
 	ply:SetupHands()
 	ply:AddEFlags(EFL_NO_DAMAGE_FORCES) -- disables knockback being applied when damage is taken
 
-    LOADOUT.EquipLoadout(ply)
+    -- loadout shit is broken, i forgot what i did to it so ima just comment it out for now
+    -- LOADOUT.EquipLoadout(ply)
 
 	ply:SetRaidStatus(0, "")
 

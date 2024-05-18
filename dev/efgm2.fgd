@@ -32,11 +32,13 @@
 @PointClass base(Targetname) = efgm_event_interface : "Event System Interface"
 [
     
+    eventName(string) : "Event Name" : "" : "The name of the event this interface manages."
+
     //Inputs
-    input StartEvent(string) : "Starts an event, with the string being the event's name. This fires OnEventStart btw."
+    input StartEvent(void) : "Starts the event, which fires OnEventStart btw."
 
     // Outputs
-    output OnEventStart(string) : "Fires when an event starts, with the string being the name of the event. Useful for making stuff happen in the map."
+    output OnEventStart(void) : "Fires when the event starts, useful for making stuff happen in the map."
 
 ]
 
