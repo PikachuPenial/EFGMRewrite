@@ -21,27 +21,17 @@ Features that sound cool and are doable idk
 - The facility would be roughly belmont sized (as far as like walkable space) with 2-3 levels, varying from claustrophobic hallways located inside the mountain to catwalks going across and parallel to the river
 - Would be a few places of interest, like a shooting range, power station, military storage, civilian housing and cafeterias and shit, maybe even a helipad on top of the facility
 
-    Shitty skill idea
-
-- OG skills were kinda dogshit (they worked mostly in the background, they didn't do much, most players probably didnt pay attention to them)
-- I've been playing way too much fucking disco elysium so that might influence this
-
-- So basically instead of skills, you got one or two slots each corresponding to general gameplay elements (combat, movement, maybe one
-related to loot / buying / selling / stashing)
-- These slots begin locked, but every 5-10 levels you get a point to unlock a specific slot in a specific category
-- As you play the game, doing ___ thing ___ amount of times will unlock different "skills" to put into slots
-- Each skill will belong to a specific category, and it show you a name, description, temporary bonus / debuff, and a requirement to complete
-- When you put a skill into a slot, that temporary effect instantly applies, and you're stuck with it until you either remove the skill,
-which will reset progress on it, or until you complete the requirement (e.g get 20 pmc kills)
-- When you complete the requirement, the description updates, and the effect is replaced with new effect(s)
-- The new effect(s) are not shown to the player until they complete the requirement of the skill, making the system a kind of gamble that
-isn't necessary to progress, but fun and rewarding to play around with
-- If you don't like the skill's permanent effect, you can remove it using up a slot point
-- Literally just the DE thought cabinet
-
     Reworked raid xp calculation
 
 - The server keeps track of player's xp and money they accumulate in the raid (from looting, kills, etc) and doesn't give it to them instantly
 - Different ways of leaving affects the amount of xp and money you get
 - Like using an extract could give you 100% of xp and money, but dying might only give you 50%
 - Maybe different extracts could multiply it more, like 120% for a non-guranteed extract or something
+
+    Rust / Stalker type inventory system
+
+- Split up into two part that items can be transferred between:
+    "Rig", has a fixed amount of slots for specific things, such as guns, grenades, melee, meds, etc
+    Backpack, stores loot in a fixed grid, and contents can't be keybinded or whatever (Also used for selling / stashing)
+
+- Because both parts are (currently) fixed in size, a byte could store each item's place in the inventory (supporting up to 256 different slots)

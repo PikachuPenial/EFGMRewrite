@@ -20,7 +20,8 @@ surface.CreateFont("Bender24", {
 	size = 24,
 } )
 
-hook.Add( "PostDrawTranslucentRenderables", "Boxxie", function()
+-- why is this box shit here
+--[[hook.Add( "PostDrawTranslucentRenderables", "Boxxie", function()
 
     local origin = Vector(256, 128, 196)
     local start = Vector(-128, -128, -128)
@@ -44,7 +45,7 @@ hook.Add( "PostDrawTranslucentRenderables", "Boxxie", function()
         cam.End3D2D() 
     cam.IgnoreZ( false )
 
-end )
+end )]]
 
 -- free look
 local freelooking = false
