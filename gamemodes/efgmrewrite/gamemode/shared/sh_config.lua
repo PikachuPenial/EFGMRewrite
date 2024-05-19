@@ -17,7 +17,7 @@ if SERVER then
     infAmmo[false] = "0"
 
     -- modifiers
-    local modif = "RecoilAutoControlMult\\t0\\nRecoilPatternDriftMult\\t1.4\\nRecoilKickMult\\t1.25 "
+    local modif = "RecoilAutoControlMult\\t0\\nRecoilPatternDriftMult\\t1.4\\nRecoilKickMult\\t1.25\\nVisualRecoilPunchMult\\t1.5\\nVisualRecoilRollMult\\t1.5\\nVisualRecoilSideMult\\t1.5\\nVisualRecoilUpMult\\t1.5 "
     RunConsoleCommand("arc9_modifiers", modif)
     RunConsoleCommand("arc9_mod_adstime", "1")
     RunConsoleCommand("arc9_mod_bodydamagecancel", "1")
