@@ -33,6 +33,8 @@
 [
     
     eventName(string) : "Event Name" : "" : "The name of the event this interface manages."
+    
+    eventDescription(string) : "Event Description" : "" : "(Optional) A description of the event, only accessed by server commands."
 
     //Inputs
     input StartEvent(void) : "Starts the event, which fires OnEventStart btw."
