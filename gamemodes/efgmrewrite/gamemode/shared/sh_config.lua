@@ -17,8 +17,8 @@ if SERVER then
     infAmmo[false] = "0"
 
     -- modifiers
-    local modif = "RecoilAutoControlMult\\t0\\nSpreadMultSights\\t0\\nVisualRecoilMult\\t0.25\\nRecoilMult\\t0.35 "
-    RunConsoleCommand("arc9_modifiers", modif) -- gotta make this work before the game is even playable lol
+    local modif = "RecoilAutoControlMult\\t0\\nRecoilPatternDriftMult\\t1.4\\nRecoilKickMult\\t1.25 "
+    RunConsoleCommand("arc9_modifiers", modif)
     RunConsoleCommand("arc9_mod_adstime", "1")
     RunConsoleCommand("arc9_mod_bodydamagecancel", "1")
     RunConsoleCommand("arc9_mod_damage", "1")
@@ -26,11 +26,11 @@ if SERVER then
     RunConsoleCommand("arc9_mod_headshotdamage", "1")
     RunConsoleCommand("arc9_mod_malfunction", "0.2")
     RunConsoleCommand("arc9_mod_muzzlevelocity", "1")
-    RunConsoleCommand("arc9_mod_recoil", "1")
+    RunConsoleCommand("arc9_mod_recoil", "0.75")
     RunConsoleCommand("arc9_mod_rpm", "1")
     RunConsoleCommand("arc9_mod_spread", "1")
     RunConsoleCommand("arc9_mod_sprinttime", "1")
-    RunConsoleCommand("arc9_mod_visualrecoil", "1")
+    RunConsoleCommand("arc9_mod_visualrecoil", "0.75")
 
     -- damage falloff (in meters)
     RunConsoleCommand("arc9_eft_mindmgrange", "200")
@@ -117,8 +117,8 @@ if CLIENT then
     RunConsoleCommand("arc9_vm_cambobintensity", "0.66")
 
     -- tpik
-    RunConsoleCommand("arc9_tpik", "0")
-    RunConsoleCommand("arc9_tpik_others", "0")
+    RunConsoleCommand("arc9_tpik", "1")
+    RunConsoleCommand("arc9_tpik_others", "1")
     RunConsoleCommand("arc9_tpik_framerate", "30")
 
     -- true names
@@ -134,6 +134,7 @@ if CLIENT then
     RunConsoleCommand("arc9_fx_animblur", "0")
     RunConsoleCommand("arc9_fx_rtblur", "0")
     RunConsoleCommand("arc9_fx_adsblur", "0")
+    RunConsoleCommand("arc9_fx_rtvm", "1")
     RunConsoleCommand("arc9_eject_fx", "0")
     RunConsoleCommand("arc9_eject_time", "-1")
     RunConsoleCommand("arc9_muzzle_light", "1")
