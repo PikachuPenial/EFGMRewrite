@@ -5,10 +5,20 @@ LOADOUT = {} -- i fucking love encapsulation of state
 
 hook.Add("Initialize", "SaveInitialize", function()
 
-    -- ok so imagine for the locationinformation, like the first bit could be 1 to designate a weapon slot
-    -- (like 5 or 10100000 would be for secondary or something)
-    -- and if it was 0 it could just be to store the position of regular backpack slots
-    -- (maybe 0yxyxyxy, so 20 or 00101000 would store the coords (3, 0))
+    -- Max integer size is 8 bytes (8 chunks of 8 bits)
+    -- The first two bytes could be used to store the x and y value,
+    -- with one of the bits in them used to designate whether or not the item is in a backpack or active slot
+
+    -- For example:
+
+    -- 00000100 (first byte, designates an item on a 5 x value)
+    -- 00000000 (second byte, designates an item on a 1 x value)
+
+    -- or maybe
+
+    -- 10000001 (first byte, the first one designates the item is in an active slot, and the rest signifies which slot the item will be in, maybe the second primary slot)
+    -- 00000000 (second byte, has no information bc there arent gonna be 32768 slots)
+
     sql.Query( "CREATE TABLE IF NOT EXISTS EFGMSaveData ( LocationInformation INTEGER, Name TEXT, Count INTEGER, Type INTEGER, Owner INTEGER );" ) -- basically stash but yk savedata
 
 end)
@@ -75,5 +85,13 @@ end
 function LOADOUT.WipeData()
 
     sql.Query( "DELETE FROM EFGMSaveData;" )
+
+end
+
+function LOADOUT.LocationInformationTOPos( LocationInformation )
+
+end
+
+function LOADOUT.PosTOLocationInformation( Pos )
 
 end
