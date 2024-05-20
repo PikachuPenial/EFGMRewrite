@@ -1,8 +1,8 @@
 -- free look
-limV = 45
-limH = 90
-smooth = 1.00
-blockads = true
+limV = 35
+limH = 70
+smooth = 0.5
+blockads = false
 blockshoot = true
 
 -- weapon arrays for gameplay testing purposes
