@@ -11,8 +11,8 @@ hook.Add("Initialize", "SaveInitialize", function()
 
     -- For example:
 
-    -- 00000100 (first byte, designates an item on a 5 x value)
-    -- 00000000 (second byte, designates an item on a 1 x value)
+    -- 00000100 (first byte, 0-255, designates an item on a 5 x value)
+    -- 00000000 (second byte, 256-65535 designates an item on a 1 x value)
 
     -- or maybe
 
@@ -88,10 +88,52 @@ function LOADOUT.WipeData()
 
 end
 
-function LOADOUT.LocationInformationTOPos( LocationInformation )
+function LOADOUT.LocationInformationTOPos( locationInformation )
+
+    -- handles overflows
+    if locationInformation > 4294967295 then return nil end
+
+    -- yeah this fuckery actually works im suprised too
+    local pos = {}
+
+    pos.y = bit.rshift( bit.band( locationInformation, 4294901760 ), 16 ) + 1
+    pos.x = bit.band( locationInformation, 65535 ) + 1
+
+    return pos
 
 end
+concommand.Add("efgm_debug_loctopos", function(ply, cmd, args)
 
-function LOADOUT.PosTOLocationInformation( Pos )
+    local loadoutInformation = tonumber( args[1] )
+
+    print("Input:")
+    print( loadoutInformation )
+    print("Output")
+    PrintTable( LOADOUT.LocationInformationTOPos( loadoutInformation ) )
+
+end)
+
+function LOADOUT.PosTOLocationInformation( pos, isActiveSlot )
+
+    -- these handle overflows
+    if pos.x > 32767 then return nil end
+    if pos.y > 65535 then return nil end
+
+    local locationInformation = (pos.x - 1) + (pos.y - 1) * 65536
+    if isActiveSlot or false then locationInformation = locationInformation + 32768 end
+
+    return locationInformation
 
 end
+concommand.Add("efgm_debug_postoloc", function(ply, cmd, args)
+
+    local pos = {}
+    pos.x = tonumber( args[1] )
+    pos.y = tonumber( args[2] )
+
+    print("Input:")
+    PrintTable( pos )
+    print("Output")
+    print( LOADOUT.PosTOLocationInformation( pos ) or -1 )
+
+end)
