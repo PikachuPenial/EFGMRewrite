@@ -1,9 +1,19 @@
 
+EFGM = {}
+
+-- screen scale function, makes my life (penial) easier because i will most definently be doing most if not all of the user interface
+-- all interfaces and fonts are developed on a 1920x1080 monitor
+
+local efgm_hud_scale = GetConVar("efgm_hud_scale")
+EFGM.ScreenScale = function(size)
+    return size / 3 * (ScrW() / 640) * efgm_hud_scale:GetFloat()
+end
+
 local function DebugRaidTime()
 
     surface.SetTextColor(Color(255, 255, 255))
-    surface.SetFont("DermaLarge")
-    surface.SetTextPos(20 * MenuAlias.widthRatio, 300 * MenuAlias.heightRatio)
+    surface.SetFont("Bender24")
+    surface.SetTextPos(EFGM.ScreenScale(10), EFGM.ScreenScale(10))
 
     -- time logic
 

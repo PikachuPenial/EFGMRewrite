@@ -12,7 +12,7 @@ local conditions = {}
 function Menu:Initialize( openTab )
 
     local menuFrame = vgui.Create("DFrame")
-    menuFrame:SetSize( 1500, 800 ) 
+    menuFrame:SetSize( EFGM.ScreenScale(1500), EFGM.ScreenScale(800) ) 
     menuFrame:Center()
     menuFrame:SetTitle( "EFGM Main Menu" ) 
     menuFrame:SetVisible( true ) 
@@ -30,7 +30,7 @@ function Menu:Initialize( openTab )
 
     local tabParentPanel = vgui.Create("DPanel", self.MenuFrame)
     tabParentPanel:Dock(TOP)
-    tabParentPanel:SetSize(0, 20)
+    tabParentPanel:SetSize(0, EFGM.ScreenScale(20))
 
     function tabParentPanel:Paint(w, h)
 
@@ -43,7 +43,7 @@ function Menu:Initialize( openTab )
 
     local lowerPanel = vgui.Create("DPanel", self.MenuFrame)
     lowerPanel:Dock(FILL)
-    lowerPanel:DockMargin(0, 5, 0, 0)
+    lowerPanel:DockMargin(0, EFGM.ScreenScale(5), 0, 0)
 
     function lowerPanel:Paint(w, h)
 
@@ -62,7 +62,7 @@ function Menu:Initialize( openTab )
 
     local statsTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
     statsTab:Dock(LEFT)
-    statsTab:SetSize(180, 0)
+    statsTab:SetSize(EFGM.ScreenScale(180), 0)
     statsTab:SetText(LocalPlayer():Name())
 
     function statsTab:DoClick()
@@ -72,7 +72,7 @@ function Menu:Initialize( openTab )
 
     local intelTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
     intelTab:Dock(LEFT)
-    intelTab:SetSize(90, 0)
+    intelTab:SetSize(EFGM.ScreenScale(90), 0)
     intelTab:SetText("Intel")
 
     function intelTab:DoClick()
@@ -82,7 +82,7 @@ function Menu:Initialize( openTab )
 
     local inventoryTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
     inventoryTab:Dock(LEFT)
-    inventoryTab:SetSize(90, 0)
+    inventoryTab:SetSize(EFGM.ScreenScale(90), 0)
     inventoryTab:SetText("Inventory")
 
     function inventoryTab:DoClick()
@@ -92,12 +92,12 @@ function Menu:Initialize( openTab )
     
     local contractsTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
     contractsTab:Dock(LEFT)
-    contractsTab:SetSize(90, 0)
+    contractsTab:SetSize(EFGM.ScreenScale(90), 0)
     contractsTab:SetText("Contracts")
     
     local unlocksTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
     unlocksTab:Dock(LEFT)
-    unlocksTab:SetSize(90, 0)
+    unlocksTab:SetSize(EFGM.ScreenScale(90), 0)
     unlocksTab:SetText("Unlocks")
 
 end
@@ -137,11 +137,11 @@ function Menu.OpenTab.Intel()
 
     local mainEntryList = vgui.Create("DCategoryList", contents)
     mainEntryList:Dock(LEFT)
-    mainEntryList:SetSize(180, 0)
+    mainEntryList:SetSize(EFGM.ScreenScale(180), 0)
 
     local subEntryList = vgui.Create("DIconLayout", contents)
     subEntryList:Dock(LEFT)
-    subEntryList:SetSize(180, 0)
+    subEntryList:SetSize(EFGM.ScreenScale(180), 0)
 
     local entryPanel = vgui.Create("DPanel", contents)
     entryPanel:Dock(FILL)
@@ -152,7 +152,7 @@ function Menu.OpenTab.Intel()
 
     local entryStats = vgui.Create("DPanel", entryPanel)
     entryStats:Dock(TOP)
-    entryStats:SetSize(0, 40)
+    entryStats:SetSize(0, EFGM.ScreenScale(40))
     entryStats.Paint = nil
 
     local entryTextDisplay = vgui.Create("DPanel", entryPanel)
@@ -163,7 +163,7 @@ function Menu.OpenTab.Intel()
 
         if stats != nil then
 
-            entryStats:SetSize(0, #stats * 40)
+            entryStats:SetSize(0, #stats * EFGM.ScreenScale(40))
 
             function entryStats:Paint(w, h)
                 
@@ -174,10 +174,10 @@ function Menu.OpenTab.Intel()
                         surface.SetDrawColor(210, 210, 210)
                     end
                     
-                    surface.DrawRect(0, (k - 1) * 40, w, 40)
+                    surface.DrawRect(0, (k - 1) * EFGM.ScreenScale(40), w, EFGM.ScreenScale(40))
 
-                    local text = markup.Parse( "<font=DermaLarge><color=0,0,0>\n\n" .. v .. "</color></font>", w - 40 )
-                    text:Draw(20, (k - 1) * 40 + 5)
+                    local text = markup.Parse( "<font=DermaLarge><color=0,0,0>\n\n" .. v .. "</color></font>", w - EFGM.ScreenScale(40) )
+                    text:Draw(EFGM.ScreenScale(20), (k - 1) * EFGM.ScreenScale(40) + EFGM.ScreenScale(5))
 
                 end
 
@@ -194,8 +194,8 @@ function Menu.OpenTab.Intel()
 
             -- chatgpt hallucinated an entire fucking function to get this shit to wrap, apologised profusely when called out on its artificial bs, but then told me about markup thanks chatgpt
 
-            local text = markup.Parse( "<font=DermaLarge><color=50,212,50>" .. entryName .. "</color></font><font=DermaLarge><color=255,255,255>\n\n" .. entryText .. "</color></font>", w - 40 )
-            text:Draw(20, 20)
+            local text = markup.Parse( "<font=DermaLarge><color=50,212,50>" .. entryName .. "</color></font><font=DermaLarge><color=255,255,255>\n\n" .. entryText .. "</color></font>", w - EFGM.ScreenScale(40) )
+            text:Draw(EFGM.ScreenScale(20), EFGM.ScreenScale(20))
 
         end
 
@@ -222,7 +222,7 @@ function Menu.OpenTab.Intel()
                 for k3, v3 in ipairs(v2.Children) do -- jesus christ
                     
                     local subEntry = subEntryList:Add("DButton")
-                    subEntry:SetSize(180, 20)
+                    subEntry:SetSize(EFGM.ScreenScale(180), EFGM.ScreenScale(20))
                     subEntry:SetText(v3.Name)
                     function subEntry:DoClick()
 
@@ -259,7 +259,7 @@ function Menu.OpenTab.Shop()
 
         local sellerBackground = vgui.Create("DPanel", contents)
         sellerBackground:Dock(LEFT)
-        sellerBackground:SetSize(650, 0)
+        sellerBackground:SetSize(EFGM.ScreenScale(650), 0)
         sellerBackground:DockPadding(unpack(MenuAlias.margins))
         sellerBackground.Paint = function(s, w, h)
 
@@ -270,12 +270,12 @@ function Menu.OpenTab.Shop()
 
         local sellerInventoryScroller = vgui.Create("DScrollPanel", sellerBackground)
         sellerInventoryScroller:Dock(BOTTOM)
-        sellerInventoryScroller:SetSize(0, 450)
+        sellerInventoryScroller:SetSize(0, EFGM.ScreenScale(450))
         sellerInventoryScroller.Paint = nil
 
         local buyScroller = vgui.Create("DScrollPanel", sellerBackground)
         buyScroller:Dock(TOP)
-        buyScroller:SetSize(0, 200)
+        buyScroller:SetSize(0, EFGM.ScreenScale(200))
         buyScroller.Paint = nil
 
     -- }
@@ -284,7 +284,7 @@ function Menu.OpenTab.Shop()
 
         local playerBackground = vgui.Create("DPanel", contents)
         playerBackground:Dock(RIGHT)
-        playerBackground:SetSize(650, 0)
+        playerBackground:SetSize(EFGM.ScreenScale(650), 0)
         playerBackground:DockPadding(unpack(MenuAlias.margins))
         playerBackground.Paint = function(s, w, h)
 
@@ -295,12 +295,12 @@ function Menu.OpenTab.Shop()
 
         local playerInventoryScroller = vgui.Create("DScrollPanel", playerBackground)
         playerInventoryScroller:Dock(BOTTOM)
-        playerInventoryScroller:SetSize(0, 450)
+        playerInventoryScroller:SetSize(0, EFGM.ScreenScale(450))
         playerInventoryScroller.Paint = nil
 
         local sellScroller = vgui.Create("DScrollPanel", playerBackground)
         sellScroller:Dock(TOP)
-        sellScroller:SetSize(0, 200)
+        sellScroller:SetSize(0, EFGM.ScreenScale(200))
         sellScroller.Paint = nil
 
     -- }
@@ -309,7 +309,7 @@ function Menu.OpenTab.Shop()
 
         local purchaseInfoPanel = vgui.Create("DPanel", contents)
         purchaseInfoPanel:Dock(TOP)
-        purchaseInfoPanel:SetSize(0, 200)
+        purchaseInfoPanel:SetSize(0, EFGM.ScreenScale(200))
         purchaseInfoPanel.Paint = function(s, w, h)
 
             surface.SetDrawColor(MenuAlias.secondaryColor)
@@ -437,12 +437,12 @@ function Menu.OpenTab.Shop()
         local displayName, model, category, price = GetShopIconInfo[type](item)
 
         local iconPanel = iconLayout:Add("DPanel")
-        iconPanel:SetSize(120, 120)
+        iconPanel:SetSize(EFGM.ScreenScale(120), EFGM.ScreenScale(120))
 
         function iconPanel:Paint(w, h)
 
             surface.SetDrawColor(MenuAlias.secondaryColor)
-            surface.DrawRect(5, 5, w, h)
+            surface.DrawRect(EFGM.ScreenScale(5), EFGM.ScreenScale(5), w, h)
 
             draw.SimpleText(displayName, "DermaDefaultBold", w / 2, 7, MenuAlias.blackColor, TEXT_ALIGN_CENTER)
             draw.SimpleText(countNames[count] or count, "DermaDefaultBold", w / 2, h - 7, MenuAlias.blackColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
@@ -450,7 +450,7 @@ function Menu.OpenTab.Shop()
         end
 
         iconPanel.spawnButton = vgui.Create("SpawnIcon", iconPanel)
-        iconPanel.spawnButton:SetSize(80, 80)
+        iconPanel.spawnButton:SetSize(EFGM.ScreenScale(80), EFGM.ScreenScale(80))
         iconPanel.spawnButton:Center()
         iconPanel.spawnButton:SetModel(model)
         iconPanel.spawnButton:SetTooltip(displayName .." (".. revCat[category] ..")\n$"..price)
@@ -619,7 +619,7 @@ function Menu.OpenTab.Stats()
 
     local contents = vgui.Create("DPanel", Menu.MenuFrame.LowerPanel)
     contents:Dock(FILL)
-    contents:DockPadding(10, 10, 10, 10)
+    contents:DockPadding(EFGM.ScreenScale(10), EFGM.ScreenScale(10), EFGM.ScreenScale(10), EFGM.ScreenScale(10))
     contents.Paint = function(s, w, h)
 
         surface.SetDrawColor(MenuAlias.secondaryColor)
@@ -631,15 +631,15 @@ function Menu.OpenTab.Stats()
 
     local importantStatsSP = vgui.Create("DScrollPanel", contents)
     importantStatsSP:Dock(LEFT)
-    importantStatsSP:SetSize(400, 0)
+    importantStatsSP:SetSize(EFGM.ScreenScale(400), 0)
 
     local importantStats = vgui.Create("DPanel", importantStatsSP)
     importantStats:Dock(TOP)
-    importantStats:SetSize(0, 500)
+    importantStats:SetSize(0, EFGM.ScreenScale(500))
 
     local playerInfo = vgui.Create("DPanel", contents)
     playerInfo:Dock(TOP)
-    playerInfo:SetSize(0, 300)
+    playerInfo:SetSize(0, EFGM.ScreenScale(300))
 
     -- only temporary, I gotta find a way to automate this shit
 
@@ -667,7 +667,7 @@ function Menu.OpenTab.Stats()
         
         local statEntry = vgui.Create("DPanel", importantStats)
         statEntry:Dock(TOP)
-        statEntry:SetSize(0, 30)
+        statEntry:SetSize(0, EFGM.ScreenScale(30))
         function statEntry:Paint(w, h)
 
             draw.SimpleText(k.." = "..v, "DermaDefault", 15, 15, MenuAlias.blackColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)

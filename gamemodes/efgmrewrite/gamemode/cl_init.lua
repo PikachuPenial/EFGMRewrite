@@ -15,10 +15,7 @@ for _, v in ipairs(file.Find("gamemodes/efgmrewrite/gamemode/intel/*.lua", "GAME
 end
 
 -- fonts
-surface.CreateFont("Bender24", {
-	font = "Bender",
-	size = 24,
-} )
+surface.CreateFont("Bender24", {font = "Bender", size = EFGM.ScreenScale(24), weight = 550, blursize = EFGM.ScreenScale(0.3), antialias = true, extended = true})
 
 -- why is this box shit here
 --[[hook.Add( "PostDrawTranslucentRenderables", "Boxxie", function()
