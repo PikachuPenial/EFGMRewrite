@@ -4,7 +4,9 @@
 
 util.AddNetworkString("RequestTransactionShop")
 
-function ShopTransaction(ply, buy, sell)
+-- this entire thing is deprecated, TODO
+
+--[[ function ShopTransaction(ply, buy, sell)
 
     -- will be like buy and sell mixed into one
 
@@ -130,4 +132,4 @@ net.Receive("RequestTransactionShop", function(len, ply)
 
     ShopTransaction(ply, buy, sell)
 
-end)
+end) ]]

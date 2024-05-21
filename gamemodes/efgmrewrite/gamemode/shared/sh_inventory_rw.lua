@@ -4,9 +4,11 @@
 local plyMeta = FindMetaTable( "Player" )
 if not plyMeta then Error("Could not find player table") return end
 
-INVRW = {} -- will be renamed to INV once the new system deprecates the old one
+INVG = {} -- will be renamed to INV once the new system deprecates the old one
 
-function INVRW:__call() -- __call just means doing just "INV(args)" would run this function
+-- just now realizing this entire structure isnt gonna work with the grid system :soggy:
+
+function INVG:__call() -- __call just means doing just "INV(args)" would run this function
 
     local inventory = {}
 
@@ -61,22 +63,26 @@ function INVRW:__call() -- __call just means doing just "INV(args)" would run th
 
     end
 
+    function inventory:FindOpenSlot()
+
+        for k, v in pairs(self.contents) do
+            
+            if v.pos == pos then return k, v.type, v.count end
+
+        end
+
+        return nil
+
+    end
+
     return inventory
 
 end
 
 -- SQLData: LocationInformation INTEGER, Name TEXT, Count INTEGER, Type INTEGER, Owner INTEGER
-function INVRW.SQLToInventory(sqlData)
+function INVG.SQLToInventory(sqlData)
 
-    local inventory = INVRW()
-
-    for k, v in pairs( sqlData ) do
-
-        inventory:AddItem(v.ItemName, tonumber( v.ItemType ), tonumber( v.ItemCount ))
-        
-    end
-
-    return inventory
+    -- deprecated, TODO later
 
 end
 
@@ -90,7 +96,7 @@ if SERVER then
     
         -- blacklist is just a lookup table basically
     
-        local inventory = INV()
+        local inventory = INVG()
     
         for k, v in pairs(self:GetWeapons()) do
     
@@ -116,24 +122,20 @@ if SERVER then
 
         if table.IsEmpty( inventory.contents ) then return nil end
 
-        -- print("Getting inventory of " .. self:GetName())
-        -- PrintTable(inventory.contents)
-
         return inventory
     
     end
 
     function plyMeta:GiveInventory(inventory)
 
+        -- TODO: add support for the grid
+
         if inventory == nil then return nil end
 
-        local remainingInventory = INV()
+        local remainingInventory = INVG()
 
         for k, v in pairs(inventory.contents) do
 
-            -- print(k..":")
-            -- PrintTable(v)
-            
             if self:HasWeapon(k) && v.type == 1 then
 
                 remainingInventory:AddItem(k, 1, 1)
@@ -148,11 +150,60 @@ if SERVER then
 
         if table.IsEmpty( remainingInventory.contents ) then return nil end
 
-        -- print("Giving inventory to " .. self:GetName())
-        -- PrintTable(remainingInventory.contents)
-
         return remainingInventory
 
     end
     
 end
+
+function INVG.LocationInformationTOPos( locationInformation )
+
+    -- handles overflows
+    if locationInformation > 4294967295 then return nil end
+
+    -- yeah this fuckery actually works im suprised too
+    local pos = {}
+
+    pos.y = bit.rshift( bit.band( locationInformation, 4294901760 ), 16 ) + 1 -- evil floating point bit level hacking
+    pos.x = bit.band( locationInformation, 32767 ) + 1 -- what the fuck?
+    pos.as = bit.rshift( bit.band( locationInformation, 32768 ), 15)
+
+    return pos
+
+end
+concommand.Add("efgm_debug_loctopos", function(ply, cmd, args)
+
+    local loadoutInformation = tonumber( args[1] )
+
+    print("Input:")
+    print( loadoutInformation )
+    print("Output")
+    PrintTable( INVG.LocationInformationTOPos( loadoutInformation ) or {"You broke it"} )
+
+end)
+
+function INVG.PosTOLocationInformation( pos )
+
+    -- these handle overflows
+    if pos.x > 32767 then return nil end
+    if pos.y > 65535 then return nil end
+    if pos.as > 1 then return nil end
+
+    local locationInformation = (pos.x - 1) + ((pos.y - 1) * 65536) + (pos.as * 32768)
+
+    return locationInformation
+
+end
+concommand.Add("efgm_debug_postoloc", function(ply, cmd, args)
+
+    local pos = {}
+    pos.x = tonumber( args[1] )
+    pos.y = tonumber( args[2] )
+    pos.as = tonumber( args[3] or 0 )
+
+    print("Input:")
+    PrintTable( pos )
+    print("Output")
+    print( INVG.PosTOLocationInformation( pos ) or -1 )
+
+end)

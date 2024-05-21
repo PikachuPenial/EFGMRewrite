@@ -36,25 +36,9 @@ function GM:Initialize()
 
 end
 
-local defaultLoadout = INV()
-defaultLoadout:AddItem("arc9_eft_m9a3", 1, 1)
-defaultLoadout:AddItem("weapon_crowbar", 1, 1)
--- no ammo bc dupe lmao
-
-local blacklist = {}
-blacklist["arc9_eft_m9a3"] = true
-blacklist["weapon_crowbar"] = true
-
 local function GetArenaLoadout()
 
-    local loadout = INV()
-
-    -- infinite ammo btw
-    loadout:AddItem(debugPrimWep[math.random(#debugPrimWep)], 1, 1)
-    loadout:AddItem(debugSecWep[math.random(#debugSecWep)], 1, 1)
-    loadout:AddItem("weapon_crowbar", 1, 1)
-
-    return loadout
+    print("If you're seeing this in the console, remind Portanator to fix his gamemode")
 
 end
 
@@ -77,8 +61,7 @@ function GM:PlayerSpawn(ply)
 	ply:SetupHands()
 	ply:AddEFlags(EFL_NO_DAMAGE_FORCES) -- disables knockback being applied when damage is taken
 
-    -- loadout shit is broken, i forgot what i did to it so ima just comment it out for now
-    -- LOADOUT.EquipLoadout(ply)
+    LOADOUT.Equip(ply)
 
 	ply:SetRaidStatus(0, "")
 

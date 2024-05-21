@@ -23,117 +23,73 @@ hook.Add("Initialize", "SaveInitialize", function()
 
 end)
 
-hook.Add("PlayerDisconnected", "SaveDisconnect", function(ply)
+-- hook.Add("PlayerDisconnected", "SaveDisconnect", function(ply)
 
-    if !ply:CompareStatus(0) then return end
+--     if !ply:CompareStatus(0) then return end
 
-    LOADOUT.StoreData(ply)
+--     LOADOUT.StoreData(ply)
 
-end)
+-- end)
 
-hook.Add("ShutDown", "SaveShutdown", function()
+-- hook.Add("ShutDown", "SaveShutdown", function()
 
-    for k, ply in pairs(player.GetHumans()) do
+--     for k, ply in pairs(player.GetHumans()) do
         
-        if !ply:CompareStatus(0) then return end
+--         if !ply:CompareStatus(0) then return end
 
-        LOADOUT.StoreData(ply)
+--         LOADOUT.StoreData(ply)
 
-    end
+--     end
 
-end)
+-- end)
 
-function LOADOUT.StoreData(ply)
+-- function LOADOUT.StoreData(ply)
 
-    local steamID = ply:SteamID64() or HostID
+--     local steamID = ply:SteamID64() or HostID
 
-    local saveInventory = ply:GetInventory()
+--     local saveInventory = ply:GetInventory()
 
-    if saveInventory == nil then return end
+--     if saveInventory == nil then return end
 
-    for k, v in pairs(saveInventory.contents) do
+--     for k, v in pairs(saveInventory.contents) do
         
-        -- i escaped the item name because idk i feel like the chances of somebody somehow doing an sql injection with an item are low but not zero
-        sql.Query( "INSERT INTO EFGMSaveData (ItemName, ItemCount, ItemType, ItemOwner) VALUES (".. SQLStr(k) ..", ".. v.count ..", ".. v.type ..", ".. steamID ..");" )
+--         -- i escaped the item name because idk i feel like the chances of somebody somehow doing an sql injection with an item are low but not zero
+--         sql.Query( "INSERT INTO EFGMSaveData (ItemName, ItemCount, ItemType, ItemOwner) VALUES (".. SQLStr(k) ..", ".. v.count ..", ".. v.type ..", ".. steamID ..");" )
 
-    end
+--     end
     
-end
+-- end
 
-function LOADOUT.RetrieveData(ply)
+-- function LOADOUT.RetrieveData(ply)
 
-    local steamID = ply:SteamID64() or HostID
+--     local steamID = ply:SteamID64() or HostID
 
-    local query = sql.Query( "SELECT ItemName, ItemCount, ItemType FROM EFGMSaveData WHERE ItemOwner = ".. steamID ..";" )
+--     local query = sql.Query( "SELECT ItemName, ItemCount, ItemType FROM EFGMSaveData WHERE ItemOwner = ".. steamID ..";" )
 
-    if query == "NULL" or query == nil then return nil end -- if query is empty returns nil
+--     if query == "NULL" or query == nil then return nil end -- if query is empty returns nil
 
-    local saveData = INV.SQLToInventory(query) 
+--     local saveData = INV.SQLToInventory(query) 
 
-    return saveData
+--     return saveData
 
-end
+-- end
 
-function LOADOUT.WipePlayerData(ply)
+-- function LOADOUT.WipePlayerData(ply)
 
-    local steamID = ply:SteamID64() or HostID
+--     local steamID = ply:SteamID64() or HostID
 
-    sql.Query( "DELETE FROM EFGMSaveData WHERE ItemOwner = ".. steamID ..";" )
+--     sql.Query( "DELETE FROM EFGMSaveData WHERE ItemOwner = ".. steamID ..";" )
 
-end
+-- end
 
-function LOADOUT.WipeData()
+-- function LOADOUT.WipeData()
 
-    sql.Query( "DELETE FROM EFGMSaveData;" )
+--     sql.Query( "DELETE FROM EFGMSaveData;" )
 
-end
+-- end
 
-function LOADOUT.LocationInformationTOPos( locationInformation )
+function LOADOUT.Equip(ply)
 
-    -- handles overflows
-    if locationInformation > 4294967295 then return nil end
-
-    -- yeah this fuckery actually works im suprised too
-    local pos = {}
-
-    pos.y = bit.rshift( bit.band( locationInformation, 4294901760 ), 16 ) + 1
-    pos.x = bit.band( locationInformation, 65535 ) + 1
-
-    return pos
+    -- TODO
 
 end
-concommand.Add("efgm_debug_loctopos", function(ply, cmd, args)
-
-    local loadoutInformation = tonumber( args[1] )
-
-    print("Input:")
-    print( loadoutInformation )
-    print("Output")
-    PrintTable( LOADOUT.LocationInformationTOPos( loadoutInformation ) )
-
-end)
-
-function LOADOUT.PosTOLocationInformation( pos, isActiveSlot )
-
-    -- these handle overflows
-    if pos.x > 32767 then return nil end
-    if pos.y > 65535 then return nil end
-
-    local locationInformation = (pos.x - 1) + (pos.y - 1) * 65536
-    if isActiveSlot or false then locationInformation = locationInformation + 32768 end
-
-    return locationInformation
-
-end
-concommand.Add("efgm_debug_postoloc", function(ply, cmd, args)
-
-    local pos = {}
-    pos.x = tonumber( args[1] )
-    pos.y = tonumber( args[2] )
-
-    print("Input:")
-    PrintTable( pos )
-    print("Output")
-    print( LOADOUT.PosTOLocationInformation( pos ) or -1 )
-
-end)
