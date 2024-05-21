@@ -15,5 +15,10 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
             -- net.WriteInt(raidStatus)
             -- net.Send(ply)
         end
+
+        -- magazine check
+        if button == ply:GetInfoNum("efgm_bind_magcheck", KEY_B) then
+            return
+        end
     end
-end)
+end)    
