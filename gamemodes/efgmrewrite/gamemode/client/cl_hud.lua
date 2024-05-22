@@ -12,7 +12,7 @@ end
 local function DebugRaidTime()
     surface.SetTextColor(Color(255, 255, 255))
     surface.SetFont("Bender24")
-    surface.SetTextPos(EFGM.ScreenScale(10), EFGM.ScreenScale(10))
+    surface.SetTextPos(EFGM.ScreenScale(20), EFGM.ScreenScale(20))
 
     -- time logic
 
@@ -29,6 +29,26 @@ local function DebugRaidTime()
 
 end
 hook.Add("HUDPaint", "DrawTimer", DebugRaidTime)
+
+-- players current weapon and ammo
+local function RenderPlayerWeapon()
+    local wep = LocalPlayer():GetActiveWeapon()
+    local ammo = wep:Clip1()
+    local name = wep:GetPrintName()
+    surface.SetFont("BenderAmmoCount")
+    local ammoTextSize = surface.GetTextSize(ammo) + EFGM.ScreenScale(10)
+    surface.SetFont("BenderWeaponName")
+    local nameTextSize = surface.GetTextSize(name) + EFGM.ScreenScale(10)
+
+    -- ammo
+    surface.SetDrawColor(0, 0, 0, 128)
+    surface.DrawRect(ScrW() - EFGM.ScreenScale(37) - ammoTextSize, ScrH() - EFGM.ScreenScale(75), ammoTextSize + EFGM.ScreenScale(17), EFGM.ScreenScale(35))
+    draw.DrawText(tostring(ammo), "BenderAmmoCount", ScrW() - EFGM.ScreenScale(34), ScrH() - EFGM.ScreenScale(74), Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT)
+
+    -- weapon name
+    draw.DrawText(name, "BenderWeaponName", ScrW() - EFGM.ScreenScale(20), ScrH() - EFGM.ScreenScale(40), Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT)
+end
+hook.Add("HUDPaint", "DrawPlayerWeapon", RenderPlayerWeapon)
 
 -- players current stance and health
 

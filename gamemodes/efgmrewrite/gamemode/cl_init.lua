@@ -16,6 +16,8 @@ end
 
 -- fonts
 surface.CreateFont("Bender24", {font = "Bender", size = EFGM.ScreenScale(24), weight = 550, blursize = EFGM.ScreenScale(0.3), antialias = true, extended = true})
+surface.CreateFont("BenderAmmoCount", { font = "Bender", size = EFGM.ScreenScale(32), weight = 550, blursize = EFGM.ScreenScale(0.3), antialias = true, extended = true })
+surface.CreateFont("BenderWeaponName", { font = "Bender", size = EFGM.ScreenScale(21), weight = 550, blursize = EFGM.ScreenScale(0.3), antialias = true, extended = true })
 
 -- why is this box shit here
 --[[hook.Add( "PostDrawTranslucentRenderables", "Boxxie", function()
