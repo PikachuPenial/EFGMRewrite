@@ -56,9 +56,9 @@ if SERVER then
 
     -- physics
     RunConsoleCommand("arc9_bullet_physics", "1")
-    RunConsoleCommand("arc9_bullet_gravity", "1.0")
-    RunConsoleCommand("arc9_bullet_drag", "1.0")
-    RunConsoleCommand("arc9_ricochet", "0")
+    RunConsoleCommand("arc9_bullet_gravity", "2")
+    RunConsoleCommand("arc9_bullet_drag", "1.5")
+    RunConsoleCommand("arc9_ricochet", "1")
     RunConsoleCommand("arc9_mod_penetration", "1")
     RunConsoleCommand("arc9_bullet_lifetime", "5")
     RunConsoleCommand("arc9_bullet_imaginary", "1")
@@ -66,6 +66,9 @@ if SERVER then
     -- true names
     RunConsoleCommand("arc9_truenames_enforced", "1")
     RunConsoleCommand("arc9_truenames_default", "1")
+
+    -- hud
+    RunConsoleCommand("arc9_hud_force_disable", "1")
 
     -- attachments
     RunConsoleCommand("arc9_atts_nocustomize", "0") -- why would anyone do this
@@ -80,7 +83,7 @@ end
 if CLIENT then
     -- controls
     RunConsoleCommand("arc9_toggleads", "0")
-    RunConsoleCommand("arc9_autolean", "1")
+    RunConsoleCommand("arc9_autolean", "0")
     RunConsoleCommand("arc9_autoreload", "0")
     RunConsoleCommand("arc9_togglelean", "0")
     RunConsoleCommand("arc9_togglepeek", "0")
@@ -99,10 +102,19 @@ if CLIENT then
     RunConsoleCommand("arc9_hud_arc9", "0")
     RunConsoleCommand("arc9_killfeed_enable", "1")
     RunConsoleCommand("arc9_killfeed_dynamic", "1")
-    RunConsoleCommand("arc9_killfeed_color", "0")
+    RunConsoleCommand("arc9_killfeed_colour", "1")
     RunConsoleCommand("arc9_breath_hud", "1")
     RunConsoleCommand("arc9_breath_pp", "1")
     RunConsoleCommand("arc9_breath_sfx", "1")
+
+    -- hints
+    RunConsoleCommand("arc9_hud_nohints", "1")
+    RunConsoleCommand("arc9_center_reload_enable", "0")
+    RunConsoleCommand("arc9_center_bipod", "1")
+    RunConsoleCommand("arc9_center_jam", "1")
+    RunConsoleCommand("arc9_center_firemode", "1")
+    RunConsoleCommand("arc9_center_firemode_time", "1")
+    RunConsoleCommand("arc9_center_overheat", "0")
 
     -- vm
     RunConsoleCommand("arc9_vm_bobstyle", "0")
