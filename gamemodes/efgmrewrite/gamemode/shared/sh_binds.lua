@@ -18,7 +18,10 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
 
         -- magazine check
         if button == ply:GetInfoNum("efgm_bind_magcheck", KEY_B) then
-            return
+            if ply:GetActiveWeapon():HasAnimation("magcheck") then
+                ply:GetActiveWeapon():PlayAnimation("magcheck", 1, true)
+                return
+            end
         end
     end
 end)    
