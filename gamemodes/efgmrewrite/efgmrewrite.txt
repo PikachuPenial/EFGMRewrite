@@ -3,7 +3,7 @@
 	"base"		"base"
 	"title"		"EFGM Rewrite"
 	"maps"		"^efgm_"
-	"workshopid"	"2792129130"
+	"workshopid"	"2998712586"
 	"category"	"pvp"
 	"menusystem"	"1"
 
