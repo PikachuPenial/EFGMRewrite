@@ -58,8 +58,8 @@ if SERVER then
 
     -- physics
     RunConsoleCommand("arc9_bullet_physics", "1")
-    RunConsoleCommand("arc9_bullet_gravity", "2")
-    RunConsoleCommand("arc9_bullet_drag", "1.5")
+    RunConsoleCommand("arc9_bullet_gravity", "1.75")
+    RunConsoleCommand("arc9_bullet_drag", "1.25")
     RunConsoleCommand("arc9_ricochet", "1")
     RunConsoleCommand("arc9_mod_penetration", "1")
     RunConsoleCommand("arc9_bullet_lifetime", "5")
@@ -79,6 +79,12 @@ if SERVER then
     RunConsoleCommand("arc9_atts_lock", "0")
     RunConsoleCommand("arc9_atts_loseondie", "1")
     RunConsoleCommand("arc9_atts_generateentities", "1")
+
+    -- dynamic height 
+    RunConsoleCommand("sv_ec2_dynamicheight", "0")
+    RunConsoleCommand("sv_ec2_dynamicheight_min", "42")
+    RunConsoleCommand("sv_ec2_dynamicheight_max", "64")
+    RunConsoleCommand("sv_ec2_staticheight", "1")
 end
 
 -- client convars
@@ -174,4 +180,10 @@ if CLIENT then
     RunConsoleCommand("arc9_precache_allsounds_onstartup", "1")
     RunConsoleCommand("arc9_precache_attsmodels_onstartup", "0")
     RunConsoleCommand("arc9_precache_wepmodels_onstartup", "0")
+
+    -- dynamic height
+    RunConsoleCommand("cl_ec2_enabled", "1")
+    RunConsoleCommand("cl_ec2_dynamicheight", "0")
+    RunConsoleCommand("cl_ec2_staticheight", "1")
+    RunConsoleCommand("cl_ec2_showhair", "0")
 end

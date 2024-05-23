@@ -145,6 +145,10 @@ local function RenderPlayerStance(ply)
     surface.DrawTexturedRect(EFGM.ScreenScale(25), ScrH() - EFGM.ScreenScale(151), EFGM.ScreenScale(127), EFGM.ScreenScale(114))
 end
 
+local function RenderPlayerOverlays(ply)
+    return
+end
+
 local function DrawHUD()
     ply = LocalPlayer()
     if not ply:Alive() then return end
@@ -152,6 +156,7 @@ local function DrawHUD()
     DebugRaidTime()
     RenderPlayerWeapon(ply)
     RenderPlayerStance(ply)
+    RenderPlayerOverlays(ply)
 end
 hook.Add("HUDPaint", "DrawHUD", DrawHUD)
 
@@ -176,7 +181,7 @@ end
 hook.Add("HUDItemPickedUp", "ItemPickedUp", DrawItemInfo)
 
 function HideHud(name)
-    for k, v in pairs({"CHudHealth", "CHudBattery", "CHudAmmo", "CHudSecondaryAmmo", "CHudCrosshair"}) do
+    for k, v in pairs({"CHudHealth", "CHudBattery", "CHudAmmo", "CHudSecondaryAmmo", "CHudZoom", "CHudVoiceStatus", "CHudDamageIndicator", "CHUDQuickInfo", "CHudCrosshair"}) do
         if name == v then
             return false
         end

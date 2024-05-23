@@ -34,6 +34,10 @@ function GM:Initialize()
 
 	print("Escape From Garry's Mod Rewrite has been initialized on " .. game.GetMap())
 
+	RunConsoleCommand("sv_airaccelerate", "2") 		-- what is a titanmod?
+	RunConsoleCommand("mp_falldamage", "1") 		-- what is a titanmod? part two, electric boogaloo
+	RunConsoleCommand("mp_show_voice_icons", "0") 	-- disable vc icons over heads
+	RunConsoleCommand("mp_friendlyfire", "1") 		-- take a wild guess
 end
 
 local function GetArenaLoadout(ply)
@@ -56,8 +60,8 @@ function GM:PlayerSpawn(ply)
 	ply:SetSlowWalkSpeed(78)
 
 	ply:SetCrouchedWalkSpeed(0.45)
-	ply:SetDuckSpeed(0.48)
-	ply:SetUnDuckSpeed(0.48)
+	ply:SetDuckSpeed(0.53)
+	ply:SetUnDuckSpeed(0.53)
 
 	ply:SetModel("models/player/Group01/male_07.mdl")
 	ply:SetupHands()
@@ -91,10 +95,15 @@ function GM:PlayerDeath(victim, inflictor, attacker)
     -- backpack:Activate()
     -- backpack:SetContents( victim:GetInventory( blacklist ), victim )
 
+	-- death sound
+	victim:EmitSound(Sound("deathsounds/" .. math.random(1, 116) .. ".wav"), 80)
+
 	-- respawn timer
-	timer.Create(victim:SteamID() .. "respawnTime", 8, 1, function() victim:Spawn() end)
+	timer.Create(victim:SteamID() .. "respawnTime", 10, 1, function() victim:Spawn() end)
 
 end
+
+hook.Add("PlayerDeathSound", "RemoveDefaultDeathSound", function() return true end)
 
 function GM:ScalePlayerDamage(target, hitgroup, dmginfo)
 	dmginfo:ScaleDamage(1)
@@ -106,11 +115,29 @@ hook.Add( "PlayerShouldTakeDamage", "AntiLobbyKill", function(victim, attacker)
 
 end )
 
+hook.Add( "OnPlayerHitGround", "VelocityLimiter", function( ply, inWater, onFloater, speed) 
+
+	local vel = ply:GetVelocity()
+	ply:SetVelocity(Vector(-vel.x / 2, -vel.y / 2, 0))
+
+end )
+
 -- prevent respawning if under a respawn timer
 hook.Add( "PlayerDeathThink", "SpawnLock", function(ply) 
 	
 	if timer.Exists(ply:SteamID() .. "respawnTime") then
 		return false
+	end
+
+end )
+
+-- modifies voice chat to be proximity based
+hook.Add( "PlayerCanHearPlayersVoice", "ProxVOIP", function(listener,talker)
+
+	if (tonumber(listener:GetPos():Distance(talker:GetPos())) > 1050) then -- 20~ meter voice distance
+		return false, false
+	else
+		return true, true
 	end
 
 end )

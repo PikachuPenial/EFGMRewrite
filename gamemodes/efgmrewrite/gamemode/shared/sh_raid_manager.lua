@@ -5,13 +5,13 @@ local plyMeta = FindMetaTable( "Player" )
 if not plyMeta then Error("Could not find player table") return end
 
 if SERVER then
-    
+
     util.AddNetworkString( "RequestExtracts" )
 
     RAID.VoteTime = 90
     RAID.PlayersInRaid = {} -- [SteamID64] = Player
 
-    RAID.MapPool = {["efgm_concrete"] = 0, ["efgm_ravine_interior"] = 0} -- only two rn ["map"] = numberofvotes
+    RAID.MapPool = {["efgm_concrete"] = 0, ["efgm_factory_rw"] = 0} -- only two rn ["map"] = numberofvotes
 
     SetGlobalInt("RaidTimeLeft", -1)
     SetGlobalInt("RaidStatus", raidStatus.PENDING) -- uses sh_enums
