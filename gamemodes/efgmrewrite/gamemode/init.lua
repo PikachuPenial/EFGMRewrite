@@ -63,7 +63,7 @@ function GM:PlayerSpawn(ply)
 	ply:SetupHands()
 	ply:AddEFlags(EFL_NO_DAMAGE_FORCES) -- disables knockback being applied when damage is taken
 
-    LOADOUT.Equip(ply)
+	LOADOUT.Equip(ply)
 	if isArena then GetArenaLoadout(ply) end
 
 	ply:SetRaidStatus(0, "")
@@ -85,11 +85,14 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	-- do nwints and shit for kd and idfk ill find it out when the actual im(port)ant shit is done haha port i said port he said it guys
     -- i did the important shit in sv_stats.lua guys guys i said port again i fucking did it
 
-    local backpack = ents.Create("efgm_backpack")
-    backpack:SetPos(victim:GetPos())
-    backpack:Spawn()
-    backpack:Activate()
-    backpack:SetContents( victim:GetInventory( blacklist ), victim )
+    -- local backpack = ents.Create("efgm_backpack")
+    -- backpack:SetPos(victim:GetPos())
+    -- backpack:Spawn()
+    -- backpack:Activate()
+    -- backpack:SetContents( victim:GetInventory( blacklist ), victim )
+
+	-- respawn timer
+	timer.Create(victim:SteamID() .. "respawnTime", 8, 1, function() victim:Spawn() end)
 
 end
 
@@ -100,5 +103,14 @@ end
 hook.Add( "PlayerShouldTakeDamage", "AntiLobbyKill", function(victim, attacker) 
 	
 	return !victim:CompareStatus(0)
+
+end )
+
+-- prevent respawning if under a respawn timer
+hook.Add( "PlayerDeathThink", "SpawnLock", function(ply) 
+	
+	if timer.Exists(ply:SteamID() .. "respawnTime") then
+		return false
+	end
 
 end )

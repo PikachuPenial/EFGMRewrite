@@ -28,10 +28,9 @@ local function DebugRaidTime()
     surface.DrawText( string.FormattedTime( raidTime, "%2i:%02i" ) .. "\n" .. tempStatusTable[raidStatus] )
 
 end
-hook.Add("HUDPaint", "DrawTimer", DebugRaidTime)
 
 -- players current weapon and ammo
-local function RenderPlayerWeapon()
+local function RenderPlayerWeapon(ply)
     local wep = LocalPlayer():GetActiveWeapon()
     if wep == NULL then return end
 
@@ -59,12 +58,11 @@ local function RenderPlayerWeapon()
     -- weapon name
     draw.DrawText(name, "BenderWeaponName", ScrW() - EFGM.ScreenScale(20), ScrH() - EFGM.ScreenScale(40), Color(214, 214, 214), TEXT_ALIGN_RIGHT)
 end
-hook.Add("HUDPaint", "DrawPlayerWeapon", RenderPlayerWeapon)
 
 -- players current stance and health
 
 local playerStance = 0
-local function RenderPlayerStance()
+local function RenderPlayerStance(ply)
 
     -- variables
     local ply = LocalPlayer()
@@ -146,7 +144,16 @@ local function RenderPlayerStance()
     surface.SetMaterial(Material("stances/crouch.png", "tarkovMaterial"))
     surface.DrawTexturedRect(EFGM.ScreenScale(25), ScrH() - EFGM.ScreenScale(151), EFGM.ScreenScale(127), EFGM.ScreenScale(114))
 end
-hook.Add("HUDPaint", "DrawPlayerStance", RenderPlayerStance)
+
+local function DrawHUD()
+    ply = LocalPlayer()
+    if not ply:Alive() then return end
+
+    DebugRaidTime()
+    RenderPlayerWeapon(ply)
+    RenderPlayerStance(ply)
+end
+hook.Add("HUDPaint", "DrawHUD", DrawHUD)
 
 function DrawTarget()
     return false

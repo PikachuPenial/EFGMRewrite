@@ -18,7 +18,7 @@ if SERVER then
     infAmmo[false] = "0"
 
     -- modifiers
-    local modif = "RecoilAutoControlMult\\t0\\nRecoilPatternDriftMult\\t1.4\\nRecoilKickMult\\t1.25\\nVisualRecoilPunchMult\\t1.5\\nVisualRecoilRollMult\\t1.5\\nVisualRecoilSideMult\\t1.5\\nVisualRecoilUpMult\\t1.5 "
+    local modif = "RecoilAutoControlMult\\t0\\nRecoilKickMult\\t1.25\\nVisualRecoilPunchMult\\t1.5\\nVisualRecoilRollMult\\t1.5\\nVisualRecoilSideMult\\t0.25\\nVisualRecoilUpMult\\t0.25\\nVisualRecoilMult\\t1.66 "
     RunConsoleCommand("arc9_modifiers", modif)
     RunConsoleCommand("arc9_mod_adstime", "1")
     RunConsoleCommand("arc9_mod_bodydamagecancel", "1")
@@ -27,7 +27,7 @@ if SERVER then
     RunConsoleCommand("arc9_mod_headshotdamage", "1")
     RunConsoleCommand("arc9_mod_malfunction", "0.2")
     RunConsoleCommand("arc9_mod_muzzlevelocity", "1")
-    RunConsoleCommand("arc9_mod_recoil", "0.75")
+    RunConsoleCommand("arc9_mod_recoil", "0.55")
     RunConsoleCommand("arc9_mod_rpm", "1")
     RunConsoleCommand("arc9_mod_spread", "1")
     RunConsoleCommand("arc9_mod_sprinttime", "1")
@@ -54,6 +54,7 @@ if SERVER then
     RunConsoleCommand("arc9_breath_slowmo", "0")
     RunConsoleCommand("arc9_manualbolt", "0")
     RunConsoleCommand("arc9_never_ready", "1")
+    RunConsoleCommand("arc9_eft_mult_flashbang", "0.4")
 
     -- physics
     RunConsoleCommand("arc9_bullet_physics", "1")
@@ -132,7 +133,7 @@ if CLIENT then
     -- tpik
     RunConsoleCommand("arc9_tpik", "1")
     RunConsoleCommand("arc9_tpik_others", "1")
-    RunConsoleCommand("arc9_tpik_framerate", "30")
+    RunConsoleCommand("arc9_tpik_framerate", "10")
 
     -- true names
     RunConsoleCommand("arc9_truenames", "1")
