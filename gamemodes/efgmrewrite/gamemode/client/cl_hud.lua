@@ -33,17 +33,28 @@ hook.Add("HUDPaint", "DrawTimer", DebugRaidTime)
 -- players current weapon and ammo
 local function RenderPlayerWeapon()
     local wep = LocalPlayer():GetActiveWeapon()
-    local ammo = wep:Clip1()
+    if wep == NULL then return end
+
     local name = wep:GetPrintName()
+    local ammo = wep:Clip1()
+    local ammoMax = wep:GetMaxClip1()
+    local magstatus
+
+    -- calculate approx. ammo remaining
+    if ammo >= ammoMax * 0.9 then magstatus = "Full"
+    elseif ammo >= ammoMax * 0.8 then magstatus = "Nearly full"
+    elseif ammo >= ammoMax * 0.4 then magstatus = "About half"
+    elseif ammo >= ammoMax * 0.2 then magstatus = "Less than half"
+    elseif ammo >= ammoMax * 0.01 then magstatus = "Almost empty"
+    else magstatus = "Empty" end
+
     surface.SetFont("BenderAmmoCount")
-    local ammoTextSize = surface.GetTextSize(ammo) + EFGM.ScreenScale(10)
-    surface.SetFont("BenderWeaponName")
-    local nameTextSize = surface.GetTextSize(name) + EFGM.ScreenScale(10)
+    local ammoTextSize = surface.GetTextSize(magstatus) + EFGM.ScreenScale(10)
 
     -- ammo
     surface.SetDrawColor(0, 0, 0, 128)
     surface.DrawRect(ScrW() - EFGM.ScreenScale(37) - ammoTextSize, ScrH() - EFGM.ScreenScale(75), ammoTextSize + EFGM.ScreenScale(17), EFGM.ScreenScale(35))
-    draw.DrawText(tostring(ammo), "BenderAmmoCount", ScrW() - EFGM.ScreenScale(34), ScrH() - EFGM.ScreenScale(74), Color(255, 255, 255), TEXT_ALIGN_RIGHT)
+    draw.DrawText(tostring(magstatus), "BenderAmmoCount", ScrW() - EFGM.ScreenScale(34), ScrH() - EFGM.ScreenScale(74), Color(255, 255, 255), TEXT_ALIGN_RIGHT)
 
     -- weapon name
     draw.DrawText(name, "BenderWeaponName", ScrW() - EFGM.ScreenScale(20), ScrH() - EFGM.ScreenScale(40), Color(214, 214, 214), TEXT_ALIGN_RIGHT)
