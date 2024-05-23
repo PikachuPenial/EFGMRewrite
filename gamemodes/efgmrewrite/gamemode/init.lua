@@ -36,9 +36,11 @@ function GM:Initialize()
 
 end
 
-local function GetArenaLoadout()
+local function GetArenaLoadout(ply)
 
-    print("If you're seeing this in the console, remind Portanator to fix his gamemode")
+	ply:Give(debugPrimWep[math.random(#debugPrimWep)])
+	ply:Give(debugSecWep[math.random(#debugSecWep)])
+	ply:Give(debugNadeWep[math.random(#debugNadeWep)])
 
 end
 
@@ -62,6 +64,7 @@ function GM:PlayerSpawn(ply)
 	ply:AddEFlags(EFL_NO_DAMAGE_FORCES) -- disables knockback being applied when damage is taken
 
     LOADOUT.Equip(ply)
+	if isArena then GetArenaLoadout(ply) end
 
 	ply:SetRaidStatus(0, "")
 
