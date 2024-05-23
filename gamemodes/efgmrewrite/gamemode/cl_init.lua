@@ -15,9 +15,22 @@ for _, v in ipairs(file.Find("gamemodes/efgmrewrite/gamemode/intel/*.lua", "GAME
 end
 
 -- fonts
-surface.CreateFont("Bender24", {font = "Bender", size = EFGM.ScreenScale(24), weight = 550, blursize = EFGM.ScreenScale(0.3), antialias = true, extended = true})
-surface.CreateFont("BenderAmmoCount", { font = "Bender", size = EFGM.ScreenScale(32), weight = 550, blursize = EFGM.ScreenScale(0.3), antialias = true, extended = true })
-surface.CreateFont("BenderWeaponName", { font = "Bender", size = EFGM.ScreenScale(21), weight = 550, blursize = EFGM.ScreenScale(0.3), antialias = true, extended = true })
+local function CreateFonts()
+    surface.CreateFont("Bender24", {font = "Bender", size = EFGM.ScreenScale(24), weight = 550, blursize = EFGM.ScreenScale(0.3), antialias = true, extended = true})
+    surface.CreateFont("BenderAmmoCount", { font = "Bender", size = EFGM.ScreenScale(32), weight = 550, blursize = EFGM.ScreenScale(0.3), antialias = true, extended = true })
+    surface.CreateFont("BenderWeaponName", { font = "Bender", size = EFGM.ScreenScale(21), weight = 550, blursize = EFGM.ScreenScale(0.3), antialias = true, extended = true })
+end
+CreateFonts()
+
+-- reload fonts on resolution change
+hook.Add("OnScreenSizeChanged", "ResolutionChange", function()
+    CreateFonts()
+end)
+
+-- reload fonts on hud scale change
+cvars.AddChangeCallback("efgm_hud_scale", function()
+    CreateFonts()
+end)
 
 -- why is this box shit here
 --[[hook.Add( "PostDrawTranslucentRenderables", "Boxxie", function()

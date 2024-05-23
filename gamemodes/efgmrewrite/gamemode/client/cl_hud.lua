@@ -43,10 +43,10 @@ local function RenderPlayerWeapon()
     -- ammo
     surface.SetDrawColor(0, 0, 0, 128)
     surface.DrawRect(ScrW() - EFGM.ScreenScale(37) - ammoTextSize, ScrH() - EFGM.ScreenScale(75), ammoTextSize + EFGM.ScreenScale(17), EFGM.ScreenScale(35))
-    draw.DrawText(tostring(ammo), "BenderAmmoCount", ScrW() - EFGM.ScreenScale(34), ScrH() - EFGM.ScreenScale(74), Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT)
+    draw.DrawText(tostring(ammo), "BenderAmmoCount", ScrW() - EFGM.ScreenScale(34), ScrH() - EFGM.ScreenScale(74), Color(255, 255, 255), TEXT_ALIGN_RIGHT)
 
     -- weapon name
-    draw.DrawText(name, "BenderWeaponName", ScrW() - EFGM.ScreenScale(20), ScrH() - EFGM.ScreenScale(40), Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT)
+    draw.DrawText(name, "BenderWeaponName", ScrW() - EFGM.ScreenScale(20), ScrH() - EFGM.ScreenScale(40), Color(214, 214, 214), TEXT_ALIGN_RIGHT)
 end
 hook.Add("HUDPaint", "DrawPlayerWeapon", RenderPlayerWeapon)
 
