@@ -100,7 +100,8 @@ hook.Add("PlayerInitialSpawn", "InitFirstSpawn", function(ply)
 
 end)
 
-function GM:PlayerDeath(victim, inflictor, attacker)
+-- ima see if setting it to PostPlayerDeath fixes it
+function GM:PostPlayerDeath(victim, inflictor, attacker)
 
 	RAID:RemovePlayer(victim)
 

@@ -266,7 +266,7 @@ if SERVER then
 
     function plyMeta:SetRaidStatus(status, spawnGroup)
 
-        self:SetNWInt( "PlayerRaidStatus", status or 0 )
+        self:SetNWInt( "PlayerRaidStatus", status or self:GetNWString( "PlayerRaidStatus", 0 ) )
         self:SetNWString("PlayerSpawnGroup", spawnGroup or self:GetNWString( "PlayerSpawnGroup", "" ) )
 
     end
@@ -377,8 +377,6 @@ end
 
 function plyMeta:CompareStatus(status) -- if player is in raid then status of 0 will return false
 
-    status = status or 0
-
-    return self:GetNWInt("PlayerRaidStatus", 0) == status
+    return self:GetNWInt("PlayerRaidStatus", 0) == status or 0
 
 end
