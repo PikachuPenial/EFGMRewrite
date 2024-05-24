@@ -65,7 +65,6 @@ local playerStance = 0
 local function RenderPlayerStance(ply)
 
     -- variables
-    local ply = LocalPlayer()
     local health = ply:Health()
     local maxHealth = ply:GetMaxHealth()
 
@@ -146,6 +145,7 @@ local function RenderPlayerStance(ply)
 end
 
 local function RenderPlayerOverlays(ply)
+    -- i dont want to play with you anymore RenderPlayerOverlays()
     return
 end
 
@@ -188,6 +188,11 @@ function HideHud(name)
     end
 end
 hook.Add("HUDShouldDraw", "HideDefaultHud", HideHud)
+
+-- hide scoreboard while in raid
+hook.Add("ScoreboardShow", "PreventScoreboardInRaid", function()
+    if !LocalPlayer():CompareStatus(0) then return false end
+end )
 
 -- hide voice chat panels
 hook.Add("PlayerStartVoice", "ImageOnVoice", function()
