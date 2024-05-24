@@ -1,10 +1,3 @@
--- free look
-limV = 35
-limH = 70
-smooth = 0.5
-blockads = false
-blockshoot = true
-
 -- weapon arrays for gameplay testing purposes
 debugPrimWep = {"arc9_eft_adar15", "arc9_eft_tx15", "arc9_eft_sag_ak545", "arc9_eft_sag_ak545short", "arc9_eft_svt", "arc9_eft_sks", "arc9_eft_vpo136", "arc9_eft_vpo209", "arc9_eft_ak101", "arc9_eft_ak102", "arc9_eft_ak103", "arc9_eft_ak104", "arc9_eft_ak105", "arc9_eft_ak12", "arc9_eft_ak74", "arc9_eft_ak74m", "arc9_eft_akm", "arc9_eft_akms", "arc9_eft_aks74", "arc9_eft_aks74u", "arc9_eft_asval", "arc9_eft_ash12", "arc9_eft_m4a1", "arc9_eft_sa58", "arc9_eft_scarh", "arc9_eft_scarl", "arc9_eft_hk416", "arc9_eft_rd704", "arc9_eft_mcx", "arc9_eft_spear", "arc9_eft_auga1", "arc9_eft_aug", "arc9_eft_avt", "arc9_eft_pkm", "arc9_eft_pkp", "arc9_eft_rpd", "arc9_eft_rpk16", "arc9_eft_m3super90", "arc9_eft_mr43", "arc9_eft_m870", "arc9_eft_saiga12k", "arc9_eft_ks23", "arc9_eft_toz106", "arc9_eft_ai_axmc", "arc9_eft_sr25", "arc9_eft_mosin_infantry", "arc9_eft_mosin_sniper", "arc9_eft_mp18", "arc9_eft_rsass", "arc9_eft_sv98", "arc9_eft_svds", "arc9_eft_vss", "arc9_eft_mp9", "arc9_eft_mp9n", "arc9_eft_fn_p90", "arc9_eft_mp7a1", "arc9_eft_mp7a2", "arc9_eft_ump", "arc9_eft_pp1901", "arc9_eft_kedr", "arc9_eft_ppsh41", "arc9_eft_saiga9", "arc9_eft_mpx", "arc9_eft_stm9", "arc9_eft_sr2m", "arc9_eft_fn40gl"}
 debugSecWep = {"arc9_eft_m9a3", "arc9_eft_fn57", "arc9_eft_glock17", "arc9_eft_glock18c", "arc9_eft_glock19x", "arc9_eft_usp", "arc9_eft_pm", "arc9_eft_pb", "arc9_eft_rsh12", "arc9_eft_p226r", "arc9_eft_sr1mp", "arc9_eft_tt33", "arc9_eft_mr43_sawedoff"}
@@ -54,6 +47,7 @@ if SERVER then
     RunConsoleCommand("arc9_never_ready", "1")
     RunConsoleCommand("arc9_eft_mult_flashbang", "0.4")
     RunConsoleCommand("arc9_eft_taran_jam", "0")
+    RunConsoleCommand("sv_vmanip_pickups", "1")
 
     -- physics
     RunConsoleCommand("arc9_bullet_physics", "1")
@@ -94,8 +88,8 @@ if CLIENT then
     RunConsoleCommand("arc9_toggleads", "0")
     RunConsoleCommand("arc9_autolean", "0")
     RunConsoleCommand("arc9_autoreload", "0")
-    RunConsoleCommand("arc9_togglelean", "0")
-    RunConsoleCommand("arc9_togglepeek", "0")
+    RunConsoleCommand("arc9_togglelean", "1")
+    RunConsoleCommand("arc9_togglepeek", "1")
     RunConsoleCommand("arc9_togglepeek_reset", "0")
     RunConsoleCommand("arc9_togglebreath", "0")
 
@@ -115,6 +109,7 @@ if CLIENT then
     RunConsoleCommand("arc9_breath_hud", "1")
     RunConsoleCommand("arc9_breath_pp", "1")
     RunConsoleCommand("arc9_breath_sfx", "1")
+    RunConsoleCommand("cl_vmanip_pickups_halo", "0")
 
     -- hints
     RunConsoleCommand("arc9_hud_nohints", "1")
@@ -136,6 +131,8 @@ if CLIENT then
     RunConsoleCommand("arc9_vm_cambob", "1")
     RunConsoleCommand("arc9_vm_cambobwalk", "1")
     RunConsoleCommand("arc9_vm_cambobintensity", "0.66")
+    RunConsoleCommand("vmanip_dooranim_hybridanim", "1")
+    RunConsoleCommand("vmanip_dooranim_screenbob", "1")
 
     -- tpik
     RunConsoleCommand("arc9_tpik", "1")
@@ -150,7 +147,7 @@ if CLIENT then
     RunConsoleCommand("arc9_allflash", "1")
 
     -- fx
-    RunConsoleCommand("arc9_cust_blur", "0")
+    RunConsoleCommand("arc9_cust_blur", "1")
     RunConsoleCommand("arc9_fx_reloadblur", "0")
     RunConsoleCommand("arc9_fx_animblur", "0")
     RunConsoleCommand("arc9_fx_rtblur", "0")

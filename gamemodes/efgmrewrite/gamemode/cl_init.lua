@@ -60,18 +60,20 @@ hook.Add("CalcView", "PovDeath", function(ply, pos, angles, fov)
 end)
 
 -- free look
+local limV = 35
+local limH = 70
+local smooth = 0.8
+local blockads = false
+local blockshoot = true
+
 local freelooking = false
+
 concommand.Add("+freelook", function(ply, cmd, args) freelooking = true end)
 concommand.Add("-freelook", function(ply, cmd, args) freelooking = false end)
 
 local LookX, LookY = 0, 0
 local InitialAng, CoolAng = Angle(), Angle()
 local ZeroAngle = Angle()
-
-local function isinsights(ply)
-    local weapon = ply:GetActiveWeapon()
-    return blockads and (ply:KeyDown(IN_ATTACK2) or (weapon.GetInSights and weapon:GetInSights()) or (weapon.GetIronSights and weapon:GetIronSights()))
-end
 
 local function holdingbind(ply)
     if !input.LookupBinding("freelook") then
@@ -82,11 +84,9 @@ local function holdingbind(ply)
 end
 
 hook.Add("CalcView", "AltlookView", function(ply, origin, angles, fov)
-    local smoothness = math.Clamp(smooth, 0.1, 2)
+    CoolAng = LerpAngle(0.3, CoolAng, Angle(LookY, -LookX, 0))
 
-    CoolAng = LerpAngle(0.15 * smoothness, CoolAng, Angle(LookY, -LookX, 0))
-
-    if !holdingbind(ply) and CoolAng.p < 0.05 and CoolAng.p > -0.05 or isinsights(ply) and CoolAng.p < 0.05 and CoolAng.p > -0.05 or !system.HasFocus() or ply:ShouldDrawLocalPlayer() then
+    if !holdingbind(ply) and CoolAng.p < 0.05 and CoolAng.p > -0.05 or !system.HasFocus() or ply:ShouldDrawLocalPlayer() then
         InitialAng = angles + CoolAng
         LookX, LookY = 0, 0
 
@@ -108,7 +108,7 @@ end)
 
 hook.Add("InputMouseApply", "AltlookMouse", function(cmd, x, y, ang)
     local lp = LocalPlayer()
-    if !holdingbind(lp) or isinsights(lp) or lp:ShouldDrawLocalPlayer() then LookX, LookY = 0, 0 return end
+    if !holdingbind(lp) or lp:ShouldDrawLocalPlayer() then LookX, LookY = 0, 0 return end
 
     InitialAng.z = 0
     cmd:SetViewAngles(InitialAng)
@@ -123,6 +123,6 @@ hook.Add("StartCommand", "AltlookBlockShoot", function(ply, cmd)
     if !ply:IsPlayer() or !ply:Alive() then return end
     if !blockshoot then return end
 
-    if !holdingbind(ply) or isinsights(ply) or ply:ShouldDrawLocalPlayer() then return end
+    if !holdingbind(ply) or ply:ShouldDrawLocalPlayer() then return end
     cmd:RemoveKey(IN_ATTACK)
 end)
