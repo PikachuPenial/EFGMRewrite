@@ -38,6 +38,7 @@ function GM:Initialize()
 	RunConsoleCommand("mp_falldamage", "1") 		-- what is a titanmod? part two, electric boogaloo
 	RunConsoleCommand("mp_show_voice_icons", "0") 	-- disable vc icons over heads
 	RunConsoleCommand("mp_friendlyfire", "1") 		-- take a wild guess
+
 end
 
 local function GetArenaLoadout(ply)
@@ -133,7 +134,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	-- death information
 	if attacker != victim then
 
-		victim:PrintMessage(HUD_PRINTTALK, attacker:GetName() .. " killed you with a " .. weaponName .. " from " .. distance .. "m away")
+		victim:PrintMessage(HUD_PRINTCENTER, attacker:GetName() .. " killed you with a " .. weaponName .. " from " .. distance .. "m away")
 
 	else
 
@@ -142,6 +143,13 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	end
 
 end
+
+hook.Add( "OnPlayerHitGround", "VelocityLimiter", function( ply, inWater, onFloater, speed) 
+
+	local vel = ply:GetVelocity()
+	ply:SetVelocity(Vector(-vel.x / 2, -vel.y / 2, 0))
+
+end )
 
 hook.Add( "PlayerDeathSound", "RemoveDefaultDeathSound", function() return true end)
 

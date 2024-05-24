@@ -15,7 +15,7 @@ debugMeleeWep = {"arc9_eft_melee_taran", "arc9_eft_melee_6x5", "arc9_eft_melee_w
 if SERVER then
 
     -- modifiers
-    local modif = "RecoilAutoControlMult\\t0\\nRecoilKickMult\\t1.25\\nVisualRecoilPunchMult\\t1.5\\nVisualRecoilRollMult\\t1.5\\nVisualRecoilSideMult\\t0.25\\nVisualRecoilUpMult\\t0.25\\nVisualRecoilMult\\t1.66 "
+    local modif = "RecoilAutoControlMult\\t0\\nRecoilKickMult\\t1.25\\nVisualRecoilPunchMult\\t1.5\\nVisualRecoilRollMult\\t1.5\\nVisualRecoilSideMult\\t0.25\\nVisualRecoilUpMult\\t0.25\\nVisualRecoilMult\\t1.66\\nRecoilRandomSideMult\\t1.25 "
     RunConsoleCommand("arc9_modifiers", modif)
     RunConsoleCommand("arc9_mod_adstime", "1")
     RunConsoleCommand("arc9_mod_bodydamagecancel", "1")
@@ -24,23 +24,23 @@ if SERVER then
     RunConsoleCommand("arc9_mod_headshotdamage", "1")
     RunConsoleCommand("arc9_mod_malfunction", "0.2")
     RunConsoleCommand("arc9_mod_muzzlevelocity", "1")
-    RunConsoleCommand("arc9_mod_recoil", "0.55")
+    RunConsoleCommand("arc9_mod_recoil", "0.6")
     RunConsoleCommand("arc9_mod_rpm", "1")
     RunConsoleCommand("arc9_mod_spread", "1")
     RunConsoleCommand("arc9_mod_sprinttime", "1")
     RunConsoleCommand("arc9_mod_visualrecoil", "0.75")
 
     -- damage falloff (in meters)
-    RunConsoleCommand("arc9_eft_mindmgrange", "200")
-    RunConsoleCommand("arc9_eft_mindmgrange_sg", "100")
-    RunConsoleCommand("arc9_eft_mult_338", "0.75")
-    RunConsoleCommand("arc9_eft_mult_bigrifle", "0.75")
-    RunConsoleCommand("arc9_eft_mult_carabine", "0.5")
+    RunConsoleCommand("arc9_eft_mindmgrange", "160")
+    RunConsoleCommand("arc9_eft_mindmgrange_sg", "80")
+    RunConsoleCommand("arc9_eft_mult_338", "0.65")
+    RunConsoleCommand("arc9_eft_mult_bigrifle", "0.65")
+    RunConsoleCommand("arc9_eft_mult_carabine", "0.4")
     RunConsoleCommand("arc9_eft_mult_massive", "0.5")
     RunConsoleCommand("arc9_eft_mult_melee", "1")
-    RunConsoleCommand("arc9_eft_mult_pistol", "0.5")
-    RunConsoleCommand("arc9_eft_mult_rifle", "0.5")
-    RunConsoleCommand("arc9_eft_mult_shotgun", "0.5")
+    RunConsoleCommand("arc9_eft_mult_pistol", "0.4")
+    RunConsoleCommand("arc9_eft_mult_rifle", "0.4")
+    RunConsoleCommand("arc9_eft_mult_shotgun", "0.4")
 
     -- mechanics
     RunConsoleCommand("arc9_infinite_ammo", "0")
@@ -84,10 +84,12 @@ if SERVER then
     RunConsoleCommand("sv_ec2_dynamicheight_min", "42")
     RunConsoleCommand("sv_ec2_dynamicheight_max", "64")
     RunConsoleCommand("sv_ec2_staticheight", "1")
+
 end
 
 -- client convars
 if CLIENT then
+
     -- controls
     RunConsoleCommand("arc9_toggleads", "0")
     RunConsoleCommand("arc9_autolean", "0")
@@ -187,4 +189,5 @@ if CLIENT then
     RunConsoleCommand("cl_ec2_dynamicheight", "0")
     RunConsoleCommand("cl_ec2_staticheight", "1")
     RunConsoleCommand("cl_ec2_showhair", "0")
+
 end
