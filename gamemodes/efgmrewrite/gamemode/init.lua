@@ -101,12 +101,7 @@ hook.Add("PlayerInitialSpawn", "InitFirstSpawn", function(ply)
 end)
 
 -- ima see if setting it to PostPlayerDeath fixes it
-function GM:PostPlayerDeath(victim, inflictor, attacker)
-
-	RAID:RemovePlayer(victim)
-
-	-- do nwints and shit for kd and idfk ill find it out when the actual im(port)ant shit is done haha port i said port he said it guys
-    -- i did the important shit in sv_stats.lua guys guys i said port again i fucking did it
+function GM:PlayerDeath(victim, inflictor, attacker)
 
     -- local backpack = ents.Create("efgm_backpack")
     -- backpack:SetPos(victim:GetPos())
@@ -116,9 +111,6 @@ function GM:PostPlayerDeath(victim, inflictor, attacker)
 
 	-- death sound
 	victim:EmitSound(Sound("deathsounds/death" .. math.random(1, 116) .. ".wav"), 80)
-
-	-- respawn timer
-	timer.Create(victim:SteamID() .. "respawnTime", 10, 1, function() victim:Spawn() end)
 
 	local weaponInfo
 	local weaponName
@@ -144,6 +136,15 @@ function GM:PostPlayerDeath(victim, inflictor, attacker)
 	end
 
 end
+
+hook.Add("PostPlayerDeath", "PlayerRemoveRaid", function(ply)
+
+	RAID:RemovePlayer(ply)
+
+	-- respawn timer
+	timer.Create(ply:SteamID() .. "respawnTime", 10, 1, function() ply:Spawn() end)
+
+end)
 
 hook.Add( "OnPlayerHitGround", "VelocityLimiter", function( ply, inWater, onFloater, speed) 
 
