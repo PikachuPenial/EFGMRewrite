@@ -156,7 +156,7 @@ local function DrawHUD()
     DebugRaidTime()
     RenderPlayerWeapon(ply)
     RenderPlayerStance(ply)
-    RenderPlayerOverlays(ply)
+    -- RenderPlayerOverlays(ply)
 end
 hook.Add("HUDPaint", "DrawHUD", DrawHUD)
 
@@ -188,6 +188,11 @@ function HideHud(name)
     end
 end
 hook.Add("HUDShouldDraw", "HideDefaultHud", HideHud)
+
+-- hide voice chat panels
+hook.Add("PlayerStartVoice", "ImageOnVoice", function()
+	return false
+end)
 
 net.Receive("VoteableMaps", function(len)
 

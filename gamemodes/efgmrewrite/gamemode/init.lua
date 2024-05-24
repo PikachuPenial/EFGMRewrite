@@ -42,11 +42,22 @@ end
 
 local function GetArenaLoadout(ply)
 
+	-- a random primary, secondary, grenade, and melee weapon
 	ply:Give(debugPrimWep[math.random(#debugPrimWep)])
 	ply:Give(debugSecWep[math.random(#debugSecWep)])
 	ply:Give(debugNadeWep[math.random(#debugNadeWep)])
+	ply:Give(debugMeleeWep[math.random(#debugMeleeWep)])
+
+	-- ammo for weapons
+	ply:SetAmmo(1984, 1) -- ar2
+	ply:SetAmmo(1984, 3) -- pistol
+	ply:SetAmmo(1984, 4) -- smg1
+	ply:SetAmmo(1984, 5) -- 357
+	ply:SetAmmo(1984, 7) -- buckshot
 
 end
+
+local playerModels = {"models/eft/pmcs/usec_extended_pm.mdl", "models/eft/pmcs/bear_extended_pm.mdl"}
 
 function GM:PlayerSpawn(ply)
 
@@ -63,7 +74,13 @@ function GM:PlayerSpawn(ply)
 	ply:SetDuckSpeed(0.53)
 	ply:SetUnDuckSpeed(0.53)
 
-	ply:SetModel("models/player/Group01/male_07.mdl")
+	ply:SetModel(playerModels[math.random(#playerModels)])
+
+	ply:SetBodygroup(0, math.random(0, 4)) -- head
+	ply:SetBodygroup(1, math.random(0, 18)) -- body
+	ply:SetBodygroup(2, math.random(0, 15)) -- legs
+	ply:SetBodygroup(3, math.random(0, 14)) -- face
+
 	ply:SetupHands()
 	ply:AddEFlags(EFL_NO_DAMAGE_FORCES) -- disables knockback being applied when damage is taken
 
@@ -96,14 +113,37 @@ function GM:PlayerDeath(victim, inflictor, attacker)
     -- backpack:SetContents( victim:GetInventory( blacklist ), victim )
 
 	-- death sound
-	victim:EmitSound(Sound("deathsounds/" .. math.random(1, 116) .. ".wav"), 80)
+	victim:EmitSound(Sound("deathsounds/death" .. math.random(1, 116) .. ".wav"), 80)
 
 	-- respawn timer
 	timer.Create(victim:SteamID() .. "respawnTime", 10, 1, function() victim:Spawn() end)
 
+	local weaponInfo
+	local weaponName
+	local rawDistance = victim:GetPos():Distance(attacker:GetPos())
+	local distance = math.Round(rawDistance * 0.01905) -- convert hammer units to meters
+
+	if (attacker:GetActiveWeapon():IsValid()) then
+		weaponInfo = weapons.Get(attacker:GetActiveWeapon():GetClass())
+		weaponName = weaponInfo["PrintName"]
+	else
+		weaponName = ""
+	end
+
+	-- death information
+	if attacker != victim then
+
+		victim:PrintMessage(HUD_PRINTTALK, attacker:GetName() .. " killed you with a " .. weaponName .. " from " .. distance .. "m away")
+
+	else
+
+		victim:PrintMessage(HUD_PRINTCENTER, "You commited suicide")
+
+	end
+
 end
 
-hook.Add("PlayerDeathSound", "RemoveDefaultDeathSound", function() return true end)
+hook.Add( "PlayerDeathSound", "RemoveDefaultDeathSound", function() return true end)
 
 function GM:ScalePlayerDamage(target, hitgroup, dmginfo)
 	dmginfo:ScaleDamage(1)
@@ -112,13 +152,6 @@ end
 hook.Add( "PlayerShouldTakeDamage", "AntiLobbyKill", function(victim, attacker) 
 	
 	return !victim:CompareStatus(0)
-
-end )
-
-hook.Add( "OnPlayerHitGround", "VelocityLimiter", function( ply, inWater, onFloater, speed) 
-
-	local vel = ply:GetVelocity()
-	ply:SetVelocity(Vector(-vel.x / 2, -vel.y / 2, 0))
 
 end )
 

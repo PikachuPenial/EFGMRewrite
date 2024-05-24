@@ -9,13 +9,10 @@ blockshoot = true
 debugPrimWep = {"arc9_eft_adar15", "arc9_eft_tx15", "arc9_eft_sag_ak545", "arc9_eft_sag_ak545short", "arc9_eft_svt", "arc9_eft_sks", "arc9_eft_vpo136", "arc9_eft_vpo209", "arc9_eft_ak101", "arc9_eft_ak102", "arc9_eft_ak103", "arc9_eft_ak104", "arc9_eft_ak105", "arc9_eft_ak12", "arc9_eft_ak74", "arc9_eft_ak74m", "arc9_eft_akm", "arc9_eft_akms", "arc9_eft_aks74", "arc9_eft_aks74u", "arc9_eft_asval", "arc9_eft_ash12", "arc9_eft_m4a1", "arc9_eft_sa58", "arc9_eft_scarh", "arc9_eft_scarl", "arc9_eft_hk416", "arc9_eft_rd704", "arc9_eft_mcx", "arc9_eft_spear", "arc9_eft_auga1", "arc9_eft_aug", "arc9_eft_avt", "arc9_eft_pkm", "arc9_eft_pkp", "arc9_eft_rpd", "arc9_eft_rpk16", "arc9_eft_m3super90", "arc9_eft_mr43", "arc9_eft_m870", "arc9_eft_saiga12k", "arc9_eft_ks23", "arc9_eft_toz106", "arc9_eft_ai_axmc", "arc9_eft_sr25", "arc9_eft_mosin_infantry", "arc9_eft_mosin_sniper", "arc9_eft_mp18", "arc9_eft_rsass", "arc9_eft_sv98", "arc9_eft_svds", "arc9_eft_vss", "arc9_eft_mp9", "arc9_eft_mp9n", "arc9_eft_fn_p90", "arc9_eft_mp7a1", "arc9_eft_mp7a2", "arc9_eft_ump", "arc9_eft_pp1901", "arc9_eft_kedr", "arc9_eft_ppsh41", "arc9_eft_saiga9", "arc9_eft_mpx", "arc9_eft_stm9", "arc9_eft_sr2m", "arc9_eft_fn40gl"}
 debugSecWep = {"arc9_eft_m9a3", "arc9_eft_fn57", "arc9_eft_glock17", "arc9_eft_glock18c", "arc9_eft_glock19x", "arc9_eft_usp", "arc9_eft_pm", "arc9_eft_pb", "arc9_eft_rsh12", "arc9_eft_p226r", "arc9_eft_sr1mp", "arc9_eft_tt33", "arc9_eft_mr43_sawedoff"}
 debugNadeWep = {"arc9_eft_f1", "arc9_eft_m18", "arc9_eft_m67", "arc9_eft_m7290", "arc9_eft_rdg2b", "arc9_eft_rgd5", "arc9_eft_rgn", "arc9_eft_rgo", "arc9_eft_vog17", "arc9_eft_vog25", "arc9_eft_zarya"}
+debugMeleeWep = {"arc9_eft_melee_taran", "arc9_eft_melee_6x5", "arc9_eft_melee_wycc", "arc9_eft_melee_a2607", "arc9_eft_melee_a2607d", "arc9_eft_melee_camper", "arc9_eft_melee_crash", "arc9_eft_melee_cultist", "arc9_eft_melee_fulcrum", "arc9_eft_melee_crowbar", "arc9_eft_melee_kiba", "arc9_eft_melee_kukri", "arc9_eft_melee_m2", "arc9_eft_melee_mpl50", "arc9_eft_melee_rebel", "arc9_eft_melee_voodoo", "arc9_eft_melee_sp8", "arc9_eft_melee_hultafors", "arc9_eft_melee_taiga"}
 
 -- server convars
 if SERVER then
-
-    local infAmmo = {} -- arena mode switches
-    infAmmo[true] = "1"
-    infAmmo[false] = "0"
 
     -- modifiers
     local modif = "RecoilAutoControlMult\\t0\\nRecoilKickMult\\t1.25\\nVisualRecoilPunchMult\\t1.5\\nVisualRecoilRollMult\\t1.5\\nVisualRecoilSideMult\\t0.25\\nVisualRecoilUpMult\\t0.25\\nVisualRecoilMult\\t1.66 "
@@ -46,7 +43,8 @@ if SERVER then
     RunConsoleCommand("arc9_eft_mult_shotgun", "0.5")
 
     -- mechanics
-    RunConsoleCommand("arc9_infinite_ammo", infAmmo[isArena])
+    RunConsoleCommand("arc9_infinite_ammo", "0")
+    RunConsoleCommand("arc9_mult_defaultammo", "0")
     RunConsoleCommand("arc9_realrecoil", "1")
     RunConsoleCommand("arc9_lean", "1")
     RunConsoleCommand("arc9_mod_sway", "1")
@@ -55,6 +53,7 @@ if SERVER then
     RunConsoleCommand("arc9_manualbolt", "0")
     RunConsoleCommand("arc9_never_ready", "1")
     RunConsoleCommand("arc9_eft_mult_flashbang", "0.4")
+    RunConsoleCommand("arc9_eft_taran_jam", "0")
 
     -- physics
     RunConsoleCommand("arc9_bullet_physics", "1")
@@ -183,6 +182,8 @@ if CLIENT then
 
     -- dynamic height
     RunConsoleCommand("cl_ec2_enabled", "1")
+    RunConsoleCommand("cl_ec2_hide_left_arm", "1")
+    RunConsoleCommand("cl_ec2_hide_right_arm", "1")
     RunConsoleCommand("cl_ec2_dynamicheight", "0")
     RunConsoleCommand("cl_ec2_staticheight", "1")
     RunConsoleCommand("cl_ec2_showhair", "0")
