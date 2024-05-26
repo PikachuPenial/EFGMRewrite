@@ -8,6 +8,7 @@ util.AddNetworkString( "MovePlayerInventory" )
 util.AddNetworkString( "DropPlayerInventory" )
 
 local inventoryTable = {}
+local ammoTable = {}
 
 local function SendPlayerInventory(ply, steamID)
 
@@ -16,6 +17,12 @@ local function SendPlayerInventory(ply, steamID)
     net.Start( "UpdatePlayerInventory" )
         net.WriteTable( inventoryTable[ steamID ].contents )
     net.Send(ply)
+
+end
+
+local function TakeAmmoFromInventory( ply, ammoName, ammoCount )
+
+    ply:PrintMessage(HUD_PRINTCENTER, "Took "..tostring(ammoCount).." bullets from your inventory lol." )
 
 end
 
@@ -42,6 +49,48 @@ hook.Add("PlayerSpawn", "GiveInventory", function(ply)
         LOADOUT.Equip( ply, inventoryTable[ steamID ].contents )
 
     end)
+
+end)
+
+-- yes this is, in fact, the only way to do this. this somehow doesnt impact performance, even well past 1000 iterations per second
+hook.Add("Tick", "CheckReload", function()
+
+    for k, ply in ipairs(player.GetHumans()) do
+
+        local wep = ply:GetActiveWeapon()
+
+        if IsValid( wep ) then
+
+            local steamID = ply:SteamID64()
+
+            ammoTable[steamID] = ammoTable[steamID] or {}
+            ammoTable[steamID].count1 = ammoTable[steamID].count1 or 0
+            ammoTable[steamID].count2 = ammoTable[steamID].count2 or 0
+
+            local ammotype1 = wep:GetPrimaryAmmoType()
+            local ammotype2 = wep:GetSecondaryAmmoType()
+
+            local count1 = ply:GetAmmoCount( ammotype1 )
+            local count2 = ply:GetAmmoCount( ammotype2 )
+
+            if count1 != ammoTable[steamID].count1 then
+
+                TakeAmmoFromInventory( ply, ammotype1, ammoTable[steamID].count1 - count1 )
+
+            end
+
+            if count2 != ammoTable[steamID].count2 then
+
+                TakeAmmoFromInventory( ply, ammotype2, ammoTable[steamID].count2 - count2 )
+                
+            end
+
+            ammoTable[steamID].count1 = count1
+            ammoTable[steamID].count2 = count2
+        
+        end
+        
+    end
 
 end)
 
