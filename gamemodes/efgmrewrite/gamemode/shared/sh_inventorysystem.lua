@@ -18,18 +18,56 @@ function INVG.New( width, height, type )
 
     function inv:Add(pos, name, type, count)
 
-        if istable( pos ) then
+        self.contents[pos] = {}
+        self.contents[pos].name = name
+        self.contents[pos].type = type
+        self.contents[pos].count = count or 1
 
-            pos = INVG.PosTOLocationInformation( pos, self.width, self.height )
-            if pos == nil then return end
+    end
+
+    function inv:Remove(pos, count)
+
+        count = count or self.contents[pos].count
+
+        if count == self.contents[pos].count then
+            
+            self.contents[pos] = nil
+
+        else
+            
+            self.contents[pos].count = self.contents[pos].count - count
 
         end
-        
-        inv.contents[pos] = {}
-        inv.contents[pos].name = name
-        inv.contents[pos].type = type
-        inv.contents[pos].count = count or 1
 
+    end
+
+    function inv:Move( oldPos, newPos, count )
+
+        count = count or self.contents[oldPos].count
+            
+        self:Add(newPos, self.contents[oldPos].name, self.contents[oldPos].type, count)
+        self:Remove(oldPos, count)
+
+    end
+
+    -- More specific utilities
+
+    function inv:GetAll( name, type )
+
+        local returnTable = {}
+
+        for k, v in pairs( self.contents ) do
+            
+            if v.name == name and v.type == type then
+                
+                returnTable.Add()
+
+            end
+
+        end
+
+        return returnTable
+    
     end
 
     return inv

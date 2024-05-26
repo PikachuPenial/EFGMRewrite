@@ -93,8 +93,6 @@ function LOADOUT.Equip( ply, contents )
     -- Temporary
     for k, v in pairs(contents) do
         
-        print("Loadout shit")
-        PrintTable(v)
         GiveItem[v.type](ply, v.name, v.count, false)
 
     end

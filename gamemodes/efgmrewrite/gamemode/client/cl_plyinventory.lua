@@ -1,15 +1,48 @@
 -- shit here
 
+local inventory = {}
 
-concommand.Add("efgm_update_inventory", function(ply, cmd, args)
+concommand.Add("efgm_inventory_print", function(ply, cmd, args)
+
+    PrintTable(inventory)
+
+end)
+
+concommand.Add("efgm_inventory_update", function(ply, cmd, args)
 
     net.Start("RequestPlayerInventory")
     net.SendToServer()
 
 end)
 
+concommand.Add("efgm_inventory_move", function(ply, cmd, args)
+    
+    local oldPos = args[1]
+    local newPos = args[2]
+    local count = tonumber( args[3] or 1 )
+
+    net.Start("MovePlayerInventory")
+        net.WriteString(oldPos)
+        net.WriteString(newPos)
+        net.WriteUInt(count, 32)
+    net.SendToServer()
+
+end)
+
+concommand.Add("efgm_inventory_drop", function(ply, cmd, args)
+    
+    local pos = args[1]
+    local count = tonumber( args[2] or 1 )
+
+    net.Start("DropPlayerInventory")
+        net.WriteString(pos)
+        net.WriteUInt(count, 32)
+    net.SendToServer()
+
+end)
+
 net.Receive("UpdatePlayerInventory", function(len, ply)
 
-    PrintTable( net.ReadTable() )
+    inventory = net.ReadTable()
 
 end)
