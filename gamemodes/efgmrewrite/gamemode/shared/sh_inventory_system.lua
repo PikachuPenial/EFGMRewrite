@@ -6,7 +6,7 @@ INVG = {}
 
 -- fuck it ima just remake this
 
-function INVG.New( width, height, type )
+function INVG.New( width, height )
 
     local inv = {}
 
@@ -14,7 +14,6 @@ function INVG.New( width, height, type )
 
     inv.width = width or math.huge
     inv.height = height or math.huge
-    inv.type = type or 0 -- does nothing yet
 
     function inv:Add(pos, name, type, count)
 

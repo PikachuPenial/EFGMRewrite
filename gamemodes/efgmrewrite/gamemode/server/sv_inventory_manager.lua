@@ -7,8 +7,7 @@ util.AddNetworkString( "RequestPlayerInventory" )
 util.AddNetworkString( "MovePlayerInventory" )
 util.AddNetworkString( "DropPlayerInventory" )
 
-local inventoryTable = {}
-local ammoTable = {}
+local backpacks = {}
 
 local function SendPlayerInventory(ply, steamID)
 
@@ -20,77 +19,37 @@ local function SendPlayerInventory(ply, steamID)
 
 end
 
-local function TakeAmmoFromInventory( ply, ammoName, ammoCount )
-
-    ply:PrintMessage(HUD_PRINTCENTER, "Took "..tostring(ammoCount).." bullets from your inventory lol." )
-
-end
-
 hook.Add("PlayerSpawn", "GiveInventory", function(ply)
 
-    -- References the loadout system eventually, rn just for testing
-
     local steamID =  ply:SteamID64()
+    backpacks[ steamID ] = backpacks[ steamID ] or {}
 
-    inventoryTable[ steamID ] = INVG.New(6, 6, 0)
+    local inventory = {}
 
-    -- for testing purposes
+    if !isArena then return end
 
-    inventoryTable[ steamID ]:Add("s_prim1", "arc9_eft_aks74u", 1, 1)
-    inventoryTable[ steamID ]:Add("s_sec", "arc9_eft_tt33", 1, 1)
+    timer.Simple(0, function()
 
-    inventoryTable[ steamID ]:Add("g_1_1", "SMG1", 2, 90)
-    inventoryTable[ steamID ]:Add("g_2_1", "Pistol", 2, 30)
+        -- all this shit is wip sorry penal
 
-    SendPlayerInventory(ply, steamID)
+        -- a random primary, secondary, grenade, and melee weapon
+        ply:Give(debugPrimWep[math.random(#debugPrimWep)])
+        ply:Give(debugSecWep[math.random(#debugSecWep)])
+        ply:Give(debugNadeWep[math.random(#debugNadeWep)])
+        ply:Give(debugMeleeWep[math.random(#debugMeleeWep)])
+    
+        -- ammo for weapons
+        ply:SetAmmo(1984, 1) -- ar2
+        ply:SetAmmo(1984, 3) -- pistol
+        ply:SetAmmo(1984, 4) -- smg1
+        ply:SetAmmo(1984, 5) -- 357
+        ply:SetAmmo(1984, 7) -- buckshot
+        
+        -- inventory = LOADOUT.GetArenaInventory(6, 6)
 
-    timer.Simple(0, function() -- if you think this is unnecessary, try removing it
-
-        LOADOUT.Equip( ply, inventoryTable[ steamID ].contents )
+        -- LOADOUT.Equip( ply, inventory.contents )
 
     end)
-
-end)
-
--- yes this is, in fact, the only way to do this. this somehow doesnt impact performance, even well past 1000 iterations per second
-hook.Add("Tick", "CheckReload", function()
-
-    for k, ply in ipairs(player.GetHumans()) do
-
-        local wep = ply:GetActiveWeapon()
-
-        if IsValid( wep ) then
-
-            local steamID = ply:SteamID64()
-
-            ammoTable[steamID] = ammoTable[steamID] or {}
-            ammoTable[steamID].count1 = ammoTable[steamID].count1 or 0
-            ammoTable[steamID].count2 = ammoTable[steamID].count2 or 0
-
-            local ammotype1 = wep:GetPrimaryAmmoType()
-            local ammotype2 = wep:GetSecondaryAmmoType()
-
-            local count1 = ply:GetAmmoCount( ammotype1 )
-            local count2 = ply:GetAmmoCount( ammotype2 )
-
-            if count1 != ammoTable[steamID].count1 then
-
-                TakeAmmoFromInventory( ply, ammotype1, ammoTable[steamID].count1 - count1 )
-
-            end
-
-            if count2 != ammoTable[steamID].count2 then
-
-                TakeAmmoFromInventory( ply, ammotype2, ammoTable[steamID].count2 - count2 )
-                
-            end
-
-            ammoTable[steamID].count1 = count1
-            ammoTable[steamID].count2 = count2
-        
-        end
-        
-    end
 
 end)
 

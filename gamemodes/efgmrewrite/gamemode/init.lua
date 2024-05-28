@@ -1,5 +1,5 @@
 
-isArena = GetConVar("efgm_arenamode"):GetInt() == 1 or false
+isArena = (GetConVar("efgm_arenamode"):GetInt() == 1) or false -- fixed it :D
 
 AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
@@ -41,26 +41,11 @@ function GM:Initialize()
 
 end
 
-local function GetArenaLoadout(ply)
-
-	-- a random primary, secondary, grenade, and melee weapon
-	ply:Give(debugPrimWep[math.random(#debugPrimWep)])
-	ply:Give(debugSecWep[math.random(#debugSecWep)])
-	ply:Give(debugNadeWep[math.random(#debugNadeWep)])
-	ply:Give(debugMeleeWep[math.random(#debugMeleeWep)])
-
-	-- ammo for weapons
-	ply:SetAmmo(1984, 1) -- ar2
-	ply:SetAmmo(1984, 3) -- pistol
-	ply:SetAmmo(1984, 4) -- smg1
-	ply:SetAmmo(1984, 5) -- 357
-	ply:SetAmmo(1984, 7) -- buckshot
-
-end
-
 local playerModels = {"models/eft/pmcs/usec_extended_pm.mdl", "models/eft/pmcs/bear_extended_pm.mdl"}
 
 function GM:PlayerSpawn(ply)
+
+	ply:SetRaidStatus(0, "") -- moving this in hopes that i wont 'fucking break the gamemode again goddamn it'
 
 	ply:SetGravity(.72)
 	ply:SetMaxHealth(100)
@@ -85,10 +70,6 @@ function GM:PlayerSpawn(ply)
 	ply:SetupHands()
 	ply:AddEFlags(EFL_NO_DAMAGE_FORCES) -- disables knockback being applied when damage is taken
 
-	if isArena then GetArenaLoadout(ply) end
-
-	ply:SetRaidStatus(0, "")
-
 end
 
 hook.Add("PlayerInitialSpawn", "InitFirstSpawn", function(ply)
@@ -99,7 +80,6 @@ hook.Add("PlayerInitialSpawn", "InitFirstSpawn", function(ply)
 
 end)
 
--- ima see if setting it to PostPlayerDeath fixes it
 function GM:PlayerDeath(victim, inflictor, attacker)
 
     -- local backpack = ents.Create("efgm_backpack")
