@@ -31,7 +31,7 @@ if SERVER then
     RunConsoleCommand("arc9_eft_mult_carabine", "0.4")
     RunConsoleCommand("arc9_eft_mult_massive", "0.5")
     RunConsoleCommand("arc9_eft_mult_melee", "1")
-    RunConsoleCommand("arc9_eft_mult_pistol", "0.4")
+    RunConsoleCommand("arc9_eft_mult_pistol", "0.35")
     RunConsoleCommand("arc9_eft_mult_rifle", "0.4")
     RunConsoleCommand("arc9_eft_mult_shotgun", "0.4")
 

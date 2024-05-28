@@ -54,7 +54,7 @@ function GM:PlayerSpawn(ply)
 	ply:SetJumpPower(140)
 
 	ply:SetLadderClimbSpeed(120)
-	ply:SetSlowWalkSpeed(78)
+	ply:SetSlowWalkSpeed(95)
 
 	ply:SetCrouchedWalkSpeed(0.45)
 	ply:SetDuckSpeed(0.53)
@@ -74,9 +74,8 @@ end
 
 hook.Add("PlayerInitialSpawn", "InitFirstSpawn", function(ply)
 
-    if !ply:IsListenServerHost() then return end
-        
-    HostID = tonumber( ply:SteamID64() )
+	if !ply:IsListenServerHost() then return end
+	HostID = tonumber( ply:SteamID64() )
 
 end)
 

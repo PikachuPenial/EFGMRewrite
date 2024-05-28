@@ -61,7 +61,7 @@ end)
 
 -- free look
 local limV = 35
-local limH = 70
+local limH = 55
 local smooth = 0.8
 local blockads = false
 local blockshoot = true
