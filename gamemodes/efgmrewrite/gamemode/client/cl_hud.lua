@@ -160,6 +160,22 @@ local function DrawHUD()
 end
 hook.Add("HUDPaint", "DrawHUD", DrawHUD)
 
+net.Receive("PlayerEnterRaid", function()
+    RaidTransition = vgui.Create("DPanel")
+    RaidTransition:SetSize(ScrW(), ScrH())
+    RaidTransition:SetPos(0, 0)
+    RaidTransition:SetAlpha(0)
+    RaidTransition:MoveToFront()
+
+    RaidTransition.Paint = function(self, w, h)
+        surface.SetDrawColor(0, 0, 0, 255)
+        surface.DrawRect(0, 0, ScrW(), ScrH())
+    end
+
+    RaidTransition:AlphaTo(255, 0.5, 0, function() end)
+    RaidTransition:AlphaTo(0, 0.5, 1, function() RaidTransition:Remove() end)
+end )
+
 function DrawTarget()
     return false
 end

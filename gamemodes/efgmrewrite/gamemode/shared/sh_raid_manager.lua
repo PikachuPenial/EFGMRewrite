@@ -174,6 +174,7 @@ if SERVER then
 
     --{ PLAYER FUNCTIONS
 
+        util.AddNetworkString("PlayerEnterRaid")
         function RAID:SpawnPlayer(ply, status)
 
             if GetGlobalInt("RaidStatus") != raidStatus.ACTIVE then print("raid isnt active") return end
@@ -182,14 +183,22 @@ if SERVER then
 
             if !ply:CompareStatus(0) then print("great ive fucking broke the gamemode again goddamn it") return end
 
-            print("spawning player")
+            net.Start("PlayerEnterRaid")
+            net.Send(ply)
 
-            spawn = GetValidRaidSpawn(status)
+            ply:Freeze(true)
 
-            ply:SetRaidStatus(status, spawn.SpawnGroup or "")
-            ply:Teleport(spawn:GetPos(), spawn:GetAngles(), Vector(0, 0, 0))
+            timer.Create("Spawn" .. ply:SteamID64(), 1, 1, function()
 
-            self:AddPlayer(ply)
+                spawn = GetValidRaidSpawn(status)
+
+                ply:SetRaidStatus(status, spawn.SpawnGroup or "")
+                ply:Teleport(spawn:GetPos(), spawn:GetAngles(), Vector(0, 0, 0))
+                ply:Freeze(false)
+
+                self:AddPlayer(ply)
+
+            end)
 
         end
 
