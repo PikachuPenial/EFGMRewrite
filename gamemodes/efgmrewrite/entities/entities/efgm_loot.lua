@@ -41,7 +41,7 @@ function ENT:Initialize()
     local rand = math.random(0, 100)
     if self.SpawnChance > rand then return end
     
-    if self.LootType == 0 then self.LootType = math.random(1, 4) end
+    if self.LootType == 0 then self.LootType = math.random(1, 5) end
     if self.LootTier == 0 then self.LootTier = math.random(1, 3) end
 
     self.StoredItem = self:SelectItem() -- sets self.StoredItem to the entity of the weapon / item stored
@@ -52,7 +52,7 @@ end
 
 function ENT:SelectItem()
 
-    local lootTable = LOOT[self.LootType]
+    local lootTable = LOOT[1] -- LOOT[self.LootType] when i make this shit work
 
     local tbl = {}
     

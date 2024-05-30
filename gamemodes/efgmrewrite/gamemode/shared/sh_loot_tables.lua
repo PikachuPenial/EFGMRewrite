@@ -17,12 +17,12 @@ LOOT = {}
 LOOT[1] = {}
 
 -- assault carbines
-LOOT[1]["arc9_eft_adar15"]              = {2}
+LOOT[1]["arc9_eft_adar15"]              = {1}
 LOOT[1]["arc9_eft_tx15"]                = {3}
 LOOT[1]["arc9_eft_sag_ak545"]           = {2}
 LOOT[1]["arc9_eft_sag_ak545short"]      = {2}
 LOOT[1]["arc9_eft_svt"]                 = {2}
-LOOT[1]["arc9_eft_sks"]                 = {2}
+LOOT[1]["arc9_eft_sks"]                 = {1}
 LOOT[1]["arc9_eft_vpo136"]              = {2}
 LOOT[1]["arc9_eft_vpo209"]              = {2}
 
@@ -99,7 +99,7 @@ LOOT[1]["arc9_eft_mp9n"]                = {2}
 LOOT[1]["arc9_eft_fn_p90"]              = {3}
 LOOT[1]["arc9_eft_mp7a1"]               = {3}
 LOOT[1]["arc9_eft_mp7a2"]               = {3}
-LOOT[1]["arc9_eft_ump"]                 = {2}
+LOOT[1]["arc9_eft_ump"]                 = {1}
 LOOT[1]["arc9_eft_pp1901"]              = {2}
 LOOT[1]["arc9_eft_kedr"]                = {1}
 LOOT[1]["arc9_eft_ppsh41"]              = {1}
@@ -109,18 +109,18 @@ LOOT[1]["arc9_eft_stm9"]                = {2}
 LOOT[1]["arc9_eft_sr2m"]                = {3}
 
 -- grenades and grenade launcher
--- LOOT[1]["arc9_eft_f1"]               = {1}
+LOOT[1]["arc9_eft_f1"]                  = {1}
 LOOT[1]["arc9_eft_fn40gl"]              = {3}
--- LOOT[1]["arc9_eft_m18"]              = {1}
--- LOOT[1]["arc9_eft_m67"]              = {1}
--- LOOT[1]["arc9_eft_m7290"]            = {1}
--- LOOT[1]["arc9_eft_rdg2b"]            = {1}
--- LOOT[1]["arc9_eft_rgd5"]             = {1}
+LOOT[1]["arc9_eft_m18"]                 = {1}
+LOOT[1]["arc9_eft_m67"]                 = {1}
+LOOT[1]["arc9_eft_m7290"]               = {1}
+LOOT[1]["arc9_eft_rdg2b"]               = {1}
+LOOT[1]["arc9_eft_rgd5"]                = {1}
 LOOT[1]["arc9_eft_rgn"]                 = {2}
 LOOT[1]["arc9_eft_rgo"]                 = {2}
--- LOOT[1]["arc9_eft_vog17"]            = {1}
--- LOOT[1]["arc9_eft_vog25"]            = {1}
--- LOOT[1]["arc9_eft_zarya"]            = {1}
+LOOT[1]["arc9_eft_vog17"]               = {1}
+LOOT[1]["arc9_eft_vog25"]               = {1}
+LOOT[1]["arc9_eft_zarya"]               = {1}
 
 -- melee
 -- LOOT[1]["arc9_eft_melee_taran"]      = {2}

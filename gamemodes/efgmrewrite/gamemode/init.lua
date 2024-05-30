@@ -139,7 +139,7 @@ end
 
 -- players in the lobby cant take damage
 hook.Add( "PlayerShouldTakeDamage", "AntiLobbyKill", function(victim, attacker) 
-	
+
 	return !victim:CompareStatus(0)
 
 end )

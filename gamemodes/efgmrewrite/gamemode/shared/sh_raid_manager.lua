@@ -11,7 +11,7 @@ if SERVER then
     RAID.VoteTime = 90
     RAID.PlayersInRaid = {} -- [SteamID64] = Player
 
-    RAID.MapPool = {["efgm_concrete"] = 0, ["efgm_factory_rw"] = 0} -- only two rn ["map"] = numberofvotes
+    RAID.MapPool = {["efgm_customs_rw"] = 0, ["efgm_concrete_rw"] = 0, ["efgm_factory_rw"] = 0} -- only two rn ["map"] = numberofvotes
 
     SetGlobalInt("RaidTimeLeft", -1)
     SetGlobalInt("RaidStatus", raidStatus.PENDING) -- uses sh_enums
@@ -386,6 +386,6 @@ end
 
 function plyMeta:CompareStatus(status) -- if player is in raid then status of 0 will return false
 
-    return self:GetNWInt("PlayerRaidStatus", 0) == status or 0
+    return self:GetNWInt("PlayerRaidStatus", 0) == status
 
 end

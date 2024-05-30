@@ -173,7 +173,7 @@ net.Receive("PlayerEnterRaid", function()
     end
 
     RaidTransition:AlphaTo(255, 0.5, 0, function() end) -- why do i need to use a callback here???
-    RaidTransition:AlphaTo(0, 0.5, 1, function() RaidTransition:Remove() end)
+    RaidTransition:AlphaTo(0, 0.35, 1, function() RaidTransition:Remove() end)
 end )
 
 function DrawTarget()

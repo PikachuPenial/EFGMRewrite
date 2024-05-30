@@ -128,9 +128,10 @@
     [
         0 : "Any"
         1 : "Weapons"
-        2 : "Utility"
-        3 : "Armor"
-        4 : "Special"
+        2 : "Ammo"
+        3 : "Attachments"
+        4 : "Medical"
+        5 : "Valuables"
     ]
 
     loot_tier(choices) : "Loot Tier" : 0 : "The tier of crate spawned from this" =
