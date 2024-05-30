@@ -1,13 +1,13 @@
 ENT.Type = "point"
 ENT.Base = "base_point"
 
---vars
+-- vars
 
 ENT.SpawnChance = 100 -- this used a 1-5 range earlier? what the fuck? why not just use 1-100 lmao
 ENT.LootType = 0
 ENT.LootTier = 0
 
---flags
+-- flags
 
 ENT.SpawnOnStart = false
 ENT.Crated = true
@@ -41,7 +41,8 @@ function ENT:Initialize()
     local rand = math.random(0, 100)
     if self.SpawnChance > rand then return end
     
-    if self.LootType == 0 then self.LootType = math.random(1, 5) end
+    -- if self.LootType == 0 then self.LootType = math.random(1, 5) end
+    if self.LootType != 1 then return end -- placeholder until loot tables for other types are complete and until there is a reason to have litearlly anything other than guns
     if self.LootTier == 0 then self.LootTier = math.random(1, 3) end
 
     self.StoredItem = self:SelectItem() -- sets self.StoredItem to the entity of the weapon / item stored
