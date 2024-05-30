@@ -3,7 +3,7 @@ ENT.Base = "base_point"
 
 --vars
 
-ENT.SpawnChance = 5
+ENT.SpawnChance = 100 -- this used a 1-5 range earlier? what the fuck? why not just use 1-100 lmao
 ENT.LootType = 0
 ENT.LootTier = 0
 
@@ -37,6 +37,9 @@ function ENT:Initialize()
 	self.SpawnOnStart = bit.band(flags, 1) == 1
 
 	self.Crated = bit.band(flags, 2) == 2
+
+    local rand = math.random(0, 100)
+    if self.SpawnChance > rand then return end
     
     if self.LootType == 0 then self.LootType = math.random(1, 4) end
     if self.LootTier == 0 then self.LootTier = math.random(1, 3) end
@@ -52,9 +55,9 @@ function ENT:SelectItem()
     local lootTable = LOOT[self.LootType]
 
     local tbl = {}
-
+    
     for k, v in pairs(lootTable) do
-        
+
         if v[1] == self.LootTier then table.insert(tbl, k) end
 
     end

@@ -9,7 +9,7 @@ ENT.DisabledMessage = ""
 ENT.ExtractGroup = ""
 ENT.Accessibility = 0
 
-ENT.IsDisabled = false 
+ENT.IsDisabled = false
 ENT.IsGuranteed = true
 ENT.InstantExtract = false
 
