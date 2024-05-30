@@ -33,18 +33,18 @@ hook.Add("PlayerSpawn", "GiveInventory", function(ply)
         -- all this shit is wip sorry penal
 
         -- a random primary, secondary, grenade, and melee weapon
-        ply:Give(debugPrimWep[math.random(#debugPrimWep)])
+        --ply:Give(debugPrimWep[math.random(#debugPrimWep)])
         ply:Give(debugSecWep[math.random(#debugSecWep)])
         ply:Give(debugNadeWep[math.random(#debugNadeWep)])
         ply:Give(debugMeleeWep[math.random(#debugMeleeWep)])
-    
+
         -- ammo for weapons
         ply:SetAmmo(1984, 1) -- ar2
         ply:SetAmmo(1984, 3) -- pistol
         ply:SetAmmo(1984, 4) -- smg1
         ply:SetAmmo(1984, 5) -- 357
         ply:SetAmmo(1984, 7) -- buckshot
-        
+
         -- inventory = LOADOUT.GetArenaInventory(6, 6)
 
         -- LOADOUT.Equip( ply, inventory.contents )

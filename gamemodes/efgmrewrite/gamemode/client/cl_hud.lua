@@ -46,6 +46,7 @@ local function RenderPlayerWeapon(ply)
     elseif ammo >= ammoMax * 0.2 then magstatus = "Less than half"
     elseif ammo >= ammoMax * 0.01 then magstatus = "Almost empty"
     else magstatus = "Empty" end
+    if ammo == -1 then magstatus = "∞" end
 
     surface.SetFont("BenderAmmoCount")
     local ammoTextSize = surface.GetTextSize(magstatus) + EFGM.ScreenScale(10)
