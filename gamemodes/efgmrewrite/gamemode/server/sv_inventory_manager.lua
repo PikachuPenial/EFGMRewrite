@@ -24,7 +24,7 @@ hook.Add("PlayerSpawn", "GiveInventory", function(ply)
     backpacks[ steamID ] = backpacks[ steamID ] or {}
 
     local inventory = {}
-    local randAtts = ARC9.Attachments_Index
+    local randAtts = table.Copy(ARC9.Attachments_Index) -- FUCK YOU FUCK YOU FUCK YOU FUCK YOU FUCK YOU FUCK YOU FUCK YOU FUCK YOU
 
     if !isArena then return end
 
@@ -52,10 +52,9 @@ hook.Add("PlayerSpawn", "GiveInventory", function(ply)
                 if k > 250 then return end -- only give player 250 diff unique attachments
                 ARC9:PlayerGiveAtt(ply, v, math.random(1, 2))
             end
-        end)
 
-        ARC9:PlayerSendAttInv(ply)
-        ARC9.LoadAtts()
+            ARC9:PlayerSendAttInv(ply)
+        end)
 
         -- inventory = LOADOUT.GetArenaInventory(6, 6)
 

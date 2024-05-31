@@ -46,6 +46,9 @@ function ENT:SetVictimName(name)
 end
 
 function ENT:Use(activator)
+    local effectdata = EffectData()
+    effectdata:SetOrigin(self:GetPos() + Vector(0, 0, 10))
+    effectdata:SetMaterialIndex(0)
 
     if !activator:IsPlayer() then return end
     activator:PrintMessage(HUD_PRINTCENTER, "You looted " .. victimName .. "! (" .. table.Count(contents) .. " items, " .. table.Count(attachments) .. " attachments)")
@@ -69,6 +72,8 @@ function ENT:Use(activator)
     end
 
     ARC9:PlayerSendAttInv(activator)
+    util.Effect("arc9_opencrate", effectdata)
+    self:EmitSound("arc9/useatt.ogg")
     self:Remove()
 
 end

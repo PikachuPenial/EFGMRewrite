@@ -10,17 +10,17 @@ if SERVER then
     -- modifiers
     local modif = "RecoilAutoControlMult\\t0\\nRecoilKickMult\\t1.25\\nVisualRecoilPunchMult\\t1.5\\nVisualRecoilRollMult\\t1.5\\nVisualRecoilSideMult\\t0.5\\nVisualRecoilUpMult\\t0.5\\nVisualRecoilMult\\t2\\nRecoilRandomSideMult\\t1.25 "
     RunConsoleCommand("arc9_modifiers", modif)
-    RunConsoleCommand("arc9_mod_adstime", "1.1")
+    RunConsoleCommand("arc9_mod_adstime", "1")
     RunConsoleCommand("arc9_mod_bodydamagecancel", "1")
-    RunConsoleCommand("arc9_mod_damage", "0.95")
+    RunConsoleCommand("arc9_mod_damage", "1")
     RunConsoleCommand("arc9_mod_damagerand", "1")
     RunConsoleCommand("arc9_mod_headshotdamage", "1")
-    RunConsoleCommand("arc9_mod_malfunction", "0.2")
-    RunConsoleCommand("arc9_mod_muzzlevelocity", "0.8")
+    RunConsoleCommand("arc9_mod_malfunction", "0.25")
+    RunConsoleCommand("arc9_mod_muzzlevelocity", "1")
     RunConsoleCommand("arc9_mod_recoil", "0.65")
     RunConsoleCommand("arc9_mod_rpm", "1")
-    RunConsoleCommand("arc9_mod_spread", "1.2")
-    RunConsoleCommand("arc9_mod_sprinttime", "1.2")
+    RunConsoleCommand("arc9_mod_spread", "1")
+    RunConsoleCommand("arc9_mod_sprinttime", "1")
     RunConsoleCommand("arc9_mod_visualrecoil", "0.75")
 
     -- damage falloff (in meters)
