@@ -57,8 +57,8 @@ function GM:PlayerSpawn(ply)
 	ply:SetSlowWalkSpeed(95)
 
 	ply:SetCrouchedWalkSpeed(0.45)
-	ply:SetDuckSpeed(0.53)
-	ply:SetUnDuckSpeed(0.53)
+	ply:SetDuckSpeed(0.43)
+	ply:SetUnDuckSpeed(0.43)
 
 	ply:SetModel(playerModels[math.random(#playerModels)])
 
@@ -139,12 +139,29 @@ hook.Add("PostPlayerDeath", "PlayerRemoveRaid", function(ply)
 
 end)
 
+-- reduce velocity upon landing to prevent bunny hopping
 hook.Add( "OnPlayerHitGround", "VelocityLimiter", function( ply, inWater, onFloater, speed) 
 
 	local vel = ply:GetVelocity()
 	ply:SetVelocity(Vector(-vel.x / 2, -vel.y / 2, 0))
 
 end )
+
+-- disable crouch jumping because of animation abuse + dynamic crouch toggling
+hook.Add("StartCommand", "DisableCrouchCommand", function(ply, cmd)
+	if !ply:IsOnGround() and !ply:Crouching() then
+		cmd:RemoveKey(IN_DUCK)
+	end
+
+	if ply:Crouching() or cmd:KeyDown(IN_DUCK) then
+		cmd:RemoveKey(IN_JUMP)
+	end
+
+	if cmd:KeyDown(IN_BACK) or (cmd:KeyDown(IN_MOVELEFT) or cmd:KeyDown(IN_MOVERIGHT)) and !cmd:KeyDown(IN_FORWARD) then
+		cmd:RemoveKey(IN_SPEED)
+	end
+
+end)
 
 hook.Add( "PlayerDeathSound", "RemoveDefaultDeathSound", function() return true end)
 

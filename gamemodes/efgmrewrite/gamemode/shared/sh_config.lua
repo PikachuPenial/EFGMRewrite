@@ -73,12 +73,6 @@ if SERVER then
     RunConsoleCommand("arc9_atts_loseondie", "1")
     RunConsoleCommand("arc9_atts_generateentities", "1")
 
-    -- dynamic height 
-    RunConsoleCommand("sv_ec2_dynamicheight", "0")
-    RunConsoleCommand("sv_ec2_dynamicheight_min", "42")
-    RunConsoleCommand("sv_ec2_dynamicheight_max", "64")
-    RunConsoleCommand("sv_ec2_staticheight", "1")
-
 end
 
 -- client convars
@@ -135,9 +129,9 @@ if CLIENT then
     RunConsoleCommand("vmanip_dooranim_screenbob", "1")
 
     -- tpik
-    RunConsoleCommand("arc9_tpik", "1")
-    RunConsoleCommand("arc9_tpik_others", "1")
-    RunConsoleCommand("arc9_tpik_framerate", "10")
+    RunConsoleCommand("arc9_tpik", "0")
+    RunConsoleCommand("arc9_tpik_others", "0")
+    RunConsoleCommand("arc9_tpik_framerate", "1")
 
     -- true names
     RunConsoleCommand("arc9_truenames", "1")
@@ -178,13 +172,5 @@ if CLIENT then
     RunConsoleCommand("arc9_precache_allsounds_onstartup", "1")
     RunConsoleCommand("arc9_precache_attsmodels_onstartup", "1")
     RunConsoleCommand("arc9_precache_wepmodels_onstartup", "1")
-
-    -- dynamic height
-    RunConsoleCommand("cl_ec2_enabled", "1")
-    RunConsoleCommand("cl_ec2_hide_left_arm", "1")
-    RunConsoleCommand("cl_ec2_hide_right_arm", "1")
-    RunConsoleCommand("cl_ec2_dynamicheight", "0")
-    RunConsoleCommand("cl_ec2_staticheight", "1")
-    RunConsoleCommand("cl_ec2_showhair", "0")
 
 end
