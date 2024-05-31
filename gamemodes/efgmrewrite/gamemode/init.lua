@@ -189,7 +189,7 @@ end )
 -- modifies voice chat to be proximity based
 hook.Add( "PlayerCanHearPlayersVoice", "ProxVOIP", function(listener,talker)
 
-	if (tonumber(listener:GetPos():Distance(talker:GetPos())) > 1575 ) or !talker:Alive() then -- 30~ meter voice distance, not able to talk while dead but can still hear others
+	if (tonumber(listener:GetPos():Distance(talker:GetPos())) > 1048 ) or !talker:Alive() then -- 20~ meter voice distance, not able to talk while dead but can still hear others
 		return false, false
 	else
 		return true, true

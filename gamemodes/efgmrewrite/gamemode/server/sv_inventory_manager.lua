@@ -34,16 +34,17 @@ hook.Add("PlayerSpawn", "GiveInventory", function(ply)
 
         -- a random primary, secondary, grenade, and melee weapon
         --ply:Give(debugPrimWep[math.random(#debugPrimWep)])
-        ply:Give(debugSecWep[math.random(#debugSecWep)])
+        ply:Give(debugShitSecWep[math.random(#debugShitSecWep)]) -- nerfing the nakeds
         ply:Give(debugNadeWep[math.random(#debugNadeWep)])
         ply:Give(debugMeleeWep[math.random(#debugMeleeWep)])
 
         -- ammo for weapons
-        ply:SetAmmo(1984, 1) -- ar2
-        ply:SetAmmo(1984, 3) -- pistol
-        ply:SetAmmo(1984, 4) -- smg1
-        ply:SetAmmo(1984, 5) -- 357
-        ply:SetAmmo(1984, 7) -- buckshot
+        ply:SetAmmo(3000, 1) -- ar2
+        ply:SetAmmo(3000, 3) -- pistol
+        ply:SetAmmo(3000, 4) -- smg1
+        ply:SetAmmo(3000, 5) -- 357
+        ply:SetAmmo(3000, 7) -- buckshot
+        ply:SetAmmo(3000, 9) -- smg grenade
 
         -- attachments
         timer.Simple(1, function()
