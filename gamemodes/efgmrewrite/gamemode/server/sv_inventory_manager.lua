@@ -1,6 +1,5 @@
 
 -- manages the players' inventories, ensures "Enjoy no weapons n____r :D" bullshit doesnt happen again
-
 util.AddNetworkString( "UpdatePlayerInventory" )
 util.AddNetworkString( "RequestPlayerInventory" )
 
@@ -25,6 +24,7 @@ hook.Add("PlayerSpawn", "GiveInventory", function(ply)
     backpacks[ steamID ] = backpacks[ steamID ] or {}
 
     local inventory = {}
+    local randAtts = ARC9.Attachments_Index
 
     if !isArena then return end
 
@@ -44,6 +44,18 @@ hook.Add("PlayerSpawn", "GiveInventory", function(ply)
         ply:SetAmmo(1984, 4) -- smg1
         ply:SetAmmo(1984, 5) -- 357
         ply:SetAmmo(1984, 7) -- buckshot
+
+        -- attachments
+        timer.Simple(1, function()
+            table.Shuffle(randAtts)
+            for k, v in pairs(randAtts) do
+                if k > 250 then return end -- only give player 250 diff unique attachments
+                ARC9:PlayerGiveAtt(ply, v, math.random(1, 2))
+            end
+        end)
+
+        ARC9:PlayerSendAttInv(ply)
+        ARC9.LoadAtts()
 
         -- inventory = LOADOUT.GetArenaInventory(6, 6)
 

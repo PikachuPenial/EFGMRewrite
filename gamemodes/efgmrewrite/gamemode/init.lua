@@ -49,8 +49,8 @@ function GM:PlayerSpawn(ply)
 
 	ply:SetGravity(.72)
 	ply:SetMaxHealth(100)
-	ply:SetRunSpeed(230)
-	ply:SetWalkSpeed(140)
+	ply:SetRunSpeed(215)
+	ply:SetWalkSpeed(130)
 	ply:SetJumpPower(140)
 
 	ply:SetLadderClimbSpeed(120)
@@ -69,7 +69,6 @@ function GM:PlayerSpawn(ply)
 
 	ply:SetupHands()
 	ply:AddEFlags(EFL_NO_DAMAGE_FORCES) -- disables knockback being applied when damage is taken
-
 end
 
 hook.Add("PlayerInitialSpawn", "InitFirstSpawn", function(ply)
@@ -101,6 +100,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	backpack:Spawn()
 	backpack:Activate()
 	backpack:SetBagContents(inventoryClean)
+	backpack:SetBagAttachments(victim.ARC9_AttInv)
 
 	-- death sound
 	victim:EmitSound(Sound("deathsounds/death" .. math.random(1, 116) .. ".wav"), 80)

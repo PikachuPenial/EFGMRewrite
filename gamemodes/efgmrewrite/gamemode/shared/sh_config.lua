@@ -8,19 +8,19 @@ debugMeleeWep = {"arc9_eft_melee_taran", "arc9_eft_melee_6x5", "arc9_eft_melee_w
 if SERVER then
 
     -- modifiers
-    local modif = "RecoilAutoControlMult\\t0\\nRecoilKickMult\\t1.25\\nVisualRecoilPunchMult\\t1.5\\nVisualRecoilRollMult\\t1.5\\nVisualRecoilSideMult\\t0.25\\nVisualRecoilUpMult\\t0.25\\nVisualRecoilMult\\t1.66\\nRecoilRandomSideMult\\t1.25 "
+    local modif = "RecoilAutoControlMult\\t0\\nRecoilKickMult\\t1.25\\nVisualRecoilPunchMult\\t1.5\\nVisualRecoilRollMult\\t1.5\\nVisualRecoilSideMult\\t0.5\\nVisualRecoilUpMult\\t0.5\\nVisualRecoilMult\\t2\\nRecoilRandomSideMult\\t1.25 "
     RunConsoleCommand("arc9_modifiers", modif)
-    RunConsoleCommand("arc9_mod_adstime", "1")
+    RunConsoleCommand("arc9_mod_adstime", "1.1")
     RunConsoleCommand("arc9_mod_bodydamagecancel", "1")
-    RunConsoleCommand("arc9_mod_damage", "1")
+    RunConsoleCommand("arc9_mod_damage", "0.95")
     RunConsoleCommand("arc9_mod_damagerand", "1")
     RunConsoleCommand("arc9_mod_headshotdamage", "1")
     RunConsoleCommand("arc9_mod_malfunction", "0.2")
-    RunConsoleCommand("arc9_mod_muzzlevelocity", "1")
-    RunConsoleCommand("arc9_mod_recoil", "0.6")
+    RunConsoleCommand("arc9_mod_muzzlevelocity", "0.8")
+    RunConsoleCommand("arc9_mod_recoil", "0.65")
     RunConsoleCommand("arc9_mod_rpm", "1")
-    RunConsoleCommand("arc9_mod_spread", "1")
-    RunConsoleCommand("arc9_mod_sprinttime", "1")
+    RunConsoleCommand("arc9_mod_spread", "1.2")
+    RunConsoleCommand("arc9_mod_sprinttime", "1.2")
     RunConsoleCommand("arc9_mod_visualrecoil", "0.75")
 
     -- damage falloff (in meters)
@@ -68,7 +68,7 @@ if SERVER then
     -- attachments
     RunConsoleCommand("arc9_atts_nocustomize", "0") -- why would anyone do this
     RunConsoleCommand("arc9_atts_max", "100")
-    RunConsoleCommand("arc9_free_atts", "1")
+    RunConsoleCommand("arc9_free_atts", "0")
     RunConsoleCommand("arc9_atts_lock", "0")
     RunConsoleCommand("arc9_atts_loseondie", "1")
     RunConsoleCommand("arc9_atts_generateentities", "1")
@@ -176,8 +176,8 @@ if CLIENT then
 
     -- caching
     RunConsoleCommand("arc9_precache_allsounds_onstartup", "1")
-    RunConsoleCommand("arc9_precache_attsmodels_onstartup", "0")
-    RunConsoleCommand("arc9_precache_wepmodels_onstartup", "0")
+    RunConsoleCommand("arc9_precache_attsmodels_onstartup", "1")
+    RunConsoleCommand("arc9_precache_wepmodels_onstartup", "1")
 
     -- dynamic height
     RunConsoleCommand("cl_ec2_enabled", "1")

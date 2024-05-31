@@ -4,6 +4,7 @@ AddCSLuaFile("shared.lua")
 include("shared.lua")
 
 local contents = {}
+local attachments = {}
 
 function ENT:Initialize()
 
@@ -31,13 +32,17 @@ function ENT:SetBagContents(inventory)
 
 end
 
+function ENT:SetBagAttachments(inventory)
+
+    attachments = inventory
+
+end
+
 function ENT:Use(activator)
 
     if !activator:IsPlayer() then return end
 
-    if table.IsEmpty( contents ) then
-
-        self:Remove()
+    if table.IsEmpty( contents ) and table.IsEmpty( attachments ) then
 
         return
 
@@ -46,9 +51,16 @@ function ENT:Use(activator)
     for k, v in ipairs( contents ) do
 
         activator:Give(v)
-       
+
     end
 
+    for k, v in pairs( attachments ) do
+
+        ARC9:PlayerGiveAtt(activator, k, v)
+
+    end
+
+    ARC9:PlayerSendAttInv(activator)
     self:Remove()
 
 end

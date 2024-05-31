@@ -109,18 +109,18 @@ LOOT[1]["arc9_eft_stm9"]                = {2}
 LOOT[1]["arc9_eft_sr2m"]                = {3}
 
 -- grenades and grenade launcher
-LOOT[1]["arc9_eft_f1"]                  = {1}
+-- LOOT[1]["arc9_eft_f1"]                  = {1}
 LOOT[1]["arc9_eft_fn40gl"]              = {3}
-LOOT[1]["arc9_eft_m18"]                 = {1}
-LOOT[1]["arc9_eft_m67"]                 = {1}
-LOOT[1]["arc9_eft_m7290"]               = {1}
-LOOT[1]["arc9_eft_rdg2b"]               = {1}
-LOOT[1]["arc9_eft_rgd5"]                = {1}
-LOOT[1]["arc9_eft_rgn"]                 = {2}
-LOOT[1]["arc9_eft_rgo"]                 = {2}
-LOOT[1]["arc9_eft_vog17"]               = {1}
-LOOT[1]["arc9_eft_vog25"]               = {1}
-LOOT[1]["arc9_eft_zarya"]               = {1}
+-- LOOT[1]["arc9_eft_m18"]                 = {1}
+-- LOOT[1]["arc9_eft_m67"]                 = {1}
+-- LOOT[1]["arc9_eft_m7290"]               = {1}
+-- LOOT[1]["arc9_eft_rdg2b"]               = {1}
+-- LOOT[1]["arc9_eft_rgd5"]                = {1}
+-- LOOT[1]["arc9_eft_rgn"]                 = {2}
+-- LOOT[1]["arc9_eft_rgo"]                 = {2}
+-- LOOT[1]["arc9_eft_vog17"]               = {1}
+-- LOOT[1]["arc9_eft_vog25"]               = {1}
+-- LOOT[1]["arc9_eft_zarya"]               = {1}
 
 -- melee
 -- LOOT[1]["arc9_eft_melee_taran"]      = {2}

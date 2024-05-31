@@ -42,7 +42,7 @@ function ENT:Initialize()
     if self.SpawnChance > rand then return end
     
     -- if self.LootType == 0 then self.LootType = math.random(1, 5) end
-    if self.LootType != 1 then return end -- placeholder until loot tables for other types are complete and until there is a reason to have litearlly anything other than guns
+    if self.LootType != 1 or self.LootType != 5 then return end -- placeholder until loot tables for other types are complete and until there is a reason to have litearlly anything other than guns
     if self.LootTier == 0 then self.LootTier = math.random(1, 3) end
 
     self.StoredItem = self:SelectItem() -- sets self.StoredItem to the entity of the weapon / item stored
