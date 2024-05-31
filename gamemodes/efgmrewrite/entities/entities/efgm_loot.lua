@@ -41,9 +41,9 @@ function ENT:Initialize()
     local rand = math.random(0, 100)
     if self.SpawnChance > rand then return end
 
-    -- if self.LootType == 0 then self.LootType = math.random(1, 5) end
-    if self.LootType != 1 and self.LootType != 5 then return end -- placeholder until loot tables for other types are complete and until there is a reason to have litearlly anything other than guns
     if self.LootTier == 0 then self.LootTier = math.random(1, 3) end
+    if self.LootType != 1 and self.LootType != 3 and self.LootType != 5 then return end -- placeholder until loot tables for other types are complete and until there is a reason to have litearlly anything other than guns
+    -- if self.LootType == 0 then self.LootType = math.random(1, 5) end
 
     self.StoredItem = self:SelectItem() -- sets self.StoredItem to the entity of the weapon / item stored
 
@@ -53,20 +53,21 @@ end
 
 function ENT:SelectItem()
 
-    local lootTable = LOOT[1] -- LOOT[self.LootType] when i make this shit work
+    local lootTable = LOOT[self.LootType] -- LOOT[self.LootType] when i make this shit work
 
     local tbl = {}
-    
+
     for k, v in pairs(lootTable) do
 
-        if v[1] == self.LootTier then table.insert(tbl, k) end
+        if v[1] == self.LootTier or v[1] == 0 then table.insert(tbl, k) end
 
     end
 
-    if table.IsEmpty( tbl ) then return end
+    if table.IsEmpty( tbl ) then print("loot table " .. self.LootType .. " is empty you fucking idiot") return end
 
     local ent = ents.Create( tbl[ math.random(#tbl) ] )
 
+    print("Spawning " .. tostring(ent))
     return ent
 
 end

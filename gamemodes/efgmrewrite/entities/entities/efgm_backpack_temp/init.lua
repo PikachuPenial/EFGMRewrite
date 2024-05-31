@@ -13,7 +13,7 @@ function ENT:Initialize()
 	self:PhysicsInit(SOLID_VPHYSICS)
 	self:SetMoveType(MOVETYPE_VPHYSICS)
 	self:SetSolid(SOLID_VPHYSICS)
-    self:SetCollisionGroup(COLLISION_GROUP_WEAPON) -- will collide with everything other than the player
+    self:SetCollisionGroup(COLLISION_GROUP_PASSABLE_DOOR) -- will collide with everything other than the player
 
 	self:SetUseType(SIMPLE_USE)
 
@@ -46,11 +46,13 @@ function ENT:SetVictimName(name)
 end
 
 function ENT:Use(activator)
+    if !activator:IsPlayer() then return end
+
     local effectdata = EffectData()
     effectdata:SetOrigin(self:GetPos() + Vector(0, 0, 10))
     effectdata:SetMaterialIndex(0)
 
-    if !activator:IsPlayer() then return end
+    activator:SetHealth(activator:GetMaxHealth())
     activator:PrintMessage(HUD_PRINTCENTER, "You looted " .. victimName .. "! (" .. table.Count(contents) .. " items, " .. table.Count(attachments) .. " attachments)")
 
     if table.IsEmpty( contents ) and table.IsEmpty( attachments ) then
