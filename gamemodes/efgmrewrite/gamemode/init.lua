@@ -96,11 +96,12 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	end
 
 	local backpack = ents.Create("efgm_backpack_temp")
-	backpack:SetPos(victim:GetPos())
+	backpack:SetPos(victim:GetPos() + Vector(0, 0, 64))
 	backpack:Spawn()
 	backpack:Activate()
 	backpack:SetBagContents(inventoryClean)
 	backpack:SetBagAttachments(victim.ARC9_AttInv)
+	backpack:SetVictimName(victim:GetName())
 
 	-- death sound
 	victim:EmitSound(Sound("deathsounds/death" .. math.random(1, 116) .. ".wav"), 80)
