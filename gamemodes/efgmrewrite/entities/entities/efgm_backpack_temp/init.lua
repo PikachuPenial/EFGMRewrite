@@ -53,7 +53,7 @@ function ENT:Use(activator)
     effectdata:SetMaterialIndex(0)
 
     activator:SetHealth(activator:GetMaxHealth())
-    activator:PrintMessage(HUD_PRINTCENTER, "You looted " .. victimName .. "! (" .. table.Count(contents) .. " items, " .. table.Count(attachments) .. " attachments)")
+    activator:PrintMessage(HUD_PRINTTALK, "You looted " .. victimName .. "! (" .. table.Count(contents) .. " items, " .. table.Count(attachments) .. " attachments)")
 
     if table.IsEmpty( contents ) and table.IsEmpty( attachments ) then
 

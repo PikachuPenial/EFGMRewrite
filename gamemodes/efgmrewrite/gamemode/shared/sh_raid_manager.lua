@@ -291,11 +291,11 @@ if SERVER then
     end
 
     net.Receive("RequestExtracts", function(len, ply)
-    
+
         local extracts = RAID.GetCurrentExtracts(ply)
 
         if extracts == nil then return end
-        
+
         local extractNames = "Your available extract locations are:"
 
         for k, v in pairs( extracts ) do

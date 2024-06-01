@@ -10,13 +10,9 @@ EFGM.ScreenScale = function(size)
 end
 
 local function DebugRaidTime()
-    surface.SetTextColor(Color(255, 255, 255))
-    surface.SetFont("Bender24")
-    surface.SetTextPos(EFGM.ScreenScale(20), EFGM.ScreenScale(20))
 
     -- time logic
-
-    local raidTime = GetGlobalInt("RaidTimeLeft", -1)
+    local raidTime = string.FormattedTime( GetGlobalInt("RaidTimeLeft", -1), "%2i:%02i" )
     local raidStatus = GetGlobalInt("RaidStatus", 0)
 
     local tempStatusTable = {
@@ -25,7 +21,11 @@ local function DebugRaidTime()
         [2] = "Raid Over"
     }
 
-    surface.DrawText( string.FormattedTime( raidTime, "%2i:%02i" ) .. "\n" .. tempStatusTable[raidStatus] )
+    local raidTimeTextSize = surface.GetTextSize(raidTime) + EFGM.ScreenScale(10)
+
+    surface.SetDrawColor(0, 0, 0, 128)
+    surface.DrawRect(ScrW() - EFGM.ScreenScale(55) - raidTimeTextSize, EFGM.ScreenScale(20), raidTimeTextSize + EFGM.ScreenScale(35), EFGM.ScreenScale(35))
+    draw.DrawText(raidTime, "BenderAmmoCount", ScrW() - EFGM.ScreenScale(30), EFGM.ScreenScale(20), Color(255, 255, 255), TEXT_ALIGN_RIGHT)
 
 end
 
