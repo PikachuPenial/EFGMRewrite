@@ -51,9 +51,9 @@ if SERVER then
     RunConsoleCommand("sv_vmanip_pickups", "1")
 
     -- physics
-    RunConsoleCommand("arc9_bullet_physics", "1")
-    RunConsoleCommand("arc9_bullet_gravity", "1.75")
-    RunConsoleCommand("arc9_bullet_drag", "1.25")
+    RunConsoleCommand("arc9_bullet_physics", "0")
+    RunConsoleCommand("arc9_bullet_gravity", "1")
+    RunConsoleCommand("arc9_bullet_drag", "1")
     RunConsoleCommand("arc9_ricochet", "1")
     RunConsoleCommand("arc9_mod_penetration", "1")
     RunConsoleCommand("arc9_bullet_lifetime", "5")
