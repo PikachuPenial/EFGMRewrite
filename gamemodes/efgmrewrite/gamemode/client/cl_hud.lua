@@ -24,7 +24,7 @@ local function DebugRaidTime()
     local raidTimeTextSize = surface.GetTextSize(raidTime) + EFGM.ScreenScale(10)
 
     surface.SetDrawColor(0, 0, 0, 128)
-    surface.DrawRect(ScrW() - EFGM.ScreenScale(55) - raidTimeTextSize, EFGM.ScreenScale(20), raidTimeTextSize + EFGM.ScreenScale(35), EFGM.ScreenScale(35))
+    surface.DrawRect(ScrW() - EFGM.ScreenScale(53) - raidTimeTextSize, EFGM.ScreenScale(20), raidTimeTextSize + EFGM.ScreenScale(33), EFGM.ScreenScale(35))
     draw.DrawText(raidTime, "BenderAmmoCount", ScrW() - EFGM.ScreenScale(30), EFGM.ScreenScale(20), Color(255, 255, 255), TEXT_ALIGN_RIGHT)
 
 end
@@ -220,7 +220,49 @@ net.Receive("VoteableMaps", function(len)
 
     local tbl = net.ReadTable()
 
-    LocalPlayer():PrintMessage(HUD_PRINTCENTER, "Look in the console and (efgm_vote mapname) for a map, im not good at UI so fuck you.")
+    LocalPlayer():PrintMessage(HUD_PRINTTALK, "Look in the console and (efgm_vote mapname) for a map, im not good at UI so fuck you.")
     PrintTable(tbl)
+
+end)
+
+local canPrintControls = true
+-- temp control printing function because its 3am and i really dont want to make another UI element right now
+concommand.Add("efgm_print_controls", function(ply, cmd, args)
+
+    if !canPrintControls then return end
+    canPrintControls = false
+    timer.Simple(5, function() canPrintControls = true end)
+
+    local extractsBind
+    local contextBind
+    local suitZoomBind
+    local interactBind
+    local adsBind
+    local UBGLBind
+    local freeLookBind
+    local toggleSightBind
+    local toggleSightBindReal -- its real i pinky promise
+    local inspectBind
+
+    if ply:GetInfoNum("efgm_bind_raidinfo", KEY_O) != nil then extractsBind = string.upper(input.GetKeyName(ply:GetInfoNum("efgm_bind_raidinfo", KEY_O))) else extractsBind = "[UNBOUND (efgm_print_extracts)]" end
+    if input.LookupBinding("+menu_context") != nil then contextBind = string.upper(input.LookupBinding("+menu_context")) else contextBind = "[UNBOUND (+menu_context)]" end
+    if input.LookupBinding("+zoom") != nil then suitZoomBind = string.upper(input.LookupBinding("+zoom")) else suitZoomBind = "[UNBOUND (+zoom)]" end
+    if input.LookupBinding("+use") != nil then interactBind = string.upper(input.LookupBinding("+use")) else interactBind = "[UNBOUND (+use)]" end
+    if input.LookupBinding("+attack2") != nil then adsBind = string.upper(input.LookupBinding("+attack2")) else adsBind = "[UNBOUND (+attack2)]" end
+    if interactBind != nil and adsBind != nil then UBGLBind = string.upper(interactBind .. " + " .. adsBind) else UBGLBind = "[UNBOUND (+use & +attack2)]" end
+    if ply:GetInfoNum("efgm_bind_freelook", MOUSE_MIDDLE) != nil then freeLookBind = string.upper(input.GetKeyName(ply:GetInfoNum("efgm_bind_freelook", MOUSE_MIDDLE))) else freeLookBind = "[UNBOUND (efgm_bind_freelook 'key code')]" end
+    if ply:GetInfoNum("efgm_bind_changesight", MOUSE_MIDDLE) != nil then toggleSightBind = string.upper(input.GetKeyName(ply:GetInfoNum("efgm_bind_changesight", MOUSE_MIDDLE))) else toggleSightBind = "[UNBOUND (efgm_bind_changesight 'key code')]" end
+    if adsBind != nil and toggleSightBind != nil then toggleSightBindReal = string.upper(adsBind .. " + " .. toggleSightBind) else toggleSightBindReal = "[UNBOUND (+attack2 & efgm_bind_changesight 'key code')]" end
+    if ply:GetInfoNum("efgm_bind_inspectweapon", KEY_I) != nil then inspectBind = string.upper(input.GetKeyName(ply:GetInfoNum("efgm_bind_inspectweapon", KEY_I))) else inspectBind = "[UNBOUND (efgm_bind_inspectweapon 'key code')]" end
+
+    ply:PrintMessage(HUD_PRINTTALK, [[
+[]] .. extractsBind .. [[] Display Extracts
+[]] .. contextBind .. [[] Weapon Bench
+[]] .. suitZoomBind .. [[] Switch Firemode
+[]] .. UBGLBind .. [[] Toggle Underbarrel GL
+[]] .. freeLookBind .. [[] Free Look
+[]] .. toggleSightBindReal .. [[] Toggle Sight Zoom/Reticle
+[]] .. inspectBind .. [[] Inspect Weapon
+    ]])
 
 end)

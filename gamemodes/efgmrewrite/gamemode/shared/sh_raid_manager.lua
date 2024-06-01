@@ -6,7 +6,7 @@ if not plyMeta then Error("Could not find player table") return end
 
 if SERVER then
 
-    util.AddNetworkString( "RequestExtracts" )
+    util.AddNetworkString("RequestExtracts")
 
     RAID.VoteTime = 60
     RAID.PlayersInRaid = {} -- [SteamID64] = Player

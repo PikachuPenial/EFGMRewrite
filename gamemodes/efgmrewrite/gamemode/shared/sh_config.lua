@@ -9,7 +9,7 @@ debugMeleeWep = {"arc9_eft_melee_taran", "arc9_eft_melee_6x5", "arc9_eft_melee_w
 if SERVER then
 
     -- modifiers
-    local modif = "RecoilAutoControlMult\\t0\\nRecoilKickMult\\t1.25\\nVisualRecoilPunchMult\\t1.5\\nVisualRecoilRollMult\\t1.5\\nVisualRecoilSideMult\\t0.5\\nVisualRecoilUpMult\\t0.5\\nVisualRecoilMult\\t2\\nRecoilRandomSideMult\\t1.25 "
+    local modif = "RecoilAutoControlMult\\t0\\nRecoilKickMult\\t1.25\\nVisualRecoilPunchMult\\t1.5\\nVisualRecoilRollMult\\t1.5\\nVisualRecoilSideMult\\t0.5\\nVisualRecoilUpMult\\t0.5\\nVisualRecoilMult\\t2\\nRecoilRandomSideMult\\t1.25\\nFreeAimRadiusMult\\t1.25 "
     RunConsoleCommand("arc9_modifiers", modif)
     RunConsoleCommand("arc9_mod_adstime", "1")
     RunConsoleCommand("arc9_mod_bodydamagecancel", "1")

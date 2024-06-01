@@ -1,17 +1,25 @@
+
 -- self explanitory
 if CLIENT then
+    CreateClientConVar("efgm_bind_showcontrols", KEY_P, true, true, "Determines the keybind that will display helpful keybinds")
     CreateClientConVar("efgm_bind_raidinfo", KEY_O, true, true, "Determines the keybind that will display available extracts and time remaining in the raid")
     CreateClientConVar("efgm_bind_leanleft", KEY_Q, true, true, "Determines the keybind that will begin a left lean")
     CreateClientConVar("efgm_bind_leanright", KEY_E, true, true, "Determines the keybind that will begin a right lean")
     CreateClientConVar("efgm_bind_freelook", MOUSE_MIDDLE, true, true, "Determines the keybind that will begin a free look")
-    CreateClientConVar("efgm_bind_changesight", MOUSE_MIDDLE, true, true, "Determines the keybind that adjust the zoom/reticle of your weapons sight")
+    CreateClientConVar("efgm_bind_changesight", MOUSE_MIDDLE, true, true, "Determines the keybind that adjusts the zoom/reticle of your weapons sight")
+    CreateClientConVar("efgm_bind_inspectweapon", KEY_I, true, true, "Determines the keybind that inspects your weapon")
 end
 
 hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
 
     if CLIENT then
 
-        -- raid information
+        -- show controls
+        if button == ply:GetInfoNum("efgm_bind_showcontrols", KEY_P) then
+            ply:ConCommand("efgm_print_controls")
+        end
+
+        -- show raid information
         if button == ply:GetInfoNum("efgm_bind_raidinfo", KEY_O) then
             ply:ConCommand("efgm_print_extracts")
         end
@@ -24,6 +32,11 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
         -- free looking
         if button == ply:GetInfoNum("efgm_bind_freelook", MOUSE_MIDDLE) then
             ply:ConCommand("+freelook")
+        end
+
+        -- weapon inspecting
+        if button == ply:GetInfoNum("efgm_bind_inspectweapon", KEY_I) then
+            ply:ConCommand("+arc9_inspect")
         end
 
     end
@@ -44,6 +57,11 @@ hook.Add("PlayerButtonUp", "EFGMBindsUp", function(ply, button)
             ply:ConCommand("-freelook")
         end
 
+        -- weapon inspecting
+        if button == ply:GetInfoNum("efgm_bind_inspectweapon", KEY_I) then
+            ply:ConCommand("-arc9_inspect")
+        end
+
     end
 
 end)
@@ -57,7 +75,12 @@ if game.SinglePlayer() then
 
         if SERVER then
 
-            -- raid information
+            -- show controls
+            if button == ply:GetInfoNum("efgm_bind_showcontrols", KEY_P) then
+                ply:ConCommand("efgm_print_controls")
+            end
+
+            -- show raid information
             if button == ply:GetInfoNum("efgm_bind_raidinfo", KEY_O) then
                 ply:ConCommand("efgm_print_extracts")
             end
@@ -70,6 +93,11 @@ if game.SinglePlayer() then
             -- free looking
             if button == ply:GetInfoNum("efgm_bind_freelook", MOUSE_MIDDLE) then
                 ply:ConCommand("+freelook")
+            end
+
+            -- weapon inspecting
+            if button == ply:GetInfoNum("efgm_bind_inspectweapon", KEY_I) then
+                ply:ConCommand("+arc9_inspect")
             end
 
         end
@@ -86,6 +114,11 @@ if game.SinglePlayer() then
         -- free looking
         if button == ply:GetInfoNum("efgm_bind_freelook", MOUSE_MIDDLE) then
             ply:ConCommand("-freelook")
+        end
+
+        -- weapon inspecting
+        if button == ply:GetInfoNum("efgm_bind_inspectweapon", KEY_I) then
+            ply:ConCommand("-arc9_inspect")
         end
 
     end)
