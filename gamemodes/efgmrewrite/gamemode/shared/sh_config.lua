@@ -25,8 +25,8 @@ if SERVER then
     RunConsoleCommand("arc9_mod_visualrecoil", "0.75")
 
     -- damage falloff (in meters)
-    RunConsoleCommand("arc9_eft_mindmgrange", "200")
-    RunConsoleCommand("arc9_eft_mindmgrange_sg", "100")
+    RunConsoleCommand("arc9_eft_mindmgrange", "160")
+    RunConsoleCommand("arc9_eft_mindmgrange_sg", "80")
     RunConsoleCommand("arc9_eft_mult_338", "0.65")
     RunConsoleCommand("arc9_eft_mult_bigrifle", "0.65")
     RunConsoleCommand("arc9_eft_mult_carabine", "0.4")
@@ -40,7 +40,7 @@ if SERVER then
     RunConsoleCommand("arc9_infinite_ammo", "0")
     RunConsoleCommand("arc9_mult_defaultammo", "0")
     RunConsoleCommand("arc9_realrecoil", "1")
-    RunConsoleCommand("arc9_lean", "1")
+    RunConsoleCommand("arc9_lean", "0")
     RunConsoleCommand("arc9_mod_sway", "1")
     RunConsoleCommand("arc9_mod_freeaim", "1")
     RunConsoleCommand("arc9_breath_slowmo", "0")
@@ -101,9 +101,9 @@ if CLIENT then
     RunConsoleCommand("arc9_killfeed_enable", "1")
     RunConsoleCommand("arc9_killfeed_dynamic", "1")
     RunConsoleCommand("arc9_killfeed_colour", "1")
-    RunConsoleCommand("arc9_breath_hud", "1")
-    RunConsoleCommand("arc9_breath_pp", "1")
-    RunConsoleCommand("arc9_breath_sfx", "1")
+    RunConsoleCommand("arc9_breath_hud", "0")
+    RunConsoleCommand("arc9_breath_pp", "0")
+    RunConsoleCommand("arc9_breath_sfx", "0")
     RunConsoleCommand("cl_vmanip_pickups_halo", "0")
 
     -- hints

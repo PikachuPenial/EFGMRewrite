@@ -63,7 +63,6 @@ end)
 local limV = 35
 local limH = 55
 local smooth = 0.8
-local blockads = false
 local blockshoot = true
 
 local freelooking = false
@@ -75,18 +74,19 @@ local LookX, LookY = 0, 0
 local InitialAng, CoolAng = Angle(), Angle()
 local ZeroAngle = Angle()
 
+local function isinsights(ply) -- arccw, arc9, tfa, mgbase, fas2 works
+    local weapon = ply:GetActiveWeapon()
+    return true and (weapon.GetInSights and weapon:GetInSights())
+end
+
 local function holdingbind(ply)
-    if !input.LookupBinding("freelook") then
-        return ply:KeyDown(IN_WALK)
-    else
-        return freelooking
-    end
+    return freelooking
 end
 
 hook.Add("CalcView", "AltlookView", function(ply, origin, angles, fov)
     CoolAng = LerpAngle(0.3, CoolAng, Angle(LookY, -LookX, 0))
 
-    if !holdingbind(ply) and CoolAng.p < 0.05 and CoolAng.p > -0.05 or !system.HasFocus() or ply:ShouldDrawLocalPlayer() then
+    if not holdingbind(ply) and CoolAng.p < 0.05 and CoolAng.p > -0.05 or isinsights(ply) and CoolAng.p < 0.05 and CoolAng.p > -0.05 or not system.HasFocus() or ply:ShouldDrawLocalPlayer() then
         InitialAng = angles + CoolAng
         LookX, LookY = 0, 0
 
@@ -108,7 +108,7 @@ end)
 
 hook.Add("InputMouseApply", "AltlookMouse", function(cmd, x, y, ang)
     local lp = LocalPlayer()
-    if !holdingbind(lp) or lp:ShouldDrawLocalPlayer() then LookX, LookY = 0, 0 return end
+    if not holdingbind(lp) or isinsights(lp) or lp:ShouldDrawLocalPlayer() then LookX, LookY = 0, 0 return end
 
     InitialAng.z = 0
     cmd:SetViewAngles(InitialAng)
@@ -123,6 +123,6 @@ hook.Add("StartCommand", "AltlookBlockShoot", function(ply, cmd)
     if !ply:IsPlayer() or !ply:Alive() then return end
     if !blockshoot then return end
 
-    if !holdingbind(ply) or ply:ShouldDrawLocalPlayer() then return end
+    if not holdingbind(ply) or isinsights(ply) or ply:ShouldDrawLocalPlayer() then return end
     cmd:RemoveKey(IN_ATTACK)
 end)
