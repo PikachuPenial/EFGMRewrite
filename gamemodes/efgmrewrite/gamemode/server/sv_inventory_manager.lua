@@ -35,6 +35,12 @@ hook.Add("PlayerSpawn", "GiveInventory", function(ply)
 
 end)
 
+hook.Add( "AllowPlayerPickup", "AllowWeaponPickup", function( ply, ent )
+    
+    -- todo: support ammo and attatchments(?)
+
+end )
+
 net.Receive("RequestPlayerInventory", function(len, ply)
 
     SendPlayerInventory(ply, ply:SteamID64())

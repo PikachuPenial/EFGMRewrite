@@ -43,7 +43,7 @@ end
 GiveItem = {}
 
 GiveItem[1] = function(ply, item, count, noReserveAmmo) -- weapons
-    ply:Give(item, noReserveAmmo or true)
+    ply:Give( item, noReserveAmmo )
 end
 
 GiveItem[2] = function(ply, item, count, noReserveAmmo) -- ammo

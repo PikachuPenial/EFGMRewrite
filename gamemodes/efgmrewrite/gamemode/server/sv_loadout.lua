@@ -8,7 +8,7 @@ function LOADOUT.Equip( ply, inventory )
     -- Temporary
     for k, v in pairs( inventory.contents ) do
         
-        GiveItem[v.type](ply, v.name, v.count, false)
+        GiveItem[v.type](ply, v.name, v.count)
 
     end
 
