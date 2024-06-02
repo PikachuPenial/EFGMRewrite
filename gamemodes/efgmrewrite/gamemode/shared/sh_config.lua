@@ -60,7 +60,7 @@ if SERVER then
 
     -- physics
     RunConsoleCommand("arc9_bullet_physics", "1")
-    RunConsoleCommand("arc9_bullet_gravity", "1.3")
+    RunConsoleCommand("arc9_bullet_gravity", "1.6")
     RunConsoleCommand("arc9_bullet_drag", "1")
     RunConsoleCommand("arc9_ricochet", "0")
     RunConsoleCommand("arc9_mod_penetration", "1")
@@ -134,8 +134,6 @@ if CLIENT then
     RunConsoleCommand("arc9_vm_cambob", "1")
     RunConsoleCommand("arc9_vm_cambobwalk", "1")
     RunConsoleCommand("arc9_vm_cambobintensity", "0.66")
-    RunConsoleCommand("vmanip_dooranim_hybridanim", "1")
-    RunConsoleCommand("vmanip_dooranim_screenbob", "1")
 
     -- tpik
     RunConsoleCommand("arc9_tpik", "0")

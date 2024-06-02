@@ -77,29 +77,29 @@ if CLIENT then
             else
                 self.IsHoldingBreath = ownerkeydownspeed
             end
-    
+
             lastpressed = ownerkeydownspeed
-    
+
             return self:CanHoldBreath() and self.IsHoldingBreath and (self:GetSightAmount() >= 1) and self:GetValue("HoldBreathTime") > 0
         end
-    
+
         -- fix flashlight rendering for other players :steamcanny:
         function SWEP:DrawFlashlightsWM()
             local allflash = true
             local owner = self:GetOwner()
             local lp = LocalPlayer()
-    
+
             if !self.Flashlights then
                 self:CreateFlashlights()
             end
-    
+
             for i, k in ipairs(self.Flashlights) do
                 local model = (k.slottbl or {}).WModel
-    
+
                 if !IsValid(model) then continue end
-    
+
                 local pos, ang
-    
+
                 if !model then
                     pos = owner:EyePos()
                     ang = owner:EyeAngles()
@@ -107,18 +107,18 @@ if CLIENT then
                     pos = model:GetPos()
                     ang = model:GetAngles()
                 end
-    
+
                 if k.qca then
                     local a = model:GetAttachment(k.qca)
                     if a then pos, ang = a.Pos, a.Ang end
                 end
-    
+
                 self:DrawLightFlare(pos + Vector(0, 0, 0.001), ang, k.col, k.br * 20, i, nil, k.nodotter)
-    
+
                 if k.qca then ang:RotateAroundAxis(ang:Up(), 90) end
-    
+
                 -- ang:RotateAroundAxis(ang:Up(), 90)
-    
+
                 local tr = util.TraceLine({
                     start = pos,
                     endpos = pos + ang:Forward() * 16,
