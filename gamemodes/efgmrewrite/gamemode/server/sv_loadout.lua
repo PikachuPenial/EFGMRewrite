@@ -20,7 +20,7 @@ function LOADOUT.GetArenaInventory( width, height, attatchmentCount )
 
     local inventory = INVG.New(width, height)
     
-    local secondary = debugSecWep[ math.random( #debugSecWep ) ] -- nerfing the nekeds
+    local secondary = debugShitSecWep[ math.random( #debugShitSecWep ) ] -- nerfing the nekeds
     local grenade = debugNadeWep[ math.random( #debugNadeWep) ]
     local melee = debugMeleeWep[ math.random( #debugMeleeWep) ]
 
@@ -28,7 +28,14 @@ function LOADOUT.GetArenaInventory( width, height, attatchmentCount )
     inventory:Add( grenade, 1, 1 )
     inventory:Add( melee, 1, 1 )
 
-    inventory:Add( game.GetAmmoID( weapons.Get( secondary ).Ammo ), 2, 1984 ) -- its just like george orwell's book
+    inventory:Add(1, 2, 3000) -- ar2
+    inventory:Add(3, 2, 3000) -- pistol
+    inventory:Add(4, 2, 3000) -- smg1
+    inventory:Add(5, 2, 3000) -- 357
+    inventory:Add(6, 2, 3000) -- buckshot
+    inventory:Add(7, 2, 3000) -- smg grenade
+
+    -- inventory:Add( game.GetAmmoID( weapons.Get( secondary ).Ammo ), 2, 1984 ) -- its just like george orwell's book (yes porty this is a good thing but people cant shoot the guns they find for now lmao)
 
     table.Shuffle(debugRandAtts)
 
@@ -41,5 +48,5 @@ function LOADOUT.GetArenaInventory( width, height, attatchmentCount )
     end
 
     return inventory
-    
+
 end
