@@ -1,7 +1,8 @@
 -- shit here
 
 local inventory = {}
-local primary, secondary, pistol, utility, knife = "", "", "", "", ""
+
+local activeSlots = {}
 
 concommand.Add("efgm_inventory_print", function(ply, cmd, args)
 
@@ -42,6 +43,12 @@ concommand.Add("efgm_inventory_drop", function(ply, cmd, args)
 
 end)
 
+concommand.Add("efgm_inventory_printactiveslots", function(ply, cmd, args)
+
+    PrintTable( activeSlots )
+
+end)
+
 net.Receive("UpdatePlayerInventory", function(len, ply)
 
     inventory = net.ReadTable()
@@ -49,49 +56,68 @@ net.Receive("UpdatePlayerInventory", function(len, ply)
 end)
 
 -- wip
--- hook.Add("Think", "CheckButtonPresses", function()
+hook.Add("Think", "CheckButtonPresses", function()
 
---     if input.IsKeyDown( KEY_1 ) && ply:HasWeapon( primary ) then
---         input.SelectWeapon( primary )
---     end
+    if table.IsEmpty( activeSlots ) then return end
+    if LocalPlayer() == nil then return end
 
---     if input.IsKeyDown( KEY_2 ) && ply:HasWeapon( secondary ) then
---         input.SelectWeapon( secondary )
---     end
+    -- todo: find a better way to do this (to put it another way, have fun penial)
 
---     if input.IsKeyDown( KEY_3 ) && ply:HasWeapon( pistol ) then
---         input.SelectWeapon( pistol )
---     end
+    for k, v in pairs( activeSlots ) do if !ply:HasWeapon( tostring( v ) ) then activeSlots[k] = nil end end
 
---     if input.IsKeyDown( KEY_G ) && ply:HasWeapon( utility ) then
---         input.SelectWeapon( utility )
---     end
+    for k, v in pairs( activeSlots ) do
+        
+        if input.IsKeyDown( k ) && ply:HasWeapon( tostring( v ) ) then
 
---     if input.IsKeyDown( KEY_V ) && ply:HasWeapon( knife ) then
---         input.SelectWeapon( knife )
---     end
+            input.SelectWeapon( LocalPlayer():GetWeapon( v ) )
+            print("Selecting "..v)
 
--- end)
+            return
+
+        end
+
+    end
+
+end)
 
 
 hook.Add("HUDWeaponPickedUp", "WeaponPickedUp", function( weapon )
 
-    -- local name = weapon:GetClass()
-    -- print(name)
+    local name = weapon:GetClass()
 
-    -- if primary == "" then
-
-    --     primary = name
-
-    -- elseif secondary == "" then
+    if flippedDebugPrimWep[name] != nil then
         
-    --     secondary = name
-
-    -- else
-
-    --     print("I fucked something up")
+        if activeSlots[KEY_1] == nil then activeSlots[KEY_1] = name return false
         
-    -- end
+        elseif activeSlots[KEY_2] == nil then activeSlots[KEY_2] = name return false
+        
+        else print("I equipped a third primary, what") return false end
+
+    end
+
+    if flippedDebugSecWep[name] != nil then
+        
+        if activeSlots[KEY_3] == nil then activeSlots[KEY_3] = name return false
+        
+        else print("I equipped a second secondary, where") return false end
+
+    end
+
+    if flippedDebugNadeWep[name] != nil then
+        
+        if activeSlots[KEY_G] == nil then activeSlots[KEY_G] = name return false
+        
+        else print("I equipped a second grenade, when") return false end
+        
+    end
+
+    if flippedDebugMeleeWep[name] != nil then
+        
+        if activeSlots[KEY_V] == nil then activeSlots[KEY_V] = name return false
+        
+        else print("I equipped a second knife, how") return false end
+        
+    end
 
     return false
 
