@@ -187,11 +187,6 @@ function DrawAmmoInfo()
 end
 hook.Add("HUDAmmoPickedUp", "AmmoPickedUp", DrawAmmoInfo)
 
-function DrawWeaponInfo()
-    return false
-end
-hook.Add("HUDWeaponPickedUp", "WeaponPickedUp", DrawWeaponInfo)
-
 function DrawItemInfo()
     return false
 end

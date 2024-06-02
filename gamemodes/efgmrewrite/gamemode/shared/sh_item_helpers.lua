@@ -5,11 +5,15 @@
 CheckExists = {} -- ok its needed now
 
 CheckExists[1] = function(item)-- weapons
-    return ITEMS[item] != nil -- if it equals nil then the weapon aint a weapon
+    return ITEMS[item] != nil
 end
 
 CheckExists[2] = function(item) -- ammo
-    return ITEMS[item] != nil -- if it equals nil then the ammo just does not exist
+    return ITEMS[item] != nil
+end
+
+CheckExists[3] = function(item) -- attatchment
+    return ITEMS[item] != nil
 end
 
 PlayerHasItem = {}
@@ -18,9 +22,12 @@ PlayerHasItem[1] = function(ply, item, count) -- weapons
     return ply:HasWeapon( item )
 end
 
-
 PlayerHasItem[2] = function(ply, item, count) -- ammo
     return ply:GetAmmoCount(item) >= (count or 1)
+end
+
+PlayerHasItem[3] = function(ply, item, count) -- attatchment
+    return false -- idk how to do that
 end
 
 TakeItem = {}
@@ -29,11 +36,9 @@ TakeItem[1] = function(ply, item, count) -- weapons
     ply:StripWeapon(item)
 end
 
-
 TakeItem[2] = function(ply, item, count) -- ammo
     ply:RemoveAmmo(count or 1, item)
 end
-
 
 GiveItem = {}
 
@@ -45,6 +50,9 @@ GiveItem[2] = function(ply, item, count, noReserveAmmo) -- ammo
     ply:GiveAmmo(count or 1, item, true)
 end
 
+GiveItem[3] = function(ply, item, count, noReserveAmmo) -- attatchment
+    ARC9:PlayerGiveAtt(ply, item, count or 1)
+end
 
 GetCost = {}
 
@@ -57,7 +65,6 @@ GetCost[2] = function(item, count) -- ammo
     return math.ceil(costPerBullet * (count or 1)) -- gets cost per bullet multiplied by the amount of bullets your rat ass wants
 end
 
-
 AddItems = {} -- returns count
 
 AddItems[1] = function(count1, count2) -- weapons
@@ -65,9 +72,12 @@ AddItems[1] = function(count1, count2) -- weapons
 end
 
 AddItems[2] = function(count1, count2) -- ammo
-    return count1 or 1 + count2 or 1 -- gets cost per bullet multiplied by the amount of bullets your rat ass wants
+    return (count1 or 1) + (count2 or 1)
 end
 
+AddItems[3] = function(count1, count2) -- attatchments
+    return (count1 or 1) + (count2 or 1)
+end
 
 GetShopIconInfo = {}
 

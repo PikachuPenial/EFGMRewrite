@@ -1,6 +1,7 @@
 -- shit here
 
 local inventory = {}
+local primary, secondary, pistol, utility, knife = "", "", "", "", ""
 
 concommand.Add("efgm_inventory_print", function(ply, cmd, args)
 
@@ -44,5 +45,54 @@ end)
 net.Receive("UpdatePlayerInventory", function(len, ply)
 
     inventory = net.ReadTable()
+
+end)
+
+-- wip
+-- hook.Add("Think", "CheckButtonPresses", function()
+
+--     if input.IsKeyDown( KEY_1 ) && ply:HasWeapon( primary ) then
+--         input.SelectWeapon( primary )
+--     end
+
+--     if input.IsKeyDown( KEY_2 ) && ply:HasWeapon( secondary ) then
+--         input.SelectWeapon( secondary )
+--     end
+
+--     if input.IsKeyDown( KEY_3 ) && ply:HasWeapon( pistol ) then
+--         input.SelectWeapon( pistol )
+--     end
+
+--     if input.IsKeyDown( KEY_G ) && ply:HasWeapon( utility ) then
+--         input.SelectWeapon( utility )
+--     end
+
+--     if input.IsKeyDown( KEY_V ) && ply:HasWeapon( knife ) then
+--         input.SelectWeapon( knife )
+--     end
+
+-- end)
+
+
+hook.Add("HUDWeaponPickedUp", "WeaponPickedUp", function( weapon )
+
+    -- local name = weapon:GetClass()
+    -- print(name)
+
+    -- if primary == "" then
+
+    --     primary = name
+
+    -- elseif secondary == "" then
+        
+    --     secondary = name
+
+    -- else
+
+    --     print("I fucked something up")
+        
+    -- end
+
+    return false
 
 end)

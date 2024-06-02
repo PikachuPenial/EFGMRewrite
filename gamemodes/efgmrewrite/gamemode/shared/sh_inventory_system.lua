@@ -15,12 +15,30 @@ function INVG.New( width, height )
     inv.width = width or math.huge
     inv.height = height or math.huge
 
-    function inv:Add(pos, name, type, count)
+    function inv:Add(name, type, count, key)
 
-        self.contents[pos] = {}
-        self.contents[pos].name = name
-        self.contents[pos].type = type
-        self.contents[pos].count = count or 1
+        if key == nil then
+
+            local k = table.insert(self.contents, {})
+            
+            self.contents[k].name = name
+            self.contents[k].type = type
+            self.contents[k].count = count or 1
+
+            return
+            
+        end
+
+        if istable(key) then
+            
+            key = INVG.PosTOLocationInformation(key, self.width, self.height)
+
+        end
+
+        self.contents[key] = {}
+        self.contents[key].name = name
+        self.contents[key].type = type
+        self.contents[key].count = count or 1
 
     end
 

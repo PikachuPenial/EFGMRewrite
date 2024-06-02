@@ -23,43 +23,13 @@ hook.Add("PlayerSpawn", "GiveInventory", function(ply)
     local steamID =  ply:SteamID64()
     backpacks[ steamID ] = backpacks[ steamID ] or {}
 
-    local inventory = {}
-    local randAtts = table.Copy(ARC9.Attachments_Index) -- FUCK YOU FUCK YOU FUCK YOU FUCK YOU FUCK YOU FUCK YOU FUCK YOU FUCK YOU
-
     if !isArena then return end
 
-    timer.Simple(0, function()
+    timer.Create("SpawnEquipTimer", 1, 1, function()
 
-        -- all this shit is wip sorry penal
+        local inventory = LOADOUT.GetArenaInventory(6, 6, 5)
 
-        -- a random primary, secondary, grenade, and melee weapon
-        --ply:Give(debugPrimWep[math.random(#debugPrimWep)])
-        ply:Give(debugShitSecWep[math.random(#debugShitSecWep)]) -- nerfing the nakeds
-        ply:Give(debugNadeWep[math.random(#debugNadeWep)])
-        ply:Give(debugMeleeWep[math.random(#debugMeleeWep)])
-
-        -- ammo for weapons
-        ply:SetAmmo(3000, 1) -- ar2
-        ply:SetAmmo(3000, 3) -- pistol
-        ply:SetAmmo(3000, 4) -- smg1
-        ply:SetAmmo(3000, 5) -- 357
-        ply:SetAmmo(3000, 7) -- buckshot
-        ply:SetAmmo(3000, 9) -- smg grenade
-
-        -- attachments
-        timer.Simple(1, function()
-            table.Shuffle(randAtts)
-            for k, v in pairs(randAtts) do
-                if k > 250 then return end -- only give player 250 diff unique attachments
-                ARC9:PlayerGiveAtt(ply, v, math.random(1, 2))
-            end
-
-            ARC9:PlayerSendAttInv(ply)
-        end)
-
-        -- inventory = LOADOUT.GetArenaInventory(6, 6)
-
-        -- LOADOUT.Equip( ply, inventory.contents )
+        LOADOUT.Equip( ply, inventory )
 
     end)
 

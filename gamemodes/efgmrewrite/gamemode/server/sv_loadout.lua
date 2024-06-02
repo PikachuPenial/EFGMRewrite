@@ -3,34 +3,43 @@
 
 LOADOUT = {} -- okay this is actually convenient
 
-function LOADOUT.Equip( ply, contents )
+function LOADOUT.Equip( ply, inventory )
 
     -- Temporary
-    for k, v in pairs(contents) do
+    for k, v in pairs( inventory.contents ) do
         
         GiveItem[v.type](ply, v.name, v.count, false)
 
     end
 
+    ARC9:PlayerSendAttInv(ply)
+
 end
 
--- function LOADOUT.GetArenaInventory( width, height )
+function LOADOUT.GetArenaInventory( width, height, attatchmentCount )
 
---     local inventory = INVG.New(width or 6, height or 6)
+    local inventory = INVG.New(width, height)
     
---     local primaryWeapon = debugPrimWep[ math.random( #debugPrimWep ) ]
---     local secondaryWeapon = debugSecWep[ math.random( #debugSecWep) ]
---     local grenade = debugNadeWep[ math.random( #debugNadeWep) ]
---     local melee = debugMeleeWep[ math.random( #debugMeleeWep) ]
+    local secondary = debugSecWep[ math.random( #debugSecWep ) ] -- nerfing the nekeds
+    local grenade = debugNadeWep[ math.random( #debugNadeWep) ]
+    local melee = debugMeleeWep[ math.random( #debugMeleeWep) ]
 
---     inventory:Add("s_prim1", primaryWep, 1, 1)
---     inventory:Add("s_sec", secondaryWeapon, 1, 1)
---     inventory:Add("s_nade", grenade, 1, 1)
---     inventory:Add("s_kn", melee, 1, 1)
+    inventory:Add( secondary, 1, 1 ) -- should be inventory.contents[1] and so on
+    inventory:Add( grenade, 1, 1 )
+    inventory:Add( melee, 1, 1 )
 
---     inventory:Add("s_ammo1", weapons.Get( primaryWeapon ):GetPrimaryAmmoType(), 2, 1984) -- its just like george orwell's book
---     inventory:Add("s_ammo2", weapons.Get( secondaryWeapon ):GetPrimaryAmmoType(), 2, 1984)
+    inventory:Add( game.GetAmmoID( weapons.Get( secondary ).Ammo ), 2, 1984 ) -- its just like george orwell's book
 
---     return inventory
+    table.Shuffle(debugRandAtts)
+
+    for k, v in ipairs(debugRandAtts) do
+
+        inventory:Add( v, 3, math.random(1, 2) )
+
+        if k > attatchmentCount then return inventory end
+
+    end
+
+    return inventory
     
--- end
+end
