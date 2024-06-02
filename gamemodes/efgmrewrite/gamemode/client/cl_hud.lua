@@ -12,8 +12,11 @@ end
 local function DebugRaidTime()
 
     -- time logic
-    local raidTime = string.FormattedTime( GetGlobalInt("RaidTimeLeft", -1), "%2i:%02i" )
-    local raidStatus = GetGlobalInt("RaidStatus", 0)
+    local realRaidTime = GetGlobalInt("RaidTimeLeft", -1)
+    local raidTime = string.FormattedTime(realRaidTime, "%2i:%02i")
+    -- local raidStatus = GetGlobalInt("RaidStatus", 0)
+
+    if raidTime == nil or surface.GetTextSize(raidTime) == nil then return end
 
     local tempStatusTable = {
         [0] = "Raid Pending",
@@ -178,7 +181,7 @@ net.Receive("PlayerEnterRaid", function()
 end )
 
 function DrawTarget()
-    return false
+    if !LocalPlayer():CompareStatus(0) then return false end
 end
 hook.Add("HUDDrawTargetID", "HidePlayerInfo", DrawTarget)
 

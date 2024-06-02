@@ -11,7 +11,7 @@ debugRandAtts = table.Copy(ARC9.Attachments_Index)
 if SERVER then
 
     -- modifiers
-    local modif = "RecoilAutoControlMult\\t0\\nRecoilKickMult\\t1.25\\nVisualRecoilPunchMult\\t1.5\\nVisualRecoilRollMult\\t1.5\\nVisualRecoilSideMult\\t0.5\\nVisualRecoilUpMult\\t0.5\\nVisualRecoilMult\\t2\\nRecoilRandomSideMult\\t1.25\\nFreeAimRadiusMult\\t1.25 "
+    local modif = "\\nRecoilKickMult\\t1.25\\nVisualRecoilPunchMult\\t1.5\\nVisualRecoilRollMult\\t1.5\\nVisualRecoilSideMult\\t1\\nVisualRecoilUpMult\\t1\\nVisualRecoilMult\\t2\\nRecoilRandomSideMult\\t1.25\\nFreeAimRadiusMult\\t1.25 "
     RunConsoleCommand("arc9_modifiers", modif)
     RunConsoleCommand("arc9_mod_adstime", "1")
     RunConsoleCommand("arc9_mod_bodydamagecancel", "1")
@@ -19,7 +19,7 @@ if SERVER then
     RunConsoleCommand("arc9_mod_damagerand", "1")
     RunConsoleCommand("arc9_mod_headshotdamage", "1")
     RunConsoleCommand("arc9_mod_malfunction", "0.25")
-    RunConsoleCommand("arc9_mod_muzzlevelocity", "1")
+    RunConsoleCommand("arc9_mod_muzzlevelocity", "0.9")
     RunConsoleCommand("arc9_mod_recoil", "0.65")
     RunConsoleCommand("arc9_mod_rpm", "1")
     RunConsoleCommand("arc9_mod_spread", "1")
@@ -53,10 +53,10 @@ if SERVER then
     RunConsoleCommand("sv_vmanip_pickups", "1")
 
     -- physics
-    RunConsoleCommand("arc9_bullet_physics", "0")
-    RunConsoleCommand("arc9_bullet_gravity", "1")
+    RunConsoleCommand("arc9_bullet_physics", "1")
+    RunConsoleCommand("arc9_bullet_gravity", "1.3")
     RunConsoleCommand("arc9_bullet_drag", "1")
-    RunConsoleCommand("arc9_ricochet", "1")
+    RunConsoleCommand("arc9_ricochet", "0")
     RunConsoleCommand("arc9_mod_penetration", "1")
     RunConsoleCommand("arc9_bullet_lifetime", "5")
     RunConsoleCommand("arc9_bullet_imaginary", "1")
