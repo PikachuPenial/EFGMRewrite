@@ -27,7 +27,7 @@ hook.Add("PlayerSpawn", "GiveInventory", function(ply)
 
     timer.Create("SpawnEquipTimer", 1, 1, function()
 
-        local inventory = LOADOUT.GetArenaInventory(6, 6, 5)
+        local inventory = LOADOUT.GetArenaInventory(6, 6, 250)
 
         LOADOUT.Equip( ply, inventory )
 
