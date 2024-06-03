@@ -85,23 +85,25 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	local inventoryClean = {}
 
 	for k, v in ipairs(inventory) do -- i tried for an entire hour to do this within the entity itself, but alas, it didn't fucking work, i genuinely don't even know anymore
-
 		local item = v:GetClass()
 		if !table.HasValue(blacklist, item) then
 
+			--table.insert(inventoryClean, v)
 			table.insert(inventoryClean, item)
 
 		end
 
 	end
 
-	local backpack = ents.Create("efgm_backpack_temp")
-	backpack:SetPos(victim:GetPos() + Vector(0, 0, 64))
-	backpack:Spawn()
-	backpack:Activate()
-	backpack:SetBagContents(inventoryClean)
-	backpack:SetBagAttachments(victim.ARC9_AttInv)
-	backpack:SetVictimName(victim:GetName())
+	if !table.IsEmpty(inventoryClean) then
+		local backpack = ents.Create("efgm_backpack_temp")
+		backpack:SetPos(victim:GetPos() + Vector(0, 0, 64))
+		backpack:Spawn()
+		backpack:Activate()
+		backpack:SetBagContents(inventoryClean)
+		backpack:SetBagAttachments(victim.ARC9_AttInv)
+		backpack:SetVictimName(victim:GetName())
+	end
 
 	-- death sound
 	victim:EmitSound(Sound("deathsounds/death" .. math.random(1, 116) .. ".wav"), 80)

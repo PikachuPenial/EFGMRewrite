@@ -1,11 +1,9 @@
 local shotCaliber = {}
-shotCaliber[3] = 200 -- pistol
-shotCaliber[5] = 50 -- .357
-shotCaliber[4] = 120 -- smg1
-shotCaliber[7] = 100 -- buckshot
+shotCaliber[3] = 180 -- pistol
+shotCaliber[5] = 35 -- .357
+shotCaliber[4] = 110 -- smg1
+shotCaliber[7] = 140 -- buckshot
 shotCaliber[1] = 75 -- ar2
-shotCaliber[13] = 50 -- sniper
-shotCaliber[14] = 50 -- sniper alt.
 shotCaliber[20] = 75 -- airboat gun
 
 local shotSounds = {
@@ -41,7 +39,7 @@ if SERVER then
                         net.Start("DistantGunAudio")
 						net.WriteVector(shootPos)
 						net.WriteFloat(plyDistance)
-						net.WriteInt(bulletPitch)
+						net.WriteInt(bulletPitch, 9)
 						net.Send(v)
 					end
 				end
@@ -50,12 +48,17 @@ if SERVER then
 	end)
 end
 
-net.Receive("DistantGunAudio", function()
-	local receivedVect = net.ReadVector()
-	local distance = net.ReadFloat()
-	local pitch = net.ReadInt()
+if CLIENT then
+    net.Receive("DistantGunAudio", function()
+        local receivedVect = net.ReadVector()
+        local distance = net.ReadFloat()
+        local pitch = net.ReadInt(9)
 
-	if receivedVect then
-		sound.Play(shotSounds[math.random(#shotSounds)], receivedVect, math.min(169, (169 * 4500) / distance), pitch + math.random(-20, 20), 1)
-	end
-end)
+        print(distance)
+        print(math.min(169, (169 * 4500) / distance))
+
+        if receivedVect then
+            sound.Play(shotSounds[math.random(#shotSounds)], receivedVect, math.min(150, (150 * 4500) / distance), pitch + math.random(-15, 15), 1)
+        end
+    end)
+end

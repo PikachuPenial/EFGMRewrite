@@ -29,13 +29,13 @@ end
 
 function ENT:SetBagContents(inventory)
 
-    contents = inventory
+    contents = table.Copy(inventory)
 
 end
 
 function ENT:SetBagAttachments(inventory)
 
-    attachments = inventory
+    attachments = table.Copy(inventory)
 
 end
 
@@ -61,8 +61,9 @@ function ENT:Use(activator)
 
     end
 
-    for k, v in ipairs( contents ) do
+    for k, v in pairs( contents ) do
 
+        -- activator:PickupWeapon(v)
         activator:Give(v)
 
     end
