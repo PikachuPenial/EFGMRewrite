@@ -80,7 +80,7 @@ end)
 
 -- end)
 
--- hook.Add("HUDWeaponPickedUp", "WeaponPickedUp", function( weapon )
+hook.Add("HUDWeaponPickedUp", "WeaponPickedUp", function( weapon )
 
     -- local name = weapon:GetClass()
 
@@ -118,6 +118,6 @@ end)
         
     -- end
 
-    -- return false
+    return false
 
--- end)
+end)
