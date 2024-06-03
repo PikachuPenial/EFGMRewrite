@@ -36,7 +36,7 @@ hook.Add("PlayerSpawn", "GiveInventory", function(ply)
 end)
 
 hook.Add( "AllowPlayerPickup", "AllowWeaponPickup", function( ply, ent )
-    
+
     -- todo: support ammo and attatchments(?)
 
 end )

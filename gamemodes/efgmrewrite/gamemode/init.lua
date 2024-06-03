@@ -78,15 +78,16 @@ hook.Add("PlayerInitialSpawn", "InitFirstSpawn", function(ply)
 
 end)
 
+local blacklist = table.Flip( {"arc9_eft_melee_taran", "arc9_eft_melee_6x5", "arc9_eft_melee_wycc", "arc9_eft_melee_a2607", "arc9_eft_melee_a2607d", "arc9_eft_melee_camper", "arc9_eft_melee_crash", "arc9_eft_melee_cultist", "arc9_eft_melee_fulcrum", "arc9_eft_melee_crowbar", "arc9_eft_melee_kiba", "arc9_eft_melee_kukri", "arc9_eft_melee_m2", "arc9_eft_melee_mpl50", "arc9_eft_melee_rebel", "arc9_eft_melee_voodoo", "arc9_eft_melee_sp8", "arc9_eft_melee_hultafors", "arc9_eft_melee_taiga"} )
+
 function GM:PlayerDeath(victim, inflictor, attacker)
 
-	local blacklist = {"arc9_eft_melee_taran", "arc9_eft_melee_6x5", "arc9_eft_melee_wycc", "arc9_eft_melee_a2607", "arc9_eft_melee_a2607d", "arc9_eft_melee_camper", "arc9_eft_melee_crash", "arc9_eft_melee_cultist", "arc9_eft_melee_fulcrum", "arc9_eft_melee_crowbar", "arc9_eft_melee_kiba", "arc9_eft_melee_kukri", "arc9_eft_melee_m2", "arc9_eft_melee_mpl50", "arc9_eft_melee_rebel", "arc9_eft_melee_voodoo", "arc9_eft_melee_sp8", "arc9_eft_melee_hultafors", "arc9_eft_melee_taiga"}
 	local inventory = victim:GetWeapons()
 	local inventoryClean = {}
 
 	for k, v in ipairs(inventory) do -- i tried for an entire hour to do this within the entity itself, but alas, it didn't fucking work, i genuinely don't even know anymore
 		local item = v:GetClass()
-		if !table.HasValue(blacklist, item) then
+		if blacklist[item] == nil then
 
 			--table.insert(inventoryClean, v)
 			table.insert(inventoryClean, item)
