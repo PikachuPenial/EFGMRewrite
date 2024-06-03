@@ -19,11 +19,11 @@ if SERVER then
     -- modifiers
     local modif = "\\nRecoilKickMult\\t1.25\\nVisualRecoilPunchMult\\t1.5\\nVisualRecoilRollMult\\t1.5\\nVisualRecoilSideMult\\t1\\nVisualRecoilUpMult\\t1\\nVisualRecoilMult\\t2\\nRecoilRandomSideMult\\t1.25\\nFreeAimRadiusMult\\t1 "
     RunConsoleCommand("arc9_modifiers", modif)
-    RunConsoleCommand("arc9_mod_adstime", "1")
+    RunConsoleCommand("arc9_mod_adstime", "0.75")
     RunConsoleCommand("arc9_mod_bodydamagecancel", "1")
     RunConsoleCommand("arc9_mod_damage", "1")
     RunConsoleCommand("arc9_mod_damagerand", "1")
-    RunConsoleCommand("arc9_mod_headshotdamage", "1")
+    RunConsoleCommand("arc9_mod_headshotdamage", "0.8")
     RunConsoleCommand("arc9_mod_malfunction", "0.25")
     RunConsoleCommand("arc9_mod_muzzlevelocity", "1")
     RunConsoleCommand("arc9_mod_recoil", "0.65")

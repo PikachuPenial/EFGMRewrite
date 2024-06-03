@@ -181,7 +181,7 @@ if SERVER then
 
             if !ply:IsPlayer() then print("What kind of player tries to enter the raid? No player, no player at all.") return end
 
-            if !ply:CompareStatus(0) then print("great ive fucking broke the gamemode again goddamn it") return end
+            if !ply:CompareStatus(0) then print("great ive fucking broke the gamemode again goddamn it") ply:Kill() return end
 
             net.Start("PlayerEnterRaid")
             net.Send(ply)
