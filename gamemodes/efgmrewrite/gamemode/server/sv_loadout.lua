@@ -7,7 +7,7 @@ function LOADOUT.Equip( ply, inventory )
 
     -- Temporary
     for k, v in pairs( inventory.contents ) do
-        
+
         GiveItem[v.type](ply, v.name, v.count)
 
     end
@@ -19,7 +19,7 @@ end
 function LOADOUT.GetArenaInventory( width, height, attatchmentCount )
 
     local inventory = INVG.New(width, height)
-    
+
     local secondary = debugShitSecWep[ math.random( #debugShitSecWep ) ] -- nerfing the nekeds
     local grenade = debugNadeWep[ math.random( #debugNadeWep) ]
     local melee = debugMeleeWep[ math.random( #debugMeleeWep) ]
