@@ -3,9 +3,9 @@ AddCSLuaFile("shared.lua")
 
 include("shared.lua")
 
-local contents = {}
-local attachments = {}
-local victimName
+ENT.Inventory = {}
+ENT.Attachments = {}
+ENT.VictimName = ""
 
 function ENT:Initialize()
 
@@ -27,48 +27,38 @@ function ENT:Initialize()
 
 end
 
-function ENT:SetBagContents(inventory)
+function ENT:SetBagData( inventory, attachments, name )
 
-    contents = table.Copy(inventory)
-
-end
-
-function ENT:SetBagAttachments(inventory)
-
-    attachments = table.Copy(inventory)
-
-end
-
-function ENT:SetVictimName(name)
-
-    victimName = name
+    self.Inventory = inventory
+    self.Attachments = attachments
+    self.VictimName = name
 
 end
 
 function ENT:Use(activator)
+
     if !activator:IsPlayer() then return end
 
     local effectdata = EffectData()
     effectdata:SetOrigin(self:GetPos() + Vector(0, 0, 10))
     effectdata:SetMaterialIndex(0)
 
+    local weaponCount = 0
+
+    for k, v in pairs( self.Inventory.contents ) do if v.type == 1 then weaponCount = weaponCount + 1 end end
+
     activator:SetHealth(activator:GetMaxHealth())
-    activator:PrintMessage(HUD_PRINTTALK, "You looted " .. victimName .. "! (" .. table.Count(contents) .. " items, " .. table.Count(attachments) .. " attachments)")
+    activator:PrintMessage(HUD_PRINTTALK, "You looted " .. self.VictimName .. "! (" .. weaponCount .. " weapons, " .. table.Count( self.Attachments ) .. " attachments)")
 
-    if table.IsEmpty( contents ) and table.IsEmpty( attachments ) then
+    if table.IsEmpty( self.Inventory.contents ) and table.IsEmpty( self.Attachments ) then return end
 
-        return
+    for k, v in pairs( self.Inventory.contents ) do
 
-    end
-
-    for k, v in pairs( contents ) do
-
-        -- activator:PickupWeapon(v)
-        activator:Give(v)
+        GiveItem[ v.type ]( activator, v.name, v.count, false )
 
     end
 
-    for k, v in pairs( attachments ) do
+    for k, v in pairs( self.Attachments ) do
 
         ARC9:PlayerGiveAtt(activator, k, v)
 

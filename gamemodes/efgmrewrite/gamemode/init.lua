@@ -82,28 +82,33 @@ local blacklist = table.Flip( {"arc9_eft_melee_taran", "arc9_eft_melee_6x5", "ar
 
 function GM:PlayerDeath(victim, inflictor, attacker)
 
-	local inventory = victim:GetWeapons()
-	local inventoryClean = {}
+	local weps = victim:GetWeapons()
+	local ammo = victim:GetAmmo()
 
-	for k, v in ipairs(inventory) do -- i tried for an entire hour to do this within the entity itself, but alas, it didn't fucking work, i genuinely don't even know anymore
+	local inventory = INVG.New()
+
+	for k, v in ipairs( weps ) do -- i tried for an entire hour to do this within the entity itself, but alas, it didn't fucking work, i genuinely don't even know anymore
+        
 		local item = v:GetClass()
+
 		if blacklist[item] == nil then
 
-			--table.insert(inventoryClean, v)
-			table.insert(inventoryClean, item)
+			inventory:Add( item, 1, 1 )
 
 		end
 
 	end
 
-	if !table.IsEmpty(inventoryClean) then
-		local backpack = ents.Create("efgm_backpack_temp")
+    for k, v in pairs( ammo ) do inventory:Add(k, 2, v) end
+
+	if !table.IsEmpty(inventory.contents) then
+
+        local backpack = ents.Create("efgm_backpack_temp")
 		backpack:SetPos(victim:GetPos() + Vector(0, 0, 64))
 		backpack:Spawn()
 		backpack:Activate()
-		backpack:SetBagContents(inventoryClean)
-		backpack:SetBagAttachments(victim.ARC9_AttInv)
-		backpack:SetVictimName(victim:GetName())
+        backpack:SetBagData( inventory, victim.ARC9_AttInv, victim:GetName() )
+
 	end
 
 	-- death sound
