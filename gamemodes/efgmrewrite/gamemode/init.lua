@@ -114,6 +114,12 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	-- death sound
 	victim:EmitSound(Sound("deathsounds/death" .. math.random(1, 116) .. ".wav"), 80)
 
+	-- when a player suicides
+	if !IsValid(attacker) or victim == attacker or !attacker:IsPlayer() then
+		victim:PrintMessage(HUD_PRINTCENTER, "You commited suicide")
+		return
+	end
+
 	local weaponInfo
 	local weaponName
 	local rawDistance = victim:GetPos():Distance(attacker:GetPos())
@@ -127,15 +133,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	end
 
 	-- death information
-	if attacker != victim then
-
-		victim:PrintMessage(HUD_PRINTCENTER, attacker:GetName() .. " [" .. attacket:Health() .. " HP] killed you with a " .. weaponName .. " from " .. distance .. "m away")
-
-	else
-
-		victim:PrintMessage(HUD_PRINTCENTER, "You commited suicide")
-
-	end
+	victim:PrintMessage(HUD_PRINTCENTER, attacker:GetName() .. " [" .. attacket:Health() .. " HP] killed you with a " .. weaponName .. " from " .. distance .. "m away")
 
 end
 

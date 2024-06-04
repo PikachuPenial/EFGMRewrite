@@ -16,7 +16,7 @@ local function DebugRaidTime()
     local raidTime = string.FormattedTime(realRaidTime, "%2i:%02i")
     -- local raidStatus = GetGlobalInt("RaidStatus", 0)
 
-    if raidTime == nil or surface.GetTextSize(raidTime) == nil then return end
+    if raidTime == nil then return end
 
     local tempStatusTable = {
         [0] = "Raid Pending",
