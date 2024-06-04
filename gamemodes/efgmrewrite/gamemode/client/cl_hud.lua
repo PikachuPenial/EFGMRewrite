@@ -278,7 +278,7 @@ net.Receive("VoteableMaps", function(len)
 
     local tbl = net.ReadTable()
 
-    LocalPlayer():PrintMessage(HUD_PRINTTALK, "Look in the console and (efgm_vote mapname) for a map, im not good at UI so fuck you.")
+    LocalPlayer():PrintMessage(HUD_PRINTTALK, "Go into the console and type 'efgm_vote ___' and vote for one of the maps!")
     PrintTable(tbl)
 
 end)

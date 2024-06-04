@@ -23,3 +23,13 @@ function ENT:KeyValue(key, value)
     end
 
 end
+
+function ENT:GetAllSpawns()
+
+    local spawns = ents.FindByName( self.SpawnName )
+
+    table.insert(spawns, self)
+
+    return spawns
+
+end

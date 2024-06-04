@@ -16,11 +16,11 @@
     //Inputs
     input StartRaid(void) : "Tells the raid system to begin the fucking raid already. Can be triggered by whatever, get creative."
 
-    input EndRaid(void) : "Tells the raid system to end the raid. Instantly. Maybe use this for like a map with a nuke or something. Again, get creative."
+    input EndRaid(void) : "Tells the raid system to end the raid. Instantly. Maybe use this for like a map with a nuke or something."
 
-    input SetRaidTime(integer) : "Does exactly what you think it does. Useful for adding pressure to extract. Do I really have to say it?"
+    input SetRaidTime(integer) : "Does exactly what you think it does. Useful for adding pressure to extract."
     
-    input RaidAddPlayer(void) : "Tells the raid system to add a player into an ongoing raid. Smart spawnz."
+    input SetPlayerReadiness(bool) : "Tells the raid system to mark a player as ready to join the raid."
 
     // Outputs
     output OnRaidStart(void) : "This fires when the raid starts. Useful for spawning shit in the map, enabling / disabling extracts, or doing other things."
@@ -31,7 +31,8 @@
 
 @PointClass base(Targetname) = efgm_event_interface : "Event System Interface"
 [
-    
+
+    // Key Values
     eventName(string) : "Event Name" : "" : "The name of the event this interface manages."
     
     eventDescription(string) : "Event Description" : "" : "(Optional) A description of the event, only accessed by server commands."
@@ -48,7 +49,6 @@
 [
 
     // Key Values
-
     spawn_type(choices) : "Spawn Type" : 0 : "Type of player that can spawn here. PMC spawns a PMC just whenever, Player Scav spawns player scavs whenever I add them, and Any spawns both." =
     [
         0 : "Any"
@@ -63,6 +63,14 @@
 
 ]
 
+@PointClass base(Targetname, PlayerClass, Angles) studio("models/editor/playerstart.mdl") = efgm_team_spawn : "Team Spawn"
+[
+
+    // Key Values
+    main_spawn(string) : "Main Raid Spawn" : "" : "Make this the name of the 'central' raid spawn."
+
+]
+
 @PointClass base(Targetname, PlayerClass, Angles) studio("models/editor/playerstart.mdl") = efgm_lobby_spawn : "Lobby Spawn"
 [
     // basically just a glorified info_target lol
@@ -72,6 +80,7 @@
 @PointClass base(Targetname) = efgm_extract : "Extract"
 [
 
+    // Key Values
     extractTime(integer)       : "Extract Time"             : 7                                     : "How long it takes to finish extracting once you've started extracting."
 
     extractName(string)        : "Extract Name"             : ""                                    : "Used by players to find extract locations. Make the name appropriate; name the extract according to what a player would look for in order to find it. (e.g. Power Station Gate, Road to Bunker, Southwestern Checkpoint, Gooey Helipad, etc.)"
@@ -106,7 +115,6 @@
 
     input StopExtractingPlayer(void)    :   "Stops a player from extracting."
 
-
     input ChangeDisabledMessage(string) :   "Changes the disabled message. Good for extracts with multiple prerequisites ig. Maybe with like a train, it could be changed from 'route power to track' to 'wait for train'."
     
     spawnflags(flags) =
@@ -122,6 +130,8 @@
 
 @PointClass base(Targetname, Angles, Origin) studio("models/efgm/low_crate02.mdl") = efgm_loot : "Spawns a customizable loot object."
 [
+
+    // Key Values
     spawn_chance(integer) : "Weapon Spawn Chance": 5 : "The chance this spawn will create loot. 5 is always, 0 is never."
 
     loot_type(choices) : "Loot Type" : 0 : "The type of loot this spawn should make" =

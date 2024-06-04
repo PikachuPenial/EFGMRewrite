@@ -1,15 +1,30 @@
 
-RAID = RAID or {}
+RAID = {}
 
 local plyMeta = FindMetaTable( "Player" )
 if not plyMeta then Error("Could not find player table") return end
 
+local function DecrementTimer()
+
+    SetGlobalInt("RaidTimeLeft", GetGlobalInt("RaidTimeLeft") - 1)
+
+    if GetGlobalInt("RaidTimeLeft") <= 0 && GetGlobalInt("RaidStatus") == raidStatus.ACTIVE then RAID:EndRaid() return end
+    if GetGlobalInt("RaidTimeLeft") <= 0 && GetGlobalInt("RaidStatus") == raidStatus.ENDED then RAID:EndVote() return end
+
+    hook.Run("RaidTimerTick", GetGlobalInt("RaidTimeLeft"))
+
+end
+
 if SERVER then
 
+    util.AddNetworkString("VoteableMaps")
+    util.AddNetworkString("SendVote")
     util.AddNetworkString("RequestExtracts")
 
+    util.AddNetworkString("PlayerEnterRaid")
+    util.AddNetworkString("PlayerSwitchTeams")
+
     RAID.VoteTime = 60
-    RAID.PlayersInRaid = {} -- [SteamID64] = Player
 
     RAID.MapPool = {["efgm_belmont_rw"] = 0, ["efgm_concrete_rw"] = 0, ["efgm_customs_rw"] = 0, ["efgm_factory_rw"] = 0} -- map, number of votes
 
@@ -18,17 +33,6 @@ if SERVER then
 
     --{ RAID FUNCTIONS
 
-        local function DecrementTimer()
-
-            SetGlobalInt("RaidTimeLeft", GetGlobalInt("RaidTimeLeft") - 1)
-
-            if GetGlobalInt("RaidTimeLeft") <= 0 && GetGlobalInt("RaidStatus") == raidStatus.ACTIVE then RAID:EndRaid() return end
-            if GetGlobalInt("RaidTimeLeft") <= 0 && GetGlobalInt("RaidStatus") == raidStatus.ENDED then RAID:EndVote() return end
-
-            hook.Run("RaidTimerTick", GetGlobalInt("RaidTimeLeft"))
-
-        end
-
         function RAID:StartRaid(raidTime)
 
             if GetGlobalInt("RaidStatus") != raidStatus.PENDING then return end
@@ -36,11 +40,7 @@ if SERVER then
             SetGlobalInt("RaidStatus", raidStatus.ACTIVE)
             SetGlobalInt("RaidTimeLeft", raidTime)
 
-            -- a ton of shit else (actually not that much ig)
-
             timer.Create("RaidTimerDecrement", 1, 0, DecrementTimer)
-
-            print("Raid Started!")
 
             hook.Run("StartedRaid")
 
@@ -55,12 +55,9 @@ if SERVER then
 
             -- kill players in raid, idk what else
 
-            -- PrintTable(self.PlayersInRaid)
             for k, v in pairs(self.PlayersInRaid) do
                 v:Kill()
             end
-
-            print("Raid Ended!")
 
             hook.Run("EndedRaid")
 
@@ -79,9 +76,48 @@ if SERVER then
 
             timer.Adjust("RaidTimerDecrement", 1, self.VoteTime) -- fuck you timer.Adjust
 
-            self:BroadcastOptions(self.MapPool)
+            net.Start( "VoteableMaps" )
+                net.WriteTable( self.MapPool )
+            net.Broadcast()
 
-            print("vote started")
+        end
+
+        function RAID:SpawnPlayers(plys, status) -- todo: make this support a sequential table of players up to a specified team limit
+
+            if GetGlobalInt("RaidStatus") != raidStatus.ACTIVE then print("raid isnt active") return end
+            if #plys > 4 then print("too many fucking people in your team dumbass") return end
+
+            local spawn = GetValidRaidSpawn(status)
+            local allSpawns = spawn:GetAllSpawns()
+    
+            for k, v in ipairs( plys ) do
+                
+                if v:IsPlayer() then
+                
+                    if !v:CompareStatus(0) then
+
+                        local status, spawnGroup = v:GetRaidStatus()
+    
+                        print("Player " .. v:GetName() .. " tried to enter the raid with status " .. status .. ", but they're probably fine to join anyway. If they aren't, tell the map maker to separate the lobby and the raid map, thanks.")
+    
+                    end
+    
+                    net.Start("PlayerEnterRaid")
+                    net.Send(v)
+    
+                    v:Freeze(true)
+    
+                    timer.Create("Spawn" .. v:SteamID64(), 1, 1, function()
+    
+                        v:SetRaidStatus(status, spawn.SpawnGroup or "")
+                        v:Teleport(allSpawns[k]:GetPos(), allSpawns[k]:GetAngles(), Vector(0, 0, 0))
+                        v:Freeze(false)
+    
+                    end)
+
+                end
+
+            end
 
         end
 
@@ -122,24 +158,7 @@ if SERVER then
 
             ply:SetNWBool("HasVoted", true)
 
-            ply:PrintMessage(HUD_PRINTTALK, "Your vote of ".. vote .." has been counted!")
-
-        end
-        concommand.Add("efgm_vote", function(ply, cmd, args)
-
-            if ply:GetNWBool("HasVoted", false) == true then return end
-            if GetGlobalInt("RaidStatus") != raidStatus.ENDED then return end
-
-            RAID:SubmitVote(ply, args[1])
-
-        end)
-
-        util.AddNetworkString("VoteableMaps")
-        function RAID:BroadcastOptions(maps)
-
-            net.Start("VoteableMaps")
-            net.WriteTable(maps)
-            net.Broadcast()
+            ply:PrintMessage(HUD_PRINTCONSOLE, "Your vote of ".. vote .." has been counted!")
 
         end
 
@@ -174,121 +193,119 @@ if SERVER then
 
     --{ PLAYER FUNCTIONS
 
-        util.AddNetworkString("PlayerEnterRaid")
-        function RAID:SpawnPlayer(ply, status)
+        function plyMeta:SetRaidStatus(status, spawnGroup)
 
-            if GetGlobalInt("RaidStatus") != raidStatus.ACTIVE then print("raid isnt active") return end
-
-            if !ply:IsPlayer() then print("What kind of player tries to enter the raid? No player, no player at all.") return end
-
-            if !ply:CompareStatus(0) then print("great ive fucking broke the gamemode again goddamn it") ply:Kill() return end
-
-            net.Start("PlayerEnterRaid")
-            net.Send(ply)
-
-            ply:Freeze(true)
-
-            timer.Create("Spawn" .. ply:SteamID64(), 1, 1, function()
-
-                spawn = GetValidRaidSpawn(status)
-
-                ply:SetRaidStatus(status, spawn.SpawnGroup or "")
-                ply:Teleport(spawn:GetPos(), spawn:GetAngles(), Vector(0, 0, 0))
-                ply:Freeze(false)
-
-                self:AddPlayer(ply)
-
-            end)
+            self:SetNWInt( "PlayerRaidStatus", status or self:GetNWString( "PlayerRaidStatus", 0 ) )
+            self:SetNWString("PlayerSpawnGroup", spawnGroup or self:GetNWString( "PlayerSpawnGroup", "" ) )
 
         end
 
-        function RAID:AddPlayer(ply)
+        function plyMeta:Teleport(position, angles, velocity)
 
-            local steamID = ply:SteamID64()
+            -- shortening the extract and raid manager logic lol, not necessary but fun ig idfk
 
-            self.PlayersInRaid[steamID] = ply
+            self:SetPos(position)
+            self:SetEyeAngles(angles)
+            self:SetLocalVelocity(velocity)
 
         end
 
-        function RAID:RemovePlayer(ply)
+        function plyMeta:GetRaidStatus()
         
-            local steamID = ply:SteamID64()
-            self.PlayersInRaid[steamID] = nil
+            local status = self:GetNWInt("PlayerRaidStatus", 0)
+            local spawnGroup = self:GetNWString("PlayerSpawnGroup", "")
         
-            ply:SetRaidStatus(0, "")
+            return status, spawnGroup
         
         end
-
+        
     --}
 
     --{ CONSOLE COMMANDS
 
-        local function ChangeStatus(ply, cmd, args)
+        concommand.Add( "efgm_startraid", function() RAID:StartRaid() end )
+        concommand.Add("efgm_endraid", function() RAID:EndRaid() end)
+
+        concommand.Add("efgm_setplayerstatus", function(ply, cmd, args)
 
             if args[1] == nil then return end
 
             local status = tonumber( args[1] )
-
             ply:SetRaidStatus(status)
+        
+        end)
 
-        end
-        concommand.Add("efgm_debug_changeraidstatus", ChangeStatus)
+        concommand.Add("efgm_getplayerstatus", function( ply )
 
-        local function GetStatus(ply, cmd, args)
+            print( "Status: " .. ply:GetNWInt( "PlayerRaidStatus", 0 ) .. ", Group: " .. ply:GetNWString( "PlayerSpawnGroup", "" ) )
+        
+        end)
 
-            local status = ply:GetNWInt("PlayerRaidStatus", 0)
-            local spawnGroup = ply:GetNWString("PlayerSpawnGroup", "")
+        concommand.Add("efgm_getraidstatus", function()
 
-            print( "Status: "..status.." Group: "..spawnGroup )
+            print("Raid Status: " .. GetGlobalInt( "RaidStatus" ) .. ", Raid Time Left: " .. GetGlobalInt( "RaidTimeLeft") )
 
-        end
-        concommand.Add("efgm_debug_getraidstatus", GetStatus)
-
-        local function GetRaidInfo(ply, cmd, args)
-
-            print(GetGlobalInt("RaidStatus") .. " " .. GetGlobalInt("RaidTimeLeft"))
-
-        end
-        concommand.Add("efgm_debug_getraidinfo", GetRaidInfo)
-
-        local function DebugStartRaid(ply, cmd, args)
-
-            RAID:StartRaid()
-
-            GetRaidInfo()
-
-        end
-        concommand.Add("efgm_debug_startraid", DebugStartRaid)
-
-        local function DebugEndRaid(ply, cmd, args)
-
-            -- what i said on GEFRST 999x
-
-            RAID:EndRaid()
-
-            GetRaidInfo()
-
-        end
-        concommand.Add("efgm_debug_endraid", DebugEndRaid)
+        end)
 
     --}
 
-    function plyMeta:SetRaidStatus(status, spawnGroup)
+    --{ HOOKS
 
-        self:SetNWInt( "PlayerRaidStatus", status or self:GetNWString( "PlayerRaidStatus", 0 ) )
-        self:SetNWString("PlayerSpawnGroup", spawnGroup or self:GetNWString( "PlayerSpawnGroup", "" ) )
+        hook.Add("PlayerExtraction", "RaidExtract", function(ply, extractTime, isExtractGuranteed)
 
-    end
+            --print("Player's name is " .. ply:GetName())
 
-    function plyMeta:Teleport(position, angles, velocity)
+            lobbySpawns = ents.FindByClass("efgm_lobby_spawn") or {} -- gets a table of all the lobby spawns
 
-        -- shortening the extract and raid manager logic lol, not necessary but fun ig idfk
+            local possibleSpawns = {}
 
-        self:SetPos(position)
-        self:SetEyeAngles(angles)
-        self:SetLocalVelocity(velocity)
+            local playerExtracted = false
 
-    end
+            if table.IsEmpty(lobbySpawns) then error("no lobby spawns eat shit") return end
+
+            -- all this is done so that players spawn in random spots bc yeah it was really that important
+            for k, v in ipairs(lobbySpawns) do
+
+                if v:CanSpawn(ply) then
+
+                    table.insert(possibleSpawns, v)
+
+                end
+
+            end
+
+            if #possibleSpawns == 0 then return end
+
+            local randomSpawn = BetterRandom(possibleSpawns)
+
+            ply:Teleport(randomSpawn:GetPos(), randomSpawn:GetAngles(), Vector(0, 0, 0))
+            ply:SetHealth( ply:GetMaxHealth() ) -- heals the player to full so dumb shit like quitting and rejoining to get max hp doesn't happen
+
+        end)
+
+        hook.Add("CheckRaidAddPlayers", "MaybeAddPeople", function( ply )
+        
+            local plyTeam = ply:GetNWString("RaidTeam", "")
+
+            if plyTeam == "" then RAID:SpawnPlayers({ply}, playerStatus.PMC) return end
+
+            local plys = {}
+
+            for k, v in ipairs( player.GetHumans() ) do
+
+                if plyTeam == v:GetNWString("RaidTeam", "") then
+
+                    table.insert(plys, v)
+                    
+                end
+
+            end
+
+            RAID:SpawnPlayers(plys, playerStatus.PMC)
+
+        end)
+
+    --}
 
     net.Receive("RequestExtracts", function(len, ply)
 
@@ -313,36 +330,20 @@ if SERVER then
 
     end)
 
-    hook.Add("PlayerExtraction", "RaidExtract", function(ply, extractTime, isExtractGuranteed)
+    net.Receive("PlayerSwitchTeams", function(len, ply)
+        
+        if !ply:CompareStatus(0) then return end
 
-        --print("Player's name is " .. ply:GetName())
+        local teamName = net.ReadString()
+        if teamName == "" then ply:SetNWString(teamName) return end
 
-        lobbySpawns = ents.FindByClass("efgm_lobby_spawn") or {} -- gets a table of all the lobby spawns
+        local teamCount = 0
 
-        local possibleSpawns = {}
+        for k, v in ipairs( player.GetHumans() ) do if v:GetNWString("RaidTeam") then teamCount = teamCount + 1 end end
 
-        local playerExtracted = false
+        if teamCount > 4 then PrintMessage(HUD_PRINTCONSOLE, "Too many people in the team!") return end
 
-        if table.IsEmpty(lobbySpawns) then error("no lobby spawns eat shit") return end
-
-        -- all this is done so that players spawn in random spots bc yeah it was really that important
-        for k, v in ipairs(lobbySpawns) do
-
-            if v:CanSpawn(ply) then
-
-                table.insert(possibleSpawns, v)
-
-            end
-
-        end
-
-        if #possibleSpawns == 0 then return end
-
-        local randomSpawn = BetterRandom(possibleSpawns)
-
-        RAID:RemovePlayer(ply)
-        ply:Teleport(randomSpawn:GetPos(), randomSpawn:GetAngles(), Vector(0, 0, 0))
-        ply:SetHealth( ply:GetMaxHealth() ) -- heals the player to full so dumb shit like quitting and rejoining to get max hp doesn't happen
+        ply:SetNWString(teamName)
 
     end)
 
@@ -356,16 +357,32 @@ if CLIENT then
         net.SendToServer()
 
     end)
+
+    concommand.Add("efgm_team_join", function(ply, cmd, args)
+            
+        net.Start("PlayerSwitchTeams")
+            net.WriteString( tostring( args[ 1 ]) )
+        net.SendToServer()
+
+    end)
+
+    concommand.Add("efgm_team_leave", function(ply, cmd, args)
+            
+        net.Start("PlayerSwitchTeams")
+            net.WriteString( "" )
+        net.SendToServer()
+
+    end)
+
+    concommand.Add("efgm_vote", function(ply, cmd, args)
+
+        if ply:GetNWBool("HasVoted", false) == true then return end
+        if GetGlobalInt("RaidStatus") != raidStatus.ENDED then return end
+
+        RAID:SubmitVote(ply, args[1])
+
+    end)
     
-end
-
-function plyMeta:GetRaidStatus()
-
-    local status = self:GetNWInt("PlayerRaidStatus", 0)
-    local spawnGroup = self:GetNWString("PlayerSpawnGroup", "")
-
-    return status, spawnGroup
-
 end
 
 function plyMeta:CompareSpawnGroup(group)

@@ -111,7 +111,7 @@ function ENT:AcceptInput(name, ply, caller, data)
 
     if name == "StopExtractingPlayer" && !self.IsDisabled && ply:IsPlayer() then
 
-        if !ply:CompareStatus(0) then self:StopExtract(ply) end
+        if !ply:CompareStatus( 0 ) && !ply:CompareSpawnGroup( self.ExtractGroup ) then self:StopExtract( ply ) end
 
     end
 

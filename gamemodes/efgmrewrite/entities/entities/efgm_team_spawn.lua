@@ -10,7 +10,3 @@ function ENT:KeyValue(key, value)
     end
 
 end
-
-function ENT:Initialize()
-
-end

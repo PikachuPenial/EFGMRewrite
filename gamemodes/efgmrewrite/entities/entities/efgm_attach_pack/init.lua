@@ -3,8 +3,8 @@ AddCSLuaFile("shared.lua")
 
 include("shared.lua")
 
-local attachCount
-local attachTable
+ENT.AttachCount = 0
+ENT.AttachTable = {}
 
 function ENT:Initialize()
 
@@ -23,31 +23,32 @@ function ENT:Initialize()
 	end
 
 	self:SetHealth(self.BaseHealth)
+    self:GetAttatchments( 50, 150)
+
+end
+
+function ENT:GetAttatchments( minCount, maxCount )
+
+    self.AttachCount = math.random( minCount, maxCount )
+    
+    self.AttachTable = table.Copy(ARC9.Attachments_Index)
+    table.Shuffle(self.AttachTable)
 
 end
 
 function ENT:Use(activator)
 
     if !activator:IsPlayer() then return end
+    if table.IsEmpty( self.AttachTable ) then return end
 
-    attachCount = math.random(50, 150)
-    attachTable = table.Copy(ARC9.Attachments_Index)
-    table.Shuffle(attachTable)
+    for k, v in pairs( self.AttachTable ) do
 
-    if table.IsEmpty( attachTable ) then
-
-        return
-
-    end
-
-    for k, v in pairs( attachTable ) do
-
-        if k > attachCount then continue end
+        if k > self.AttachCount then continue end
         ARC9:PlayerGiveAtt(activator, v, 1)
 
     end
 
-    activator:PrintMessage(HUD_PRINTTALK, "You looted " .. attachCount .. " attachments!")
+    activator:PrintMessage(HUD_PRINTTALK, "You looted " .. self.AttachCount .. " attachments!")
 
     ARC9:PlayerSendAttInv(activator)
     self:Remove()

@@ -4,18 +4,13 @@
 
 local spawns
 
-function BetterRandom(haystack)
+function BetterRandom(haystack) -- this is literally never used ever
     return haystack[math.random(#haystack)]
 end
 
 function GetValidRaidSpawn(status) -- status: 0 = lobby, 1 = pmc, 2 = scav (assuming 1)
 
-    -- eventually smart spawns
-
-    print("status == " .. status)
-    -- print(spawns)
-
-    if status == 0 then print("shits fucked") return nil end
+    if status == 0 then return nil end
 
     spawns = ents.FindByClass("efgm_raid_spawn")
 
@@ -29,7 +24,6 @@ function GetValidRaidSpawn(status) -- status: 0 = lobby, 1 = pmc, 2 = scav (assu
             end
         end
 
-        -- PrintTable(pmcSpawns)
         return BetterRandom( pmcSpawns )
 
     end
@@ -44,8 +38,8 @@ function GetValidRaidSpawn(status) -- status: 0 = lobby, 1 = pmc, 2 = scav (assu
             end
         end
 
-        -- PrintTable(scavSpawns)
         return BetterRandom( scavSpawns )
+
     end
     
 end

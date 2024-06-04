@@ -45,9 +45,17 @@ function ENT:AcceptInput(name, ply, caller, data)
 
     end
 
-    if name == "RaidAddPlayer" then
+    if name == "SetPlayerReadiness" then
 
-        RAID:SpawnPlayer(ply, playerStatus.PMC)
+        local isReady = tobool(data)
+
+        ply:SetNWBool( "RaidReady", isReady )
+
+        if isReady then
+            
+            hook.Run("CheckRaidAddPlayers", ply)
+
+        end
 
     end
 

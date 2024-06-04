@@ -139,8 +139,6 @@ end
 
 hook.Add("PostPlayerDeath", "PlayerRemoveRaid", function(ply)
 
-	RAID:RemovePlayer(ply)
-
 	-- respawn timer
 	timer.Create(ply:SteamID() .. "respawnTime", 10, 1, function() ply:Spawn() end)
 
