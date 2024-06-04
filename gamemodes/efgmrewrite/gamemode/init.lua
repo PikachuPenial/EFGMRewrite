@@ -88,7 +88,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	local inventory = INVG.New()
 
 	for k, v in ipairs( weps ) do -- i tried for an entire hour to do this within the entity itself, but alas, it didn't fucking work, i genuinely don't even know anymore
-        
+
 		local item = v:GetClass()
 
 		if blacklist[item] == nil then
@@ -103,7 +103,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 
 	if !table.IsEmpty(inventory.contents) then
 
-        local backpack = ents.Create("efgm_backpack_temp")
+        local backpack = ents.Create("efgm_backpack")
 		backpack:SetPos(victim:GetPos() + Vector(0, 0, 64))
 		backpack:Spawn()
 		backpack:Activate()
@@ -129,7 +129,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	-- death information
 	if attacker != victim then
 
-		victim:PrintMessage(HUD_PRINTCENTER, attacker:GetName() .. " killed you with a " .. weaponName .. " from " .. distance .. "m away")
+		victim:PrintMessage(HUD_PRINTCENTER, attacker:GetName() .. " [" .. attacket:Health() .. " HP] killed you with a " .. weaponName .. " from " .. distance .. "m away")
 
 	else
 

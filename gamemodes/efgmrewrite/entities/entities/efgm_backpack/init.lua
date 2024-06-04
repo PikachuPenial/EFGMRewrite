@@ -3,8 +3,9 @@ AddCSLuaFile("shared.lua")
 
 include("shared.lua")
 
-local backpackInventoryName = "Backpack"
-local backpackInventory = {}
+ENT.Inventory = {}
+ENT.Attachments = {}
+ENT.VictimName = ""
 
 function ENT:Initialize()
 
@@ -12,7 +13,7 @@ function ENT:Initialize()
 	self:PhysicsInit(SOLID_VPHYSICS)
 	self:SetMoveType(MOVETYPE_VPHYSICS)
 	self:SetSolid(SOLID_VPHYSICS)
-    self:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
+    self:SetCollisionGroup(COLLISION_GROUP_PASSABLE_DOOR) -- will collide with everything other than the player
 
 	self:SetUseType(SIMPLE_USE)
 
@@ -26,23 +27,11 @@ function ENT:Initialize()
 
 end
 
-function ENT:SetContents(inventory, ply)
+function ENT:SetBagData( inventory, attachments, name )
 
-    if inventory == nil then
-    
-        self:Remove()
-
-        return
-        
-    end
-
-    if ply != nil then
-
-        backpackInventoryName = ply:GetName()
-
-    end
-
-    backpackInventory = inventory
+    self.Inventory = inventory
+    self.Attachments = attachments
+    self.VictimName = name
 
 end
 
@@ -50,27 +39,35 @@ function ENT:Use(activator)
 
     if !activator:IsPlayer() then return end
 
-    if table.IsEmpty( backpackInventory ) then
-    
-        self:Remove()
+    local effectdata = EffectData()
+    effectdata:SetOrigin(self:GetPos() + Vector(0, 0, 10))
+    effectdata:SetMaterialIndex(0)
 
-        return
-    
+    local weaponCount = 0
+
+    for k, v in ipairs( self.Inventory.contents ) do if v.type == 1 then weaponCount = weaponCount + 1 end end
+
+    activator:SetHealth(activator:GetMaxHealth())
+    activator:PrintMessage(HUD_PRINTTALK, "You looted " .. self.VictimName .. "! (" .. weaponCount .. " weapons, " .. table.Count( self.Attachments ) .. " attachments)")
+
+    if table.IsEmpty( self.Inventory.contents ) and table.IsEmpty( self.Attachments ) then return end
+
+    for k, v in ipairs( self.Inventory.contents ) do
+
+        GiveItem[ v.type ]( activator, v.name, v.count, false )
+
     end
 
-    local remainingInventory = activator:GiveInventory(backpackInventory)
+    for k, v in pairs( self.Attachments ) do
 
-    print(activator:GetName() .. " looted " .. backpackInventoryName)
+        ARC9:PlayerGiveAtt(activator, k, v)
 
-    if remainingInventory == nil then
-    
-        self:Remove()
-
-    else
-
-        backpackInventory = remainingInventory
-        
     end
+
+    ARC9:PlayerSendAttInv(activator)
+    util.Effect("arc9_opencrate", effectdata)
+    self:EmitSound("arc9/useatt.ogg")
+    self:Remove()
 
 end
 
