@@ -30,7 +30,7 @@ if SERVER then
     RunConsoleCommand("arc9_mod_headshotdamage", "0.8")
     RunConsoleCommand("arc9_mod_malfunction", "0.25")
     RunConsoleCommand("arc9_mod_muzzlevelocity", "1")
-    RunConsoleCommand("arc9_mod_recoil", "0.65")
+    RunConsoleCommand("arc9_mod_recoil", "0.75")
     RunConsoleCommand("arc9_mod_rpm", "1")
     RunConsoleCommand("arc9_mod_spread", "1")
     RunConsoleCommand("arc9_mod_sprinttime", "1")

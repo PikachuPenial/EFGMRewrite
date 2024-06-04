@@ -20,11 +20,11 @@ local function RenderRaidTime(ply)
         [2] = "Raid Over"
     }
 
-    if raidTime == nil then return end
+    surface.SetFont("BenderAmmoCount")
     local raidTimeTextSize = surface.GetTextSize(tostring(raidTime)) + EFGM.ScreenScale(10)
 
     surface.SetDrawColor(0, 0, 0, 128)
-    surface.DrawRect(ScrW() - EFGM.ScreenScale(53) - raidTimeTextSize, EFGM.ScreenScale(20), raidTimeTextSize + EFGM.ScreenScale(33), EFGM.ScreenScale(35))
+    surface.DrawRect(ScrW() - EFGM.ScreenScale(32) - raidTimeTextSize, EFGM.ScreenScale(20), raidTimeTextSize + EFGM.ScreenScale(12), EFGM.ScreenScale(35))
     draw.DrawText(raidTime, "BenderAmmoCount", ScrW() - EFGM.ScreenScale(30), EFGM.ScreenScale(20), Color(255, 255, 255), TEXT_ALIGN_RIGHT)
 
 end
@@ -238,6 +238,7 @@ concommand.Add("efgm_print_controls", function(ply, cmd, args)
     local toggleSightBind
     local toggleSightBindReal -- its real i pinky promise
     local inspectBind
+    local dropBind
 
     if ply:GetInfoNum("efgm_bind_raidinfo", KEY_O) != nil then extractsBind = string.upper(input.GetKeyName(ply:GetInfoNum("efgm_bind_raidinfo", KEY_O))) else extractsBind = "[UNBOUND (efgm_print_extracts)]" end
     if input.LookupBinding("+menu_context") != nil then contextBind = string.upper(input.LookupBinding("+menu_context")) else contextBind = "[UNBOUND (+menu_context)]" end
@@ -249,6 +250,7 @@ concommand.Add("efgm_print_controls", function(ply, cmd, args)
     if ply:GetInfoNum("efgm_bind_changesight", MOUSE_MIDDLE) != nil then toggleSightBind = string.upper(input.GetKeyName(ply:GetInfoNum("efgm_bind_changesight", MOUSE_MIDDLE))) else toggleSightBind = "[UNBOUND (efgm_bind_changesight 'key code')]" end
     if adsBind != nil and toggleSightBind != nil then toggleSightBindReal = string.upper(adsBind .. " + " .. toggleSightBind) else toggleSightBindReal = "[UNBOUND (+attack2 & efgm_bind_changesight 'key code')]" end
     if ply:GetInfoNum("efgm_bind_inspectweapon", KEY_I) != nil then inspectBind = string.upper(input.GetKeyName(ply:GetInfoNum("efgm_bind_inspectweapon", KEY_I))) else inspectBind = "[UNBOUND (efgm_bind_inspectweapon 'key code')]" end
+    if ply:GetInfoNum("efgm_bind_dropweapon", KEY_MINUS) != nil then dropBind = string.upper(input.GetKeyName(ply:GetInfoNum("efgm_bind_dropweapon", KEY_MINUS))) else dropBind = "[UNBOUND (efgm_bind_dropweapon 'key code')]" end
 
     ply:PrintMessage(HUD_PRINTTALK, [[
 []] .. extractsBind .. [[] Display Extracts
@@ -257,7 +259,7 @@ concommand.Add("efgm_print_controls", function(ply, cmd, args)
 []] .. UBGLBind .. [[] Toggle Underbarrel GL
 []] .. freeLookBind .. [[] Free Look
 []] .. toggleSightBindReal .. [[] Toggle Sight Zoom/Reticle
-[]] .. inspectBind .. [[] Inspect Weapon
+[]] .. inspectBind .. [[] Inspect Weapon []] .. dropBind .. [[] Drop Weapon
     ]])
 
 end)

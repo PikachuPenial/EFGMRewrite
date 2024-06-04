@@ -8,9 +8,19 @@ if CLIENT then
     CreateClientConVar("efgm_bind_freelook", MOUSE_MIDDLE, true, true, "Determines the keybind that will begin a free look")
     CreateClientConVar("efgm_bind_changesight", MOUSE_MIDDLE, true, true, "Determines the keybind that adjusts the zoom/reticle of your weapons sight")
     CreateClientConVar("efgm_bind_inspectweapon", KEY_I, true, true, "Determines the keybind that inspects your weapon")
+    CreateClientConVar("efgm_bind_dropweapon", KEY_MINUS, true, true, "Determines the keybind that drops your held weapon")
 end
 
 hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
+
+    if SERVER then
+
+        -- drop weapon
+        if button == ply:GetInfoNum("efgm_bind_dropweapon", KEY_MINUS) then
+            ply:DropWeapon(ply:GetActiveWeapon())
+        end
+
+    end
 
     if CLIENT then
 
@@ -74,6 +84,11 @@ if game.SinglePlayer() then
     hook.Add("PlayerButtonDown", "EFGMBindsSP", function(ply, button)
 
         if SERVER then
+            
+            -- drop weapon
+            if button == ply:GetInfoNum("efgm_bind_dropweapon", KEY_MINUS) then
+                ply:DropWeapon(ply:GetActiveWeapon())
+            end
 
             -- show controls
             if button == ply:GetInfoNum("efgm_bind_showcontrols", KEY_P) then
