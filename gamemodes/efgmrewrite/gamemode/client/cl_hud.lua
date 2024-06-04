@@ -12,18 +12,18 @@ end
 local function RenderRaidTime(ply)
     -- time logic
     local raidTime = string.FormattedTime(GetGlobalInt("RaidTimeLeft", 0), "%2i:%02i")
-    -- local raidStatus = GetGlobalInt("RaidStatus", 0)
+    local raidStatus = GetGlobalInt("RaidStatus", 0)
 
-    local tempStatusTable = {
-        [0] = "Raid Pending",
-        [1] = "Raid Active",
-        [2] = "Raid Over"
+    local raidStatusTbl = {
+        [0] = Color(0, 75, 0, 128), -- raid pending
+        [1] = Color(0, 0, 0, 128), -- raid active
+        [2] = Color(75, 0, 0, 128)  -- raid ended
     }
 
     surface.SetFont("BenderAmmoCount")
     local raidTimeTextSize = surface.GetTextSize(tostring(raidTime)) + EFGM.ScreenScale(10)
 
-    surface.SetDrawColor(0, 0, 0, 128)
+    surface.SetDrawColor(raidStatusTbl[raidStatus])
     surface.DrawRect(ScrW() - EFGM.ScreenScale(32) - raidTimeTextSize, EFGM.ScreenScale(20), raidTimeTextSize + EFGM.ScreenScale(12), EFGM.ScreenScale(35))
     draw.DrawText(raidTime, "BenderAmmoCount", ScrW() - EFGM.ScreenScale(30), EFGM.ScreenScale(20), Color(255, 255, 255), TEXT_ALIGN_RIGHT)
 
@@ -61,7 +61,6 @@ local function RenderPlayerWeapon(ply)
 end
 
 -- players current stance and health
-
 local playerStance = 0
 local function RenderPlayerStance(ply)
 
@@ -143,6 +142,70 @@ local function RenderPlayerStance(ply)
     surface.SetDrawColor(255, 255, 255, CrouchingAlpha)
     surface.SetMaterial(Material("stances/crouch.png", "tarkovMaterial"))
     surface.DrawTexturedRect(EFGM.ScreenScale(25), ScrH() - EFGM.ScreenScale(151), EFGM.ScreenScale(127), EFGM.ScreenScale(114))
+end
+
+-- compass
+function RenderCompass(ply)
+
+    -- no need to create the compass panel if it already exists
+    if IsValid(Compass) then
+        return
+    end
+
+    Compass = vgui.Create("DPanel")
+    Compass:SetSize(ScrW(), ScrH())
+    Compass:SetPos(0, 0)
+    Compass:SetAlpha(0)
+    Compass:MoveToFront()
+
+    local color = Color(255, 255, 255)
+    local adv_compass_tbl = {
+        [0] = "N",
+        [45] = "NE",
+        [90] = "E",
+        [135] = "SE",
+        [180] = "S",
+        [225] = "SW",
+        [270] = "W",
+        [315] = "NW",
+        [360] = "N"
+    }
+
+    Compass.Paint = function(self, w, h)
+        local ang = ply:EyeAngles()
+
+        surface.SetDrawColor(color)
+        surface.DrawLine(ScrW() / 2, 0, ScrW() / 2, EFGM.ScreenScale(6))
+
+        local compassX, compassY = ScrW() * EFGM.ScreenScale(0.5), ScrH() * 0
+        local width, height = ScrW() * EFGM.ScreenScale(0.5), EFGM.ScreenScale(10)
+
+        spacing = (width * 1) / EFGM.ScreenScale(360)
+        numOfLines = width / spacing
+        fadeDistMultiplier = EFGM.ScreenScale(25)
+        fadeDistance = (width / 2) / fadeDistMultiplier
+
+        for i = math.Round(-ang.y) % 360, (math.Round(-ang.y) % 360) + numOfLines do
+
+            local x = ((compassX - (width / 2)) + (((i + ang.y) % 360) * spacing))
+            local value = math.abs(x - compassX)
+            local calc = 1 - ((value + (value - fadeDistance)) / (width / 2))
+            local calculation = 255 * math.Clamp(calc, 0.001, 1)
+
+            local i_offset = -(math.Round(i - 0 - (numOfLines / 2))) % 360
+
+            if i_offset % 45 == 0 and i_offset >= 0 then
+                local a = i_offset
+                local text = adv_compass_tbl[360 - (a % 360)] and adv_compass_tbl[360 - (a % 360)] or 360 - (a % 360)
+
+                draw.SimpleText(text, "Bender24", x, compassY + height * EFGM.ScreenScale(0.6), Color(color.r, color.g, color.b, calculation), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+            end
+        end
+    end
+
+    Compass:AlphaTo(255, 0.35, 0, function() end) -- why do i need to use a callback here???
+    Compass:AlphaTo(0, 1, 4.65, function() Compass:Remove() end)
+
 end
 
 local function RenderPlayerOverlays(ply)
@@ -229,6 +292,7 @@ concommand.Add("efgm_print_controls", function(ply, cmd, args)
     timer.Simple(5, function() canPrintControls = true end)
 
     local extractsBind
+    local compassBind
     local contextBind
     local suitZoomBind
     local interactBind
@@ -240,7 +304,8 @@ concommand.Add("efgm_print_controls", function(ply, cmd, args)
     local inspectBind
     local dropBind
 
-    if ply:GetInfoNum("efgm_bind_raidinfo", KEY_O) != nil then extractsBind = string.upper(input.GetKeyName(ply:GetInfoNum("efgm_bind_raidinfo", KEY_O))) else extractsBind = "[UNBOUND (efgm_print_extracts)]" end
+    if ply:GetInfoNum("efgm_bind_raidinfo", KEY_O) != nil then extractsBind = string.upper(input.GetKeyName(ply:GetInfoNum("efgm_bind_raidinfo", KEY_O))) else extractsBind = "[UNBOUND (efgm_print_extracts 'key code')]" end
+    if ply:GetInfoNum("efgm_bind_showcompass", KEY_TAB) != nil then compassBind = string.upper(input.GetKeyName(ply:GetInfoNum("efgm_bind_showcompass", KEY_TAB))) else compassBind = "[UNBOUND (efgm_bind_showcompass 'key code')]" end
     if input.LookupBinding("+menu_context") != nil then contextBind = string.upper(input.LookupBinding("+menu_context")) else contextBind = "[UNBOUND (+menu_context)]" end
     if input.LookupBinding("+zoom") != nil then suitZoomBind = string.upper(input.LookupBinding("+zoom")) else suitZoomBind = "[UNBOUND (+zoom)]" end
     if input.LookupBinding("+use") != nil then interactBind = string.upper(input.LookupBinding("+use")) else interactBind = "[UNBOUND (+use)]" end
@@ -253,7 +318,7 @@ concommand.Add("efgm_print_controls", function(ply, cmd, args)
     if ply:GetInfoNum("efgm_bind_dropweapon", KEY_MINUS) != nil then dropBind = string.upper(input.GetKeyName(ply:GetInfoNum("efgm_bind_dropweapon", KEY_MINUS))) else dropBind = "[UNBOUND (efgm_bind_dropweapon 'key code')]" end
 
     ply:PrintMessage(HUD_PRINTTALK, [[
-[]] .. extractsBind .. [[] Display Extracts
+[]] .. extractsBind .. [[] Show Extracts []] .. compassBind .. [[] Show Compass
 []] .. contextBind .. [[] Weapon Bench
 []] .. suitZoomBind .. [[] Switch Firemode
 []] .. UBGLBind .. [[] Toggle Underbarrel GL

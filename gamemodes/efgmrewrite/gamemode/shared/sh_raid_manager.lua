@@ -11,7 +11,7 @@ if SERVER then
     RAID.VoteTime = 60
     RAID.PlayersInRaid = {} -- [SteamID64] = Player
 
-    RAID.MapPool = {["efgm_customs_rw"] = 0, ["efgm_concrete_rw"] = 0, ["efgm_factory_rw"] = 0} -- only two rn ["map"] = numberofvotes
+    RAID.MapPool = {["efgm_belmont_rw"] = 0, ["efgm_concrete_rw"] = 0, ["efgm_customs_rw"] = 0, ["efgm_factory_rw"] = 0} -- map, number of votes
 
     SetGlobalInt("RaidTimeLeft", -1)
     SetGlobalInt("RaidStatus", raidStatus.PENDING) -- uses sh_enums
