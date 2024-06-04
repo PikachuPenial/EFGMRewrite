@@ -9,14 +9,10 @@ EFGM.ScreenScale = function(size)
     return size / 3 * (ScrW() / 640) * efgm_hud_scale:GetFloat()
 end
 
-local function DebugRaidTime()
-
+local function RenderRaidTime(ply)
     -- time logic
-    local realRaidTime = GetGlobalInt("RaidTimeLeft", -1)
-    local raidTime = string.FormattedTime(realRaidTime, "%2i:%02i")
+    local raidTime = string.FormattedTime(GetGlobalInt("RaidTimeLeft", 0), "%2i:%02i")
     -- local raidStatus = GetGlobalInt("RaidStatus", 0)
-
-    if raidTime == nil then return end
 
     local tempStatusTable = {
         [0] = "Raid Pending",
@@ -24,7 +20,8 @@ local function DebugRaidTime()
         [2] = "Raid Over"
     }
 
-    local raidTimeTextSize = surface.GetTextSize(raidTime) + EFGM.ScreenScale(10)
+    if raidTime == nil then return end
+    local raidTimeTextSize = surface.GetTextSize(tostring(raidTime)) + EFGM.ScreenScale(10)
 
     surface.SetDrawColor(0, 0, 0, 128)
     surface.DrawRect(ScrW() - EFGM.ScreenScale(53) - raidTimeTextSize, EFGM.ScreenScale(20), raidTimeTextSize + EFGM.ScreenScale(33), EFGM.ScreenScale(35))
@@ -157,7 +154,7 @@ local function DrawHUD()
     ply = LocalPlayer()
     if not ply:Alive() then return end
 
-    DebugRaidTime()
+    RenderRaidTime(ply)
     RenderPlayerWeapon(ply)
     RenderPlayerStance(ply)
     -- RenderPlayerOverlays(ply)
