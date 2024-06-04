@@ -90,7 +90,7 @@ if game.SinglePlayer() then
     hook.Add("PlayerButtonDown", "EFGMBindsSP", function(ply, button)
 
         if SERVER then
-            
+
             -- drop weapon
             if button == ply:GetInfoNum("efgm_bind_dropweapon", KEY_MINUS) then
                 ply:DropWeapon(ply:GetActiveWeapon())
