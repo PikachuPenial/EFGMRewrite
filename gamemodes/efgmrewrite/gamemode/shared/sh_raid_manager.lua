@@ -112,6 +112,9 @@ if SERVER then
                         v:SetRaidStatus(status, spawn.SpawnGroup or "")
                         v:Teleport(allSpawns[k]:GetPos(), allSpawns[k]:GetAngles(), Vector(0, 0, 0))
                         v:Freeze(false)
+
+                        v:SetNWBool("RaidReady", false)
+                        v:SetNWBool("RaidTeam", "")
     
                     end)
 
@@ -290,18 +293,25 @@ if SERVER then
             if plyTeam == "" then RAID:SpawnPlayers({ply}, playerStatus.PMC) return end
 
             local plys = {}
+            local spawnBool = true
 
             for k, v in ipairs( player.GetHumans() ) do
 
                 if plyTeam == v:GetNWString("RaidTeam", "") then
 
                     table.insert(plys, v)
-                    
+
+                    if v:GetNWBool("RaidReady", false) == false then spawnBool = false end
+
                 end
 
             end
 
-            RAID:SpawnPlayers(plys, playerStatus.PMC)
+            if spawnbool then
+
+                RAID:SpawnPlayers(plys, playerStatus.PMC)
+                
+            end
 
         end)
 
@@ -335,15 +345,17 @@ if SERVER then
         if !ply:CompareStatus(0) then return end
 
         local teamName = net.ReadString()
-        if teamName == "" then ply:SetNWString(teamName) return end
+        if teamName == "" then ply:SetNWString(teamName) ply:PrintMessage(HUD_PRINTTALK, "Sucessfully left your team!") return end
 
         local teamCount = 0
 
         for k, v in ipairs( player.GetHumans() ) do if v:GetNWString("RaidTeam") then teamCount = teamCount + 1 end end
 
-        if teamCount > 4 then PrintMessage(HUD_PRINTCONSOLE, "Too many people in the team!") return end
+        if teamCount > 4 then ply:PrintMessage(HUD_PRINTTALK, "Too many people in the team!") return end
 
         ply:SetNWString(teamName)
+
+        ply:PrintMessage(HUD_PRINTTALK, "Sucessfully joined team " .. teamName .. "!")
 
     end)
 
