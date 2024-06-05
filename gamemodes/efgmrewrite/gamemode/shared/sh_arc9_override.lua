@@ -63,25 +63,6 @@ if CLIENT then
     
             return true
         end
-    
-        -- surely this is the last time right?
-        function SWEP:HoldingBreath()
-            if self:GetSightAmount() < 0.05 then self.IsHoldingBreath = false return end
-    
-            local ownerkeydownspeed = self:GetOwner():IsSprinting()
-    
-            if togglconvar:GetBool() then
-                if ownerkeydownspeed and !lastpressed then
-                    self.IsHoldingBreath = !self.IsHoldingBreath
-                end
-            else
-                self.IsHoldingBreath = ownerkeydownspeed
-            end
-
-            lastpressed = ownerkeydownspeed
-
-            return self:CanHoldBreath() and self.IsHoldingBreath and (self:GetSightAmount() >= 1) and self:GetValue("HoldBreathTime") > 0
-        end
 
         -- fix flashlight rendering for other players :steamcanny:
         function SWEP:DrawFlashlightsWM()
@@ -137,7 +118,7 @@ if CLIENT then
                 else
                     pos = tr.HitPos
                 end
-    
+
                 k.light:SetPos(pos)
                 k.light:SetAngles(ang)
                 k.light:Update()
