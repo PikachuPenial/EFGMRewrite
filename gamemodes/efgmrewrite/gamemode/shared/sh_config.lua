@@ -53,7 +53,7 @@ if SERVER then
     RunConsoleCommand("arc9_mult_defaultammo", "0")
     RunConsoleCommand("arc9_realrecoil", "1")
     RunConsoleCommand("arc9_lean", "0")
-    RunConsoleCommand("arc9_mod_sway", "1")
+    RunConsoleCommand("arc9_mod_sway", "0")
     RunConsoleCommand("arc9_mod_freeaim", "1")
     RunConsoleCommand("arc9_breath_slowmo", "0")
     RunConsoleCommand("arc9_manualbolt", "0")
