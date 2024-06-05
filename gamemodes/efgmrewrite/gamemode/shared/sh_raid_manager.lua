@@ -289,6 +289,7 @@ if SERVER then
         hook.Add("CheckRaidAddPlayers", "MaybeAddPeople", function( ply )
         
             local plyTeam = ply:GetNWString("RaidTeam", "")
+            print("Player team is " .. plyTeam)
 
             if plyTeam == "" then RAID:SpawnPlayers({ply}, playerStatus.PMC) return end
 
@@ -297,11 +298,14 @@ if SERVER then
 
             for k, v in ipairs( player.GetHumans() ) do
 
+                print("Player " .. v:Nick() .. " with team " .. v:GetNWString("RaidTeam", "") .. ", their RaidReady is " .. tostring( v:GetNWBool("RaidReady", false) ) )
+
                 if plyTeam == v:GetNWString("RaidTeam", "") then
 
                     table.insert(plys, v)
 
                     if v:GetNWBool("RaidReady", false) == false then spawnBool = false end
+                    print("Spawnbool is " .. tostring( spawnBool ) )
 
                 end
 
@@ -342,10 +346,12 @@ if SERVER then
 
     net.Receive("PlayerSwitchTeams", function(len, ply)
         
+        print("YIPPEE")
+
         if !ply:CompareStatus(0) then return end
 
         local teamName = net.ReadString()
-        if teamName == "" then ply:SetNWString(teamName) ply:PrintMessage(HUD_PRINTTALK, "Sucessfully left your team!") return end
+        if teamName == "" then ply:SetNWString("RaidTeam", teamName) ply:PrintMessage(HUD_PRINTTALK, "Sucessfully left your team!") return end
 
         local teamCount = 0
 
@@ -353,7 +359,7 @@ if SERVER then
 
         if teamCount > 4 then ply:PrintMessage(HUD_PRINTTALK, "Too many people in the team!") return end
 
-        ply:SetNWString(teamName)
+        ply:SetNWString("RaidTeam", teamName)
 
         ply:PrintMessage(HUD_PRINTTALK, "Sucessfully joined team " .. teamName .. "!")
 
@@ -375,6 +381,8 @@ if CLIENT then
         net.Start("PlayerSwitchTeams")
             net.WriteString( tostring( args[ 1 ]) )
         net.SendToServer()
+
+        print("Sent to server " .. tostring( args[ 1 ]) )
 
     end)
 
