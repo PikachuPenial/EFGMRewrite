@@ -7,6 +7,8 @@ ENT.SpawnType = 0 -- 0 = any, 1 = pmc, 2 = scav
 ENT.SpawnGroup = ""
 ENT.SpawnName = ""
 
+ENT.Spawns = {}
+
 function ENT:KeyValue(key, value)
 
     if key == "spawn_type" then
@@ -24,12 +26,18 @@ function ENT:KeyValue(key, value)
 
 end
 
-function ENT:GetAllSpawns()
+function ENT:Initialize()
 
-    local spawns = ents.FindByName( self.SpawnName )
+    timer.Simple( 1, function() -- gives all the team spawns a chance to initialize first
+    
+        for k, v in ipairs( ents.FindByClass( "efgm_team_spawn" ) ) do
+        
+            if v.MainSpawnName == self.SpawnName then table.insert( self.Spawns, v ) end
+    
+        end
+    
+        table.insert( self.Spawns, self )
 
-    table.insert(spawns, self)
-
-    return spawns
+    end)
 
 end

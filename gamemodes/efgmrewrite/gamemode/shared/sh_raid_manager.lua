@@ -55,10 +55,6 @@ if SERVER then
 
             -- kill players in raid, idk what else
 
-            for k, v in pairs(self.PlayersInRaid) do
-                v:Kill()
-            end
-
             hook.Run("EndedRaid")
 
             -- Thanks penal code
@@ -80,6 +76,12 @@ if SERVER then
                 net.WriteTable( self.MapPool )
             net.Broadcast()
 
+            if table.IsEmpty( self.PlayersInRaid ) then return end
+            
+            for k, v in pairs(self.PlayersInRaid) do
+                v:Kill()
+            end
+
         end
 
         function RAID:SpawnPlayers(plys, status) -- todo: make this support a sequential table of players up to a specified team limit
@@ -88,9 +90,13 @@ if SERVER then
             if #plys > 4 then print("too many fucking people in your team dumbass") return end
 
             local spawn = GetValidRaidSpawn(status)
-            local allSpawns = spawn:GetAllSpawns()
+            local allSpawns = spawn.Spawns
+
+            PrintTable(allSpawns)
     
             for k, v in ipairs( plys ) do
+
+                print("Player " .. k .. "'s name is " .. v:Nick())
                 
                 if v:IsPlayer() then
                 
@@ -101,6 +107,8 @@ if SERVER then
                         print("Player " .. v:GetName() .. " tried to enter the raid with status " .. status .. ", but they're probably fine to join anyway. If they aren't, tell the map maker to separate the lobby and the raid map, thanks.")
     
                     end
+
+                    print("Sending player " .. k .. " (" .. v:Nick() .. ") into raid!")
     
                     net.Start("PlayerEnterRaid")
                     net.Send(v)
@@ -112,9 +120,6 @@ if SERVER then
                         v:SetRaidStatus(status, spawn.SpawnGroup or "")
                         v:Teleport(allSpawns[k]:GetPos(), allSpawns[k]:GetAngles(), Vector(0, 0, 0))
                         v:Freeze(false)
-
-                        v:SetNWBool("RaidReady", false)
-                        v:SetNWBool("RaidTeam", "")
     
                     end)
 
@@ -198,8 +203,11 @@ if SERVER then
 
         function plyMeta:SetRaidStatus(status, spawnGroup)
 
-            self:SetNWInt( "PlayerRaidStatus", status or self:GetNWString( "PlayerRaidStatus", 0 ) )
-            self:SetNWString("PlayerSpawnGroup", spawnGroup or self:GetNWString( "PlayerSpawnGroup", "" ) )
+            status = status or self:GetNWString( "PlayerRaidStatus", 0 )
+            spawnGroup = spawnGroup or self:GetNWString( "PlayerSpawnGroup", "" )
+
+            self:SetNWInt( "PlayerRaidStatus", status )
+            self:SetNWString("PlayerSpawnGroup", spawnGroup )
 
         end
 
@@ -284,6 +292,10 @@ if SERVER then
             ply:Teleport(randomSpawn:GetPos(), randomSpawn:GetAngles(), Vector(0, 0, 0))
             ply:SetHealth( ply:GetMaxHealth() ) -- heals the player to full so dumb shit like quitting and rejoining to get max hp doesn't happen
 
+            ply:SetRaidStatus(0, "")
+            ply:SetNWBool("RaidReady", false)
+            ply:SetNWBool("RaidTeam", "")
+
         end)
 
         hook.Add("CheckRaidAddPlayers", "MaybeAddPeople", function( ply )
@@ -311,7 +323,12 @@ if SERVER then
 
             end
 
-            if spawnbool then
+            print("for loop ended")
+
+            if tobool( spawnBool ) == true then
+
+                print("spawning players:")
+                PrintTable(plys)
 
                 RAID:SpawnPlayers(plys, playerStatus.PMC)
                 
@@ -348,7 +365,7 @@ if SERVER then
         
         print("YIPPEE")
 
-        if !ply:CompareStatus(0) then return end
+        if !ply:CompareStatus(0) then print("Player " .. ply:Nick() .. " is in raid tf") end
 
         local teamName = net.ReadString()
         if teamName == "" then ply:SetNWString("RaidTeam", teamName) ply:PrintMessage(HUD_PRINTTALK, "Sucessfully left your team!") return end
