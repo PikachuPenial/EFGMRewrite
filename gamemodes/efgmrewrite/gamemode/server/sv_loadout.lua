@@ -12,7 +12,7 @@ function LOADOUT.Equip( ply, inventory )
 
     end
 
-    ARC9:PlayerSendAttInv(ply)
+    -- ARC9:PlayerSendAttInv(ply)
 
 end
 

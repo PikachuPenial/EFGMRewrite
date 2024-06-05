@@ -82,42 +82,6 @@ end)
 
 hook.Add("HUDWeaponPickedUp", "WeaponPickedUp", function( weapon )
 
-    local name = weapon:GetClass()
-
-    if flippedDebugPrimWep[name] != nil then
-        
-        if activeSlots[KEY_1] == nil then activeSlots[KEY_1] = name return false
-        
-        elseif activeSlots[KEY_2] == nil then activeSlots[KEY_2] = name return false
-        
-        else return false end
-
-    end
-
-    if flippedDebugSecWep[name] != nil then
-        
-        if activeSlots[KEY_3] == nil then activeSlots[KEY_3] = name return false
-        
-        else return false end
-
-    end
-
-    if flippedDebugNadeWep[name] != nil then
-        
-        if activeSlots[KEY_G] == nil then activeSlots[KEY_G] = name return false
-        
-        else return false end
-        
-    end
-
-    if flippedDebugMeleeWep[name] != nil then
-        
-        if activeSlots[KEY_V] == nil then activeSlots[KEY_V] = name return false
-        
-        else return false end
-        
-    end
-
     return false
 
 end)

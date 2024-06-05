@@ -20,17 +20,17 @@ function INVG.New( width, height )
         if key == nil then
 
             local k = table.insert(self.contents, {})
-            
+
             self.contents[k].name = name
             self.contents[k].type = type
             self.contents[k].count = count or 1
 
             return
-            
+
         end
 
         if istable(key) then
-            
+
             key = INVG.PosTOLocationInformation(key, self.width, self.height)
 
         end
