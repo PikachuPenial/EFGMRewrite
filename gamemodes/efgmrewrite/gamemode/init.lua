@@ -133,7 +133,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	end
 
 	-- death information
-	victim:PrintMessage(HUD_PRINTCENTER, attacker:GetName() .. " [" .. attacket:Health() .. " HP] killed you with a " .. weaponName .. " from " .. distance .. "m away")
+	victim:PrintMessage(HUD_PRINTCENTER, attacker:GetName() .. " [" .. attacker:Health() .. " HP] killed you with a " .. weaponName .. " from " .. distance .. "m away")
 
 end
 
