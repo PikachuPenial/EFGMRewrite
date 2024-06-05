@@ -177,13 +177,13 @@ function RenderCompass(ply)
         surface.SetDrawColor(color)
         surface.DrawLine(ScrW() / 2, 0, ScrW() / 2, EFGM.ScreenScale(6))
 
-        local compassX, compassY = ScrW() * EFGM.ScreenScale(0.5), ScrH() * 0
+        local compassX, compassY = ScrW() * 0.5, ScrH() * 0
         local width, height = ScrW() * EFGM.ScreenScale(0.5), EFGM.ScreenScale(10)
 
         spacing = (width * 1) / EFGM.ScreenScale(360)
         numOfLines = width / spacing
-        fadeDistMultiplier = EFGM.ScreenScale(25)
-        fadeDistance = (width / 2) / fadeDistMultiplier
+        fadeDistMultiplier = 25
+        fadeDistance = (ScrW() / 2) / fadeDistMultiplier
 
         for i = math.Round(-ang.y) % 360, (math.Round(-ang.y) % 360) + numOfLines do
 
