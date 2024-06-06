@@ -76,11 +76,7 @@ if SERVER then
                 net.WriteTable( self.MapPool )
             net.Broadcast()
 
-            if table.IsEmpty( self.PlayersInRaid ) then return end
-            
-            for k, v in pairs(self.PlayersInRaid) do
-                v:Kill()
-            end
+            for k, v in pairs( player.GetHumans() ) do if !v:CompareStatus(0) then v:Kill() end end
 
         end
 
