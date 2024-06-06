@@ -372,7 +372,7 @@ if SERVER then
 
         local teamCount = 0
 
-        for k, v in ipairs( player.GetHumans() ) do if v:GetNWString("RaidTeam") then teamCount = teamCount + 1 end end
+        for k, v in ipairs( player.GetHumans() ) do if v:GetNWString("RaidTeam") == teamName then teamCount = teamCount + 1 end end
 
         if teamCount > 4 then ply:PrintMessage(HUD_PRINTTALK, "Too many people in the team!") return end
 
