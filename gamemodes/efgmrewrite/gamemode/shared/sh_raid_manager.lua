@@ -155,14 +155,15 @@ if SERVER then
         end
 
         function RAID:SubmitVote(ply, vote)
-            
+
+            if ply:GetNWBool("HasVoted", false) then ply:PrintMessage(HUD_PRINTTALK, "You have already voted!") return end
+            if GetGlobalInt("RaidStatus") != raidStatus.ENDED then ply:PrintMessage(HUD_PRINTTALK, "The raid is still ongoing, your vote has not been counted.") return end
             if self.MapPool[vote] == nil then return end
 
             self.MapPool[vote] = self.MapPool[vote] + 1
 
             ply:SetNWBool("HasVoted", true)
-
-            ply:PrintMessage(HUD_PRINTCONSOLE, "Your vote of ".. vote .." has been counted!")
+            ply:PrintMessage(HUD_PRINTTALK, "Your vote of ".. vote .." has been counted!")
 
         end
 
@@ -378,6 +379,12 @@ if SERVER then
 
     end)
 
+    net.Receive("SendVote", function(len, ply)
+        
+        RAID:SubmitVote(ply, net.ReadString() )
+
+    end)
+
 end
 
 if CLIENT then
@@ -395,8 +402,6 @@ if CLIENT then
             net.WriteString( tostring( args[ 1 ]) )
         net.SendToServer()
 
-        print("Sent to server " .. tostring( args[ 1 ]) )
-
     end)
 
     concommand.Add("efgm_team_leave", function(ply, cmd, args)
@@ -409,10 +414,9 @@ if CLIENT then
 
     concommand.Add("efgm_vote", function(ply, cmd, args)
 
-        if ply:GetNWBool("HasVoted", false) == true then return end
-        if GetGlobalInt("RaidStatus") != raidStatus.ENDED then return end
-
-        RAID:SubmitVote(ply, args[1])
+        net.Start("SendVote")
+            net.WriteString( args[1] )
+        net.SendToServer()
 
     end)
     

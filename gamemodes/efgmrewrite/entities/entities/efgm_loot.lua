@@ -63,7 +63,7 @@ function ENT:SelectItem()
 
     end
 
-    if table.IsEmpty( tbl ) then print("loot table " .. self.LootType .. " is empty you fucking idiot") return end
+    if table.IsEmpty( tbl ) then print("loot table " .. self.LootType .. " is empty you fucking idiot") return nil end
 
     local ent = ents.Create( tbl[ math.random(#tbl) ] )
 
@@ -73,6 +73,8 @@ function ENT:SelectItem()
 end
 
 function ENT:SpawnItem()
+
+    if self.StoredItem == nil then print("Loot entity failed to spawn item!") return end
 
     self.StoredItem:SetPos(self:GetPos())
     self.StoredItem:SetAngles(self:GetAngles())
