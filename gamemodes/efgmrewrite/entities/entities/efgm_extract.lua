@@ -34,6 +34,19 @@ function ENT:KeyValue(key, value)
 		self.Accessibility = tonumber(value)
 	end
 
+
+	if key == "OnPlayerExtract" then
+		self:StoreOutput(key, value)
+	end
+
+	if key == "OnExtractEnabled" then
+		self:StoreOutput(key, value)
+	end
+
+	if key == "OnExtractDisabled" then
+		self:StoreOutput(key, value)
+	end
+
 end
 
 function ENT:Initialize()
@@ -64,15 +77,21 @@ end
 
 function ENT:AcceptInput(name, ply, caller, data)
 	
-	if name == "EnableExtract" then self.IsDisabled = false end
+	if name == "EnableExtract" then
+
+        self.IsDisabled = false
+        self:TriggerOutput( "OnExtractEnabled", ply, data )
+
+    end
 
 	if name == "DisableExtract" then
 
         self.IsDisabled = true
+        self:TriggerOutput( "OnExtractDisabled", ply, data )
 
         for k, v in ipairs( player.GetHumans() ) do
 
-            self:TriggerOutput("StopExtractingPlayer", ply)
+            self:Fire( "StopExtractingPlayer", nil, 0, ply, caller )
             
         end
 
@@ -82,11 +101,13 @@ function ENT:AcceptInput(name, ply, caller, data)
 
         if self.IsDisabled then
             
-            self:TriggerOutput("EnableExtract", ply)
+            self:Fire( "EnableExtract", nil, 0, ply, caller )
+            self:TriggerOutput( "OnExtractEnabled", ply, data )
 
         else
 
-            self:TriggerOutput("DisableExtract", ply)
+            self:Fire( "DisableExtract", nil, 0, ply, caller )
+            self:TriggerOutput( "OnExtractDisabled", ply, data )
 
         end
 
@@ -161,6 +182,8 @@ end
 
 function ENT:Extract(ply)
 
+    self:TriggerOutput( "OnPlayerExtract", ply )
+    
     hook.Run("PlayerExtraction", ply, self.ExtractTime, self.IsGuranteed)
 
 end
