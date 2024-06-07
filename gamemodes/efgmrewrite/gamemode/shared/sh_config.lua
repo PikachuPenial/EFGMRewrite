@@ -21,7 +21,7 @@ flippedDebugMeleeWep = table.Flip( debugMeleeWep )
 if SERVER then
 
     -- modifiers
-    local modif = "\\nRecoilKickMult\\t1.25\\nVisualRecoilPunchMult\\t1.5\\nVisualRecoilRollMult\\t1.5\\nVisualRecoilSideMult\\t1\\nVisualRecoilUpMult\\t1\\nVisualRecoilMult\\t2\\nRecoilRandomSideMult\\t1.25\\nSwayMultMidAir\\t7.5 "
+    local modif = "\\nRecoilKickMult\\t1.25\\nVisualRecoilPunchMult\\t1.5\\nVisualRecoilRollMult\\t1.5\\nVisualRecoilSideMult\\t1\\nVisualRecoilUpMult\\t1\\nVisualRecoilMult\\t2\\nRecoilRandomSideMult\\t1.25\\nSwayMultMidAir\\t1.5 "
     RunConsoleCommand("arc9_modifiers", modif)
     RunConsoleCommand("arc9_mod_adstime", "0.75")
     RunConsoleCommand("arc9_mod_bodydamagecancel", "1")
@@ -149,7 +149,7 @@ if CLIENT then
 
     -- performance
     RunConsoleCommand("arc9_cheapscopes", "0")
-    RunConsoleCommand("arc9_allflash", "1")
+    RunConsoleCommand("arc9_allflash", "0")
 
     -- fx
     RunConsoleCommand("arc9_cust_blur", "1")
