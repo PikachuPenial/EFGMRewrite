@@ -264,9 +264,9 @@ function HideHud(name)
 end
 hook.Add("HUDShouldDraw", "HideDefaultHud", HideHud)
 
--- hide scoreboard while in raid
-hook.Add("ScoreboardShow", "PreventScoreboardInRaid", function()
-    if !LocalPlayer():CompareStatus(0) then return false end
+-- disable scoreboard
+hook.Add("ScoreboardShow", "DisableHL2Scoreboard", function()
+    return true
 end )
 
 -- hide voice chat panels
@@ -305,7 +305,7 @@ concommand.Add("efgm_print_controls", function(ply, cmd, args)
     local dropBind
 
     if ply:GetInfoNum("efgm_bind_raidinfo", KEY_O) != nil then extractsBind = string.upper(input.GetKeyName(ply:GetInfoNum("efgm_bind_raidinfo", KEY_O))) else extractsBind = "[UNBOUND (efgm_print_extracts 'key code')]" end
-    if ply:GetInfoNum("efgm_bind_showcompass", KEY_TAB) != nil then compassBind = string.upper(input.GetKeyName(ply:GetInfoNum("efgm_bind_showcompass", KEY_TAB))) else compassBind = "[UNBOUND (efgm_bind_showcompass 'key code')]" end
+    if ply:GetInfoNum("efgm_bind_showcompass", KEY_M) != nil then compassBind = string.upper(input.GetKeyName(ply:GetInfoNum("efgm_bind_showcompass", KEY_M))) else compassBind = "[UNBOUND (efgm_bind_showcompass 'key code')]" end
     if input.LookupBinding("+menu_context") != nil then contextBind = string.upper(input.LookupBinding("+menu_context")) else contextBind = "[UNBOUND (+menu_context)]" end
     if input.LookupBinding("+zoom") != nil then suitZoomBind = string.upper(input.LookupBinding("+zoom")) else suitZoomBind = "[UNBOUND (+zoom)]" end
     if input.LookupBinding("+use") != nil then interactBind = string.upper(input.LookupBinding("+use")) else interactBind = "[UNBOUND (+use)]" end

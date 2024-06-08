@@ -3,7 +3,7 @@ local factory = {
     Name = "Factory",
 
     Stats = {
-        [1] = "Raid Time = 20 Minutes",
+        [1] = "Raid Time = 20 minutes",
         [2] = "Map Size = Small"
     },
 
@@ -17,7 +17,7 @@ local factory = {
 
             Stats = {
 
-                [1] = "Extraction Time = 10 Seconds",
+                [1] = "Extraction Time = 10 seconds",
                 [2] = "Is Universal = False",
                 [3] = "Is Guranteed = True"
 
@@ -33,7 +33,7 @@ local factory = {
 
             Stats = {
 
-                [1] = "Extraction Time = 10 Seconds",
+                [1] = "Extraction Time = 10 seconds",
                 [2] = "Is Universal = True",
                 [3] = "Is Guranteed = True"
 
@@ -49,7 +49,7 @@ local factory = {
 
             Stats = {
 
-                [1] = "Extraction Time = 10 Seconds",
+                [1] = "Extraction Time = 10 seconds",
                 [2] = "Is Universal = False",
                 [3] = "Is Guranteed = True"
 
@@ -65,7 +65,7 @@ local factory = {
 
             Stats = {
 
-                [1] = "Extraction Time = 10 Seconds",
+                [1] = "Extraction Time = 10 seconds",
                 [2] = "Is Universal = False",
                 [3] = "Is Guranteed = True"
 
@@ -81,7 +81,7 @@ local factory = {
 
             Stats = {
 
-                [1] = "Extraction Time = 10 Seconds",
+                [1] = "Extraction Time = 10 seconds",
                 [2] = "Is Universal = False",
                 [3] = "Is Guranteed = True"
 

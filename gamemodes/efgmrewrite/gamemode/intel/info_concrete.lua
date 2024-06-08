@@ -3,7 +3,7 @@ local concrete = {
     Name = "Concrete",
 
     Stats = {
-        [1] = "Raid Time = 15 Minutes",
+        [1] = "Raid Time = 30 minutes",
         [2] = "Map Size = Medium"
     },
 
@@ -28,7 +28,7 @@ local concrete = {
 
             Stats = {
 
-                [1] = "Extraction Time = 30 Seconds",
+                [1] = "Extraction Time = 15 seconds",
                 [2] = "Is Universal = False",
                 [3] = "Is Guranteed = True"
 
@@ -46,7 +46,7 @@ local concrete = {
 
             Stats = {
 
-                [1] = "Extraction Time = 10 Seconds",
+                [1] = "Extraction Time = 10 seconds",
                 [2] = "Is Universal = False",
                 [3] = "Is Guranteed = True"
 
@@ -64,7 +64,7 @@ local concrete = {
 
             Stats = {
 
-                [1] = "Extraction Time = 20 Seconds",
+                [1] = "Extraction Time = 10 seconds",
                 [2] = "Is Universal = True",
                 [3] = "Is Guranteed = True"
 
@@ -72,7 +72,7 @@ local concrete = {
 
             Description = "An expertly camouflaged door situated in an underground tunnel. This extract is unique, as it is " ..
             "the only extract available to everybody, all the time, with no prerequisites. While the extraction point is lit up, the rest of the tunnel system is extremely dark, " ..
-            "making it easy for people to sneak up and ambush you while you wait for the extract's 20 seconds to be over."
+            "making it easy for people to sneak up and ambush you while you wait for the extract's 10 seconds to be over."
 
         },
 
@@ -82,7 +82,7 @@ local concrete = {
 
             Stats = {
 
-                [1] = "Extraction Time = 10 Seconds",
+                [1] = "Extraction Time = 10 seconds",
                 [2] = "Is Universal = True",
                 [3] = "Is Guranteed = False"
 
@@ -103,7 +103,7 @@ local concrete = {
 
             Stats = {
 
-                [1] = "Extraction Time = 20 Seconds",
+                [1] = "Extraction Time = 10 seconds",
                 [2] = "Is Universal = True",
                 [3] = "Is Guranteed = False"
 

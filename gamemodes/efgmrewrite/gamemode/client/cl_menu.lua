@@ -5,6 +5,11 @@ Menu = {}
 
 Menu.MusicList = {"sound/music/menu_01.mp4", "sound/music/menu_02.mp4", "sound/music/menu_03.mp4", "sound/music/menu_04.mp4"}
 
+local menuBind = GetConVar("efgm_bind_menu"):GetInt()
+cvars.AddChangeCallback("efgm_bind_menu", function(convar_name, value_old, value_new)
+    menuBind = tonumber(value_new)
+end)
+
 local conditions = {}
 
 -- called non-globally to initialize the menu, that way it can only be initialized once by Menu:Open()
@@ -22,8 +27,17 @@ function Menu:Initialize(openTab)
     menuFrame:MakePopup()
     menuFrame:SetBackgroundBlur(true)
 
+    hook.Add("Think", "MenuController", function()
+
+        if !gui.IsGameUIVisible() then menuFrame:Show() else menuFrame:Hide() end
+
+    end)
+
     function menuFrame:OnClose()
+
         Menu.IsOpen = false
+        hook.Remove("Think", "MenuController")
+
     end
 
     self.MenuFrame = menuFrame
@@ -89,12 +103,12 @@ function Menu:Initialize(openTab)
         Menu.MenuFrame.LowerPanel.Contents:Remove()
         Menu.OpenTab.Inventory()
     end
-    
+
     local contractsTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
     contractsTab:Dock(LEFT)
     contractsTab:SetSize(EFGM.ScreenScale(90), 0)
     contractsTab:SetText("Contracts")
-    
+
     local unlocksTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
     unlocksTab:Dock(LEFT)
     unlocksTab:SetSize(EFGM.ScreenScale(90), 0)
@@ -103,9 +117,9 @@ function Menu:Initialize(openTab)
 end
 
 -- called to either initialize or open the menu
-function Menu:Open( openTab )
+function Menu:Open(openTab)
 
-    if self.MenuFrame != nil then 
+    if self.MenuFrame != nil then
 
         self.MenuFrame:Remove()
 
@@ -684,17 +698,6 @@ function Menu.OpenTab.Stats()
     importantStatsSP:GetCanvas():SetSize( cw, height )
     
 end
-
--- shitty showspare2 offbrand because i really don't want to use the net library yet (todo: remove bc concommands do this better)
-hook.Add("Think", "MySpare2Function", function()
-    if input.IsKeyDown(KEY_F4) then
-
-        -- print("showing spare 1")
-        
-        Menu:Open("Intel")
-
-    end
-end)
 
 concommand.Add("efgm_gamemenu", function(ply, cmd, args)
 
