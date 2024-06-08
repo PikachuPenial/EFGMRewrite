@@ -1,5 +1,5 @@
 
--- self explanitory
+-- self explanitory (erm actually its explanatory 🤓)
 if CLIENT then
     CreateClientConVar("efgm_bind_menu", KEY_TAB, true, true, "Determines the keybind that will display the menu")
     CreateClientConVar("efgm_bind_showcontrols", KEY_P, true, true, "Determines the keybind that will display helpful keybinds")
@@ -11,6 +11,7 @@ if CLIENT then
     CreateClientConVar("efgm_bind_changesight", MOUSE_MIDDLE, true, true, "Determines the keybind that adjusts the zoom/reticle of your weapons sight")
     CreateClientConVar("efgm_bind_inspectweapon", KEY_I, true, true, "Determines the keybind that inspects your weapon")
     CreateClientConVar("efgm_bind_dropweapon", KEY_MINUS, true, true, "Determines the keybind that drops your held weapon")
+    CreateClientConVar("efgm_bind_teaminvite", KEY_PERIOD, true, true, "Determines the keybind that invites someone to your team, or accepts somebody else's team ivnite")
 end
 
 hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
@@ -59,6 +60,11 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
         -- weapon inspecting
         if button == ply:GetInfoNum("efgm_bind_inspectweapon", KEY_I) then
             ply:ConCommand("+arc9_inspect")
+        end
+
+        -- team inviting / accepting
+        if button == ply:GetInfoNum("efgm_bind_teaminvite", KEY_PERIOD) then
+            -- todo
         end
 
     end

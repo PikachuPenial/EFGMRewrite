@@ -45,6 +45,13 @@
 
 ]
 
+@PointClass base(Targetname) = efgm_status_setter : "Player Raid Status Setter"
+[
+    //Inputs
+    input SetStatus(integer) : "Sets the activator to the chosen status."
+
+]
+
 @PointClass base(Targetname, PlayerClass, Angles) studio("models/editor/playerstart.mdl") = efgm_raid_spawn : "Player Spawn"
 [
 
