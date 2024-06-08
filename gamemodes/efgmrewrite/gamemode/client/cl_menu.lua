@@ -9,16 +9,16 @@ local conditions = {}
 
 -- called non-globally to initialize the menu, that way it can only be initialized once by Menu:Open()
 -- also openTab is the name of the tab it should open to
-function Menu:Initialize( openTab )
+function Menu:Initialize(openTab)
 
     local menuFrame = vgui.Create("DFrame")
-    menuFrame:SetSize( EFGM.ScreenScale(1500), EFGM.ScreenScale(800) ) 
+    menuFrame:SetSize(EFGM.ScreenScale(1500), EFGM.ScreenScale(800))
     menuFrame:Center()
-    menuFrame:SetTitle( "EFGM Main Menu" ) 
-    menuFrame:SetVisible( true ) 
-    menuFrame:SetDraggable( false ) 
+    menuFrame:SetTitle("")
+    menuFrame:SetVisible(true)
+    menuFrame:SetDraggable(false) 
     menuFrame:SetDeleteOnClose(false)
-    menuFrame:ShowCloseButton( true ) 
+    menuFrame:ShowCloseButton(true)
     menuFrame:MakePopup()
     menuFrame:SetBackgroundBlur(true)
 
@@ -697,7 +697,7 @@ hook.Add("Think", "MySpare2Function", function()
 end)
 
 concommand.Add("efgm_gamemenu", function(ply, cmd, args)
-    
+
     local tab = args[1] -- tab currently does jack
 
     Menu:Open(tab)

@@ -15,8 +15,5 @@ MenuAlias.inRaidColor = 	Color(50, 255, 50, 255)		-- Red
 MenuAlias.outRaidColor = 	Color(255, 255, 255, 255)		-- Green
 MenuAlias.deadColor = 		Color(255, 50, 50, 255)	-- Gray what the fuck was i colorblind
 
-MenuAlias.widthRatio =      ScrW() / 1920 -- can multiply this by elements, so a panel taking up the entire screen could be 1920 * widthRatio to get a dynamic width on whatever screen you wanna use
-MenuAlias.heightRatio =     ScrH() / 1080 -- same
-
 MenuAlias.margin = 		    math.Round( ScrH() * 0.01 )
 MenuAlias.margins =         {MenuAlias.margin, MenuAlias.margin, MenuAlias.margin, MenuAlias.margin} -- in DockMargin or DockPadding functions, use unpack( MenuAlias.margins ) which equates to "take these 4 values from this one argument"

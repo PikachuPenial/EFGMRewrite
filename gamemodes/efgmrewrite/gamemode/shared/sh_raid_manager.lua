@@ -109,13 +109,13 @@ if SERVER then
                     net.Start("PlayerEnterRaid")
                     net.Send(v)
     
-                    v:Freeze(true)
+                    v:Lock()
     
                     timer.Create("Spawn" .. v:SteamID64(), 1, 1, function()
     
                         v:SetRaidStatus(status, spawn.SpawnGroup or "")
                         v:Teleport(allSpawns[k]:GetPos(), allSpawns[k]:GetAngles(), Vector(0, 0, 0))
-                        v:Freeze(false)
+                        v:UnLock()
     
                     end)
 
