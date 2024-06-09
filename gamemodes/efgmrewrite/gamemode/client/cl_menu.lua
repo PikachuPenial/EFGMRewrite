@@ -27,6 +27,13 @@ function Menu:Initialize(openTab)
     menuFrame:MakePopup()
     menuFrame:SetBackgroundBlur(true)
 
+    -- close menu with the game menu keybind
+    function menuFrame:OnKeyCodePressed(key)
+        if key == menuBind then
+            menuFrame:AlphaTo( 0, 0.1, 0, function() menuFrame:Close() end)
+        end
+    end
+
     hook.Add("Think", "MenuController", function()
 
         if !gui.IsGameUIVisible() then menuFrame:Show() else menuFrame:Hide() end

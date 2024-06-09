@@ -7,7 +7,7 @@ local customs = {
         [2] = "Map Size = Medium"
     },
 
-    Description = "A section of the 'Customs' map from Escape from Tarkov, which includes Fortress, Crackhouse, and other familiar landmarks."
+    Description = "A section of the 'Customs' map from Escape from Tarkov, which includes Fortress, Crackhouse, and other familiar landmarks.",
 
     Children = {
 
