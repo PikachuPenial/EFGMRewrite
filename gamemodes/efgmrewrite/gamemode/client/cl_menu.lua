@@ -21,17 +21,29 @@ function Menu:Initialize(openTab)
     menuFrame:Center()
     menuFrame:SetTitle("")
     menuFrame:SetVisible(true)
-    menuFrame:SetDraggable(false) 
+    menuFrame:SetDraggable(false)
     menuFrame:SetDeleteOnClose(false)
-    menuFrame:ShowCloseButton(true)
+    menuFrame:ShowCloseButton(false)
     menuFrame:MakePopup()
+    menuFrame:SetAlpha(0)
     menuFrame:SetBackgroundBlur(true)
 
+    menuFrame:AlphaTo(255, 0.2, 0, function() end)
+
     -- close menu with the game menu keybind
-    function menuFrame:OnKeyCodePressed(key)
+    function menuFrame:OnKeyCodeReleased(key)
+
         if key == menuBind then
-            menuFrame:AlphaTo( 0, 0.1, 0, function() menuFrame:Close() end)
+
+            menuFrame:SetKeyboardInputEnabled(false)
+            menuFrame:SetMouseInputEnabled(false)
+
+            menuFrame:AlphaTo(0, 0.1, 0, function()
+                menuFrame:Close()
+            end)
+
         end
+
     end
 
     hook.Add("Think", "MenuController", function()
@@ -81,9 +93,13 @@ function Menu:Initialize(openTab)
 
     Menu.MenuFrame.LowerPanel.Contents = contents
 
+    -- for text size calculations
+    surface.SetFont("PuristaBold18")
+
     local statsTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
     statsTab:Dock(LEFT)
-    statsTab:SetSize(EFGM.ScreenScale(180), 0)
+    statsTab:SetFont("PuristaBold18")
+    statsTab:SetSize(surface.GetTextSize(tostring(LocalPlayer():Name())) + EFGM.ScreenScale(50), 0)
     statsTab:SetText(LocalPlayer():Name())
 
     function statsTab:DoClick()
@@ -93,7 +109,8 @@ function Menu:Initialize(openTab)
 
     local intelTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
     intelTab:Dock(LEFT)
-    intelTab:SetSize(EFGM.ScreenScale(90), 0)
+    intelTab:SetFont("PuristaBold18")
+    intelTab:SetSize(surface.GetTextSize("Intel") + EFGM.ScreenScale(50), 0)
     intelTab:SetText("Intel")
 
     function intelTab:DoClick()
@@ -103,7 +120,8 @@ function Menu:Initialize(openTab)
 
     local inventoryTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
     inventoryTab:Dock(LEFT)
-    inventoryTab:SetSize(EFGM.ScreenScale(90), 0)
+    inventoryTab:SetFont("PuristaBold18")
+    inventoryTab:SetSize(surface.GetTextSize("Inventory") + EFGM.ScreenScale(50), 0)
     inventoryTab:SetText("Inventory")
 
     function inventoryTab:DoClick()
@@ -113,12 +131,14 @@ function Menu:Initialize(openTab)
 
     local contractsTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
     contractsTab:Dock(LEFT)
-    contractsTab:SetSize(EFGM.ScreenScale(90), 0)
+    contractsTab:SetFont("PuristaBold18")
+    contractsTab:SetSize(surface.GetTextSize("Contracts") + EFGM.ScreenScale(50), 0)
     contractsTab:SetText("Contracts")
 
     local unlocksTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
     unlocksTab:Dock(LEFT)
-    unlocksTab:SetSize(EFGM.ScreenScale(90), 0)
+    unlocksTab:SetFont("PuristaBold18")
+    unlocksTab:SetSize(surface.GetTextSize("Unlocks") + EFGM.ScreenScale(50), 0)
     unlocksTab:SetText("Unlocks")
 
 end
@@ -187,17 +207,17 @@ function Menu.OpenTab.Intel()
             entryStats:SetSize(0, #stats * EFGM.ScreenScale(40))
 
             function entryStats:Paint(w, h)
-                
+
                 for k, v in ipairs(stats) do
 
                     surface.SetDrawColor(190, 190, 190)
                     if k % 2 == 1 then 
                         surface.SetDrawColor(210, 210, 210)
                     end
-                    
+
                     surface.DrawRect(0, (k - 1) * EFGM.ScreenScale(40), w, EFGM.ScreenScale(40))
 
-                    local text = markup.Parse( "<font=DermaLarge><color=0,0,0>\n\n" .. v .. "</color></font>", w - EFGM.ScreenScale(40) )
+                    local text = markup.Parse( "<font=PuristaBold32><color=0,0,0>\n\n" .. v .. "</color></font>", w - EFGM.ScreenScale(40) )
                     text:Draw(EFGM.ScreenScale(20), (k - 1) * EFGM.ScreenScale(40) + EFGM.ScreenScale(5))
 
                 end
@@ -215,7 +235,7 @@ function Menu.OpenTab.Intel()
 
             -- chatgpt hallucinated an entire fucking function to get this shit to wrap, apologised profusely when called out on its artificial bs, but then told me about markup thanks chatgpt
 
-            local text = markup.Parse( "<font=DermaLarge><color=50,212,50>" .. entryName .. "</color></font><font=DermaLarge><color=255,255,255>\n\n" .. entryText .. "</color></font>", w - EFGM.ScreenScale(40) )
+            local text = markup.Parse( "<font=PuristaBold64><color=50,212,50>" .. entryName .. "</color></font><font=Purista32><color=255,255,255>\n" .. entryText .. "</color></font>", w - EFGM.ScreenScale(40) )
             text:Draw(EFGM.ScreenScale(20), EFGM.ScreenScale(20))
 
         end
@@ -244,6 +264,7 @@ function Menu.OpenTab.Intel()
                     
                     local subEntry = subEntryList:Add("DButton")
                     subEntry:SetSize(EFGM.ScreenScale(180), EFGM.ScreenScale(20))
+                    subEntry:SetFont("PuristaBold18")
                     subEntry:SetText(v3.Name)
                     function subEntry:DoClick()
 
@@ -341,6 +362,7 @@ function Menu.OpenTab.Shop()
         local purchaseButton = vgui.Create("DButton", purchaseInfoPanel)
         purchaseButton:Dock(TOP)
         purchaseButton:SetText("DEAL")
+        purchaseButton:SetFont("PuristaBold18")
         purchaseButton:SetConsoleCommand("efgm_shop_transaction", SHOP:CompileOrders())
 
     -- }
@@ -691,7 +713,7 @@ function Menu.OpenTab.Stats()
         statEntry:SetSize(0, EFGM.ScreenScale(30))
         function statEntry:Paint(w, h)
 
-            draw.SimpleText(k.." = "..v, "DermaDefault", 15, 15, MenuAlias.blackColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+            draw.SimpleText(k.." = "..v, "Purista18", 15, 15, MenuAlias.blackColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 
         end
 
