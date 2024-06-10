@@ -29,8 +29,8 @@ local concrete = {
             Stats = {
 
                 [1] = "Extraction Time = 15 seconds",
-                [2] = "Is Universal = False",
-                [3] = "Is Guranteed = True"
+                [2] = "Universal = False",
+                [3] = "Guranteed = True"
 
             },
 
@@ -47,8 +47,8 @@ local concrete = {
             Stats = {
 
                 [1] = "Extraction Time = 10 seconds",
-                [2] = "Is Universal = False",
-                [3] = "Is Guranteed = True"
+                [2] = "Universal = False",
+                [3] = "Guranteed = True"
 
             },
 
@@ -65,8 +65,8 @@ local concrete = {
             Stats = {
 
                 [1] = "Extraction Time = 10 seconds",
-                [2] = "Is Universal = True",
-                [3] = "Is Guranteed = True"
+                [2] = "Universal = True",
+                [3] = "Guranteed = True"
 
             },
 
@@ -83,8 +83,8 @@ local concrete = {
             Stats = {
 
                 [1] = "Extraction Time = 10 seconds",
-                [2] = "Is Universal = True",
-                [3] = "Is Guranteed = False"
+                [2] = "Universal = True",
+                [3] = "Guranteed = False"
 
             },
 
@@ -104,8 +104,8 @@ local concrete = {
             Stats = {
 
                 [1] = "Extraction Time = 10 seconds",
-                [2] = "Is Universal = True",
-                [3] = "Is Guranteed = False"
+                [2] = "Universal = True",
+                [3] = "Guranteed = False"
 
             },
 

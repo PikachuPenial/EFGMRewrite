@@ -30,6 +30,21 @@ function Menu:Initialize(openTab)
 
     menuFrame:AlphaTo(255, 0.2, 0, function() end)
 
+    self.StartTime = SysTime()
+
+    function menuFrame:Paint(w, h)
+
+        -- calling this function twice is the only way to make the blur darker lmao
+        Derma_DrawBackgroundBlur(self, self.StartTime)
+        Derma_DrawBackgroundBlur(self, self.StartTime)
+
+        surface.SetDrawColor(0, 0, 0, 25)
+        surface.DrawRect(0, 0, w, h)
+
+        draw.SimpleTextOutlined("Escape From Garry's Mod", "Purista32", 5, -5, MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
     -- close menu with the game menu keybind
     function menuFrame:OnKeyCodeReleased(key)
 
@@ -59,15 +74,16 @@ function Menu:Initialize(openTab)
 
     end
 
+    self.Player = LocalPlayer()
     self.MenuFrame = menuFrame
 
     local tabParentPanel = vgui.Create("DPanel", self.MenuFrame)
     tabParentPanel:Dock(TOP)
-    tabParentPanel:SetSize(0, EFGM.ScreenScale(20))
+    tabParentPanel:SetSize(0, EFGM.ScreenScale(25))
 
     function tabParentPanel:Paint(w, h)
 
-        surface.SetDrawColor(0, 0, 0, 50)
+        surface.SetDrawColor(0, 0, 0, 0)
         surface.DrawRect(0, 0, w, h)
 
     end
@@ -80,7 +96,7 @@ function Menu:Initialize(openTab)
 
     function lowerPanel:Paint(w, h)
 
-        surface.SetDrawColor(255, 255, 255)
+        surface.SetDrawColor(0, 0, 0, 0)
         surface.DrawRect(0, 0, w, h)
 
     end
@@ -107,15 +123,16 @@ function Menu:Initialize(openTab)
         Menu.OpenTab.Stats()
     end
 
-    local intelTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
-    intelTab:Dock(LEFT)
-    intelTab:SetFont("PuristaBold18")
-    intelTab:SetSize(surface.GetTextSize("Intel") + EFGM.ScreenScale(50), 0)
-    intelTab:SetText("Intel")
+    local matchTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
+    matchTab:Dock(LEFT)
+    matchTab:SetFont("PuristaBold18")
+    matchTab:SetSize(surface.GetTextSize("Match") + EFGM.ScreenScale(50), 0)
+    matchTab:SetText("Match")
 
-    function intelTab:DoClick()
+    function matchTab:DoClick()
+        if !Menu.Player:CompareStatus(0) then return end
         Menu.MenuFrame.LowerPanel.Contents:Remove()
-        Menu.OpenTab.Intel()
+        Menu.OpenTab.Match()
     end
 
     local inventoryTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
@@ -129,17 +146,28 @@ function Menu:Initialize(openTab)
         Menu.OpenTab.Inventory()
     end
 
-    local contractsTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
-    contractsTab:Dock(LEFT)
-    contractsTab:SetFont("PuristaBold18")
-    contractsTab:SetSize(surface.GetTextSize("Contracts") + EFGM.ScreenScale(50), 0)
-    contractsTab:SetText("Contracts")
+    local intelTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
+    intelTab:Dock(LEFT)
+    intelTab:SetFont("PuristaBold18")
+    intelTab:SetSize(surface.GetTextSize("Intel") + EFGM.ScreenScale(50), 0)
+    intelTab:SetText("Intel")
 
-    local unlocksTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
-    unlocksTab:Dock(LEFT)
-    unlocksTab:SetFont("PuristaBold18")
-    unlocksTab:SetSize(surface.GetTextSize("Unlocks") + EFGM.ScreenScale(50), 0)
-    unlocksTab:SetText("Unlocks")
+    function intelTab:DoClick()
+        Menu.MenuFrame.LowerPanel.Contents:Remove()
+        Menu.OpenTab.Intel()
+    end
+
+    -- local contractsTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
+    -- contractsTab:Dock(LEFT)
+    -- contractsTab:SetFont("PuristaBold18")
+    -- contractsTab:SetSize(surface.GetTextSize("Contracts") + EFGM.ScreenScale(50), 0)
+    -- contractsTab:SetText("Contracts")
+
+    -- local unlocksTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
+    -- unlocksTab:Dock(LEFT)
+    -- unlocksTab:SetFont("PuristaBold18")
+    -- unlocksTab:SetSize(surface.GetTextSize("Unlocks") + EFGM.ScreenScale(50), 0)
+    -- unlocksTab:SetText("Unlocks")
 
 end
 
@@ -187,7 +215,7 @@ function Menu.OpenTab.Intel()
     local entryPanel = vgui.Create("DPanel", contents)
     entryPanel:Dock(FILL)
     function entryPanel:Paint(w, h)
-        surface.SetDrawColor(50, 50, 50)
+        surface.SetDrawColor(50, 50, 50, 0)
         surface.DrawRect(0, 0, w, h)
     end
 
@@ -279,6 +307,16 @@ function Menu.OpenTab.Intel()
         end
         
     end
+
+end
+
+function Menu.OpenTab.Match()
+
+    local contents = vgui.Create("DPanel", Menu.MenuFrame.LowerPanel)
+    contents:Dock(FILL)
+    contents.Paint = nil
+
+    Menu.MenuFrame.LowerPanel.Contents = contents
 
 end
 
@@ -487,8 +525,8 @@ function Menu.OpenTab.Shop()
             surface.SetDrawColor(MenuAlias.secondaryColor)
             surface.DrawRect(EFGM.ScreenScale(5), EFGM.ScreenScale(5), w, h)
 
-            draw.SimpleText(displayName, "DermaDefaultBold", w / 2, 7, MenuAlias.blackColor, TEXT_ALIGN_CENTER)
-            draw.SimpleText(countNames[count] or count, "DermaDefaultBold", w / 2, h - 7, MenuAlias.blackColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+            draw.DrawText(displayName, "DermaDefaultBold", w / 2, 7, MenuAlias.blackColor, TEXT_ALIGN_CENTER)
+            draw.DrawText(countNames[count] or count, "DermaDefaultBold", w / 2, h - 7, MenuAlias.blackColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
 
         end
 
@@ -665,7 +703,7 @@ function Menu.OpenTab.Stats()
     contents:DockPadding(EFGM.ScreenScale(10), EFGM.ScreenScale(10), EFGM.ScreenScale(10), EFGM.ScreenScale(10))
     contents.Paint = function(s, w, h)
 
-        surface.SetDrawColor(MenuAlias.secondaryColor)
+        surface.SetDrawColor(Color(0, 0, 0, 0))
         surface.DrawRect(0, 0, w, h)
 
     end
@@ -675,14 +713,32 @@ function Menu.OpenTab.Stats()
     local importantStatsSP = vgui.Create("DScrollPanel", contents)
     importantStatsSP:Dock(LEFT)
     importantStatsSP:SetSize(EFGM.ScreenScale(400), 0)
+    importantStatsSP.Paint = function(s, w, h)
+
+        surface.SetDrawColor(Color(0, 0, 0, 0))
+        surface.DrawRect(0, 0, w, h)
+
+    end
 
     local importantStats = vgui.Create("DPanel", importantStatsSP)
     importantStats:Dock(TOP)
     importantStats:SetSize(0, EFGM.ScreenScale(500))
+    importantStats.Paint = function(s, w, h)
+
+        surface.SetDrawColor(Color(0, 0, 0, 0))
+        surface.DrawRect(0, 0, w, h)
+
+    end
 
     local playerInfo = vgui.Create("DPanel", contents)
     playerInfo:Dock(TOP)
     playerInfo:SetSize(0, EFGM.ScreenScale(300))
+    playerInfo.Paint = function(s, w, h)
+
+        surface.SetDrawColor(Color(0, 0, 0, 0))
+        surface.DrawRect(0, 0, w, h)
+
+    end
 
     -- only temporary, I gotta find a way to automate this shit
 
@@ -710,22 +766,23 @@ function Menu.OpenTab.Stats()
         
         local statEntry = vgui.Create("DPanel", importantStats)
         statEntry:Dock(TOP)
-        statEntry:SetSize(0, EFGM.ScreenScale(30))
+        statEntry:SetSize(0, EFGM.ScreenScale(20))
         function statEntry:Paint(w, h)
 
-            draw.SimpleText(k.." = "..v, "Purista18", 15, 15, MenuAlias.blackColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+            surface.SetDrawColor(Color(0, 0, 0, 0))
+            surface.DrawRect(0, 0, w, h)
+
+            draw.SimpleTextOutlined(k .. " = " .. v, "Purista18", 0, 0, MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
         end
 
-        height = height + 30
-
-        print(k)
+        height = height + 20
 
     end
 
     local cw, ch = importantStats:GetContentSize()
     importantStatsSP:GetCanvas():SetSize( cw, height )
-    
+
 end
 
 concommand.Add("efgm_gamemenu", function(ply, cmd, args)
