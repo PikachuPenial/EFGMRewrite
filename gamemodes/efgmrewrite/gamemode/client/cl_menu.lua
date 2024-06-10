@@ -41,7 +41,7 @@ function Menu:Initialize(openTab)
         surface.SetDrawColor(0, 0, 0, 25)
         surface.DrawRect(0, 0, w, h)
 
-        draw.SimpleTextOutlined("Escape From Garry's Mod", "Purista32", 5, -5, MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined("Escape From Garry's Mod", "Purista32", EFGM.ScreenScale(5), EFGM.ScreenScale(-5), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
     end
 
@@ -130,7 +130,10 @@ function Menu:Initialize(openTab)
     matchTab:SetText("Match")
 
     function matchTab:DoClick()
-        if !Menu.Player:CompareStatus(0) then return end
+        if !Menu.Player:CompareStatus(0) then
+            surface.PlaySound("common/wpn_denyselect.wav")
+            return
+        end
         Menu.MenuFrame.LowerPanel.Contents:Remove()
         Menu.OpenTab.Match()
     end
@@ -142,8 +145,12 @@ function Menu:Initialize(openTab)
     inventoryTab:SetText("Inventory")
 
     function inventoryTab:DoClick()
-        Menu.MenuFrame.LowerPanel.Contents:Remove()
-        Menu.OpenTab.Inventory()
+        -- placeholder until inventory functions chop chop portapotty
+        surface.PlaySound("common/wpn_denyselect.wav")
+        return
+
+        -- Menu.MenuFrame.LowerPanel.Contents:Remove()
+        -- Menu.OpenTab.Inventory()
     end
 
     local intelTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
@@ -317,6 +324,76 @@ function Menu.OpenTab.Match()
     contents.Paint = nil
 
     Menu.MenuFrame.LowerPanel.Contents = contents
+
+    local pmcSP = vgui.Create("DScrollPanel", contents)
+    pmcSP:Dock(LEFT)
+    pmcSP:SetSize(EFGM.ScreenScale(400), 0)
+    pmcSP.Paint = function(s, w, h)
+
+        surface.SetDrawColor(Color(0, 0, 0, 0))
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
+    local pmcSPBar = pmcSP:GetVBar()
+    pmcSPBar:SetHideButtons(true)
+    function pmcSPBar:Paint(w, h)
+        draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
+    end
+    function pmcSPBar.btnGrip:Paint(w, h)
+        draw.RoundedBox(0, EFGM.ScreenScale(5), EFGM.ScreenScale(8), EFGM.ScreenScale(5), h - EFGM.ScreenScale(16), Color(0, 0, 0, 0))
+    end
+
+    pmcList = vgui.Create("DListLayout", pmcSP)
+    pmcList:SetSize(pmcSP:GetWide(), 0)
+    pmcList:SetPos(0, 0)
+
+    local onlinePlayers = player.GetAll()
+
+    for k, v in pairs(onlinePlayers) do
+        local name = v:GetName()
+        local ping = v:Ping()
+        local kills = v:Frags()
+        local deaths = v:Deaths()
+
+        local pmcPanel = vgui.Create("DPanel", pmcList)
+        pmcPanel:SetSize(pmcList:GetWide(), EFGM.ScreenScale(50))
+        pmcPanel:SetPos(0, 0)
+        pmcPanel.Paint = function(w, h)
+            if !IsValid(v) then return end
+            draw.SimpleTextOutlined(name .. "         " .. ping  .. "ms", "Purista18", EFGM.ScreenScale(50), EFGM.ScreenScale(5), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            draw.SimpleTextOutlined(kills, "Purista18", EFGM.ScreenScale(50), EFGM.ScreenScale(25), Color(0, 255, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            draw.SimpleTextOutlined(deaths, "Purista18", EFGM.ScreenScale(85), EFGM.ScreenScale(25), Color(255, 0, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        end
+
+        local pmcPFP = vgui.Create("AvatarImage", pmcPanel)
+        pmcPFP:SetPos(EFGM.ScreenScale(5), EFGM.ScreenScale(5))
+        pmcPFP:SetSize(EFGM.ScreenScale(40), EFGM.ScreenScale(40))
+        pmcPFP:SetPlayer(v, 184)
+
+        pmcPFP.OnMousePressed = function()
+            local dropdown = DermaMenu()
+
+            local profile = dropdown:AddOption("Open Steam Profile", function() gui.OpenURL("http://steamcommunity.com/profiles/" .. v:SteamID64()) end)
+            profile:SetIcon("icon16/page_find.png")
+
+            dropdown:AddSpacer()
+
+            local copy = dropdown:AddSubMenu("Copy...")
+            copy:AddOption("Copy Name", function() SetClipboardText(v:GetName()) end):SetIcon("icon16/cut.png")
+            copy:AddOption("Copy SteamID64", function() SetClipboardText(v:SteamID64()) end):SetIcon("icon16/cut.png")
+
+            if v != Menu.Player then
+                local mute = dropdown:AddOption("Mute Player", function(self)
+                    if v:IsMuted() then v:SetMuted(false) else v:SetMuted(true) end
+                end)
+
+                if v:IsMuted() then mute:SetIcon("icon16/sound.png") mute:SetText("Unmute Player") else mute:SetIcon("icon16/sound_mute.png") mute:SetText("Mute Player") end
+            end
+
+            dropdown:Open()
+        end
+    end
 
 end
 
