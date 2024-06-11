@@ -49,12 +49,24 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
 
         -- lean left
         if button == ply:GetInfoNum("efgm_bind_leanleft", KEY_Q) then
-            ply:ConCommand("+arc9_switchsights")
+            if ply:GetInfoNum("efgm_controls_togglelean", 1) == 0 then
+                ply:SetNW2Var("leaning_left", true)
+            else
+                local state = not ply:GetNW2Var("leaning_left", false)
+                ply:SetNW2Var("leaning_left", state)
+                ply:SetNW2Var("leaning_right", false)
+            end
         end
 
         -- lean right
         if button == ply:GetInfoNum("efgm_bind_leanright", KEY_E) then
-            ply:ConCommand("+arc9_switchsights")
+            if ply:GetInfoNum("efgm_controls_togglelean", 1) == 0 then
+                ply:SetNW2Var("leaning_right", true)
+            else
+                local state = not ply:GetNW2Var("leaning_right", false)
+                ply:SetNW2Var("leaning_right", state)
+                ply:SetNW2Var("leaning_left", false)
+            end
         end
 
         -- switching sights
@@ -93,6 +105,18 @@ hook.Add("PlayerButtonUp", "EFGMBindsUp", function(ply, button)
         -- free looking
         if button == ply:GetInfoNum("efgm_bind_freelook", MOUSE_MIDDLE) then
             ply:ConCommand("-freelook")
+        end
+
+        -- unlean left
+        if button == ply:GetInfoNum("efgm_bind_leanleft", KEY_Q) then
+            if ply:GetInfoNum("efgm_controls_togglelean", 1) == 1 then return end
+            ply:SetNW2Var("leaning_left", false)
+        end
+
+        -- unlean right
+        if button == ply:GetInfoNum("efgm_bind_leanright", KEY_E) then
+            if ply:GetInfoNum("efgm_controls_togglelean", 1) == 1 then return end
+            ply:SetNW2Var("leaning_right", false)
         end
 
         -- weapon inspecting
@@ -138,6 +162,28 @@ if game.SinglePlayer() then
                 ply:ConCommand("efgm_print_extracts")
             end
 
+            -- lean left
+            if button == ply:GetInfoNum("efgm_bind_leanleft", KEY_Q) then
+                if ply:GetInfoNum("efgm_controls_togglelean", 1) == 0 then
+                    ply:SetNW2Var("leaning_left", true)
+                else
+                    local state = not ply:GetNW2Var("leaning_left", false)
+                    ply:SetNW2Var("leaning_left", state)
+                    ply:SetNW2Var("leaning_right", false)
+                end
+            end
+
+            -- lean right
+            if button == ply:GetInfoNum("efgm_bind_leanright", KEY_E) then
+                if ply:GetInfoNum("efgm_controls_togglelean", 1) == 0 then
+                    ply:SetNW2Var("leaning_right", true)
+                else
+                    local state = not ply:GetNW2Var("leaning_right", false)
+                    ply:SetNW2Var("leaning_right", state)
+                    ply:SetNW2Var("leaning_left", false)
+                end
+            end
+
             -- switching sights
             if button == ply:GetInfoNum("efgm_bind_changesight", MOUSE_MIDDLE) then
                 ply:ConCommand("+arc9_switchsights")
@@ -167,6 +213,18 @@ if game.SinglePlayer() then
         -- free looking
         if button == ply:GetInfoNum("efgm_bind_freelook", MOUSE_MIDDLE) then
             ply:ConCommand("-freelook")
+        end
+
+        -- unlean left
+        if button == ply:GetInfoNum("efgm_bind_leanleft", KEY_Q) then
+            if ply:GetInfoNum("efgm_controls_togglelean", 1) == 1 then return end
+            ply:SetNW2Var("leaning_left", false)
+        end
+
+        -- unlean right
+        if button == ply:GetInfoNum("efgm_bind_leanright", KEY_E) then
+            if ply:GetInfoNum("efgm_controls_togglelean", 1) == 1 then return end
+            ply:SetNW2Var("leaning_right", false)
         end
 
         -- weapon inspecting

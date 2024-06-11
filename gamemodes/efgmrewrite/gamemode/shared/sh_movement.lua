@@ -12,7 +12,14 @@ hook.Add("StartCommand", "AdjustPlayerMovement", function(ply, cmd)
 
 	if !ply:OnGround() then
 		cmd:RemoveKey(IN_ATTACK2)
+        ply:SetNW2Var("leaning_left", false)
+        ply:SetNW2Var("leaning_right", false)
 	end
+
+    if cmd:KeyDown(IN_SPEED) then
+        ply:SetNW2Var("leaning_left", false)
+        ply:SetNW2Var("leaning_right", false)
+    end
 
 end)
 
@@ -27,62 +34,11 @@ end )
 
 -- leaning
 local distance = 16
-local speed = 2
+local speed = 1.6
 local interp = 2
 
-local hull_size_5 = Vector(5, 5, 5)
-local hull_size_5_negative = Vector(-5, -5, -5)
-
-local binds = {
-	{"_cl_lean_right_key_hold", "Lean Right (Hold)", "leaning_right", "hold"},
-	{"_cl_lean_left_key_hold", "Lean Left (Hold)", "leaning_left", "hold"},
-
-	{"_cl_lean_right_key_toggle", "Lean Right (Toggle)", "leaning_right", "toggle"},
-	{"_cl_lean_left_key_toggle", "Lean Left (Toggle)", "leaning_left", "toggle"},
-}
-
-hook.Add("PlayerButtonDown", "leaning_keys", function(ply, button)
-    for i, data in ipairs(binds) do
-        local info_name = data[1]
-        local pretty_name = data[2]
-        local network_name = data[3]
-        local typee = data[4]
-
-        local need_to_press = ply:GetInfoNum(info_name, -1)
-
-        if button == need_to_press then
-            if typee == "hold" then
-                ply:SetNW2Var(network_name, true)
-            end
-
-            if typee == "toggle" then
-                local state = not ply:GetNW2Var(network_name, false)
-                ply:SetNW2Var(network_name, state)
-
-                for j, j_data in ipairs(binds) do
-                    if j_data[4] == "toggle" and network_name != j_data[3] then
-                        ply:SetNW2Var(j_data[3], false)
-                    end
-                end
-            end
-        end
-    end
-end)
-
-hook.Add("PlayerButtonUp", "leaning_keys", function(ply, button)
-    for i, data in ipairs(binds) do
-        local info_name = data[1]
-        local pretty_name = data[2]
-        local network_name = data[3]
-        local typee = data[4]
-
-        local need_to_press = ply:GetInfoNum(info_name, -1)
-
-        if button == need_to_press then
-            if typee == "hold" then ply:SetNW2Var(network_name, false) end
-        end
-    end
-end)
+local hull_size_5 = Vector(6.3, 6.3, 6.3)
+local hull_size_5_negative = Vector(-6.3, -6.3, -6.3)
 
 hook.Add("SetupMove", "leaning_main", function(ply, mv, cmd)
     local eyepos = ply:EyePos() - ply:GetNW2Vector("leaning_best_head_offset")
@@ -101,7 +57,7 @@ hook.Add("SetupMove", "leaning_main", function(ply, mv, cmd)
         fraction = Lerp(FrameTime() * 5 * speed + FrameTime(), fraction, 1)
     end
 
-    if not leaning_left and not leaning_right then
+    if !leaning_left and !leaning_right then
         fraction = Lerp(FrameTime() * 5 * speed + FrameTime(), fraction, 0)
     end
 
@@ -165,7 +121,7 @@ local function lean_bones(ply, roll)
     for _, bone_name in ipairs({"ValveBiped.Bip01_Spine", "ValveBiped.Bip01_Spine1", "ValveBiped.Bip01_Head1"}) do
         local bone = ply:LookupBone(bone_name)
 
-        if not bone then continue end
+        if !bone then continue end
 
         local ang
         local old_ang
@@ -218,10 +174,6 @@ if SERVER then
 end
 
 if CLIENT then
-    for i, data in ipairs(binds) do
-        CreateConVar(data[1], -1, {FCVAR_USERINFO, FCVAR_ARCHIVE})
-    end
-
     hook.Add("PreRender", "leaning_bend", function()
         for k, ply in ipairs(player.GetAll()) do
             ply.leaning_fraction_true_smooth = Lerp(FrameTime() / (engine.TickInterval() * interp), ply.leaning_fraction_true_smooth or 0, ply:GetNW2Float("leaning_fraction_smooth") * distance)
