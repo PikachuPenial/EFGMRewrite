@@ -1,4 +1,16 @@
+
 include("shared.lua")
+
+-- client globals
+EFGM = {}
+
+-- screen scale function, makes my life (penial) easier because i will most definently be doing most if not all of the user interface
+-- all interfaces and fonts are developed on a 1920x1080 monitor
+
+local efgm_hud_scale = GetConVar("efgm_hud_scale")
+EFGM.ScreenScale = function(size)
+    return size / 3 * (ScrW() / 640) * efgm_hud_scale:GetFloat()
+end
 
 for _, v in ipairs(file.Find("gamemodes/efgmrewrite/gamemode/shared/*.lua", "GAME", "nameasc")) do
 	include("shared/" .. v)

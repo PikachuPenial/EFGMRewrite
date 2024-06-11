@@ -1,5 +1,5 @@
 
--- self explanitory (erm actually its explanatory 🤓)
+-- self explanitory (erm actually its explanatory 🤓) (fuck off porty)
 if CLIENT then
     CreateClientConVar("efgm_bind_menu", KEY_TAB, true, true, "Determines the keybind that will display the menu")
     CreateClientConVar("efgm_bind_showcontrols", KEY_P, true, true, "Determines the keybind that will display helpful keybinds")
@@ -45,6 +45,16 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
         -- show raid information
         if button == ply:GetInfoNum("efgm_bind_raidinfo", KEY_O) then
             ply:ConCommand("efgm_print_extracts")
+        end
+
+        -- lean left
+        if button == ply:GetInfoNum("efgm_bind_leanleft", KEY_Q) then
+            ply:ConCommand("+arc9_switchsights")
+        end
+
+        -- lean right
+        if button == ply:GetInfoNum("efgm_bind_leanright", KEY_E) then
+            ply:ConCommand("+arc9_switchsights")
         end
 
         -- switching sights

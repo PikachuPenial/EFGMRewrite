@@ -176,6 +176,17 @@ function Menu:Initialize(openTab)
     -- unlocksTab:SetSize(surface.GetTextSize("Unlocks") + EFGM.ScreenScale(50), 0)
     -- unlocksTab:SetText("Unlocks")
 
+    local settingsTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
+    settingsTab:Dock(LEFT)
+    settingsTab:SetFont("PuristaBold18")
+    settingsTab:SetSize(surface.GetTextSize("Settings") + EFGM.ScreenScale(50), 0)
+    settingsTab:SetText("Settings")
+
+    function settingsTab:DoClick()
+        Menu.MenuFrame.LowerPanel.Contents:Remove()
+        Menu.OpenTab.Settings()
+    end
+
 end
 
 -- called to either initialize or open the menu
@@ -859,6 +870,22 @@ function Menu.OpenTab.Stats()
 
     local cw, ch = importantStats:GetContentSize()
     importantStatsSP:GetCanvas():SetSize( cw, height )
+
+end
+
+function Menu.OpenTab.Settings()
+
+    local contents = vgui.Create("DPanel", Menu.MenuFrame.LowerPanel)
+    contents:Dock(FILL)
+    contents:DockPadding(EFGM.ScreenScale(10), EFGM.ScreenScale(10), EFGM.ScreenScale(10), EFGM.ScreenScale(10))
+    contents.Paint = function(s, w, h)
+
+        surface.SetDrawColor(Color(0, 0, 0, 0))
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
+    Menu.MenuFrame.LowerPanel.Contents = contents
 
 end
 

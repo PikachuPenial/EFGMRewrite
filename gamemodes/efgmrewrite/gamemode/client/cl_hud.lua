@@ -1,14 +1,4 @@
 
-EFGM = {}
-
--- screen scale function, makes my life (penial) easier because i will most definently be doing most if not all of the user interface
--- all interfaces and fonts are developed on a 1920x1080 monitor
-
-local efgm_hud_scale = GetConVar("efgm_hud_scale")
-EFGM.ScreenScale = function(size)
-    return size / 3 * (ScrW() / 640) * efgm_hud_scale:GetFloat()
-end
-
 local function RenderRaidTime(ply)
     -- time logic
     local raidTime = string.FormattedTime(GetGlobalInt("RaidTimeLeft", 0), "%2i:%02i")
