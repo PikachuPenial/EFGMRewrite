@@ -43,7 +43,7 @@ if SERVER then
     RunConsoleCommand("arc9_eft_mult_bigrifle", "0.65")
     RunConsoleCommand("arc9_eft_mult_carabine", "0.4")
     RunConsoleCommand("arc9_eft_mult_massive", "0.5")
-    RunConsoleCommand("arc9_eft_mult_melee", "1")
+    RunConsoleCommand("arc9_eft_mult_melee", "1.5")
     RunConsoleCommand("arc9_eft_mult_pistol", "0.35")
     RunConsoleCommand("arc9_eft_mult_rifle", "0.4")
     RunConsoleCommand("arc9_eft_mult_shotgun", "0.4")
@@ -87,6 +87,18 @@ if SERVER then
     RunConsoleCommand("arc9_atts_generateentities", "1")
 
 end
+
+-- variables for ARC9 multipliers and range, used for modifications that I will make directly in SWEPS
+dmgrange = GetConVar("arc9_eft_mindmgrange"):GetInt() / 1000
+dmgrange_shotgun = GetConVar("arc9_eft_mindmgrange_sg"):GetInt() / 1000
+mult_338 = GetConVar("arc9_eft_mult_338"):GetFloat()
+mult_bigrifle = GetConVar("arc9_eft_mult_bigrifle"):GetFloat()
+mult_carabine = GetConVar("arc9_eft_mult_carabine"):GetFloat()
+mult_massive = GetConVar("arc9_eft_mult_massive"):GetFloat()
+mult_melee = GetConVar("arc9_eft_mult_melee"):GetFloat()
+mult_pistol = GetConVar("arc9_eft_mult_pistol"):GetFloat()
+mult_rifle = GetConVar("arc9_eft_mult_rifle"):GetFloat()
+mult_shotgun = GetConVar("arc9_eft_mult_shotgun"):GetFloat()
 
 -- client convars
 if CLIENT then
