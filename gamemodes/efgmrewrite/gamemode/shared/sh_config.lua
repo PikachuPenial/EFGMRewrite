@@ -96,7 +96,7 @@ if CLIENT then
     RunConsoleCommand("arc9_autolean", "0")
     RunConsoleCommand("arc9_autoreload", "0")
     RunConsoleCommand("arc9_togglelean", "1")
-    RunConsoleCommand("arc9_togglepeek", "1")
+    RunConsoleCommand("arc9_togglepeek", "0")
     RunConsoleCommand("arc9_togglepeek_reset", "0")
     RunConsoleCommand("arc9_togglebreath", "0")
 
@@ -183,5 +183,8 @@ if CLIENT then
     RunConsoleCommand("arc9_precache_allsounds_onstartup", "1")
     RunConsoleCommand("arc9_precache_attsmodels_onstartup", "1")
     RunConsoleCommand("arc9_precache_wepmodels_onstartup", "1")
+
+    -- font
+    RunConsoleCommand("arc9_font", "Bender")
 
 end

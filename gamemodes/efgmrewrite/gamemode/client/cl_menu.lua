@@ -905,7 +905,7 @@ function Menu.OpenTab.Settings()
         surface.SetDrawColor(Color(0, 0, 0, 0))
         surface.DrawRect(0, 0, w, h)
 
-        draw.SimpleTextOutlined("Gameplay", "PuristaBold32", w / 2, 0, MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined("GAMEPLAY", "PuristaBold32", w / 2, 0, MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
     end
 
@@ -936,7 +936,7 @@ function Menu.OpenTab.Settings()
         surface.SetDrawColor(Color(0, 0, 0, 0))
         surface.DrawRect(0, 0, w, h)
 
-        draw.SimpleTextOutlined("Controls", "PuristaBold32", w / 2, 0, MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined("CONTROLS", "PuristaBold32", w / 2, 0, MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
     end
 
@@ -967,7 +967,7 @@ function Menu.OpenTab.Settings()
         surface.SetDrawColor(Color(0, 0, 0, 0))
         surface.DrawRect(0, 0, w, h)
 
-        draw.SimpleTextOutlined("Interface", "PuristaBold32", w / 2, 0, MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined("INTERFACE", "PuristaBold32", w / 2, 0, MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
     end
 
@@ -980,34 +980,34 @@ function Menu.OpenTab.Settings()
         draw.RoundedBox(0, EFGM.ScreenScale(5), EFGM.ScreenScale(8), EFGM.ScreenScale(5), h - EFGM.ScreenScale(16), Color(0, 0, 0, 0))
     end
 
-    local performance = vgui.Create("DScrollPanel", contents)
-    performance:Dock(LEFT)
-    performance:SetSize(EFGM.ScreenScale(300), 0)
-    performance.Paint = function(s, w, h)
+    local visuals = vgui.Create("DScrollPanel", contents)
+    visuals:Dock(LEFT)
+    visuals:SetSize(EFGM.ScreenScale(300), 0)
+    visuals.Paint = function(s, w, h)
 
         surface.SetDrawColor(Color(0, 0, 0, 0))
         surface.DrawRect(0, 0, w, h)
 
     end
 
-    local performanceTitle = vgui.Create("DPanel", performance)
-    performanceTitle:Dock(TOP)
-    performanceTitle:SetSize(0, EFGM.ScreenScale(32))
-    function performanceTitle:Paint(w, h)
+    local visualsTitle = vgui.Create("DPanel", visuals)
+    visualsTitle:Dock(TOP)
+    visualsTitle:SetSize(0, EFGM.ScreenScale(32))
+    function visualsTitle:Paint(w, h)
 
         surface.SetDrawColor(Color(0, 0, 0, 0))
         surface.DrawRect(0, 0, w, h)
 
-        draw.SimpleTextOutlined("Performance", "PuristaBold32", w / 2, 0, MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined("VISUALS", "PuristaBold32", w / 2, 0, MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
     end
 
-    local performanceBar = performance:GetVBar()
-    performanceBar:SetHideButtons(true)
-    function performanceBar:Paint(w, h)
+    local visualsBar = visuals:GetVBar()
+    visualsBar:SetHideButtons(true)
+    function visualsBar:Paint(w, h)
         draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
     end
-    function performanceBar.btnGrip:Paint(w, h)
+    function visualsBar.btnGrip:Paint(w, h)
         draw.RoundedBox(0, EFGM.ScreenScale(5), EFGM.ScreenScale(8), EFGM.ScreenScale(5), h - EFGM.ScreenScale(16), Color(0, 0, 0, 0))
     end
 
@@ -1029,7 +1029,7 @@ function Menu.OpenTab.Settings()
         surface.SetDrawColor(Color(0, 0, 0, 0))
         surface.DrawRect(0, 0, w, h)
 
-        draw.SimpleTextOutlined("Account", "PuristaBold32", w / 2, 0, MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined("ACCOUNT", "PuristaBold32", w / 2, 0, MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
     end
 
@@ -1042,9 +1042,24 @@ function Menu.OpenTab.Settings()
         draw.RoundedBox(0, EFGM.ScreenScale(5), EFGM.ScreenScale(8), EFGM.ScreenScale(5), h - EFGM.ScreenScale(16), Color(0, 0, 0, 0))
     end
 
-    -- controls go below
+    -- settings go below
 
     -- gameplay
+
+    local toggleADSPanel = vgui.Create("DPanel", gameplay)
+    toggleADSPanel:Dock(TOP)
+    toggleADSPanel:SetSize(0, EFGM.ScreenScale(50))
+    function toggleADSPanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Toggle Aim Down Sights", "Purista18", w / 2, EFGM.ScreenScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local toggleADS = vgui.Create("DCheckBox", toggleADSPanel)
+    toggleADS:SetPos(EFGM.ScreenScale(142), EFGM.ScreenScale(29))
+    toggleADS:SetConVar("arc9_toggleads")
+    toggleADS:SetSize(EFGM.ScreenScale(16), EFGM.ScreenScale(16))
+
 
     local toggleLeanPanel = vgui.Create("DPanel", gameplay)
     toggleLeanPanel:Dock(TOP)
@@ -1093,9 +1108,26 @@ function Menu.OpenTab.Settings()
 
     -- controls
 
+    local adsSensPanel = vgui.Create("DPanel", controls)
+    adsSensPanel:Dock(TOP)
+    adsSensPanel:SetSize(0, EFGM.ScreenScale(50))
+    function adsSensPanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Aim Down Sight Sensitivity", "Purista18", w / 2, EFGM.ScreenScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local adsSens = vgui.Create("DNumSlider", adsSensPanel)
+    adsSens:SetPos(EFGM.ScreenScale(25), EFGM.ScreenScale(30))
+    adsSens:SetSize(EFGM.ScreenScale(200), EFGM.ScreenScale(15))
+    adsSens:SetConVar("arc9_mult_sens")
+    adsSens:SetMin(0)
+    adsSens:SetMax(2)
+    adsSens:SetDecimals(2)
+
     local gameMenuPanel = vgui.Create("DPanel", controls)
     gameMenuPanel:Dock(TOP)
-    gameMenuPanel:SetSize(0, EFGM.ScreenScale(50))
+    gameMenuPanel:SetSize(0, EFGM.ScreenScale(55))
     function gameMenuPanel:Paint(w, h)
 
         draw.SimpleTextOutlined("Game Menu keybind", "Purista18", w / 2, EFGM.ScreenScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -1103,8 +1135,9 @@ function Menu.OpenTab.Settings()
     end
 
     local gameMenu = vgui.Create("DBinder", gameMenuPanel)
-    gameMenu:SetPos(EFGM.ScreenScale(110), EFGM.ScreenScale(30))
-    gameMenu:SetSize(EFGM.ScreenScale(80), EFGM.ScreenScale(15))
+    gameMenu:SetPos(EFGM.ScreenScale(100), EFGM.ScreenScale(30))
+    gameMenu:SetSize(EFGM.ScreenScale(100), EFGM.ScreenScale(20))
+    gameMenu:SetFont("PuristaBold18")
     gameMenu:SetSelectedNumber(GetConVar("efgm_bind_menu"):GetInt())
     function gameMenu:OnChange(num)
         RunConsoleCommand("efgm_bind_menu", gameMenu:GetSelectedNumber())
@@ -1112,7 +1145,7 @@ function Menu.OpenTab.Settings()
 
     local showCompassPanel = vgui.Create("DPanel", controls)
     showCompassPanel:Dock(TOP)
-    showCompassPanel:SetSize(0, EFGM.ScreenScale(50))
+    showCompassPanel:SetSize(0, EFGM.ScreenScale(55))
     function showCompassPanel:Paint(w, h)
 
         draw.SimpleTextOutlined("Show Compass keybind", "Purista18", w / 2, EFGM.ScreenScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -1120,8 +1153,9 @@ function Menu.OpenTab.Settings()
     end
 
     local showCompass = vgui.Create("DBinder", showCompassPanel)
-    showCompass:SetPos(EFGM.ScreenScale(110), EFGM.ScreenScale(30))
-    showCompass:SetSize(EFGM.ScreenScale(80), EFGM.ScreenScale(15))
+    showCompass:SetPos(EFGM.ScreenScale(100), EFGM.ScreenScale(30))
+    showCompass:SetSize(EFGM.ScreenScale(100), EFGM.ScreenScale(20))
+    showCompass:SetFont("PuristaBold18")
     showCompass:SetSelectedNumber(GetConVar("efgm_bind_showcompass"):GetInt())
     function showCompass:OnChange(num)
 
@@ -1131,7 +1165,7 @@ function Menu.OpenTab.Settings()
 
     local showRaidInfoPanel = vgui.Create("DPanel", controls)
     showRaidInfoPanel:Dock(TOP)
-    showRaidInfoPanel:SetSize(0, EFGM.ScreenScale(50))
+    showRaidInfoPanel:SetSize(0, EFGM.ScreenScale(55))
     function showRaidInfoPanel:Paint(w, h)
 
         draw.SimpleTextOutlined("Show Extracts keybind", "Purista18", w / 2, EFGM.ScreenScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -1139,8 +1173,9 @@ function Menu.OpenTab.Settings()
     end
 
     local showRaidInfo = vgui.Create("DBinder", showRaidInfoPanel)
-    showRaidInfo:SetPos(EFGM.ScreenScale(110), EFGM.ScreenScale(30))
-    showRaidInfo:SetSize(EFGM.ScreenScale(80), EFGM.ScreenScale(15))
+    showRaidInfo:SetPos(EFGM.ScreenScale(100), EFGM.ScreenScale(30))
+    showRaidInfo:SetSize(EFGM.ScreenScale(100), EFGM.ScreenScale(20))
+    showRaidInfo:SetFont("PuristaBold18")
     showRaidInfo:SetSelectedNumber(GetConVar("efgm_bind_raidinfo"):GetInt())
     function showRaidInfo:OnChange(num)
 
@@ -1150,7 +1185,7 @@ function Menu.OpenTab.Settings()
 
     local leanLeftPanel = vgui.Create("DPanel", controls)
     leanLeftPanel:Dock(TOP)
-    leanLeftPanel:SetSize(0, EFGM.ScreenScale(50))
+    leanLeftPanel:SetSize(0, EFGM.ScreenScale(55))
     function leanLeftPanel:Paint(w, h)
 
         draw.SimpleTextOutlined("Lean Left keybind", "Purista18", w / 2, EFGM.ScreenScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -1158,8 +1193,9 @@ function Menu.OpenTab.Settings()
     end
 
     local leanLeft = vgui.Create("DBinder", leanLeftPanel)
-    leanLeft:SetPos(EFGM.ScreenScale(110), EFGM.ScreenScale(30))
-    leanLeft:SetSize(EFGM.ScreenScale(80), EFGM.ScreenScale(15))
+    leanLeft:SetPos(EFGM.ScreenScale(100), EFGM.ScreenScale(30))
+    leanLeft:SetSize(EFGM.ScreenScale(100), EFGM.ScreenScale(20))
+    leanLeft:SetFont("PuristaBold18")
     leanLeft:SetSelectedNumber(GetConVar("efgm_bind_leanleft"):GetInt())
     function leanLeft:OnChange(num)
 
@@ -1169,7 +1205,7 @@ function Menu.OpenTab.Settings()
 
     local leanRightPanel = vgui.Create("DPanel", controls)
     leanRightPanel:Dock(TOP)
-    leanRightPanel:SetSize(0, EFGM.ScreenScale(50))
+    leanRightPanel:SetSize(0, EFGM.ScreenScale(55))
     function leanRightPanel:Paint(w, h)
 
         draw.SimpleTextOutlined("Lean Right keybind", "Purista18", w / 2, EFGM.ScreenScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -1177,8 +1213,9 @@ function Menu.OpenTab.Settings()
     end
 
     local leanRight = vgui.Create("DBinder", leanRightPanel)
-    leanRight:SetPos(EFGM.ScreenScale(110), EFGM.ScreenScale(30))
-    leanRight:SetSize(EFGM.ScreenScale(80), EFGM.ScreenScale(15))
+    leanRight:SetPos(EFGM.ScreenScale(100), EFGM.ScreenScale(30))
+    leanRight:SetSize(EFGM.ScreenScale(100), EFGM.ScreenScale(20))
+    leanRight:SetFont("PuristaBold18")
     leanRight:SetSelectedNumber(GetConVar("efgm_bind_leanright"):GetInt())
     function leanRight:OnChange(num)
 
@@ -1188,7 +1225,7 @@ function Menu.OpenTab.Settings()
 
     local freeLookPanel = vgui.Create("DPanel", controls)
     freeLookPanel:Dock(TOP)
-    freeLookPanel:SetSize(0, EFGM.ScreenScale(50))
+    freeLookPanel:SetSize(0, EFGM.ScreenScale(55))
     function freeLookPanel:Paint(w, h)
 
         draw.SimpleTextOutlined("Free Look keybind", "Purista18", w / 2, EFGM.ScreenScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -1196,8 +1233,9 @@ function Menu.OpenTab.Settings()
     end
 
     local freeLook = vgui.Create("DBinder", freeLookPanel)
-    freeLook:SetPos(EFGM.ScreenScale(110), EFGM.ScreenScale(30))
-    freeLook:SetSize(EFGM.ScreenScale(80), EFGM.ScreenScale(15))
+    freeLook:SetPos(EFGM.ScreenScale(100), EFGM.ScreenScale(30))
+    freeLook:SetSize(EFGM.ScreenScale(100), EFGM.ScreenScale(20))
+    freeLook:SetFont("PuristaBold18")
     freeLook:SetSelectedNumber(GetConVar("efgm_bind_freelook"):GetInt())
     function freeLook:OnChange(num)
 
@@ -1207,7 +1245,7 @@ function Menu.OpenTab.Settings()
 
     local changeSightPanel = vgui.Create("DPanel", controls)
     changeSightPanel:Dock(TOP)
-    changeSightPanel:SetSize(0, EFGM.ScreenScale(50))
+    changeSightPanel:SetSize(0, EFGM.ScreenScale(55))
     function changeSightPanel:Paint(w, h)
 
         draw.SimpleTextOutlined("Change Sight Zoom/Reticle keybind", "Purista18", w / 2, EFGM.ScreenScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -1215,8 +1253,9 @@ function Menu.OpenTab.Settings()
     end
 
     local changeSight = vgui.Create("DBinder", changeSightPanel)
-    changeSight:SetPos(EFGM.ScreenScale(110), EFGM.ScreenScale(30))
-    changeSight:SetSize(EFGM.ScreenScale(80), EFGM.ScreenScale(15))
+    changeSight:SetPos(EFGM.ScreenScale(100), EFGM.ScreenScale(30))
+    changeSight:SetSize(EFGM.ScreenScale(100), EFGM.ScreenScale(20))
+    changeSight:SetFont("PuristaBold18")
     changeSight:SetSelectedNumber(GetConVar("efgm_bind_changesight"):GetInt())
     function changeSight:OnChange(num)
 
@@ -1226,7 +1265,7 @@ function Menu.OpenTab.Settings()
 
     local inspectWeaponPanel = vgui.Create("DPanel", controls)
     inspectWeaponPanel:Dock(TOP)
-    inspectWeaponPanel:SetSize(0, EFGM.ScreenScale(50))
+    inspectWeaponPanel:SetSize(0, EFGM.ScreenScale(55))
     function inspectWeaponPanel:Paint(w, h)
 
         draw.SimpleTextOutlined("Inspect Weapon keybind", "Purista18", w / 2, EFGM.ScreenScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -1234,8 +1273,9 @@ function Menu.OpenTab.Settings()
     end
 
     local inspectWeapon = vgui.Create("DBinder", inspectWeaponPanel)
-    inspectWeapon:SetPos(EFGM.ScreenScale(110), EFGM.ScreenScale(30))
-    inspectWeapon:SetSize(EFGM.ScreenScale(80), EFGM.ScreenScale(15))
+    inspectWeapon:SetPos(EFGM.ScreenScale(100), EFGM.ScreenScale(30))
+    inspectWeapon:SetSize(EFGM.ScreenScale(100), EFGM.ScreenScale(20))
+    inspectWeapon:SetFont("PuristaBold18")
     inspectWeapon:SetSelectedNumber(GetConVar("efgm_bind_inspectweapon"):GetInt())
     function inspectWeapon:OnChange(num)
 
@@ -1245,7 +1285,7 @@ function Menu.OpenTab.Settings()
 
     local dropWeaponPanel = vgui.Create("DPanel", controls)
     dropWeaponPanel:Dock(TOP)
-    dropWeaponPanel:SetSize(0, EFGM.ScreenScale(50))
+    dropWeaponPanel:SetSize(0, EFGM.ScreenScale(55))
     function dropWeaponPanel:Paint(w, h)
 
         draw.SimpleTextOutlined("Drop Weapon keybind", "Purista18", w / 2, EFGM.ScreenScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -1253,8 +1293,9 @@ function Menu.OpenTab.Settings()
     end
 
     local dropWeapon = vgui.Create("DBinder", dropWeaponPanel)
-    dropWeapon:SetPos(EFGM.ScreenScale(110), EFGM.ScreenScale(30))
-    dropWeapon:SetSize(EFGM.ScreenScale(80), EFGM.ScreenScale(15))
+    dropWeapon:SetPos(EFGM.ScreenScale(100), EFGM.ScreenScale(30))
+    dropWeapon:SetSize(EFGM.ScreenScale(100), EFGM.ScreenScale(20))
+    dropWeapon:SetFont("PuristaBold18")
     dropWeapon:SetSelectedNumber(GetConVar("efgm_bind_dropweapon"):GetInt())
     function dropWeapon:OnChange(num)
 
@@ -1264,7 +1305,7 @@ function Menu.OpenTab.Settings()
 
     local teamInvitePanel = vgui.Create("DPanel", controls)
     teamInvitePanel:Dock(TOP)
-    teamInvitePanel:SetSize(0, EFGM.ScreenScale(50))
+    teamInvitePanel:SetSize(0, EFGM.ScreenScale(55))
     function teamInvitePanel:Paint(w, h)
 
         draw.SimpleTextOutlined("Invite Player To Team keybind", "Purista18", w / 2, EFGM.ScreenScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -1272,8 +1313,9 @@ function Menu.OpenTab.Settings()
     end
 
     local teamInvite = vgui.Create("DBinder", teamInvitePanel)
-    teamInvite:SetPos(EFGM.ScreenScale(110), EFGM.ScreenScale(30))
-    teamInvite:SetSize(EFGM.ScreenScale(80), EFGM.ScreenScale(15))
+    teamInvite:SetPos(EFGM.ScreenScale(100), EFGM.ScreenScale(30))
+    teamInvite:SetSize(EFGM.ScreenScale(100), EFGM.ScreenScale(20))
+    teamInvite:SetFont("PuristaBold18")
     teamInvite:SetSelectedNumber(GetConVar("efgm_bind_teaminvite"):GetInt())
     function teamInvite:OnChange(num)
 
@@ -1299,6 +1341,57 @@ function Menu.OpenTab.Settings()
     interfaceScale:SetMin(0.5)
     interfaceScale:SetMax(1.5)
     interfaceScale:SetDecimals(2)
+
+    -- visuals
+
+    local vmFOVPanel = vgui.Create("DPanel", visuals)
+    vmFOVPanel:Dock(TOP)
+    vmFOVPanel:SetSize(0, EFGM.ScreenScale(50))
+    function vmFOVPanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Viewmodel Scale", "Purista18", w / 2, EFGM.ScreenScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local vmFOV = vgui.Create("DNumSlider", vmFOVPanel)
+    vmFOV:SetPos(EFGM.ScreenScale(25), EFGM.ScreenScale(30))
+    vmFOV:SetSize(EFGM.ScreenScale(200), EFGM.ScreenScale(15))
+    vmFOV:SetConVar("arc9_fov")
+    vmFOV:SetMin(-40)
+    vmFOV:SetMax(40)
+    vmFOV:SetDecimals(0)
+
+    -- account
+
+    local invitePrivacyPanel = vgui.Create("DPanel", account)
+    invitePrivacyPanel:Dock(TOP)
+    invitePrivacyPanel:SetSize(0, EFGM.ScreenScale(55))
+    function invitePrivacyPanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Receive Invites From", "Purista18", w / 2, EFGM.ScreenScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local invitePrivacy = vgui.Create("DComboBox", invitePrivacyPanel)
+    invitePrivacy:SetPos(EFGM.ScreenScale(90), EFGM.ScreenScale(30))
+    invitePrivacy:SetSize(EFGM.ScreenScale(120), EFGM.ScreenScale(20))
+
+    if GetConVar("efgm_privacy_invites"):GetInt() == 0 then
+        invitePrivacy:SetValue("None")
+    elseif GetConVar("efgm_privacy_invites"):GetInt() == 1 then
+        invitePrivacy:SetValue("Steam Friends")
+    elseif GetConVar("efgm_privacy_invites"):GetInt() == 2  then
+        invitePrivacy:SetValue("Everyone")
+    end
+
+    invitePrivacy:AddChoice("None")
+    invitePrivacy:AddChoice("Steam Friends")
+    invitePrivacy:AddChoice("Everyone")
+    invitePrivacy:SetFont("PuristaBold18")
+    invitePrivacy:SetSortItems(false)
+    invitePrivacy.OnSelect = function(self, value)
+        RunConsoleCommand("efgm_privacy_invites", value - 1)
+    end
 
 end
 
