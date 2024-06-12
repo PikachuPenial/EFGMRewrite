@@ -2,7 +2,6 @@
 -- self explanitory (erm actually its explanatory 🤓) (fuck off porty)
 if CLIENT then
     CreateClientConVar("efgm_bind_menu", KEY_TAB, true, true, "Determines the keybind that will display the menu")
-    CreateClientConVar("efgm_bind_showcontrols", KEY_P, true, true, "Determines the keybind that will display helpful keybinds")
     CreateClientConVar("efgm_bind_showcompass", KEY_M, true, true, "Determines the keybind that shows the compass")
     CreateClientConVar("efgm_bind_raidinfo", KEY_O, true, true, "Determines the keybind that will display available extracts and time remaining in the raid")
     CreateClientConVar("efgm_bind_leanleft", KEY_Q, true, true, "Determines the keybind that will begin a left lean")
@@ -30,11 +29,6 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
         -- toggle menu
         if button == ply:GetInfoNum("efgm_bind_menu", KEY_TAB) then
             ply:ConCommand("efgm_gamemenu")
-        end
-
-        -- show controls
-        if button == ply:GetInfoNum("efgm_bind_showcontrols", KEY_P) then
-            ply:ConCommand("efgm_print_controls")
         end
 
         -- show compass
@@ -145,11 +139,6 @@ if game.SinglePlayer() then
             -- toggle menu
             if button == ply:GetInfoNum("efgm_bind_menu", KEY_TAB) then
                 ply:ConCommand("efgm_gamemenu")
-            end
-
-            -- show controls
-            if button == ply:GetInfoNum("efgm_bind_showcontrols", KEY_P) then
-                ply:ConCommand("efgm_print_controls")
             end
 
             -- show compass

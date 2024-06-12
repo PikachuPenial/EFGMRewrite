@@ -6,7 +6,7 @@ GM.Website = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 if CLIENT then
     CreateClientConVar("efgm_music", 1, true, true, "Enable/disable the music", 0, 1)
     CreateClientConVar("efgm_musicvolume", 1, true, true, "Increase or lower the volume of the music", 0, 2)
-    CreateClientConVar("efgm_hud_scale", 1, false, true, "Adjust the scale for all user interface items", 0.5, 5)
+    CreateClientConVar("efgm_hud_scale", 1, false, true, "Adjust the scale for all user interface items", 0.5, 1.5)
     CreateClientConVar("efgm_controls_togglelean", 1, true, true, "Adjust if player leans are hold or toggle", 0, 1)
 end
 
