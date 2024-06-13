@@ -12,7 +12,7 @@ ENT.LootTier = 0
 ENT.SpawnOnStart = false
 ENT.Crated = true
 
-ENT.StoredItem = nil -- will be generated when the server starts (provided i dont add loot respawning) so it only has to spawn it on crate break / loot spawn
+ENT.HasValidType = true
 
 function ENT:KeyValue(key, value)
 
@@ -32,28 +32,29 @@ end
 
 function ENT:Initialize()
 
+    if self.LootTier == 0 then self.LootTier = math.random(1, 3) end
+    if self.LootType != 1 and self.LootType != 3 and self.LootType != 5 then -- placeholder until loot tables for other types are complete and until there is a reason to have literally anything other than guns
+
+        self.HasValidType = false
+
+        return
+
+    end
+
 	local flags = tonumber( self:GetSpawnFlags() )
 
 	self.SpawnOnStart = bit.band(flags, 1) == 1
-
 	self.Crated = bit.band(flags, 2) == 2
 
-    local rand = math.random(0, 100)
-    if self.SpawnChance > rand then return end
-
-    if self.LootTier == 0 then self.LootTier = math.random(1, 3) end
-    if self.LootType != 1 and self.LootType != 3 and self.LootType != 5 then return end -- placeholder until loot tables for other types are complete and until there is a reason to have litearlly anything other than guns
-    -- if self.LootType == 0 then self.LootType = math.random(1, 5) end
-
-    self.StoredItem = self:SelectItem() -- sets self.StoredItem to the entity of the weapon / item stored
-
-    if self.SpawnOnStart then self:SpawnItem() end
+    if self.SpawnOnStart then self:SpawnItem( self:SelectItem() ) end
 
 end
 
 function ENT:SelectItem()
 
-    local lootTable = LOOT[self.LootType] -- LOOT[self.LootType] when i make this shit work
+    if self.SpawnChance > math.random(0, 100) then return nil end
+
+    local lootTable = LOOT[self.LootType]
 
     local tbl = {}
 
@@ -72,22 +73,27 @@ function ENT:SelectItem()
 
 end
 
-function ENT:SpawnItem()
+function ENT:SpawnItem( item )
 
-    if self.StoredItem == nil then print("Loot entity failed to spawn item!") return end
+    if item == nil then return end
 
-    self.StoredItem:SetPos(self:GetPos())
-    self.StoredItem:SetAngles(self:GetAngles())
+    item:SetPos( self:GetPos() )
+    item:SetAngles( self:GetAngles() )
 
-    self.StoredItem:Spawn()
-    self.StoredItem:PhysWake()
+    item:Spawn()
+    item:PhysWake()
 
 	self:TriggerOutput("OnSpawn", nil, nil)
 
 end
 
 function ENT:AcceptInput(name, activator, caller, data)
-	if name == "SpawnLoot" then
-		self:SpawnItem()
+
+	if name == "SpawnLoot" && self.HasValidType then
+
+        local item = self:SelectItem()
+		self:SpawnItem( item )
+
 	end
+
 end
