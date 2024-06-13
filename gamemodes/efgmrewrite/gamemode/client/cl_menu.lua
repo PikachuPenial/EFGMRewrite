@@ -1363,6 +1363,36 @@ function Menu.OpenTab.Settings()
 
     -- account
 
+    local factionPreferencePanel = vgui.Create("DPanel", account)
+    factionPreferencePanel:Dock(TOP)
+    factionPreferencePanel:SetSize(0, EFGM.ScreenScale(55))
+    function factionPreferencePanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Faction Preference", "Purista18", w / 2, EFGM.ScreenScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local factionPreference = vgui.Create("DComboBox", factionPreferencePanel)
+    factionPreference:SetPos(EFGM.ScreenScale(90), EFGM.ScreenScale(30))
+    factionPreference:SetSize(EFGM.ScreenScale(120), EFGM.ScreenScale(20))
+
+    if GetConVar("efgm_faction_preference"):GetInt() == 0 then
+        factionPreference:SetValue("None")
+    elseif GetConVar("efgm_faction_preference"):GetInt() == 1 then
+        factionPreference:SetValue("USEC")
+    elseif GetConVar("efgm_faction_preference"):GetInt() == 2  then
+        factionPreference:SetValue("BEAR")
+    end
+
+    factionPreference:AddChoice("None")
+    factionPreference:AddChoice("USEC")
+    factionPreference:AddChoice("BEAR")
+    factionPreference:SetFont("PuristaBold18")
+    factionPreference:SetSortItems(false)
+    factionPreference.OnSelect = function(self, value)
+        RunConsoleCommand("efgm_faction_preference", value - 1)
+    end
+
     local invitePrivacyPanel = vgui.Create("DPanel", account)
     invitePrivacyPanel:Dock(TOP)
     invitePrivacyPanel:SetSize(0, EFGM.ScreenScale(55))

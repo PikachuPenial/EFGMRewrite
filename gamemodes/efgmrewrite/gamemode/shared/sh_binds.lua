@@ -20,6 +20,7 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
         -- drop weapon
         if button == ply:GetInfoNum("efgm_bind_dropweapon", KEY_MINUS) then
             ply:DropWeapon(ply:GetActiveWeapon())
+            return
         end
 
     end
@@ -29,16 +30,19 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
         -- toggle menu
         if button == ply:GetInfoNum("efgm_bind_menu", KEY_TAB) then
             ply:ConCommand("efgm_gamemenu")
+            return
         end
 
         -- show compass
         if button == ply:GetInfoNum("efgm_bind_showcompass", KEY_M) then
             RenderCompass(ply)
+            return
         end
 
         -- show raid information
         if button == ply:GetInfoNum("efgm_bind_raidinfo", KEY_O) then
             ply:ConCommand("efgm_print_extracts")
+            return
         end
 
         -- lean left
@@ -71,16 +75,19 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
         -- free looking
         if button == ply:GetInfoNum("efgm_bind_freelook", MOUSE_MIDDLE) then
             ply:ConCommand("+freelook")
+            return
         end
 
         -- weapon inspecting
         if button == ply:GetInfoNum("efgm_bind_inspectweapon", KEY_I) then
             ply:ConCommand("+arc9_inspect")
+            return
         end
 
         -- team inviting / accepting
         if button == ply:GetInfoNum("efgm_bind_teaminvite", KEY_PERIOD) then
             -- todo
+            return
         end
 
     end
@@ -99,23 +106,27 @@ hook.Add("PlayerButtonUp", "EFGMBindsUp", function(ply, button)
         -- free looking
         if button == ply:GetInfoNum("efgm_bind_freelook", MOUSE_MIDDLE) then
             ply:ConCommand("-freelook")
+            return
         end
 
         -- unlean left
         if button == ply:GetInfoNum("efgm_bind_leanleft", KEY_Q) then
             if ply:GetInfoNum("efgm_controls_togglelean", 1) == 1 then return end
             ply:SetNW2Var("leaning_left", false)
+            return
         end
 
         -- unlean right
         if button == ply:GetInfoNum("efgm_bind_leanright", KEY_E) then
             if ply:GetInfoNum("efgm_controls_togglelean", 1) == 1 then return end
             ply:SetNW2Var("leaning_right", false)
+            return
         end
 
         -- weapon inspecting
         if button == ply:GetInfoNum("efgm_bind_inspectweapon", KEY_I) then
             ply:ConCommand("-arc9_inspect")
+            return
         end
 
     end
@@ -134,21 +145,25 @@ if game.SinglePlayer() then
             -- drop weapon
             if button == ply:GetInfoNum("efgm_bind_dropweapon", KEY_MINUS) then
                 ply:DropWeapon(ply:GetActiveWeapon())
+                return
             end
 
             -- toggle menu
             if button == ply:GetInfoNum("efgm_bind_menu", KEY_TAB) then
                 ply:ConCommand("efgm_gamemenu")
+                return
             end
 
             -- show compass
             if button == ply:GetInfoNum("efgm_bind_showcompass", KEY_M) then
                 ply:SendLua("RenderCompass(ply)")
+                return
             end
 
             -- show raid information
             if button == ply:GetInfoNum("efgm_bind_raidinfo", KEY_O) then
                 ply:ConCommand("efgm_print_extracts")
+                return
             end
 
             -- lean left
@@ -160,6 +175,7 @@ if game.SinglePlayer() then
                     ply:SetNW2Var("leaning_left", state)
                     ply:SetNW2Var("leaning_right", false)
                 end
+                return
             end
 
             -- lean right
@@ -171,6 +187,7 @@ if game.SinglePlayer() then
                     ply:SetNW2Var("leaning_right", state)
                     ply:SetNW2Var("leaning_left", false)
                 end
+                return
             end
 
             -- switching sights
@@ -181,11 +198,13 @@ if game.SinglePlayer() then
             -- free looking
             if button == ply:GetInfoNum("efgm_bind_freelook", MOUSE_MIDDLE) then
                 ply:ConCommand("+freelook")
+                return
             end
 
             -- weapon inspecting
             if button == ply:GetInfoNum("efgm_bind_inspectweapon", KEY_I) then
                 ply:ConCommand("+arc9_inspect")
+                return
             end
 
         end
@@ -202,23 +221,27 @@ if game.SinglePlayer() then
         -- free looking
         if button == ply:GetInfoNum("efgm_bind_freelook", MOUSE_MIDDLE) then
             ply:ConCommand("-freelook")
+            return
         end
 
         -- unlean left
         if button == ply:GetInfoNum("efgm_bind_leanleft", KEY_Q) then
             if ply:GetInfoNum("efgm_controls_togglelean", 1) == 1 then return end
             ply:SetNW2Var("leaning_left", false)
+            return
         end
 
         -- unlean right
         if button == ply:GetInfoNum("efgm_bind_leanright", KEY_E) then
             if ply:GetInfoNum("efgm_controls_togglelean", 1) == 1 then return end
             ply:SetNW2Var("leaning_right", false)
+            return
         end
 
         -- weapon inspecting
         if button == ply:GetInfoNum("efgm_bind_inspectweapon", KEY_I) then
             ply:ConCommand("-arc9_inspect")
+            return
         end
 
     end)

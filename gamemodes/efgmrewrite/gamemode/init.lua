@@ -41,7 +41,10 @@ function GM:Initialize()
 
 end
 
-local playerModels = {"models/eft/pmcs/usec_extended_pm.mdl", "models/eft/pmcs/bear_extended_pm.mdl"}
+-- player models
+local usecPMs = {"models/eft/pmcs/usec_extended_pm.mdl"}
+local bearPMs = {"models/eft/pmcs/bear_extended_pm.mdl"}
+local allPMs = {"models/eft/pmcs/usec_extended_pm.mdl", "models/eft/pmcs/bear_extended_pm.mdl"}
 
 function GM:PlayerSpawn(ply)
 
@@ -60,7 +63,16 @@ function GM:PlayerSpawn(ply)
 	ply:SetDuckSpeed(0.43)
 	ply:SetUnDuckSpeed(0.43)
 
-	ply:SetModel(playerModels[math.random(#playerModels)])
+	if ply:GetInfoNum("efgm_faction_preference", 0) == 1 then
+		-- USEC prefered
+		ply:SetModel(usecPMs[math.random(#usecPMs)])
+	elseif ply:GetInfoNum("efgm_faction_preference", 0) == 2 then
+		-- BEAR prefered
+		ply:SetModel(bearPMs[math.random(#bearPMs)])
+	else
+		-- no preference
+		ply:SetModel(allPMs[math.random(#allPMs)])
+	end
 
 	ply:SetBodygroup(0, math.random(0, 4)) -- head
 	ply:SetBodygroup(1, math.random(0, 18)) -- body
