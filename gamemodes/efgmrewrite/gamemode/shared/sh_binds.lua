@@ -45,28 +45,6 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
             return
         end
 
-        -- lean left
-        if button == ply:GetInfoNum("efgm_bind_leanleft", KEY_Q) then
-            if ply:GetInfoNum("efgm_controls_togglelean", 1) == 0 then
-                ply:SetNW2Var("leaning_left", true)
-            else
-                local state = not ply:GetNW2Var("leaning_left", false)
-                ply:SetNW2Var("leaning_left", state)
-                ply:SetNW2Var("leaning_right", false)
-            end
-        end
-
-        -- lean right
-        if button == ply:GetInfoNum("efgm_bind_leanright", KEY_E) then
-            if ply:GetInfoNum("efgm_controls_togglelean", 1) == 0 then
-                ply:SetNW2Var("leaning_right", true)
-            else
-                local state = not ply:GetNW2Var("leaning_right", false)
-                ply:SetNW2Var("leaning_right", state)
-                ply:SetNW2Var("leaning_left", false)
-            end
-        end
-
         -- switching sights
         if button == ply:GetInfoNum("efgm_bind_changesight", MOUSE_MIDDLE) then
             ply:ConCommand("+arc9_switchsights")
@@ -86,10 +64,36 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
 
         -- team inviting / accepting
         if button == ply:GetInfoNum("efgm_bind_teaminvite", KEY_PERIOD) then
-            -- todo
+            -- todo (CHOP CHOP @portanator)
             return
         end
 
+    end
+
+    -- SHARED (for networking/prediction)
+
+    -- lean left
+    if button == ply:GetInfoNum("efgm_bind_leanleft", KEY_Q) then
+        if ply:GetInfoNum("efgm_controls_togglelean", 1) == 0 then
+            ply:SetNW2Var("leaning_left", true)
+        else
+            local state = not ply:GetNW2Var("leaning_left", false)
+            ply:SetNW2Var("leaning_left", state)
+            ply:SetNW2Var("leaning_right", false)
+        end
+        return
+    end
+
+    -- lean right
+    if button == ply:GetInfoNum("efgm_bind_leanright", KEY_E) then
+        if ply:GetInfoNum("efgm_controls_togglelean", 1) == 0 then
+            ply:SetNW2Var("leaning_right", true)
+        else
+            local state = not ply:GetNW2Var("leaning_right", false)
+            ply:SetNW2Var("leaning_right", state)
+            ply:SetNW2Var("leaning_left", false)
+        end
+        return
     end
 
 end)
@@ -109,26 +113,28 @@ hook.Add("PlayerButtonUp", "EFGMBindsUp", function(ply, button)
             return
         end
 
-        -- unlean left
-        if button == ply:GetInfoNum("efgm_bind_leanleft", KEY_Q) then
-            if ply:GetInfoNum("efgm_controls_togglelean", 1) == 1 then return end
-            ply:SetNW2Var("leaning_left", false)
-            return
-        end
-
-        -- unlean right
-        if button == ply:GetInfoNum("efgm_bind_leanright", KEY_E) then
-            if ply:GetInfoNum("efgm_controls_togglelean", 1) == 1 then return end
-            ply:SetNW2Var("leaning_right", false)
-            return
-        end
-
         -- weapon inspecting
         if button == ply:GetInfoNum("efgm_bind_inspectweapon", KEY_I) then
             ply:ConCommand("-arc9_inspect")
             return
         end
 
+    end
+
+    -- SHARED (for networking/prediction)
+
+    -- unlean left
+    if button == ply:GetInfoNum("efgm_bind_leanleft", KEY_Q) then
+        if ply:GetInfoNum("efgm_controls_togglelean", 1) == 1 then return end
+        ply:SetNW2Var("leaning_left", false)
+        return
+    end
+
+    -- unlean right
+    if button == ply:GetInfoNum("efgm_bind_leanright", KEY_E) then
+        if ply:GetInfoNum("efgm_controls_togglelean", 1) == 1 then return end
+        ply:SetNW2Var("leaning_right", false)
+        return
     end
 
 end)
@@ -166,30 +172,6 @@ if game.SinglePlayer() then
                 return
             end
 
-            -- lean left
-            if button == ply:GetInfoNum("efgm_bind_leanleft", KEY_Q) then
-                if ply:GetInfoNum("efgm_controls_togglelean", 1) == 0 then
-                    ply:SetNW2Var("leaning_left", true)
-                else
-                    local state = not ply:GetNW2Var("leaning_left", false)
-                    ply:SetNW2Var("leaning_left", state)
-                    ply:SetNW2Var("leaning_right", false)
-                end
-                return
-            end
-
-            -- lean right
-            if button == ply:GetInfoNum("efgm_bind_leanright", KEY_E) then
-                if ply:GetInfoNum("efgm_controls_togglelean", 1) == 0 then
-                    ply:SetNW2Var("leaning_right", true)
-                else
-                    local state = not ply:GetNW2Var("leaning_right", false)
-                    ply:SetNW2Var("leaning_right", state)
-                    ply:SetNW2Var("leaning_left", false)
-                end
-                return
-            end
-
             -- switching sights
             if button == ply:GetInfoNum("efgm_bind_changesight", MOUSE_MIDDLE) then
                 ply:ConCommand("+arc9_switchsights")
@@ -209,20 +191,58 @@ if game.SinglePlayer() then
 
         end
 
+        -- SHARED (for networking/prediction)
+
+        -- lean left
+        if button == ply:GetInfoNum("efgm_bind_leanleft", KEY_Q) then
+            if ply:GetInfoNum("efgm_controls_togglelean", 1) == 0 then
+                ply:SetNW2Var("leaning_left", true)
+            else
+                local state = not ply:GetNW2Var("leaning_left", false)
+                ply:SetNW2Var("leaning_left", state)
+                ply:SetNW2Var("leaning_right", false)
+            end
+            return
+        end
+
+        -- lean right
+        if button == ply:GetInfoNum("efgm_bind_leanright", KEY_E) then
+            if ply:GetInfoNum("efgm_controls_togglelean", 1) == 0 then
+                ply:SetNW2Var("leaning_right", true)
+            else
+                local state = not ply:GetNW2Var("leaning_right", false)
+                ply:SetNW2Var("leaning_right", state)
+                ply:SetNW2Var("leaning_left", false)
+            end
+            return
+        end
+
     end)
 
     hook.Add("PlayerButtonUp", "EFGMBindsUp", function(ply, button)
 
-        -- switching sights
-        if button == ply:GetInfoNum("efgm_bind_changesight", MOUSE_MIDDLE) then
-            ply:ConCommand("-arc9_switchsights")
+        if SERVER then
+
+            -- switching sights
+            if button == ply:GetInfoNum("efgm_bind_changesight", MOUSE_MIDDLE) then
+                ply:ConCommand("-arc9_switchsights")
+            end
+
+            -- free looking
+            if button == ply:GetInfoNum("efgm_bind_freelook", MOUSE_MIDDLE) then
+                ply:ConCommand("-freelook")
+                return
+            end
+
+            -- weapon inspecting
+            if button == ply:GetInfoNum("efgm_bind_inspectweapon", KEY_I) then
+                ply:ConCommand("-arc9_inspect")
+                return
+            end
+
         end
 
-        -- free looking
-        if button == ply:GetInfoNum("efgm_bind_freelook", MOUSE_MIDDLE) then
-            ply:ConCommand("-freelook")
-            return
-        end
+        -- SHARED (for networking/prediction)
 
         -- unlean left
         if button == ply:GetInfoNum("efgm_bind_leanleft", KEY_Q) then
@@ -235,12 +255,6 @@ if game.SinglePlayer() then
         if button == ply:GetInfoNum("efgm_bind_leanright", KEY_E) then
             if ply:GetInfoNum("efgm_controls_togglelean", 1) == 1 then return end
             ply:SetNW2Var("leaning_right", false)
-            return
-        end
-
-        -- weapon inspecting
-        if button == ply:GetInfoNum("efgm_bind_inspectweapon", KEY_I) then
-            ply:ConCommand("-arc9_inspect")
             return
         end
 
