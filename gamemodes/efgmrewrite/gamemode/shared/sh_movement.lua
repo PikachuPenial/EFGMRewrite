@@ -45,7 +45,7 @@ hook.Add("OnPlayerHitGround", "VelocityLimiter", function(ply)
 
 	local vel = ply:GetVelocity()
 	ply:SetVelocity(Vector(-vel.x / 2, -vel.y / 2, 0))
-	timer.Create(ply:SteamID64() .. "jumpCD", 0.75, 1, function() end)
+	timer.Create(ply:SteamID64() .. "jumpCD", 0.5, 1, function() end)
 
 end )
 
