@@ -12,6 +12,11 @@ EFGM.ScreenScale = function(size)
     return size / 3 * (ScrW() / 640) * efgm_hud_scale:GetFloat()
 end
 
+-- i can't be asked to support player controlled menu scaling, way too problematic, so we will seperate the HUDs scale and the menus scale
+EFGM.MenuScale = function(size)
+    return size / 3 * (ScrW() / 640)
+end
+
 for _, v in ipairs(file.Find("gamemodes/efgmrewrite/gamemode/shared/*.lua", "GAME", "nameasc")) do
 	include("shared/" .. v)
 end
