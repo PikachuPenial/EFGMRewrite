@@ -2,23 +2,6 @@
 -- disable crouch jumping because of animation abuse + dynamic crouch toggling
 hook.Add("StartCommand", "AdjustPlayerMovement", function(ply, cmd)
 
-    -- only run if player is moving
-    if (cmd:KeyDown(IN_FORWARD) or cmd:KeyDown(IN_BACK) or cmd:KeyDown(IN_MOVELEFT) or cmd:KeyDown(IN_MOVERIGHT)) then
-        local runSpeed
-        -- gradual sprint speed buildup
-        if cmd:KeyDown(IN_SPEED) then
-            if startTime == nil then startTime = CurTime() end
-            runSpeed = (Lerp((CurTime() - startTime) / 1, math.Round(ply:GetVelocity():Length()), 215 * ply:GetActiveWeapon():GetProcessedValue("Speed", nil, 1)))
-            ply:SetRunSpeed(math.max(runSpeed, ply:GetWalkSpeed()) or 215 * ply:GetActiveWeapon():GetProcessedValue("Speed", nil, 1))
-        else
-            startTime = nil
-            ply:SetRunSpeed(1) -- setting this to 0 causes rubberbanding anytime someone sprints lmao
-        end
-    else
-        startTime = nil
-        ply:SetRunSpeed(1) -- yeah it still causes rubberbanding
-    end
-
     if cmd:KeyDown(IN_BACK) or (cmd:KeyDown(IN_MOVELEFT) or cmd:KeyDown(IN_MOVERIGHT)) and !cmd:KeyDown(IN_FORWARD) or cmd:KeyDown(IN_ATTACK2) then
         cmd:RemoveKey(IN_SPEED)
     end

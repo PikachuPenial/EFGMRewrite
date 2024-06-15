@@ -94,10 +94,11 @@ function Menu:Initialize(openTab)
 
     local lowerPanel = vgui.Create("DPanel", self.MenuFrame)
     lowerPanel:SetSize(EFGM.MenuScale(1880), EFGM.MenuScale(980))
+    lowerPanel:NoClipping(true)
 
     function lowerPanel:Paint(w, h)
 
-        surface.SetDrawColor(0, 0, 0, 0)
+        surface.SetDrawColor(0, 0, 0, 255)
         surface.DrawRect(0, 0, w, h)
 
         if GetConVar("efgm_menu_parallax"):GetInt() == 1 then
@@ -110,7 +111,7 @@ function Menu:Initialize(openTab)
 
         else
 
-            lowerPanel:SetPos(ScrW() / 2 - (EFGM.MenuScale(1880) / 2), 1060 / 2 - (920 / 2))
+            lowerPanel:SetPos(ScrW() / 2 - (EFGM.MenuScale(1900) / 2), 1060 / 2 - (920 / 2))
 
         end
 
