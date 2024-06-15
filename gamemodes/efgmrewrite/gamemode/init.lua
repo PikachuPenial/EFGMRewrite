@@ -191,3 +191,28 @@ hook.Add( "PlayerCanHearPlayersVoice", "ProxVOIP", function(listener,talker)
 	end
 
 end )
+
+-- light on bullet impact
+hook.Add("EntityFireBullets", "BulletLight", function(Entity, Other)
+
+	if IsValid(Entity) then
+		local Trace = {}
+		Trace.start = Other.Src
+		Trace.endpos = Other.Src + (Other.Dir * 2147483647)
+		Trace.filter = Entity
+		local Result = util.TraceLine(Trace)
+
+		if Result.Hit then
+
+			local FireLight = ents.Create("light_dynamic")
+			FireLight:SetKeyValue("distance", 75)
+			FireLight:SetKeyValue("_light", 255 .. " " .. 200 .. " " .. 150)
+			FireLight:SetPos(Result.HitPos)
+			FireLight:Spawn()
+			FireLight:Fire("Kill", "", 0.1)
+
+		end
+
+	end
+
+end)
