@@ -1,5 +1,6 @@
 
 isArena = (GetConVar("efgm_arenamode"):GetInt() == 1) or false -- fixed it :D
+isInventoryTesting = (GetConVar("efgm_invtesting"):GetInt() == 1) or false
 
 AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")

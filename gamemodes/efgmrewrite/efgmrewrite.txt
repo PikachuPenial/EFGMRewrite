@@ -26,7 +26,17 @@
 			"help"		"Enables features such as infinite ammo, spawning with loadouts, etc. Keep disabled for the classic EFGM experience."
 			"type"		"CheckBox"
 			"default"	"0"
-			"singleplayer"	"true
+			"singleplayer"	"true"
+		}
+
+        3
+		{
+			"name"		"efgm_invtesting"
+			"text"		"Enable Inventory Testing"
+			"help"		"Enables features active slots and the inventory. For testing rn, this option will be removed eventually!"
+			"type"		"CheckBox"
+			"default"	"0"
+			"singleplayer"	"true"
 		}
 
 	}

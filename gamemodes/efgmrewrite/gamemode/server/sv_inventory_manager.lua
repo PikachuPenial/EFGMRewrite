@@ -1,27 +1,31 @@
 
 -- manages the players' inventories, ensures "Enjoy no weapons n____r :D" bullshit doesnt happen again
-util.AddNetworkString( "UpdatePlayerInventory" )
-util.AddNetworkString( "RequestPlayerInventory" )
 
-util.AddNetworkString( "MovePlayerInventory" )
-util.AddNetworkString( "DropPlayerInventory" )
+util.AddNetworkString( "UpdateBackpack" )
+util.AddNetworkString( "RequestBackpack" )
+
+util.AddNetworkString( "MoveBackpackItem" )
+util.AddNetworkString( "DropBackpackItem" )
 
 local backpacks = {}
+
+local activeSlots = {}
 
 local function SendPlayerInventory(ply, steamID)
 
     steamID = steamID or ply:SteamID64()
 
-    net.Start( "UpdatePlayerInventory" )
+    net.Start( "UpdateBackpack" )
         net.WriteTable( inventoryTable[ steamID ].contents )
     net.Send(ply)
 
 end
 
-hook.Add("PlayerSpawn", "GiveInventory", function(ply)
+hook.Add("PlayerSpawn", "GiveBackpack", function(ply)
 
     local steamID =  ply:SteamID64()
     backpacks[ steamID ] = backpacks[ steamID ] or {}
+    activeSlots[ steamID ] = activeSlots[ steamID ] or {}
 
     if !isArena then return end
 
@@ -35,19 +39,35 @@ hook.Add("PlayerSpawn", "GiveInventory", function(ply)
 
 end)
 
+hook.Add("PlayerDeath", "RevokeShitOnDeath", function(ply)
+
+    local steamID =  ply:SteamID64()
+    backpacks[ steamID ] = {}
+    activeSlots[ steamID ] = {}
+
+end)
+
+hook.Add("PlayerDisconnected", "RevokeShitOnDisconnect", function(ply)
+
+    local steamID =  ply:SteamID64()
+    backpacks[ steamID ] = {}
+    activeSlots[ steamID ] = {}
+
+end)
+
 hook.Add( "AllowPlayerPickup", "AllowWeaponPickup", function( ply, ent )
 
     -- todo: support ammo and attatchments(?)
 
 end )
 
-net.Receive("RequestPlayerInventory", function(len, ply)
+net.Receive("RequestBackpack", function(len, ply)
 
     SendPlayerInventory(ply, ply:SteamID64())
 
 end)
 
-net.Receive("MovePlayerInventory", function(len, ply)
+net.Receive("MoveBackpackItem", function(len, ply)
 
     local oldPos = net.ReadString()
     local newPos = net.ReadString()
@@ -71,7 +91,7 @@ net.Receive("MovePlayerInventory", function(len, ply)
 
 end)
 
-net.Receive("DropPlayerInventory", function(len, ply)
+net.Receive("DropBackpackItem", function(len, ply)
 
     local pos = net.ReadString()
     local count = net.ReadUInt(32)
@@ -88,5 +108,74 @@ net.Receive("DropPlayerInventory", function(len, ply)
     -- drop logic eventually
 
     print( "Dropped item successfully" )
+
+end)
+
+hook.Add("PlayerCanPickupWeapon", "WeaponPickup", function(ply, weapon)
+
+    if !isInventoryTesting then return true end
+
+    local name = weapon:GetClass()
+    local steamID = ply:SteamID64()
+
+    -- assign active slots if possible (also I forgot how half of this shit works)
+    -- *should* return true if the weapon can be assigned to a slot, and false if the slot is filled
+    -- also which primary slot it goes to server-side is arbitrary, it only matters for binds client-side
+
+    if flippedDebugPrimWep[name] != nil then
+
+        if activeSlots[steamID][KEY_1] == nil then activeSlots[steamID][KEY_1] = name ply:PrintMessage(HUD_PRINTTALK, "Picked up "..name.."!") return true
+        elseif activeSlots[steamID][KEY_2] == nil then activeSlots[steamID][KEY_2] = name ply:PrintMessage(HUD_PRINTTALK, "Picked up "..name.."!") return true
+        else return false end
+
+    end
+
+    if flippedDebugSecWep[name] != nil then
+
+        if activeSlots[steamID][KEY_3] == nil then activeSlots[steamID][KEY_3] = name ply:PrintMessage(HUD_PRINTTALK, "Picked up "..name.."!") return true
+        else return false end
+
+    end
+
+    if flippedDebugNadeWep[name] != nil then
+
+        if activeSlots[steamID][KEY_G] == nil then activeSlots[steamID][KEY_G] = name ply:PrintMessage(HUD_PRINTTALK, "Picked up "..name.."!") return true
+        else return false end
+
+    end
+
+    if flippedDebugMeleeWep[name] != nil then
+
+        if activeSlots[steamID][KEY_V] == nil then activeSlots[steamID][KEY_V] = name ply:PrintMessage(HUD_PRINTTALK, "Picked up "..name.."!") return true
+        else return false end
+
+    end
+
+    return false
+
+end)
+
+hook.Add("PlayerDroppedWeapon", "WeaponDrop", function(ply, weapon)
+
+    if !isInventoryTesting then return end
+
+    local name = weapon:GetClass()
+    local steamID = ply:SteamID64()
+
+    if activeSlots[steamID][KEY_1] == name then activeSlots[steamID][KEY_1] = nil ply:PrintMessage(HUD_PRINTTALK, "Dropped "..name.."!") return end
+    if activeSlots[steamID][KEY_2] == name then activeSlots[steamID][KEY_2] = nil ply:PrintMessage(HUD_PRINTTALK, "Dropped "..name.."!") return end
+    if activeSlots[steamID][KEY_3] == name then activeSlots[steamID][KEY_3] = nil ply:PrintMessage(HUD_PRINTTALK, "Dropped "..name.."!") return end
+    if activeSlots[steamID][KEY_G] == name then activeSlots[steamID][KEY_G] = nil ply:PrintMessage(HUD_PRINTTALK, "Dropped "..name.."!") return end
+    if activeSlots[steamID][KEY_V] == name then activeSlots[steamID][KEY_V] = nil ply:PrintMessage(HUD_PRINTTALK, "Dropped "..name.."!") return end
+
+end)
+
+-- will do later for ammos and such perhaps
+hook.Add("PlayerCanPickupItem", "ItemPickupTest", function(ply, item)
+
+    -- local steamID = ply:SteamID64()
+    -- activeSlots[steamID] = activeSlots[steamID] or {}
+
+    return true
 
 end)
