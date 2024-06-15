@@ -98,7 +98,7 @@ function Menu:Initialize(openTab)
 
     function lowerPanel:Paint(w, h)
 
-        surface.SetDrawColor(0, 0, 0, 255)
+        surface.SetDrawColor(0, 0, 0, 0)
         surface.DrawRect(0, 0, w, h)
 
         if GetConVar("efgm_menu_parallax"):GetInt() == 1 then

@@ -1,38 +1,118 @@
---Removing unneccessary hooks for optimization purposes.
-hook.Add("Initialize", "Optimization", function()
-    hook.Remove("PlayerTick", "TickWidgets")
-    if SERVER and timer.Exists("CheckHookTimes") then timer.Remove("CheckHookTimes") end
-    if CLIENT then
-        hook.Remove("RenderScreenspaceEffects", "RenderColorModify")
-        hook.Remove("RenderScreenspaceEffects", "RenderBloom")
-        hook.Remove("RenderScreenspaceEffects", "RenderToyTown")
-        hook.Remove("RenderScreenspaceEffects", "RenderTexturize")
-        hook.Remove("RenderScreenspaceEffects", "RenderSunbeams")
-        hook.Remove("RenderScreenspaceEffects", "RenderSobel")
-        hook.Remove("RenderScreenspaceEffects", "RenderSharpen")
-        hook.Remove("RenderScreenspaceEffects", "RenderMaterialOverlay")
-        hook.Remove("RenderScreenspaceEffects", "RenderMotionBlur")
-        hook.Remove("RenderScene", "RenderStereoscopy")
-        hook.Remove("RenderScene", "RenderSuperDoF")
-        hook.Remove("GUIMousePressed", "SuperDOFMouseDown")
-        hook.Remove("GUIMouseReleased", "SuperDOFMouseUp")
-        hook.Remove("PreventScreenClicks", "SuperDOFPreventClicks")
-        hook.Remove("PostRender", "RenderFrameBlend")
-        hook.Remove("PreRender", "PreRenderFrameBlend")
-        hook.Remove("Think", "DOFThink")
-        hook.Remove("RenderScreenspaceEffects", "RenderBokeh")
-        hook.Remove("NeedsDepthPass", "NeedsDepthPass_Bokeh")
-        hook.Remove("PostDrawEffects", "RenderWidgets")
-        hook.Remove("PostDrawEffects", "RenderHalos")
-    end
+-- removing unneccessary server hook
+if SERVER then
+
+	hook.Add("Initialize", "SVHookRemoval", function()
+
+		if timer.Exists("CheckHookTimes") then timer.Remove("CheckHookTimes") end
+
+	end)
+
+end
+
+if CLIENT then
+
+	-- removing unneccessary client hooks
+	hook.Add("InitPostEntity", "CLHookRemoval", function()
+		hook.Remove("RenderScreenspaceEffects", "RenderColorModify")
+		hook.Remove("RenderScreenspaceEffects", "RenderBloom")
+		hook.Remove("RenderScreenspaceEffects", "RenderToyTown")
+		hook.Remove("RenderScreenspaceEffects", "RenderTexturize")
+		hook.Remove("RenderScreenspaceEffects", "RenderSunbeams")
+		hook.Remove("RenderScreenspaceEffects", "RenderSobel")
+		hook.Remove("RenderScreenspaceEffects", "RenderSharpen")
+		hook.Remove("RenderScreenspaceEffects", "RenderMaterialOverlay")
+		hook.Remove("RenderScreenspaceEffects", "RenderMotionBlur")
+		hook.Remove("RenderScene", "RenderStereoscopy")
+		hook.Remove("RenderScene", "RenderSuperDoF")
+		hook.Remove("GUIMousePressed", "SuperDOFMouseDown")
+		hook.Remove("GUIMouseReleased", "SuperDOFMouseUp")
+		hook.Remove("PreventScreenClicks", "SuperDOFPreventClicks")
+		hook.Remove("PostRender", "RenderFrameBlend")
+		hook.Remove("PreRender", "PreRenderFrameBlend")
+		hook.Remove("Think", "DOFThink")
+		hook.Remove("RenderScreenspaceEffects", "RenderBokeh")
+		hook.Remove("NeedsDepthPass", "NeedsDepthPass_Bokeh")
+		hook.Remove("PostDrawEffects", "RenderWidgets")
+		hook.Remove("PostDrawEffects", "RenderHalos")
+	end)
+
+	-- remove widget code every tick
+	local function CLTickRemoval(ent)
+
+		if ent:IsWidget() then
+
+			hook.Add("PlayerTick", "TickWidgets", function(pl, mv)
+
+				widgets.PlayerTick(pl, mv)
+
+			end)
+
+			hook.Remove("OnEntityCreated", "WidgetCreated")
+
+		end
+
+	end
+	hook.Add("OnEntityCreated", "WidgetCreated", CLTickRemoval)
+
+end
+
+-- force multicore for clients
+hook.Add("InitPostEntity", "CLMulticore", function()
+
+	timer.Simple(3, function() -- just in case
+
+		RunConsoleCommand("gmod_mcore_test", "1")
+		RunConsoleCommand("mat_queue_mode", "-1")
+		RunConsoleCommand("cl_threaded_bone_setup", "1")
+		RunConsoleCommand("cl_threaded_client_leaf_system", "1")
+		RunConsoleCommand("r_threaded_client_shadow_manager", "1")
+		RunConsoleCommand("r_threaded_particles", "1")
+		RunConsoleCommand("r_threaded_renderables", "1")
+		RunConsoleCommand("r_queued_ropes", "1")
+		RunConsoleCommand("studio_queue_mode", "1")
+
+	end)
+
 end)
 
---Automatic garbage collection
---hook.Add("Think", "ManualGC", function()
-	--collectgarbage("step", 192)
---end)
+-- map optimization
+hook.Add("InitPostEntityMap", "MapOptimization", function()
+	local shadowexists = 0
 
---Optimized surface and draw functions.
+	for _, ent in pairs(ents.FindByClass("shadow_control")) do
+		ent:SetKeyValue("disableallshadows", 1)
+		shadowexists = 1
+	end
+
+	if shadowexists == 0 then
+		local ent = ents.Create("shadow_control")
+		if ent:IsValid() then
+			ent:SetKeyValue("disableallshadows", 1)
+			shadowexists = 1
+		end
+	end
+
+	for _, ent in pairs(ents.FindByClass("func_precipitation")) do
+		ent:Remove()
+	end
+
+	for _, ent in pairs(ents.FindByClass("func_smokevolume")) do
+		ent:Remove()
+	end
+end)
+
+-- prevent model related crashes
+hook.Add("PlayerInitialSpawn", "CLPreventCrash", function(ply)
+	ply:SendLua("RunConsoleCommand('r_drawmodeldecals', 0)")
+	ply:SendLua("RunConsoleCommand('r_maxmodeldecal', 50)")
+end)
+
+-- automatic garbage collection
+-- hook.Add("Think", "ManualGC", function()
+	-- collectgarbage("step", 192)
+-- end)
+
+-- optimized surface and draw functions
 if SERVER or SurfaceRewrite then return end
 SurfaceRewrite = true
 

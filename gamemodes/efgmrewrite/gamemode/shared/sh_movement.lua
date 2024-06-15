@@ -6,15 +6,15 @@ hook.Add("StartCommand", "AdjustPlayerMovement", function(ply, cmd)
         cmd:RemoveKey(IN_SPEED)
     end
 
-	if timer.Exists(ply:SteamID64() .. "jumpCD") then
-		cmd:RemoveKey(IN_JUMP)
-	end
+    if timer.Exists(ply:SteamID64() .. "jumpCD") then
+        cmd:RemoveKey(IN_JUMP)
+    end
 
-	if !ply:OnGround() then
-		cmd:RemoveKey(IN_ATTACK2)
+    if !ply:OnGround() then
+        cmd:RemoveKey(IN_ATTACK2)
         ply:SetNW2Var("leaning_left", false)
         ply:SetNW2Var("leaning_right", false)
-	end
+    end
 
     if cmd:KeyDown(IN_SPEED) then
         ply:SetNW2Var("leaning_left", false)
@@ -26,9 +26,9 @@ end)
 -- reduce velocity upon landing to prevent bunny hopping
 hook.Add("OnPlayerHitGround", "VelocityLimiter", function(ply) 
 
-	local vel = ply:GetVelocity()
-	ply:SetVelocity(Vector(-vel.x / 2, -vel.y / 2, 0))
-	timer.Create(ply:SteamID64() .. "jumpCD", 0.5, 1, function() end)
+    local vel = ply:GetVelocity()
+    ply:SetVelocity(Vector(-vel.x / 2, -vel.y / 2, 0))
+    timer.Create(ply:SteamID64() .. "jumpCD", 0.5, 1, function() end)
 
 end )
 

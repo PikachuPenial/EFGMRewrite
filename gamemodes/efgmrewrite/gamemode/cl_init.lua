@@ -122,6 +122,6 @@ hook.Add("StartCommand", "AltlookBlockShoot", function(ply, cmd)
     if !ply:IsPlayer() or !ply:Alive() then return end
     if !blockshoot then return end
 
-    if not holdingbind(ply) or isinsights(ply) or ply:ShouldDrawLocalPlayer() then return end
+    if !holdingbind(ply) or isinsights(ply) or ply:ShouldDrawLocalPlayer() then return end
     cmd:RemoveKey(IN_ATTACK)
 end)
