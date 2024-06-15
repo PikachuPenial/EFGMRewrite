@@ -1439,7 +1439,7 @@ function Menu.OpenTab.Settings()
     vmFOVPanel:SetSize(0, EFGM.MenuScale(50))
     function vmFOVPanel:Paint(w, h)
 
-        draw.SimpleTextOutlined("Viewmodel Scale", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined("Viewmodel FOV Scale", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
     end
 
@@ -1450,6 +1450,57 @@ function Menu.OpenTab.Settings()
     vmFOV:SetMin(-40)
     vmFOV:SetMax(40)
     vmFOV:SetDecimals(0)
+
+    local vmXPanel = vgui.Create("DPanel", visuals)
+    vmXPanel:Dock(TOP)
+    vmXPanel:SetSize(0, EFGM.MenuScale(50))
+    function vmXPanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Viewmodel X Position", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local vmX = vgui.Create("DNumSlider", vmXPanel)
+    vmX:SetPos(EFGM.MenuScale(33), EFGM.MenuScale(30))
+    vmX:SetSize(EFGM.MenuScale(200), EFGM.MenuScale(15))
+    vmX:SetConVar("arc9_vm_addx")
+    vmX:SetMin(-7)
+    vmX:SetMax(7)
+    vmX:SetDecimals(0)
+
+    local vmYPanel = vgui.Create("DPanel", visuals)
+    vmYPanel:Dock(TOP)
+    vmYPanel:SetSize(0, EFGM.MenuScale(50))
+    function vmYPanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Viewmodel Y Position", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local vmY = vgui.Create("DNumSlider", vmYPanel)
+    vmY:SetPos(EFGM.MenuScale(33), EFGM.MenuScale(30))
+    vmY:SetSize(EFGM.MenuScale(200), EFGM.MenuScale(15))
+    vmY:SetConVar("arc9_vm_addy")
+    vmY:SetMin(-7)
+    vmY:SetMax(7)
+    vmY:SetDecimals(0)
+
+    local vmZPanel = vgui.Create("DPanel", visuals)
+    vmZPanel:Dock(TOP)
+    vmZPanel:SetSize(0, EFGM.MenuScale(50))
+    function vmZPanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Viewmodel Y Position", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local vmZ = vgui.Create("DNumSlider", vmZPanel)
+    vmZ:SetPos(EFGM.MenuScale(33), EFGM.MenuScale(30))
+    vmZ:SetSize(EFGM.MenuScale(200), EFGM.MenuScale(15))
+    vmZ:SetConVar("arc9_vm_addz")
+    vmZ:SetMin(-7)
+    vmZ:SetMax(7)
+    vmZ:SetDecimals(0)
 
     -- account
 
