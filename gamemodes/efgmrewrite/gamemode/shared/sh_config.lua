@@ -104,7 +104,6 @@ mult_shotgun = GetConVar("arc9_eft_mult_shotgun"):GetFloat()
 if CLIENT then
 
     -- controls
-    RunConsoleCommand("arc9_toggleads", "0")
     RunConsoleCommand("arc9_autolean", "0")
     RunConsoleCommand("arc9_autoreload", "0")
     RunConsoleCommand("arc9_togglelean", "1")
@@ -141,10 +140,6 @@ if CLIENT then
 
     -- vm
     RunConsoleCommand("arc9_vm_bobstyle", "0")
-    RunConsoleCommand("arc9_fov", "0")
-    RunConsoleCommand("arc9_vm_addx", "0")
-    RunConsoleCommand("arc9_vm_addy", "0")
-    RunConsoleCommand("arc9_vm_addz", "0")
 
     -- vb
     RunConsoleCommand("arc9_vm_cambob", "1")

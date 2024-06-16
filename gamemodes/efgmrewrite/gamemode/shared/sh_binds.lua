@@ -77,28 +77,31 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
             return
         end
 
-        -- INVENTORY SHIT
-
+        -- equip primary #1
         if button == ply:GetInfoNum("efgm_bind_equip_primary1", KEY_1) then
             ply:ConCommand("efgm_inventory_equip 2")
             return
         end
 
+        -- equip primary #2
         if button == ply:GetInfoNum("efgm_bind_equip_primary2", KEY_2) then
             ply:ConCommand("efgm_inventory_equip 3")
             return
         end
 
+        -- equip secondary
         if button == ply:GetInfoNum("efgm_bind_equip_secondary", KEY_3) then
             ply:ConCommand("efgm_inventory_equip 4")
             return
         end
 
-        if button == ply:GetInfoNum("efgm_bind_equip_knife", KEY_V) then
+        -- equip melee
+        if button == ply:GetInfoNum("efgm_bind_equip_knife", KEY_4) then
             ply:ConCommand("efgm_inventory_equip 32")
             return
         end
 
+        -- equip utility
         if button == ply:GetInfoNum("efgm_bind_equip_utility", KEY_G) then
             ply:ConCommand("efgm_inventory_equip 17")
             return
@@ -239,36 +242,39 @@ if game.SinglePlayer() then
                 return
             end
 
-            -- INVENTORY SHIT
-
-            if button == ply:GetInfoNum("efgm_bind_equip_primary1", KEY_1) then
-                ply:ConCommand("efgm_inventory_equip 2")
-                return
-            end
-
-            if button == ply:GetInfoNum("efgm_bind_equip_primary2", KEY_2) then
-                ply:ConCommand("efgm_inventory_equip 3")
-                return
-            end
-
-            if button == ply:GetInfoNum("efgm_bind_equip_secondary", KEY_3) then
-                ply:ConCommand("efgm_inventory_equip 4")
-                return
-            end
-
-            if button == ply:GetInfoNum("efgm_bind_equip_knife", KEY_V) then
-                ply:ConCommand("efgm_inventory_equip 32")
-                return
-            end
-
-            if button == ply:GetInfoNum("efgm_bind_equip_utility", KEY_G) then
-                ply:ConCommand("efgm_inventory_equip 17")
-                return
-            end
-
         end
 
         -- SHARED (for networking/prediction)
+
+        -- equip primary #1
+        if button == ply:GetInfoNum("efgm_bind_equip_primary1", KEY_1) then
+            ply:ConCommand("efgm_inventory_equip 2")
+            return
+        end
+
+        -- equip primary #2
+        if button == ply:GetInfoNum("efgm_bind_equip_primary2", KEY_2) then
+            ply:ConCommand("efgm_inventory_equip 3")
+            return
+        end
+
+        -- equip secondary
+        if button == ply:GetInfoNum("efgm_bind_equip_secondary", KEY_3) then
+            ply:ConCommand("efgm_inventory_equip 4")
+            return
+        end
+
+        -- equip melee
+        if button == ply:GetInfoNum("efgm_bind_equip_knife", KEY_4) then
+            ply:ConCommand("efgm_inventory_equip 32")
+            return
+        end
+
+        -- equip utility
+        if button == ply:GetInfoNum("efgm_bind_equip_utility", KEY_G) then
+            ply:ConCommand("efgm_inventory_equip 17")
+            return
+        end
 
         -- lean left
         if button == ply:GetInfoNum("efgm_bind_leanleft", KEY_Q) then

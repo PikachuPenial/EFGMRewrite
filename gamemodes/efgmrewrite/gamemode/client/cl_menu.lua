@@ -357,7 +357,7 @@ function Menu.OpenTab.Intel()
     for k1, v1 in pairs(Intel) do
 
         local category = mainEntryList:Add(k1)
-        category:DoExpansion(false)
+        category:DoExpansion(true)
 
         for k2, v2 in pairs(v1) do
 
@@ -498,6 +498,10 @@ function Menu.OpenTab.Match()
 
     end
 
+    local CreateSquadName
+    local CreateSquadPassword
+    local CreateSquadPlayerLimit
+
     local createSquadTitle = vgui.Create("DPanel", squadPanel)
     createSquadTitle:Dock(TOP)
     createSquadTitle:SetSize(0, EFGM.MenuScale(32))
@@ -523,19 +527,23 @@ function Menu.OpenTab.Match()
     end
 
     squadNameBG = vgui.Create("DPanel", squadNamePanel)
-    squadNameBG:SetPos(85, 30)
-    squadNameBG:SetSize(150, 20)
+    squadNameBG:SetPos(EFGM.MenuScale(85), EFGM.MenuScale(30))
+    squadNameBG:SetSize(EFGM.MenuScale(150), EFGM.MenuScale(20))
     squadNameBG:SetBackgroundColor(Color(25, 25, 25, 155))
 
     local squadName = vgui.Create("DTextEntry", squadNameBG)
     squadName:Dock(FILL)
     squadName:SetPlaceholderText(" ")
     squadName:SetFont("PuristaBold18")
+    squadName:SetUpdateOnType(true)
     squadName:SetPaintBackground(false)
     squadName:SetTextColor(MenuAlias.whiteColor)
     squadName:SetCursorColor(MenuAlias.whiteColor)
 
-    squadName.OnEnter = function(self)
+    squadName.OnValueChange = function(self, value)
+
+        CreateSquadName = self:GetValue()
+
     end
 
     squadPasswordPanel = vgui.Create("DPanel", squadPanel)
@@ -551,37 +559,59 @@ function Menu.OpenTab.Match()
     end
 
     squadPasswordBG = vgui.Create("DPanel", squadPasswordPanel)
-    squadPasswordBG:SetPos(85, 30)
-    squadPasswordBG:SetSize(150, 20)
+    squadPasswordBG:SetPos(EFGM.MenuScale(85), EFGM.MenuScale(30))
+    squadPasswordBG:SetSize(EFGM.MenuScale(150), EFGM.MenuScale(20))
     squadPasswordBG:SetBackgroundColor(Color(25, 25, 25, 155))
 
     local squadPassword = vgui.Create("DTextEntry", squadPasswordBG)
     squadPassword:Dock(FILL)
     squadPassword:SetPlaceholderText(" ")
     squadPassword:SetFont("PuristaBold18")
+    squadPassword:SetUpdateOnType(true)
     squadPassword:SetPaintBackground(false)
     squadPassword:SetTextColor(MenuAlias.whiteColor)
     squadPassword:SetCursorColor(MenuAlias.whiteColor)
 
-    squadPassword.OnEnter = function(self)
+    squadPassword.OnValueChange = function(self, value)
+
+        CreateSquadPassword = self:GetValue()
+
     end
 
     local squadMemberLimitPanel = vgui.Create("DPanel", squadPanel)
     squadMemberLimitPanel:Dock(TOP)
-    squadMemberLimitPanel:SetSize(0, EFGM.MenuScale(50 + 50))
+    squadMemberLimitPanel:SetSize(0, EFGM.MenuScale(100 + 50))
     function squadMemberLimitPanel:Paint(w, h)
 
-        draw.SimpleTextOutlined("Squad Member Limit", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined("Squad Member Limit (1 to 4)", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
     end
 
-    local squadMemberLimit = vgui.Create("DNumSlider", squadMemberLimitPanel)
-    squadMemberLimit:SetPos(EFGM.MenuScale(35), EFGM.MenuScale(30))
-    squadMemberLimit:SetSize(EFGM.MenuScale(200), EFGM.MenuScale(15))
+    local squadMemberLimit = vgui.Create("DNumberWang", squadMemberLimitPanel)
+    squadMemberLimit:SetPos(EFGM.MenuScale(135), EFGM.MenuScale(30))
+    squadMemberLimit:SetSize(EFGM.MenuScale(50), EFGM.MenuScale(20))
     squadMemberLimit:SetMin(1)
     squadMemberLimit:SetMax(4)
-    squadMemberLimit:SetDecimals(0)
-    squadMemberLimit:SetDefaultValue(4)
+
+    squadMemberLimit.OnValueChanged = function(self)
+        CreateSquadPlayerLimit = self:GetValue()
+    end
+    squadMemberLimit:SetValue(4) -- have to put this down here or else it won't work thanks glua
+
+    local squadCreateButton = vgui.Create("DButton", squadMemberLimitPanel)
+    squadCreateButton:SetPos(EFGM.MenuScale(85), EFGM.MenuScale(65))
+    squadCreateButton:SetSize(EFGM.MenuScale(150), EFGM.MenuScale(20))
+    squadCreateButton:SetFont("PuristaBold18")
+    squadCreateButton:SetText("Create Squad")
+
+    function squadCreateButton:DoClick()
+
+        -- print(CreateSquadName)
+        -- print(CreateSquadPassword)
+        -- print(CreateSquadPlayerLimit)
+
+        -- RunConsoleCommand("efgm_squad_create", CreateSquadName, CreateSquadPassword, CreateSquadPlayerLimit)
+    end
 
     local joinSquadTitle = vgui.Create("DPanel", squadPanel)
     joinSquadTitle:Dock(TOP)
@@ -620,8 +650,8 @@ function Menu.OpenTab.Match()
     end
 
     squadJoinLegacyBG = vgui.Create("DPanel", squadJoinLegacyPanel)
-    squadJoinLegacyBG:SetPos(85, 30)
-    squadJoinLegacyBG:SetSize(150, 20)
+    squadJoinLegacyBG:SetPos(EFGM.MenuScale(85), EFGM.MenuScale(30))
+    squadJoinLegacyBG:SetSize(EFGM.MenuScale(150), EFGM.MenuScale(20))
     squadJoinLegacyBG:SetBackgroundColor(Color(25, 25, 25, 155))
 
     local squadJoinLegacy = vgui.Create("DTextEntry", squadJoinLegacyBG)
@@ -637,8 +667,8 @@ function Menu.OpenTab.Match()
     end
 
     local squadLeaveLegacy = vgui.Create("DButton", squadJoinLegacyPanel)
-    squadLeaveLegacy:SetPos(85, 55)
-    squadLeaveLegacy:SetSize(150, 20)
+    squadLeaveLegacy:SetPos(EFGM.MenuScale(85), EFGM.MenuScale(55))
+    squadLeaveLegacy:SetSize(EFGM.MenuScale(150), EFGM.MenuScale(20))
     squadLeaveLegacy:SetFont("PuristaBold18")
     squadLeaveLegacy:SetText("Leave Current Squad")
 
@@ -1643,8 +1673,8 @@ function Menu.OpenTab.Settings()
     vmFOV:SetPos(EFGM.MenuScale(35), EFGM.MenuScale(30))
     vmFOV:SetSize(EFGM.MenuScale(200), EFGM.MenuScale(15))
     vmFOV:SetConVar("arc9_fov")
-    vmFOV:SetMin(-40)
-    vmFOV:SetMax(40)
+    vmFOV:SetMin(-20)
+    vmFOV:SetMax(20)
     vmFOV:SetDecimals(0)
 
     local vmXPanel = vgui.Create("DPanel", visuals)
@@ -1662,7 +1692,7 @@ function Menu.OpenTab.Settings()
     vmX:SetConVar("arc9_vm_addx")
     vmX:SetMin(-7)
     vmX:SetMax(7)
-    vmX:SetDecimals(0)
+    vmX:SetDecimals(1)
 
     local vmYPanel = vgui.Create("DPanel", visuals)
     vmYPanel:Dock(TOP)
@@ -1679,7 +1709,7 @@ function Menu.OpenTab.Settings()
     vmY:SetConVar("arc9_vm_addy")
     vmY:SetMin(-7)
     vmY:SetMax(7)
-    vmY:SetDecimals(0)
+    vmY:SetDecimals(1)
 
     local vmZPanel = vgui.Create("DPanel", visuals)
     vmZPanel:Dock(TOP)
@@ -1696,7 +1726,7 @@ function Menu.OpenTab.Settings()
     vmZ:SetConVar("arc9_vm_addz")
     vmZ:SetMin(-7)
     vmZ:SetMax(7)
-    vmZ:SetDecimals(0)
+    vmZ:SetDecimals(1)
 
     -- account
 
