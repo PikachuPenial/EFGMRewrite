@@ -365,8 +365,6 @@ if SERVER then
     end)
 
     net.Receive("PlayerSwitchTeams", function(len, ply)
-        
-        print("YIPPEE")
 
         if !ply:CompareStatus(0) then print("Player " .. ply:Nick() .. " is in raid tf") end
 

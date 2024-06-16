@@ -2,12 +2,15 @@ GM.Name = "EFGM Remastered"
 GM.Author = "Penial & Porty"
 GM.Email = "piss off"
 GM.Website = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-
+    
 if CLIENT then
     CreateClientConVar("efgm_music", 1, false, true, "Enable/disable the music", 0, 1)
     CreateClientConVar("efgm_musicvolume", 1, false, true, "Increase or lower the volume of the music", 0, 2)
     CreateClientConVar("efgm_hud_scale", 1, false, true, "Adjust the scale for all user interface items", 0.5, 2)
     CreateClientConVar("efgm_menu_parallax", 1, false, true, "Adjust the main menu parallax/jiggle when moving your cursor", 0, 1)
+    CreateClientConVar("efgm_menu_color_red", 0, false, true, "Adjust the red coloring of the main menu", 0, 255)
+    CreateClientConVar("efgm_menu_color_green", 0, false, true, "Adjust the red coloring of the main menu", 0, 255)
+    CreateClientConVar("efgm_menu_color_blue", 0, false, true, "Adjust the red coloring of the main menu", 0, 255)
     CreateClientConVar("efgm_controls_togglecrouch", 1, true, true, "Adjust if player crouches are hold or toggle", 0, 1)
     CreateClientConVar("efgm_controls_togglelean", 1, true, true, "Adjust if player leans are hold or toggle", 0, 1)
     CreateClientConVar("efgm_faction_preference", 0, true, true, "Determines the faction that your playermodel is based on (0 = None, 1 = USEC, 2 = BEAR)", 0, 2)

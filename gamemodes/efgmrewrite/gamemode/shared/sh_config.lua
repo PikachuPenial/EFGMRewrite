@@ -57,7 +57,7 @@ if SERVER then
     RunConsoleCommand("arc9_mod_freeaim", "1")
     RunConsoleCommand("arc9_breath_slowmo", "0")
     RunConsoleCommand("arc9_manualbolt", "0")
-    RunConsoleCommand("arc9_never_ready", "1")
+    RunConsoleCommand("arc9_never_ready", "0")
     RunConsoleCommand("arc9_eft_mult_flashbang", "0.4")
     RunConsoleCommand("arc9_eft_taran_jam", "0")
     RunConsoleCommand("sv_vmanip_pickups", "1")

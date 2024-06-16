@@ -210,7 +210,7 @@ hook.Add("EntityFireBullets", "BulletLight", function(Entity, Other)
 			FireLight:SetKeyValue("_light", 255 .. " " .. 200 .. " " .. 150)
 			FireLight:SetPos(Result.HitPos)
 			FireLight:Spawn()
-			FireLight:Fire("Kill", "", 0.1)
+			FireLight:Fire("Kill", "", 0.075)
 
 		end
 
