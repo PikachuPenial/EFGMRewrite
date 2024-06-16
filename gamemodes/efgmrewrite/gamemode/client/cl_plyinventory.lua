@@ -55,36 +55,6 @@ net.Receive("UpdateBackpack", function(len, ply)
 
 end)
 
--- wip
-hook.Add("Think", "CheckButtonPresses", function()
-
-    if !isInventoryTesting then return end
-    if table.IsEmpty( activeSlots ) then return end
-    if LocalPlayer() == nil then return end
-
-    -- todo: find a better way to do this (to put it another way, have fun penial)
-
-    for k, v in pairs( activeSlots ) do
-        if !ply:HasWeapon( tostring( v ) ) then
-            activeSlots[k] = nil
-        end
-    end
-
-    for k, v in pairs( activeSlots ) do
-        
-        if input.IsKeyDown( k ) && ply:HasWeapon( tostring( v ) ) then
-
-            input.SelectWeapon( LocalPlayer():GetWeapon( v ) )
-            print("Selecting "..v)
-
-            return
-
-        end
-
-    end
-
-end)
-
 hook.Add("HUDWeaponPickedUp", "WeaponPickedUp", function( weapon )
 
     local name = weapon:GetClass()
@@ -129,5 +99,29 @@ concommand.Add("efgm_inventory_swapprimaries", function(ply, cmd, args)
 
     activeSlots[KEY_2] = primary1
     activeSlots[KEY_1] = primary2
+
+end)
+
+concommand.Add("efgm_inventory_equip", function(ply, cmd, args)
+    
+    if !isInventoryTesting then return end
+    if table.IsEmpty( activeSlots ) then return end
+
+    local keyPressed = tonumber( args[1] )
+    local weaponString = activeSlots[ keyPressed ]
+
+    if weaponString == nil then return end
+
+    if !ply:HasWeapon( weaponString ) then
+
+        activeSlots[ keyPressed ] = nil
+
+        return
+
+    end
+
+    input.SelectWeapon( ply:GetWeapon( weaponString ) )
+
+    print("Selecting "..weaponString)
 
 end)

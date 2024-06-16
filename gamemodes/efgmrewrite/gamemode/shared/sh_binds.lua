@@ -1,6 +1,7 @@
 
 -- self explanitory (erm actually its explanatory 🤓) (fuck off porty)
 if CLIENT then
+
     CreateClientConVar("efgm_bind_menu", KEY_TAB, true, true, "Determines the keybind that will display the menu")
     CreateClientConVar("efgm_bind_showcompass", KEY_M, true, true, "Determines the keybind that shows the compass")
     CreateClientConVar("efgm_bind_raidinfo", KEY_O, true, true, "Determines the keybind that will display available extracts and time remaining in the raid")
@@ -11,6 +12,14 @@ if CLIENT then
     CreateClientConVar("efgm_bind_inspectweapon", KEY_I, true, true, "Determines the keybind that inspects your weapon")
     CreateClientConVar("efgm_bind_dropweapon", KEY_MINUS, true, true, "Determines the keybind that drops your held weapon")
     CreateClientConVar("efgm_bind_teaminvite", KEY_PERIOD, true, true, "Determines the keybind that invites someone to your team, or accepts somebody else's team ivnite")
+
+
+    CreateClientConVar("efgm_bind_equip_primary1", KEY_1, true, true, "Determines the keybind that equips your first primary")
+    CreateClientConVar("efgm_bind_equip_primary2", KEY_2, true, true, "Determines the keybind that equips your second primary")
+    CreateClientConVar("efgm_bind_equip_secondary", KEY_3, true, true, "Determines the keybind that equips your secondary")
+    CreateClientConVar("efgm_bind_equip_knife", KEY_V, true, true, "Determines the keybind that equips your knife")
+    CreateClientConVar("efgm_bind_equip_utility", KEY_G, true, true, "Determines the keybind that equips your grenade")
+
 end
 
 hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
@@ -65,6 +74,42 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
         -- team inviting / accepting
         if button == ply:GetInfoNum("efgm_bind_teaminvite", KEY_PERIOD) then
             -- todo (CHOP CHOP @portanator)
+            return
+        end
+
+        -- INVENTORY SHIT
+
+        if button == ply:GetInfoNum("efgm_bind_equip_primary1", KEY_1) then
+            ply:ConCommand("efgm_inventory_equip 2")
+            return
+        end
+
+        if button == ply:GetInfoNum("efgm_bind_equip_primary2", KEY_2) then
+            ply:ConCommand("efgm_inventory_equip 3")
+            return
+        end
+
+        if button == ply:GetInfoNum("efgm_bind_equip_secondary", KEY_3) then
+            ply:ConCommand("efgm_inventory_equip 4")
+            return
+        end
+
+        if button == ply:GetInfoNum("efgm_bind_equip_knife", KEY_V) then
+            ply:ConCommand("efgm_inventory_equip 32")
+            return
+        end
+
+        if button == ply:GetInfoNum("efgm_bind_equip_utility", KEY_G) then
+            ply:ConCommand("efgm_inventory_equip 17")
+            return
+        end
+
+        if button == ply:GetInfoNum("efgm_bind_dropweapon", KEY_MINUS) then -- yes this is necessary
+            ply:ConCommand("efgm_inventory_equip 17")
+            ply:ConCommand("efgm_inventory_equip 32")
+            ply:ConCommand("efgm_inventory_equip 4")
+            ply:ConCommand("efgm_inventory_equip 3")
+            ply:ConCommand("efgm_inventory_equip 2")
             return
         end
 
@@ -151,6 +196,11 @@ if game.SinglePlayer() then
             -- drop weapon
             if button == ply:GetInfoNum("efgm_bind_dropweapon", KEY_MINUS) then
                 ply:DropWeapon(ply:GetActiveWeapon())
+                ply:ConCommand("efgm_inventory_equip 17")
+                ply:ConCommand("efgm_inventory_equip 32")
+                ply:ConCommand("efgm_inventory_equip 4")
+                ply:ConCommand("efgm_inventory_equip 3")
+                ply:ConCommand("efgm_inventory_equip 2")
                 return
             end
 
@@ -186,6 +236,33 @@ if game.SinglePlayer() then
             -- weapon inspecting
             if button == ply:GetInfoNum("efgm_bind_inspectweapon", KEY_I) then
                 ply:ConCommand("+arc9_inspect")
+                return
+            end
+
+            -- INVENTORY SHIT
+
+            if button == ply:GetInfoNum("efgm_bind_equip_primary1", KEY_1) then
+                ply:ConCommand("efgm_inventory_equip 2")
+                return
+            end
+
+            if button == ply:GetInfoNum("efgm_bind_equip_primary2", KEY_2) then
+                ply:ConCommand("efgm_inventory_equip 3")
+                return
+            end
+
+            if button == ply:GetInfoNum("efgm_bind_equip_secondary", KEY_3) then
+                ply:ConCommand("efgm_inventory_equip 4")
+                return
+            end
+
+            if button == ply:GetInfoNum("efgm_bind_equip_knife", KEY_V) then
+                ply:ConCommand("efgm_inventory_equip 32")
+                return
+            end
+
+            if button == ply:GetInfoNum("efgm_bind_equip_utility", KEY_G) then
+                ply:ConCommand("efgm_inventory_equip 17")
                 return
             end
 
