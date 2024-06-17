@@ -25,14 +25,27 @@ if CLIENT then
 
     concommand.Add("efgm_squad_create", function(ply, cmd, args)
 
+        local name = tostring(args[1])
+        local password = tostring(args[2])
+        local limit = math.Clamp(tonumber(args[3]), 1, 4)
+        local red = math.Clamp(tonumber(args[4]), 0, 255)
+        local green = math.Clamp(tonumber(args[5]), 0, 255)
+        local blue = math.Clamp(tonumber(args[6]), 0, 255)
+
+        if name == nil then
+
+            name = ply:GetName() .. "'s Squad"
+
+        end
+
         net.Start("PlayerCreateSquad")
 
-            net.WriteString(tostring(args[1]))
-            net.WriteString(tostring(args[2]))
-            net.WriteInt(tonumber(args[3]), 4)
-            net.WriteInt(tonumber(args[4]), 9)
-            net.WriteInt(tonumber(args[5]), 9)
-            net.WriteInt(tonumber(args[6]), 9)
+            net.WriteString(name)
+            net.WriteString(password)
+            net.WriteInt(limit, 4)
+            net.WriteInt(red, 9)
+            net.WriteInt(green, 9)
+            net.WriteInt(blue, 9)
 
         net.SendToServer()
 

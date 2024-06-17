@@ -18,7 +18,7 @@ concommand.Add("efgm_inventory_update", function(ply, cmd, args)
 end)
 
 concommand.Add("efgm_inventory_move", function(ply, cmd, args)
-    
+
     local oldPos = args[1]
     local newPos = args[2]
     local count = tonumber( args[3] or 1 )
@@ -32,7 +32,7 @@ concommand.Add("efgm_inventory_move", function(ply, cmd, args)
 end)
 
 concommand.Add("efgm_inventory_drop", function(ply, cmd, args)
-    
+
     local pos = args[1]
     local count = tonumber( args[2] or 1 )
 
@@ -93,7 +93,7 @@ hook.Add("HUDWeaponPickedUp", "WeaponPickedUp", function( weapon )
 end)
 
 concommand.Add("efgm_inventory_swapprimaries", function(ply, cmd, args)
-    
+
     local primary1 = activeSlots[KEY_1]
     local primary2 = activeSlots[KEY_2]
 
@@ -103,7 +103,7 @@ concommand.Add("efgm_inventory_swapprimaries", function(ply, cmd, args)
 end)
 
 concommand.Add("efgm_inventory_equip", function(ply, cmd, args)
-    
+
     if !isInventoryTesting then return end
     if table.IsEmpty( activeSlots ) then return end
 
@@ -122,6 +122,6 @@ concommand.Add("efgm_inventory_equip", function(ply, cmd, args)
 
     input.SelectWeapon( ply:GetWeapon( weaponString ) )
 
-    print("Selecting "..weaponString)
+    print("Selecting " .. weaponString)
 
 end)
