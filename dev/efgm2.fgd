@@ -139,7 +139,7 @@
 [
 
     // Key Values
-    spawn_chance(integer) : "Weapon Spawn Chance": 5 : "The chance this spawn will create loot. 5 is always, 0 is never."
+    spawn_chance(integer) : "Weapon Spawn Chance": 100 : "The chance this spawn will create loot. 100 is always, 0 is never."
 
     loot_type(choices) : "Loot Type" : 0 : "The type of loot this spawn should make" =
     [
@@ -164,11 +164,12 @@
 
     // Outputs
     output OnSpawn(void) : "Fires when the loot spawns"
-    output OnOpen(void) : "Fires for crates when the loot spawns from the crate. Have fun."
+
+    output OnOpen(void) : "(PLANNED) Fires for crates when the loot spawns from the crate. Have fun."
 
     spawnflags(flags) =
     [
         1 : "Spawn on Start" : 0
-        2 : "Loot in Crate" : 1
+        2 : "Loot in Crate (PLANNED)" : 1
     ]
 ]
