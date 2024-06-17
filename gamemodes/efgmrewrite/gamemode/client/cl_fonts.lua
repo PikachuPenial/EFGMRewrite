@@ -11,6 +11,7 @@ local function CreateFonts()
     surface.CreateFont("PuristaBold32", {font = "PuristaBold", size = EFGM.MenuScale(32), weight = 550, antialias = true, extended = true})
     surface.CreateFont("Purista32", {font = "Purista", size = EFGM.MenuScale(32), weight = 550, antialias = true, extended = true})
 
+    surface.CreateFont("PuristaBold24", {font = "PuristaBold", size = EFGM.MenuScale(24), weight = 550, antialias = true, extended = true})
     surface.CreateFont("PuristaBold64", {font = "PuristaBold", size = EFGM.MenuScale(64), weight = 550, antialias = true, extended = true})
 
     -- HUD
