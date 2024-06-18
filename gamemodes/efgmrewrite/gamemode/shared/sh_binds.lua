@@ -38,7 +38,7 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
 
         -- toggle menu
         if button == ply:GetInfoNum("efgm_bind_menu", KEY_TAB) then
-            ply:ConCommand("efgm_gamemenu")
+            ply:ConCommand("efgm_gamemenu Stats")
             return
         end
 
@@ -209,7 +209,7 @@ if game.SinglePlayer() then
 
             -- toggle menu
             if button == ply:GetInfoNum("efgm_bind_menu", KEY_TAB) then
-                ply:ConCommand("efgm_gamemenu")
+                ply:ConCommand("efgm_gamemenu Stats")
                 return
             end
 

@@ -1,24 +1,34 @@
 
 SQUADS = {}
-SQUADS["TEST"] = {OWNER = "Portanator", PASSWORD = "", LIMIT = 4, COLOR = {RED = 255, GREEN = 255, BLUE = 255}, MEMBERS = {"Portanator", "Bean", "Zedorfska"}}
-SQUADS["WE <3 BALATRO"] = {OWNER = "Computery", PASSWORD = "", LIMIT = 2, COLOR = {RED = 0, GREEN = 255, BLUE = 155}, MEMBERS = {"Computery", "Polskiano"}}
-SQUADS["9H ON VISUAL STUDIO CODE"] = {OWNER = "Penial", PASSWORD = "endingitall", LIMIT = 4, COLOR = {RED = 255, GREEN = 255, BLUE = 55}, MEMBERS = {"Penial", "Suomij (narkotica)"}}
 
 if SERVER then
 
+    util.AddNetworkString("GrabSquadData")
+    util.AddNetworkString("SendSquadData")
     util.AddNetworkString("PlayerCreateSquad")
     util.AddNetworkString("PlayerPrintSquad")
+
+    -- please dont exploit this
+    net.Receive("GrabSquadData", function(len, ply)
+
+        net.Start("SendSquadData", true)
+
+            net.WriteTable(SQUADS)
+
+        net.Send(ply)
+
+    end)
 
     net.Receive("PlayerCreateSquad", function(len, ply)
 
         local name = net.ReadString()
         local password = net.ReadString()
         local limit = net.ReadInt(4)
-        local r, g, b = net.ReadInt(9)
+        local r = net.ReadInt(9)
         local g = net.ReadInt(9)
         local b = net.ReadInt(9)
 
-        SQUADS[name] = {OWNER = ply, PASSWORD = password, LIMIT = limit, COLOR = {r, g, b}, MEMBERS = {ply}}
+        SQUADS[name] = {OWNER = ply, PASSWORD = password, LIMIT = limit, COLOR = {RED = r, GREEN = g, BLUE = b}, MEMBERS = {ply}}
 
     end)
 
@@ -34,8 +44,19 @@ if CLIENT then
 
     concommand.Add("efgm_squad_create", function(ply, cmd, args)
 
-        local name = tostring( args[1] or ( ply:GetName() .. "'s Squad" ) )
-        local password = tostring(args[2] or "") -- the or just sets the value if nil, bc a password of nil will just be "nil" instead of ""
+        local name
+
+        if tostring(args[1]) != ("" or nil) then
+
+            name = tostring(args[1])
+
+        else
+
+            name = tostring(ply:GetName() .. "'s Squad")
+
+        end
+
+        local password = tostring(args[2] or "") -- the 'or' just sets the value if nil, bc a password of nil will just be "nil" instead of ""
         local limit = math.Clamp(tonumber(args[3] or 1), 1, 4)
         local red = math.Clamp(tonumber(args[4] or 255), 0, 255)
         local green = math.Clamp(tonumber(args[5] or 255), 0, 255)
@@ -53,7 +74,7 @@ if CLIENT then
         net.SendToServer()
 
     end)
-    
+
     concommand.Add("efgm_squad_printlist", function(ply, cmd, args)
 
         net.Start("PlayerPrintSquad")
