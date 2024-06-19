@@ -72,11 +72,17 @@ if SERVER then
 
             timer.Adjust("RaidTimerDecrement", 1, self.VoteTime) -- fuck you timer.Adjust
 
-            net.Start( "VoteableMaps" )
-                net.WriteTable( self.MapPool )
+            net.Start("VoteableMaps")
+
+                net.WriteTable(self.MapPool)
+
             net.Broadcast()
 
-            for k, v in pairs( player.GetHumans() ) do if !v:CompareStatus(0) then v:Kill() end end
+            for k, v in pairs(player.GetHumans()) do
+
+                if not v:CompareStatus(0) then v:Kill() end
+
+            end
 
         end
 
@@ -89,39 +95,36 @@ if SERVER then
             local allSpawns = spawn.Spawns
 
             PrintTable(allSpawns)
-    
+
             for k, v in ipairs( plys ) do
 
-                print("Player " .. k .. "'s name is " .. v:Nick())
-                
                 if v:IsPlayer() then
-                
+
                     if !v:CompareStatus(0) then
 
                         local status, spawnGroup = v:GetRaidStatus()
-    
+
                         print("Player " .. v:GetName() .. " tried to enter the raid with status " .. status .. ", but they're probably fine to join anyway. If they aren't, tell the map maker to separate the lobby and the raid map, thanks.")
-    
+
                     end
 
-                    print("Sending player " .. k .. " (" .. v:Nick() .. ") into raid!")
-    
                     net.Start("PlayerEnterRaid")
                     net.Send(v)
-    
+
                     v:Freeze(true)
-    
+
                     timer.Create("Spawn" .. v:SteamID64(), 1, 1, function()
-    
+
                         v:Teleport(allSpawns[k]:GetPos(), allSpawns[k]:GetAngles(), Vector(0, 0, 0))
                         v:Freeze(false)
-                        
+
                         timer.Simple(0.5, function() -- temporary invulnerability bc v:Lock() fucked shit
-                            
+
                             v:SetRaidStatus(status, spawn.SpawnGroup or "")
+                            v:SetNW2Bool("PlayerInSquad", false)
 
                         end)
-    
+
                     end)
 
                 end
@@ -136,9 +139,9 @@ if SERVER then
             local mapTable = {}
 
             for k, v in pairs(self.MapPool) do -- getting the max vote
-                
+
                 if v > maxVote then
-                    
+
                     maxVote = v
 
                 end
@@ -146,9 +149,9 @@ if SERVER then
             end
 
             for k, v in pairs(self.MapPool) do -- getting every map with the max vote into a table
-                
+
                 if v == maxVote then
-                    
+
                     table.insert(mapTable, k)
 
                 end
@@ -173,30 +176,28 @@ if SERVER then
         end
 
         function RAID.GetCurrentExtracts(ply)
-                
+
             if ply:CompareStatus(0) then return nil end
-    
+
             local extracts = {}
-    
+
             for k, v in pairs( ents.FindByClass("efgm_extract") ) do
-    
-                print(v)
-    
+
                 if ply:CompareSpawnGroup(v.ExtractGroup) then
-    
+
                     local tbl = {}
                     tbl.ExtractName = v.ExtractName
                     tbl.ExtractTime = v.ExtractTime
                     tbl.IsGuranteed = v.IsGuranteed
-    
+
                     table.insert(extracts, tbl)
-    
+
                 end
-    
+
             end
-    
+
             return extracts
-    
+
         end
 
     --}
@@ -224,14 +225,14 @@ if SERVER then
         end
 
         function plyMeta:GetRaidStatus()
-        
+
             local status = self:GetNWInt("PlayerRaidStatus", 0)
             local spawnGroup = self:GetNWString("PlayerSpawnGroup", "")
-        
+
             return status, spawnGroup
-        
+
         end
-        
+
     --}
 
     --{ CONSOLE COMMANDS
@@ -245,13 +246,13 @@ if SERVER then
 
             local status = tonumber( args[1] )
             ply:SetRaidStatus(status)
-        
+
         end)
 
         concommand.Add("efgm_getplayerstatus", function( ply )
 
             print( "Status: " .. ply:GetNWInt( "PlayerRaidStatus", 0 ) .. ", Group: " .. ply:GetNWString( "PlayerSpawnGroup", "" ) )
-        
+
         end)
 
         concommand.Add("efgm_getraidstatus", function()
@@ -266,13 +267,9 @@ if SERVER then
 
         hook.Add("PlayerExtraction", "RaidExtract", function(ply, extractTime, isExtractGuranteed)
 
-            --print("Player's name is " .. ply:GetName())
-
             lobbySpawns = ents.FindByClass("efgm_lobby_spawn") or {} -- gets a table of all the lobby spawns
 
             local possibleSpawns = {}
-
-            local playerExtracted = false
 
             if table.IsEmpty(lobbySpawns) then error("no lobby spawns eat shit") return end
 
@@ -302,9 +299,8 @@ if SERVER then
         end)
 
         hook.Add("CheckRaidAddPlayers", "MaybeAddPeople", function( ply )
-        
+
             local plyTeam = ply:GetNWString("RaidTeam", "")
-            print("Player team is " .. plyTeam)
 
             if plyTeam == "" then RAID:SpawnPlayers({ply}, playerStatus.PMC) return end
 
@@ -313,28 +309,20 @@ if SERVER then
 
             for k, v in ipairs( player.GetHumans() ) do
 
-                print("Player " .. v:Nick() .. " with team " .. v:GetNWString("RaidTeam", "") .. ", their RaidReady is " .. tostring( v:GetNWBool("RaidReady", false) ) )
-
                 if plyTeam == v:GetNWString("RaidTeam", "") then
 
                     table.insert(plys, v)
 
                     if v:GetNWBool("RaidReady", false) == false then spawnBool = false end
-                    print("Spawnbool is " .. tostring( spawnBool ) )
 
                 end
 
             end
 
-            print("for loop ended")
-
             if tobool( spawnBool ) == true then
 
-                print("spawning players:")
-                PrintTable(plys)
-
                 RAID:SpawnPlayers(plys, playerStatus.PMC)
-                
+
             end
 
         end)
@@ -384,7 +372,7 @@ if SERVER then
     end)
 
     net.Receive("SendVote", function(len, ply)
-        
+
         RAID:SubmitVote(ply, net.ReadString() )
 
     end)
@@ -394,14 +382,14 @@ end
 if CLIENT then
 
     concommand.Add("efgm_print_extracts", function(ply, cmd, args)
-            
+
         net.Start("RequestExtracts")
         net.SendToServer()
 
     end)
 
     concommand.Add("efgm_team_join", function(ply, cmd, args)
-            
+
         net.Start("PlayerSwitchTeams")
             net.WriteString( tostring( args[ 1 ]) )
         net.SendToServer()
@@ -409,7 +397,7 @@ if CLIENT then
     end)
 
     concommand.Add("efgm_team_leave", function(ply, cmd, args)
-            
+
         net.Start("PlayerSwitchTeams")
             net.WriteString( "" )
         net.SendToServer()
@@ -423,7 +411,7 @@ if CLIENT then
         net.SendToServer()
 
     end)
-    
+
 end
 
 function plyMeta:CompareSpawnGroup(group)
@@ -432,9 +420,6 @@ function plyMeta:CompareSpawnGroup(group)
     -- oh i forgot an end
 
     group = group or ""
-
-    print("Extract SpawnGroup == "..group)
-    print("Player SpawnGroup == "..self:GetNWString("PlayerSpawnGroup", ""))
 
     if group == "" then return true end
 

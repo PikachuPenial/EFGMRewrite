@@ -12,16 +12,21 @@ ENT.Spawns = {}
 function ENT:KeyValue(key, value)
 
     if key == "spawn_type" then
+
         self.SpawnType = tonumber(value)
+
     end
 
     if key == "spawn_group" then
+
         self.SpawnGroup = value
-        print("Setting SpawnGroup to "..self.SpawnGroup)
+
     end
 
     if key == "targetname" then
+
         self.SpawnName = value
+
     end
 
 end

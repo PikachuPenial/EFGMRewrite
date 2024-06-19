@@ -114,16 +114,15 @@ function ENT:AcceptInput(name, ply, caller, data)
     end
 
     if name == "StartExtractingPlayer" && ply:IsPlayer() then
-    
+
         if ply:CompareStatus(0) or !ply:CompareSpawnGroup(self.ExtractGroup) then return end
 
         if self.IsDisabled then
-        
+
             ply:PrintMessage( HUD_PRINTCENTER, self.DisabledMessage )
 
         else
-            
-            print("Player's name is " .. ply:GetName())
+
             self:StartExtract(ply)
 
         end
@@ -139,8 +138,6 @@ function ENT:AcceptInput(name, ply, caller, data)
 end
 
 function ENT:StartExtract(ply)
-
-	--print("Player's name is " .. ply:GetName())
 
 	-- debug, will replace later once i make a fancy UI system
 	ply:PrintMessage( HUD_PRINTCENTER, "Extracting using ".. self.ExtractName .." (".. self.ExtractTime .." Seconds)" )

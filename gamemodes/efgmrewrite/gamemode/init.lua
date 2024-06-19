@@ -7,26 +7,30 @@ AddCSLuaFile("shared.lua")
 include("shared.lua")
 
 for _, v in ipairs(file.Find("gamemodes/efgmrewrite/gamemode/shared/*.lua", "GAME", "nameasc")) do
-	print("shared/" .. v)
+
 	AddCSLuaFile("shared/" .. v)
 	include("shared/" .. v)
+
 end
 
 for _, v in ipairs(file.Find("gamemodes/efgmrewrite/gamemode/client/*.lua", "GAME", "nameasc")) do
-	print("client/" .. v)
+
 	AddCSLuaFile("client/" .. v)
+
 end
 
 for _, v in ipairs(file.Find("gamemodes/efgmrewrite/gamemode/server/*.lua", "GAME", "nameasc")) do
-	print("server/" .. v)
+
 	include("server/" .. v)
+
 end
 
 -- intel shit
 
 for _, v in ipairs(file.Find("gamemodes/efgmrewrite/gamemode/intel/*.lua", "GAME", "nameasc")) do
-	print("intel/" .. v)
+
 	AddCSLuaFile("intel/" .. v)
+
 end
 
 HostID = nil -- will be set if it's a p2p server (holy fucking shit i really didnt set it to nil)

@@ -68,13 +68,30 @@ function Menu:Initialize(openTo)
 
     function menuFrame:Think()
 
-        if !gui.IsGameUIVisible() then menuFrame:Show() else menuFrame:Hide() end
+        if (!gui.IsGameUIVisible() or !gui.IsConsoleVisible()) then
+            menuFrame:Show()
+        else
+
+            if Menu.ActiveTab == "Match" then
+
+                net.Start("RemovePlayerSquadRF")
+                net.SendToServer()
+
+            end
+
+            menuFrame:Remove()
+        end
 
     end
 
     function menuFrame:OnClose()
 
-        Menu.IsOpen = false
+        if Menu.ActiveTab == "Match" then
+
+            net.Start("RemovePlayerSquadRF")
+            net.SendToServer()
+
+        end
 
     end
 
@@ -147,6 +164,13 @@ function Menu:Initialize(openTo)
 
         if Menu.ActiveTab == "Stats" then return end
 
+        if Menu.ActiveTab == "Match" then
+
+            net.Start("RemovePlayerSquadRF")
+            net.SendToServer()
+
+        end
+
         Menu.MenuFrame.LowerPanel.Contents:AlphaTo(0, 0.05, 0, function()
 
             Menu.MenuFrame.LowerPanel.Contents:Remove()
@@ -184,6 +208,9 @@ function Menu:Initialize(openTo)
             Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, function() end)
 
         end)
+
+        net.Start("AddPlayerSquadRF")
+        net.SendToServer()
     end
 
     local inventoryTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
@@ -193,6 +220,13 @@ function Menu:Initialize(openTo)
     inventoryTab:SetText("Inventory")
 
     function inventoryTab:DoClick()
+
+        if Menu.ActiveTab == "Match" then
+
+            net.Start("RemovePlayerSquadRF")
+            net.SendToServer()
+
+        end
 
         -- placeholder until inventory functions chop chop portapotty
         surface.PlaySound("common/wpn_denyselect.wav")
@@ -219,6 +253,13 @@ function Menu:Initialize(openTo)
     function intelTab:DoClick()
 
         if Menu.ActiveTab == "Intel" then return end
+
+        if Menu.ActiveTab == "Match" then
+
+            net.Start("RemovePlayerSquadRF")
+            net.SendToServer()
+
+        end
 
         Menu.MenuFrame.LowerPanel.Contents:AlphaTo(0, 0.05, 0, function()
 
@@ -253,6 +294,13 @@ function Menu:Initialize(openTo)
     function settingsTab:DoClick()
 
         if Menu.ActiveTab == "Settings" then return end
+
+        if Menu.ActiveTab == "Match" then
+
+            net.Start("RemovePlayerSquadRF")
+            net.SendToServer()
+
+        end
 
         Menu.MenuFrame.LowerPanel.Contents:AlphaTo(0, 0.05, 0, function()
 
@@ -420,12 +468,9 @@ function Menu.OpenTab.Intel()
 
         for k2, v2 in pairs(v1) do
 
-            print(v2.Name)
-
             local entry = category:Add(v2.Name)
             function entry:DoClick()
 
-                print("Clicked " .. v2.Name)
                 subEntryList:Clear()
                 DrawEntry(v2.Name, v2.Description, v2.Stats)
 
