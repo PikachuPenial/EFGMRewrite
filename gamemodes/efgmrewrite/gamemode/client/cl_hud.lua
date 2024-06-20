@@ -1,4 +1,9 @@
 
+local enabled = GetConVar("efgm_hud_enable")
+cvars.AddChangeCallback("efgm_hud_enable", function(convar_name, value_old, value_new)
+    enabled = tobool(value_new)
+end)
+
 local function RenderRaidTime(ply)
     -- time logic
     local raidTime = string.FormattedTime(GetGlobalInt("RaidTimeLeft", 0), "%2i:%02i")
@@ -236,12 +241,12 @@ local function RenderDebugEquippedSlots(ply)
 
     end
 
-    local knife = activeSlots[KEY_V]
-    if knife != nil then
+    local melee = activeSlots[KEY_4]
+    if melee != nil then
 
-        local knifeTextSize = surface.GetTextSize("V: "..knife) + EFGM.ScreenScale(10)
-        surface.DrawRect( EFGM.ScreenScale(20), EFGM.ScreenScale(170), EFGM.ScreenScale(12) + knifeTextSize, EFGM.ScreenScale(35) )
-        draw.DrawText( "V: "..knife, "BenderAmmoCount", EFGM.ScreenScale(22), EFGM.ScreenScale(170), Color(255, 255, 255), TEXT_ALIGN_LEFT )
+        local meleeTextSize = surface.GetTextSize("4: "..melee) + EFGM.ScreenScale(10)
+        surface.DrawRect( EFGM.ScreenScale(20), EFGM.ScreenScale(170), EFGM.ScreenScale(12) + meleeTextSize, EFGM.ScreenScale(35) )
+        draw.DrawText( "4: "..melee, "BenderAmmoCount", EFGM.ScreenScale(22), EFGM.ScreenScale(170), Color(255, 255, 255), TEXT_ALIGN_LEFT )
 
     end
 
@@ -259,6 +264,7 @@ end
 local function DrawHUD()
     ply = LocalPlayer()
     if not ply:Alive() then return end
+    if not enabled then return end
 
     RenderRaidTime(ply)
     RenderPlayerWeapon(ply)

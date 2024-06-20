@@ -35,6 +35,7 @@ function Menu:Initialize(openTo)
 
     self.StartTime = SysTime()
     self.Unblur = false
+    self.Closing = false
 
     function menuFrame:Paint(w, h)
 
@@ -55,6 +56,7 @@ function Menu:Initialize(openTo)
 
         if key == menuBind then
 
+            self.Closing = true
             menuFrame:SetKeyboardInputEnabled(false)
             menuFrame:SetMouseInputEnabled(false)
 
@@ -122,7 +124,10 @@ function Menu:Initialize(openTo)
 
         if GetConVar("efgm_menu_parallax"):GetInt() == 1 then
 
+            if Menu.MenuFrame.Closing then return end
+
             local x, y = menuFrame:CursorPos()
+
             local mouseX = (x / math.Round(EFGM.MenuScale(1900), 1)) - 0.5
             local mouseY = (y / math.Round(EFGM.MenuScale(1060), 1)) - 0.5
 
@@ -1432,17 +1437,38 @@ function Menu.OpenTab.Stats()
 
     Menu.MenuFrame.LowerPanel.Contents = contents
 
-    local importantStatsSP = vgui.Create("DScrollPanel", contents)
-    importantStatsSP:Dock(LEFT)
-    importantStatsSP:SetSize(EFGM.MenuScale(400), 0)
-    importantStatsSP.Paint = function(s, w, h)
+    local stats = vgui.Create("DScrollPanel", contents)
+    stats:Dock(LEFT)
+    stats:SetSize(EFGM.MenuScale(320), 0)
+    stats.Paint = function(s, w, h)
 
         surface.SetDrawColor(Color(0, 0, 0, 0))
         surface.DrawRect(0, 0, w, h)
 
     end
 
-    local importantStats = vgui.Create("DPanel", importantStatsSP)
+    local statsTitle = vgui.Create("DPanel", stats)
+    statsTitle:Dock(TOP)
+    statsTitle:SetSize(0, EFGM.MenuScale(32))
+    function statsTitle:Paint(w, h)
+
+        surface.SetDrawColor(Color(0, 0, 0, 0))
+        surface.DrawRect(0, 0, w, h)
+
+        draw.SimpleTextOutlined("STATISTICS", "PuristaBold32", w / 2, 0, MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local statsBar = stats:GetVBar()
+    statsBar:SetHideButtons(true)
+    function statsBar:Paint(w, h)
+        draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 0))
+    end
+    function statsBar.btnGrip:Paint(w, h)
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 0))
+    end
+
+    local importantStats = vgui.Create("DPanel", stats)
     importantStats:Dock(TOP)
     importantStats:SetSize(0, EFGM.MenuScale(500))
     importantStats.Paint = function(s, w, h)
@@ -1465,27 +1491,31 @@ function Menu.OpenTab.Stats()
     -- only temporary, I gotta find a way to automate this shit
 
     local stats = {}
-    
+
     stats.Level = LocalPlayer():GetNWInt("Level")
     stats.Experience = LocalPlayer():GetNWInt("Experience")
-	stats.MoneyEarned = LocalPlayer():GetNWInt("MoneyEarned")
-	stats.MoneySpent = LocalPlayer():GetNWInt("MoneySpent")
-	stats.Time = LocalPlayer():GetNWInt("Time")
+    stats.MoneyEarned = LocalPlayer():GetNWInt("MoneyEarned")
+    stats.MoneySpent = LocalPlayer():GetNWInt("MoneySpent")
+    stats.Time = LocalPlayer():GetNWInt("Time")
+    stats.StashValie = LocalPlayer():GetNWInt("StashValie")
 
-	stats.Kills = LocalPlayer():GetNWInt("Kills")
-	stats.Deaths = LocalPlayer():GetNWInt("Deaths")
-	stats.DamageGiven = LocalPlayer():GetNWInt("DamageGiven")
-	stats.DamageRecieved = LocalPlayer():GetNWInt("DamageRecieved")
-	stats.DamageHealed = LocalPlayer():GetNWInt("DamageHealed")
+    stats.Kills = LocalPlayer():GetNWInt("Kills")
+    stats.Deaths = LocalPlayer():GetNWInt("Deaths")
+    stats.Suicides = LocalPlayer():GetNWInt("Suicides")
+    stats.DamageGiven = LocalPlayer():GetNWInt("DamageGiven")
+    stats.DamageRecieved = LocalPlayer():GetNWInt("DamageRecieved")
+    stats.DamageHealed = LocalPlayer():GetNWInt("DamageHealed") 
+    stats.Extractions = LocalPlayer():GetNWInt("Extractions")
+    stats.Quits = LocalPlayer():GetNWInt("Quits")
+    stats.FullRaids = LocalPlayer():GetNWInt("FullRaids")
 
-	stats.Extractions = LocalPlayer():GetNWInt("Extractions")
-	stats.Quits = LocalPlayer():GetNWInt("Quits")
-	stats.FullRaids = LocalPlayer():GetNWInt("FullRaids")
+    stats.CurrentKillStreak = LocalPlayer():GetNWInt("CurrentKillStreak") 
+    stats.BestKillStreak = LocalPlayer():GetNWInt("BestKillStreak")
+    stats.CurrentExtractionStreak = LocalPlayer():GetNWInt("CurrentExtractionStreak")
+    stats.BestExtractionStreak = LocalPlayer():GetNWInt("BestExtractionStreak")
 
-    local height = 0
+    for k, v in SortedPairs(stats) do
 
-    for k, v in pairs(stats) do
-        
         local statEntry = vgui.Create("DPanel", importantStats)
         statEntry:Dock(TOP)
         statEntry:SetSize(0, EFGM.MenuScale(20))
@@ -1494,16 +1524,12 @@ function Menu.OpenTab.Stats()
             surface.SetDrawColor(Color(0, 0, 0, 0))
             surface.DrawRect(0, 0, w, h)
 
-            draw.SimpleTextOutlined(k .. " = " .. v, "Purista18", 0, 0, MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            draw.SimpleTextOutlined(k .. "", "Purista18", 0, 0, MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            draw.SimpleTextOutlined(math.Round(v), "Purista18", w, 0, MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
         end
 
-        height = height + 20
-
     end
-
-    local cw, ch = importantStats:GetContentSize()
-    importantStatsSP:GetCanvas():SetSize( cw, height )
 
 end
 
@@ -1989,7 +2015,121 @@ function Menu.OpenTab.Settings()
 
     end
 
+    local primaryWeaponPanel = vgui.Create("DPanel", controls)
+    primaryWeaponPanel:Dock(TOP)
+    primaryWeaponPanel:SetSize(0, EFGM.MenuScale(55))
+    function primaryWeaponPanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Primary Weapon keybind", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local primaryWeapon = vgui.Create("DBinder", primaryWeaponPanel)
+    primaryWeapon:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(30))
+    primaryWeapon:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
+    primaryWeapon:SetFont("PuristaBold18")
+    primaryWeapon:SetSelectedNumber(GetConVar("efgm_bind_equip_primary1"):GetInt())
+    function primaryWeapon:OnChange(num)
+
+        RunConsoleCommand("efgm_bind_equip_primary1", primaryWeapon:GetSelectedNumber())
+
+    end
+
+    local primaryWeaponTwoPanel = vgui.Create("DPanel", controls)
+    primaryWeaponTwoPanel:Dock(TOP)
+    primaryWeaponTwoPanel:SetSize(0, EFGM.MenuScale(55))
+    function primaryWeaponTwoPanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Primary Weapon #2 keybind", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local primaryWeaponTwo = vgui.Create("DBinder", primaryWeaponTwoPanel)
+    primaryWeaponTwo:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(30))
+    primaryWeaponTwo:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
+    primaryWeaponTwo:SetFont("PuristaBold18")
+    primaryWeaponTwo:SetSelectedNumber(GetConVar("efgm_bind_equip_primary2"):GetInt())
+    function primaryWeaponTwo:OnChange(num)
+
+        RunConsoleCommand("efgm_bind_equip_primary2", primaryWeaponTwo:GetSelectedNumber())
+
+    end
+
+    local secondaryWeaponPanel = vgui.Create("DPanel", controls)
+    secondaryWeaponPanel:Dock(TOP)
+    secondaryWeaponPanel:SetSize(0, EFGM.MenuScale(55))
+    function secondaryWeaponPanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Secondary Weapon keybind", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local secondaryWeapon = vgui.Create("DBinder", secondaryWeaponPanel)
+    secondaryWeapon:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(30))
+    secondaryWeapon:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
+    secondaryWeapon:SetFont("PuristaBold18")
+    secondaryWeapon:SetSelectedNumber(GetConVar("efgm_bind_equip_secondary"):GetInt())
+    function secondaryWeapon:OnChange(num)
+
+        RunConsoleCommand("efgm_bind_equip_secondary", secondaryWeapon:GetSelectedNumber())
+
+    end
+
+    local meleeWeaponPanel = vgui.Create("DPanel", controls)
+    meleeWeaponPanel:Dock(TOP)
+    meleeWeaponPanel:SetSize(0, EFGM.MenuScale(55))
+    function meleeWeaponPanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Melee Weapon keybind", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local meleeWeapon = vgui.Create("DBinder", meleeWeaponPanel)
+    meleeWeapon:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(30))
+    meleeWeapon:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
+    meleeWeapon:SetFont("PuristaBold18")
+    meleeWeapon:SetSelectedNumber(GetConVar("efgm_bind_equip_melee"):GetInt())
+    function meleeWeapon:OnChange(num)
+
+        RunConsoleCommand("efgm_bind_equip_melee", meleeWeapon:GetSelectedNumber())
+
+    end
+
+    local utilityThrowablePanel = vgui.Create("DPanel", controls)
+    utilityThrowablePanel:Dock(TOP)
+    utilityThrowablePanel:SetSize(0, EFGM.MenuScale(55))
+    function utilityThrowablePanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Utility/Throwable keybind", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local utilityThrowable = vgui.Create("DBinder", utilityThrowablePanel)
+    utilityThrowable:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(30))
+    utilityThrowable:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
+    utilityThrowable:SetFont("PuristaBold18")
+    utilityThrowable:SetSelectedNumber(GetConVar("efgm_bind_equip_utility"):GetInt())
+    function utilityThrowable:OnChange(num)
+
+        RunConsoleCommand("efgm_bind_equip_utility", utilityThrowable:GetSelectedNumber())
+
+    end
+
     -- interface
+
+    local hudEnablePanel = vgui.Create("DPanel", interface)
+    hudEnablePanel:Dock(TOP)
+    hudEnablePanel:SetSize(0, EFGM.MenuScale(50))
+    function hudEnablePanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Enable HUD", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local hudEnable = vgui.Create("DCheckBox", hudEnablePanel)
+    hudEnable:SetPos(EFGM.MenuScale(152), EFGM.MenuScale(30))
+    hudEnable:SetConVar("efgm_hud_enable")
+    hudEnable:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
 
     local hudScalePanel = vgui.Create("DPanel", interface)
     hudScalePanel:Dock(TOP)

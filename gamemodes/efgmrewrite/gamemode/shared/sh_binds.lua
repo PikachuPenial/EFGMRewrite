@@ -17,7 +17,7 @@ if CLIENT then
     CreateClientConVar("efgm_bind_equip_primary1", KEY_1, true, true, "Determines the keybind that equips your first primary")
     CreateClientConVar("efgm_bind_equip_primary2", KEY_2, true, true, "Determines the keybind that equips your second primary")
     CreateClientConVar("efgm_bind_equip_secondary", KEY_3, true, true, "Determines the keybind that equips your secondary")
-    CreateClientConVar("efgm_bind_equip_knife", KEY_V, true, true, "Determines the keybind that equips your knife")
+    CreateClientConVar("efgm_bind_equip_melee", KEY_4, true, true, "Determines the keybind that equips your melee")
     CreateClientConVar("efgm_bind_equip_utility", KEY_G, true, true, "Determines the keybind that equips your grenade")
 
 end
@@ -96,7 +96,7 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
         end
 
         -- equip melee
-        if button == ply:GetInfoNum("efgm_bind_equip_knife", KEY_4) then
+        if button == ply:GetInfoNum("efgm_bind_equip_melee", KEY_4) then
             ply:ConCommand("efgm_inventory_equip 32")
             return
         end
@@ -265,7 +265,7 @@ if game.SinglePlayer() then
         end
 
         -- equip melee
-        if button == ply:GetInfoNum("efgm_bind_equip_knife", KEY_4) then
+        if button == ply:GetInfoNum("efgm_bind_equip_melee", KEY_4) then
             ply:ConCommand("efgm_inventory_equip 32")
             return
         end

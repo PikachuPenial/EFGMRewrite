@@ -25,7 +25,7 @@ cat = { -- theres a limit on 16 each but idc
     SMG = 6,
     Sniper = 7,
     Pistol = 8,
-    Knife = 9,
+    Melee = 9,
     Grenade = 10,
     RPG = 11,
 

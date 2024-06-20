@@ -7,6 +7,7 @@ if CLIENT then
 
     CreateClientConVar("efgm_music", 1, false, true, "Enable/disable the music", 0, 1)
     CreateClientConVar("efgm_musicvolume", 1, false, true, "Increase or lower the volume of the music", 0, 2)
+    CreateClientConVar("efgm_hud_enable", 1, false, true, "Adjust the visibility of the user interface", 0, 1)
     CreateClientConVar("efgm_hud_scale", 1, false, true, "Adjust the scale for all user interface items", 0.5, 2)
     CreateClientConVar("efgm_menu_parallax", 1, false, true, "Adjust the main menu parallax/jiggle when moving your cursor", 0, 1)
     CreateClientConVar("efgm_menu_color_red", 0, false, true, "Adjust the red coloring of the main menu", 0, 255)

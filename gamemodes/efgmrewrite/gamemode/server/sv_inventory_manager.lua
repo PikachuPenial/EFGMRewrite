@@ -146,7 +146,7 @@ hook.Add("PlayerCanPickupWeapon", "WeaponPickup", function(ply, weapon)
 
     if flippedDebugMeleeWep[name] != nil then
 
-        if activeSlots[steamID][KEY_V] == nil then activeSlots[steamID][KEY_V] = name ply:PrintMessage(HUD_PRINTTALK, "Picked up "..name.."!") return true
+        if activeSlots[steamID][KEY_4] == nil then activeSlots[steamID][KEY_4] = name ply:PrintMessage(HUD_PRINTTALK, "Picked up "..name.."!") return true
         else return false end
 
     end
@@ -166,7 +166,7 @@ hook.Add("PlayerDroppedWeapon", "WeaponDrop", function(ply, weapon)
     if activeSlots[steamID][KEY_2] == name then activeSlots[steamID][KEY_2] = nil ply:PrintMessage(HUD_PRINTTALK, "Dropped "..name.."!") return end
     if activeSlots[steamID][KEY_3] == name then activeSlots[steamID][KEY_3] = nil ply:PrintMessage(HUD_PRINTTALK, "Dropped "..name.."!") return end
     if activeSlots[steamID][KEY_G] == name then activeSlots[steamID][KEY_G] = nil ply:PrintMessage(HUD_PRINTTALK, "Dropped "..name.."!") return end
-    if activeSlots[steamID][KEY_V] == name then activeSlots[steamID][KEY_V] = nil ply:PrintMessage(HUD_PRINTTALK, "Dropped "..name.."!") return end
+    if activeSlots[steamID][KEY_4] == name then activeSlots[steamID][KEY_4] = nil ply:PrintMessage(HUD_PRINTTALK, "Dropped "..name.."!") return end
 
 end)
 

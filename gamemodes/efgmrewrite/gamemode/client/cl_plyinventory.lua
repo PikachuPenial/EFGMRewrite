@@ -83,7 +83,7 @@ hook.Add("HUDWeaponPickedUp", "WeaponPickedUp", function( weapon )
 
     if flippedDebugMeleeWep[name] != nil then
 
-        if activeSlots[KEY_V] == nil then activeSlots[KEY_V] = name return false
+        if activeSlots[KEY_4] == nil then activeSlots[KEY_4] = name return false
         else return false end
 
     end

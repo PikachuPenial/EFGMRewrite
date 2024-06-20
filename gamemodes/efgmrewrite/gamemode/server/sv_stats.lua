@@ -13,10 +13,12 @@ function Stats.InitializeAll(ply)
 	InitializeNetworkInt(ply, "MoneyEarned", 0) -- all money earned
 	InitializeNetworkInt(ply, "MoneySpent", 0) -- all money spent (money would just be MoneyEarned - MoneySpent)
 	InitializeNetworkInt(ply, "Time", 0) -- playtime in minutes
+    InitializeNetworkInt(ply, "StashValie") -- value of all items in stash
 
     -- combat
 	InitializeNetworkInt(ply, "Kills", 0)
 	InitializeNetworkInt(ply, "Deaths", 0)
+    InitializeNetworkInt(ply, "Suicides", 0)
 	InitializeNetworkInt(ply, "DamageGiven", 0)
 	InitializeNetworkInt(ply, "DamageRecieved", 0)
 	InitializeNetworkInt(ply, "DamageHealed", 0)
@@ -25,6 +27,12 @@ function Stats.InitializeAll(ply)
 	InitializeNetworkInt(ply, "Extractions", 0)
 	InitializeNetworkInt(ply, "Quits", 0)
 	InitializeNetworkInt(ply, "FullRaids", 0) -- the amount of full raids played, counted if you join before the first minute and stay until the raid ends
+
+    -- streaks
+    InitializeNetworkInt(ply, "CurrentKillStreak")
+    InitializeNetworkInt(ply, "BestKillStreak")
+    InitializeNetworkInt(ply, "CurrentExtractionStreak")
+    InitializeNetworkInt(ply, "BestExtractionStreak")
 
 end
 
@@ -37,10 +45,12 @@ function Stats.UninitializeAll(ply)
 	UninitializeNetworkInt(ply, "MoneyEarned")
 	UninitializeNetworkInt(ply, "MoneySpent")
 	UninitializeNetworkInt(ply, "Time")
+    UninitializeNetworkInt(ply, "StashValie")
 
     -- combat
 	UninitializeNetworkInt(ply, "Kills")
 	UninitializeNetworkInt(ply, "Deaths")
+    UninitializeNetworkInt(ply, "Suicides")
 	UninitializeNetworkInt(ply, "DamageGiven")
 	UninitializeNetworkInt(ply, "DamageRecieved")
 	UninitializeNetworkInt(ply, "DamageHealed")
@@ -49,6 +59,12 @@ function Stats.UninitializeAll(ply)
 	UninitializeNetworkInt(ply, "Extractions")
 	UninitializeNetworkInt(ply, "Quits")
 	UninitializeNetworkInt(ply, "FullRaids")
+
+    -- streaks
+    UninitializeNetworkInt(ply, "CurrentKillStreak")
+    UninitializeNetworkInt(ply, "BestKillStreak")
+    UninitializeNetworkInt(ply, "CurrentExtractionStreak")
+    UninitializeNetworkInt(ply, "BestExtractionStreak")
 
 end
 
@@ -63,10 +79,12 @@ function Stats.GetAll(ply)
     tbl["MoneyEarned"] = ply:GetNWInt("MoneyEarned")
     tbl["MoneySpent"] = ply:GetNWInt("MoneySpent")
     tbl["Time"] = ply:GetNWInt("Time")
+    tbl["StashValie"] = ply:GetNWInt("StashValie")
 
     -- combat
     tbl["Kills"] = ply:GetNWInt("Kills")
     tbl["Deaths"] = ply:GetNWInt("Deaths")
+    tbl["Suicides"] = ply:GetNWInt("Suicides")
     tbl["DamageGiven"] = ply:GetNWInt("DamageGiven")
     tbl["DamageRecieved"] = ply:GetNWInt("DamageRecieved")
     tbl["DamageHealed"] = ply:GetNWInt("DamageHealed")
@@ -75,6 +93,12 @@ function Stats.GetAll(ply)
     tbl["Extractions"] = ply:GetNWInt("Extractions")
     tbl["Quits"] = ply:GetNWInt("Quits")
     tbl["FullRaids"] = ply:GetNWInt("FullRaids")
+
+    -- streaks
+    tbl["CurrentKillStreak"] = ply:GetNWInt("CurrentKillStreak")
+    tbl["BestKillStreak"] = ply:GetNWInt("BestKillStreak")
+    tbl["CurrentExtractionStreak"] = ply:GetNWInt("CurrentExtractionStreak")
+    tbl["BestExtractionStreak"] = ply:GetNWInt("BestExtractionStreak")
 
     return tbl
 
