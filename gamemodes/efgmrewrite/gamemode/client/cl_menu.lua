@@ -826,7 +826,8 @@ function Menu.OpenTab.Match()
 
             if !protected then status = "PUBLIC" else status = "PRIVATE" end
 
-            local squadEntry = vgui.Create("DPanel", availableSquadsList)
+            local squadEntry = vgui.Create("DButton", availableSquadsList)
+            squadEntry:SetText("")
             squadEntry:SetSize(0, EFGM.MenuScale(55))
             squadEntry.Paint = function(s, w, h)
 
@@ -842,9 +843,18 @@ function Menu.OpenTab.Match()
 
             end
 
+            squadEntry.DoClick = function(s, w, h)
+
+                if open and !protected then
+
+                    RunConsoleCommand("efgm_squad_join", name, password)
+
+                end
+
+            end
+
             -- mouse position
             local x, y = 0, 0
-            local squadPopOut
 
             squadEntry.OnCursorEntered = function(s)
 
@@ -884,19 +894,32 @@ function Menu.OpenTab.Match()
                     -- draw name for each member
                     for k, v in SortedPairs(members) do
 
-                        draw.SimpleTextOutlined(v:GetName(), "PuristaBold18", EFGM.MenuScale(27), (k * EFGM.MenuScale(20)) + EFGM.MenuScale(10), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                        if v == owner then
+
+                            draw.SimpleTextOutlined(v:GetName() .. "*", "PuristaBold18", EFGM.MenuScale(27), (k * EFGM.MenuScale(20)) + EFGM.MenuScale(10), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                        else
+
+                            draw.SimpleTextOutlined(v:GetName(), "PuristaBold18", EFGM.MenuScale(27), (k * EFGM.MenuScale(20)) + EFGM.MenuScale(10), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                        end
 
                     end
 
                     if !open then
-                        draw.SimpleTextOutlined("SQUAD FULL!", "PuristaBold18", EFGM.MenuScale(5), h - EFGM.MenuScale(23), Color(255, 0, 0, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.whiteColor)
+
+                        draw.SimpleTextOutlined("SQUAD FULL!", "PuristaBold18", EFGM.MenuScale(5), h - EFGM.MenuScale(23), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(255, 0, 0, 255))
                         return
+
                     end
 
                     if !protected then
+
                         draw.SimpleTextOutlined("CLICK TO JOIN!", "PuristaBold18", EFGM.MenuScale(5), h - EFGM.MenuScale(23), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
                     else
+
                         draw.SimpleTextOutlined("ENTER PASSWORD TO JOIN!", "PuristaBold18", EFGM.MenuScale(5), h - EFGM.MenuScale(23), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
                     end
 
                 end
@@ -913,6 +936,7 @@ function Menu.OpenTab.Match()
 
                 -- create password entry if squad is password protected and not full
                 if protected and open then
+
                     squadPasswordEntryBG = vgui.Create("DPanel", squadPopOut)
                     squadPasswordEntryBG:SetPos(EFGM.MenuScale(5), squadPopOut:GetTall() - EFGM.MenuScale(43))
                     squadPasswordEntryBG:SetSize(EFGM.MenuScale(181), EFGM.MenuScale(20))
@@ -929,9 +953,10 @@ function Menu.OpenTab.Match()
 
                     squadPasswordEntry.OnEnter = function(self)
 
-                        -- its 4am will do this later :steamhappy:
+                        RunConsoleCommand("efgm_squad_join", name, password)
 
                     end
+
                 end
 
             end
@@ -951,6 +976,8 @@ function Menu.OpenTab.Match()
 
     net.Receive("SendSquadData", function(len, ply)
 
+        availableSquadsList:Clear()
+        if IsValid(squadPopOut) then squadPopOut:Remove() end
         squadArray = table.Copy(net.ReadTable())
         GenerateJoinableSquads(squadArray)
 

@@ -87,6 +87,7 @@ function GM:PlayerSpawn(ply)
 	ply:SetupHands()
 	ply:AddEFlags(EFL_NO_DAMAGE_FORCES) -- disables knockback being applied when damage is taken
 	ply:SendLua("RunConsoleCommand('r_cleardecals')") -- clear decals for that extra 2 fps
+
 end
 
 hook.Add("PlayerInitialSpawn", "InitFirstSpawn", function(ply)
