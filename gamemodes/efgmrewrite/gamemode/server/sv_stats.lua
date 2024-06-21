@@ -13,7 +13,7 @@ function Stats.InitializeAll(ply)
 	InitializeNetworkInt(ply, "MoneyEarned", 0) -- all money earned
 	InitializeNetworkInt(ply, "MoneySpent", 0) -- all money spent (money would just be MoneyEarned - MoneySpent)
 	InitializeNetworkInt(ply, "Time", 0) -- playtime in minutes
-    InitializeNetworkInt(ply, "StashValie") -- value of all items in stash
+    InitializeNetworkInt(ply, "StashValie", 1) -- value of all items in stash
 
     -- combat
 	InitializeNetworkInt(ply, "Kills", 0)
@@ -29,10 +29,10 @@ function Stats.InitializeAll(ply)
 	InitializeNetworkInt(ply, "FullRaids", 0) -- the amount of full raids played, counted if you join before the first minute and stay until the raid ends
 
     -- streaks
-    InitializeNetworkInt(ply, "CurrentKillStreak")
-    InitializeNetworkInt(ply, "BestKillStreak")
-    InitializeNetworkInt(ply, "CurrentExtractionStreak")
-    InitializeNetworkInt(ply, "BestExtractionStreak")
+    InitializeNetworkInt(ply, "CurrentKillStreak", 1)
+    InitializeNetworkInt(ply, "BestKillStreak", 1)
+    InitializeNetworkInt(ply, "CurrentExtractionStreak", 1)
+    InitializeNetworkInt(ply, "BestExtractionStreak", 1)
 
 end
 

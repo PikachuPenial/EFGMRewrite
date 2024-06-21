@@ -121,7 +121,7 @@ if SERVER then
                         timer.Simple(0.5, function() -- temporary invulnerability bc v:Lock() fucked shit
 
                             v:SetRaidStatus(status, spawn.SpawnGroup or "")
-                            v:SetNW2Bool("PlayerInSquad", false)
+                            v:SetNW2Var("PlayerInSquad", nil)
 
                         end)
 

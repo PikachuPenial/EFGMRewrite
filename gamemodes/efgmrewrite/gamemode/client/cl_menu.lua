@@ -598,6 +598,8 @@ function Menu.OpenTab.Match()
         end
     end
 
+    local squad = LocalPlayer():GetNW2String("PlayerInSquad", nil)
+
     local squadPanel = vgui.Create("DPanel", contents)
     squadPanel:Dock(LEFT)
     squadPanel:SetSize(EFGM.MenuScale(320), 0)
@@ -812,7 +814,7 @@ function Menu.OpenTab.Match()
 
     local availableSquadsList = vgui.Create("DListLayout", availableSquadsPanel)
     availableSquadsList:Dock(TOP)
-    availableSquadsList:SetSize(0, EFGM.MenuScale(330))
+    availableSquadsList:SetSize(EFGM.MenuScale(300), EFGM.MenuScale(330))
 
     function GenerateJoinableSquads(array)
 
@@ -825,7 +827,7 @@ function Menu.OpenTab.Match()
             local password = v.PASSWORD
             local limit = v.LIMIT
             local members = v.MEMBERS
-            local memberCount = table.Count(v.MEMBERS)
+            local memberCount = table.Count(members)
             local open = limit != memberCount
             local protected = string.len(password) != 0
 
@@ -979,68 +981,69 @@ function Menu.OpenTab.Match()
 
     end
 
+    local function RenderCurrentSquad(array)
+
+        if squad == "nil" then
+
+
+
+            return
+        end
+
+        local name = squad
+        local color = array[squad].COLOR
+        local owner = array[squad].OWNER
+        local status
+        local password = array[squad].PASSWORD
+        local limit = array[squad].LIMIT
+        local members = array[squad].MEMBERS
+        local memberCount = table.Count(array[squad].MEMBERS)
+        local open = limit != memberCount
+        local protected = string.len(password) != 0
+
+        local currentSquadPanel = vgui.Create("DPanel", contents)
+        currentSquadPanel:Dock(LEFT)
+        currentSquadPanel:SetSize(EFGM.MenuScale(320), 0)
+        currentSquadPanel.Paint = function(s, w, h)
+
+            surface.SetDrawColor(Color(0, 0, 0, 0))
+            surface.DrawRect(0, 0, w, h)
+
+        end
+
+        local currentSquadName = vgui.Create("DPanel", currentSquadPanel)
+        currentSquadName:Dock(TOP)
+        currentSquadName:SetSize(0, EFGM.MenuScale(32))
+        function currentSquadName:Paint(w, h)
+
+            surface.SetDrawColor(Color(0, 0, 0, 225))
+            surface.DrawRect(0, 0, w, h)
+
+            surface.SetDrawColor(Color(color.RED, color.GREEN, color.BLUE, 45))
+            surface.DrawRect(0, 0, w, h)
+
+            surface.SetDrawColor(Color(color.RED, color.GREEN, color.BLUE, 255))
+            surface.DrawRect(0, 0, w, 5)
+
+            draw.SimpleTextOutlined(squad, "PuristaBold32", w / 2, 0, MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        end
+
+    end
+
     net.Receive("SendSquadData", function(len, ply)
 
+        squad = LocalPlayer():GetNW2String("PlayerInSquad", nil)
         availableSquadsList:Clear()
         if IsValid(squadPopOut) then squadPopOut:Remove() end
         squadArray = table.Copy(net.ReadTable())
         GenerateJoinableSquads(squadArray)
+        RenderCurrentSquad(squadArray)
 
     end )
 
-    net.Start("GrabSquadData", true)
+    net.Start("GrabSquadData")
     net.SendToServer()
-
-    local joinSquadLegacyTitle = vgui.Create("DPanel", squadPanel)
-    joinSquadLegacyTitle:Dock(TOP)
-    joinSquadLegacyTitle:SetSize(0, EFGM.MenuScale(32))
-    function joinSquadLegacyTitle:Paint(w, h)
-
-        surface.SetDrawColor(Color(0, 0, 0, 0))
-        surface.DrawRect(0, 0, w, h)
-
-        draw.SimpleTextOutlined("JOIN SQUAD (LEGACY)", "PuristaBold32", w / 2, 0, MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-    end
-
-    squadJoinLegacyPanel = vgui.Create("DPanel", squadPanel)
-    squadJoinLegacyPanel:Dock(TOP)
-    squadJoinLegacyPanel:SetSize(0, EFGM.MenuScale(55 + 55))
-    squadJoinLegacyPanel.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Color(0, 0, 0, 0))
-        surface.DrawRect(0, 0, w, h)
-
-        draw.SimpleTextOutlined("Squad Name", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-    end
-
-    squadJoinLegacyBG = vgui.Create("DPanel", squadJoinLegacyPanel)
-    squadJoinLegacyBG:SetPos(EFGM.MenuScale(85), EFGM.MenuScale(30))
-    squadJoinLegacyBG:SetSize(EFGM.MenuScale(150), EFGM.MenuScale(20))
-    squadJoinLegacyBG:SetBackgroundColor(Color(25, 25, 25, 155))
-
-    local squadJoinLegacy = vgui.Create("DTextEntry", squadJoinLegacyBG)
-    squadJoinLegacy:Dock(FILL)
-    squadJoinLegacy:SetPlaceholderText(" ")
-    squadJoinLegacy:SetFont("PuristaBold18")
-    squadJoinLegacy:SetPaintBackground(false)
-    squadJoinLegacy:SetTextColor(MenuAlias.whiteColor)
-    squadJoinLegacy:SetCursorColor(MenuAlias.whiteColor)
-
-    squadJoinLegacy.OnEnter = function(self)
-        RunConsoleCommand("efgm_team_join", self:GetValue())
-    end
-
-    local squadLeaveLegacy = vgui.Create("DButton", squadJoinLegacyPanel)
-    squadLeaveLegacy:SetPos(EFGM.MenuScale(85), EFGM.MenuScale(55))
-    squadLeaveLegacy:SetSize(EFGM.MenuScale(150), EFGM.MenuScale(20))
-    squadLeaveLegacy:SetFont("PuristaBold18")
-    squadLeaveLegacy:SetText("Leave Current Squad")
-
-    function squadLeaveLegacy:DoClick()
-        RunConsoleCommand("efgm_team_leave")
-    end
 
 end
 

@@ -1,7 +1,7 @@
 
 hook.Add("PlayerInitialSpawn", "SquadFirstSpawn", function(ply)
 
-    ply:SetNW2Bool("PlayerInSquad", false)
+    ply:SetNW2String("PlayerInSquad", "nil")
 
 end)
 
@@ -9,7 +9,7 @@ function GM:OnReloaded()
 
     for k, v in pairs(player:GetAll()) do
 
-        v:SetNW2Bool("PlayerInSquad", false)
+        v:SetNW2String("PlayerInSquad", "nil")
 
     end
 
@@ -45,7 +45,7 @@ if SERVER then
 
     local function PlayerInSquad(ply)
 
-        if ply:GetNW2Bool("PlayerInSquad", false) then
+        if ply:GetNW2String("PlayerInSquad", "nil") != "nil" then
 
             return true
 
@@ -104,7 +104,7 @@ if SERVER then
 
         for k, v in pairs(SQUADS[squad].MEMBERS) do
 
-            v:SetNW2Bool("PlayerInSquad", false)
+            v:SetNW2String("PlayerInSquad", "nil")
 
         end
 
@@ -149,7 +149,7 @@ if SERVER then
 
         SQUADS[name] = {OWNER = ply, PASSWORD = password, LIMIT = limit, COLOR = {RED = r, GREEN = g, BLUE = b}, MEMBERS = {ply}}
 
-        ply:SetNW2Bool("PlayerInSquad", true)
+        ply:SetNW2String("PlayerInSquad", name)
         NetworkSquadInfoToClients()
 
     end)
@@ -167,7 +167,7 @@ if SERVER then
 
         table.insert(SQUADS[name].MEMBERS, ply)
 
-        ply:SetNW2Bool("PlayerInSquad", true)
+        ply:SetNW2String("PlayerInSquad", name)
         NetworkSquadInfoToClients()
 
     end)
@@ -179,7 +179,7 @@ if SERVER then
         local squad = GetSquadOfPlayer(ply)
 
         table.RemoveByValue(SQUADS[squad].MEMBERS, ply)
-        ply:SetNW2Bool("PlayerInSquad", false)
+        ply:SetNW2String("PlayerInSquad", "nil")
 
         if table.Count(SQUADS[squad].MEMBERS) == 0 then
 
