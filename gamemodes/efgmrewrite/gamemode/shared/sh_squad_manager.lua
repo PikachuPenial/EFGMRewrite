@@ -156,7 +156,7 @@ if SERVER then
 
     net.Receive("PlayerJoinSquad", function(len, ply)
 
-        if PlayerInSquad(ply) then return end
+        -- if PlayerInSquad(ply) then return end
 
         local name = net.ReadString()
         local password = net.ReadString()

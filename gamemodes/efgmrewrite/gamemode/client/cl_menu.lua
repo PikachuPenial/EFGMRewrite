@@ -101,8 +101,8 @@ function Menu:Initialize(openTo)
     self.MenuFrame = menuFrame
 
     local tabParentPanel = vgui.Create("DPanel", self.MenuFrame)
-    tabParentPanel:Dock(TOP)
-    tabParentPanel:SetSize(0, EFGM.MenuScale(25))
+    tabParentPanel:SetPos(0, 0)
+    tabParentPanel:SetSize(ScrW(), EFGM.MenuScale(41))
 
     function tabParentPanel:Paint(w, h)
 
@@ -162,8 +162,20 @@ function Menu:Initialize(openTo)
     local statsTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
     statsTab:Dock(LEFT)
     statsTab:SetFont("PuristaBold18")
-    statsTab:SetSize(surface.GetTextSize(tostring(LocalPlayer():Name())) + EFGM.MenuScale(50), 0)
-    statsTab:SetText(LocalPlayer():Name())
+    statsTab:SetSize(EFGM.MenuScale(38), 0)
+    statsTab:SetText("")
+
+    local statsIcon = vgui.Create("DImage", statsTab)
+    statsIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
+    statsIcon:SetSize(36, 36)
+    statsIcon:SetImage("icons/profile_icon.png")
+
+    statsTab.Paint = function(s, w, h)
+
+        surface.SetDrawColor(Color(25, 25, 25, 155))
+        surface.DrawRect(0, 0, w, h)
+
+    end
 
     function statsTab:DoClick()
 
@@ -190,8 +202,20 @@ function Menu:Initialize(openTo)
     local matchTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
     matchTab:Dock(LEFT)
     matchTab:SetFont("PuristaBold18")
-    matchTab:SetSize(surface.GetTextSize("Match") + EFGM.MenuScale(50), 0)
-    matchTab:SetText("Match")
+    matchTab:SetSize(EFGM.MenuScale(38), 0)
+    matchTab:SetText("")
+
+    local matchIcon = vgui.Create("DImage", matchTab)
+    matchIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
+    matchIcon:SetSize(36, 36)
+    matchIcon:SetImage("icons/match_icon.png")
+
+    matchTab.Paint = function(s, w, h)
+
+        surface.SetDrawColor(Color(25, 25, 25, 155))
+        surface.DrawRect(0, 0, w, h)
+
+    end
 
     function matchTab:DoClick()
 
@@ -221,8 +245,20 @@ function Menu:Initialize(openTo)
     local inventoryTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
     inventoryTab:Dock(LEFT)
     inventoryTab:SetFont("PuristaBold18")
-    inventoryTab:SetSize(surface.GetTextSize("Inventory") + EFGM.MenuScale(50), 0)
-    inventoryTab:SetText("Inventory")
+    inventoryTab:SetSize(EFGM.MenuScale(38), 0)
+    inventoryTab:SetText("")
+
+    local inventoryIcon = vgui.Create("DImage", inventoryTab)
+    inventoryIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
+    inventoryIcon:SetSize(36, 36)
+    inventoryIcon:SetImage("icons/inventory_icon.png")
+
+    inventoryTab.Paint = function(s, w, h)
+
+        surface.SetDrawColor(Color(25, 25, 25, 155))
+        surface.DrawRect(0, 0, w, h)
+
+    end
 
     function inventoryTab:DoClick()
 
@@ -252,8 +288,20 @@ function Menu:Initialize(openTo)
     local intelTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
     intelTab:Dock(LEFT)
     intelTab:SetFont("PuristaBold18")
-    intelTab:SetSize(surface.GetTextSize("Intel") + EFGM.MenuScale(50), 0)
-    intelTab:SetText("Intel")
+    intelTab:SetSize(EFGM.MenuScale(38), 0)
+    intelTab:SetText("")
+
+    local intelIcon = vgui.Create("DImage", intelTab)
+    intelIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
+    intelIcon:SetSize(36, 36)
+    intelIcon:SetImage("icons/intel_icon.png")
+
+    intelTab.Paint = function(s, w, h)
+
+        surface.SetDrawColor(Color(25, 25, 25, 155))
+        surface.DrawRect(0, 0, w, h)
+
+    end
 
     function intelTab:DoClick()
 
@@ -293,8 +341,20 @@ function Menu:Initialize(openTo)
     local settingsTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
     settingsTab:Dock(LEFT)
     settingsTab:SetFont("PuristaBold18")
-    settingsTab:SetSize(surface.GetTextSize("Settings") + EFGM.MenuScale(50), 0)
-    settingsTab:SetText("Settings")
+    settingsTab:SetSize(EFGM.MenuScale(38), 0)
+    settingsTab:SetText("")
+
+    local settingsIcon = vgui.Create("DImage", settingsTab)
+    settingsIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
+    settingsIcon:SetSize(36, 36)
+    settingsIcon:SetImage("icons/settings_icon.png")
+
+    settingsTab.Paint = function(s, w, h)
+
+        surface.SetDrawColor(Color(25, 25, 25, 155))
+        surface.DrawRect(0, 0, w, h)
+
+    end
 
     function settingsTab:DoClick()
 
@@ -587,18 +647,40 @@ function Menu.OpenTab.Match()
             copy:AddOption("Copy SteamID64", function() SetClipboardText(v:SteamID64()) end):SetIcon("icon16/cut.png")
 
             if v != Menu.Player then
+
                 local mute = dropdown:AddOption("Mute Player", function(self)
-                    if v:IsMuted() then v:SetMuted(false) else v:SetMuted(true) end
+
+                    if v:IsMuted() then
+
+                        v:SetMuted(false)
+
+                    else
+
+                        v:SetMuted(true)
+
+                    end
+
                 end)
 
-                if v:IsMuted() then mute:SetIcon("icon16/sound.png") mute:SetText("Unmute Player") else mute:SetIcon("icon16/sound_mute.png") mute:SetText("Mute Player") end
+                if v:IsMuted() then
+
+                    mute:SetIcon("icon16/sound.png")
+                    mute:SetText("Unmute Player")
+                else
+
+                    mute:SetIcon("icon16/sound_mute.png")
+                    mute:SetText("Mute Player")
+
+                end
+
             end
 
             dropdown:Open()
+        endwn:Open()
         end
     end
 
-    local squad = LocalPlayer():GetNW2String("PlayerInSquad", nil)
+    local squad = Menu.Player:GetNW2String("PlayerInSquad", nil)
 
     local squadPanel = vgui.Create("DPanel", contents)
     squadPanel:Dock(LEFT)
@@ -912,6 +994,9 @@ function Menu.OpenTab.Match()
 
                     end
 
+                    -- don't show join text if client is already in a squad
+                    if squad != "nil" then return end
+
                     if !open then
 
                         draw.SimpleTextOutlined("SQUAD FULL!", "PuristaBold18", EFGM.MenuScale(5), h - EFGM.MenuScale(23), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(255, 0, 0, 255))
@@ -942,7 +1027,7 @@ function Menu.OpenTab.Match()
                 end
 
                 -- create password entry if squad is password protected and not full
-                if protected and open then
+                if protected and open and squad != "nil" then
 
                     squadPasswordEntryBG = vgui.Create("DPanel", squadPopOut)
                     squadPasswordEntryBG:SetPos(EFGM.MenuScale(5), squadPopOut:GetTall() - EFGM.MenuScale(43))
@@ -983,12 +1068,20 @@ function Menu.OpenTab.Match()
 
     local function RenderCurrentSquad(array)
 
+        local currentSquadPanel
+
         if squad == "nil" then
 
-
+            -- enable squad create button if client is not/no longer in a squad
+            squadColorPanel:SetSize(0, EFGM.MenuScale(110 + 20))
+            squadCreateButton:Show()
 
             return
         end
+
+        -- disable squad create button if client is a member of a squad
+        squadColorPanel:SetSize(0, EFGM.MenuScale(110))
+        squadCreateButton:Hide()
 
         local name = squad
         local color = array[squad].COLOR
@@ -998,10 +1091,11 @@ function Menu.OpenTab.Match()
         local limit = array[squad].LIMIT
         local members = array[squad].MEMBERS
         local memberCount = table.Count(array[squad].MEMBERS)
-        local open = limit != memberCount
         local protected = string.len(password) != 0
 
-        local currentSquadPanel = vgui.Create("DPanel", contents)
+        if !protected then status = "PUBLIC" else status = "PRIVATE" end
+
+        currentSquadPanel = vgui.Create("DPanel", contents)
         currentSquadPanel:Dock(LEFT)
         currentSquadPanel:SetSize(EFGM.MenuScale(320), 0)
         currentSquadPanel.Paint = function(s, w, h)
@@ -1013,10 +1107,10 @@ function Menu.OpenTab.Match()
 
         local currentSquadName = vgui.Create("DPanel", currentSquadPanel)
         currentSquadName:Dock(TOP)
-        currentSquadName:SetSize(0, EFGM.MenuScale(32))
+        currentSquadName:SetSize(0, EFGM.MenuScale(55))
         function currentSquadName:Paint(w, h)
 
-            surface.SetDrawColor(Color(0, 0, 0, 225))
+            surface.SetDrawColor(Color(0, 0, 0, 155))
             surface.DrawRect(0, 0, w, h)
 
             surface.SetDrawColor(Color(color.RED, color.GREEN, color.BLUE, 45))
@@ -1025,7 +1119,132 @@ function Menu.OpenTab.Match()
             surface.SetDrawColor(Color(color.RED, color.GREEN, color.BLUE, 255))
             surface.DrawRect(0, 0, w, 5)
 
-            draw.SimpleTextOutlined(squad, "PuristaBold32", w / 2, 0, MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            draw.SimpleTextOutlined(squad, "PuristaBold32", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            draw.SimpleTextOutlined(status, "PuristaBold18", w / 2, EFGM.MenuScale(32), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        end
+
+        local currentSquadMembers = vgui.Create("DPanel", currentSquadPanel)
+        currentSquadMembers:Dock(TOP)
+        currentSquadMembers:SetSize(0, EFGM.MenuScale(30) + (memberCount * EFGM.MenuScale(35)))
+        function currentSquadMembers:Paint(w, h)
+
+            surface.SetDrawColor(Color(color.RED, color.GREEN, color.BLUE, 10))
+            surface.DrawRect(0, 0, w, h)
+
+            draw.SimpleTextOutlined("MEMBERS", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(0), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            for k, v in SortedPairs(members) do
+
+                if v == owner then
+
+                    draw.SimpleTextOutlined(v:GetName() .. "*", "PuristaBold24", EFGM.MenuScale(40), (k * EFGM.MenuScale(35)) - EFGM.MenuScale(3), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                else
+
+                    draw.SimpleTextOutlined(v:GetName(), "PuristaBold24", EFGM.MenuScale(40), (k * EFGM.MenuScale(35)) - EFGM.MenuScale(3), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                end
+
+            end
+
+        end
+
+        -- draw profile picture for each member
+        for k, v in SortedPairs(members) do
+
+            local memberPFP = vgui.Create("AvatarImage", currentSquadMembers)
+            memberPFP:SetPos(EFGM.MenuScale(5), (k * EFGM.MenuScale(35)) - EFGM.MenuScale(5))
+            memberPFP:SetSize(EFGM.MenuScale(30), EFGM.MenuScale(30))
+            memberPFP:SetPlayer(v, 184)
+
+            memberPFP.OnMousePressed = function()
+                local dropdown = DermaMenu()
+
+                local profile = dropdown:AddOption("Open Steam Profile", function() gui.OpenURL("http://steamcommunity.com/profiles/" .. v:SteamID64()) end)
+                profile:SetIcon("icon16/page_find.png")
+
+                dropdown:AddSpacer()
+
+                local copy = dropdown:AddSubMenu("Copy...")
+                copy:AddOption("Copy Name", function() SetClipboardText(v:GetName()) end):SetIcon("icon16/cut.png")
+                copy:AddOption("Copy SteamID64", function() SetClipboardText(v:SteamID64()) end):SetIcon("icon16/cut.png")
+
+                if v != Menu.Player then
+
+                    local mute = dropdown:AddOption("Mute Player", function(self)
+
+                        if v:IsMuted() then
+
+                            v:SetMuted(false) 
+                        
+                        else
+
+                            v:SetMuted(true)
+
+                        end
+
+                    end)
+
+                    if v:IsMuted() then
+
+                        mute:SetIcon("icon16/sound.png")
+                        mute:SetText("Unmute Player")
+                    else
+
+                        mute:SetIcon("icon16/sound_mute.png")
+                        mute:SetText("Mute Player")
+
+                    end
+
+                end
+
+                dropdown:Open()
+            end
+
+        end
+
+        local currentSquadLeavePanel = vgui.Create("DPanel", currentSquadPanel)
+        currentSquadLeavePanel:Dock(TOP)
+        currentSquadLeavePanel:SetSize(0, EFGM.MenuScale(35))
+        function currentSquadLeavePanel:Paint(w, h)
+
+            surface.SetDrawColor(Color(color.RED, color.GREEN, color.BLUE, 10))
+            surface.DrawRect(0, 0, w, h)
+
+        end
+
+        local currentSquadLeaveButton = vgui.Create("DButton", currentSquadLeavePanel)
+        currentSquadLeaveButton:SetPos(EFGM.MenuScale(85), EFGM.MenuScale(5))
+        currentSquadLeaveButton:SetSize(EFGM.MenuScale(150), EFGM.MenuScale(25))
+        currentSquadLeaveButton:SetText("")
+        currentSquadLeaveButton.Paint = function(s, w, h)
+
+            surface.SetDrawColor(Color(25, 25, 25, 155))
+            surface.DrawRect(0, 0, w, h)
+
+            if owner != Menu.Player then
+
+                draw.SimpleTextOutlined("Leave Squad", "PuristaBold24", w / 2, EFGM.MenuScale(-2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            else
+
+                draw.SimpleTextOutlined("Disband Squad", "PuristaBold24", w / 2, EFGM.MenuScale(-2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            end
+
+        end
+
+        function currentSquadLeaveButton:DoClick()
+
+            if owner != Menu.Player then
+
+                RunConsoleCommand("efgm_squad_leave")
+
+            else
+
+                RunConsoleCommand("efgm_squad_disband")
+
+            end
 
         end
 
@@ -1033,7 +1252,7 @@ function Menu.OpenTab.Match()
 
     net.Receive("SendSquadData", function(len, ply)
 
-        squad = LocalPlayer():GetNW2String("PlayerInSquad", nil)
+        squad = Menu.Player:GetNW2String("PlayerInSquad", nil)
         availableSquadsList:Clear()
         if IsValid(squadPopOut) then squadPopOut:Remove() end
         squadArray = table.Copy(net.ReadTable())
@@ -1203,7 +1422,7 @@ function Menu.OpenTab.Shop()
 
         end
 
-        for k, v in pairs(LocalPlayer():GetWeapons()) do
+        for k, v in pairs(Menu.Player:GetWeapons()) do
             
             local wep = v:GetClass()
 
@@ -1215,7 +1434,7 @@ function Menu.OpenTab.Shop()
 
         end
 
-        for k, v in pairs(LocalPlayer():GetAmmo()) do
+        for k, v in pairs(Menu.Player:GetAmmo()) do
             
             local ammo = game.GetAmmoName(k)
 
@@ -1495,27 +1714,27 @@ function Menu.OpenTab.Stats()
 
     local stats = {}
 
-    stats.Level = LocalPlayer():GetNWInt("Level")
-    stats.Experience = LocalPlayer():GetNWInt("Experience")
-    stats.MoneyEarned = LocalPlayer():GetNWInt("MoneyEarned")
-    stats.MoneySpent = LocalPlayer():GetNWInt("MoneySpent")
-    stats.Time = LocalPlayer():GetNWInt("Time")
-    stats.StashValie = LocalPlayer():GetNWInt("StashValie")
+    stats.Level = Menu.Player:GetNWInt("Level")
+    stats.Experience = Menu.Player:GetNWInt("Experience")
+    stats.MoneyEarned = Menu.Player:GetNWInt("MoneyEarned")
+    stats.MoneySpent = Menu.Player:GetNWInt("MoneySpent")
+    stats.Time = Menu.Player:GetNWInt("Time")
+    stats.StashValie = Menu.Player:GetNWInt("StashValie")
 
-    stats.Kills = LocalPlayer():GetNWInt("Kills")
-    stats.Deaths = LocalPlayer():GetNWInt("Deaths")
-    stats.Suicides = LocalPlayer():GetNWInt("Suicides")
-    stats.DamageGiven = LocalPlayer():GetNWInt("DamageGiven")
-    stats.DamageRecieved = LocalPlayer():GetNWInt("DamageRecieved")
-    stats.DamageHealed = LocalPlayer():GetNWInt("DamageHealed") 
-    stats.Extractions = LocalPlayer():GetNWInt("Extractions")
-    stats.Quits = LocalPlayer():GetNWInt("Quits")
-    stats.FullRaids = LocalPlayer():GetNWInt("FullRaids")
+    stats.Kills = Menu.Player:GetNWInt("Kills")
+    stats.Deaths = Menu.Player:GetNWInt("Deaths")
+    stats.Suicides = Menu.Player:GetNWInt("Suicides")
+    stats.DamageGiven = Menu.Player:GetNWInt("DamageGiven")
+    stats.DamageRecieved = Menu.Player:GetNWInt("DamageRecieved")
+    stats.DamageHealed = Menu.Player:GetNWInt("DamageHealed") 
+    stats.Extractions = Menu.Player:GetNWInt("Extractions")
+    stats.Quits = Menu.Player:GetNWInt("Quits")
+    stats.FullRaids = Menu.Player:GetNWInt("FullRaids")
 
-    stats.CurrentKillStreak = LocalPlayer():GetNWInt("CurrentKillStreak") 
-    stats.BestKillStreak = LocalPlayer():GetNWInt("BestKillStreak")
-    stats.CurrentExtractionStreak = LocalPlayer():GetNWInt("CurrentExtractionStreak")
-    stats.BestExtractionStreak = LocalPlayer():GetNWInt("BestExtractionStreak")
+    stats.CurrentKillStreak = Menu.Player:GetNWInt("CurrentKillStreak") 
+    stats.BestKillStreak = Menu.Player:GetNWInt("BestKillStreak")
+    stats.CurrentExtractionStreak = Menu.Player:GetNWInt("CurrentExtractionStreak")
+    stats.BestExtractionStreak = Menu.Player:GetNWInt("BestExtractionStreak")
 
     for k, v in SortedPairs(stats) do
 
