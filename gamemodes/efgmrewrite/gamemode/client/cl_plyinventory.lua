@@ -55,6 +55,19 @@ net.Receive("UpdateBackpack", function(len, ply)
 
 end)
 
+-- i hate the active slot system so much
+hook.Add("Think", "CheckButtonPresses", function()
+
+    if !isInventoryTesting then return end  if table.IsEmpty( activeSlots ) then return end   if LocalPlayer() == nil then return end
+
+    for k, v in pairs( activeSlots ) do
+        if !ply:HasWeapon( tostring( v ) ) then
+            activeSlots[k] = nil
+        end
+    end
+
+end)
+
 hook.Add("HUDWeaponPickedUp", "WeaponPickedUp", function( weapon )
 
     local name = weapon:GetClass()
@@ -111,14 +124,6 @@ concommand.Add("efgm_inventory_equip", function(ply, cmd, args)
     local weaponString = activeSlots[ keyPressed ]
 
     if weaponString == nil then return end
-
-    if !ply:HasWeapon( weaponString ) then
-
-        activeSlots[ keyPressed ] = nil
-
-        return
-
-    end
 
     input.SelectWeapon( ply:GetWeapon( weaponString ) )
 

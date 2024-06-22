@@ -104,7 +104,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	local weps = victim:GetWeapons()
 	local ammo = victim:GetAmmo()
 
-	local inventory = INVG.New()
+	local inventory = INV.New()
 
 	for k, v in ipairs( weps ) do -- i tried for an entire hour to do this within the entity itself, but alas, it didn't fucking work, i genuinely don't even know anymore
 
@@ -131,7 +131,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	end
 
 	-- death sound
-	victim:EmitSound(Sound("deathsounds/death" .. math.random(1, 116) .. ".wav"), 80)
+	victim:EmitSound(Sound("deathsounds/death" .. math.random(1, 116) .. ".wav"), 80) -- holy shit thats a few
 
 	-- when a player suicides
 	if !IsValid(attacker) or victim == attacker or !attacker:IsPlayer() then

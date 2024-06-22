@@ -45,14 +45,14 @@ function ENT:Use(activator)
 
     local weaponCount = 0
 
-    for k, v in ipairs( self.Inventory.contents ) do if v.type == 1 then weaponCount = weaponCount + 1 end end
+    for k, v in pairs( self.Inventory.contents ) do if v.type == 1 then weaponCount = weaponCount + 1 end end
 
     activator:SetHealth(activator:GetMaxHealth())
     activator:PrintMessage(HUD_PRINTTALK, "You looted " .. self.VictimName .. "! (" .. weaponCount .. " weapons, " .. table.Count( self.Attachments ) .. " attachments)")
 
     if table.IsEmpty( self.Inventory.contents ) and table.IsEmpty( self.Attachments ) then return end
 
-    for k, v in ipairs( self.Inventory.contents ) do
+    for k, v in pairs( self.Inventory.contents ) do
 
         GiveItem[ v.type ]( activator, v.name, v.count, false )
 

@@ -97,22 +97,13 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
 
         -- equip melee
         if button == ply:GetInfoNum("efgm_bind_equip_melee", KEY_4) then
-            ply:ConCommand("efgm_inventory_equip 32")
+            ply:ConCommand("efgm_inventory_equip 5")
             return
         end
 
         -- equip utility
         if button == ply:GetInfoNum("efgm_bind_equip_utility", KEY_G) then
             ply:ConCommand("efgm_inventory_equip 17")
-            return
-        end
-
-        if button == ply:GetInfoNum("efgm_bind_dropweapon", KEY_MINUS) then -- yes this is necessary
-            ply:ConCommand("efgm_inventory_equip 17")
-            ply:ConCommand("efgm_inventory_equip 32")
-            ply:ConCommand("efgm_inventory_equip 4")
-            ply:ConCommand("efgm_inventory_equip 3")
-            ply:ConCommand("efgm_inventory_equip 2")
             return
         end
 
@@ -199,11 +190,6 @@ if game.SinglePlayer() then
             -- drop weapon
             if button == ply:GetInfoNum("efgm_bind_dropweapon", KEY_MINUS) then
                 ply:DropWeapon(ply:GetActiveWeapon())
-                ply:ConCommand("efgm_inventory_equip 17")
-                ply:ConCommand("efgm_inventory_equip 32")
-                ply:ConCommand("efgm_inventory_equip 4")
-                ply:ConCommand("efgm_inventory_equip 3")
-                ply:ConCommand("efgm_inventory_equip 2")
                 return
             end
 
@@ -266,7 +252,7 @@ if game.SinglePlayer() then
 
         -- equip melee
         if button == ply:GetInfoNum("efgm_bind_equip_melee", KEY_4) then
-            ply:ConCommand("efgm_inventory_equip 32")
+            ply:ConCommand("efgm_inventory_equip 5")
             return
         end
 
