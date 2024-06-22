@@ -143,15 +143,15 @@ end
 function RenderCompass(ply)
 
     -- no need to create the compass panel if it already exists
-    if IsValid(Compass) then
+    if IsValid(compass) then
         return
     end
 
-    Compass = vgui.Create("DPanel")
-    Compass:SetSize(ScrW(), ScrH())
-    Compass:SetPos(0, 0)
-    Compass:SetAlpha(0)
-    Compass:MoveToFront()
+    compass = vgui.Create("DPanel")
+    compass:SetSize(ScrW(), ScrH())
+    compass:SetPos(0, 0)
+    compass:SetAlpha(0)
+    compass:MoveToFront()
 
     local color = Color(255, 255, 255)
     local adv_compass_tbl = {
@@ -166,7 +166,7 @@ function RenderCompass(ply)
         [360] = "N"
     }
 
-    Compass.Paint = function(self, w, h)
+    compass.Paint = function(self, w, h)
         local ang = ply:EyeAngles()
 
         surface.SetDrawColor(color)
@@ -198,8 +198,8 @@ function RenderCompass(ply)
         end
     end
 
-    Compass:AlphaTo(255, 0.35, 0, function() end) -- why do i need to use a callback here???
-    Compass:AlphaTo(0, 1, 4.65, function() Compass:Remove() end)
+    compass:AlphaTo(255, 0.35, 0, function() end) -- why do i need to use a callback here???
+    compass:AlphaTo(0, 1, 4.65, function() compass:Remove() end)
 
 end
 
@@ -209,7 +209,7 @@ local function RenderPlayerOverlays(ply)
 end
 
 local function RenderDebugEquippedSlots(ply)
-    
+
     if activeSlots == nil then return end
 
     surface.SetDrawColor(0, 0, 0, 128)

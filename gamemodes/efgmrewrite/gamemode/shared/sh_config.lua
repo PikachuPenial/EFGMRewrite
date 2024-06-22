@@ -86,6 +86,11 @@ if SERVER then
     RunConsoleCommand("arc9_atts_loseondie", "1")
     RunConsoleCommand("arc9_atts_generateentities", "1")
 
+    -- caching
+    RunConsoleCommand("arc9_precache_allsounds_onstartup", "1")
+    RunConsoleCommand("arc9_precache_attsmodels_onstartup", "1")
+    RunConsoleCommand("arc9_precache_wepmodels_onstartup", "1")
+
 end
 
 -- variables for ARC9 multipliers and range, used for modifications that I will make directly in SWEPS
@@ -185,11 +190,6 @@ if CLIENT then
 
     -- attachments
     RunConsoleCommand("arc9_autosave", "0")
-
-    -- caching
-    RunConsoleCommand("arc9_precache_allsounds_onstartup", "1")
-    RunConsoleCommand("arc9_precache_attsmodels_onstartup", "1")
-    RunConsoleCommand("arc9_precache_wepmodels_onstartup", "1")
 
     -- font
     RunConsoleCommand("arc9_font", "Bender")

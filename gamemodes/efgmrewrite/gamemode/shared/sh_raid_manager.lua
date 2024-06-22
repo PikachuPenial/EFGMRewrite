@@ -22,7 +22,6 @@ if SERVER then
     util.AddNetworkString("RequestExtracts")
 
     util.AddNetworkString("PlayerEnterRaid")
-    util.AddNetworkString("PlayerSwitchTeams")
 
     RAID.VoteTime = 60
 
@@ -86,7 +85,7 @@ if SERVER then
 
         end
 
-        function RAID:SpawnPlayers(plys, status) -- todo: make this support a sequential table of players up to a specified team limit
+        function RAID:SpawnPlayers(plys, status, squad) -- todo: make this support a sequential table of players up to a specified team limit
 
             if GetGlobalInt("RaidStatus") != raidStatus.ACTIVE then print("raid isnt active") return end
             if #plys > 4 then print("too many fucking people in your team dumbass") return end
@@ -94,9 +93,10 @@ if SERVER then
             local spawn = GetValidRaidSpawn(status)
             local allSpawns = spawn.Spawns
 
-            PrintTable(allSpawns)
+            table.removeKey(SQUADS, squad)
+            NetworkSquadInfoToClients()
 
-            for k, v in ipairs( plys ) do
+            for k, v in ipairs(plys) do
 
                 if v:IsPlayer() then
 
@@ -121,7 +121,7 @@ if SERVER then
                         timer.Simple(0.5, function() -- temporary invulnerability bc v:Lock() fucked shit
 
                             v:SetRaidStatus(status, spawn.SpawnGroup or "")
-                            v:SetNW2Var("PlayerInSquad", nil)
+                            v:SetNW2String("PlayerInSquad", "nil")
 
                         end)
 
@@ -294,34 +294,31 @@ if SERVER then
 
             ply:SetRaidStatus(0, "")
             ply:SetNWBool("RaidReady", false)
-            ply:SetNWBool("RaidTeam", "")
 
         end)
 
         hook.Add("CheckRaidAddPlayers", "MaybeAddPeople", function( ply )
 
-            local plyTeam = ply:GetNWString("RaidTeam", "")
+            local plySquad = ply:GetNW2String("PlayerInSquad", "nil")
 
-            if plyTeam == "" then RAID:SpawnPlayers({ply}, playerStatus.PMC) return end
+            if plySquad == "nil" then RAID:SpawnPlayers({ply}, playerStatus.PMC, "nil") return end
+
+            if table.Count(SQUADS[plySquad].MEMBERS) <= 1 then RAID:SpawnPlayers({ply}, playerStatus.PMC, plySquad) return end
 
             local plys = {}
             local spawnBool = true
 
-            for k, v in ipairs( player.GetHumans() ) do
+            for k, v in pairs(SQUADS[plySquad].MEMBERS) do
 
-                if plyTeam == v:GetNWString("RaidTeam", "") then
+                table.insert(plys, v)
 
-                    table.insert(plys, v)
-
-                    if v:GetNWBool("RaidReady", false) == false then spawnBool = false end
-
-                end
+                if v:GetNWBool("RaidReady", false) == false then spawnBool = false end
 
             end
 
             if tobool( spawnBool ) == true then
 
-                RAID:SpawnPlayers(plys, playerStatus.PMC)
+                RAID:SpawnPlayers(plys, playerStatus.PMC, plySquad)
 
             end
 
@@ -352,25 +349,6 @@ if SERVER then
 
     end)
 
-    net.Receive("PlayerSwitchTeams", function(len, ply)
-
-        if !ply:CompareStatus(0) then print("Player " .. ply:Nick() .. " is in raid tf") end
-
-        local teamName = net.ReadString()
-        if teamName == "" then ply:SetNWString("RaidTeam", teamName) ply:PrintMessage(HUD_PRINTTALK, "Sucessfully left your team!") return end
-
-        local teamCount = 0
-
-        for k, v in ipairs( player.GetHumans() ) do if v:GetNWString("RaidTeam") == teamName then teamCount = teamCount + 1 end end
-
-        if teamCount > 4 then ply:PrintMessage(HUD_PRINTTALK, "Too many people in the team!") return end
-
-        ply:SetNWString("RaidTeam", teamName)
-
-        ply:PrintMessage(HUD_PRINTTALK, "Sucessfully joined team " .. teamName .. "!")
-
-    end)
-
     net.Receive("SendVote", function(len, ply)
 
         RAID:SubmitVote(ply, net.ReadString() )
@@ -384,22 +362,6 @@ if CLIENT then
     concommand.Add("efgm_print_extracts", function(ply, cmd, args)
 
         net.Start("RequestExtracts")
-        net.SendToServer()
-
-    end)
-
-    concommand.Add("efgm_team_join", function(ply, cmd, args)
-
-        net.Start("PlayerSwitchTeams")
-            net.WriteString( tostring( args[ 1 ]) )
-        net.SendToServer()
-
-    end)
-
-    concommand.Add("efgm_team_leave", function(ply, cmd, args)
-
-        net.Start("PlayerSwitchTeams")
-            net.WriteString( "" )
         net.SendToServer()
 
     end)

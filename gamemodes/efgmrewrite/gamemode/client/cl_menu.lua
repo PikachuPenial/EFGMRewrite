@@ -1014,11 +1014,20 @@ function Menu.OpenTab.Match()
                 squadPopOut:SetSize(EFGM.MenuScale(200), EFGM.MenuScale(60) + (memberCount * EFGM.MenuScale(19)))
                 squadPopOut:SetPos(x + EFGM.MenuScale(10), y - EFGM.MenuScale(45))
                 squadPopOut:SetAlpha(0)
-                squadPopOut:AlphaTo(255, 0.2, 0, function() end)
+                squadPopOut:AlphaTo(255, 0.1, 0, function() end)
 
                 -- panel needs to be slightly taller for password entry
-                if protected and open then
+                if protected and open and squad == "nil" then
+
                     squadPopOut:SetSize(EFGM.MenuScale(200), EFGM.MenuScale(90) + (memberCount * EFGM.MenuScale(19)))
+
+                end
+
+                -- panel needs to be slightly shorter if the player is already in a squad
+                if squad != "nil" then
+
+                    squadPopOut:SetSize(EFGM.MenuScale(200), EFGM.MenuScale(40) + (memberCount * EFGM.MenuScale(19)))
+
                 end
 
                 squadPopOut.Paint = function(s, w, h)
@@ -1036,7 +1045,7 @@ function Menu.OpenTab.Match()
                     surface.DrawRect(0, 0, w, h)
 
                     surface.SetDrawColor(Color(color.RED, color.GREEN, color.BLUE, 255))
-                    surface.DrawRect(0, 0, w, 5)
+                    surface.DrawRect(0, 0, w, EFGM.MenuScale(5))
 
                     draw.SimpleTextOutlined("MEMBERS", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
@@ -1087,7 +1096,7 @@ function Menu.OpenTab.Match()
                 end
 
                 -- create password entry if squad is password protected and not full
-                if protected and open and squad != "nil" then
+                if protected and open and squad == "nil" then
 
                     squadPasswordEntryBG = vgui.Create("DPanel", squadPopOut)
                     squadPasswordEntryBG:SetPos(EFGM.MenuScale(5), squadPopOut:GetTall() - EFGM.MenuScale(43))
@@ -1126,22 +1135,19 @@ function Menu.OpenTab.Match()
 
     end
 
+    local currentSquadPanel = vgui.Create("DPanel", contents)
+    currentSquadPanel:Dock(LEFT)
+    currentSquadPanel:SetSize(EFGM.MenuScale(320), 0)
+    currentSquadPanel.Paint = function(s, w, h)
+
+        surface.SetDrawColor(MenuAlias.transparent)
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
     local function RenderCurrentSquad(array)
 
-        local currentSquadPanel
-
-        if squad == "nil" then
-
-            -- enable squad create button if client is not/no longer in a squad
-            squadColorPanel:SetSize(0, EFGM.MenuScale(110 + 20))
-            squadCreateButton:Show()
-
-            return
-        end
-
-        -- disable squad create button if client is a member of a squad
-        squadColorPanel:SetSize(0, EFGM.MenuScale(110))
-        squadCreateButton:Hide()
+        if squad == "nil" then return end
 
         local name = squad
         local color = array[squad].COLOR
@@ -1155,19 +1161,9 @@ function Menu.OpenTab.Match()
 
         if !protected then status = "PUBLIC" else status = "PRIVATE" end
 
-        currentSquadPanel = vgui.Create("DPanel", contents)
-        currentSquadPanel:Dock(LEFT)
-        currentSquadPanel:SetSize(EFGM.MenuScale(320), 0)
-        currentSquadPanel.Paint = function(s, w, h)
-
-            surface.SetDrawColor(MenuAlias.transparent)
-            surface.DrawRect(0, 0, w, h)
-
-        end
-
         local currentSquadName = vgui.Create("DPanel", currentSquadPanel)
         currentSquadName:Dock(TOP)
-        currentSquadName:SetSize(0, EFGM.MenuScale(55))
+        currentSquadName:SetSize(0, EFGM.MenuScale(60))
         function currentSquadName:Paint(w, h)
 
             surface.SetDrawColor(Color(0, 0, 0, 155))
@@ -1177,10 +1173,36 @@ function Menu.OpenTab.Match()
             surface.DrawRect(0, 0, w, h)
 
             surface.SetDrawColor(Color(color.RED, color.GREEN, color.BLUE, 255))
-            surface.DrawRect(0, 0, w, 5)
+            surface.DrawRect(0, 0, w, EFGM.MenuScale(5))
 
             draw.SimpleTextOutlined(squad, "PuristaBold32", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-            draw.SimpleTextOutlined(status, "PuristaBold18", w / 2, EFGM.MenuScale(32), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            draw.SimpleTextOutlined(status, "PuristaBold18", w / 2, EFGM.MenuScale(37), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        end
+
+        -- allows squad owners to copy the squad password if the squad is private
+        if status == "PRIVATE" and Menu.Player == owner then
+
+            currentSquadName:SetSize(0, EFGM.MenuScale(77))
+
+            local currentSquadPasswordButton = vgui.Create("DButton", currentSquadName)
+            currentSquadPasswordButton:SetPos(EFGM.MenuScale(100), EFGM.MenuScale(57))
+            currentSquadPasswordButton:SetSize(EFGM.MenuScale(120), EFGM.MenuScale(18))
+            currentSquadPasswordButton:SetText("")
+            currentSquadPasswordButton.Paint = function(s, w, h)
+
+                surface.SetDrawColor(Color(25, 25, 25, 155))
+                surface.DrawRect(0, 0, w, h)
+
+                draw.SimpleTextOutlined("Copy Password", "PuristaBold18", w / 2, EFGM.MenuScale(-2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            end
+
+            function currentSquadPasswordButton:DoClick()
+
+                SetClipboardText(password)
+
+            end
 
         end
 
@@ -1209,7 +1231,7 @@ function Menu.OpenTab.Match()
 
         end
 
-        -- draw profile picture for each member
+        -- draw profile pictures and create kick/transfer buttons for each member
         for k, v in SortedPairs(members) do
 
             local memberPFP = vgui.Create("AvatarImage", currentSquadMembers)
@@ -1235,8 +1257,8 @@ function Menu.OpenTab.Match()
 
                         if v:IsMuted() then
 
-                            v:SetMuted(false) 
-                        
+                            v:SetMuted(false)
+
                         else
 
                             v:SetMuted(true)
@@ -1259,6 +1281,34 @@ function Menu.OpenTab.Match()
                 end
 
                 dropdown:Open()
+            end
+
+            if Menu.Player == owner and Menu.Player != v then
+
+                local transferToMember = vgui.Create("DImageButton", currentSquadMembers)
+                transferToMember:SetPos(EFGM.MenuScale(262), (k * EFGM.MenuScale(35)) - EFGM.MenuScale(2))
+                transferToMember:SetSize(EFGM.MenuScale(24), EFGM.MenuScale(24))
+                transferToMember:SetImage("icons/squad_transfer_icon.png")
+                transferToMember:SetDepressImage(false)
+
+                function transferToMember:DoClick()
+
+                    RunConsoleCommand("efgm_squad_transfer", v:GetName())
+
+                end
+
+                local kickMember = vgui.Create("DImageButton", currentSquadMembers)
+                kickMember:SetPos(EFGM.MenuScale(291), (k * EFGM.MenuScale(35)) - EFGM.MenuScale(2))
+                kickMember:SetSize(EFGM.MenuScale(24), EFGM.MenuScale(24))
+                kickMember:SetImage("icons/squad_kick_icon.png")
+                kickMember:SetDepressImage(false)
+
+                function kickMember:DoClick()
+
+                    RunConsoleCommand("efgm_squad_kick", v:GetName())
+
+                end
+
             end
 
         end
@@ -1313,8 +1363,24 @@ function Menu.OpenTab.Match()
     net.Receive("SendSquadData", function(len, ply)
 
         squad = Menu.Player:GetNW2String("PlayerInSquad", nil)
+
         availableSquadsList:Clear()
+        currentSquadPanel:Clear()
+
+        if squad == "nil" then
+
+            -- enable squad create button if client is not/no longer in a squad
+            squadCreateButton:Show()
+
+        else
+
+            -- disable squad create button if client is a member of a squad
+            squadCreateButton:Hide()
+
+        end
+
         if IsValid(squadPopOut) then squadPopOut:Remove() end
+
         squadArray = table.Copy(net.ReadTable())
         GenerateJoinableSquads(squadArray)
         RenderCurrentSquad(squadArray)

@@ -212,7 +212,7 @@ hook.Add("EntityFireBullets", "BulletLight", function(Entity, Other)
 
 			local FireLight = ents.Create("light_dynamic")
 			FireLight:SetKeyValue("distance", 50)
-			FireLight:SetKeyValue("_light", 255 .. " " .. 200 .. " " .. 150)
+			FireLight:SetKeyValue("_light", 255 .. " " .. 200 .. " " .. math.random(120, 180))
 			FireLight:SetPos(Result.HitPos)
 			FireLight:Spawn()
 			FireLight:Fire("Kill", "", 0.075)

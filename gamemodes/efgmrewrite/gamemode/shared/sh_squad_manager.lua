@@ -30,10 +30,11 @@ if SERVER then
     util.AddNetworkString("PlayerJoinSquad")
     util.AddNetworkString("PlayerLeaveSquad")
     util.AddNetworkString("PlayerTransferSquad")
+    util.AddNetworkString("PlayerKickSquad")
     util.AddNetworkString("PlayerDisbandSquad")
 
     -- send squad information to every client that will need it
-    local function NetworkSquadInfoToClients()
+    function NetworkSquadInfoToClients()
 
         net.Start("SendSquadData", true)
 
@@ -95,8 +96,7 @@ if SERVER then
 
     local function ReplaceSquadOwner(newOwner, squad)
 
-        table.remove(SQUADS[squad], OWNER)
-        table.insert(SQUADS[squad], OWNER, newOwner)
+        SQUADS[squad].OWNER = newOwner
 
     end
 
@@ -137,9 +137,9 @@ if SERVER then
 
         local name = net.ReadString()
 
-        -- dont allow ppl to override other squads lmao
+        -- dont allow ppl to override other squads or to name their squad nil, this will break everything lmao
         local currentSquadNames = table.GetKeys(SQUADS)
-        if table.HasValue(currentSquadNames, name) then return end
+        if table.HasValue(currentSquadNames, name) or name == "nil" then return end
 
         local password = net.ReadString()
         local limit = net.ReadInt(4)
@@ -156,7 +156,7 @@ if SERVER then
 
     net.Receive("PlayerJoinSquad", function(len, ply)
 
-        -- if PlayerInSquad(ply) then return end
+        if PlayerInSquad(ply) then return end
 
         local name = net.ReadString()
         local password = net.ReadString()
@@ -213,7 +213,31 @@ if SERVER then
 
             if string.lower(v:GetName()) == newOwner then
 
-                ReplaceSquadOwner(newOwner, squad)
+                ReplaceSquadOwner(v, squad)
+
+            end
+
+        end
+
+        NetworkSquadInfoToClients()
+
+    end)
+
+    net.Receive("PlayerKickSquad", function(len, ply)
+
+        if not PlayerInSquad(ply) then return end
+
+        local kickedPly = string.lower(net.ReadString())
+        local squad = GetSquadOfPlayer(ply)
+
+        if ply != SQUADS[squad].OWNER then return end
+
+        for k, v in pairs(SQUADS[squad].MEMBERS) do
+
+            if string.lower(v:GetName()) == kickedPly then
+
+                table.RemoveByValue(SQUADS[squad].MEMBERS, v)
+                v:SetNW2String("PlayerInSquad", "nil")
 
             end
 
@@ -313,6 +337,18 @@ if CLIENT then
 
     end)
 
+    concommand.Add("efgm_squad_kick", function(ply, cmd, args)
+
+        local kickedPly = tostring(args[1])
+
+        net.Start("PlayerKickSquad")
+
+            net.WriteString(kickedPly)
+
+        net.SendToServer()
+
+    end)
+
     concommand.Add("efgm_squad_disband", function(ply, cmd, args)
 
         net.Start("PlayerDisbandSquad")
@@ -321,3 +357,32 @@ if CLIENT then
     end)
 
 end
+
+-- remove player from squad if they disconnect
+hook.Add("PlayerDisconnected", "KickFromSquadOnDisconnect", function(ply)
+
+    if not PlayerInSquad(ply) then return end
+
+    local squad = GetSquadOfPlayer(ply)
+
+    table.RemoveByValue(SQUADS[squad].MEMBERS, ply)
+    ply:SetNW2String("PlayerInSquad", "nil")
+
+    if table.Count(SQUADS[squad].MEMBERS) == 0 then
+
+        DisbandSquad(squad)
+        NetworkSquadInfoToClients()
+        return
+
+    end
+
+    if ply == SQUADS[squad].OWNER then
+
+        local newOwner = table.Random(SQUADS[squad].MEMBERS)
+        ReplaceSquadOwner(newOwner, squad)
+
+    end
+
+    NetworkSquadInfoToClients()
+
+end)
