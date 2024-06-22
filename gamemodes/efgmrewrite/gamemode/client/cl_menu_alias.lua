@@ -7,6 +7,7 @@ MenuAlias = {}
 MenuAlias.blackColor =      Color(10, 10, 10, 255)
 MenuAlias.whiteColor = 		Color(250, 250, 250, 255)
 MenuAlias.offWhiteColor = 	Color(200, 200, 200, 255)
+MenuAlias.transparent =     Color(0, 0, 0, 0)
 
 MenuAlias.primaryColor =	Color(30, 30, 30, 255)
 MenuAlias.secondaryColor =	Color(100, 100, 100, 255)
