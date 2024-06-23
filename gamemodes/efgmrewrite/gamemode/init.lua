@@ -69,14 +69,20 @@ function GM:PlayerSpawn(ply)
 	ply:SetUnDuckSpeed(0.43)
 
 	if ply:GetInfoNum("efgm_faction_preference", 0) == 1 then
+
 		-- USEC prefered
 		ply:SetModel(usecPMs[math.random(#usecPMs)])
+
 	elseif ply:GetInfoNum("efgm_faction_preference", 0) == 2 then
+
 		-- BEAR prefered
 		ply:SetModel(bearPMs[math.random(#bearPMs)])
+
 	else
+
 		-- no preference
 		ply:SetModel(allPMs[math.random(#allPMs)])
+
 	end
 
 	ply:SetBodygroup(0, math.random(0, 4)) -- head
@@ -97,7 +103,7 @@ hook.Add("PlayerInitialSpawn", "InitFirstSpawn", function(ply)
 
 end)
 
-local blacklist = table.Flip( {"arc9_eft_melee_taran", "arc9_eft_melee_6x5", "arc9_eft_melee_wycc", "arc9_eft_melee_a2607", "arc9_eft_melee_a2607d", "arc9_eft_melee_camper", "arc9_eft_melee_crash", "arc9_eft_melee_cultist", "arc9_eft_melee_fulcrum", "arc9_eft_melee_crowbar", "arc9_eft_melee_kiba", "arc9_eft_melee_kukri", "arc9_eft_melee_m2", "arc9_eft_melee_mpl50", "arc9_eft_melee_rebel", "arc9_eft_melee_voodoo", "arc9_eft_melee_sp8", "arc9_eft_melee_hultafors", "arc9_eft_melee_taiga"} )
+local blacklist = table.Flip({"arc9_eft_melee_taran", "arc9_eft_melee_6x5", "arc9_eft_melee_wycc", "arc9_eft_melee_a2607", "arc9_eft_melee_a2607d", "arc9_eft_melee_camper", "arc9_eft_melee_crash", "arc9_eft_melee_cultist", "arc9_eft_melee_fulcrum", "arc9_eft_melee_crowbar", "arc9_eft_melee_kiba", "arc9_eft_melee_kukri", "arc9_eft_melee_m2", "arc9_eft_melee_mpl50", "arc9_eft_melee_rebel", "arc9_eft_melee_voodoo", "arc9_eft_melee_sp8", "arc9_eft_melee_hultafors", "arc9_eft_melee_taiga"})
 
 function GM:PlayerDeath(victim, inflictor, attacker)
 
@@ -118,7 +124,11 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 
 	end
 
-    for k, v in pairs( ammo ) do inventory:Add(k, 2, v) end
+    for k, v in pairs( ammo ) do
+
+		inventory:Add(k, 2, v)
+
+	end
 
 	if !table.IsEmpty(inventory.contents) then
 
@@ -135,8 +145,10 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 
 	-- when a player suicides
 	if !IsValid(attacker) or victim == attacker or !attacker:IsPlayer() then
+
 		victim:PrintMessage(HUD_PRINTCENTER, "You commited suicide")
 		return
+
 	end
 
 	local weaponInfo
@@ -145,10 +157,14 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	local distance = math.Round(rawDistance * 0.01905) -- convert hammer units to meters
 
 	if (attacker:GetActiveWeapon():IsValid()) then
+
 		weaponInfo = weapons.Get(attacker:GetActiveWeapon():GetClass())
 		weaponName = weaponInfo["PrintName"]
+
 	else
+
 		weaponName = ""
+
 	end
 
 	-- death information
@@ -160,40 +176,51 @@ hook.Add("PostPlayerDeath", "PlayerRemoveRaid", function(ply)
 
 	-- respawn timer
 	timer.Create(ply:SteamID() .. "respawnTime", 10, 1, function() ply:Spawn() end)
-    ply:SetNWBool("RaidReady", false)
-    ply:SetNWBool("RaidTeam", "")
+	ply:SetNWBool("RaidReady", false)
 
 end)
 
-hook.Add( "PlayerDeathSound", "RemoveDefaultDeathSound", function() return true end)
+hook.Add("PlayerDeathSound", "RemoveDefaultDeathSound", function()
 
-function GM:ScalePlayerDamage(target, hitgroup, dmginfo)
-	dmginfo:ScaleDamage(1)
-end
+	return true
+
+end)
+
+-- function GM:ScalePlayerDamage(target, hitgroup, dmginfo)
+
+	-- dmginfo:ScaleDamage(1)
+
+-- end
 
 -- players in the lobby cant take damage
-hook.Add( "PlayerShouldTakeDamage", "AntiLobbyKill", function(victim, attacker) 
+hook.Add("PlayerShouldTakeDamage", "AntiLobbyKill", function(victim, attacker)
 
 	return !victim:CompareStatus(0)
 
 end )
 
 -- prevent respawning if under a respawn timer
-hook.Add( "PlayerDeathThink", "SpawnLock", function(ply) 
-	
+hook.Add("PlayerDeathThink", "SpawnLock", function(ply)
+
 	if timer.Exists(ply:SteamID() .. "respawnTime") then
+
 		return false
+
 	end
 
 end )
 
 -- modifies voice chat to be proximity based
-hook.Add( "PlayerCanHearPlayersVoice", "ProxVOIP", function(listener,talker)
+hook.Add("PlayerCanHearPlayersVoice", "ProxVOIP", function(listener,talker)
 
 	if (tonumber(listener:GetPos():Distance(talker:GetPos())) > 1048 ) or !talker:Alive() then -- 20~ meter voice distance, not able to talk while dead but can still hear others
+
 		return false, false
+
 	else
+
 		return true, true
+
 	end
 
 end )
@@ -202,6 +229,7 @@ end )
 hook.Add("EntityFireBullets", "BulletLight", function(Entity, Other)
 
 	if IsValid(Entity) then
+
 		local Trace = {}
 		Trace.start = Other.Src
 		Trace.endpos = Other.Src + (Other.Dir * 2147483647)

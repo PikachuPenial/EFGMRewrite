@@ -120,8 +120,11 @@ if SERVER then
 
                         timer.Simple(0.5, function() -- temporary invulnerability bc v:Lock() fucked shit
 
+                            local curTime = math.Round(CurTime(), 0) -- once players spawn, we make their team chat channel more specific, this is so others can create squads of the same name and not conflict with anything
+
                             v:SetRaidStatus(status, spawn.SpawnGroup or "")
                             v:SetNW2String("PlayerInSquad", "nil")
+                            v:SetNW2String("TeamChatChannel", squad .. "_" .. curTime)
 
                         end)
 

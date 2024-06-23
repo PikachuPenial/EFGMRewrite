@@ -78,7 +78,3 @@ end)
 hook.Add("PlayerInitialSpawn", "SetEffectOnSpawn", function(ply)
 	effect_amount = 0
 end)
-
--- hook.Add("PlayerDeath", "ClearEffectOnDeath", function(ply, i, a)
-	-- effect_amount = 0
--- end)

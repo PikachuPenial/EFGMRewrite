@@ -2,6 +2,7 @@
 hook.Add("PlayerInitialSpawn", "SquadFirstSpawn", function(ply)
 
     ply:SetNW2String("PlayerInSquad", "nil")
+    ply:SetNW2String("TeamChatChannel", "nil")
 
 end)
 
@@ -10,6 +11,7 @@ function GM:OnReloaded()
     for k, v in pairs(player:GetAll()) do
 
         v:SetNW2String("PlayerInSquad", "nil")
+        v:SetNW2String("TeamChatChannel", "nil")
 
     end
 
@@ -105,6 +107,7 @@ if SERVER then
         for k, v in pairs(SQUADS[squad].MEMBERS) do
 
             v:SetNW2String("PlayerInSquad", "nil")
+            v:SetNW2String("TeamChatChannel", "nil")
 
         end
 
@@ -134,6 +137,7 @@ if SERVER then
     net.Receive("PlayerCreateSquad", function(len, ply)
 
         if PlayerInSquad(ply) then return end
+        if !ply:CompareStatus(0) then return end
 
         local name = net.ReadString()
 
@@ -150,36 +154,46 @@ if SERVER then
         SQUADS[name] = {OWNER = ply, PASSWORD = password, LIMIT = limit, COLOR = {RED = r, GREEN = g, BLUE = b}, MEMBERS = {ply}}
 
         ply:SetNW2String("PlayerInSquad", name)
+        ply:SetNW2String("TeamChatChannel", name)
         NetworkSquadInfoToClients()
 
     end)
 
     net.Receive("PlayerJoinSquad", function(len, ply)
 
-        if PlayerInSquad(ply) then return end
-
-        local name = net.ReadString()
+        local squad = net.ReadString()
         local password = net.ReadString()
 
-        if table.Count(SQUADS[name].MEMBERS) >= SQUADS[name].LIMIT then return end
+        if PlayerInSquad(ply) then return end
+        if !ply:CompareStatus(0) then return end
+        if table.Count(SQUADS[squad].MEMBERS) >= SQUADS[squad].LIMIT then return end
+        if !PasswordCheck(ply, squad, password) then return end
 
-        if not PasswordCheck(ply, name, password) then return end
+        table.insert(SQUADS[squad].MEMBERS, ply)
 
-        table.insert(SQUADS[name].MEMBERS, ply)
-
-        ply:SetNW2String("PlayerInSquad", name)
+        ply:SetNW2String("PlayerInSquad", squad)
+        ply:SetNW2String("TeamChatChannel", squad)
         NetworkSquadInfoToClients()
+
+        for k, v in pairs(SQUADS[squad].MEMBERS) do
+
+            if v == ply then return end
+            v:SendLua("chat.AddText(ply, Color(105, 255, 105), ' has joined your squad!')")
+
+        end
 
     end)
 
     net.Receive("PlayerLeaveSquad", function(len, ply)
 
-        if not PlayerInSquad(ply) then return end
+        if !PlayerInSquad(ply) then return end
+        if !ply:CompareStatus(0) then return end
 
         local squad = GetSquadOfPlayer(ply)
 
         table.RemoveByValue(SQUADS[squad].MEMBERS, ply)
         ply:SetNW2String("PlayerInSquad", "nil")
+        ply:SetNW2String("TeamChatChannel", "nil")
 
         if table.Count(SQUADS[squad].MEMBERS) == 0 then
 
@@ -198,22 +212,30 @@ if SERVER then
 
         NetworkSquadInfoToClients()
 
+        for k, v in pairs(SQUADS[squad].MEMBERS) do
+
+            v:SendLua("chat.AddText(ply, Color(255, 105, 105), ' has left your squad!')")
+
+        end
+
     end)
 
     net.Receive("PlayerTransferSquad", function(len, ply)
 
-        if not PlayerInSquad(ply) then return end
+        if !PlayerInSquad(ply) then return end
+        if !ply:CompareStatus(0) then return end
 
-        local newOwner = string.lower(net.ReadString())
+        local newOwner = net.ReadString()
         local squad = GetSquadOfPlayer(ply)
 
         if ply != SQUADS[squad].OWNER then return end
 
         for k, v in pairs(SQUADS[squad].MEMBERS) do
 
-            if string.lower(v:GetName()) == newOwner then
+            if string.lower(v:GetName()) == string.lower(newOwner) then
 
                 ReplaceSquadOwner(v, squad)
+                newOwnerEnt = v
 
             end
 
@@ -225,19 +247,22 @@ if SERVER then
 
     net.Receive("PlayerKickSquad", function(len, ply)
 
-        if not PlayerInSquad(ply) then return end
+        if !PlayerInSquad(ply) then return end
+        if !ply:CompareStatus(0) then return end
 
-        local kickedPly = string.lower(net.ReadString())
+        local kickedPly = net.ReadString()
         local squad = GetSquadOfPlayer(ply)
 
         if ply != SQUADS[squad].OWNER then return end
 
         for k, v in pairs(SQUADS[squad].MEMBERS) do
 
-            if string.lower(v:GetName()) == kickedPly then
+            if string.lower(v:GetName()) == string.lower(kickedPly) then
 
                 table.RemoveByValue(SQUADS[squad].MEMBERS, v)
                 v:SetNW2String("PlayerInSquad", "nil")
+                v:SetNW2String("TeamChatChannel", "nil")
+                v:SendLua("chat.AddText(Color(255, 105, 105), 'You have been kicked from your squad!')")
 
             end
 
@@ -249,21 +274,26 @@ if SERVER then
 
     net.Receive("PlayerDisbandSquad", function(len, ply)
 
-        if not PlayerInSquad(ply) then return end
+        if !PlayerInSquad(ply) then return end
+        if !ply:CompareStatus(0) then return end
 
         local squad = GetSquadOfPlayer(ply)
 
         if ply != SQUADS[squad].OWNER then return end
 
+        for k, v in pairs(SQUADS[squad].MEMBERS) do
+
+            if v != ply then
+
+                v:SendLua("chat.AddText(Color(255, 105, 105), 'Your squad has been disbanded!')")
+
+            end
+
+        end
+
         DisbandSquad(squad)
 
         NetworkSquadInfoToClients()
-
-    end)
-
-    net.Receive("PrintSquads", function(len, ply)
-
-        PrintTable(SQUADS)
 
     end)
 
@@ -358,15 +388,22 @@ if CLIENT then
 
 end
 
+-- remove player from team chat channel on death if they were in a raid
+hook.Add("PlayerDeath", "ClearEffectOnDeath", function(ply)
+
+    if ply:CompareStatus(0) then return end
+    ply:SetNW2String("TeamChatChannel", "nil")
+
+end)
+
 -- remove player from squad if they disconnect
 hook.Add("PlayerDisconnected", "KickFromSquadOnDisconnect", function(ply)
 
-    if not PlayerInSquad(ply) then return end
+    if !PlayerInSquad(ply) then return end
 
     local squad = GetSquadOfPlayer(ply)
 
     table.RemoveByValue(SQUADS[squad].MEMBERS, ply)
-    ply:SetNW2String("PlayerInSquad", "nil")
 
     if table.Count(SQUADS[squad].MEMBERS) == 0 then
 
