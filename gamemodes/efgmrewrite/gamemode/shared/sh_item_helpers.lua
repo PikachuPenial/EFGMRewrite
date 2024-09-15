@@ -3,7 +3,7 @@
 
 CheckExists = {} -- ok its needed now
 
-CheckExists[1] = function(item)-- weapons
+CheckExists[1] = function(item) -- weapons
     return ITEMS[item] != nil
 end
 

@@ -1845,7 +1845,7 @@ function Menu.OpenTab.Stats()
     stats.MoneyEarned = Menu.Player:GetNWInt("MoneyEarned")
     stats.MoneySpent = Menu.Player:GetNWInt("MoneySpent")
     stats.Time = Menu.Player:GetNWInt("Time")
-    stats.StashValie = Menu.Player:GetNWInt("StashValie")
+    stats.StashValue = Menu.Player:GetNWInt("StashValue")
 
     stats.Kills = Menu.Player:GetNWInt("Kills")
     stats.Deaths = Menu.Player:GetNWInt("Deaths")

@@ -13,7 +13,7 @@ function Stats.InitializeAll(ply)
 	InitializeNetworkInt(ply, "MoneyEarned", 0) -- all money earned
 	InitializeNetworkInt(ply, "MoneySpent", 0) -- all money spent (money would just be MoneyEarned - MoneySpent)
 	InitializeNetworkInt(ply, "Time", 0) -- playtime in minutes
-    InitializeNetworkInt(ply, "StashValie", 1) -- value of all items in stash
+    InitializeNetworkInt(ply, "StashValue", 1) -- value of all items in stash
 
     -- combat
 	InitializeNetworkInt(ply, "Kills", 0)
@@ -45,7 +45,7 @@ function Stats.UninitializeAll(ply)
 	UninitializeNetworkInt(ply, "MoneyEarned")
 	UninitializeNetworkInt(ply, "MoneySpent")
 	UninitializeNetworkInt(ply, "Time")
-    UninitializeNetworkInt(ply, "StashValie")
+    UninitializeNetworkInt(ply, "StashValue")
 
     -- combat
 	UninitializeNetworkInt(ply, "Kills")
@@ -79,7 +79,7 @@ function Stats.GetAll(ply)
     tbl["MoneyEarned"] = ply:GetNWInt("MoneyEarned")
     tbl["MoneySpent"] = ply:GetNWInt("MoneySpent")
     tbl["Time"] = ply:GetNWInt("Time")
-    tbl["StashValie"] = ply:GetNWInt("StashValie")
+    tbl["StashValue"] = ply:GetNWInt("StashValue")
 
     -- combat
     tbl["Kills"] = ply:GetNWInt("Kills")

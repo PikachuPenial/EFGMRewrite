@@ -63,6 +63,10 @@ LOOT[1]["arc9_eft_rpk16"]               = {2}
 
 -- pistols
 LOOT[1]["arc9_eft_m9a3"]                = {1}
+LOOT[1]["arc9_eft_pd20"]                = {1}
+LOOT[1]["arc9_eft_deagle_l5"]           = {2}
+LOOT[1]["arc9_eft_deagle_l6"]           = {3}
+LOOT[1]["arc9_eft_deagle_xix"]          = {3}
 LOOT[1]["arc9_eft_fn57"]                = {2}
 -- LOOT[1]["arc9_eft_glock17"]             = {1}
 LOOT[1]["arc9_eft_glock18c"]            = {2}
@@ -102,6 +106,8 @@ LOOT[1]["arc9_eft_fn_p90"]              = {3}
 LOOT[1]["arc9_eft_mp7a1"]               = {3}
 LOOT[1]["arc9_eft_mp7a2"]               = {3}
 LOOT[1]["arc9_eft_ump"]                 = {1}
+LOOT[1]["arc9_eft_vector45"]            = {3}
+LOOT[1]["arc9_eft_vector9"]             = {3}
 LOOT[1]["arc9_eft_pp1901"]              = {2}
 -- LOOT[1]["arc9_eft_kedr"]                = {1}
 LOOT[1]["arc9_eft_ppsh41"]              = {1}
@@ -202,6 +208,10 @@ LOOT[5]["arc9_eft_rpk16"]               = {2}
 
 -- pistols
 LOOT[5]["arc9_eft_m9a3"]                = {1}
+LOOT[5]["arc9_eft_pd20"]                = {1}
+LOOT[5]["arc9_eft_deagle_l5"]           = {2}
+LOOT[5]["arc9_eft_deagle_l6"]           = {3}
+LOOT[5]["arc9_eft_deagle_xix"]          = {3}
 LOOT[5]["arc9_eft_fn57"]                = {2}
 -- LOOT[5]["arc9_eft_glock17"]             = {1}
 LOOT[5]["arc9_eft_glock18c"]            = {2}
@@ -241,6 +251,8 @@ LOOT[5]["arc9_eft_fn_p90"]              = {3}
 LOOT[5]["arc9_eft_mp7a1"]               = {3}
 LOOT[5]["arc9_eft_mp7a2"]               = {3}
 LOOT[5]["arc9_eft_ump"]                 = {1}
+LOOT[5]["arc9_eft_vector45"]            = {3}
+LOOT[5]["arc9_eft_vector9"]             = {3}
 LOOT[5]["arc9_eft_pp1901"]              = {2}
 -- LOOT[5]["arc9_eft_kedr"]                = {1}
 LOOT[5]["arc9_eft_ppsh41"]              = {1}
