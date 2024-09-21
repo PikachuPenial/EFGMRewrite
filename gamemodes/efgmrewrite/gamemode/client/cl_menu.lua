@@ -185,6 +185,7 @@ function Menu:Initialize(openTo)
     statsIcon.OnCursorEntered = function(s)
 
         statsTab:SizeTo(EFGM.MenuScale(46) + statsTextSize, statsTab:GetTall(), 0.15, 0, 0.5)
+        surface.PlaySound("ui/element_hover.wav")
 
     end
 
@@ -196,6 +197,8 @@ function Menu:Initialize(openTo)
     function statsIcon:DoClick()
 
         if Menu.ActiveTab == "Stats" then return end
+
+        surface.PlaySound("ui/element_select.wav")
 
         if Menu.ActiveTab == "Match" then
 
@@ -241,6 +244,7 @@ function Menu:Initialize(openTo)
     matchIcon.OnCursorEntered = function(s)
 
         matchTab:SizeTo(EFGM.MenuScale(46) + matchTextSize, matchTab:GetTall(), 0.15, 0, 0.5)
+        surface.PlaySound("ui/element_hover.wav")
 
     end
 
@@ -259,6 +263,8 @@ function Menu:Initialize(openTo)
         end
 
         if Menu.ActiveTab == "Match" then return end
+
+        surface.PlaySound("ui/element_select.wav")
 
         Menu.MenuFrame.LowerPanel.Contents:AlphaTo(0, 0.05, 0, function()
 
@@ -300,6 +306,7 @@ function Menu:Initialize(openTo)
     inventoryIcon.OnCursorEntered = function(s)
 
         inventoryTab:SizeTo(EFGM.MenuScale(46) + inventoryTextSize, inventoryTab:GetTall(), 0.15, 0, 0.5)
+        surface.PlaySound("ui/element_hover.wav")
 
     end
 
@@ -309,6 +316,8 @@ function Menu:Initialize(openTo)
     end
 
     function inventoryIcon:DoClick()
+
+        if Menu.ActiveTab == "Inventory" then return end
 
         if Menu.ActiveTab == "Match" then
 
@@ -320,16 +329,6 @@ function Menu:Initialize(openTo)
         -- placeholder until inventory functions chop chop portapotty
         surface.PlaySound("common/wpn_denyselect.wav")
         return
-
-        Menu.MenuFrame.LowerPanel.Contents:AlphaTo(0, 0.05, 0, function()
-
-            Menu.MenuFrame.LowerPanel.Contents:Remove()
-            Menu.OpenTab.Inventory()
-            Menu.ActiveTab = "Inventory"
-
-            Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, function() end)
-
-        end)
 
     end
 
@@ -359,6 +358,7 @@ function Menu:Initialize(openTo)
     intelIcon.OnCursorEntered = function(s)
 
         intelTab:SizeTo(EFGM.MenuScale(46) + intelTextSize, intelTab:GetTall(), 0.15, 0, 0.5)
+        surface.PlaySound("ui/element_hover.wav")
 
     end
 
@@ -370,6 +370,8 @@ function Menu:Initialize(openTo)
     function intelIcon:DoClick()
 
         if Menu.ActiveTab == "Intel" then return end
+
+        surface.PlaySound("ui/element_select.wav")
 
         if Menu.ActiveTab == "Match" then
 
@@ -428,6 +430,7 @@ function Menu:Initialize(openTo)
     settingsIcon.OnCursorEntered = function(s)
 
         settingsTab:SizeTo(EFGM.MenuScale(46) + settingsTextSize, settingsTab:GetTall(), 0.15, 0, 0.5)
+        surface.PlaySound("ui/element_hover.wav")
 
     end
 
@@ -439,6 +442,8 @@ function Menu:Initialize(openTo)
     function settingsIcon:DoClick()
 
         if Menu.ActiveTab == "Settings" then return end
+
+        surface.PlaySound("ui/element_select.wav")
 
         if Menu.ActiveTab == "Match" then
 
@@ -594,7 +599,16 @@ function Menu.OpenTab.Intel()
         for k2, v2 in pairs(v1) do
 
             local entry = category:Add(v2.Name)
+
+            function entry:OnCursorEntered()
+
+                surface.PlaySound("ui/element_hover.wav")
+
+            end
+
             function entry:DoClick()
+
+                surface.PlaySound("ui/element_select.wav")
 
                 subEntryList:Clear()
                 DrawEntry(v2.Name, v2.Description, v2.Stats)
@@ -605,7 +619,16 @@ function Menu.OpenTab.Intel()
                     subEntry:SetSize(EFGM.MenuScale(180), EFGM.MenuScale(20))
                     subEntry:SetFont("PuristaBold18")
                     subEntry:SetText(v3.Name)
+
+                    function subEntry:OnCursorEntered()
+
+                        surface.PlaySound("ui/element_hover.wav")
+
+                    end
+
                     function subEntry:DoClick()
+
+                        surface.PlaySound("ui/element_select.wav")
 
                         DrawEntry(v3.Name, v3.Description, v3.Stats)
 
@@ -917,7 +940,15 @@ function Menu.OpenTab.Match()
     squadCreateButton:SetFont("PuristaBold18")
     squadCreateButton:SetText("Create Squad")
 
+    squadCreateButton.OnCursorEntered = function(s)
+
+        surface.PlaySound("ui/element_hover.wav")
+
+    end
+
     function squadCreateButton:DoClick()
+
+        surface.PlaySound("ui/element_select.wav")
 
         RunConsoleCommand("efgm_squad_create", squadName:GetValue(), squadPassword:GetValue(), CreateSquadPlayerLimit, CreateSquadColor.RED, CreateSquadColor.GREEN, CreateSquadColor.BLUE)
 
@@ -996,6 +1027,8 @@ function Menu.OpenTab.Match()
 
                 if open and !protected then
 
+                    surface.PlaySound("ui/element_select.wav")
+
                     RunConsoleCommand("efgm_squad_join", name, password)
 
                 end
@@ -1008,6 +1041,7 @@ function Menu.OpenTab.Match()
             squadEntry.OnCursorEntered = function(s)
 
                 x, y = Menu.MenuFrame:CursorPos()
+                surface.PlaySound("ui/element_hover.wav")
 
                 if IsValid(squadPopOut) then squadPopOut:Remove() end
                 squadPopOut = vgui.Create("DPanel", Menu.MenuFrame.LowerPanel.Contents)
@@ -1198,7 +1232,15 @@ function Menu.OpenTab.Match()
 
             end
 
+            function currentSquadPasswordButton:OnCursorEntered()
+
+                surface.PlaySound("ui/element_hover.wav")
+
+            end
+
             function currentSquadPasswordButton:DoClick()
+
+                surface.PlaySound("ui/element_select.wav")
 
                 SetClipboardText(password)
 
@@ -1291,7 +1333,15 @@ function Menu.OpenTab.Match()
                 transferToMember:SetImage("icons/squad_transfer_icon.png")
                 transferToMember:SetDepressImage(false)
 
+                function transferToMember:OnCursorEntered()
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
                 function transferToMember:DoClick()
+
+                    surface.PlaySound("ui/element_select.wav")
 
                     RunConsoleCommand("efgm_squad_transfer", v:GetName())
 
@@ -1303,7 +1353,15 @@ function Menu.OpenTab.Match()
                 kickMember:SetImage("icons/squad_kick_icon.png")
                 kickMember:SetDepressImage(false)
 
+                function kickMember:OnCursorEntered()
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
                 function kickMember:DoClick()
+
+                    surface.PlaySound("ui/element_select.wav")
 
                     RunConsoleCommand("efgm_squad_kick", v:GetName())
 
@@ -1344,7 +1402,15 @@ function Menu.OpenTab.Match()
 
         end
 
+        function currentSquadLeaveButton:OnCursorEntered()
+
+            surface.PlaySound("ui/element_hover.wav")
+
+        end
+
         function currentSquadLeaveButton:DoClick()
+
+            surface.PlaySound("ui/element_deselect.wav")
 
             if owner != Menu.Player then
 
