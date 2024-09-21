@@ -152,23 +152,23 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	end
 
 	local weaponInfo
-	local weaponName
+	local weaponCal
 	local rawDistance = victim:GetPos():Distance(attacker:GetPos())
 	local distance = math.Round(rawDistance * 0.01905) -- convert hammer units to meters
 
 	if (attacker:GetActiveWeapon():IsValid()) then
 
 		weaponInfo = weapons.Get(attacker:GetActiveWeapon():GetClass())
-		weaponName = weaponInfo["PrintName"]
+		weaponCal = weaponInfo["Caliber"]
 
 	else
 
-		weaponName = ""
+		weaponCal = ""
 
 	end
 
 	-- death information
-	victim:PrintMessage(HUD_PRINTCENTER, attacker:GetName() .. " [" .. attacker:Health() .. " HP] killed you with a " .. weaponName .. " from " .. distance .. "m away")
+	victim:PrintMessage(HUD_PRINTCENTER, attacker:GetName() .. " [" .. attacker:Health() .. " HP] killed you with " .. weaponCal .. " from " .. distance .. "m away")
 
 end
 

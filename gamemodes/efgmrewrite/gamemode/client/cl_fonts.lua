@@ -18,6 +18,7 @@ local function CreateFonts()
     surface.CreateFont("Bender24", {font = "Bender", size = EFGM.ScreenScale(24), weight = 550, antialias = true, extended = true})
     surface.CreateFont("BenderAmmoCount", { font = "Bender", size = EFGM.ScreenScale(32), weight = 550, antialias = true, extended = true })
     surface.CreateFont("BenderWeaponName", { font = "Bender", size = EFGM.ScreenScale(21), weight = 550, antialias = true, extended = true })
+    surface.CreateFont("BenderDebug", { font = "Bender", size = EFGM.ScreenScale(14), weight = 550, antialias = true, extended = true })
 end
 CreateFonts()
 

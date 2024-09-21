@@ -5,6 +5,7 @@ cvars.AddChangeCallback("efgm_hud_enable", function(convar_name, value_old, valu
 end)
 
 local function RenderRaidTime(ply)
+
     -- time logic
     local raidTime = string.FormattedTime(GetGlobalInt("RaidTimeLeft", 0), "%2i:%02i")
     local raidStatus = GetGlobalInt("RaidStatus", 0)

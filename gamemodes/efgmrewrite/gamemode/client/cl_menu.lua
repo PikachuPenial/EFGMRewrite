@@ -4,7 +4,7 @@
 Menu = {}
 
 Menu.MusicList = {"sound/music/menu_01.mp4", "sound/music/menu_02.mp4", "sound/music/menu_03.mp4", "sound/music/menu_04.mp4"}
-Menu.TabList = {"stats", "match", "inventory", "intel", "settings"}
+Menu.TabList = {"stats", "match", "inventory", "intel", "achievements", "settings"}
 Menu.ActiveTab = ""
 
 local menuBind = GetConVar("efgm_bind_menu"):GetInt()
@@ -332,6 +332,108 @@ function Menu:Initialize(openTo)
 
     end
 
+    local tasksTab = vgui.Create("DPanel", self.MenuFrame.TabParentPanel)
+    tasksTab:Dock(LEFT)
+    tasksTab:SetSize(EFGM.MenuScale(38), 0)
+
+    local tasksIcon = vgui.Create("DImageButton", tasksTab)
+    tasksIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
+    tasksIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
+    tasksIcon:SetImage("icons/tasks_icon.png")
+    tasksIcon:SetDepressImage(false)
+
+    local tasksBGColor = MenuAlias.transparent
+    local tasksText = "TASKS"
+    local tasksTextSize = EFGM.MenuScale(surface.GetTextSize(tasksText))
+
+    tasksTab.Paint = function(s, w, h)
+
+        surface.SetDrawColor(tasksBGColor)
+        surface.DrawRect(0, 0, w, h)
+
+        draw.SimpleTextOutlined(tasksText, "PuristaBold32", EFGM.MenuScale(43), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    tasksIcon.OnCursorEntered = function(s)
+
+        tasksTab:SizeTo(EFGM.MenuScale(46) + tasksTextSize, tasksTab:GetTall(), 0.15, 0, 0.5)
+        surface.PlaySound("ui/element_hover.wav")
+
+    end
+
+    tasksIcon.OnCursorExited = function(s)
+
+        tasksTab:SizeTo(EFGM.MenuScale(38), tasksTab:GetTall(), 0.15, 0, 0.5)
+    end
+
+    function tasksIcon:DoClick()
+
+        if Menu.ActiveTab == "Tasks" then return end
+
+        if Menu.ActiveTab == "Match" then
+
+            net.Start("RemovePlayerSquadRF")
+            net.SendToServer()
+
+        end
+
+        surface.PlaySound("common/wpn_denyselect.wav")
+        return
+
+    end
+
+    local skillsTab = vgui.Create("DPanel", self.MenuFrame.TabParentPanel)
+    skillsTab:Dock(LEFT)
+    skillsTab:SetSize(EFGM.MenuScale(38), 0)
+
+    local skillsIcon = vgui.Create("DImageButton", skillsTab)
+    skillsIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
+    skillsIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
+    skillsIcon:SetImage("icons/skills_icon.png")
+    skillsIcon:SetDepressImage(false)
+
+    local skillsBGColor = MenuAlias.transparent
+    local skillsText = "SKILLS"
+    local skillsTextSize = EFGM.MenuScale(surface.GetTextSize(skillsText))
+
+    skillsTab.Paint = function(s, w, h)
+
+        surface.SetDrawColor(skillsBGColor)
+        surface.DrawRect(0, 0, w, h)
+
+        draw.SimpleTextOutlined(skillsText, "PuristaBold32", EFGM.MenuScale(43), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    skillsIcon.OnCursorEntered = function(s)
+
+        skillsTab:SizeTo(EFGM.MenuScale(46) + skillsTextSize, skillsTab:GetTall(), 0.15, 0, 0.5)
+        surface.PlaySound("ui/element_hover.wav")
+
+    end
+
+    skillsIcon.OnCursorExited = function(s)
+
+        skillsTab:SizeTo(EFGM.MenuScale(38), skillsTab:GetTall(), 0.15, 0, 0.5)
+    end
+
+    function skillsIcon:DoClick()
+
+        if Menu.ActiveTab == "Skills" then return end
+
+        if Menu.ActiveTab == "Match" then
+
+            net.Start("RemovePlayerSquadRF")
+            net.SendToServer()
+
+        end
+
+        surface.PlaySound("common/wpn_denyselect.wav")
+        return
+
+    end
+
     local intelTab = vgui.Create("DPanel", self.MenuFrame.TabParentPanel)
     intelTab:Dock(LEFT)
     intelTab:SetSize(EFGM.MenuScale(38), 0)
@@ -389,6 +491,57 @@ function Menu:Initialize(openTo)
             Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, function() end)
 
         end)
+
+    end
+
+    local achievementsTab = vgui.Create("DPanel", self.MenuFrame.TabParentPanel)
+    achievementsTab:Dock(LEFT)
+    achievementsTab:SetSize(EFGM.MenuScale(38), 0)
+
+    local achievementsIcon = vgui.Create("DImageButton", achievementsTab)
+    achievementsIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
+    achievementsIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
+    achievementsIcon:SetImage("icons/achievement_icon.png")
+    achievementsIcon:SetDepressImage(false)
+
+    local achievementsBGColor = MenuAlias.transparent
+    local achievementsText = "ACHIEVEMENTS"
+    local achievementsTextSize = EFGM.MenuScale(surface.GetTextSize(achievementsText))
+
+    achievementsTab.Paint = function(s, w, h)
+
+        surface.SetDrawColor(achievementsBGColor)
+        surface.DrawRect(0, 0, w, h)
+
+        draw.SimpleTextOutlined(achievementsText, "PuristaBold32", EFGM.MenuScale(43), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    achievementsIcon.OnCursorEntered = function(s)
+
+        achievementsTab:SizeTo(EFGM.MenuScale(46) + achievementsTextSize, achievementsTab:GetTall(), 0.15, 0, 0.5)
+        surface.PlaySound("ui/element_hover.wav")
+
+    end
+
+    achievementsIcon.OnCursorExited = function(s)
+
+        achievementsTab:SizeTo(EFGM.MenuScale(38), achievementsTab:GetTall(), 0.15, 0, 0.5)
+    end
+
+    function achievementsIcon:DoClick()
+
+        if Menu.ActiveTab == "Achievements" then return end
+
+        if Menu.ActiveTab == "Match" then
+
+            net.Start("RemovePlayerSquadRF")
+            net.SendToServer()
+
+        end
+
+        surface.PlaySound("common/wpn_denyselect.wav")
+        return
 
     end
 
