@@ -17,7 +17,7 @@ LOOT[1] = {}
 
 -- assault carbines
 LOOT[1]["arc9_eft_adar15"]              = {1}
-LOOT[1]["arc9_eft_vsk94"]              = {2}
+LOOT[1]["arc9_eft_vsk94"]               = {2}
 LOOT[1]["arc9_eft_tx15"]                = {3}
 LOOT[1]["arc9_eft_sag_ak545"]           = {2}
 LOOT[1]["arc9_eft_sag_ak545short"]      = {2}
@@ -46,6 +46,7 @@ LOOT[1]["arc9_eft_sa58"]                = {3}
 LOOT[1]["arc9_eft_scarh"]               = {3}
 LOOT[1]["arc9_eft_scarl"]               = {2}
 LOOT[1]["arc9_eft_hk416"]               = {3}
+LOOT[1]["arc9_eft_g36"]                 = {2}
 LOOT[1]["arc9_eft_9a91"]                = {1}
 LOOT[1]["arc9_eft_mk47_mutant"]         = {3}
 LOOT[1]["arc9_eft_rd704"]               = {3}
@@ -64,6 +65,8 @@ LOOT[1]["arc9_eft_rpk16"]               = {2}
 -- pistols
 LOOT[1]["arc9_eft_m9a3"]                = {1}
 LOOT[1]["arc9_eft_pd20"]                = {1}
+LOOT[1]["arc9_eft_m1911"]               = {1}
+LOOT[1]["arc9_eft_m45"]                 = {1}
 LOOT[1]["arc9_eft_deagle_l5"]           = {2}
 LOOT[1]["arc9_eft_deagle_l6"]           = {3}
 LOOT[1]["arc9_eft_deagle_xix"]          = {3}
@@ -93,7 +96,9 @@ LOOT[1]["arc9_eft_toz106"]              = {1}
 
 -- sniper/marksman rifles
 LOOT[1]["arc9_eft_ai_axmc"]             = {3}
+LOOT[1]["arc9_eft_g28"]                 = {3}
 LOOT[1]["arc9_eft_sr25"]                = {3}
+LOOT[1]["arc9_eft_mk18_mjolnir"]        = {3}
 LOOT[1]["arc9_eft_mosin_infantry"]      = {1}
 LOOT[1]["arc9_eft_mosin_sniper"]        = {2}
 -- LOOT[1]["arc9_eft_mp18"]                = {1}
@@ -106,6 +111,8 @@ LOOT[1]["arc9_eft_vss"]                 = {3}
 LOOT[1]["arc9_eft_mp9"]                 = {2}
 LOOT[1]["arc9_eft_mp9n"]                = {2}
 LOOT[1]["arc9_eft_fn_p90"]              = {3}
+LOOT[1]["arc9_eft_mp5"]                 = {2}
+LOOT[1]["arc9_eft_mp5k"]                = {1}
 LOOT[1]["arc9_eft_mp7a1"]               = {3}
 LOOT[1]["arc9_eft_mp7a2"]               = {3}
 LOOT[1]["arc9_eft_ump"]                 = {1}
@@ -165,7 +172,7 @@ LOOT[5] = {}
 
 -- assault carbines
 LOOT[5]["arc9_eft_adar15"]              = {1}
-LOOT[5]["arc9_eft_vsk94"]              = {2}
+LOOT[5]["arc9_eft_vsk94"]               = {2}
 LOOT[5]["arc9_eft_tx15"]                = {3}
 LOOT[5]["arc9_eft_sag_ak545"]           = {2}
 LOOT[5]["arc9_eft_sag_ak545short"]      = {2}
@@ -194,6 +201,7 @@ LOOT[5]["arc9_eft_sa58"]                = {3}
 LOOT[5]["arc9_eft_scarh"]               = {3}
 LOOT[5]["arc9_eft_scarl"]               = {2}
 LOOT[5]["arc9_eft_hk416"]               = {3}
+LOOT[5]["arc9_eft_g36"]                 = {2}
 LOOT[5]["arc9_eft_9a91"]                = {1}
 LOOT[5]["arc9_eft_mk47_mutant"]         = {3}
 LOOT[5]["arc9_eft_rd704"]               = {3}
@@ -212,6 +220,8 @@ LOOT[5]["arc9_eft_rpk16"]               = {2}
 -- pistols
 LOOT[5]["arc9_eft_m9a3"]                = {1}
 LOOT[5]["arc9_eft_pd20"]                = {1}
+LOOT[5]["arc9_eft_m1911"]               = {1}
+LOOT[5]["arc9_eft_m45"]                 = {1}
 LOOT[5]["arc9_eft_deagle_l5"]           = {2}
 LOOT[5]["arc9_eft_deagle_l6"]           = {3}
 LOOT[5]["arc9_eft_deagle_xix"]          = {3}
@@ -241,7 +251,9 @@ LOOT[5]["arc9_eft_toz106"]              = {1}
 
 -- sniper/marksman rifles
 LOOT[5]["arc9_eft_ai_axmc"]             = {3}
+LOOT[5]["arc9_eft_g28"]                 = {3}
 LOOT[5]["arc9_eft_sr25"]                = {3}
+LOOT[5]["arc9_eft_mk18_mjolnir"]        = {3}
 LOOT[5]["arc9_eft_mosin_infantry"]      = {1}
 LOOT[5]["arc9_eft_mosin_sniper"]        = {2}
 -- LOOT[5]["arc9_eft_mp18"]                = {1}
@@ -254,6 +266,8 @@ LOOT[5]["arc9_eft_vss"]                 = {3}
 LOOT[5]["arc9_eft_mp9"]                 = {2}
 LOOT[5]["arc9_eft_mp9n"]                = {2}
 LOOT[5]["arc9_eft_fn_p90"]              = {3}
+LOOT[5]["arc9_eft_mp5"]                 = {2}
+LOOT[5]["arc9_eft_mp5k"]                = {1}
 LOOT[5]["arc9_eft_mp7a1"]               = {3}
 LOOT[5]["arc9_eft_mp7a2"]               = {3}
 LOOT[5]["arc9_eft_ump"]                 = {1}

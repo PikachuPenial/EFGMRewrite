@@ -43,7 +43,7 @@ hook.Add("PlayerSpawn", "GiveBackpack", function(ply)
         end
 
         print("Printing inventory from hook PlayerSpawn in sv_inventory_manager.lua:")
-        PrintTable(inventory)
+        -- PrintTable(inventory) wow this flooded the console so bad
         LOADOUT.Equip( ply, inventory )
 
     end)
