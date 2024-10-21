@@ -57,6 +57,8 @@ LOOT[1]["arc9_eft_aug"]                 = {2}
 LOOT[1]["arc9_eft_avt"]                 = {3}
 
 -- light machine guns
+LOOT[1]["arc9_eft_m60e4"]               = {2}
+LOOT[1]["arc9_eft_m60e6"]               = {2}
 LOOT[1]["arc9_eft_pkm"]                 = {3}
 LOOT[1]["arc9_eft_pkp"]                 = {3}
 LOOT[1]["arc9_eft_rpd"]                 = {3}
@@ -132,6 +134,7 @@ LOOT[1]["arc9_eft_fn40gl"]              = {3}
 -- LOOT[1]["arc9_eft_m18"]                 = {1}
 -- LOOT[1]["arc9_eft_m67"]                 = {1}
 -- LOOT[1]["arc9_eft_m7290"]               = {1}
+LOOT[1]["arc9_eft_m32a1"]               = {3}
 -- LOOT[1]["arc9_eft_rdg2b"]               = {1}
 -- LOOT[1]["arc9_eft_rgd5"]                = {1}
 -- LOOT[1]["arc9_eft_rgn"]                 = {2}
@@ -212,6 +215,8 @@ LOOT[5]["arc9_eft_aug"]                 = {2}
 LOOT[5]["arc9_eft_avt"]                 = {3}
 
 -- light machine guns
+LOOT[5]["arc9_eft_m60e4"]               = {2}
+LOOT[5]["arc9_eft_m60e6"]               = {2}
 LOOT[5]["arc9_eft_pkm"]                 = {3}
 LOOT[5]["arc9_eft_pkp"]                 = {3}
 LOOT[5]["arc9_eft_rpd"]                 = {3}
@@ -287,6 +292,7 @@ LOOT[5]["arc9_eft_fn40gl"]              = {3}
 -- LOOT[5]["arc9_eft_m18"]                 = {1}
 -- LOOT[5]["arc9_eft_m67"]                 = {1}
 -- LOOT[5]["arc9_eft_m7290"]               = {1}
+LOOT[5]["arc9_eft_m32a1"]               = {3}
 -- LOOT[5]["arc9_eft_rdg2b"]               = {1}
 -- LOOT[5]["arc9_eft_rgd5"]                = {1}
 -- LOOT[5]["arc9_eft_rgn"]                 = {2}
