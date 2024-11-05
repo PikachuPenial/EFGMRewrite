@@ -90,6 +90,9 @@ LOOT[1]["arc9_eft_aps"]                 = {1}
 -- shotguns
 LOOT[1]["arc9_eft_m3super90"]           = {2}
 LOOT[1]["arc9_eft_m590"]                = {2}
+LOOT[1]["arc9_eft_mr133"]               = {1}
+LOOT[1]["arc9_eft_mr153"]               = {2}
+LOOT[1]["arc9_eft_mr155"]               = {2}
 -- LOOT[1]["arc9_eft_mr43_sawedoff"]       = {1}
 LOOT[1]["arc9_eft_mr43"]                = {1}
 LOOT[1]["arc9_eft_aa12"]                = {3}
@@ -251,6 +254,9 @@ LOOT[5]["arc9_eft_aps"]                 = {1}
 -- shotguns
 LOOT[5]["arc9_eft_m3super90"]           = {2}
 LOOT[5]["arc9_eft_m590"]                = {2}
+LOOT[5]["arc9_eft_mr133"]               = {1}
+LOOT[5]["arc9_eft_mr153"]               = {2}
+LOOT[5]["arc9_eft_mr155"]               = {2}
 -- LOOT[5]["arc9_eft_mr43_sawedoff"]       = {1}
 LOOT[5]["arc9_eft_mr43"]                = {1}
 LOOT[5]["arc9_eft_aa12"]                = {3}
