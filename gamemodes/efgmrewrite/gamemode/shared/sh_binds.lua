@@ -50,7 +50,7 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
 
         -- show raid information
         if button == ply:GetInfoNum("efgm_bind_raidinfo", KEY_O) then
-            ply:ConCommand("efgm_print_extracts")
+            RenderExtracts(ply)
             return
         end
 
@@ -207,7 +207,7 @@ if game.SinglePlayer() then
 
             -- show raid information
             if button == ply:GetInfoNum("efgm_bind_raidinfo", KEY_O) then
-                ply:ConCommand("efgm_print_extracts")
+                ply:SendLua("RenderExtracts(ply)")
                 return
             end
 

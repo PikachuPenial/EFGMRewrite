@@ -17,11 +17,10 @@ local function RenderRaidTime(ply)
     }
 
     surface.SetFont("BenderAmmoCount")
-    local raidTimeTextSize = surface.GetTextSize(tostring(raidTime)) + EFGM.ScreenScale(10)
 
     surface.SetDrawColor(raidStatusTbl[raidStatus])
-    surface.DrawRect(ScrW() - EFGM.ScreenScale(32) - raidTimeTextSize, EFGM.ScreenScale(20), raidTimeTextSize + EFGM.ScreenScale(12), EFGM.ScreenScale(35))
-    draw.DrawText(raidTime, "BenderAmmoCount", ScrW() - EFGM.ScreenScale(30), EFGM.ScreenScale(20), Color(255, 255, 255), TEXT_ALIGN_RIGHT)
+    surface.DrawRect(ScrW() - EFGM.ScreenScale(120), EFGM.ScreenScale(20), EFGM.ScreenScale(100), EFGM.ScreenScale(36))
+    draw.DrawText(raidTime, "BenderAmmoCount", ScrW() - EFGM.ScreenScale(70), EFGM.ScreenScale(21), Color(255, 255, 255), TEXT_ALIGN_CENTER)
 
 end
 
@@ -140,6 +139,33 @@ local function RenderPlayerStance(ply)
     surface.DrawTexturedRect(EFGM.ScreenScale(25), ScrH() - EFGM.ScreenScale(151), EFGM.ScreenScale(127), EFGM.ScreenScale(114))
 end
 
+-- extracts
+function RenderExtracts(ply)
+
+    -- no need to create the compass panel if it already exists
+    if IsValid(extracts) then
+        return
+    end
+
+    extracts = vgui.Create("DPanel")
+    extracts:SetSize(ScrW(), ScrH())
+    extracts:SetPos(0, 0)
+    extracts:SetAlpha(0)
+    extracts:MoveToFront()
+
+    extracts.Paint = function(self, w, h)
+
+        surface.SetDrawColor(0, 0, 0, 128)
+        surface.DrawRect(ScrW() - EFGM.ScreenScale(515), EFGM.ScreenScale(20), EFGM.ScreenScale(390), EFGM.ScreenScale(36))
+        draw.SimpleTextOutlined("FIND AN EXTRACTION POINT", "BenderAmmoCount", ScrW() - EFGM.ScreenScale(320), EFGM.ScreenScale(21), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 100, 0, 128))
+
+    end
+
+    extracts:AlphaTo(255, 0.35, 0, function() end) -- why do i need to use a callback here???
+    extracts:AlphaTo(0, 1, 4.65, function() extracts:Remove() end)
+
+end
+
 -- compass
 function RenderCompass(ply)
 
@@ -205,8 +231,10 @@ function RenderCompass(ply)
 end
 
 local function RenderPlayerOverlays(ply)
+
     -- i dont want to play with you anymore RenderPlayerOverlays()
     return
+
 end
 
 local function RenderDebugEquippedSlots(ply)

@@ -329,29 +329,6 @@ if SERVER then
 
     --}
 
-    net.Receive("RequestExtracts", function(len, ply)
-
-        local extracts = RAID.GetCurrentExtracts(ply)
-
-        if extracts == nil then return end
-
-        local extractNames = "Your available extract locations are:"
-
-        for k, v in pairs( extracts ) do
-
-            extractNames = extractNames .. "\n" .. v.ExtractName
-
-            if v.IsGuranteed then
-                extractNames = extractNames .. " (Status: Available)"
-            else
-                extractNames = extractNames .. " (Status: Unknown)"
-            end
-        end
-
-        ply:PrintMessage(HUD_PRINTCENTER, extractNames)
-
-    end)
-
     net.Receive("SendVote", function(len, ply)
 
         RAID:SubmitVote(ply, net.ReadString() )
@@ -361,13 +338,6 @@ if SERVER then
 end
 
 if CLIENT then
-
-    concommand.Add("efgm_print_extracts", function(ply, cmd, args)
-
-        net.Start("RequestExtracts")
-        net.SendToServer()
-
-    end)
 
     concommand.Add("efgm_vote", function(ply, cmd, args)
 
