@@ -114,6 +114,7 @@ LOOT[1]["arc9_eft_m700"]                = {2}
 LOOT[1]["arc9_eft_rsass"]               = {3}
 LOOT[1]["arc9_eft_m1a"]                 = {2}
 LOOT[1]["arc9_eft_sv98"]                = {2}
+LOOT[1]["arc9_eft_svd"]                 = {2}
 LOOT[1]["arc9_eft_svds"]                = {3}
 LOOT[1]["arc9_eft_vss"]                 = {3}
 
@@ -280,6 +281,7 @@ LOOT[5]["arc9_eft_m700"]                = {2}
 LOOT[5]["arc9_eft_rsass"]               = {3}
 LOOT[5]["arc9_eft_m1a"]                 = {2}
 LOOT[5]["arc9_eft_sv98"]                = {2}
+LOOT[5]["arc9_eft_svd"]                 = {2}
 LOOT[5]["arc9_eft_svds"]                = {3}
 LOOT[5]["arc9_eft_vss"]                 = {3}
 
