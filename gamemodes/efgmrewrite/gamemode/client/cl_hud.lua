@@ -16,11 +16,9 @@ local function RenderRaidTime(ply)
         [2] = Color(75, 0, 0, 128)  -- raid ended
     }
 
-    surface.SetFont("BenderAmmoCount")
-
     surface.SetDrawColor(raidStatusTbl[raidStatus])
     surface.DrawRect(ScrW() - EFGM.ScreenScale(120), EFGM.ScreenScale(20), EFGM.ScreenScale(100), EFGM.ScreenScale(36))
-    draw.DrawText(raidTime, "BenderAmmoCount", ScrW() - EFGM.ScreenScale(70), EFGM.ScreenScale(21), Color(255, 255, 255), TEXT_ALIGN_CENTER)
+    draw.DrawText(raidTime, "BenderExfilList", ScrW() - EFGM.ScreenScale(70), EFGM.ScreenScale(19), Color(255, 255, 255), TEXT_ALIGN_CENTER)
 
 end
 
@@ -143,9 +141,17 @@ end
 function RenderExtracts(ply)
 
     -- no need to create the compass panel if it already exists
-    if IsValid(extracts) then
-        return
-    end
+    if IsValid(extracts) then return end
+
+    local extractList
+    net.Receive("SendExtractList", function(len, ply)
+
+        extractList = net.ReadTable()
+
+    end )
+
+    net.Start("GrabExtractList")
+    net.SendToServer()
 
     extracts = vgui.Create("DPanel")
     extracts:SetSize(ScrW(), ScrH())
@@ -153,11 +159,29 @@ function RenderExtracts(ply)
     extracts:SetAlpha(0)
     extracts:MoveToFront()
 
+    local exitStatusTbl = {
+        [false] = Color(255, 255, 255, 255), -- extract open
+        [true] = Color(255, 0, 0, 255) -- extract closed
+    }
+
     extracts.Paint = function(self, w, h)
+
+        if not ply:Alive() then return end
+        if extractList == nil then return end
 
         surface.SetDrawColor(0, 0, 0, 128)
         surface.DrawRect(ScrW() - EFGM.ScreenScale(515), EFGM.ScreenScale(20), EFGM.ScreenScale(390), EFGM.ScreenScale(36))
         draw.SimpleTextOutlined("FIND AN EXTRACTION POINT", "BenderAmmoCount", ScrW() - EFGM.ScreenScale(320), EFGM.ScreenScale(21), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 100, 0, 128))
+
+        for k, v in pairs(extractList) do
+
+            surface.DrawRect(ScrW() - EFGM.ScreenScale(515), EFGM.ScreenScale(61) + ((k - 1) * 41), EFGM.ScreenScale(390), EFGM.ScreenScale(36))
+            surface.DrawRect(ScrW() - EFGM.ScreenScale(120), EFGM.ScreenScale(61) + ((k - 1) * 41), EFGM.ScreenScale(100), EFGM.ScreenScale(36))
+
+            draw.DrawText("EXFIL0" .. k, "BenderExfilList", ScrW() - EFGM.ScreenScale(505), EFGM.ScreenScale(60) + ((k - 1) * 41), exitStatusTbl[v.IsDisabled], TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+            draw.DrawText(v.ExtractName, "BenderExfilName", ScrW() - EFGM.ScreenScale(380), EFGM.ScreenScale(65) + ((k - 1) * 41), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+
+        end
 
     end
 
@@ -170,9 +194,7 @@ end
 function RenderCompass(ply)
 
     -- no need to create the compass panel if it already exists
-    if IsValid(compass) then
-        return
-    end
+    if IsValid(compass) then return end
 
     compass = vgui.Create("DPanel")
     compass:SetSize(ScrW(), ScrH())
@@ -194,6 +216,9 @@ function RenderCompass(ply)
     }
 
     compass.Paint = function(self, w, h)
+
+        if not ply:Alive() then return end
+
         local ang = ply:EyeAngles()
 
         surface.SetDrawColor(color)
@@ -221,8 +246,11 @@ function RenderCompass(ply)
                 local text = adv_compass_tbl[360 - (a % 360)] and adv_compass_tbl[360 - (a % 360)] or 360 - (a % 360)
 
                 draw.DrawText(text, "Bender24", x, compassY + height * EFGM.ScreenScale(0.6), Color(color.r, color.g, color.b, calculation), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+
             end
+
         end
+
     end
 
     compass:AlphaTo(255, 0.35, 0, function() end) -- why do i need to use a callback here???

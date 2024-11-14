@@ -23,6 +23,9 @@ if SERVER then
 
     util.AddNetworkString("PlayerEnterRaid")
 
+    util.AddNetworkString("GrabExtractList")
+    util.AddNetworkString("SendExtractList")
+
     RAID.VoteTime = 60
 
     RAID.MapPool = {["efgm_belmont_rw"] = 0, ["efgm_concrete_rw"] = 0, ["efgm_customs_rw"] = 0, ["efgm_factory_rw"] = 0} -- map, number of votes
@@ -192,6 +195,7 @@ if SERVER then
                     tbl.ExtractName = v.ExtractName
                     tbl.ExtractTime = v.ExtractTime
                     tbl.IsGuranteed = v.IsGuranteed
+                    tbl.IsDisabled = v.IsDisabled
 
                     table.insert(extracts, tbl)
 
@@ -329,9 +333,21 @@ if SERVER then
 
     --}
 
+    net.Receive("GrabExtractList", function(len, ply)
+
+        local extracts = RAID.GetCurrentExtracts(ply)
+
+        if not istable(extracts) then return end
+
+        net.Start("SendExtractList")
+        net.WriteTable(extracts)
+        net.Send(ply)
+
+    end)
+
     net.Receive("SendVote", function(len, ply)
 
-        RAID:SubmitVote(ply, net.ReadString() )
+        RAID:SubmitVote(ply, net.ReadString())
 
     end)
 
