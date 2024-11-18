@@ -55,11 +55,11 @@ function GM:PlayerSpawn(ply)
 
 	ply:SetRaidStatus(0, "") -- moving this in hopes that i wont 'fucking break the gamemode again goddamn it'
 
-	ply:SetGravity(.72)
+	ply:SetGravity(.73)
 	ply:SetMaxHealth(100)
 	ply:SetRunSpeed(215)
 	ply:SetWalkSpeed(130)
-	ply:SetJumpPower(140)
+	ply:SetJumpPower(172)
 
 	ply:SetLadderClimbSpeed(120)
 	ply:SetSlowWalkSpeed(95)
