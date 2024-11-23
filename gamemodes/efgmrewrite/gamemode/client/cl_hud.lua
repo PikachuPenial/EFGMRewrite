@@ -175,11 +175,11 @@ function RenderExtracts(ply)
 
         for k, v in pairs(extractList) do
 
-            surface.DrawRect(ScrW() - EFGM.ScreenScale(515), EFGM.ScreenScale(61) + ((k - 1) * 41), EFGM.ScreenScale(390), EFGM.ScreenScale(36))
-            surface.DrawRect(ScrW() - EFGM.ScreenScale(120), EFGM.ScreenScale(61) + ((k - 1) * 41), EFGM.ScreenScale(100), EFGM.ScreenScale(36))
+            surface.DrawRect(ScrW() - EFGM.ScreenScale(515), EFGM.ScreenScale(61) + ((k - 1) * EFGM.ScreenScale(41)), EFGM.ScreenScale(390), EFGM.ScreenScale(36))
+            surface.DrawRect(ScrW() - EFGM.ScreenScale(120), EFGM.ScreenScale(61) + ((k - 1) * EFGM.ScreenScale(41)), EFGM.ScreenScale(100), EFGM.ScreenScale(36))
 
-            draw.DrawText("EXFIL0" .. k, "BenderExfilList", ScrW() - EFGM.ScreenScale(505), EFGM.ScreenScale(60) + ((k - 1) * 41), exitStatusTbl[v.IsDisabled], TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-            draw.DrawText(v.ExtractName, "BenderExfilName", ScrW() - EFGM.ScreenScale(380), EFGM.ScreenScale(65) + ((k - 1) * 41), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+            draw.DrawText("EXFIL0" .. k, "BenderExfilList", ScrW() - EFGM.ScreenScale(505), EFGM.ScreenScale(60) + ((k - 1) * EFGM.ScreenScale(41)), exitStatusTbl[v.IsDisabled], TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+            draw.DrawText(v.ExtractName, "BenderExfilName", ScrW() - EFGM.ScreenScale(380), EFGM.ScreenScale(65) + ((k - 1) * EFGM.ScreenScale(41)), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
 
         end
 
@@ -224,12 +224,12 @@ function RenderCompass(ply)
         surface.SetDrawColor(color)
         surface.DrawLine(ScrW() / 2, 0, ScrW() / 2, EFGM.ScreenScale(6))
 
-        local compassX, compassY = ScrW() * 0.5, ScrH() * 0
-        local width, height = ScrW() * EFGM.ScreenScale(0.5), EFGM.ScreenScale(10)
+        local compassX, compassY = (ScrW() / EFGM.ScreenScale(1)) * EFGM.ScreenScale(0.5), ScrH() * 0
+        local width, height = (ScrW() / EFGM.ScreenScale(1)) * EFGM.ScreenScale(0.5), EFGM.ScreenScale(10)
 
-        spacing = (width * 1) / EFGM.ScreenScale(360)
+        spacing = width / 360
         numOfLines = width / spacing
-        fadeDistMultiplier = 25
+        fadeDistMultiplier = EFGM.ScreenScale(25)
         fadeDistance = (ScrW() / 2) / fadeDistMultiplier
 
         for i = math.Round(-ang.y) % 360, (math.Round(-ang.y) % 360) + numOfLines do
@@ -245,7 +245,7 @@ function RenderCompass(ply)
                 local a = i_offset
                 local text = adv_compass_tbl[360 - (a % 360)] and adv_compass_tbl[360 - (a % 360)] or 360 - (a % 360)
 
-                draw.DrawText(text, "Bender24", x, compassY + height * EFGM.ScreenScale(0.6), Color(color.r, color.g, color.b, calculation), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+                draw.DrawText(text, "BenderExfilList", x, compassY + height * EFGM.ScreenScale(0.6), Color(color.r, color.g, color.b, calculation), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 
             end
 
