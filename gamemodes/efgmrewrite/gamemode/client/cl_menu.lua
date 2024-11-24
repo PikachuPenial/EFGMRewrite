@@ -192,6 +192,7 @@ function Menu:Initialize(openTo)
     statsIcon.OnCursorExited = function(s)
 
         statsTab:SizeTo(EFGM.MenuScale(38), statsTab:GetTall(), 0.15, 0, 0.5)
+
     end
 
     function statsIcon:DoClick()
@@ -313,6 +314,7 @@ function Menu:Initialize(openTo)
     inventoryIcon.OnCursorExited = function(s)
 
         inventoryTab:SizeTo(EFGM.MenuScale(38), inventoryTab:GetTall(), 0.15, 0, 0.5)
+
     end
 
     function inventoryIcon:DoClick()
@@ -365,6 +367,7 @@ function Menu:Initialize(openTo)
     tasksIcon.OnCursorExited = function(s)
 
         tasksTab:SizeTo(EFGM.MenuScale(38), tasksTab:GetTall(), 0.15, 0, 0.5)
+
     end
 
     function tasksIcon:DoClick()
@@ -467,6 +470,7 @@ function Menu:Initialize(openTo)
     intelIcon.OnCursorExited = function(s)
 
         intelTab:SizeTo(EFGM.MenuScale(38), intelTab:GetTall(), 0.15, 0, 0.5)
+
     end
 
     function intelIcon:DoClick()
@@ -614,6 +618,52 @@ function Menu:Initialize(openTo)
             Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, function() end)
 
         end)
+
+    end
+
+    local helpTab = vgui.Create("DPanel", self.MenuFrame.TabParentPanel)
+    helpTab:Dock(RIGHT)
+    helpTab:SetSize(EFGM.MenuScale(54), 0)
+
+    local helpIcon = vgui.Create("DImageButton", helpTab)
+    helpIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
+    helpIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
+    helpIcon:SetImage("icons/help_icon.png")
+    helpIcon:SetDepressImage(false)
+
+    local helpBGColor = MenuAlias.transparent
+
+    helpTab.Paint = function(s, w, h)
+
+        surface.SetDrawColor(helpBGColor)
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
+    helpIcon.OnCursorEntered = function(s)
+
+        statsTab:SizeTo(EFGM.MenuScale(46) + statsTextSize, statsTab:GetTall(), 0.15, 0, 0.5)
+        matchTab:SizeTo(EFGM.MenuScale(46) + matchTextSize, matchTab:GetTall(), 0.15, 0, 0.5)
+        inventoryTab:SizeTo(EFGM.MenuScale(46) + inventoryTextSize, inventoryTab:GetTall(), 0.15, 0, 0.5)
+        tasksTab:SizeTo(EFGM.MenuScale(46) + tasksTextSize, tasksTab:GetTall(), 0.15, 0, 0.5)
+        skillsTab:SizeTo(EFGM.MenuScale(46) + skillsTextSize, skillsTab:GetTall(), 0.15, 0, 0.5)
+        intelTab:SizeTo(EFGM.MenuScale(46) + intelTextSize, intelTab:GetTall(), 0.15, 0, 0.5)
+        achievementsTab:SizeTo(EFGM.MenuScale(46) + achievementsTextSize, achievementsTab:GetTall(), 0.15, 0, 0.5)
+        settingsTab:SizeTo(EFGM.MenuScale(46) + settingsTextSize, settingsTab:GetTall(), 0.15, 0, 0.5)
+        surface.PlaySound("ui/element_hover.wav")
+
+    end
+
+    helpIcon.OnCursorExited = function(s)
+
+        statsTab:SizeTo(EFGM.MenuScale(38), statsTab:GetTall(), 0.15, 0, 0.5)
+        matchTab:SizeTo(EFGM.MenuScale(38), matchTab:GetTall(), 0.15, 0, 0.5)
+        inventoryTab:SizeTo(EFGM.MenuScale(38), inventoryTab:GetTall(), 0.15, 0, 0.5)
+        tasksTab:SizeTo(EFGM.MenuScale(38), tasksTab:GetTall(), 0.15, 0, 0.5)
+        skillsTab:SizeTo(EFGM.MenuScale(38), skillsTab:GetTall(), 0.15, 0, 0.5)
+        intelTab:SizeTo(EFGM.MenuScale(38), intelTab:GetTall(), 0.15, 0, 0.5)
+        achievementsTab:SizeTo(EFGM.MenuScale(38), achievementsTab:GetTall(), 0.15, 0, 0.5)
+        settingsTab:SizeTo(EFGM.MenuScale(38), settingsTab:GetTall(), 0.15, 0, 0.5)
 
     end
 
@@ -2325,7 +2375,7 @@ function Menu.OpenTab.Settings()
     toggleLeanPanel:SetSize(0, EFGM.MenuScale(50))
     function toggleLeanPanel:Paint(w, h)
 
-        draw.SimpleTextOutlined("Toggle Lean", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined("Toggle Leaning", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
     end
 
@@ -2798,6 +2848,20 @@ function Menu.OpenTab.Settings()
     vmZ:SetMin(-7)
     vmZ:SetMax(7)
     vmZ:SetDecimals(1)
+
+    local impactFXPanel = vgui.Create("DPanel", visuals)
+    impactFXPanel:Dock(TOP)
+    impactFXPanel:SetSize(0, EFGM.MenuScale(50))
+    function impactFXPanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("High Quality Bullet Impact FX", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local impactFX = vgui.Create("DCheckBox", impactFXPanel)
+    impactFX:SetPos(EFGM.MenuScale(152), EFGM.MenuScale(30))
+    impactFX:SetConVar("efgm_visuals_highqualimpactfx")
+    impactFX:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
 
     -- account
 
