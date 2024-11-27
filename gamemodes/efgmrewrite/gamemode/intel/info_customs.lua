@@ -79,4 +79,4 @@ local customs = {
 
 }
 
-table.insert(Intel.Locations, customs)
+table.insert(Intel.LOCATIONS, customs)

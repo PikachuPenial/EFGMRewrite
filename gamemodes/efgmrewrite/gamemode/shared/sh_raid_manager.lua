@@ -1,7 +1,7 @@
 
 RAID = {}
 
-local plyMeta = FindMetaTable( "Player" )
+local plyMeta = FindMetaTable("Player")
 if not plyMeta then Error("Could not find player table") return end
 
 local function DecrementTimer()

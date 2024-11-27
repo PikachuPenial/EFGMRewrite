@@ -19,14 +19,16 @@ function Stats.InitializeAll(ply)
 	InitializeNetworkInt(ply, "Kills", 0)
 	InitializeNetworkInt(ply, "Deaths", 0)
     InitializeNetworkInt(ply, "Suicides", 0)
-	InitializeNetworkInt(ply, "DamageGiven", 0)
+	InitializeNetworkInt(ply, "DamageDealt", 0)
 	InitializeNetworkInt(ply, "DamageRecieved", 0)
 	InitializeNetworkInt(ply, "DamageHealed", 0)
+    InitializeNetworkInt(ply, "Headshots", 0)
+    InitializeNetworkInt(ply, "FarthestKill", 0)
 
     -- raids
 	InitializeNetworkInt(ply, "Extractions", 0)
 	InitializeNetworkInt(ply, "Quits", 0)
-	InitializeNetworkInt(ply, "FullRaids", 0) -- the amount of full raids played, counted if you join before the first minute and stay until the raid ends
+	InitializeNetworkInt(ply, "RaidsPlayed", 0) -- the amount of full raids played, counted if you join before the first minute and stay until the raid ends
 
     -- streaks
     InitializeNetworkInt(ply, "CurrentKillStreak", 1)
@@ -51,14 +53,16 @@ function Stats.UninitializeAll(ply)
 	UninitializeNetworkInt(ply, "Kills")
 	UninitializeNetworkInt(ply, "Deaths")
     UninitializeNetworkInt(ply, "Suicides")
-	UninitializeNetworkInt(ply, "DamageGiven")
+	UninitializeNetworkInt(ply, "DamageDealt")
 	UninitializeNetworkInt(ply, "DamageRecieved")
 	UninitializeNetworkInt(ply, "DamageHealed")
+    UninitializeNetworkInt(ply, "Headshots")
+    UninitializeNetworkInt(ply, "FarthestKill")
 
     -- raids
 	UninitializeNetworkInt(ply, "Extractions")
 	UninitializeNetworkInt(ply, "Quits")
-	UninitializeNetworkInt(ply, "FullRaids")
+	UninitializeNetworkInt(ply, "RaidsPlayed")
 
     -- streaks
     UninitializeNetworkInt(ply, "CurrentKillStreak")
@@ -85,14 +89,16 @@ function Stats.GetAll(ply)
     tbl["Kills"] = ply:GetNWInt("Kills")
     tbl["Deaths"] = ply:GetNWInt("Deaths")
     tbl["Suicides"] = ply:GetNWInt("Suicides")
-    tbl["DamageGiven"] = ply:GetNWInt("DamageGiven")
+    tbl["DamageDealt"] = ply:GetNWInt("DamageDealt")
     tbl["DamageRecieved"] = ply:GetNWInt("DamageRecieved")
     tbl["DamageHealed"] = ply:GetNWInt("DamageHealed")
+    tbl["Headshots"] = ply:GetNWInt("Headshots")
+    tbl["FarthestKill"] = ply:GetNWInt("FarthestKill")
 
     -- raids
     tbl["Extractions"] = ply:GetNWInt("Extractions")
     tbl["Quits"] = ply:GetNWInt("Quits")
-    tbl["FullRaids"] = ply:GetNWInt("FullRaids")
+    tbl["RaidsPlayed"] = ply:GetNWInt("RaidsPlayed")
 
     -- streaks
     tbl["CurrentKillStreak"] = ply:GetNWInt("CurrentKillStreak")
@@ -177,7 +183,7 @@ hook.Add("EntityTakeDamage", "DamageUpdateStats", function(ply, damageInfo)
     if damageAmount < 0 then -- if the attacker healed another player somehow
         attacker:SetNWInt("DamageHealed", attacker:GetNWInt("DamageHealed") - damageAmount)
     elseif damageAmount > 0 then
-        attacker:SetNWInt("DamageGiven", attacker:GetNWInt("DamageGiven") + damageAmount)
+        attacker:SetNWInt("DamageDealt", attacker:GetNWInt("DamageDealt") + damageAmount)
     end
 
 end)

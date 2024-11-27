@@ -728,16 +728,21 @@ function Menu.OpenTab.Intel()
     local mainEntryList = vgui.Create("DCategoryList", contents)
     mainEntryList:Dock(LEFT)
     mainEntryList:SetSize(EFGM.MenuScale(180), 0)
-    mainEntryList:SetBackgroundColor(Color(0, 0, 0, 100))
+    mainEntryList:SetBackgroundColor(Color(0, 0, 0, 0))
 
-    local subEntryList = vgui.Create("DIconLayout", contents)
+    local subEntryPanel = vgui.Create("DPanel", contents)
+    subEntryPanel:Dock(LEFT)
+    subEntryPanel:SetSize(EFGM.MenuScale(180), 0)
+    subEntryPanel:SetBackgroundColor(Color(0, 0, 0, 0))
+
+    local subEntryList = vgui.Create("DIconLayout", subEntryPanel)
     subEntryList:Dock(LEFT)
     subEntryList:SetSize(EFGM.MenuScale(180), 0)
 
     local entryPanel = vgui.Create("DPanel", contents)
     entryPanel:Dock(FILL)
     function entryPanel:Paint(w, h)
-        surface.SetDrawColor(50, 50, 50, 0)
+        surface.SetDrawColor(0, 0, 0, 0)
         surface.DrawRect(0, 0, w, h)
     end
 
@@ -760,15 +765,15 @@ function Menu.OpenTab.Intel()
 
                 for k, v in ipairs(stats) do
 
-                    surface.SetDrawColor(190, 190, 190)
-                    if k % 2 == 1 then 
-                        surface.SetDrawColor(210, 210, 210)
+                    surface.SetDrawColor(25, 25, 25, 50)
+                    if k % 2 == 1 then
+                        surface.SetDrawColor(35, 35, 35, 70)
                     end
 
-                    surface.DrawRect(0, (k - 1) * EFGM.MenuScale(40), w, EFGM.MenuScale(40))
+                    surface.DrawRect(0, (k - 1) * EFGM.MenuScale(30), w, EFGM.MenuScale(30))
 
-                    local text = markup.Parse( "<font=PuristaBold32><color=0,0,0>\n\n" .. v .. "</color></font>", w - EFGM.MenuScale(40) )
-                    text:Draw(EFGM.MenuScale(20), (k - 1) * EFGM.MenuScale(40) + EFGM.MenuScale(5))
+                    local text = markup.Parse( "<font=PuristaBold32><color=255,255,255>\n\n" .. v .. "</color></font>", w - EFGM.MenuScale(40) )
+                    text:Draw(EFGM.MenuScale(20), (k - 1) * EFGM.MenuScale(30) - EFGM.MenuScale(4))
 
                 end
 
@@ -778,15 +783,15 @@ function Menu.OpenTab.Intel()
 
             entryStats:SetSize(0, 0)
             entryStats.Paint = nil
-            
+
         end
 
         function entryTextDisplay:Paint(w, h)
 
             -- chatgpt hallucinated an entire fucking function to get this shit to wrap, apologised profusely when called out on its artificial bs, but then told me about markup thanks chatgpt
 
-            local text = markup.Parse( "<font=PuristaBold64><color=50,212,50>" .. entryName .. "</color></font><font=Purista32><color=255,255,255>\n" .. entryText .. "</color></font>", w - EFGM.MenuScale(40) )
-            text:Draw(EFGM.MenuScale(20), EFGM.MenuScale(20))
+            local text = markup.Parse( "<font=PuristaBold64><color=50,212,50>" .. string.upper(entryName) .. "</color></font><font=Purista32><color=255,255,255>\n" .. entryText .. "</color></font>", w - EFGM.MenuScale(40) )
+            text:Draw(EFGM.MenuScale(20), EFGM.MenuScale(-15))
 
         end
 
@@ -801,7 +806,7 @@ function Menu.OpenTab.Intel()
 
         for k2, v2 in pairs(v1) do
 
-            local entry = category:Add(v2.Name)
+            local entry = category:Add(string.upper(v2.Name))
 
             function entry:OnCursorEntered()
 
@@ -819,9 +824,9 @@ function Menu.OpenTab.Intel()
                 for k3, v3 in ipairs(v2.Children) do -- jesus christ
 
                     local subEntry = subEntryList:Add("DButton")
-                    subEntry:SetSize(EFGM.MenuScale(180), EFGM.MenuScale(20))
+                    subEntry:SetSize(EFGM.MenuScale(180), EFGM.MenuScale(24))
                     subEntry:SetFont("PuristaBold18")
-                    subEntry:SetText(v3.Name)
+                    subEntry:SetText(string.upper(v3.Name))
 
                     function subEntry:OnCursorEntered()
 
@@ -2119,12 +2124,14 @@ function Menu.OpenTab.Stats()
     stats.Kills = Menu.Player:GetNWInt("Kills")
     stats.Deaths = Menu.Player:GetNWInt("Deaths")
     stats.Suicides = Menu.Player:GetNWInt("Suicides")
-    stats.DamageGiven = Menu.Player:GetNWInt("DamageGiven")
+    stats.DamageDealt = Menu.Player:GetNWInt("DamageDealt")
     stats.DamageRecieved = Menu.Player:GetNWInt("DamageRecieved")
-    stats.DamageHealed = Menu.Player:GetNWInt("DamageHealed") 
+    stats.DamageHealed = Menu.Player:GetNWInt("DamageHealed")
+    stats.Headshots = Menu.Player:GetNWInt("Headshots")
+    stats.FarthestKill = Menu.Player:GetNWInt("FarthestKill")
     stats.Extractions = Menu.Player:GetNWInt("Extractions")
     stats.Quits = Menu.Player:GetNWInt("Quits")
-    stats.FullRaids = Menu.Player:GetNWInt("FullRaids")
+    stats.RaidsPlayed = Menu.Player:GetNWInt("RaidsPlayed")
 
     stats.CurrentKillStreak = Menu.Player:GetNWInt("CurrentKillStreak") 
     stats.BestKillStreak = Menu.Player:GetNWInt("BestKillStreak")
@@ -2433,6 +2440,20 @@ function Menu.OpenTab.Settings()
     adsSens:SetMin(0)
     adsSens:SetMax(2)
     adsSens:SetDecimals(2)
+
+    local magnificationCompensationPanel = vgui.Create("DPanel", controls)
+    magnificationCompensationPanel:Dock(TOP)
+    magnificationCompensationPanel:SetSize(0, EFGM.MenuScale(50))
+    function magnificationCompensationPanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Scale Sensitivity With Magnification", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local magnificationCompensation = vgui.Create("DCheckBox", magnificationCompensationPanel)
+    magnificationCompensation:SetPos(EFGM.MenuScale(152), EFGM.MenuScale(30))
+    magnificationCompensation:SetConVar("arc9_compensate_sens")
+    magnificationCompensation:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
 
     local gameMenuPanel = vgui.Create("DPanel", controls)
     gameMenuPanel:Dock(TOP)

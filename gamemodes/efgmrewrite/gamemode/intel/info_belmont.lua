@@ -114,4 +114,4 @@ local belmont = {
 
 }
 
-table.insert(Intel.Locations, belmont)
+table.insert(Intel.LOCATIONS, belmont)

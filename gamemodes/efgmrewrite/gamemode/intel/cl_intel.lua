@@ -1,9 +1,11 @@
 Intel = {}
 
-Intel.Tutorial = {}
-Intel.Gameplay = {}
-Intel.Objectives = {}
-Intel.Locations = {}
+Intel.TUTORIAL = {}
+Intel.GAMEPLAY = {}
+Intel.OBJECTIVES = {}
+Intel.LOCATIONS = {}
+Intel.SKILLS = {}
+Intel.WEAPONS = {}
 
 local tutorial = {
 
@@ -86,4 +88,4 @@ local tutorial = {
     }
 
 }
-table.insert(Intel.Tutorial, tutorial)
+table.insert(Intel.TUTORIAL, tutorial)

@@ -122,4 +122,4 @@ local concrete = {
 
 }
 
-table.insert(Intel.Locations, concrete)
+table.insert(Intel.LOCATIONS, concrete)

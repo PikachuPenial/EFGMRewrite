@@ -95,4 +95,4 @@ local factory = {
 
 }
 
-table.insert(Intel.Locations, factory)
+table.insert(Intel.LOCATIONS, factory)
