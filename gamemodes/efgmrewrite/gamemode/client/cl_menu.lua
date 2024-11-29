@@ -6,6 +6,8 @@ Menu = {}
 Menu.MusicList = {"sound/music/menu_01.mp4", "sound/music/menu_02.mp4", "sound/music/menu_03.mp4", "sound/music/menu_04.mp4"}
 Menu.TabList = {"stats", "match", "inventory", "intel", "achievements", "settings"}
 Menu.ActiveTab = ""
+Menu.MouseX = 0
+Menu.MouseY = 0
 
 local menuBind = GetConVar("efgm_bind_menu"):GetInt()
 cvars.AddChangeCallback("efgm_bind_menu", function(convar_name, value_old, value_new)
@@ -122,16 +124,16 @@ function Menu:Initialize(openTo)
         surface.SetDrawColor(MenuAlias.transparent)
         surface.DrawRect(0, 0, w, h)
 
-        if GetConVar("efgm_menu_parallax"):GetInt() == 1 then
+        if Menu.MenuFrame.Closing then return end
 
-            if Menu.MenuFrame.Closing then return end
+        if GetConVar("efgm_menu_parallax"):GetInt() == 1 then
 
             local x, y = menuFrame:CursorPos()
 
-            local mouseX = (x / math.Round(EFGM.MenuScale(1900), 1)) - 0.5
-            local mouseY = (y / math.Round(EFGM.MenuScale(1060), 1)) - 0.5
+            Menu.MouseX = (x / math.Round(EFGM.MenuScale(1900), 1)) - 0.5
+            Menu.MouseY = (y / math.Round(EFGM.MenuScale(1060), 1)) - 0.5
 
-            lowerPanel:SetPos(ScrW() / 2 - (EFGM.MenuScale(1900) / 2) + (mouseX * EFGM.MenuScale(20)), 1060 / 2 - (920 / 2) + (mouseY * EFGM.MenuScale(20)))
+            lowerPanel:SetPos(ScrW() / 2 - (EFGM.MenuScale(1900) / 2) + (Menu.MouseX * EFGM.MenuScale(20)), 1060 / 2 - (920 / 2) + (Menu.MouseY * EFGM.MenuScale(20)))
 
         else
 
@@ -217,6 +219,7 @@ function Menu:Initialize(openTo)
             Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, function() end)
 
         end)
+
     end
 
     local matchTab = vgui.Create("DPanel", self.MenuFrame.TabParentPanel)
@@ -432,8 +435,17 @@ function Menu:Initialize(openTo)
 
         end
 
-        surface.PlaySound("common/wpn_denyselect.wav")
-        return
+        surface.PlaySound("ui/element_select.wav")
+
+        Menu.MenuFrame.LowerPanel.Contents:AlphaTo(0, 0.05, 0, function()
+
+            Menu.MenuFrame.LowerPanel.Contents:Remove()
+            Menu.OpenTab.Skills()
+            Menu.ActiveTab = "Skills"
+
+            Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, function() end)
+
+        end)
 
     end
 
@@ -1254,7 +1266,7 @@ function Menu.OpenTab.Match()
                 if IsValid(squadPopOut) then squadPopOut:Remove() end
                 squadPopOut = vgui.Create("DPanel", Menu.MenuFrame.LowerPanel.Contents)
                 squadPopOut:SetSize(EFGM.MenuScale(200), EFGM.MenuScale(60) + (memberCount * EFGM.MenuScale(19)))
-                squadPopOut:SetPos(x + EFGM.MenuScale(10), y - EFGM.MenuScale(45))
+                squadPopOut:SetPos(math.Clamp(x - (Menu.MouseX * EFGM.MenuScale(20)), 0, ScrW() - squadPopOut:GetWide() - EFGM.MenuScale(40)), math.Clamp(y - EFGM.MenuScale(45) - (Menu.MouseY * EFGM.MenuScale(20)), 0, ScrH() - squadPopOut:GetTall() - EFGM.MenuScale(100)))
                 squadPopOut:SetAlpha(0)
                 squadPopOut:AlphaTo(255, 0.1, 0, function() end)
 
@@ -1278,9 +1290,9 @@ function Menu.OpenTab.Match()
 
                     -- panel position follows mouse position
                     x, y = Menu.MenuFrame:CursorPos()
-                    squadPopOut:SetPos(x + EFGM.MenuScale(10), y - EFGM.MenuScale(45))
+                    squadPopOut:SetPos(math.Clamp(x - (Menu.MouseX * EFGM.MenuScale(20)), 0, ScrW() - squadPopOut:GetWide() - EFGM.MenuScale(40)), math.Clamp(y - EFGM.MenuScale(45) - (Menu.MouseY * EFGM.MenuScale(20)), 0, ScrH() - squadPopOut:GetTall() - EFGM.MenuScale(100)))
 
-                    surface.SetDrawColor(Color(0, 0, 0, 225))
+                    surface.SetDrawColor(Color(0, 0, 0, 245))
                     surface.DrawRect(0, 0, w, h)
 
                     surface.SetDrawColor(Color(color.RED, color.GREEN, color.BLUE, 45))
@@ -1373,6 +1385,7 @@ function Menu.OpenTab.Match()
                 end
 
             end
+
         end
 
     end
@@ -2150,6 +2163,154 @@ function Menu.OpenTab.Stats()
 
             draw.SimpleTextOutlined(k .. "", "Purista18", 0, 0, MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
             draw.SimpleTextOutlined(math.Round(v), "Purista18", w, 0, MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        end
+
+    end
+
+end
+
+function Menu.OpenTab.Skills()
+
+    local contents = vgui.Create("DPanel", Menu.MenuFrame.LowerPanel)
+    contents:Dock(FILL)
+    contents:DockPadding(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10))
+    contents:SetAlpha(0)
+    contents.Paint = function(s, w, h)
+
+        surface.SetDrawColor(MenuAlias.transparent)
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
+    Menu.MenuFrame.LowerPanel.Contents = contents
+
+    local skills = vgui.Create("DScrollPanel", contents)
+    skills:Dock(FILL)
+    skills.Paint = function(s, w, h)
+
+        surface.SetDrawColor(MenuAlias.transparent)
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
+    local skillsTitle = vgui.Create("DPanel", skills)
+    skillsTitle:Dock(TOP)
+    skillsTitle:SetSize(0, EFGM.MenuScale(32))
+    function skillsTitle:Paint(w, h)
+
+        surface.SetDrawColor(MenuAlias.transparent)
+        surface.DrawRect(0, 0, w, h)
+
+        draw.SimpleTextOutlined("SKILLS", "PuristaBold32", 265, 0, MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local skillsBar = skills:GetVBar()
+    skillsBar:SetHideButtons(true)
+    function skillsBar:Paint(w, h)
+        draw.RoundedBox(0, 0, 0, w, h, MenuAlias.transparent)
+    end
+    function skillsBar.btnGrip:Paint(w, h)
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.transparent)
+    end
+
+    local skillsList = vgui.Create("DIconLayout", skills)
+    skillsList:Dock(LEFT)
+    skillsList:SetSize(EFGM.MenuScale(530), 0)
+    skillsList:SetSpaceY(EFGM.MenuScale(20))
+    skillsList:SetSpaceX(EFGM.MenuScale(20))
+    skillsList.Paint = function(s, w, h)
+
+        surface.SetDrawColor(MenuAlias.transparent)
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
+    local skillTypeTbl = {
+        ["Combat"] = Color(155, 75, 75), -- combat
+        ["Mental"] = Color(0, 155, 0, 128), -- mental
+        ["Physical"] = Color(45, 165, 165, 128),  -- physical
+        ["Practical"] = Color(155, 155, 0, 128)  -- practical
+    }
+
+    for k1, v1 in pairs(Skills) do
+
+        local skillItem = skillsList:Add("DButton")
+        skillItem:SetSize(EFGM.MenuScale(90), EFGM.MenuScale(90))
+        skillItem.Paint = function(s, w, h)
+
+            surface.SetDrawColor(MenuAlias.whiteColor)
+            surface.DrawRect(0, 0, w, h)
+
+        end
+
+        local skillIcon = vgui.Create("DImage", skillItem)
+        skillIcon:SetPos(EFGM.MenuScale(3), EFGM.MenuScale(3))
+        skillIcon:SetSize(EFGM.MenuScale(84), EFGM.MenuScale(84))
+        skillIcon:SetImage(v1.Icon)
+
+        local skillText = vgui.Create("DPanel", skillIcon)
+        skillText:Dock(FILL)
+        skillText.Paint = function(s, w, h)
+
+            draw.SimpleTextOutlined("1", "PuristaBold32", EFGM.MenuScale(4), EFGM.MenuScale(52), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            draw.SimpleTextOutlined("0/10", "Purista18", w - EFGM.MenuScale(4), EFGM.MenuScale(64), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        end
+
+        local x, y = 0, 0
+
+        skillItem.OnCursorEntered = function(s)
+
+            x, y = Menu.MenuFrame:CursorPos()
+            surface.PlaySound("ui/element_hover.wav")
+
+            -- for text size calculations
+            surface.SetFont("Purista18")
+            local skillDescTextSize = EFGM.MenuScale(surface.GetTextSize(v1.Description))
+
+            if IsValid(skillPopOut) then skillPopOut:Remove() end
+            skillPopOut = vgui.Create("DPanel", Menu.MenuFrame.LowerPanel.Contents)
+            skillPopOut:SetSize(EFGM.MenuScale(10) + skillDescTextSize, EFGM.MenuScale(80))
+            skillPopOut:SetPos(math.Clamp(x - (Menu.MouseX * EFGM.MenuScale(20)), 0, ScrW() - skillPopOut:GetWide() - EFGM.MenuScale(40)), math.Clamp(y - EFGM.MenuScale(45) - (Menu.MouseY * EFGM.MenuScale(20)), 0, ScrH() - skillPopOut:GetTall() - EFGM.MenuScale(100)))
+            skillPopOut:AlphaTo(255, 0.1, 0, function() end)
+
+            skillPopOut.Paint = function(s, w, h)
+
+                if !IsValid(s) then return end
+
+                -- panel position follows mouse position
+                x, y = Menu.MenuFrame:CursorPos()
+                skillPopOut:SetPos(math.Clamp(x - (Menu.MouseX * EFGM.MenuScale(20)), 0, ScrW() - skillPopOut:GetWide() - EFGM.MenuScale(40)), math.Clamp(y - EFGM.MenuScale(45) - (Menu.MouseY * EFGM.MenuScale(20)), 0, ScrH() - skillPopOut:GetTall() - EFGM.MenuScale(100)))
+
+                surface.SetDrawColor(Color(0, 0, 0, 245))
+                surface.DrawRect(0, 0, w, h)
+
+                skillTypeTbl[v1.Category].a = 45
+                surface.SetDrawColor(skillTypeTbl[v1.Category])
+                surface.DrawRect(0, 0, w, h)
+
+                skillTypeTbl[v1.Category].a = 255
+                surface.SetDrawColor(skillTypeTbl[v1.Category])
+                surface.DrawRect(0, 0, w, EFGM.MenuScale(5))
+
+                draw.SimpleTextOutlined(string.upper(v1.Name), "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined(string.upper(v1.Category), "Purista18Italic", EFGM.MenuScale(5), EFGM.MenuScale(25), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined(v1.Description, "Purista18", EFGM.MenuScale(5), EFGM.MenuScale(55), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined("1", "PuristaBold64", w - EFGM.MenuScale(5), EFGM.MenuScale(-10), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            end
+
+        end
+
+        skillItem.OnCursorExited = function(s)
+
+            if IsValid(skillPopOut) then
+
+                skillPopOut:AlphaTo(0, 0.1, 0, function() skillPopOut:Remove() end)
+
+            end
 
         end
 

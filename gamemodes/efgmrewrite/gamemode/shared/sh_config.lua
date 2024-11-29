@@ -60,6 +60,7 @@ if SERVER then
     RunConsoleCommand("arc9_never_ready", "0")
     RunConsoleCommand("arc9_eft_mult_flashbang", "0.4")
     RunConsoleCommand("arc9_eft_taran_jam", "0")
+    RunConsoleCommand("arc9_mod_peek", "0")
     RunConsoleCommand("sv_vmanip_pickups", "1")
 
     -- physics
@@ -124,7 +125,7 @@ if CLIENT then
     RunConsoleCommand("arc9_hud_color_r", "255")
     RunConsoleCommand("arc9_hud_color_g", "255")
     RunConsoleCommand("arc9_hud_color_b", "255")
-    RunConsoleCommand("arc9_hud_darkmode", "1")
+    RunConsoleCommand("arc9_hud_lightmode", "0")
     RunConsoleCommand("arc9_hud_arc9", "0")
     RunConsoleCommand("arc9_killfeed_enable", "1")
     RunConsoleCommand("arc9_killfeed_dynamic", "1")

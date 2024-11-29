@@ -24,6 +24,7 @@ end
 
 -- players current weapon and ammo
 local function RenderPlayerWeapon(ply)
+
     local wep = LocalPlayer():GetActiveWeapon()
     if wep == NULL then return end
 
@@ -51,6 +52,7 @@ local function RenderPlayerWeapon(ply)
 
     -- weapon name
     draw.DrawText(name, "BenderWeaponName", ScrW() - EFGM.ScreenScale(20), ScrH() - EFGM.ScreenScale(40), Color(214, 214, 214), TEXT_ALIGN_RIGHT)
+
 end
 
 -- players current stance and health
@@ -135,6 +137,7 @@ local function RenderPlayerStance(ply)
     surface.SetDrawColor(255, 255, 255, CrouchingAlpha)
     surface.SetMaterial(Material("stances/crouch.png", "tarkovMaterial"))
     surface.DrawTexturedRect(EFGM.ScreenScale(25), ScrH() - EFGM.ScreenScale(151), EFGM.ScreenScale(127), EFGM.ScreenScale(114))
+
 end
 
 -- extracts
@@ -319,6 +322,7 @@ local function RenderDebugEquippedSlots(ply)
 end
 
 local function DrawHUD()
+
     ply = LocalPlayer()
     if not ply:Alive() then return end
     if not enabled then return end
@@ -328,13 +332,15 @@ local function DrawHUD()
     RenderPlayerStance(ply)
     -- RenderPlayerOverlays(ply)
 
-    if !isInventoryTesting then return end
+    if not isInventoryTesting then return end
 
     RenderDebugEquippedSlots(ply)
+
 end
 hook.Add("HUDPaint", "DrawHUD", DrawHUD)
 
-net.Receive("PlayerEnterRaid", function()
+net.Receive("PlayerRaidTransition", function()
+
     RaidTransition = vgui.Create("DPanel")
     RaidTransition:SetSize(ScrW(), ScrH())
     RaidTransition:SetPos(0, 0)
@@ -348,40 +354,53 @@ net.Receive("PlayerEnterRaid", function()
 
     RaidTransition:AlphaTo(255, 0.5, 0, function() end) -- why do i need to use a callback here???
     RaidTransition:AlphaTo(0, 0.35, 1, function() RaidTransition:Remove() end)
+
 end )
 
 function DrawTarget()
+
     if !LocalPlayer():CompareStatus(0) then return false end
+
 end
 hook.Add("HUDDrawTargetID", "HidePlayerInfo", DrawTarget)
 
 function DrawAmmoInfo()
+
     return false
+
 end
 hook.Add("HUDAmmoPickedUp", "AmmoPickedUp", DrawAmmoInfo)
 
 function DrawItemInfo()
+
     return false
+
 end
 hook.Add("HUDItemPickedUp", "ItemPickedUp", DrawItemInfo)
 
 function HideHud(name)
+
     for k, v in pairs({"CHudHealth", "CHudBattery", "CHudAmmo", "CHudSecondaryAmmo", "CHudZoom", "CHudVoiceStatus", "CHudDamageIndicator", "CHUDQuickInfo", "CHudCrosshair"}) do
         if name == v then
             return false
         end
     end
+
 end
 hook.Add("HUDShouldDraw", "HideDefaultHud", HideHud)
 
 -- disable scoreboard
 hook.Add("ScoreboardShow", "DisableHL2Scoreboard", function()
+
     return true
+
 end )
 
 -- hide voice chat panels
 hook.Add("PlayerStartVoice", "ImageOnVoice", function()
-	return false
+
+    return false
+
 end)
 
 net.Receive("VoteableMaps", function(len)

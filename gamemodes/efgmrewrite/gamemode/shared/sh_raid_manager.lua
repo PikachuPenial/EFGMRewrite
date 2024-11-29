@@ -21,7 +21,7 @@ if SERVER then
     util.AddNetworkString("SendVote")
     util.AddNetworkString("RequestExtracts")
 
-    util.AddNetworkString("PlayerEnterRaid")
+    util.AddNetworkString("PlayerRaidTransition")
 
     util.AddNetworkString("GrabExtractList")
     util.AddNetworkString("SendExtractList")
@@ -111,7 +111,7 @@ if SERVER then
 
                     end
 
-                    net.Start("PlayerEnterRaid")
+                    net.Start("PlayerRaidTransition")
                     net.Send(v)
 
                     v:Freeze(true)
@@ -244,7 +244,7 @@ if SERVER then
 
     --{ CONSOLE COMMANDS
 
-        concommand.Add( "efgm_startraid", function() RAID:StartRaid() end )
+        concommand.Add("efgm_startraid", function() RAID:StartRaid() end )
         concommand.Add("efgm_endraid", function() RAID:EndRaid() end)
 
         concommand.Add("efgm_setplayerstatus", function(ply, cmd, args)
@@ -295,12 +295,23 @@ if SERVER then
 
             local randomSpawn = BetterRandom(possibleSpawns)
 
-            ply:Teleport(randomSpawn:GetPos(), randomSpawn:GetAngles(), Vector(0, 0, 0))
-            ply:SetHealth( ply:GetMaxHealth() ) -- heals the player to full so dumb shit like quitting and rejoining to get max hp doesn't happen
-            ply:SendLua("RunConsoleCommand('r_cleardecals')") -- clear decals for that extra 2 fps
+            net.Start("PlayerRaidTransition")
+            net.Send(ply)
 
-            ply:SetRaidStatus(0, "")
-            ply:SetNWBool("RaidReady", false)
+            ply:Freeze(true)
+
+            timer.Create("Extract" .. ply:SteamID64(), 1, 1, function()
+
+                ply:Teleport(randomSpawn:GetPos(), randomSpawn:GetAngles(), Vector(0, 0, 0))
+                ply:SetHealth(ply:GetMaxHealth()) -- heals the player to full so dumb shit like quitting and rejoining to get max hp doesn't happen
+                ply:SendLua("RunConsoleCommand('r_cleardecals')") -- clear decals for that extra 2 fps
+
+                ply:SetRaidStatus(0, "")
+                ply:SetNWBool("RaidReady", false)
+
+                ply:Freeze(false)
+
+            end)
 
         end)
 
