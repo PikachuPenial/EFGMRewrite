@@ -21,13 +21,45 @@ hook.Add("StartCommand", "AdjustPlayerMovement", function(ply, cmd)
         ply:SetNW2Var("leaning_right", false)
     end
 
+    -- disable crouching/uncrouching in certain positions
+    if !ply:OnGround() then
+        cmd:RemoveKey(IN_DUCK)
+    end
+
+    -- disable jumping while crouching
+    if ply:Crouching() or ply:GetNW2Var("entering_crouch", false) then
+        cmd:RemoveKey(IN_JUMP)
+    end
+
+    -- can not uncrouch until the crouching sequence is complete
+    if ply:GetNW2Var("entering_crouch", false) then
+        cmd:AddKey(IN_DUCK)
+    end
+
+    if ply:Crouching() then
+        ply:SetNW2Var("entering_crouch", false)
+    else
+        ply:SetNW2Var("exiting_crouch", false)
+    end
+
+    if ply:KeyPressed(IN_DUCK) then
+        ply:SetNW2Var("entering_crouch", true)
+    end
+
+    -- can not crouch again while uncrouching lol
+    if ply:Crouching() and !ply:KeyDown(IN_DUCK) then
+        ply:SetNW2Var("exiting_crouch", true)
+    end
+
+    if ply:GetNW2Var("exiting_crouch", false) then
+        cmd:RemoveKey(IN_DUCK)
+    end
+
 end)
 
 -- reduce velocity upon landing to prevent bunny hopping
 hook.Add("OnPlayerHitGround", "VelocityLimiter", function(ply) 
 
-    local vel = ply:GetVelocity()
-    ply:SetVelocity(Vector(-vel.x / 2, -vel.y / 2, 0))
     timer.Create(ply:SteamID64() .. "jumpCD", 0.5, 1, function() end)
 
 end )

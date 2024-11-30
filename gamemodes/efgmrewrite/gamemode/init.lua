@@ -64,9 +64,9 @@ function GM:PlayerSpawn(ply)
 	ply:SetLadderClimbSpeed(120)
 	ply:SetSlowWalkSpeed(95)
 
-	ply:SetCrouchedWalkSpeed(0.45)
-	ply:SetDuckSpeed(0.43)
-	ply:SetUnDuckSpeed(0.43)
+	ply:SetCrouchedWalkSpeed(0.46)
+	ply:SetDuckSpeed(0.36)
+	ply:SetUnDuckSpeed(0.36)
 
 	if ply:GetInfoNum("efgm_faction_preference", 0) == 1 then
 
