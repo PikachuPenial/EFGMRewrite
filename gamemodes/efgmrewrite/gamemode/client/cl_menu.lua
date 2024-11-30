@@ -3045,6 +3045,20 @@ function Menu.OpenTab.Settings()
     impactFX:SetConVar("efgm_visuals_highqualimpactfx")
     impactFX:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
 
+    local clTPIKPanel = vgui.Create("DPanel", visuals)
+    clTPIKPanel:Dock(TOP)
+    clTPIKPanel:SetSize(0, EFGM.MenuScale(50))
+    function clTPIKPanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Clientside TPIK", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local clTPIK = vgui.Create("DCheckBox", clTPIKPanel)
+    clTPIK:SetPos(EFGM.MenuScale(152), EFGM.MenuScale(30))
+    clTPIK:SetConVar("arc9_tpik")
+    clTPIK:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+
     -- account
 
     local factionPreferencePanel = vgui.Create("DPanel", account)

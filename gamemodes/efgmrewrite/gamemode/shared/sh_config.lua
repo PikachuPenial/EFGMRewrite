@@ -153,7 +153,6 @@ if CLIENT then
     RunConsoleCommand("arc9_vm_cambobintensity", "0.66")
 
     -- tpik
-    RunConsoleCommand("arc9_tpik", "0")
     RunConsoleCommand("arc9_tpik_others", "0")
     RunConsoleCommand("arc9_tpik_framerate", "1")
 
@@ -162,7 +161,7 @@ if CLIENT then
 
     -- performance
     RunConsoleCommand("arc9_cheapscopes", "0")
-    RunConsoleCommand("arc9_allflash", "0")
+    RunConsoleCommand("arc9_allflash", "1")
 
     -- fx
     RunConsoleCommand("arc9_cust_blur", "1")

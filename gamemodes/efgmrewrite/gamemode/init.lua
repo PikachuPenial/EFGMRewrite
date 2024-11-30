@@ -192,6 +192,13 @@ end)
 
 -- end
 
+-- more lethal fall damage
+hook.Add("GetFallDamage", "FallDmgCalc", function(ply, speed)
+
+	return speed / 6
+
+end)
+
 -- players in the lobby cant take damage
 hook.Add("PlayerShouldTakeDamage", "AntiLobbyKill", function(victim, attacker)
 
