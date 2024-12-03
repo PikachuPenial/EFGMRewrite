@@ -21,6 +21,7 @@ if SERVER then
     util.AddNetworkString("SendVote")
     util.AddNetworkString("RequestExtracts")
 
+    util.AddNetworkString("SendExtractionStatus")
     util.AddNetworkString("PlayerRaidTransition")
 
     util.AddNetworkString("GrabExtractList")

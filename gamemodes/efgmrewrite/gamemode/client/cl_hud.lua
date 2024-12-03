@@ -359,6 +359,51 @@ net.Receive("PlayerRaidTransition", function()
 
 end )
 
+net.Receive("SendExtractionStatus", function()
+
+    local status = net.ReadBool()
+
+    if status then
+
+        if IsValid(ExtractPopup) then return end
+
+        local exitTime = net.ReadInt(16)
+        local exitTimeLeft = exitTime
+        timer.Create("TimeToExit", exitTime, 1, function()
+            ExtractPopup:Remove()
+            hook.Remove("Think", "TimeToExit")
+        end)
+
+        hook.Add("Think", "TimeToExitCalc", function()
+            if timer.Exists("TimeToExit") then exitTimeLeft = math.Round(timer.TimeLeft("TimeToExit"), 1) end
+        end)
+
+        ExtractPopup = vgui.Create("DPanel")
+        ExtractPopup:SetSize(ScrW(), ScrH())
+        ExtractPopup:SetPos(0, 0)
+        ExtractPopup:SetAlpha(0)
+        ExtractPopup:MoveToFront()
+
+        ExtractPopup.Paint = function(self, w, h)
+            surface.SetDrawColor(120, 180, 40, 125)
+            surface.DrawRect(w / 2 - EFGM.ScreenScale(125), h - EFGM.ScreenScale(300), EFGM.ScreenScale(250), EFGM.ScreenScale(80))
+
+            draw.DrawText("EXTRACTION IN", "BenderExfilList", w / 2, h - EFGM.ScreenScale(300), Color(0, 0, 0, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+            draw.DrawText(string.format("%.1f", tostring(exitTimeLeft)), "BenderExfilTimer", w / 2, h - EFGM.ScreenScale(275), Color(0, 0, 0, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+        end
+
+        ExtractPopup:AlphaTo(255, 0.1, 0, function() end) -- why do i need to use a callback here???
+
+    else
+
+        if not IsValid(ExtractPopup) then return end
+
+        ExtractPopup:AlphaTo(0, 0.2, 0, function() ExtractPopup:Remove() timer.Remove("TimeToExit") hook.Remove("Think", "TimeToExit") end)
+
+    end
+
+end )
+
 function DrawTarget()
 
     if !LocalPlayer():CompareStatus(0) then return false end

@@ -139,10 +139,12 @@ end
 
 function ENT:StartExtract(ply)
 
-	-- debug, will replace later once i make a fancy UI system
-	ply:PrintMessage( HUD_PRINTCENTER, "Extracting using ".. self.ExtractName .." (".. self.ExtractTime .." Seconds)" )
-
 	if self.InstantExtract then self.Extract(ply) return end
+
+	net.Start("SendExtractionStatus")
+	net.WriteBool(true) -- true signals that the player entered the extraction points boundaries
+	net.WriteInt(self.ExtractTime, 16)
+	net.Send(ply)
 
 	-- defines the timerName as for example "ExTimer_90071996842377216214"
 	-- completely useless and fucking unreadable for normal (and maybe even autistic) people but nevertheless useful for consistently identifying timers
@@ -163,7 +165,9 @@ end
 
 function ENT:StopExtract(ply)
 
-	ply:PrintMessage( HUD_PRINTCENTER, "Stopping extracting" )
+	net.Start("SendExtractionStatus")
+	net.WriteBool(false) -- false signals that the player left the extraction points boundaries
+	net.Send(ply)
 
 	-- read StartExtract you lazy ass
 	local timerName = "ExTimer_" .. ply:SteamID64() .. self:EntIndex()
