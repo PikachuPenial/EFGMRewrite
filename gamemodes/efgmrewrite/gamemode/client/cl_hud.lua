@@ -390,6 +390,12 @@ net.Receive("SendExtractionStatus", function()
 
             draw.DrawText("EXTRACTION IN", "BenderExfilList", w / 2, h - EFGM.ScreenScale(300), Color(0, 0, 0, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
             draw.DrawText(string.format("%.1f", tostring(exitTimeLeft)), "BenderExfilTimer", w / 2, h - EFGM.ScreenScale(275), Color(0, 0, 0, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+
+            surface.SetDrawColor(0, 0, 0, 128)
+            surface.DrawRect(w / 2 - EFGM.ScreenScale(125), h - EFGM.ScreenScale(215), EFGM.ScreenScale(250), EFGM.ScreenScale(5))
+
+            surface.SetDrawColor(120, 180, 40, 125)
+            surface.DrawRect((w / 2) - EFGM.ScreenScale(250) * (exitTimeLeft / exitTime) / 2, h - EFGM.ScreenScale(215), EFGM.ScreenScale(250) * (exitTimeLeft / exitTime), EFGM.ScreenScale(5))
         end
 
         ExtractPopup:AlphaTo(255, 0.1, 0, function() end) -- why do i need to use a callback here???
@@ -398,7 +404,7 @@ net.Receive("SendExtractionStatus", function()
 
         if not IsValid(ExtractPopup) then return end
 
-        ExtractPopup:AlphaTo(0, 0.2, 0, function() ExtractPopup:Remove() timer.Remove("TimeToExit") hook.Remove("Think", "TimeToExit") end)
+        ExtractPopup:AlphaTo(0, 0.1, 0, function() ExtractPopup:Remove() timer.Remove("TimeToExit") hook.Remove("Think", "TimeToExit") end)
 
     end
 
