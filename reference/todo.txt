@@ -23,6 +23,11 @@ Will add to this if need be (mostly for motivation to finish the thing but also 
     Unique PData
     Map votes
     Stat tracking
+    Keybind customization menu
+    Display to player extracting the time before extract (maybe global float)
+    Port belmont and customs to rewrite
+    Proper extract list menu (like tarky <3)
+    Team system
 
 -- TODO --
 
@@ -41,16 +46,11 @@ Right Now:
 
 Planned Eventually:
 
-    Keybind customization menu
-    Display to player extracting the time before extract (maybe global float)
     (Maybe) make a universal transaction framework (would help if tradeups or player trading were added)
-    Port belmont and customs to rewrite
     Finish shop UI (ive given up for now, i really need to figure this shit out)
     Post-raid screen
     Stash UI
     Smart Spawnz
-    Proper extract list menu (like tarky <3)
-    Team system
     Contracts (per-map missions)
     Translation / localization system
     Feedback feature
@@ -74,3 +74,5 @@ Planned Eventually:
     I'm ready to just admit that I don't know how to make a bad map better, and nothing I do to concrete is gonna improve it.
     In future though, I should probably just try to come up with an actually good idea and just execute it to the best of my ability,
     instead of copy pasting a bunch of buildings and making that playable
+
+    UPDATE AS OF 12/4/2024 BY PENIAL: portanator still consistently updates concrete despite my pleads to do literally anything else with the gamemode, map is still shit, maybe map won't be shit for long, i don't fucking know

@@ -1,3 +1,5 @@
 # Escape From Garry's Mod Rewrite
 
- Escape From Garry's Mod Rewrite is a refactor of Escape From Garry's Mod, a spiritual adaptation of the very not anger inducing game "Escape From Tarkov".
+heavily work in progress sequel to Escape From Garry's Mod, missing many gameplay elements, don't bother playing
+
+portanator and I (penial) have been working on this gamemode on and off for two years and i can't promise that it'll ever be playable, just working on it when we are bored and not busy

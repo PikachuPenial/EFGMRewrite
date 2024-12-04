@@ -57,7 +57,7 @@ hook.Add("StartCommand", "AdjustPlayerMovement", function(ply, cmd)
 
 end)
 
--- reduce velocity upon landing to prevent bunny hopping
+-- jump cooldown
 hook.Add("OnPlayerHitGround", "VelocityLimiter", function(ply) 
 
     timer.Create(ply:SteamID64() .. "jumpCD", 0.5, 1, function() end)

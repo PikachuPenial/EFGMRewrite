@@ -1,7 +1,7 @@
-GM.Name = "EFGM Remastered"
-GM.Author = "Penial & Porty"
-GM.Email = "piss off"
-GM.Website = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+GM.Name = "EFGM Rewrite"
+GM.Author = "Penial, Portanator"
+GM.Email = "kind programmer spreads christmas cheer through phone calls :blush:"
+GM.Website = "https://github.com/PikachuPenial/EFGMRewrite"
 
 if CLIENT then
 
