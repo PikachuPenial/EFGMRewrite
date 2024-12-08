@@ -233,7 +233,7 @@ function Menu:Initialize(openTo)
     matchIcon:SetDepressImage(false)
 
     local matchBGColor = MenuAlias.transparent
-    local matchText = "MATCH"
+    local matchText = "#menu.tab.match"
     local matchTextSize = EFGM.MenuScale(surface.GetTextSize(matchText))
 
     matchTab.Paint = function(s, w, h)
@@ -295,7 +295,7 @@ function Menu:Initialize(openTo)
     inventoryIcon:SetDepressImage(false)
 
     local inventoryBGColor = MenuAlias.transparent
-    local inventoryText = "INVENTORY"
+    local inventoryText = "#menu.tab.inventory"
     local inventoryTextSize = EFGM.MenuScale(surface.GetTextSize(inventoryText))
 
     inventoryTab.Paint = function(s, w, h)
@@ -348,7 +348,7 @@ function Menu:Initialize(openTo)
     tasksIcon:SetDepressImage(false)
 
     local tasksBGColor = MenuAlias.transparent
-    local tasksText = "TASKS"
+    local tasksText = "#menu.tab.tasks"
     local tasksTextSize = EFGM.MenuScale(surface.GetTextSize(tasksText))
 
     tasksTab.Paint = function(s, w, h)
@@ -400,7 +400,7 @@ function Menu:Initialize(openTo)
     skillsIcon:SetDepressImage(false)
 
     local skillsBGColor = MenuAlias.transparent
-    local skillsText = "SKILLS"
+    local skillsText = "#menu.tab.skills"
     local skillsTextSize = EFGM.MenuScale(surface.GetTextSize(skillsText))
 
     skillsTab.Paint = function(s, w, h)
@@ -460,7 +460,7 @@ function Menu:Initialize(openTo)
     intelIcon:SetDepressImage(false)
 
     local intelBGColor = MenuAlias.transparent
-    local intelText = "INTEL"
+    local intelText = "#menu.tab.intel"
     local intelTextSize = EFGM.MenuScale(surface.GetTextSize(intelText))
 
     intelTab.Paint = function(s, w, h)
@@ -521,7 +521,7 @@ function Menu:Initialize(openTo)
     achievementsIcon:SetDepressImage(false)
 
     local achievementsBGColor = MenuAlias.transparent
-    local achievementsText = "ACHIEVEMENTS"
+    local achievementsText = "#menu.tab.achievements"
     local achievementsTextSize = EFGM.MenuScale(surface.GetTextSize(achievementsText))
 
     achievementsTab.Paint = function(s, w, h)
@@ -584,7 +584,7 @@ function Menu:Initialize(openTo)
     settingsIcon:SetDepressImage(false)
 
     local settingsBGColor = MenuAlias.transparent
-    local settingsText = "SETTINGS"
+    local settingsText = "#menu.tab.settings"
     local settingsTextSize = EFGM.MenuScale(surface.GetTextSize(settingsText))
 
     settingsTab.Paint = function(s, w, h)
