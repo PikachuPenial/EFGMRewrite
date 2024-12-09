@@ -82,10 +82,10 @@ if SERVER then
     -- attachments
     RunConsoleCommand("arc9_atts_nocustomize", "0") -- why would anyone do this
     RunConsoleCommand("arc9_atts_max", "100")
-    RunConsoleCommand("arc9_free_atts", "0")
     RunConsoleCommand("arc9_atts_lock", "0")
     RunConsoleCommand("arc9_atts_loseondie", "1")
     RunConsoleCommand("arc9_atts_generateentities", "0")
+    if GetConVar("efgm_derivesbox"):GetInt() == 1 then RunConsoleCommand("arc9_free_atts", "1") else RunConsoleCommand("arc9_free_atts", 0) end
 
     -- caching
     RunConsoleCommand("arc9_precache_allsounds_onstartup", "1")
@@ -136,7 +136,7 @@ if CLIENT then
     RunConsoleCommand("cl_vmanip_pickups_halo", "0")
 
     -- hints
-    RunConsoleCommand("arc9_hud_nohints", "1")
+    RunConsoleCommand("arc9_hud_hints", "0")
     RunConsoleCommand("arc9_center_reload_enable", "0")
     RunConsoleCommand("arc9_center_bipod", "1")
     RunConsoleCommand("arc9_center_jam", "1")
@@ -144,7 +144,7 @@ if CLIENT then
     RunConsoleCommand("arc9_center_firemode_time", "1")
     RunConsoleCommand("arc9_center_overheat", "0")
 
-    -- vm
+    -- vm 
     RunConsoleCommand("arc9_vm_bobstyle", "0")
 
     -- vb
