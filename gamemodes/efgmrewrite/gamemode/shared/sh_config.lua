@@ -9,19 +9,20 @@ debugShitSecWep = {"arc9_eft_glock17", "arc9_eft_pm", "arc9_eft_pb", "arc9_eft_t
 debugNadeWep = {"arc9_eft_f1", "arc9_eft_m18", "arc9_eft_m67", "arc9_eft_m7290", "arc9_eft_rdg2b", "arc9_eft_rgd5", "arc9_eft_rgn", "arc9_eft_rgo", "arc9_eft_vog17", "arc9_eft_vog25", "arc9_eft_zarya"}
 debugMeleeWep = {"arc9_eft_melee_taran", "arc9_eft_melee_6x5", "arc9_eft_melee_wycc", "arc9_eft_melee_a2607", "arc9_eft_melee_a2607d", "arc9_eft_melee_camper", "arc9_eft_melee_crash", "arc9_eft_melee_cultist", "arc9_eft_melee_fulcrum", "arc9_eft_melee_crowbar", "arc9_eft_melee_kiba", "arc9_eft_melee_kukri", "arc9_eft_melee_m2", "arc9_eft_melee_mpl50", "arc9_eft_melee_rebel", "arc9_eft_melee_voodoo", "arc9_eft_melee_sp8", "arc9_eft_melee_hultafors", "arc9_eft_melee_taiga"}
 
-debugRandAtts = table.Copy( ARC9.Attachments_Index )
+-- get a copy of every attachment loaded by ARC9
+debugRandAtts = table.Copy(ARC9.Attachments_Index)
 
 -- swaps the keys with the values, so for flippedDebugPrimWep, ["arc9_eft_tx15"] would equal 2, useful for inventory slot filtering
-flippedDebugPrimWep = table.Flip( debugPrimWep )
-flippedDebugSecWep = table.Flip( debugSecWep )
-flippedDebugNadeWep = table.Flip( debugNadeWep )
-flippedDebugMeleeWep = table.Flip( debugMeleeWep )
+flippedDebugPrimWep = table.Flip(debugPrimWep)
+flippedDebugSecWep = table.Flip(debugSecWep)
+flippedDebugNadeWep = table.Flip(debugNadeWep)
+flippedDebugMeleeWep = table.Flip(debugMeleeWep)
 
 -- server convars
 if SERVER then
 
     -- modifiers
-    local modif = "\\nRecoilKickMult\\t0.75\\nVisualRecoilPunchMult\\t1.5\\nVisualRecoilRollMult\\t1.5\\nVisualRecoilSideMult\\t1\\nVisualRecoilUpMult\\t1\\nVisualRecoilMult\\t2\\nRecoilRandomSideMult\\t1\\nSwayMultMidAir\\t1.5\\nRecoilAutoControlMultShooting\\t0.05\\nRecoilUpMult\\t0.5\\nRecoilAutoControlMult\\t0.5 "
+    local modif = "\\nRecoilKickMult\\t0.75\\nVisualRecoilPunchMult\\t1.5\\nVisualRecoilRollMult\\t1.5\\nVisualRecoilSideMult\\t1\\nVisualRecoilUpMult\\t1\\nVisualRecoilMult\\t2\\nRecoilRandomSideMult\\t1\\nSwayMultMidAir\\t1.5\\nRecoilAutoControlMultShooting\\t0.05\\nRecoilUpMult\\t0.5\\nRecoilAutoControlMult\\t0.5\\nFreeAimRadiusMult\\t1.33 "
     RunConsoleCommand("arc9_modifiers", modif)
     RunConsoleCommand("arc9_mod_adstime", "0.75")
     RunConsoleCommand("arc9_mod_bodydamagecancel", "1")
@@ -84,7 +85,6 @@ if SERVER then
     RunConsoleCommand("arc9_atts_max", "100")
     RunConsoleCommand("arc9_atts_lock", "0")
     RunConsoleCommand("arc9_atts_loseondie", "1")
-    RunConsoleCommand("arc9_atts_generateentities", "0")
     if GetConVar("efgm_derivesbox"):GetInt() == 1 then RunConsoleCommand("arc9_free_atts", "1") else RunConsoleCommand("arc9_free_atts", 0) end
 
     -- caching

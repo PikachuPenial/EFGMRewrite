@@ -100,11 +100,9 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
 
         end
 
-        local jumpmove = math.Clamp(math.ease.InExpo(math.Clamp(velocityangle.z, -150, 0)/-150)*0.5 + math.ease.InExpo(math.Clamp(velocityangle.z, 0, 350)/350)*-50, -4, 2.5) * 0.5   -- crazy math for jump movement
-        smoothjumpmove = Lerp(math.Clamp(ft*8, 0, 1), smoothjumpmove, jumpmove)
-        local smoothjumpmove2 = math.Clamp(smoothjumpmove, -0.3, 0.01) * (1.5-sightamount) * 2
-
-        if owner.GetSliding then if owner:GetSliding() then mag = 0 step = 5 smoothsidemove = 0 end end
+        local jumpmove = math.Clamp(math.ease.InExpo(math.Clamp(velocityangle.z, -150, 0) / -150) * 0.5 + math.ease.InExpo(math.Clamp(velocityangle.z, 0, 350)/350)*-50, -4, 2.5) * 0.5   -- crazy math for jump movement
+        smoothjumpmove = Lerp(math.Clamp(ft * 8, 0, 1), smoothjumpmove, jumpmove)
+        local smoothjumpmove2 = math.Clamp(smoothjumpmove, -0.3, 0.01) * (1.5 - sightamount) * 2
 
         if self:GetIsSprinting() then
 
@@ -181,10 +179,10 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
         local inertiaanchor = Vector(self.CustomizeRotateAnchor)
         inertiaanchor.x = inertiaanchor.x * 0.75
 
-        pos:Add(ang:Up() * smootheyeang.p * 0.075 * sightmult)
-        pos:Add(ang:Right() * smootheyeang.y * -0.1 * sightmult)
+        pos:Add(ang:Up() * smootheyeang.p * 0.075 * (sightmult / 3))
+        pos:Add(ang:Right() * smootheyeang.y * -0.1 * (sightmult / 3))
 
-        local rap_pos, rap_ang = self:RotateAroundPoint2(pos, ang, inertiaanchor, vector_origin, smootheyeang * sightmult)
+        local rap_pos, rap_ang = self:RotateAroundPoint2(pos, ang, inertiaanchor, vector_origin, smootheyeang * 3 * (sightmult / 6) * -1)
         pos:Set(rap_pos)
         ang:Set(rap_ang)
 
