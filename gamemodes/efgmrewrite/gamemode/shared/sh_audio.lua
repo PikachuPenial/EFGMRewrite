@@ -1,5 +1,87 @@
 
--- sounds
+-- footsteps
+hook.Add("PlayerStepSoundTime", "FootTime", function(ply, type, walking)
+    if (type == STEPSOUNDTIME_ON_LADDER) then
+
+        local speed = 450
+        return speed
+
+    end
+
+    if (type == STEPSOUNDTIME_NORMAL or type == STEPSOUNDTIME_WATER_FOOT) then
+
+        if (ply:GetMoveType() == MOVETYPE_LADDER) then
+
+            local speed = math.Remap(ply:GetWalkSpeed(), 200, 450, 400, 200) + 200
+            return speed
+
+        else
+
+            if (ply:GetVelocity():Length2D() > 450) then
+
+                local speed = 200
+                return speed
+
+            else
+
+                if (ply:Crouching()) then
+
+                    if (ply:GetVelocity():Length2D() < 229) then
+
+                        local speed = 400 + 100
+                        return speed
+
+                    else
+
+                        local speed = math.Remap(ply:GetVelocity():Length2D(), 200, 450, 400, 200) + 200
+                        return speed
+
+                    end
+
+                else
+
+                    if (ply:GetVelocity():Length2D() < 160) then
+
+                        local speed = 445
+                        return speed
+
+                    else
+
+                        local speed = math.Remap(ply:GetVelocity():Length2D(), 200, 450, 355, 200)
+                        return speed
+
+                    end
+
+                end
+            end
+        end
+    end
+
+    if (type == STEPSOUNDTIME_WATER_KNEE) then
+
+        if (ply:GetVelocity():Length2D() > 450) then
+
+            local speed = 200
+            return speed
+
+        else
+
+            if (ply:GetVelocity():Length2D() < 229) then
+
+                local speed = 400
+                return speed
+
+            else
+
+                local speed = math.Remap(ply:GetVelocity():Length2D(), 200, 450, 400, 200)
+                return speed
+
+            end
+        end
+    end
+end)
+
+-- gun sounds
 local shotSounds = {
     "cracks/distant/dist01.ogg",
     "cracks/distant/dist02.ogg",
