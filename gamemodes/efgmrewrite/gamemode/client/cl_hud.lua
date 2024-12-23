@@ -261,13 +261,6 @@ function RenderCompass(ply)
 
 end
 
-local function RenderPlayerOverlays(ply)
-
-    -- i dont want to play with you anymore RenderPlayerOverlays()
-    return
-
-end
-
 local function RenderDebugEquippedSlots(ply)
 
     if activeSlots == nil then return end
@@ -330,7 +323,6 @@ local function DrawHUD()
     RenderRaidTime(ply)
     RenderPlayerWeapon(ply)
     RenderPlayerStance(ply)
-    -- RenderPlayerOverlays(ply)
 
     if not isInventoryTesting then return end
 

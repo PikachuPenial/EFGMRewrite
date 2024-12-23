@@ -18,6 +18,27 @@ for _, v in ipairs(file.Find("gamemodes/efgmrewrite/gamemode/shared/*.lua", "GAM
 for _, v in ipairs(file.Find("gamemodes/efgmrewrite/gamemode/client/*.lua", "GAME", "nameasc")) do include("client/" .. v) end
 for _, v in ipairs(file.Find("gamemodes/efgmrewrite/gamemode/intel/*.lua", "GAME", "nameasc")) do include("intel/" .. v) end
 
+-- panel/frame blur
+-- TODO: create similar function for segments of the screen instead of blurring a specific function, would let us blur HUD elements that are not held in a panel/frame
+local blurMat = Material("pp/blurscreen")
+function BlurPanel(panel, strength)
+
+    surface.SetMaterial(blurMat)
+    surface.SetDrawColor(255, 255, 255, 255)
+
+    local blurX, blurY = panel:LocalToScreen(0, 0)
+
+    for i = 0.33, 1, 0.33 do
+
+        blurMat:SetFloat("$blur", strength * i)
+        blurMat:Recompute()
+        if (render) then render.UpdateScreenEffectTexture() end
+        surface.DrawTexturedRect(blurX * -1, blurY * -1, ScrW(), ScrH())
+
+    end
+
+end
+
 -- death prespective
 local function Calc(ply, pos, angles, fov, target)
 
