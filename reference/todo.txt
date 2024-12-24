@@ -33,16 +33,20 @@ Will add to this if need be (mostly for motivation to finish the thing but also 
 
 Right Now:
 
-    Rework inventory
-        - Stash: Grid of slots, can be upgraded if need be
-        - Shop: Grid of slots, unlimited stack size
-        - Inventory: Main slots (primary, secondary, etc) with different blacklists (knifes only in knife slot, etc), and backpack with grid of slots
-    
-    Order of operations:
-        1. Inventory table rework
-        2. Storing player's inventory data using the new system
-        3. Compatability with the loadout system
-        4. Stash compatability
+    Build a framework for defining items, such as their weight, type, etc.
+        - Each item should have its own information
+        - Information should be easily pulled
+        - Information will not be instantiated with items
+
+    Rework item instantiation:
+        - Items will be tables with {identifier, count, metadata} keys
+        - Identifier is used to pull item information from the json, count is self explanitory, metadata is used for attatchments and the like
+
+    Rework inventories:
+        - Inventories may be organized like {contents, metadata} like before
+        - Contents might use number or letter ID's, idk
+        - The metadata might allow infinite stacking or item movement restrictions to allow for the shop
+        - Also I gotta make an inventory panel one of these days
 
 Planned Eventually:
 
@@ -66,13 +70,6 @@ Planned Eventually:
 
 Planned Eventually:
 
-    Ravine - Right now, the map is really shit, and I don't remember adding anything helping.
-    Because it could just be fundamentally shit, I could try spending like an hour making 2 or 3 other layouts, and just fucking around with them.
-    I'll probably do that actually, it sounds more fun than sleeping tbh
-
-    Concrete - Just fuck off with it.
-    I'm ready to just admit that I don't know how to make a bad map better, and nothing I do to concrete is gonna improve it.
-    In future though, I should probably just try to come up with an actually good idea and just execute it to the best of my ability,
-    instead of copy pasting a bunch of buildings and making that playable
-
     UPDATE AS OF 12/4/2024 BY PENIAL: portanator still consistently updates concrete despite my pleads to do literally anything else with the gamemode, map is still shit, maybe map won't be shit for long, i don't fucking know
+
+    UPDATE AS OF 12/23/2024 BY PORTANATOR: penial still consistently pleads with me to do literally anything but work on concrete. i think he's trying to subtly suggest that i should work on the inventory system, idk tho
