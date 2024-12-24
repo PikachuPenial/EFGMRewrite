@@ -39,7 +39,7 @@ function BlurPanel(panel, strength)
 
 end
 
--- death prespective
+-- death perspective
 local function Calc(ply, pos, angles, fov, target)
 
     local view = target:GetAttachment(target:LookupAttachment("eyes"))

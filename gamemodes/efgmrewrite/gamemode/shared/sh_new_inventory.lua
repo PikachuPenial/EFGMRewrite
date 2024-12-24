@@ -21,4 +21,35 @@
 // shit so lua doesn't get mad at me for having an empty .lua file
 // https://www.youtube.com/watch?v=Iv3F5ARdu58
 
-local a = 0
+
+function ReadJSON( fileName )
+
+    return file.Read( "addons/EFGMRewrite/gamemodes/efgmrewrite/gamemode/json/" .. fileName .. ".json", "GAME" )
+
+end
+
+concommand.Add("efgm_print_json", function(ply, cmd, args)
+
+    PrintTable( ReadJSON( tostring( args[1] ) ) )
+
+end)
+
+concommand.Add("efgm_debug_testitems", function(ply, cmd, args)
+    
+    local inventory = CONTAINER.NewContainer( 5, 10, 600 )
+    local weapon = ITEM.CreateItem( "arc9_eft_akm", 1, {} )
+
+    inventory:AddItem(weapon, 2, 2)
+
+    PrintTable(inventory)
+    PrintTable(weapon)
+
+    local id = CONTAINER.GetSlotID( 2, 2, 5 )
+    local x, y = CONTAINER.GetCoords( id, 5 )
+
+    print( "Slot ID - " .. id )
+    print( "Slot x - " .. x )
+    print( "Slot y - " .. y )
+
+
+end)

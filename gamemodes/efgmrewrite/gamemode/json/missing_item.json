@@ -1,0 +1,11 @@
+{
+    "displayName": "MISSING",
+    "weight": 0.1,
+    "value": 1,
+    "equipType": 0,
+    "appearInInventory": true,
+    "stackSize": 1,
+
+    "sizeX": 1,
+    "sizeY": 1
+}

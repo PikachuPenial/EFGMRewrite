@@ -42,11 +42,11 @@ Right Now:
         - Items will be tables with {identifier, count, metadata} keys
         - Identifier is used to pull item information from the json, count is self explanitory, metadata is used for attatchments and the like
 
-    Rework inventories:
-        - Inventories may be organized like {contents, metadata} like before
+    Rework containers / inventories:
+        - Containers may be organized like {contents, metadata} like before
         - Contents might use number or letter ID's, idk
         - The metadata might allow infinite stacking or item movement restrictions to allow for the shop
-        - Also I gotta make an inventory panel one of these days
+        - Also I gotta make a container panel one of these days
 
 Planned Eventually:
 
