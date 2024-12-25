@@ -331,9 +331,17 @@ function Menu:Initialize(openTo)
 
         end
 
-        -- placeholder until inventory functions chop chop portapotty
-        surface.PlaySound("common/wpn_denyselect.wav")
-        return
+        surface.PlaySound("ui/element_select.wav")
+
+        Menu.MenuFrame.LowerPanel.Contents:AlphaTo(0, 0.05, 0, function()
+
+            Menu.MenuFrame.LowerPanel.Contents:Remove()
+            Menu.OpenTab.Inventory()
+            Menu.ActiveTab = "Inventory"
+
+            Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, function() end)
+
+        end)
 
     end
 
@@ -683,9 +691,9 @@ function Menu:Initialize(openTo)
     if openTo != nil then
 
         -- i cant figure this out so enjoy the Stats tab
-        Menu.OpenTab.Stats()
+        Menu.OpenTab.Inventory()
         Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, function() end)
-        Menu.ActiveTab = "Stats"
+        Menu.ActiveTab = "Inventory"
 
     end
 
@@ -719,6 +727,66 @@ function Menu.OpenTab.Inventory()
     end
 
     Menu.MenuFrame.LowerPanel.Contents = contents
+
+    local playerPanel = vgui.Create("DPanel", contents)
+    playerPanel:Dock(LEFT)
+    playerPanel:DockPadding(EFGM.MenuScale(0), EFGM.MenuScale(0), EFGM.MenuScale(5), EFGM.MenuScale(0))
+    playerPanel:SetSize(EFGM.MenuScale(626), 0)
+    playerPanel.Paint = function(s, w, h)
+
+        surface.SetDrawColor(MenuAlias.transparent)
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
+    local playerPanelPlaceholder = vgui.Create("DPanel", playerPanel)
+    playerPanelPlaceholder:Dock(FILL)
+    function playerPanelPlaceholder:Paint(w, h)
+
+        surface.SetDrawColor(Color(0, 0, 0, 155))
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
+    local inventoryPanel = vgui.Create("DPanel", contents)
+    inventoryPanel:Dock(LEFT)
+    inventoryPanel:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(0), EFGM.MenuScale(5), EFGM.MenuScale(0))
+    inventoryPanel:SetSize(EFGM.MenuScale(626), 0)
+    inventoryPanel.Paint = function(s, w, h)
+
+        surface.SetDrawColor(MenuAlias.transparent)
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
+    local inventoryPanelPlaceholder = vgui.Create("DPanel", inventoryPanel)
+    inventoryPanelPlaceholder:Dock(FILL)
+    function inventoryPanelPlaceholder:Paint(w, h)
+
+        surface.SetDrawColor(Color(0, 0, 0, 155))
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
+    local stashPanel = vgui.Create("DPanel", contents)
+    stashPanel:Dock(LEFT)
+    stashPanel:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(0), EFGM.MenuScale(5), EFGM.MenuScale(0))
+    stashPanel:SetSize(EFGM.MenuScale(626), 0)
+    stashPanel.Paint = function(s, w, h)
+
+        surface.SetDrawColor(MenuAlias.transparent)
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
+    local stashPanelPlaceholder = vgui.Create("DPanel", stashPanel)
+    stashPanelPlaceholder:Dock(FILL)
+    function stashPanelPlaceholder:Paint(w, h)
+
+        surface.SetDrawColor(Color(0, 0, 0, 155))
+        surface.DrawRect(0, 0, w, h)
+
+    end
 
 end
 

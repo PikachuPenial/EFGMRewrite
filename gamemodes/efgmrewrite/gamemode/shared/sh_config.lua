@@ -89,8 +89,8 @@ if SERVER then
 
     -- caching
     RunConsoleCommand("arc9_precache_allsounds_onstartup", "1")
-    RunConsoleCommand("arc9_precache_attsmodels_onstartup", "1")
-    RunConsoleCommand("arc9_precache_wepmodels_onstartup", "1")
+    RunConsoleCommand("arc9_precache_attsmodels_onstartup", "0")
+    RunConsoleCommand("arc9_precache_wepmodels_onstartup", "0")
 
 end
 
