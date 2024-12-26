@@ -788,19 +788,25 @@ function Menu.OpenTab.Inventory()
         surface.SetDrawColor(Color(0, 0, 0, 155))
         surface.DrawRect(0, 0, w, h)
 
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
+
     end
 
     local currentStashUsed = 0
     local stashText = vgui.Create("DPanel", stashPanel)
     stashText:Dock(TOP)
-    stashText:SetSize(0, EFGM.MenuScale(30))
+    stashText:SetSize(0, EFGM.MenuScale(36))
     function stashText:Paint(w, h)
 
         surface.SetDrawColor(Color(155, 155, 155, 10))
         surface.DrawRect(0, 0, w, h)
 
-        draw.SimpleTextOutlined("STASH", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(13), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
-        draw.SimpleTextOutlined(currentStashUsed .. "/144", "PuristaBold18", EFGM.MenuScale(95), EFGM.MenuScale(17), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined("STASH", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(19), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined(currentStashUsed .. "/144", "PuristaBold18", EFGM.MenuScale(95), EFGM.MenuScale(23), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
 
     end
 
@@ -809,39 +815,48 @@ function Menu.OpenTab.Inventory()
     stashHolder:DockMargin(EFGM.MenuScale(37), 0, 0, 0)
     function stashHolder:Paint(w, h)
 
+        BlurPanel(stashHolder, 3)
+
         surface.SetDrawColor(Color(80, 80, 80, 10))
         surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 5))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+
+        surface.SetDrawColor(Color(255, 255, 255, 5))
+        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 5))
+        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+        for i = 1, stashHolder:GetTall() do
+
+            if i % EFGM.MenuScale(64) == 0 then
+
+                surface.SetDrawColor(Color(255, 255, 255, 5))
+                surface.DrawRect(0, i, w, EFGM.MenuScale(1))
+
+                if i <= EFGM.MenuScale(576) then
+
+                    surface.SetDrawColor(Color(255, 255, 255, 5))
+                    surface.DrawRect(i, 0, EFGM.MenuScale(1), h)
+
+                end
+
+            end
+
+        end
 
     end
 
     local stashBar = stashHolder:GetVBar()
     stashBar:SetSize(0, 0)
 
-    local stashItems = vgui.Create("DIconLayout", stashHolder)
-    stashItems:Dock(FILL)
-    stashItems:SetSpaceY(0)
-    stashItems:SetSpaceX(0)
-
-    for i = 1, 24 do
-        currentStashUsed = currentStashUsed + 1
-        local stashCell = stashItems:Add("DPanel")
-        stashCell:SetSize(64, 64)
-        -- stashCell:Droppable("test")
-
-        function stashCell:Paint(w, h)
-
-            surface.SetDrawColor(Color(80, 80, 80, 10))
-            surface.DrawRect(0, 0, w, h)
-
-            surface.SetDrawColor(Color(255, 255, 255, 255))
-            surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
-            surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
-
-
-        end
-    end
+    local sortButton = vgui.Create("DImageButton", stashPanel)
+    sortButton:SetPos(EFGM.MenuScale(0), EFGM.MenuScale(924))
+    sortButton:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
+    sortButton:SetImage("icons/sort_icon.png")
+    sortButton:SetDepressImage(false)
 
 end
 
