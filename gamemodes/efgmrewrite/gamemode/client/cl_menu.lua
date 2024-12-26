@@ -718,7 +718,7 @@ function Menu.OpenTab.Inventory()
 
     local contents = vgui.Create("DPanel", Menu.MenuFrame.LowerPanel)
     contents:Dock(FILL)
-    contents:DockPadding(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10))
+    contents:DockPadding(EFGM.MenuScale(15), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10))
     contents.Paint = function(s, w, h)
 
         surface.SetDrawColor(MenuAlias.transparent)
@@ -730,38 +730,49 @@ function Menu.OpenTab.Inventory()
 
     local playerPanel = vgui.Create("DPanel", contents)
     playerPanel:Dock(LEFT)
-    playerPanel:DockPadding(EFGM.MenuScale(0), EFGM.MenuScale(0), EFGM.MenuScale(5), EFGM.MenuScale(0))
-    playerPanel:SetSize(EFGM.MenuScale(626), 0)
+    playerPanel:SetSize(EFGM.MenuScale(613), 0)
     playerPanel.Paint = function(s, w, h)
-
-        surface.SetDrawColor(MenuAlias.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
-
-    local playerPanelPlaceholder = vgui.Create("DPanel", playerPanel)
-    playerPanelPlaceholder:Dock(FILL)
-    function playerPanelPlaceholder:Paint(w, h)
 
         surface.SetDrawColor(Color(0, 0, 0, 155))
         surface.DrawRect(0, 0, w, h)
 
     end
 
-    local inventoryPanel = vgui.Create("DPanel", contents)
-    inventoryPanel:Dock(LEFT)
-    inventoryPanel:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(0), EFGM.MenuScale(5), EFGM.MenuScale(0))
-    inventoryPanel:SetSize(EFGM.MenuScale(626), 0)
-    inventoryPanel.Paint = function(s, w, h)
+    local primaryWeaponHolder = vgui.Create("DPanel", playerPanel)
+    primaryWeaponHolder:SetPos(EFGM.MenuScale(313), EFGM.MenuScale(700))
+    primaryWeaponHolder:SetSize(EFGM.MenuScale(300), EFGM.MenuScale(120))
+    function primaryWeaponHolder:Paint(w, h)
 
-        surface.SetDrawColor(MenuAlias.transparent)
+        surface.SetDrawColor(Color(255, 255, 255, 10))
         surface.DrawRect(0, 0, w, h)
 
     end
 
-    local inventoryPanelPlaceholder = vgui.Create("DPanel", inventoryPanel)
-    inventoryPanelPlaceholder:Dock(FILL)
-    function inventoryPanelPlaceholder:Paint(w, h)
+    local secondaryWeaponHolder = vgui.Create("DPanel", playerPanel)
+    secondaryWeaponHolder:SetPos(EFGM.MenuScale(313), EFGM.MenuScale(840))
+    secondaryWeaponHolder:SetSize(EFGM.MenuScale(300), EFGM.MenuScale(120))
+    function secondaryWeaponHolder:Paint(w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 10))
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
+    local meleeWeaponHolder = vgui.Create("DPanel", playerPanel)
+    meleeWeaponHolder:SetPos(EFGM.MenuScale(493), EFGM.MenuScale(560))
+    meleeWeaponHolder:SetSize(EFGM.MenuScale(120), EFGM.MenuScale(120))
+    function meleeWeaponHolder:Paint(w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 10))
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
+    local inventoryPanel = vgui.Create("DPanel", contents)
+    inventoryPanel:Dock(LEFT)
+    inventoryPanel:DockMargin(EFGM.MenuScale(13), 0, 0, 0)
+    inventoryPanel:SetSize(EFGM.MenuScale(613), 0)
+    inventoryPanel.Paint = function(s, w, h)
 
         surface.SetDrawColor(Color(0, 0, 0, 155))
         surface.DrawRect(0, 0, w, h)
@@ -770,22 +781,66 @@ function Menu.OpenTab.Inventory()
 
     local stashPanel = vgui.Create("DPanel", contents)
     stashPanel:Dock(LEFT)
-    stashPanel:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(0), EFGM.MenuScale(5), EFGM.MenuScale(0))
-    stashPanel:SetSize(EFGM.MenuScale(626), 0)
+    stashPanel:DockMargin(EFGM.MenuScale(13), 0, 0, 0)
+    stashPanel:SetSize(EFGM.MenuScale(613), 0)
     stashPanel.Paint = function(s, w, h)
-
-        surface.SetDrawColor(MenuAlias.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
-
-    local stashPanelPlaceholder = vgui.Create("DPanel", stashPanel)
-    stashPanelPlaceholder:Dock(FILL)
-    function stashPanelPlaceholder:Paint(w, h)
 
         surface.SetDrawColor(Color(0, 0, 0, 155))
         surface.DrawRect(0, 0, w, h)
 
+    end
+
+    local currentStashUsed = 0
+    local stashText = vgui.Create("DPanel", stashPanel)
+    stashText:Dock(TOP)
+    stashText:SetSize(0, EFGM.MenuScale(30))
+    function stashText:Paint(w, h)
+
+        surface.SetDrawColor(Color(155, 155, 155, 10))
+        surface.DrawRect(0, 0, w, h)
+
+        draw.SimpleTextOutlined("STASH", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(13), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined(currentStashUsed .. "/144", "PuristaBold18", EFGM.MenuScale(95), EFGM.MenuScale(17), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
+
+    end
+
+    local stashHolder = vgui.Create("DScrollPanel", stashPanel)
+    stashHolder:Dock(FILL)
+    stashHolder:DockMargin(EFGM.MenuScale(37), 0, 0, 0)
+    function stashHolder:Paint(w, h)
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
+    local stashBar = stashHolder:GetVBar()
+    stashBar:SetSize(0, 0)
+
+    local stashItems = vgui.Create("DIconLayout", stashHolder)
+    stashItems:Dock(FILL)
+    stashItems:SetSpaceY(0)
+    stashItems:SetSpaceX(0)
+
+    for i = 1, 24 do
+        currentStashUsed = currentStashUsed + 1
+        local stashCell = stashItems:Add("DPanel")
+        stashCell:SetSize(64, 64)
+        -- stashCell:Droppable("test")
+
+        function stashCell:Paint(w, h)
+
+            surface.SetDrawColor(Color(80, 80, 80, 10))
+            surface.DrawRect(0, 0, w, h)
+
+            surface.SetDrawColor(Color(255, 255, 255, 255))
+            surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+            surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+
+        end
     end
 
 end
