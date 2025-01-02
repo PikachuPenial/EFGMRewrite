@@ -255,6 +255,7 @@ function Menu:Initialize(openTo)
     matchIcon.OnCursorExited = function(s)
 
         matchTab:SizeTo(EFGM.MenuScale(38), matchTab:GetTall(), 0.15, 0, 0.5)
+
     end
 
     function matchIcon:DoClick()
@@ -430,6 +431,7 @@ function Menu:Initialize(openTo)
     skillsIcon.OnCursorExited = function(s)
 
         skillsTab:SizeTo(EFGM.MenuScale(38), skillsTab:GetTall(), 0.15, 0, 0.5)
+
     end
 
     function skillsIcon:DoClick()
@@ -551,6 +553,7 @@ function Menu:Initialize(openTo)
     achievementsIcon.OnCursorExited = function(s)
 
         achievementsTab:SizeTo(EFGM.MenuScale(38), achievementsTab:GetTall(), 0.15, 0, 0.5)
+
     end
 
     function achievementsIcon:DoClick()
@@ -614,6 +617,7 @@ function Menu:Initialize(openTo)
     settingsIcon.OnCursorExited = function(s)
 
         settingsTab:SizeTo(EFGM.MenuScale(38), settingsTab:GetTall(), 0.15, 0, 0.5)
+
     end
 
     function settingsIcon:DoClick()
@@ -733,8 +737,26 @@ function Menu.OpenTab.Inventory()
     playerPanel:SetSize(EFGM.MenuScale(613), 0)
     playerPanel.Paint = function(s, w, h)
 
-        surface.SetDrawColor(Color(0, 0, 0, 155))
+        BlurPanel(s, 13)
+        BlurPanel(s, 13)
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
         surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
+
+    end
+
+    local playerText = vgui.Create("DPanel", playerPanel)
+    playerText:Dock(TOP)
+    playerText:SetSize(0, EFGM.MenuScale(36))
+    function playerText:Paint(w, h)
+
+        surface.SetDrawColor(Color(155, 155, 155, 10))
+        surface.DrawRect(0, 0, w, h)
+
+        draw.SimpleTextOutlined(string.upper(Menu.Player:GetName()), "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(19), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
 
     end
 
@@ -743,30 +765,66 @@ function Menu.OpenTab.Inventory()
     primaryWeaponHolder:SetSize(EFGM.MenuScale(300), EFGM.MenuScale(120))
     function primaryWeaponHolder:Paint(w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 10))
+        surface.SetDrawColor(Color(80, 80, 80, 10))
         surface.DrawRect(0, 0, w, h)
 
+        surface.SetDrawColor(Color(255, 255, 255, 5))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
     end
+
+    local primaryWeaponIcon = vgui.Create("DImage", primaryWeaponHolder)
+    primaryWeaponIcon:SetPos(EFGM.MenuScale(25), EFGM.MenuScale(15))
+    primaryWeaponIcon:SetSize(EFGM.MenuScale(250), EFGM.MenuScale(80))
+    primaryWeaponIcon:SetImage("icons/inventory_primary_icon.png")
+    primaryWeaponIcon:SetImageColor(Color(255, 255, 255, 5))
 
     local secondaryWeaponHolder = vgui.Create("DPanel", playerPanel)
     secondaryWeaponHolder:SetPos(EFGM.MenuScale(313), EFGM.MenuScale(840))
     secondaryWeaponHolder:SetSize(EFGM.MenuScale(300), EFGM.MenuScale(120))
     function secondaryWeaponHolder:Paint(w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 10))
+        surface.SetDrawColor(Color(80, 80, 80, 10))
         surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 5))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
 
     end
 
-    local meleeWeaponHolder = vgui.Create("DPanel", playerPanel)
-    meleeWeaponHolder:SetPos(EFGM.MenuScale(493), EFGM.MenuScale(560))
-    meleeWeaponHolder:SetSize(EFGM.MenuScale(120), EFGM.MenuScale(120))
-    function meleeWeaponHolder:Paint(w, h)
+    local secondaryWeaponIcon = vgui.Create("DImage", secondaryWeaponHolder)
+    secondaryWeaponIcon:SetPos(EFGM.MenuScale(25), EFGM.MenuScale(15))
+    secondaryWeaponIcon:SetSize(EFGM.MenuScale(250), EFGM.MenuScale(80))
+    secondaryWeaponIcon:SetImage("icons/inventory_primary_icon.png")
+    secondaryWeaponIcon:SetImageColor(Color(255, 255, 255, 5))
 
-        surface.SetDrawColor(Color(255, 255, 255, 10))
+    local holsterWeaponHolder = vgui.Create("DPanel", playerPanel)
+    holsterWeaponHolder:SetPos(EFGM.MenuScale(493), EFGM.MenuScale(560))
+    holsterWeaponHolder:SetSize(EFGM.MenuScale(120), EFGM.MenuScale(120))
+    function holsterWeaponHolder:Paint(w, h)
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
         surface.DrawRect(0, 0, w, h)
 
+        surface.SetDrawColor(Color(255, 255, 255, 5))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
     end
+
+    local holsterWeaponIcon = vgui.Create("DImage", holsterWeaponHolder)
+    holsterWeaponIcon:SetPos(EFGM.MenuScale(22), EFGM.MenuScale(32))
+    holsterWeaponIcon:SetSize(EFGM.MenuScale(80), EFGM.MenuScale(54))
+    holsterWeaponIcon:SetImage("icons/inventory_holster_icon.png")
+    holsterWeaponIcon:SetImageColor(Color(255, 255, 255, 5))
 
     local inventoryPanel = vgui.Create("DPanel", contents)
     inventoryPanel:Dock(LEFT)
@@ -774,8 +832,26 @@ function Menu.OpenTab.Inventory()
     inventoryPanel:SetSize(EFGM.MenuScale(613), 0)
     inventoryPanel.Paint = function(s, w, h)
 
-        surface.SetDrawColor(Color(0, 0, 0, 155))
+        BlurPanel(s, 13)
+        BlurPanel(s, 13)
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
         surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
+
+    end
+
+    local inventoryText = vgui.Create("DPanel", inventoryPanel)
+    inventoryText:Dock(TOP)
+    inventoryText:SetSize(0, EFGM.MenuScale(36))
+    function inventoryText:Paint(w, h)
+
+        surface.SetDrawColor(Color(155, 155, 155, 10))
+        surface.DrawRect(0, 0, w, h)
+
+        draw.SimpleTextOutlined("INVENTORY", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(19), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
 
     end
 
@@ -785,8 +861,8 @@ function Menu.OpenTab.Inventory()
     stashPanel:SetSize(EFGM.MenuScale(613), 0)
     stashPanel.Paint = function(s, w, h)
 
-        surface.SetDrawColor(Color(0, 0, 0, 155))
-        surface.DrawRect(0, 0, w, h)
+        BlurPanel(s, 13)
+        BlurPanel(s, 13)
 
         surface.SetDrawColor(Color(80, 80, 80, 10))
         surface.DrawRect(0, 0, w, h)
@@ -815,18 +891,12 @@ function Menu.OpenTab.Inventory()
     stashHolder:DockMargin(EFGM.MenuScale(37), 0, 0, 0)
     function stashHolder:Paint(w, h)
 
-        BlurPanel(stashHolder, 3)
-
         surface.SetDrawColor(Color(80, 80, 80, 10))
         surface.DrawRect(0, 0, w, h)
 
         surface.SetDrawColor(Color(255, 255, 255, 5))
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-
-        surface.SetDrawColor(Color(255, 255, 255, 5))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-
-        surface.SetDrawColor(Color(255, 255, 255, 5))
         surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
 
         for i = 1, stashHolder:GetTall() do
@@ -857,6 +927,34 @@ function Menu.OpenTab.Inventory()
     sortButton:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
     sortButton:SetImage("icons/sort_icon.png")
     sortButton:SetDepressImage(false)
+
+    local sortButtonText = vgui.Create("DPanel", stashPanel)
+    sortButtonText:SetSize(EFGM.MenuScale(577), EFGM.MenuScale(36))
+    sortButtonText:SetPos(EFGM.MenuScale(37), EFGM.MenuScale(924))
+    sortButtonText:SetAlpha(0)
+    function sortButtonText:Paint(w, h)
+
+        BlurPanel(sortButtonText, 5)
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, w, h)
+
+        draw.SimpleTextOutlined("AUTO-SORT", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(16), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
+
+    end
+
+    sortButton.OnCursorEntered = function(s)
+
+        sortButtonText:AlphaTo(255, 0.05, 0)
+        surface.PlaySound("ui/element_hover.wav")
+
+    end
+
+    sortButton.OnCursorExited = function(s)
+
+        sortButtonText:AlphaTo(0, 0.05, 0)
+
+    end
 
 end
 

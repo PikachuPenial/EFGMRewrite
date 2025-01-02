@@ -50,7 +50,7 @@ if SERVER then
     RunConsoleCommand("arc9_eft_mult_shotgun", "0.4")
 
     -- mechanics
-    RunConsoleCommand("arc9_infinite_ammo", "0")
+    if GetConVar("efgm_derivesbox"):GetInt() == 1 then RunConsoleCommand("arc9_infinite_ammo", "1") else RunConsoleCommand("arc9_infinite_ammo", "0") end
     RunConsoleCommand("arc9_mult_defaultammo", "0")
     RunConsoleCommand("arc9_realrecoil", "1")
     RunConsoleCommand("arc9_lean", "0")
@@ -85,7 +85,7 @@ if SERVER then
     RunConsoleCommand("arc9_atts_max", "100")
     RunConsoleCommand("arc9_atts_lock", "0")
     RunConsoleCommand("arc9_atts_loseondie", "1")
-    if GetConVar("efgm_derivesbox"):GetInt() == 1 then RunConsoleCommand("arc9_free_atts", "1") else RunConsoleCommand("arc9_free_atts", 0) end
+    if GetConVar("efgm_derivesbox"):GetInt() == 1 then RunConsoleCommand("arc9_free_atts", "1") else RunConsoleCommand("arc9_free_atts", "0") end
 
     -- caching
     RunConsoleCommand("arc9_precache_allsounds_onstartup", "1")
