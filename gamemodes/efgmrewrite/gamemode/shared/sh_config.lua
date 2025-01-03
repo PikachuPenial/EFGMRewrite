@@ -171,7 +171,7 @@ if CLIENT then
     RunConsoleCommand("arc9_fx_adsblur", "0")
     RunConsoleCommand("arc9_fx_rtvm", "1")
     RunConsoleCommand("arc9_eject_fx", "0")
-    RunConsoleCommand("arc9_eject_time", "-1")
+    RunConsoleCommand("arc9_eject_time", "0")
     RunConsoleCommand("arc9_muzzle_light", "1")
     RunConsoleCommand("arc9_muzzle_others", "1")
 

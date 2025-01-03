@@ -14,6 +14,55 @@ cvars.AddChangeCallback("efgm_bind_menu", function(convar_name, value_old, value
     menuBind = tonumber(value_new)
 end)
 
+local function GetEntityBodygroups(ent, override)
+
+    local bg = {}
+
+    for i = 0, ent:GetNumBodyGroups() - 1 do
+
+		if override and override[i] then
+
+			bg[i] = override[i]
+
+		else
+
+			if ent:GetBodygroupCount(i) <= 1 then continue end
+			bg[i] = ent:GetBodygroup(i)
+
+		end
+
+	end
+
+	if next(bg) then
+
+		return bg
+
+	end
+
+end
+
+local function GetEntitySkin(ent, override)
+
+	if override then return override end
+	if ent:SkinCount() > 1 then return ent:GetSkin() end
+
+end
+
+local function GetEntityGroups(ent, override)
+
+	local groups = {}
+
+	groups.Bodygroups = GetEntityBodygroups(ent, override and override.Bodygroups)
+	groups.Skin = GetEntitySkin(ent, override and override.Skin)
+
+	if next(groups) then
+
+		return groups
+
+	end
+
+end
+
 local conditions = {}
 
 -- called non-globally to initialize the menu, that way it can only be initialized once by Menu:Open()
@@ -760,15 +809,60 @@ function Menu.OpenTab.Inventory()
 
     end
 
+    local playerModel = vgui.Create("DModelPanel", playerPanel)
+    playerModel:Dock(FILL)
+    playerModel:SetMouseInputEnabled(false)
+    playerModel:SetFOV(26)
+    playerModel:SetCamPos(Vector(10, 0, 0))
+    playerModel:SetLookAt(Vector(-100, 0, -24))
+    playerModel:SetDirectionalLight(BOX_RIGHT, Color(255, 160, 80, 255))
+    playerModel:SetDirectionalLight(BOX_LEFT, Color(80, 160, 255, 255))
+    playerModel:SetAnimated(true)
+    playerModel:SetModel(Menu.Player:GetModel())
+
+    local groups = GetEntityGroups(Menu.Player, override)
+
+    if groups then
+
+        if groups.Bodygroups then
+
+			for k, v in pairs(groups.Bodygroups) do
+
+				playerModel.Entity:SetBodygroup(k, v)
+
+			end
+
+		end
+
+		if groups.Skin then
+
+			playerModel.Entity:SetSkin(groups.Skin)
+
+		end
+
+	end
+
+    playerModel.Entity:SetPos(Vector(-108, -1, -63))
+    playerModel.Entity:SetAngles(Angle(0, 20, 0))
+
+    function playerModel:LayoutEntity(Entity)
+
+        if !IsValid(Entity) then return end
+        playerModel:RunAnimation()
+
+    end
+
     local primaryWeaponHolder = vgui.Create("DPanel", playerPanel)
     primaryWeaponHolder:SetPos(EFGM.MenuScale(313), EFGM.MenuScale(700))
     primaryWeaponHolder:SetSize(EFGM.MenuScale(300), EFGM.MenuScale(120))
     function primaryWeaponHolder:Paint(w, h)
 
+        BlurPanel(primaryWeaponHolder, 3)
+
         surface.SetDrawColor(Color(80, 80, 80, 10))
         surface.DrawRect(0, 0, w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 5))
+        surface.SetDrawColor(Color(255, 255, 255, 25))
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
         surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -787,10 +881,12 @@ function Menu.OpenTab.Inventory()
     secondaryWeaponHolder:SetSize(EFGM.MenuScale(300), EFGM.MenuScale(120))
     function secondaryWeaponHolder:Paint(w, h)
 
+        BlurPanel(secondaryWeaponHolder, 3)
+
         surface.SetDrawColor(Color(80, 80, 80, 10))
         surface.DrawRect(0, 0, w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 5))
+        surface.SetDrawColor(Color(255, 255, 255, 25))
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
         surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -809,10 +905,12 @@ function Menu.OpenTab.Inventory()
     holsterWeaponHolder:SetSize(EFGM.MenuScale(120), EFGM.MenuScale(120))
     function holsterWeaponHolder:Paint(w, h)
 
+        BlurPanel(holsterWeaponHolder, 3)
+
         surface.SetDrawColor(Color(80, 80, 80, 10))
         surface.DrawRect(0, 0, w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 5))
+        surface.SetDrawColor(Color(255, 255, 255, 25))
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
         surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
