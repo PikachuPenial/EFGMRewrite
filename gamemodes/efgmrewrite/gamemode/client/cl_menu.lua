@@ -786,8 +786,8 @@ function Menu.OpenTab.Inventory()
     playerPanel:SetSize(EFGM.MenuScale(613), 0)
     playerPanel.Paint = function(s, w, h)
 
-        BlurPanel(s, 13)
-        BlurPanel(s, 13)
+        BlurPanel(s, EFGM.MenuScale(13))
+        BlurPanel(s, EFGM.MenuScale(13))
 
         surface.SetDrawColor(Color(80, 80, 80, 10))
         surface.DrawRect(0, 0, w, h)
@@ -857,7 +857,7 @@ function Menu.OpenTab.Inventory()
     primaryWeaponHolder:SetSize(EFGM.MenuScale(300), EFGM.MenuScale(120))
     function primaryWeaponHolder:Paint(w, h)
 
-        BlurPanel(primaryWeaponHolder, 3)
+        BlurPanel(primaryWeaponHolder, EFGM.MenuScale(3))
 
         surface.SetDrawColor(Color(80, 80, 80, 10))
         surface.DrawRect(0, 0, w, h)
@@ -874,14 +874,14 @@ function Menu.OpenTab.Inventory()
     primaryWeaponIcon:SetPos(EFGM.MenuScale(25), EFGM.MenuScale(15))
     primaryWeaponIcon:SetSize(EFGM.MenuScale(250), EFGM.MenuScale(80))
     primaryWeaponIcon:SetImage("icons/inventory_primary_icon.png")
-    primaryWeaponIcon:SetImageColor(Color(255, 255, 255, 5))
+    primaryWeaponIcon:SetImageColor(Color(255, 255, 255, 10))
 
     local secondaryWeaponHolder = vgui.Create("DPanel", playerPanel)
     secondaryWeaponHolder:SetPos(EFGM.MenuScale(313), EFGM.MenuScale(840))
     secondaryWeaponHolder:SetSize(EFGM.MenuScale(300), EFGM.MenuScale(120))
     function secondaryWeaponHolder:Paint(w, h)
 
-        BlurPanel(secondaryWeaponHolder, 3)
+        BlurPanel(secondaryWeaponHolder, EFGM.MenuScale(3))
 
         surface.SetDrawColor(Color(80, 80, 80, 10))
         surface.DrawRect(0, 0, w, h)
@@ -898,14 +898,14 @@ function Menu.OpenTab.Inventory()
     secondaryWeaponIcon:SetPos(EFGM.MenuScale(25), EFGM.MenuScale(15))
     secondaryWeaponIcon:SetSize(EFGM.MenuScale(250), EFGM.MenuScale(80))
     secondaryWeaponIcon:SetImage("icons/inventory_primary_icon.png")
-    secondaryWeaponIcon:SetImageColor(Color(255, 255, 255, 5))
+    secondaryWeaponIcon:SetImageColor(Color(255, 255, 255, 10))
 
     local holsterWeaponHolder = vgui.Create("DPanel", playerPanel)
     holsterWeaponHolder:SetPos(EFGM.MenuScale(493), EFGM.MenuScale(560))
     holsterWeaponHolder:SetSize(EFGM.MenuScale(120), EFGM.MenuScale(120))
     function holsterWeaponHolder:Paint(w, h)
 
-        BlurPanel(holsterWeaponHolder, 3)
+        BlurPanel(holsterWeaponHolder, EFGM.MenuScale(3))
 
         surface.SetDrawColor(Color(80, 80, 80, 10))
         surface.DrawRect(0, 0, w, h)
@@ -922,7 +922,7 @@ function Menu.OpenTab.Inventory()
     holsterWeaponIcon:SetPos(EFGM.MenuScale(22), EFGM.MenuScale(32))
     holsterWeaponIcon:SetSize(EFGM.MenuScale(80), EFGM.MenuScale(54))
     holsterWeaponIcon:SetImage("icons/inventory_holster_icon.png")
-    holsterWeaponIcon:SetImageColor(Color(255, 255, 255, 5))
+    holsterWeaponIcon:SetImageColor(Color(255, 255, 255, 10))
 
     local inventoryPanel = vgui.Create("DPanel", contents)
     inventoryPanel:Dock(LEFT)
@@ -930,8 +930,8 @@ function Menu.OpenTab.Inventory()
     inventoryPanel:SetSize(EFGM.MenuScale(613), 0)
     inventoryPanel.Paint = function(s, w, h)
 
-        BlurPanel(s, 13)
-        BlurPanel(s, 13)
+        BlurPanel(s, EFGM.MenuScale(13))
+        BlurPanel(s, EFGM.MenuScale(13))
 
         surface.SetDrawColor(Color(80, 80, 80, 10))
         surface.DrawRect(0, 0, w, h)
@@ -959,8 +959,8 @@ function Menu.OpenTab.Inventory()
     stashPanel:SetSize(EFGM.MenuScale(613), 0)
     stashPanel.Paint = function(s, w, h)
 
-        BlurPanel(s, 13)
-        BlurPanel(s, 13)
+        BlurPanel(s, EFGM.MenuScale(13))
+        BlurPanel(s, EFGM.MenuScale(13))
 
         surface.SetDrawColor(Color(80, 80, 80, 10))
         surface.DrawRect(0, 0, w, h)
@@ -1032,7 +1032,7 @@ function Menu.OpenTab.Inventory()
     sortButtonText:SetAlpha(0)
     function sortButtonText:Paint(w, h)
 
-        BlurPanel(sortButtonText, 5)
+        BlurPanel(sortButtonText, EFGM.MenuScale(5))
 
         surface.SetDrawColor(Color(80, 80, 80, 10))
         surface.DrawRect(0, 0, w, h)
@@ -1650,7 +1650,7 @@ function Menu.OpenTab.Match()
 
                     if !IsValid(s) then return end
 
-                    BlurPanel(s, 3)
+                    BlurPanel(s, EFGM.MenuScale(3))
 
                     -- panel position follows mouse position
                     x, y = Menu.MenuFrame:CursorPos()
@@ -2694,7 +2694,7 @@ function Menu.OpenTab.Skills()
 
                 if !IsValid(s) then return end
 
-                BlurPanel(s, 3)
+                BlurPanel(s, EFGM.MenuScale(3))
 
                 -- panel position follows mouse position
                 x, y = Menu.MenuFrame:CursorPos()

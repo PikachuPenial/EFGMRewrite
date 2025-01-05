@@ -9,10 +9,34 @@ EFGM = {}
 -- screen scale function, makes my life (penial) easier because i will most definently be doing most if not all of the user interface
 -- all interfaces and fonts are developed on a 1920x1080 monitor
 local efgm_hud_scale = GetConVar("efgm_hud_scale")
-EFGM.ScreenScale = function(size) return size / 3 * (ScrW() / 640) * efgm_hud_scale:GetFloat() end
+EFGM.ScreenScale = function(size)
+
+    if size > 0 then
+
+        return math.max(1, size / 3 * (ScrW() / 640) * efgm_hud_scale:GetFloat())
+
+    else
+
+        return math.min(-1, size / 3 * (ScrW() / 640) * efgm_hud_scale:GetFloat())
+
+    end
+
+end
 
 -- i can't be asked to support player controlled menu scaling, way too problematic, so we will seperate the HUDs scale and the menus scale
-EFGM.MenuScale = function(size) return size / 3 * (ScrW() / 640) end
+EFGM.MenuScale = function(size)
+
+    if size > 0 then
+
+        return math.max(1, size / 3 * (ScrW() / 640))
+
+    else
+
+        return math.min(-1, size / 3 * (ScrW() / 640))
+
+    end
+
+end
 
 for _, v in ipairs(file.Find("gamemodes/efgmrewrite/gamemode/shared/*.lua", "GAME", "nameasc")) do include("shared/" .. v) end
 for _, v in ipairs(file.Find("gamemodes/efgmrewrite/gamemode/client/*.lua", "GAME", "nameasc")) do include("client/" .. v) end
