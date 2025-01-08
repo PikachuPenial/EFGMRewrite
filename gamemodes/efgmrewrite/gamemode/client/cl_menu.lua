@@ -953,6 +953,213 @@ function Menu.OpenTab.Inventory()
 
     end
 
+    local rigHolder = vgui.Create("DPanel", inventoryPanel)
+    rigHolder:Dock(TOP)
+    rigHolder:DockMargin(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(9))
+    rigHolder:SetSize(0, EFGM.MenuScale(152))
+    rigHolder.Paint = function(s, w, h)
+
+        surface.SetDrawColor(Color(0, 0, 0, 0))
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
+    local rigText = vgui.Create("DPanel", rigHolder)
+    rigText:Dock(TOP)
+    rigText:SetSize(0, EFGM.MenuScale(28))
+    surface.SetFont("PuristaBold24")
+    rigText.Paint = function(s, w, h)
+
+        BlurPanel(s, EFGM.MenuScale(3))
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, surface.GetTextSize("RIG"), h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, surface.GetTextSize("RIG"), EFGM.MenuScale(2))
+
+        draw.SimpleTextOutlined("RIG", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(13), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
+
+    end
+
+    local rigEquipedHolder = vgui.Create("DPanel", rigHolder)
+    rigEquipedHolder:SetPos(0, EFGM.MenuScale(32))
+    rigEquipedHolder:SetSize(EFGM.MenuScale(120), EFGM.MenuScale(120))
+    function rigEquipedHolder:Paint(w, h)
+
+        BlurPanel(rigEquipedHolder, EFGM.MenuScale(3))
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+    end
+
+    local pocketsHolder = vgui.Create("DPanel", inventoryPanel)
+    pocketsHolder:Dock(TOP)
+    pocketsHolder:DockMargin(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(9))
+    pocketsHolder:SetSize(0, EFGM.MenuScale(96))
+    pocketsHolder.Paint = function(s, w, h)
+
+        surface.SetDrawColor(Color(0, 0, 0, 0))
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
+    local pocketsText = vgui.Create("DPanel", pocketsHolder)
+    pocketsText:Dock(TOP)
+    pocketsText:SetSize(0, EFGM.MenuScale(28))
+    surface.SetFont("PuristaBold24")
+    pocketsText.Paint = function(s, w, h)
+
+        BlurPanel(s, EFGM.MenuScale(3))
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, surface.GetTextSize("POCKETS") + 10, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, surface.GetTextSize("POCKETS") + 10, EFGM.MenuScale(2))
+
+        draw.SimpleTextOutlined("POCKETS", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(13), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
+
+    end
+
+    local pocketsSlotHolder = vgui.Create("DPanel", pocketsHolder)
+    pocketsSlotHolder:Dock(TOP)
+    pocketsSlotHolder:DockMargin(0, EFGM.MenuScale(4), 0, 0)
+    pocketsSlotHolder:SetSize(0, EFGM.MenuScale(64))
+    pocketsSlotHolder.Paint = function(s, w, h)
+
+        surface.SetDrawColor(Color(0, 0, 0, 0))
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
+    for i = 1, 5 do
+
+        local pocketSlot = vgui.Create("DPanel", pocketsSlotHolder)
+        pocketSlot:Dock(LEFT)
+        pocketSlot:DockMargin(0, 0, EFGM.MenuScale(4), 0)
+        pocketSlot:SetSize(EFGM.MenuScale(64), EFGM.MenuScale(64))
+        pocketSlot.Paint = function(s, w, h)
+
+            BlurPanel(s, EFGM.MenuScale(3))
+
+            surface.SetDrawColor(Color(80, 80, 80, 10))
+            surface.DrawRect(0, 0, w, h)
+
+            surface.SetDrawColor(Color(255, 255, 255, 5))
+            surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+            surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+        end
+
+    end
+
+    local bagHolder = vgui.Create("DPanel", inventoryPanel)
+    bagHolder:Dock(TOP)
+    bagHolder:DockMargin(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), 0)
+    bagHolder:SetSize(0, EFGM.MenuScale(152))
+    bagHolder.Paint = function(s, w, h)
+
+        surface.SetDrawColor(Color(0, 0, 0, 0))
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
+    local bagText = vgui.Create("DPanel", bagHolder)
+    bagText:Dock(TOP)
+    bagText:SetSize(0, EFGM.MenuScale(28))
+    surface.SetFont("PuristaBold24")
+    bagText.Paint = function(s, w, h)
+
+        BlurPanel(s, EFGM.MenuScale(3))
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, surface.GetTextSize("BAG") + 10, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, surface.GetTextSize("BAG") + 10, EFGM.MenuScale(2))
+
+        draw.SimpleTextOutlined("BAG", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(13), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
+
+    end
+
+    local bagEquipedHolder = vgui.Create("DPanel", bagHolder)
+    bagEquipedHolder:SetPos(0, EFGM.MenuScale(32))
+    bagEquipedHolder:SetSize(EFGM.MenuScale(120), EFGM.MenuScale(120))
+    function bagEquipedHolder:Paint(w, h)
+
+        BlurPanel(bagEquipedHolder, EFGM.MenuScale(3))
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+    end
+
+    local secureHolder = vgui.Create("DPanel", inventoryPanel)
+    secureHolder:Dock(TOP)
+    secureHolder:DockMargin(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), 0)
+    secureHolder:SetSize(0, EFGM.MenuScale(152))
+    secureHolder.Paint = function(s, w, h)
+
+        surface.SetDrawColor(Color(0, 0, 0, 0))
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
+    local secureText = vgui.Create("DPanel", secureHolder)
+    secureText:Dock(TOP)
+    secureText:SetSize(0, EFGM.MenuScale(28))
+    surface.SetFont("PuristaBold24")
+    secureText.Paint = function(s, w, h)
+
+        BlurPanel(s, EFGM.MenuScale(3))
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, surface.GetTextSize("CONTAINER") + 10, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, surface.GetTextSize("CONTAINER") + 10, EFGM.MenuScale(2))
+
+        draw.SimpleTextOutlined("CONTAINER", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(13), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
+
+    end
+
+    local secureEquipedHolder = vgui.Create("DPanel", secureHolder)
+    secureEquipedHolder:SetPos(0, EFGM.MenuScale(32))
+    secureEquipedHolder:SetSize(EFGM.MenuScale(120), EFGM.MenuScale(120))
+    function secureEquipedHolder:Paint(w, h)
+
+        BlurPanel(secureEquipedHolder, EFGM.MenuScale(3))
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+    end
+
+    -- dont show stash when player is in a raid
+    if !Menu.Player:CompareStatus(0) then return end
+
     local stashPanel = vgui.Create("DPanel", contents)
     stashPanel:Dock(LEFT)
     stashPanel:DockMargin(EFGM.MenuScale(13), 0, 0, 0)

@@ -409,6 +409,13 @@ function DrawTarget()
 end
 hook.Add("HUDDrawTargetID", "HidePlayerInfo", DrawTarget)
 
+function DrawWeaponInfo()
+
+    return false
+
+end
+hook.Add("HUDWeaponPickedUp", "WeaponPickedUp", DrawWeaponInfo)
+
 function DrawAmmoInfo()
 
     return false
