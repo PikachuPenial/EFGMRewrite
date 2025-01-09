@@ -3,6 +3,17 @@ isInventoryTesting = (GetConVar("efgm_invtesting"):GetInt() == 1) or false
 
 include("shared.lua")
 
+concommand.Add("derma_updateskin", function()
+	if GetConVar("sv_allowcslua"):GetInt() == 0 then return end
+	for k,v in pairs(derma.GetSkinTable()) do
+		if v.GwenTexture then
+			local tex = v.GwenTexture:GetTexture("$basetexture")
+			if tex then tex:Download() end
+		end
+	end
+	derma.RefreshSkins()
+end,nil,"Updates skins for all Derma objects.")
+
 -- client globals
 EFGM = {}
 

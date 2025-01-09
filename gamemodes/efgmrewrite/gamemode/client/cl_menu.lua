@@ -623,13 +623,11 @@ function Menu:Initialize(openTo)
 
     -- local contractsTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
     -- contractsTab:Dock(LEFT)
-    -- contractsTab:SetFont("PuristaBold18")
     -- contractsTab:SetSize(surface.GetTextSize("Contracts") + EFGM.MenuScale(50), 0)
     -- contractsTab:SetText("Contracts")
 
     -- local unlocksTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
     -- unlocksTab:Dock(LEFT)
-    -- unlocksTab:SetFont("PuristaBold18")
     -- unlocksTab:SetSize(surface.GetTextSize("Unlocks") + EFGM.MenuScale(50), 0)
     -- unlocksTab:SetText("Unlocks")
 
@@ -1000,6 +998,22 @@ function Menu.OpenTab.Inventory()
 
     end
 
+    local rigEquipedIcon = vgui.Create("DImage", rigEquipedHolder)
+    rigEquipedIcon:SetPos(EFGM.MenuScale(10), EFGM.MenuScale(10))
+    rigEquipedIcon:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(100))
+    rigEquipedIcon:SetImage("icons/inventory_rig_icon.png")
+    rigEquipedIcon:SetImageColor(Color(255, 255, 255, 10))
+
+    local rigSlotHolder = vgui.Create("DPanel", rigHolder)
+    rigSlotHolder:SetPos(EFGM.MenuScale(124), EFGM.MenuScale(32))
+    rigSlotHolder:SetSize(EFGM.MenuScale(448), EFGM.MenuScale(120))
+    rigSlotHolder.Paint = function(s, w, h)
+
+        surface.SetDrawColor(Color(0, 0, 0, 0))
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
     local pocketsHolder = vgui.Create("DPanel", inventoryPanel)
     pocketsHolder:Dock(TOP)
     pocketsHolder:DockMargin(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(9))
@@ -1053,7 +1067,7 @@ function Menu.OpenTab.Inventory()
             surface.SetDrawColor(Color(80, 80, 80, 10))
             surface.DrawRect(0, 0, w, h)
 
-            surface.SetDrawColor(Color(255, 255, 255, 5))
+            surface.SetDrawColor(Color(255, 255, 255, 25))
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
             surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -1110,6 +1124,22 @@ function Menu.OpenTab.Inventory()
 
     end
 
+    local bagEquipedIcon = vgui.Create("DImage", bagEquipedHolder)
+    bagEquipedIcon:SetPos(EFGM.MenuScale(10), EFGM.MenuScale(8))
+    bagEquipedIcon:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(100))
+    bagEquipedIcon:SetImage("icons/inventory_bag_icon.png")
+    bagEquipedIcon:SetImageColor(Color(255, 255, 255, 10))
+
+    local bagSlotHolder = vgui.Create("DPanel", bagHolder)
+    bagSlotHolder:SetPos(EFGM.MenuScale(124), EFGM.MenuScale(32))
+    bagSlotHolder:SetSize(EFGM.MenuScale(448), EFGM.MenuScale(120))
+    bagSlotHolder.Paint = function(s, w, h)
+
+        surface.SetDrawColor(Color(0, 0, 0, 0))
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
     local secureHolder = vgui.Create("DPanel", inventoryPanel)
     secureHolder:Dock(TOP)
     secureHolder:DockMargin(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), 0)
@@ -1157,6 +1187,22 @@ function Menu.OpenTab.Inventory()
 
     end
 
+    local secureEquipedIcon = vgui.Create("DImage", secureEquipedHolder)
+    secureEquipedIcon:SetPos(EFGM.MenuScale(1), EFGM.MenuScale(18))
+    secureEquipedIcon:SetSize(EFGM.MenuScale(120), EFGM.MenuScale(80))
+    secureEquipedIcon:SetImage("icons/inventory_container_icon.png")
+    secureEquipedIcon:SetImageColor(Color(255, 255, 255, 10))
+
+    local secureSlotHolder = vgui.Create("DPanel", secureHolder)
+    secureSlotHolder:SetPos(EFGM.MenuScale(124), EFGM.MenuScale(32))
+    secureSlotHolder:SetSize(EFGM.MenuScale(448), EFGM.MenuScale(120))
+    secureSlotHolder.Paint = function(s, w, h)
+
+        surface.SetDrawColor(Color(0, 0, 0, 0))
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
     -- dont show stash when player is in a raid
     if !Menu.Player:CompareStatus(0) then return end
 
@@ -1199,7 +1245,7 @@ function Menu.OpenTab.Inventory()
         surface.SetDrawColor(Color(80, 80, 80, 10))
         surface.DrawRect(0, 0, w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 5))
+        surface.SetDrawColor(Color(255, 255, 255, 25))
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
         surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
@@ -1208,12 +1254,10 @@ function Menu.OpenTab.Inventory()
 
             if i % EFGM.MenuScale(64) == 0 then
 
-                surface.SetDrawColor(Color(255, 255, 255, 5))
                 surface.DrawRect(0, i, w, EFGM.MenuScale(1))
 
                 if i <= EFGM.MenuScale(576) then
 
-                    surface.SetDrawColor(Color(255, 255, 255, 5))
                     surface.DrawRect(i, 0, EFGM.MenuScale(1), h)
 
                 end
@@ -1378,7 +1422,6 @@ function Menu.OpenTab.Intel()
 
                     local subEntry = subEntryList:Add("DButton")
                     subEntry:SetSize(EFGM.MenuScale(180), EFGM.MenuScale(24))
-                    subEntry:SetFont("PuristaBold18")
                     subEntry:SetText(string.upper(v3.Name))
 
                     function subEntry:OnCursorEntered()
@@ -1571,7 +1614,6 @@ function Menu.OpenTab.Match()
     local squadName = vgui.Create("DTextEntry", squadNameBG)
     squadName:Dock(FILL)
     squadName:SetPlaceholderText(" ")
-    squadName:SetFont("PuristaBold18")
     squadName:SetUpdateOnType(true)
     squadName:SetPaintBackground(false)
     squadName:SetTextColor(MenuAlias.whiteColor)
@@ -1603,7 +1645,6 @@ function Menu.OpenTab.Match()
     local squadPassword = vgui.Create("DTextEntry", squadPasswordBG)
     squadPassword:Dock(FILL)
     squadPassword:SetPlaceholderText(" ")
-    squadPassword:SetFont("PuristaBold18")
     squadPassword:SetUpdateOnType(true)
     squadPassword:SetPaintBackground(false)
     squadPassword:SetTextColor(MenuAlias.whiteColor)
@@ -1629,7 +1670,6 @@ function Menu.OpenTab.Match()
     squadMemberLimit:SetSize(EFGM.MenuScale(50), EFGM.MenuScale(20))
     squadMemberLimit:SetMin(1)
     squadMemberLimit:SetMax(4)
-    squadMemberLimit:SetFont("PuristaBold18")
 
     squadMemberLimit.OnValueChanged = function(self)
 
@@ -1655,7 +1695,6 @@ function Menu.OpenTab.Match()
     squadColorR:SetSize(EFGM.MenuScale(45), EFGM.MenuScale(20))
     squadColorR:SetMin(0)
     squadColorR:SetMax(255)
-    squadColorR:SetFont("PuristaBold18")
 
     squadColorR.OnValueChanged = function(self)
 
@@ -1670,7 +1709,6 @@ function Menu.OpenTab.Match()
     squadColorG:SetSize(EFGM.MenuScale(45), EFGM.MenuScale(20))
     squadColorG:SetMin(0)
     squadColorG:SetMax(255)
-    squadColorG:SetFont("PuristaBold18")
 
     squadColorG.OnValueChanged = function(self)
 
@@ -1685,7 +1723,6 @@ function Menu.OpenTab.Match()
     squadColorB:SetSize(EFGM.MenuScale(45), EFGM.MenuScale(20))
     squadColorB:SetMin(0)
     squadColorB:SetMax(255)
-    squadColorB:SetFont("PuristaBold18")
 
     squadColorB.OnValueChanged = function(self)
 
@@ -1698,7 +1735,6 @@ function Menu.OpenTab.Match()
     local squadCreateButton = vgui.Create("DButton", squadColorPanel)
     squadCreateButton:SetPos(EFGM.MenuScale(85), EFGM.MenuScale(75))
     squadCreateButton:SetSize(EFGM.MenuScale(150), EFGM.MenuScale(20))
-    squadCreateButton:SetFont("PuristaBold18")
     squadCreateButton:SetText("Create Squad")
 
     squadCreateButton.OnCursorEntered = function(s)
@@ -1938,7 +1974,6 @@ function Menu.OpenTab.Match()
                     local squadPasswordEntry = vgui.Create("DTextEntry", squadPasswordEntryBG)
                     squadPasswordEntry:Dock(FILL)
                     squadPasswordEntry:SetPlaceholderText(" ")
-                    squadPasswordEntry:SetFont("PuristaBold18")
                     squadPasswordEntry:SetPaintBackground(false)
                     squadPasswordEntry:SetTextColor(MenuAlias.whiteColor)
                     squadPasswordEntry:SetCursorColor(MenuAlias.whiteColor)
@@ -2353,7 +2388,6 @@ function Menu.OpenTab.Shop()
         local purchaseButton = vgui.Create("DButton", purchaseInfoPanel)
         purchaseButton:Dock(TOP)
         purchaseButton:SetText("DEAL")
-        purchaseButton:SetFont("PuristaBold18")
         purchaseButton:SetConsoleCommand("efgm_shop_transaction", SHOP:CompileOrders())
 
     -- }
@@ -3258,7 +3292,6 @@ function Menu.OpenTab.Settings()
     local gameMenu = vgui.Create("DBinder", gameMenuPanel)
     gameMenu:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(30))
     gameMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
-    gameMenu:SetFont("PuristaBold18")
     gameMenu:SetSelectedNumber(GetConVar("efgm_bind_menu"):GetInt())
     function gameMenu:OnChange(num)
         RunConsoleCommand("efgm_bind_menu", gameMenu:GetSelectedNumber())
@@ -3276,7 +3309,6 @@ function Menu.OpenTab.Settings()
     local showCompass = vgui.Create("DBinder", showCompassPanel)
     showCompass:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(30))
     showCompass:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
-    showCompass:SetFont("PuristaBold18")
     showCompass:SetSelectedNumber(GetConVar("efgm_bind_showcompass"):GetInt())
     function showCompass:OnChange(num)
 
@@ -3296,7 +3328,6 @@ function Menu.OpenTab.Settings()
     local showRaidInfo = vgui.Create("DBinder", showRaidInfoPanel)
     showRaidInfo:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(30))
     showRaidInfo:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
-    showRaidInfo:SetFont("PuristaBold18")
     showRaidInfo:SetSelectedNumber(GetConVar("efgm_bind_raidinfo"):GetInt())
     function showRaidInfo:OnChange(num)
 
@@ -3316,7 +3347,6 @@ function Menu.OpenTab.Settings()
     local leanLeft = vgui.Create("DBinder", leanLeftPanel)
     leanLeft:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(30))
     leanLeft:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
-    leanLeft:SetFont("PuristaBold18")
     leanLeft:SetSelectedNumber(GetConVar("efgm_bind_leanleft"):GetInt())
     function leanLeft:OnChange(num)
 
@@ -3336,7 +3366,6 @@ function Menu.OpenTab.Settings()
     local leanRight = vgui.Create("DBinder", leanRightPanel)
     leanRight:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(30))
     leanRight:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
-    leanRight:SetFont("PuristaBold18")
     leanRight:SetSelectedNumber(GetConVar("efgm_bind_leanright"):GetInt())
     function leanRight:OnChange(num)
 
@@ -3356,7 +3385,6 @@ function Menu.OpenTab.Settings()
     local freeLook = vgui.Create("DBinder", freeLookPanel)
     freeLook:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(30))
     freeLook:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
-    freeLook:SetFont("PuristaBold18")
     freeLook:SetSelectedNumber(GetConVar("efgm_bind_freelook"):GetInt())
     function freeLook:OnChange(num)
 
@@ -3376,7 +3404,6 @@ function Menu.OpenTab.Settings()
     local changeSight = vgui.Create("DBinder", changeSightPanel)
     changeSight:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(30))
     changeSight:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
-    changeSight:SetFont("PuristaBold18")
     changeSight:SetSelectedNumber(GetConVar("efgm_bind_changesight"):GetInt())
     function changeSight:OnChange(num)
 
@@ -3396,7 +3423,6 @@ function Menu.OpenTab.Settings()
     local inspectWeapon = vgui.Create("DBinder", inspectWeaponPanel)
     inspectWeapon:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(30))
     inspectWeapon:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
-    inspectWeapon:SetFont("PuristaBold18")
     inspectWeapon:SetSelectedNumber(GetConVar("efgm_bind_inspectweapon"):GetInt())
     function inspectWeapon:OnChange(num)
 
@@ -3416,7 +3442,6 @@ function Menu.OpenTab.Settings()
     local dropWeapon = vgui.Create("DBinder", dropWeaponPanel)
     dropWeapon:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(30))
     dropWeapon:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
-    dropWeapon:SetFont("PuristaBold18")
     dropWeapon:SetSelectedNumber(GetConVar("efgm_bind_dropweapon"):GetInt())
     function dropWeapon:OnChange(num)
 
@@ -3436,7 +3461,6 @@ function Menu.OpenTab.Settings()
     local teamInvite = vgui.Create("DBinder", teamInvitePanel)
     teamInvite:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(30))
     teamInvite:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
-    teamInvite:SetFont("PuristaBold18")
     teamInvite:SetSelectedNumber(GetConVar("efgm_bind_teaminvite"):GetInt())
     function teamInvite:OnChange(num)
 
@@ -3456,7 +3480,6 @@ function Menu.OpenTab.Settings()
     local primaryWeapon = vgui.Create("DBinder", primaryWeaponPanel)
     primaryWeapon:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(30))
     primaryWeapon:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
-    primaryWeapon:SetFont("PuristaBold18")
     primaryWeapon:SetSelectedNumber(GetConVar("efgm_bind_equip_primary1"):GetInt())
     function primaryWeapon:OnChange(num)
 
@@ -3476,7 +3499,6 @@ function Menu.OpenTab.Settings()
     local primaryWeaponTwo = vgui.Create("DBinder", primaryWeaponTwoPanel)
     primaryWeaponTwo:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(30))
     primaryWeaponTwo:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
-    primaryWeaponTwo:SetFont("PuristaBold18")
     primaryWeaponTwo:SetSelectedNumber(GetConVar("efgm_bind_equip_primary2"):GetInt())
     function primaryWeaponTwo:OnChange(num)
 
@@ -3496,7 +3518,6 @@ function Menu.OpenTab.Settings()
     local secondaryWeapon = vgui.Create("DBinder", secondaryWeaponPanel)
     secondaryWeapon:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(30))
     secondaryWeapon:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
-    secondaryWeapon:SetFont("PuristaBold18")
     secondaryWeapon:SetSelectedNumber(GetConVar("efgm_bind_equip_secondary"):GetInt())
     function secondaryWeapon:OnChange(num)
 
@@ -3516,7 +3537,6 @@ function Menu.OpenTab.Settings()
     local meleeWeapon = vgui.Create("DBinder", meleeWeaponPanel)
     meleeWeapon:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(30))
     meleeWeapon:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
-    meleeWeapon:SetFont("PuristaBold18")
     meleeWeapon:SetSelectedNumber(GetConVar("efgm_bind_equip_melee"):GetInt())
     function meleeWeapon:OnChange(num)
 
@@ -3536,7 +3556,6 @@ function Menu.OpenTab.Settings()
     local utilityThrowable = vgui.Create("DBinder", utilityThrowablePanel)
     utilityThrowable:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(30))
     utilityThrowable:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
-    utilityThrowable:SetFont("PuristaBold18")
     utilityThrowable:SetSelectedNumber(GetConVar("efgm_bind_equip_utility"):GetInt())
     function utilityThrowable:OnChange(num)
 
@@ -3715,7 +3734,6 @@ function Menu.OpenTab.Settings()
     factionPreference:AddChoice("None")
     factionPreference:AddChoice("USEC")
     factionPreference:AddChoice("BEAR")
-    factionPreference:SetFont("PuristaBold18")
     factionPreference:SetSortItems(false)
     factionPreference.OnSelect = function(self, value)
         RunConsoleCommand("efgm_faction_preference", value - 1)
@@ -3745,7 +3763,6 @@ function Menu.OpenTab.Settings()
     invitePrivacy:AddChoice("None")
     invitePrivacy:AddChoice("Steam Friends")
     invitePrivacy:AddChoice("Everyone")
-    invitePrivacy:SetFont("PuristaBold18")
     invitePrivacy:SetSortItems(false)
     invitePrivacy.OnSelect = function(self, value)
         RunConsoleCommand("efgm_privacy_invites", value - 1)

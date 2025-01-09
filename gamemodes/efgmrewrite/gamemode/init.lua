@@ -199,6 +199,17 @@ hook.Add("GetFallDamage", "FallDmgCalc", function(ply, speed)
 
 end)
 
+-- hit flinch
+hook.Add("EntityTakeDamage", "HitFlinch", function(target, dmginfo)
+
+	if IsValid(target) and target:IsPlayer() then
+
+		util.ScreenShake(target:GetPos(), 1, 3, 0.1, 500)
+
+	end
+
+end)
+
 -- players in the lobby cant take damage
 hook.Add("PlayerShouldTakeDamage", "AntiLobbyKill", function(victim, attacker)
 

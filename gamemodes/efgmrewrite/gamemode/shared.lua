@@ -20,6 +20,23 @@ end
 
 if GetConVar("efgm_derivesbox"):GetInt() == 1 then DeriveGamemode("sandbox") end -- this will enable the spawn menu as well as countless other things that you do not want users to have access too, please leave this off unless you know what you are doing
 
+-- include derma skin
+if SERVER then
+
+    AddCSLuaFile("skins/efgm.lua")
+
+elseif CLIENT then
+
+    include("skins/efgm.lua")
+
+    hook.Add("ForceDermaSkin", "EFGMDermaSkin", function()
+
+        return "Escape From Garry's Mod Derma Skin"
+
+    end)
+
+end
+
 -- misc. functions
 
 function table.removeKey(tbl, key)
