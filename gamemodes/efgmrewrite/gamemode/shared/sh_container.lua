@@ -18,19 +18,6 @@ function CONTAINER.NewContainer( sizeX, sizeY, weightLimit )
     container.metadata.sizeY = sizeY
     container.metadata.weightLimit = weightLimit
 
-    -- I think how I'ma do the grid is by having a number ID system, it's hard to explain but like this
-    
-    -- 1  2  3  4  5  6
-    -- 7  8  9  10 11 12
-    -- 13 14 15 16 17 18
-    -- 19 20 21 22 23 24
-
-    -- x of 4 and y of 3 = id of 16
-    -- ID = ((Y - 1) * sizeX) + X
-
-    -- X  = ID % sizeX
-    -- Y  = ((ID - X) / sizeX) + 1
-
     -- this function should add an item to a single slot, and then fill out all the other slots somehow
     function container:AddItem(item, x, y)
 
