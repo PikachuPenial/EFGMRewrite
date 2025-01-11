@@ -1,20 +1,20 @@
 
-EFGMITEMS = {}
+EQUIPTYPE = {}
+EQUIPTYPE.Weapon = 1
+EQUIPTYPE.Gear = 2
+EQUIPTYPE.None = 3
+EQUIPTYPE.Spawn = 4 // For shit that spawns into the world on equip
 
-// So far, [equipType]:
--- 1 is for weapons
--- 2 is for gear like rigs or backpacks
--- 3 is for unequippable shit like barter items
--- 4 could be for stuff that spawns into the world, idk tho imagine you start shooting a cheater and a HL2 jeep appears and he starts driving away
+EFGMITEMS = {}
 
 function EFGMITEMS:__index( var )
 
 	return var or {
-        ["displayName"] = "MISSING_ITEM",
+        ["fullName"] = "MISSING_ITEM",
         ["displayType"] = "???",
         ["weight"] = 0.1,
         ["value"] = 1,
-        ["equipType"] = 4,
+        ["equipType"] = EQUIPTYPE.None,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
     
@@ -28,11 +28,12 @@ end
 
     EFGMITEMS["arc9_eft_akm"] = {
 
+        ["fullName"] = "AKM",
         ["displayName"] = "AKM",
         ["displayType"] = "Assault Rifle",
         ["weight"] = 2.5,
         ["value"] = 12000,
-        ["equipType"] = 1,
+        ["equipType"] = EQUIPTYPE.Weapon,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = "idk",
@@ -41,15 +42,17 @@ end
         ["sizeY"] = 2
     }
 
-// GEAR (Rigs, Backpacks)
+// RIGS
 
     EFGMITEMS["efgm_umka"] = {
 
-        ["displayName"] = "Umka M33-SET1",
+        ["fullName"] = "Umka M33-SET1",
+        ["displayName"] = "Umka",
         ["displayType"] = "Chest Rig",
         ["weight"] = 1.2,
         ["value"] = 12000,
-        ["equipType"] = 2,
+        ["equipType"] = EQUIPTYPE.Gear,
+        ["equipmentType"] = "rig",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = "idk",
@@ -77,15 +80,261 @@ end
         }
     }
 
+// BACKPACKS
+
+    EFGMITEMS["efgm_daypack"] = {
+
+        ["fullName"] = "LBT-8005A Day Pack",
+        ["displayName"] = "Daypack",
+        ["displayType"] = "Backpack",
+        ["weight"] = 0.57,
+        ["value"] = 22000,
+        ["equipType"] = EQUIPTYPE.Gear,
+        ["equipmentType"] = "backpack",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "idk",
+
+        ["sizeX"] = 4,
+        ["sizeY"] = 5,
+
+        ["containerLayoutSizeX"] = 4,
+        ["containerLayoutSizeY"] = 5,
+        
+        ["childContainers"] = {
+
+            { ["posX"] = 1, ["posY"] = 1, ["sizeX"] = 4, ["sizeY"] = 5 }
+
+        }
+    }
+
+// POCKETS
+
+    EFGMITEMS["efgm_default_pockets"] = {
+
+        ["fullName"] = "",
+        ["displayName"] = "",
+        ["displayType"] = "",
+        ["weight"] = 0,
+        ["value"] = 0,
+        ["equipType"] = EQUIPTYPE.Gear,
+        ["equipmentType"] = "pockets",
+        ["appearInInventory"] = false,
+        ["stackSize"] = 1,
+        ["icon"] = "",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["containerLayoutSizeX"] = 4,
+        ["containerLayoutSizeY"] = 1,
+        
+        ["childContainers"] = {
+
+            { ["posX"] = 1, ["posY"] = 1, ["sizeX"] = 1, ["sizeY"] = 1 },
+            { ["posX"] = 2, ["posY"] = 1, ["sizeX"] = 1, ["sizeY"] = 1 },
+            { ["posX"] = 3, ["posY"] = 1, ["sizeX"] = 1, ["sizeY"] = 1 },
+            { ["posX"] = 4, ["posY"] = 1, ["sizeX"] = 1, ["sizeY"] = 1 }
+
+        }
+    }
+
+    EFGMITEMS["efgm_alt_pockets"] = {
+
+        ["fullName"] = "",
+        ["displayName"] = "",
+        ["displayType"] = "",
+        ["weight"] = 0,
+        ["value"] = 0,
+        ["equipType"] = EQUIPTYPE.Gear,
+        ["equipmentType"] = "pockets",
+        ["appearInInventory"] = false,
+        ["stackSize"] = 1,
+        ["icon"] = "",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["containerLayoutSizeX"] = 1,
+        ["containerLayoutSizeY"] = 2,
+        
+        ["childContainers"] = {
+
+            { ["posX"] = 1, ["posY"] = 1, ["sizeX"] = 1, ["sizeY"] = 2 }
+
+        }
+    }
+
+    EFGMITEMS["efgm_eod_pockets"] = {
+
+        ["fullName"] = "",
+        ["displayName"] = "",
+        ["displayType"] = "",
+        ["weight"] = 0,
+        ["value"] = 0,
+        ["equipType"] = EQUIPTYPE.Gear,
+        ["equipmentType"] = "pockets",
+        ["appearInInventory"] = false,
+        ["stackSize"] = 1,
+        ["icon"] = "",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["containerLayoutSizeX"] = 4,
+        ["containerLayoutSizeY"] = 2,
+        
+        ["childContainers"] = {
+
+            { ["posX"] = 1, ["posY"] = 1, ["sizeX"] = 1, ["sizeY"] = 1 },
+            { ["posX"] = 2, ["posY"] = 1, ["sizeX"] = 1, ["sizeY"] = 2 },
+            { ["posX"] = 3, ["posY"] = 1, ["sizeX"] = 1, ["sizeY"] = 2 },
+            { ["posX"] = 4, ["posY"] = 1, ["sizeX"] = 1, ["sizeY"] = 1 }
+
+        }
+    }
+
+// SECURE CONTAINERS
+
+    EFGMITEMS["efgm_sc_alpha"] = {
+
+        ["fullName"] = "Secure Container Alpha",
+        ["displayName"] = "Alpha",
+        ["displayType"] = "Secure Container",
+        ["weight"] = 0.6,
+        ["value"] = 0,
+        ["equipType"] = EQUIPTYPE.Gear,
+        ["equipmentType"] = "sc",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "idk",
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 2,
+
+        ["containerLayoutSizeX"] = 2,
+        ["containerLayoutSizeY"] = 2,
+        
+        ["childContainers"] = {
+
+            { ["posX"] = 1, ["posY"] = 1, ["sizeX"] = 2, ["sizeY"] = 2 }
+
+        }
+    }
+
+    EFGMITEMS["efgm_sc_beta"] = {
+
+        ["fullName"] = "Secure Container Beta",
+        ["displayName"] = "Beta",
+        ["displayType"] = "Secure Container",
+        ["weight"] = 0.8,
+        ["value"] = 0,
+        ["equipType"] = EQUIPTYPE.Gear,
+        ["equipmentType"] = "sc",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "idk",
+
+        ["sizeX"] = 3,
+        ["sizeY"] = 2,
+
+        ["containerLayoutSizeX"] = 3,
+        ["containerLayoutSizeY"] = 2,
+        
+        ["childContainers"] = {
+
+            { ["posX"] = 1, ["posY"] = 1, ["sizeX"] = 3, ["sizeY"] = 2 }
+
+        }
+    }
+
+    EFGMITEMS["efgm_sc_epsilon"] = {
+
+        ["fullName"] = "Secure Container Epsilon",
+        ["displayName"] = "Epsilon",
+        ["displayType"] = "Secure Container",
+        ["weight"] = 1.1,
+        ["value"] = 0,
+        ["equipType"] = EQUIPTYPE.Gear,
+        ["equipmentType"] = "sc",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "idk",
+
+        ["sizeX"] = 4,
+        ["sizeY"] = 2,
+
+        ["containerLayoutSizeX"] = 4,
+        ["containerLayoutSizeY"] = 2,
+        
+        ["childContainers"] = {
+
+            { ["posX"] = 1, ["posY"] = 1, ["sizeX"] = 4, ["sizeY"] = 2 }
+
+        }
+    }
+
+    EFGMITEMS["efgm_sc_gamma"] = {
+
+        ["fullName"] = "Secure Container Gamma",
+        ["displayName"] = "Gamma",
+        ["displayType"] = "Secure Container",
+        ["weight"] = 1.2,
+        ["value"] = 0,
+        ["equipType"] = EQUIPTYPE.Gear,
+        ["equipmentType"] = "sc",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "idk",
+
+        ["sizeX"] = 3,
+        ["sizeY"] = 3,
+
+        ["containerLayoutSizeX"] = 3,
+        ["containerLayoutSizeY"] = 3,
+        
+        ["childContainers"] = {
+
+            { ["posX"] = 1, ["posY"] = 1, ["sizeX"] = 3, ["sizeY"] = 3 }
+
+        }
+    }
+
+    EFGMITEMS["efgm_sc_kappa"] = {
+
+        ["fullName"] = "Secure Container Kappa",
+        ["displayName"] = "Kappa",
+        ["displayType"] = "Secure Container",
+        ["weight"] = 2,
+        ["value"] = 0,
+        ["equipType"] = EQUIPTYPE.Gear,
+        ["equipmentType"] = "sc",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "idk",
+
+        ["sizeX"] = 3,
+        ["sizeY"] = 3,
+
+        ["containerLayoutSizeX"] = 3,
+        ["containerLayoutSizeY"] = 4,
+        
+        ["childContainers"] = {
+
+            { ["posX"] = 1, ["posY"] = 1, ["sizeX"] = 3, ["sizeY"] = 4 }
+
+        }
+    }
+
 // BARTER ITEMS / VALUABLES
 
     EFGMITEMS["efgm_roler"] = {
 
-        ["displayName"] = "Roler Submariner",
+        ["fullName"] = "Roler Submariner",
         ["displayType"] = "Barter Item",
         ["weight"] = 0.18,
         ["value"] = 25000,
-        ["equipType"] = 3,
+        ["equipType"] = EQUIPTYPE.None,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = "idk",
@@ -98,11 +347,11 @@ end
 
     EFGMITEMS["hl2_jeep"] = {
 
-        ["displayName"] = "The Jeep from Half Life 2",
+        ["fullName"] = "The Jeep from Half Life 2",
         ["displayType"] = "Vehicle",
         ["weight"] = 1800,
         ["value"] = 69,
-        ["equipType"] = 4,
+        ["equipType"] = EQUIPTYPE.Spawn,
         ["spawnOnEquip"] = "Jeep",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
