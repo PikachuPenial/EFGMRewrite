@@ -9,6 +9,7 @@ if not plyMeta then Error("Could not find player table") return end
 INV = {}
 
 -- fuck it ima just remake this
+-- TODO: remake again
 
 function INV.New()
 
@@ -51,37 +52,3 @@ end
 GiveItem[3] = function(ply, item, count, noReserveAmmo) -- attatchment
     ARC9:PlayerGiveAtt(ply, item, count or 1)
 end
-
--- onto the actual new stuff
-
-function ReadJSON( fileName )
-
-    return file.Read( "addons/EFGMRewrite/gamemodes/efgmrewrite/gamemode/json/" .. fileName .. ".json", "GAME" )
-
-end
-
-concommand.Add("efgm_print_json", function(ply, cmd, args)
-
-    PrintTable( ReadJSON( tostring( args[1] ) ) )
-
-end)
-
-concommand.Add("efgm_debug_testitems", function(ply, cmd, args)
-    
-    local inventory = CONTAINER.NewContainer( 5, 10, 600 )
-    local weapon = ITEM.CreateItem( "arc9_eft_akm", 1, {} )
-
-    inventory:AddItem(weapon, 2, 2)
-
-    PrintTable(inventory)
-    PrintTable(weapon)
-
-    local id = CONTAINER.GetSlotID( 2, 2, 5 )
-    local x, y = CONTAINER.GetCoords( id, 5 )
-
-    print( "Slot ID - " .. id )
-    print( "Slot x - " .. x )
-    print( "Slot y - " .. y )
-
-
-end)
