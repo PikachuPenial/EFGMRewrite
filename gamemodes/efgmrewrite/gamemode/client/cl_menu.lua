@@ -1327,6 +1327,15 @@ function Menu.OpenTab.Intel()
     mainEntryList:SetSize(EFGM.MenuScale(180), 0)
     mainEntryList:SetBackgroundColor(Color(0, 0, 0, 0))
 
+    local entryBar = mainEntryList:GetVBar()
+    entryBar:SetHideButtons(true)
+    function entryBar:Paint(w, h)
+        draw.RoundedBox(0, 0, 0, w, h, MenuAlias.transparent)
+    end
+    function entryBar.btnGrip:Paint(w, h)
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.transparent)
+    end
+
     local subEntryPanel = vgui.Create("DPanel", contents)
     subEntryPanel:Dock(LEFT)
     subEntryPanel:SetSize(EFGM.MenuScale(180), 0)
@@ -1417,6 +1426,20 @@ function Menu.OpenTab.Intel()
 
                 subEntryList:Clear()
                 DrawEntry(v2.Name, v2.Description, v2.Stats)
+
+                -- support for entries that don't need sub-categories
+                if v2.Children != nil then
+
+                    subEntryPanel:SetSize(EFGM.MenuScale(180), 0) 
+                
+
+                else
+
+                    subEntryPanel:SetSize(0, 0)
+
+                    return
+
+                end
 
                 for k3, v3 in ipairs(v2.Children) do -- jesus christ
 

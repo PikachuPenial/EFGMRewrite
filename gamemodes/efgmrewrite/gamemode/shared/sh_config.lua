@@ -9,6 +9,7 @@ debugShitSecWep = {"arc9_eft_glock17", "arc9_eft_pm", "arc9_eft_pb", "arc9_eft_t
 debugNadeWep = {"arc9_eft_f1", "arc9_eft_m18", "arc9_eft_m18y", "arc9_eft_m67", "arc9_eft_m7290", "arc9_eft_rdg2b", "arc9_eft_rgd5", "arc9_eft_rgn", "arc9_eft_rgo", "arc9_eft_v40", "arc9_eft_vog17", "arc9_eft_vog25", "arc9_eft_zarya"}
 debugMeleeWep = {"arc9_eft_melee_taran", "arc9_eft_melee_6x5", "arc9_eft_melee_wycc", "arc9_eft_melee_a2607", "arc9_eft_melee_a2607d", "arc9_eft_melee_camper", "arc9_eft_melee_crash", "arc9_eft_melee_cultist", "arc9_eft_melee_fulcrum", "arc9_eft_melee_crowbar", "arc9_eft_melee_kiba", "arc9_eft_melee_kukri", "arc9_eft_melee_m2", "arc9_eft_melee_mpl50", "arc9_eft_melee_rebel", "arc9_eft_melee_voodoo", "arc9_eft_melee_sp8", "arc9_eft_melee_hultafors", "arc9_eft_melee_taiga"}
 
+
 -- get a copy of every attachment loaded by ARC9
 debugRandAtts = table.Copy(ARC9.Attachments_Index)
 
