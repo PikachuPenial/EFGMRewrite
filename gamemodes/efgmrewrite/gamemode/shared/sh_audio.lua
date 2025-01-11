@@ -108,7 +108,7 @@ shotCaliber[1] =  {75, 5250, "bullet"}    -- ar2
 shotCaliber[20] = {75, 5250, "bullet"}    -- airboat gun (should be the mounted guns on customs fortress?)
 
 -- entities
-shotCaliber["Grenade"] = {60, 6500, "boom"}  -- grenade (sex for the first person to guess what this is for)
+shotCaliber["Grenade"] = {60, 6500, "boom"}      -- grenade (sex for the first person to guess what this is for)
 shotCaliber["Pistol"] = {180, 3000, "bullet"}    -- grenade shrapnel (no sex this time sorry guys)
 
 if SERVER then

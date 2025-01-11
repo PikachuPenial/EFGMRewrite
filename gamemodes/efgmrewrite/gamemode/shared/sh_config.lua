@@ -63,6 +63,8 @@ if SERVER then
     RunConsoleCommand("arc9_eft_taran_jam", "0")
     RunConsoleCommand("arc9_mod_peek", "0")
     RunConsoleCommand("sv_vmanip_pickups", "1")
+    RunConsoleCommand("arc9_eft_nontpik_mode", "1")
+    RunConsoleCommand("arc9_eft_singleuse_behaviour", "1")
 
     -- physics
     RunConsoleCommand("arc9_bullet_physics", "1")
