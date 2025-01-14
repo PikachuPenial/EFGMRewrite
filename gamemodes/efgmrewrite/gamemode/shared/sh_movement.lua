@@ -26,9 +26,10 @@ hook.Add("StartCommand", "AdjustPlayerMovement", function(ply, cmd)
         cmd:RemoveKey(IN_DUCK)
     end
 
-    -- disable jumping while crouching
+    -- disable jumping/slow walking while crouching
     if ply:Crouching() or ply:GetNW2Var("entering_crouch", false) then
         cmd:RemoveKey(IN_JUMP)
+        cmd:RemoveKey(IN_WALK)
     end
 
     -- can not uncrouch until the crouching sequence is complete
@@ -63,6 +64,132 @@ hook.Add("OnPlayerHitGround", "VelocityLimiter", function(ply)
     timer.Create(ply:SteamID64() .. "jumpCD", 0.5, 1, function() end)
 
 end )
+
+-- inertia (original code from datae, modified for gamemode)
+local function SetInertia(ply, value)
+
+    ply:SetNW2Float("inertia", value)
+
+end
+
+local function GetInertia(ply)
+
+    return ply:GetNW2Float("inertia", 0)
+
+end
+
+hook.Add("CreateMove", "Inertia", function(cmd)
+
+    local ply = LocalPlayer()
+    local inertia = ply:GetNW2Float("inertia", 0)
+
+    if (ply:WaterLevel() < 2 or ply:OnGround()) then
+
+        cmd:SetForwardMove(cmd:GetForwardMove() * (inertia + 0.06) * 0.09)
+        cmd:SetSideMove(cmd:GetSideMove() * (inertia + 0.06) * 0.09)
+
+        if math.abs(cmd:GetSideMove()) > 0 and math.abs(cmd:GetForwardMove()) > 0 then
+
+            cmd:SetSideMove(cmd:GetSideMove() * 0.707)
+            cmd:SetForwardMove(cmd:GetForwardMove() * 0.707)
+
+        end
+
+    end
+
+end)
+
+hook.Add("SetupMove", "VBSetupMove", function(ply, mv, cmd)
+
+    local vel = mv:GetVelocity():GetNormalized():Dot(ply:GetNW2Vector("VBLastDir"), vector_origin)
+
+    if ply:OnGround() and vel < ((mv:KeyDown(IN_SPEED) and 0.99) or 0.998) and vel > 0 then
+
+        SetInertia(ply, 0.06)
+
+    end
+
+    if math.abs(cmd:GetForwardMove()) + math.abs(cmd:GetSideMove()) > 0 then
+
+        local target = (cmd:KeyDown(IN_WALK) and 0.04) or math.min(1 - 0.15 + 0.25, 1)
+        local target_speed = (cmd:KeyDown(IN_WALK) and 0.85) or 0.125
+        local sprintmult = ((cmd:KeyDown(IN_SPEED) and ply:WaterLevel() < 1) and 3.5) or 1
+        SetInertia(ply, math.Approach(GetInertia(ply), target, FrameTime() * target_speed * sprintmult * 1.33))
+
+    else
+
+        SetInertia(ply, math.Approach(GetInertia(ply), 0, FrameTime() * 4))
+
+    end
+
+    local stept = ply:GetNW2Float("VMTime", 0) % 0.64
+
+    if !ply:GetNW2Bool("DoStep", false) and stept < ply:GetNW2Float("LastVMTime") and ply:OnGround() and ply:GetMoveType() == MOVETYPE_WALK and mv:GetVelocity():Length() > 10 then
+
+        ply:SetNW2Bool("DoStep", true)
+
+        return
+
+    end
+
+    if ply:GetNW2Bool("DoStep", false) then
+
+        if SERVER then ply:PlayStepSound(0.25) end
+        ply:SetNW2Bool("DoStep", false)
+        ply:SetNW2Float("LastVMTime", 0)
+
+        return
+
+    end
+
+    ply:SetNW2Float("LastVMTime", stept)
+
+    if ply:OnGround() then
+
+        ply:SetNW2Vector("VBLastDir", mv:GetVelocity():GetNormalized())
+
+    end
+
+    local FT = FrameTime()
+
+    if ply:OnGround() and ply:GetMoveType() == MOVETYPE_WALK then
+
+        if mv:KeyDown(IN_SPEED) then
+
+            FT = FT * 0.9
+
+        end
+
+        local runspeed = ply:GetWalkSpeed()
+        local VMTime = ply:GetNW2Float("VMTime", 0)
+        local mod = (VMTime % 0.625)
+
+        if mod > 0.3125 then
+
+            mod = -mod
+
+        end
+
+        local target = ply:GetNW2Float("VMTime",0) - mod
+        local increment = (FT * (math.min(mv:GetVelocity():Length(), 300) / (runspeed * 0.75))) * 1
+
+        ply:SetNW2Float("VMTime", VMTime + increment)
+
+        if increment == 0 and VMTime != target then
+
+            ply:SetNW2Float("VMTime", math.Approach(VMTime, target, FT * 0.625))
+
+        end
+
+    end
+
+    if math.abs(cmd:GetForwardMove()) + math.abs(cmd:GetSideMove()) == 0 and ply:OnGround() then
+
+        mv:SetVelocity(mv:GetVelocity() * 0.9)
+
+    end
+
+end)
 
 -- leaning
 local distance = 16
