@@ -3,7 +3,9 @@
 hook.Add("PlayerFootstep", "FootSteps", function(ply)
 
 	if ply:GetMoveType() == MOVETYPE_LADDER then
+
 		return
+
 	end
 
 end)

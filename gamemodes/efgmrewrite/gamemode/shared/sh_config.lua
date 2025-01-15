@@ -148,7 +148,7 @@ if CLIENT then
     RunConsoleCommand("arc9_center_overheat", "0")
 
     -- vm 
-    RunConsoleCommand("arc9_vm_bobstyle", "0")
+    RunConsoleCommand("arc9_vm_bobstyle", "-1")
 
     -- vb
     RunConsoleCommand("arc9_vm_cambob", "1")

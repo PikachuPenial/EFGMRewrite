@@ -65,132 +65,6 @@ hook.Add("OnPlayerHitGround", "VelocityLimiter", function(ply)
 
 end )
 
--- inertia (original code from datae, modified for gamemode)
-local function SetInertia(ply, value)
-
-    ply:SetNW2Float("inertia", value)
-
-end
-
-local function GetInertia(ply)
-
-    return ply:GetNW2Float("inertia", 0)
-
-end
-
-hook.Add("CreateMove", "Inertia", function(cmd)
-
-    local ply = LocalPlayer()
-    local inertia = ply:GetNW2Float("inertia", 0)
-
-    if (ply:WaterLevel() < 2 or ply:OnGround()) then
-
-        cmd:SetForwardMove(cmd:GetForwardMove() * (inertia + 0.06) * 0.09)
-        cmd:SetSideMove(cmd:GetSideMove() * (inertia + 0.06) * 0.09)
-
-        if math.abs(cmd:GetSideMove()) > 0 and math.abs(cmd:GetForwardMove()) > 0 then
-
-            cmd:SetSideMove(cmd:GetSideMove() * 0.707)
-            cmd:SetForwardMove(cmd:GetForwardMove() * 0.707)
-
-        end
-
-    end
-
-end)
-
-hook.Add("SetupMove", "VBSetupMove", function(ply, mv, cmd)
-
-    local vel = mv:GetVelocity():GetNormalized():Dot(ply:GetNW2Vector("VBLastDir"), vector_origin)
-
-    if ply:OnGround() and vel < ((mv:KeyDown(IN_SPEED) and 0.99) or 0.998) and vel > 0 then
-
-        SetInertia(ply, 0.06)
-
-    end
-
-    if math.abs(cmd:GetForwardMove()) + math.abs(cmd:GetSideMove()) > 0 then
-
-        local target = (cmd:KeyDown(IN_WALK) and 0.04) or math.min(1 - 0.15 + 0.25, 1)
-        local target_speed = (cmd:KeyDown(IN_WALK) and 0.85) or 0.125
-        local sprintmult = ((cmd:KeyDown(IN_SPEED) and ply:WaterLevel() < 1) and 3.5) or 1
-        SetInertia(ply, math.Approach(GetInertia(ply), target, FrameTime() * target_speed * sprintmult * 1.33))
-
-    else
-
-        SetInertia(ply, math.Approach(GetInertia(ply), 0, FrameTime() * 4))
-
-    end
-
-    local stept = ply:GetNW2Float("VMTime", 0) % 0.64
-
-    if !ply:GetNW2Bool("DoStep", false) and stept < ply:GetNW2Float("LastVMTime") and ply:OnGround() and ply:GetMoveType() == MOVETYPE_WALK and mv:GetVelocity():Length() > 10 then
-
-        ply:SetNW2Bool("DoStep", true)
-
-        return
-
-    end
-
-    if ply:GetNW2Bool("DoStep", false) then
-
-        if SERVER then ply:PlayStepSound(0.25) end
-        ply:SetNW2Bool("DoStep", false)
-        ply:SetNW2Float("LastVMTime", 0)
-
-        return
-
-    end
-
-    ply:SetNW2Float("LastVMTime", stept)
-
-    if ply:OnGround() then
-
-        ply:SetNW2Vector("VBLastDir", mv:GetVelocity():GetNormalized())
-
-    end
-
-    local FT = FrameTime()
-
-    if ply:OnGround() and ply:GetMoveType() == MOVETYPE_WALK then
-
-        if mv:KeyDown(IN_SPEED) then
-
-            FT = FT * 0.9
-
-        end
-
-        local runspeed = ply:GetWalkSpeed()
-        local VMTime = ply:GetNW2Float("VMTime", 0)
-        local mod = (VMTime % 0.625)
-
-        if mod > 0.3125 then
-
-            mod = -mod
-
-        end
-
-        local target = ply:GetNW2Float("VMTime",0) - mod
-        local increment = (FT * (math.min(mv:GetVelocity():Length(), 300) / (runspeed * 0.75))) * 1
-
-        ply:SetNW2Float("VMTime", VMTime + increment)
-
-        if increment == 0 and VMTime != target then
-
-            ply:SetNW2Float("VMTime", math.Approach(VMTime, target, FT * 0.625))
-
-        end
-
-    end
-
-    if math.abs(cmd:GetForwardMove()) + math.abs(cmd:GetSideMove()) == 0 and ply:OnGround() then
-
-        mv:SetVelocity(mv:GetVelocity() * 0.9)
-
-    end
-
-end)
-
 -- leaning
 local distance = 16
 local speed = 1.6
@@ -386,3 +260,569 @@ if CLIENT then
         ang.z = ang.z + lerped_fraction
     end)
 end
+
+-- inertia and bobbing (original code my datae)
+local function SetInertia(ply, value)
+
+    ply:SetNW2Float("inertia", value)
+
+end
+
+local function GetInertia(ply)
+
+    return ply:GetNW2Float("inertia", 0)
+
+end
+
+hook.Add("CreateMove", "Inertia", function(cmd)
+
+    local ply = LocalPlayer()
+    local inertia = ply:GetNW2Float("inertia", 0)
+
+    if (ply:WaterLevel() < 2 or ply:OnGround()) then
+
+        cmd:SetForwardMove(cmd:GetForwardMove() * (inertia + 0.06) * 0.09)
+        cmd:SetSideMove(cmd:GetSideMove() * (inertia + 0.06) * 0.09)
+
+        if math.abs(cmd:GetSideMove()) > 0 and math.abs(cmd:GetForwardMove()) > 0 then
+
+            cmd:SetSideMove(cmd:GetSideMove() * 0.707)
+            cmd:SetForwardMove(cmd:GetForwardMove() * 0.707)
+
+        end
+
+    end
+
+end)
+
+hook.Add("SetupMove", "VBSetupMove", function(ply, mv, cmd)
+
+    local vel = mv:GetVelocity():GetNormalized():Dot(ply:GetNW2Vector("VBLastDir"), vector_origin)
+
+    if ply:OnGround() and vel < ((mv:KeyDown(IN_SPEED) and 0.99) or 0.998) and vel > 0 then
+
+        SetInertia(ply, 0.06)
+
+    end
+
+    if math.abs(cmd:GetForwardMove()) + math.abs(cmd:GetSideMove()) > 0 then
+
+        local target = (cmd:KeyDown(IN_WALK) and 0.04) or math.min(1 - 0.15 + 0.25, 1)
+        local target_speed = (cmd:KeyDown(IN_WALK) and 0.85) or 0.125
+        local sprintmult = ((cmd:KeyDown(IN_SPEED) and ply:WaterLevel() < 1) and 3.5) or 1
+        SetInertia(ply, math.Approach(GetInertia(ply), target, FrameTime() * target_speed * sprintmult * 1.33))
+
+    else
+
+        SetInertia(ply, math.Approach(GetInertia(ply), 0, FrameTime() * 4))
+
+    end
+
+    local stept = ply:GetNW2Float("VMTime", 0) % 0.64
+
+    if !ply:GetNW2Bool("DoStep", false) and stept < ply:GetNW2Float("LastVMTime") and ply:OnGround() and ply:GetMoveType() == MOVETYPE_WALK and mv:GetVelocity():Length() > 10 then
+
+        ply:SetNW2Bool("DoStep", true)
+
+        return
+
+    end
+
+    if ply:GetNW2Bool("DoStep", false) then
+
+        if SERVER then ply:PlayStepSound(0.25) end
+        ply:SetNW2Bool("DoStep", false)
+        ply:SetNW2Float("LastVMTime", 0)
+
+        return
+
+    end
+
+    ply:SetNW2Float("LastVMTime", stept)
+
+    if ply:OnGround() then
+
+        ply:SetNW2Vector("VBLastDir", mv:GetVelocity():GetNormalized())
+
+    end
+
+    local FT = FrameTime()
+
+    if ply:OnGround() and ply:GetMoveType() == MOVETYPE_WALK then
+
+        if mv:KeyDown(IN_SPEED) then
+
+            FT = FT * 0.9
+
+        end
+
+        local runspeed = ply:GetWalkSpeed()
+        local VMTime = ply:GetNW2Float("VMTime", 0)
+        local mod = (VMTime % 0.625)
+
+        if mod > 0.3125 then
+
+            mod = -mod
+
+        end
+
+        local target = ply:GetNW2Float("VMTime",0) - mod
+        local increment = (FT * (math.min(mv:GetVelocity():Length(), 300) / (runspeed * 0.75))) * 1
+
+        ply:SetNW2Float("VMTime", VMTime + increment)
+
+        if increment == 0 and VMTime != target then
+
+            ply:SetNW2Float("VMTime", math.Approach(VMTime, target, FT * 0.625))
+
+        end
+
+    end
+
+    if math.abs(cmd:GetForwardMove()) + math.abs(cmd:GetSideMove()) == 0 and ply:OnGround() then
+
+        mv:SetVelocity(mv:GetVelocity() * 0.9)
+
+    end
+
+end)
+
+local math = math
+
+local meta = FindMetaTable("Player")
+local metavec = FindMetaTable("Vector")
+
+local SP = game.SinglePlayer()
+
+local DAMPING = 5
+local SPRING_CONSTANT = 80
+
+local function lensqr(ang)
+
+    return (ang[1] ^ 2) + (ang[2] ^ 2) + (ang[3] ^ 2)
+
+end
+
+function metavec:Approach(x, y, z, speed)
+
+	if !isnumber(x) then
+
+		local vec = x
+		speed = y
+		x, y, z = vec:Unpack()
+
+	end
+
+	self[1] = math.Approach(self[1], x, speed)
+	self[2] = math.Approach(self[2], y, speed)
+	self[3] = math.Approach(self[3], z, speed)
+
+end
+
+local function VBSpringThink()
+
+	local self = LocalPlayer()
+
+	if !self.VBSpringVelocity or !self.VBSpringAngle then
+
+		self.VBSpringVelocity = Angle()
+		self.VBSpringAngle = Angle()
+
+	end
+
+	local vpa = self.VBSpringAngle
+	local vpv = self.VBSpringVelocity
+
+	if !self.VBSpringDone and lensqr(vpa) + lensqr(vpv) > 0.000001 then
+
+		local FT = FrameTime()
+
+		vpa = vpa + (vpv * FT)
+		local damping = 1 - (DAMPING * FT)
+		if damping < 0 then
+			damping = 0
+		end
+		vpv = vpv * damping
+
+		local springforcemagnitude = SPRING_CONSTANT * FT
+		springforcemagnitude = math.Clamp(springforcemagnitude, 0, 2)
+		vpv = vpv - (vpa * springforcemagnitude)
+
+		vpa[1] = math.Clamp(vpa[1], -89.9, 89.9)
+		vpa[2] = math.Clamp(vpa[2], -179.9, 179.9)
+		vpa[3] = math.Clamp(vpa[3], -89.9, 89.9)
+
+		self.VBSpringAngle = vpa
+		self.VBSpringVelocity = vpv
+
+	else
+
+		self.VBSpringDone = true
+
+	end
+
+end
+
+if CLIENT then
+
+	hook.Add("Think", "VBSpring", VBSpringThink)
+
+end
+
+function meta:VBSpring(angle)
+
+	if !self.VBSpringVelocity then return end
+	local intensity = 20
+	self.VBSpringVelocity:Add(angle * intensity)
+	if !self.VBSpringVelocity then self.VBSpringVelocity = Angle() end
+
+	local ang = self.VBSpringVelocity
+	ang[1] = math.Clamp(ang[1], -180, 180)
+	ang[2] = math.Clamp(ang[2], -180, 180)
+	ang[3] = math.Clamp(ang[3], -180, 180)
+
+	self.VBSpringDone = false
+
+end
+
+function meta:GetVBSpringAngles()
+
+	return self.VBSpringAngle
+
+end
+
+local LastAng = Angle()
+local LerpedSway_Y = 0
+local LerpedSway_X = 0
+local LerpedSway_Tilt = 0
+local LerpedAngX = 0
+
+local requestedmove = false
+local punchstop = false
+local VBPos, VBAng = Vector(), Angle()
+local VBPosCalc, VBAngCalc = Vector(), Angle()
+local VBPosPre, VBAngPre = Vector(), Angle()
+local VBPos2 = Vector()
+local LerpedInertia = 0
+local calcpos = Vector()
+VB_ForceOff = false
+
+local UCT = CurTime()
+local VBPosWeight, VBAngWeight = 1, 1
+local VBSighted = 1
+local stepweight = 1
+
+VBSightChecks = {
+
+	["arc9_base"] = function(wep) return wep.dt and wep.dt.InSights end,
+	["arc9_eft_base"] = function(wep) return wep.dt and wep.dt.InSights end
+
+}
+local VBSightChecks = VBSightChecks
+
+local function GetSighted(wep)
+
+	local sightfunc = VBSightChecks[wep.Base]
+
+	if !sightfunc and wep.BaseClass then
+
+		sightfunc = VBSightChecks[wep.BaseClass.Base]
+
+	end
+
+	return sightfunc and sightfunc(wep)
+
+end
+
+local function Sighted_Process(wep, FT)
+
+	if GetSighted(wep) then
+
+		VBPosWeight = math.Approach(VBPosWeight, 0.15, FT * 2)
+		VBAngWeight = math.Approach(VBAngWeight, 0.05, FT * 2)
+		VBSighted = math.Approach(VBSighted, 0, FT * 4)
+
+	else
+
+		VBPosWeight = math.Approach(VBPosWeight, 1, FT)
+		VBAngWeight = math.Approach(VBAngWeight, 1, FT)
+		VBSighted = math.Approach(VBSighted, 1, FT * 4)
+
+	end
+
+end
+
+local SpringStop = Angle(0.0025,0,0)
+local SpringSway = Angle()
+local SpringTilt = Angle()
+local SpringMove1, SpringMove2 = Angle(), Angle()
+
+hook.Add("CalcViewModelView", "VBCalcViewModelView", function(wep, vm, oldpos, oldang, pos, ang)
+
+	local ply = LocalPlayer()
+	if !ply.VBSpringAngle then return end
+
+	local FT = (SP and FrameTime()) or RealFrameTime()
+	local IFTP = (SP or IsFirstTimePredicted())
+
+	if VB_ForceOff then
+
+		return
+
+	end
+
+	pos:Set(oldpos)
+	ang:Set(oldang)
+	VBPosPre:Set(oldpos)
+	VBAngPre:Set(oldang)
+
+	VBPosCalc:Set(vector_origin)
+	VBAngCalc:Set(angle_zero)
+
+	local VMTime = ply:GetNW2Float("VMTime")
+
+	if wep then
+
+		Sighted_Process(wep, FT)
+
+	end
+
+	local runspeed = ply:GetWalkSpeed()
+	local speedinertia = LocalPlayer():GetVelocity():Length()
+
+	if speedinertia >= runspeed-0.01 then
+
+		punchstop = true
+
+	elseif speedinertia <= 1 then
+
+		punchstop = false
+
+	end
+
+	local walkmul = (ply:KeyDown(IN_WALK) and 2) or 1
+	local walkmulintensity = (ply:KeyDown(IN_WALK) and 0.5) or 1
+	local inertiamul = math.sin(((speedinertia / runspeed) * math.pi) * walkmul) * 0.04 * walkmulintensity
+
+	if !requestedmove and punchstop then
+
+		inertiamul = -(math.sin((speedinertia * math.pi / runspeed) * walkmul) * 0.0225 * walkmulintensity)
+		ply:VBSpring(SpringStop)
+
+	end
+
+	LerpedInertia = Lerp(FT * 5, LerpedInertia, inertiamul)
+	VBAngCalc.x = VBAngCalc.x + 10 * LerpedInertia
+	VBAngCalc.z = VBAngCalc.z + 10 * LerpedInertia
+	VBPosCalc.z = VBPosCalc.z + 10 * LerpedInertia
+
+	local sway_y = math.Clamp(math.AngleDifference(LastAng.y, ang.y) * 0.5, -2.5, 2.5) * 0
+	local sway_x = math.Clamp(math.AngleDifference(LastAng.x, ang.x), -2.5, 2.5) * 0
+
+	local swayt_x = (sway_x == 0 and 6) or 4
+	local swayt_y = (sway_y == 0 and 6) or 4
+
+	if IFTP and UCT != UnPredictedCurTime() then
+
+		LerpedSway_X = Lerp(FT * swayt_x, LerpedSway_X, sway_x)
+		LerpedSway_Y = Lerp(FT * swayt_y, LerpedSway_Y, sway_y)
+		SpringSway[1] = LerpedSway_X * -0.005
+		SpringSway[2] = LerpedSway_Y * -0.01
+		ply:VBSpring(SpringSway)
+
+	end
+
+	local r = ang:Right()
+	local up = ang:Up()
+	local f = ang:Forward()
+
+	local flipped = wep and wep.ViewModelFlip
+
+	if flipped then
+
+		r:Mul(-1)
+		LerpedSway_X = 0
+		LerpedSway_Y = 0
+
+	end
+
+	local sway_tilt = math.Clamp(r:Dot(LocalPlayer():GetVelocity() * 0.015), -10, 10)
+	local swayt_tilt = (sway_tilt == 0 and 12) or 8
+
+	if IFTP and UCT != UnPredictedCurTime() then
+
+		LerpedSway_Tilt = Lerp(FrameTime() * swayt_tilt, LerpedSway_Tilt, sway_tilt)
+		SpringTilt[3] = LerpedSway_Tilt * 0.01
+		ply:VBSpring(SpringTilt)
+
+	end
+
+	stepweight = math.Approach(stepweight, 0.5, FT)
+
+	VBPosCalc:Add(up * math.sin(VMTime * 10) * 0.1)
+	VBPosCalc:Add(r * math.sin(VMTime * 5) * 0.05)
+	VBPosCalc:Sub(f * math.sin(VMTime * 5) * 0.15)
+
+	VBAngCalc.z = VBAngCalc.z + math.sin(VMTime * 10) * 0.25
+	VBAngCalc.x = VBAngCalc.x + math.abs(math.sin(VMTime * 5) * 0.425)
+
+	local dist = math.abs(math.AngleDifference(ang.x, LerpedAngX)) / 50
+	LerpedAngX = math.min(math.Approach(LerpedAngX, ang.x, FT * (200 * dist)), 0)
+	LerpedAngX = Lerp(VBPosWeight, 0, LerpedAngX)
+	VBPosCalc:Add(f * - LerpedAngX * 0.01)
+	VBPosCalc:Add(up * LerpedAngX * 0.025)
+
+	VBAngCalc.y = (!flipped and VBAngCalc.y - LerpedSway_Y + math.abs(LerpedSway_X * 0.25)) or VBAngCalc.y + LerpedSway_Y - math.abs(LerpedSway_X * 0.25)
+
+	VBAngCalc.z = VBAngCalc.z + LerpedSway_Tilt
+	VBPosCalc.z = VBPosCalc.z + (LerpedSway_Tilt * 0.1)
+	VBPosCalc:Sub(r * LerpedSway_Y * 0.5)
+	VBPosCalc:Sub(up * LerpedSway_X * 0.5)
+
+	if (!requestedmove and punchstop) or requestedmove then
+
+		local ang = VBAngCalc + ang
+		SpringMove1[1] = (ang.x - oldang.x + LerpedSway_X) * -0.01
+		SpringMove1[2] = (ang.y - oldang.y + LerpedSway_Y) * 0.1
+		ply:VBSpring(SpringMove1)
+
+		SpringMove2[2] = math.sin(VMTime * 5) * -0.005
+		SpringMove2[3] = math.sin(VMTime * 5) * 0.0075 * (FT * 150)
+		ply:VBSpring(SpringMove2)
+
+	end
+
+	VBPosCalc:Mul(VBPosWeight)
+	VBAngCalc:Mul(VBAngWeight)
+
+	pos:Add(VBPosCalc)
+	ang:Add(VBAngCalc)
+
+	VBPos:Set(pos)
+	VBAng:Set(ang)
+
+	VBPos2:Set(pos)
+	VBPos2:Sub(up * math.min(LerpedAngX, 0) * 0.025)
+	VBPos2:Sub(f * math.min(LerpedAngX, 45) * 0.025)
+
+	ang:Add(ply.VBSpringAngle)
+
+	LastAng:Set(oldang)
+
+	ang.x = ang.x + (VBAng.x-VBAngPre.x) * 0.25
+
+	pos:Sub(calcpos)
+
+	UCT = UnPredictedCurTime()
+
+end)
+
+hook.Add("CalcView","VBCalcView", function(ply,pos,ang)
+
+	if VB_ForceOff then return end
+
+	calcpos:Set(ang:Up() * ((VBAng.x-VBAngPre.x) * 3 + LerpedSway_X - math.abs(LerpedSway_Y * 0.15)))
+	ang.x = ang.x + (VBAng.x-VBAngPre.x) * 0.25
+
+	pos:Sub(calcpos)
+	ang.z = ang.z - (LerpedSway_Y + math.abs(LerpedSway_X * 0.25)) * 0.5 + (LerpedSway_Tilt * 0.5)
+
+end)
+
+hook.Add("PlayerStepSoundTime", "VBPlayerStepSoundTime", function(ply)
+
+	if ply:GetMoveType() == MOVETYPE_LADDER then
+		return
+	end
+
+	return 1
+
+end)
+
+hook.Add("PlayerFootstep", "VBPlayerFootstep", function(ply)
+
+	if ply:GetMoveType() == MOVETYPE_LADDER then
+
+		return
+
+	end
+
+	if !ply:GetNW2Bool("DoStep", false) then
+
+		return true
+
+	end
+
+	if SP then
+
+		ply:SetNW2Bool("DoStep", false)
+		ply:SetNW2Float("LastVMTime", ply:GetNW2Float("VMTime", 0) % 0.64 - 99)
+
+	end
+
+end)
+
+local VBAngN = Angle()
+local function BoneVB(ply, vm, m)
+
+	local VBPunchAng = (stumbleamt == 0 and ply.VBSpringAngle) or angle_zero
+	local rot = -(VBPunchAng + VBAngN)
+	m:Rotate(rot)
+
+end
+
+local VBMF = false
+local routecount = 0
+
+local function ChildBones(vm, ply, boneid)
+
+	if !boneid then return end
+	if routecount > 1 then return end
+
+	local parentm = vm:GetBoneParent(boneid)
+	parentm = vm:GetBoneMatrix(parentm)
+
+	local m = vm:GetBoneMatrix(boneid)
+	if !m then return end
+
+	BoneVB(ply, vm, m)
+
+	if !VBMF then
+
+		local p = (EyePos() - VBPos)
+		local eyeang = EyeAngles()
+		p = WorldToLocal(vector_origin, angle_zero, p, eyeang)
+		p:Mul(-0.05)
+		p[1] = math.abs(p[1]) * 10
+		p[3] = p[1] * 0.5
+		m:Translate(p)
+		VBAngN:Mul(-1.25)
+		VBAngN[3] = VBAngN[3] * 0.25
+		VBAngN[1] = VBAngN[1] * 4
+		VBMF = true
+
+	end
+
+	vm:SetBoneMatrix(boneid,m)
+	local c = vm:GetChildBones(boneid)
+	routecount = routecount + 1
+	ChildBones(vm, ply, c[1])
+
+end
+
+hook.Add("PostDrawViewModel", "VBPostDrawViewModel", function(vm,ply,wep)
+
+	if VBFORCEOFF or VB_ForceOff then return end
+	if !ply.VBSpringAngle then return end
+
+	local arm = vm:LookupBone("ValveBiped.Bip01_L_Forearm")
+	local eyeang = ply:EyeAngles()
+
+	routecount = 0
+	VBMF = false
+	VBAngN:Set(VBAng - eyeang + ply.VBSpringAngle)
+	VBAngN.x = VBAngN.x * -0.25
+	VBAngN.z = VBAngN.z * 2.5
+	ChildBones(vm, ply, arm)
+
+end)
