@@ -405,7 +405,7 @@ end
 
 function metavec:Approach(x, y, z, speed)
 
-	if !isnumber(x) then
+    if !isnumber(x) then
 
 		local vec = x
 		speed = y
@@ -562,6 +562,8 @@ hook.Add("CalcViewModelView", "VBCalcViewModelView", function(wep, vm, oldpos, o
 	local ply = LocalPlayer()
 	if !ply.VBSpringAngle then return end
 
+    if type(wep.GetCustomize) == "function" and wep:GetCustomize() then return end
+
 	local FT = (SP and FrameTime()) or RealFrameTime()
 	local IFTP = (SP or IsFirstTimePredicted())
 
@@ -590,11 +592,11 @@ hook.Add("CalcViewModelView", "VBCalcViewModelView", function(wep, vm, oldpos, o
 	local runspeed = ply:GetWalkSpeed()
 	local speedinertia = LocalPlayer():GetVelocity():Length()
 
-	if speedinertia >= runspeed-0.01 then
+	if speedinertia >= runspeed - 0.01 then
 
 		punchstop = true
 
-	elseif speedinertia <= 1 then
+	elseif speedinertia <= 1 or GetSighted(wep) then
 
 		punchstop = false
 
@@ -614,15 +616,20 @@ hook.Add("CalcViewModelView", "VBCalcViewModelView", function(wep, vm, oldpos, o
 	LerpedInertia = Lerp(FT * 5, LerpedInertia, inertiamul)
 	VBAngCalc.x = VBAngCalc.x + 10 * LerpedInertia
 	VBAngCalc.z = VBAngCalc.z + 10 * LerpedInertia
-	VBPosCalc.z = VBPosCalc.z + 10 * LerpedInertia
 
-	local sway_y = math.Clamp(math.AngleDifference(LastAng.y, ang.y) * 0.5, -2.5, 2.5) * 0
-	local sway_x = math.Clamp(math.AngleDifference(LastAng.x, ang.x), -2.5, 2.5) * 0
+    if !GetSighted(wep) then
+
+	    VBPosCalc.z = VBPosCalc.z + 10 * LerpedInertia
+
+    end
+
+	local sway_y = math.Clamp(math.AngleDifference(LastAng.y, ang.y) * 0.5, -2.5, 2.5) * 0.5
+	local sway_x = math.Clamp(math.AngleDifference(LastAng.x, ang.x), -2.5, 2.5) * 0.5
 
 	local swayt_x = (sway_x == 0 and 6) or 4
 	local swayt_y = (sway_y == 0 and 6) or 4
 
-	if IFTP and UCT != UnPredictedCurTime() then
+	if UCT != UnPredictedCurTime() then
 
 		LerpedSway_X = Lerp(FT * swayt_x, LerpedSway_X, sway_x)
 		LerpedSway_Y = Lerp(FT * swayt_y, LerpedSway_Y, sway_y)
@@ -649,7 +656,7 @@ hook.Add("CalcViewModelView", "VBCalcViewModelView", function(wep, vm, oldpos, o
 	local sway_tilt = math.Clamp(r:Dot(LocalPlayer():GetVelocity() * 0.015), -10, 10)
 	local swayt_tilt = (sway_tilt == 0 and 12) or 8
 
-	if IFTP and UCT != UnPredictedCurTime() then
+	if UCT != UnPredictedCurTime() then
 
 		LerpedSway_Tilt = Lerp(FrameTime() * swayt_tilt, LerpedSway_Tilt, sway_tilt)
 		SpringTilt[3] = LerpedSway_Tilt * 0.01
@@ -665,12 +672,6 @@ hook.Add("CalcViewModelView", "VBCalcViewModelView", function(wep, vm, oldpos, o
 
 	VBAngCalc.z = VBAngCalc.z + math.sin(VMTime * 10) * 0.25
 	VBAngCalc.x = VBAngCalc.x + math.abs(math.sin(VMTime * 5) * 0.425)
-
-	local dist = math.abs(math.AngleDifference(ang.x, LerpedAngX)) / 50
-	LerpedAngX = math.min(math.Approach(LerpedAngX, ang.x, FT * (200 * dist)), 0)
-	LerpedAngX = Lerp(VBPosWeight, 0, LerpedAngX)
-	VBPosCalc:Add(f * - LerpedAngX * 0.01)
-	VBPosCalc:Add(up * LerpedAngX * 0.025)
 
 	VBAngCalc.y = (!flipped and VBAngCalc.y - LerpedSway_Y + math.abs(LerpedSway_X * 0.25)) or VBAngCalc.y + LerpedSway_Y - math.abs(LerpedSway_X * 0.25)
 
@@ -811,6 +812,8 @@ local function ChildBones(vm, ply, boneid)
 end
 
 hook.Add("PostDrawViewModel", "VBPostDrawViewModel", function(vm,ply,wep)
+
+    if type(wep.GetCustomize) == "function" and wep:GetCustomize() then return end
 
 	if VBFORCEOFF or VB_ForceOff then return end
 	if !ply.VBSpringAngle then return end
