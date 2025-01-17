@@ -3703,6 +3703,34 @@ function Menu.OpenTab.Settings()
     vmZ:SetMax(7)
     vmZ:SetDecimals(1)
 
+    local headBobPanel = vgui.Create("DPanel", visuals)
+    headBobPanel:Dock(TOP)
+    headBobPanel:SetSize(0, EFGM.MenuScale(50))
+    function headBobPanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Head Bobbing", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local headBob = vgui.Create("DCheckBox", headBobPanel)
+    headBob:SetPos(EFGM.MenuScale(152), EFGM.MenuScale(30))
+    headBob:SetConVar("efgm_visuals_headbob")
+    headBob:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+
+    local viewRollPanel = vgui.Create("DPanel", visuals)
+    viewRollPanel:Dock(TOP)
+    viewRollPanel:SetSize(0, EFGM.MenuScale(50))
+    function viewRollPanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("View Rolling", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local viewRoll = vgui.Create("DCheckBox", viewRollPanel)
+    viewRoll:SetPos(EFGM.MenuScale(152), EFGM.MenuScale(30))
+    viewRoll:SetConVar("efgm_visuals_viewroll")
+    viewRoll:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+
     local impactFXPanel = vgui.Create("DPanel", visuals)
     impactFXPanel:Dock(TOP)
     impactFXPanel:SetSize(0, EFGM.MenuScale(50))
@@ -3722,7 +3750,7 @@ function Menu.OpenTab.Settings()
     clTPIKPanel:SetSize(0, EFGM.MenuScale(50))
     function clTPIKPanel:Paint(w, h)
 
-        draw.SimpleTextOutlined("Clientside TPIK", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined("High Quality TPP Animations", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
     end
 
