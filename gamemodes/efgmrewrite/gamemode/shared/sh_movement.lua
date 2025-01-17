@@ -564,7 +564,6 @@ hook.Add("CalcViewModelView", "VBCalcViewModelView", function(wep, vm, oldpos, o
     if type(wep.GetCustomize) == "function" and wep:GetCustomize() then return end
 
 	local FT = (SP and FrameTime()) or RealFrameTime()
-	local IFTP = (SP or IsFirstTimePredicted())
 
 	pos:Set(oldpos)
 	ang:Set(oldang)
@@ -711,28 +710,29 @@ hook.Add("CalcViewModelView", "VBCalcViewModelView", function(wep, vm, oldpos, o
 
 end)
 
-local bobbing = GetConVar("efgm_visuals_headbob")
-local rolling = GetConVar("efgm_visuals_viewroll")
-hook.Add("CalcView","VBCalcView", function(ply,pos,ang)
-
-    if bobbing then
-
-        calcpos:Set(ang:Up() * ((VBAng.x-VBAngPre.x) * 3 + LerpedSway_X - math.abs(LerpedSway_Y * 0.15)))
-        ang.x = ang.x + (VBAng.x-VBAngPre.x) * 0.25
-
-    end
-
-    pos:Sub(calcpos)
-
-    if rolling then
-
-	    ang.z = ang.z - (LerpedSway_Y + math.abs(LerpedSway_X * 0.25)) * 0.5 + (LerpedSway_Tilt * 0.5)
-
-    end
-
-end)
-
 if CLIENT then
+
+    local bobbing = GetConVar("efgm_visuals_headbob"):GetBool()
+    local rolling = GetConVar("efgm_visuals_viewroll"):GetBool()
+
+    hook.Add("CalcView","VBCalcView", function(ply,pos,ang)
+
+        if bobbing then
+
+            calcpos:Set(ang:Up() * ((VBAng.x-VBAngPre.x) * 3 + LerpedSway_X - math.abs(LerpedSway_Y * 0.15)))
+            ang.x = ang.x + (VBAng.x-VBAngPre.x) * 0.25
+
+        end
+
+        pos:Sub(calcpos)
+
+        if rolling then
+
+            ang.z = ang.z - (LerpedSway_Y + math.abs(LerpedSway_X * 0.25)) * 0.5 + (LerpedSway_Tilt * 0.5)
+
+        end
+
+    end)
 
     cvars.AddChangeCallback("efgm_visuals_headbob", function(convar_name, value_old, value_new) if value_new == "1" then bobbing = true else bobbing = false end end)
     cvars.AddChangeCallback("efgm_visuals_viewroll", function(convar_name, value_old, value_new) if value_new == "1" then rolling = true else rolling = false end end)
@@ -741,9 +741,7 @@ end
 
 hook.Add("PlayerStepSoundTime", "VBPlayerStepSoundTime", function(ply)
 
-	if ply:GetMoveType() == MOVETYPE_LADDER then
-		return
-	end
+	if ply:GetMoveType() == MOVETYPE_LADDER then return end
 
 	return 1
 
