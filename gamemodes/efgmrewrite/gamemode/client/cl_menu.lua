@@ -231,6 +231,13 @@ function Menu:Initialize(openTo)
 
         draw.SimpleTextOutlined(statsText, "PuristaBold32", EFGM.MenuScale(43), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
+        if Menu.ActiveTab == "Stats" then
+
+            surface.SetDrawColor(MenuAlias.whiteColor)
+            surface.DrawRect(2, 39, w - 2, 2)
+
+        end
+
     end
 
     statsIcon.OnCursorEntered = function(s)
@@ -291,6 +298,13 @@ function Menu:Initialize(openTo)
         surface.DrawRect(0, 0, w, h)
 
         draw.SimpleTextOutlined(matchText, "PuristaBold32", EFGM.MenuScale(43), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        if Menu.ActiveTab == "Match" then
+
+            surface.SetDrawColor(MenuAlias.whiteColor)
+            surface.DrawRect(2, 39, w - 2, 2)
+
+        end
 
     end
 
@@ -355,6 +369,13 @@ function Menu:Initialize(openTo)
 
         draw.SimpleTextOutlined(inventoryText, "PuristaBold32", EFGM.MenuScale(43), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
+        if Menu.ActiveTab == "Inventory" then
+
+            surface.SetDrawColor(MenuAlias.whiteColor)
+            surface.DrawRect(2, 39, w - 2, 2)
+
+        end
+
     end
 
     inventoryIcon.OnCursorEntered = function(s)
@@ -416,6 +437,13 @@ function Menu:Initialize(openTo)
 
         draw.SimpleTextOutlined(tasksText, "PuristaBold32", EFGM.MenuScale(43), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
+        if Menu.ActiveTab == "Tasks" then
+
+            surface.SetDrawColor(MenuAlias.whiteColor)
+            surface.DrawRect(2, 39, w - 2, 2)
+
+        end
+
     end
 
     tasksIcon.OnCursorEntered = function(s)
@@ -467,6 +495,13 @@ function Menu:Initialize(openTo)
         surface.DrawRect(0, 0, w, h)
 
         draw.SimpleTextOutlined(skillsText, "PuristaBold32", EFGM.MenuScale(43), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        if Menu.ActiveTab == "Skills" then
+
+            surface.SetDrawColor(MenuAlias.whiteColor)
+            surface.DrawRect(2, 39, w - 2, 2)
+
+        end
 
     end
 
@@ -529,6 +564,13 @@ function Menu:Initialize(openTo)
 
         draw.SimpleTextOutlined(intelText, "PuristaBold32", EFGM.MenuScale(43), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
+        if Menu.ActiveTab == "Intel" then
+
+            surface.SetDrawColor(MenuAlias.whiteColor)
+            surface.DrawRect(2, 39, w - 2, 2)
+
+        end
+
     end
 
     intelIcon.OnCursorEntered = function(s)
@@ -589,6 +631,13 @@ function Menu:Initialize(openTo)
         surface.DrawRect(0, 0, w, h)
 
         draw.SimpleTextOutlined(achievementsText, "PuristaBold32", EFGM.MenuScale(43), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        if Menu.ActiveTab == "Achievements" then
+
+            surface.SetDrawColor(MenuAlias.whiteColor)
+            surface.DrawRect(2, 39, w - 2, 2)
+
+        end
 
     end
 
@@ -651,6 +700,13 @@ function Menu:Initialize(openTo)
         surface.DrawRect(0, 0, w, h)
 
         draw.SimpleTextOutlined(settingsText, "PuristaBold32", EFGM.MenuScale(43), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        if Menu.ActiveTab == "Settings" then
+
+            surface.SetDrawColor(MenuAlias.whiteColor)
+            surface.DrawRect(2, 39, w - 2, 2)
+
+        end
 
     end
 
