@@ -1,14 +1,14 @@
 
 ITEM = {}
 
-function ITEM.CreateItem( identifier, count, metadata )
+function ITEM.CreateItem( identifier, data, md )
 
     local info = ReadJSON( identifier ) or ReadJSON( "missing_item" )
 
     local item = {}
     item.identifier = identifier
-    item.count = count or 1
-    item.metadata = metadata or {}
+    item.data = data or {}
+    item.md = md or {}
 
     return item
 

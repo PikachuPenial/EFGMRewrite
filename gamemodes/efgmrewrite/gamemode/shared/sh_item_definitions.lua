@@ -9,14 +9,16 @@ EFGMITEMS = {}
 
 function EFGMITEMS:__index( var )
 
-	return var or {
+	return {
         ["fullName"] = "MISSING_ITEM",
+        ["displayName"] = "MISSING",
         ["displayType"] = "???",
         ["weight"] = 0.1,
-        ["value"] = 1,
+        ["value"] = 0,
         ["equipType"] = EQUIPTYPE.None,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
+        ["icon"] = "missing",
     
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -76,34 +78,6 @@ end
             { ["posX"] = 2, ["posY"] = 4, ["sizeX"] = 1, ["sizeY"] = 1 },
 
             { ["posX"] = 3, ["posY"] = 3, ["sizeX"] = 2, ["sizeY"] = 2 } // Bottom right 2x2
-
-        }
-    }
-
-// BACKPACKS
-
-    EFGMITEMS["efgm_daypack"] = {
-
-        ["fullName"] = "LBT-8005A Day Pack",
-        ["displayName"] = "Daypack",
-        ["displayType"] = "Backpack",
-        ["weight"] = 0.57,
-        ["value"] = 22000,
-        ["equipType"] = EQUIPTYPE.Gear,
-        ["equipmentType"] = "backpack",
-        ["appearInInventory"] = true,
-        ["stackSize"] = 1,
-        ["icon"] = "idk",
-
-        ["sizeX"] = 4,
-        ["sizeY"] = 5,
-
-        ["containerLayoutSizeX"] = 4,
-        ["containerLayoutSizeY"] = 5,
-        
-        ["childContainers"] = {
-
-            { ["posX"] = 1, ["posY"] = 1, ["sizeX"] = 4, ["sizeY"] = 5 }
 
         }
     }
@@ -190,6 +164,34 @@ end
             { ["posX"] = 2, ["posY"] = 1, ["sizeX"] = 1, ["sizeY"] = 2 },
             { ["posX"] = 3, ["posY"] = 1, ["sizeX"] = 1, ["sizeY"] = 2 },
             { ["posX"] = 4, ["posY"] = 1, ["sizeX"] = 1, ["sizeY"] = 1 }
+
+        }
+    }
+
+// BACKPACKS
+
+    EFGMITEMS["efgm_daypack"] = {
+
+        ["fullName"] = "LBT-8005A Day Pack",
+        ["displayName"] = "Daypack",
+        ["displayType"] = "Backpack",
+        ["weight"] = 0.57,
+        ["value"] = 22000,
+        ["equipType"] = EQUIPTYPE.Gear,
+        ["equipmentType"] = "backpack",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "idk",
+
+        ["sizeX"] = 4,
+        ["sizeY"] = 5,
+
+        ["containerLayoutSizeX"] = 4,
+        ["containerLayoutSizeY"] = 5,
+        
+        ["childContainers"] = {
+
+            { ["posX"] = 1, ["posY"] = 1, ["sizeX"] = 4, ["sizeY"] = 5 }
 
         }
     }

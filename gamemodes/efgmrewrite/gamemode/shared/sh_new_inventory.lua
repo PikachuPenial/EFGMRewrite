@@ -1,54 +1,28 @@
 
--- https://www.youtube.com/watch?v=Iv3F5ARdu58
-
--- code below is deprecated but is needed for the meantime to make deaths function
-
 local plyMeta = FindMetaTable( "Player" )
 if not plyMeta then Error("Could not find player table") return end
 
-INV = {}
+if SERVER then
+    
+    -- local playerInventories = {}
 
--- fuck it ima just remake this
--- TODO: remake again
+    -- hook.Add( "PlayerSpawn", "PlayerInventoryInitialize", function(ply)
+    
+    --     local id64 = ply:SteamID64()
 
-function INV.New()
+    --     playerInventories[id64] = SetupPlayerInventory(ply)
 
-    local inv = {}
+    -- end)
 
-    inv.contents = {} -- items within
+    -- function SetupPlayerInventory(ply)
 
-    function inv:Add( name, type, count )
+    --     local inventory = {}
 
-        local key = table.insert(self.contents, {})
+    --     inventory.rig = {}
+    --     inventory.backpack = {}
+    --     inventory.pockets = {}
+    --     inventory.sc = {}
 
-        self.contents[key].name = name
-        self.contents[key].type = type
-        self.contents[key].count = count or 1
+    -- end
 
-    end
-
-    function inv:Remove(name, count)
-
-        -- todo
-
-        return false
-
-    end
-
-    return inv
-
-end
-
-GiveItem = {}
-
-GiveItem[1] = function(ply, item, count, noReserveAmmo) -- weapons
-    ply:Give( item, noReserveAmmo )
-end
-
-GiveItem[2] = function(ply, item, count, noReserveAmmo) -- ammo
-    ply:GiveAmmo(count or 1, item, true)
-end
-
-GiveItem[3] = function(ply, item, count, noReserveAmmo) -- attatchment
-    ARC9:PlayerGiveAtt(ply, item, count or 1)
 end
