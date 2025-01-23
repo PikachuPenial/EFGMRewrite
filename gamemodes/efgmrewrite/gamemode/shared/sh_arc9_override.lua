@@ -1,5 +1,6 @@
 
 hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
+
     -- arc9 determines a player as sprinting if they are holding IN_SPEED, not when they are actually sprinting, breaking animations with EFGM's sprinting system
     function SWEP:GetIsSprintingCheck()
 
@@ -15,18 +16,9 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
         if !owner:OnGround() or owner:GetMoveType() == MOVETYPE_NOCLIP then return false end
         if !owner:KeyDown(IN_FORWARD + IN_BACK + IN_MOVELEFT + IN_MOVERIGHT) then return false end
 
-        if (self:GetAnimLockTime() > CurTime()) and self:GetProcessedValue("NoSprintWhenLocked", true) then
-            return false
-        end
-
-        if self:GetProcessedValue("ShootWhileSprint", true) and owner:KeyDown(IN_ATTACK) then
-            return false
-        end
-
-        if self:GetGrenadePrimed() then
-            return false
-        end
-
+        if (self:GetAnimLockTime() > CurTime()) and self:GetProcessedValue("NoSprintWhenLocked", true) then return false end
+        if self:GetProcessedValue("ShootWhileSprint", true) and owner:KeyDown(IN_ATTACK) then return false end
+        if self:GetGrenadePrimed() then return false end
         if owner:Crouching() then return false end
 
         return true
@@ -35,12 +27,10 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
 
     -- take a wild guess
     function SWEP:GetIsWalking()
+
         local owner = self:GetOwner()
 
-        if !owner:IsValid() or owner:IsNPC() then
-            return false
-        end
-
+        if !owner:IsValid() or owner:IsNPC() then return false end
         if owner:KeyDown(IN_SPEED) then return false end
         if owner:IsSprinting() then return false end
         if !owner:KeyDown(IN_FORWARD + IN_BACK + IN_MOVELEFT + IN_MOVERIGHT) then return false end
@@ -52,7 +42,7 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
 
     end
 
-    -- same w/ sway this time
+    -- sway
 
     local lasteyeang = Angle()
     local smootheyeang = Angle()
@@ -99,6 +89,114 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
         ang:Set(rap_ang)
 
         return pos, ang
+
+    end
+
+    -- revert commit that fixed (i think) fixed leaning mods but then proceeded to break EFGM leaning
+
+    if CLIENT then
+
+        local rtsize = math.min(1024, ScrW(), ScrH())
+
+        local rtmat = GetRenderTarget("arc9_pipscope", rtsize, rtsize, false)
+        local rtmat_spare = GetRenderTarget("arc9_rtmat_spare", ScrW(), ScrH(), false)
+
+        function SWEP:ShouldDoScope()
+
+            if self:GetSight().Disassociate then return false end
+            return true
+
+        end
+
+        function SWEP:DoRT(fov, atttbl)
+
+            if ARC9.OverDraw then return end
+
+            local rtpos, rtang = self:GetShootPos()
+            local sighttbl = self:GetSight()
+            local rtvm = true
+
+            local rt = {
+                x = 0,
+                y = 0,
+                w = rtsize,
+                h = rtsize,
+                angles = rtang,
+                origin = rtpos,
+                drawviewmodel = rtvm or false,
+                fov = fov,
+                znear = 16,
+                zfar = 30000
+            }
+
+            ARC9.RTScopeRenderFOV = fov
+
+            render.PushRenderTarget(rtmat, 0, 0, rtsize, rtsize)
+
+            if self:ShouldDoScope() then
+
+                ARC9.OverDraw = true
+                ARC9.RTScopeRender = rtvm
+                render.RenderView(rt)
+                ARC9.RTScopeRender = false
+                ARC9.OverDraw = false
+
+                cam.Start3D(rtpos, rtang, fov, 0, 0, rtsize, rtsize)
+
+                    cam.IgnoreZ(true)
+                    self:DrawLasers(false, true)
+                    cam.IgnoreZ(false)
+
+                cam.End3D()
+
+            else
+
+                render.Clear(0, 0, 0, 255, true, true)
+
+            end
+
+            if atttbl.RTScopeFLIR then
+
+                cam.Start3D(rtpos, rtang, fov, 0, 0, rtsize, rtsize, 16, 30000)
+
+                self:DoFLIR(atttbl)
+
+                cam.End3D()
+
+            end
+
+            if atttbl.RTScopeNightVision then self:DoNightScopeEffects(atttbl) end
+
+            cam.Start3D(rtpos, rtang, fov, 0, 0, rtsize, rtsize, 16, 30000)
+
+                self:DrawLockOnHUD(true)
+
+            cam.End3D()
+
+            self:DoRTScopeEffects()
+
+            render.PopRenderTarget()
+
+            if sighttbl.InvertColors then
+
+                render.PushRenderTarget(rtmat, 0, 0, rtsize, rtsize)
+
+                    render.CopyTexture(rtmat, rtmat_spare)
+
+                    render.Clear(255, 255, 255, 255, true, true)
+                    render.OverrideBlend(true, BLEND_ONE, BLEND_ONE, BLENDFUNC_REVERSE_SUBTRACT)
+
+                    render.DrawTextureToScreen(rtmat_spare)
+
+                    render.OverrideBlend(false)
+
+                    if atttbl.RTScopePostInvertFunc then atttbl.RTScopePostInvertFunc(self) end
+
+                render.PopRenderTarget()
+
+            end
+
+        end
 
     end
 

@@ -234,7 +234,7 @@ function Menu:Initialize(openTo)
         if Menu.ActiveTab == "Stats" then
 
             surface.SetDrawColor(MenuAlias.whiteColor)
-            surface.DrawRect(2, 39, w - 2, 2)
+            surface.DrawRect(EFGM.MenuScale(2), EFGM.MenuScale(39), w - EFGM.MenuScale(2), EFGM.MenuScale(2))
 
         end
 
@@ -302,7 +302,7 @@ function Menu:Initialize(openTo)
         if Menu.ActiveTab == "Match" then
 
             surface.SetDrawColor(MenuAlias.whiteColor)
-            surface.DrawRect(2, 39, w - 2, 2)
+            surface.DrawRect(EFGM.MenuScale(2), EFGM.MenuScale(39), w - EFGM.MenuScale(2), EFGM.MenuScale(2))
 
         end
 
@@ -372,7 +372,7 @@ function Menu:Initialize(openTo)
         if Menu.ActiveTab == "Inventory" then
 
             surface.SetDrawColor(MenuAlias.whiteColor)
-            surface.DrawRect(2, 39, w - 2, 2)
+            surface.DrawRect(EFGM.MenuScale(2), EFGM.MenuScale(39), w - EFGM.MenuScale(2), EFGM.MenuScale(2))
 
         end
 
@@ -440,7 +440,7 @@ function Menu:Initialize(openTo)
         if Menu.ActiveTab == "Tasks" then
 
             surface.SetDrawColor(MenuAlias.whiteColor)
-            surface.DrawRect(2, 39, w - 2, 2)
+            surface.DrawRect(EFGM.MenuScale(2), EFGM.MenuScale(39), w - EFGM.MenuScale(2), EFGM.MenuScale(2))
 
         end
 
@@ -499,7 +499,7 @@ function Menu:Initialize(openTo)
         if Menu.ActiveTab == "Skills" then
 
             surface.SetDrawColor(MenuAlias.whiteColor)
-            surface.DrawRect(2, 39, w - 2, 2)
+            surface.DrawRect(EFGM.MenuScale(2), EFGM.MenuScale(39), w - EFGM.MenuScale(2), EFGM.MenuScale(2))
 
         end
 
@@ -567,7 +567,7 @@ function Menu:Initialize(openTo)
         if Menu.ActiveTab == "Intel" then
 
             surface.SetDrawColor(MenuAlias.whiteColor)
-            surface.DrawRect(2, 39, w - 2, 2)
+            surface.DrawRect(EFGM.MenuScale(2), EFGM.MenuScale(39), w - EFGM.MenuScale(2), EFGM.MenuScale(2))
 
         end
 
@@ -635,7 +635,7 @@ function Menu:Initialize(openTo)
         if Menu.ActiveTab == "Achievements" then
 
             surface.SetDrawColor(MenuAlias.whiteColor)
-            surface.DrawRect(2, 39, w - 2, 2)
+            surface.DrawRect(EFGM.MenuScale(2), EFGM.MenuScale(39), w - EFGM.MenuScale(2), EFGM.MenuScale(2))
 
         end
 
@@ -704,7 +704,7 @@ function Menu:Initialize(openTo)
         if Menu.ActiveTab == "Settings" then
 
             surface.SetDrawColor(MenuAlias.whiteColor)
-            surface.DrawRect(2, 39, w - 2, 2)
+            surface.DrawRect(EFGM.MenuScale(2), EFGM.MenuScale(39), w - EFGM.MenuScale(2), EFGM.MenuScale(2))
 
         end
 
