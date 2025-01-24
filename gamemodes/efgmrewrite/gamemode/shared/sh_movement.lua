@@ -627,15 +627,11 @@ hook.Add("CalcViewModelView", "VBCalcViewModelView", function(wep, vm, oldpos, o
 	local swayt_x = (sway_x == 0 and 6) or 4
 	local swayt_y = (sway_y == 0 and 6) or 4
 
-	if UCT != UnPredictedCurTime() then
-
-		LerpedSway_X = Lerp(FT * swayt_x, LerpedSway_X, sway_x)
-		LerpedSway_Y = Lerp(FT * swayt_y, LerpedSway_Y, sway_y)
-		SpringSway[1] = LerpedSway_X * -0.005
-		SpringSway[2] = LerpedSway_Y * -0.01
-		ply:VBSpring(SpringSway)
-
-	end
+    LerpedSway_X = Lerp(FT * swayt_x, LerpedSway_X, sway_x)
+    LerpedSway_Y = Lerp(FT * swayt_y, LerpedSway_Y, sway_y)
+    SpringSway[1] = LerpedSway_X * -0.005
+    SpringSway[2] = LerpedSway_Y * -0.01
+    ply:VBSpring(SpringSway)
 
 	local r = ang:Right()
 	local up = ang:Up()

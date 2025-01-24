@@ -203,22 +203,20 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
 
             for k, v in pairs(player.GetAll()) do
 
+                if shotCaliber[self:GetPrimaryAmmoType()] == nil then return end
+
                 local attacker = self:GetOwner()
                 local shootPos = attacker:GetPos()
                 local plyDistance = attacker:GetPos():Distance(v:GetPos())
-                local bulletPitch
-                local threshold
+                local bulletPitch = shotCaliber[self:GetPrimaryAmmoType()][1] or 100
+                local threshold = shotCaliber[self:GetPrimaryAmmoType()][2] or 6000
                 local style = shotCaliber[self:GetPrimaryAmmoType()][3] == "bullet" -- returns true if bullet, false if explosive
+                local volume = 1
 
-                if wep != nil then
+                if silenced then
 
-                    bulletPitch = shotCaliber[self:GetPrimaryAmmoType()][1] or 100
-                    threshold = shotCaliber[self:GetPrimaryAmmoType()][2] or 6000
-
-                else
-
-                    bulletPitch = 100
-                    threshold = 6000
+                    volume = 0.3
+                    bulletPitch = math.Round(bulletPitch * 1.5)
 
                 end
 
@@ -231,6 +229,7 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
                         net.WriteFloat(plyDistance)
                         net.WriteInt(bulletPitch, 9)
                         net.WriteInt(threshold, 16)
+                        net.WriteFloat(volume)
                         net.WriteBool(style)
                         net.Send(v)
 
