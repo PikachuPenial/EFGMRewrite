@@ -11,7 +11,7 @@ hook.Add("PlayerFootstep", "FootSteps", function(ply)
 end)
 
 -- gun sounds
-local shotSounds = {
+shotSounds = {
     "cracks/distant/dist01.ogg",
     "cracks/distant/dist02.ogg",
     "cracks/distant/dist03.ogg",
@@ -22,11 +22,11 @@ local shotSounds = {
     "cracks/distant/dist08.ogg"
 }
 
-local boomSounds = {
+boomSounds = {
     "weapons/darsu_eft/m203/gren_expl2_indoor_distant.ogg"
 }
 
-local shotCaliber = {} -- pitch, threshold, style
+shotCaliber = {} -- pitch, threshold, style
 
 -- weapons
 shotCaliber[3] =  {180, 3000, "bullet"}   -- pistol
@@ -47,37 +47,7 @@ if SERVER then
         for k, v in pairs(player.GetAll()) do
 
             -- a hacky way to distinquish an ARC9 weapon and an entity, ARC9 doesn't set an AmmoType, we use this to create the monstrosity you are about to read 
-            if data.AmmoType == "" then
-                -- weapon detected
-                local wep = attacker:GetActiveWeapon()
-                local shootPos = attacker:GetPos()
-                local plyDistance = attacker:GetPos():Distance(v:GetPos())
-                local bulletPitch
-                local threshold
-                local style = shotCaliber[wep:GetPrimaryAmmoType()][3] == "bullet" -- returns true if bullet, false if explosive
-
-                if wep != nil then
-                    bulletPitch = shotCaliber[wep:GetPrimaryAmmoType()][1] or 100
-                    threshold = shotCaliber[wep:GetPrimaryAmmoType()][2] or 6000
-                else
-                    bulletPitch = 100
-                    threshold = 6000
-                end
-
-                for i = 1, data.Num do
-                    if (plyDistance >= 2500) then
-                        if (v != attacker) then
-                            net.Start("DistantGunAudio")
-                            net.WriteVector(shootPos)
-                            net.WriteFloat(plyDistance)
-                            net.WriteInt(bulletPitch, 9)
-                            net.WriteInt(threshold, 16)
-                            net.WriteBool(style)
-                            net.Send(v)
-                        end
-                    end
-                end
-            else
+            if data.AmmoType != "" then
                 -- entity detected
                 local entAmmo = data.AmmoType
 
@@ -119,6 +89,7 @@ if SERVER then
 end
 
 if CLIENT then
+
     net.Receive("DistantGunAudio", function()
         local chosenSound
         local receivedVect = net.ReadVector()
@@ -128,13 +99,19 @@ if CLIENT then
         local style = net.ReadBool()
 
         if style == true then
+
             chosenSound = shotSounds[math.random(#shotSounds)]
+
         else
+
             chosenSound = boomSounds[math.random(#boomSounds)]
+
         end
 
         if receivedVect then
+
             sound.Play(chosenSound, receivedVect, math.min(150, (150 * threshold) / distance), pitch + math.random(-15, 15), math.Rand(0.8, 1))
+
         end
     end)
 end

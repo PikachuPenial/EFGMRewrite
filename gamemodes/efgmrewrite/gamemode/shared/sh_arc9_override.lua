@@ -42,8 +42,211 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
 
     end
 
-    -- sway
+    -- weapon sounds
+    local lsstr = "ShootSound"
+    local lsslr = "LayerSound"
+    local ldsstr = "DistantShootSound"
 
+    local sstrSilenced = "ShootSoundSilenced"
+    local sslrSilenced = "LayerSoundSilenced"
+    local dsstrSilenced = "DistantShootSoundSilenced"
+
+    local soundtab1 = {name = "shootsound"}
+    local soundtab2 = {name = "shootlayer"}
+    local soundtab3 = {name = "shootdistant"}
+    local soundtab4 = {name = "shootsoundindoor"}
+    local soundtab5 = {name = "shootlayerindoor"}
+    local soundtab6 = {name = "shootdistantindoor"}
+
+    function SWEP:DoShootSounds()
+        local pvar = self:GetProcessedValue("ShootPitchVariation", true)
+        local pvrand = util.SharedRandom("ARC9_sshoot", -pvar, pvar)
+
+        local sstr = lsstr
+        local sslr = lsslr
+        local dsstr = ldsstr
+
+        local silenced = self:GetProcessedValue("Silencer", true) and !self:GetUBGL()
+        local indoor = self:GetIndoor()
+
+        local indoormix = 1 - indoor
+        local havedistant = self:GetProcessedValue(dsstr, true)
+
+        if silenced and self:GetProcessedValue(sstrSilenced, true) then
+            sstr = sstrSilenced
+        end
+
+        if silenced and self:GetProcessedValue(sslrSilenced, true) then
+            sslr = sslrSilenced
+        end
+
+        if havedistant and silenced and self:GetProcessedValue(dsstrSilenced, true) then
+            dsstr = dsstrSilenced
+        end
+
+        do
+            local burstCountZero = self:GetBurstCount() == 0
+            local sstrFirst = "First" .. sstr
+            local dsstrFirst = "First" .. dsstr
+
+            if burstCountZero and self:GetProcessedValue(sstrFirst, true) then
+                sstr = sstrFirst
+            end
+
+            if havedistant and burstCountZero and self:GetProcessedValue(dsstrFirst, true) then
+                dsstr = dsstrFirst
+            end
+        end
+
+        local ss = self:RandomChoice(self:GetProcessedValue(sstr, true))
+        local sl = self:RandomChoice(self:GetProcessedValue(sslr, true))
+        local dss
+
+        if havedistant then
+            dss = self:RandomChoice(self:GetProcessedValue(dsstr, true))
+        end
+
+        local svolume, spitch, svolumeactual = self:GetProcessedValue("ShootVolume", true), self:GetProcessedValue("ShootPitch", true) + pvrand, self:GetProcessedValue("ShootVolumeActual", true) or 1
+        local dvolume, dpitch, dvolumeactual
+
+        if havedistant then
+            dvolume, dpitch, dvolumeactual = math.min(149, (self:GetProcessedValue("DistantShootVolume", true) or svolume) * 2), (self:GetProcessedValue("DistantShootPitch", true) or spitch) + pvrand, self:GetProcessedValue("DistantShootVolumeActual", true) or svolumeactual or 1
+        end
+
+        local volumeMix = svolumeactual * indoormix
+
+        local hardcutoff = self.IndoorSoundHardCutoff and self.IndoorSoundHardCutoffRatio < indoor
+
+        if hardcutoff then
+            indoormix = 0
+            indoor = 1
+        elseif self.IndoorSoundHardCutoff then
+            indoormix = 1
+            indoor = 0
+        end
+
+        if indoormix > 0 then
+
+            do
+                soundtab1.sound = ss or ""
+                soundtab1.level = svolume
+                soundtab1.pitch = spitch
+                soundtab1.volume = volumeMix
+                soundtab1.channel = ARC9.CHAN_WEAPON
+            end
+
+            self:PlayTranslatedSound(soundtab1)
+
+            do
+                soundtab2.sound = sl or ""
+                soundtab2.level = svolume
+                soundtab2.pitch = spitch
+                soundtab2.volume = volumeMix
+                soundtab2.channel = ARC9.CHAN_LAYER + 4
+            end
+
+            self:PlayTranslatedSound(soundtab2)
+
+            if havedistant then
+                do
+                    soundtab3.sound = dss or ""
+                    soundtab3.level = dvolume
+                    soundtab3.pitch = dpitch
+                    soundtab3.volume = dvolume * indoormix
+                    soundtab3.channel = ARC9.CHAN_DISTANT
+                end
+
+                self:PlayTranslatedSound(soundtab3)
+            end
+        end
+
+        if indoor > 0 then
+            local ssIN = self:RandomChoice(self:GetProcessedValue(sstr .. "Indoor", true))
+            local slIN = self:RandomChoice(self:GetProcessedValue(sslr .. "Indoor", true))
+            local dssIN = havedistant and self:RandomChoice(self:GetProcessedValue(dsstr .. "Indoor", true))
+            local indoorVolumeMix = svolumeactual * indoor
+
+            do
+                soundtab4.sound = ssIN or ""
+                soundtab4.level = svolume
+                soundtab4.pitch = spitch
+                soundtab4.volume = indoorVolumeMix
+                soundtab4.channel = ARC9.CHAN_INDOOR
+            end
+
+            self:PlayTranslatedSound(soundtab4)
+
+            do
+                soundtab5.sound = slIN or ""
+                soundtab5.level = svolume
+                soundtab5.pitch = spitch
+                soundtab5.volume = indoorVolumeMix
+                soundtab5.channel = ARC9.CHAN_INDOOR + 7
+            end
+
+            self:PlayTranslatedSound(soundtab5)
+
+            if havedistant then
+                do
+                    soundtab6.sound = dssIN or ""
+                    soundtab6.level = dvolume
+                    soundtab6.pitch = dpitch
+                    soundtab6.volume = indoor
+                    soundtab6.channel = ARC9.CHAN_INDOORDISTANT
+                end
+
+                self:PlayTranslatedSound(soundtab6)
+            end
+        end
+
+        if SERVER then
+
+            for k, v in pairs(player.GetAll()) do
+
+                local attacker = self:GetOwner()
+                local shootPos = attacker:GetPos()
+                local plyDistance = attacker:GetPos():Distance(v:GetPos())
+                local bulletPitch
+                local threshold
+                local style = shotCaliber[self:GetPrimaryAmmoType()][3] == "bullet" -- returns true if bullet, false if explosive
+
+                if wep != nil then
+
+                    bulletPitch = shotCaliber[self:GetPrimaryAmmoType()][1] or 100
+                    threshold = shotCaliber[self:GetPrimaryAmmoType()][2] or 6000
+
+                else
+
+                    bulletPitch = 100
+                    threshold = 6000
+
+                end
+
+                for i = 1, self.Num do
+
+                    if plyDistance >= 2500 and v != attacker then
+
+                        net.Start("DistantGunAudio")
+                        net.WriteVector(shootPos)
+                        net.WriteFloat(plyDistance)
+                        net.WriteInt(bulletPitch, 9)
+                        net.WriteInt(threshold, 16)
+                        net.WriteBool(style)
+                        net.Send(v)
+
+                    end
+
+                end
+
+            end
+
+        end
+
+        self:StartLoop()
+
+    end
+
+    -- sway
     local lasteyeang = Angle()
     local smootheyeang = Angle()
     local smoothswayroll = 0
@@ -93,7 +296,6 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
     end
 
     -- revert commit that fixed (i think) fixed leaning mods but then proceeded to break EFGM leaning
-
     if CLIENT then
 
         local rtsize = math.min(1024, ScrW(), ScrH())
