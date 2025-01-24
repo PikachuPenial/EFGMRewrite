@@ -261,59 +261,6 @@ function RenderCompass(ply)
 
 end
 
-local function RenderDebugEquippedSlots(ply)
-
-    if activeSlots == nil then return end
-
-    surface.SetDrawColor(0, 0, 0, 128)
-
-    local prim1 = activeSlots[KEY_1]
-    if prim1 != nil then
-
-        local prim1TextSize = surface.GetTextSize("1: "..prim1) + EFGM.ScreenScale(10)
-        surface.DrawRect( EFGM.ScreenScale(20), EFGM.ScreenScale(20), EFGM.ScreenScale(12) + prim1TextSize, EFGM.ScreenScale(35) )
-        draw.DrawText( "1: "..prim1, "BenderAmmoCount", EFGM.ScreenScale(22), EFGM.ScreenScale(20), Color(255, 255, 255), TEXT_ALIGN_LEFT )
-
-    end
-
-    local prim2 = activeSlots[KEY_2]
-    if prim2 != nil then
-
-        local prim2TextSize = surface.GetTextSize("2: "..prim2) + EFGM.ScreenScale(10)
-        surface.DrawRect( EFGM.ScreenScale(20), EFGM.ScreenScale(70), EFGM.ScreenScale(12) + prim2TextSize, EFGM.ScreenScale(35) )
-        draw.DrawText( "2: "..prim2, "BenderAmmoCount", EFGM.ScreenScale(22), EFGM.ScreenScale(70), Color(255, 255, 255), TEXT_ALIGN_LEFT )
-
-    end
-
-    local secondary = activeSlots[KEY_3]
-    if secondary != nil then
-
-        local secondaryTextSize = surface.GetTextSize("3: "..secondary) + EFGM.ScreenScale(10)
-        surface.DrawRect( EFGM.ScreenScale(20), EFGM.ScreenScale(120), EFGM.ScreenScale(12) + secondaryTextSize, EFGM.ScreenScale(35) )
-        draw.DrawText( "3: "..secondary, "BenderAmmoCount", EFGM.ScreenScale(22), EFGM.ScreenScale(120), Color(255, 255, 255), TEXT_ALIGN_LEFT )
-
-    end
-
-    local melee = activeSlots[KEY_4]
-    if melee != nil then
-
-        local meleeTextSize = surface.GetTextSize("4: "..melee) + EFGM.ScreenScale(10)
-        surface.DrawRect( EFGM.ScreenScale(20), EFGM.ScreenScale(170), EFGM.ScreenScale(12) + meleeTextSize, EFGM.ScreenScale(35) )
-        draw.DrawText( "4: "..melee, "BenderAmmoCount", EFGM.ScreenScale(22), EFGM.ScreenScale(170), Color(255, 255, 255), TEXT_ALIGN_LEFT )
-
-    end
-
-    local utility = activeSlots[KEY_G]
-    if utility != nil then
-
-        local utilityTextSize = surface.GetTextSize("G: "..utility) + EFGM.ScreenScale(10)
-        surface.DrawRect( EFGM.ScreenScale(20), EFGM.ScreenScale(220), EFGM.ScreenScale(12) + utilityTextSize, EFGM.ScreenScale(35) )
-        draw.DrawText( "G: "..utility, "BenderAmmoCount", EFGM.ScreenScale(22), EFGM.ScreenScale(220), Color(255, 255, 255), TEXT_ALIGN_LEFT )
-
-    end
-
-end
-
 local function DrawHUD()
 
     ply = LocalPlayer()
@@ -323,10 +270,6 @@ local function DrawHUD()
     RenderRaidTime(ply)
     RenderPlayerWeapon(ply)
     RenderPlayerStance(ply)
-
-    if not isInventoryTesting then return end
-
-    RenderDebugEquippedSlots(ply)
 
 end
 hook.Add("HUDPaint", "DrawHUD", DrawHUD)

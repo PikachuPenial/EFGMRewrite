@@ -1,6 +1,4 @@
 
-isInventoryTesting = (GetConVar("efgm_invtesting"):GetInt() == 1) or false
-
 include("shared.lua")
 
 concommand.Add("derma_updateskin", function()
