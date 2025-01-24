@@ -222,7 +222,7 @@ function Menu:Initialize(openTo)
 
     local statsBGColor = MenuAlias.transparent
     local statsText = string.upper(Menu.Player:GetName())
-    local statsTextSize = EFGM.MenuScale(surface.GetTextSize(statsText))
+    local statsTextSize = surface.GetTextSize(statsText)
 
     statsTab.Paint = function(s, w, h)
 
@@ -290,7 +290,7 @@ function Menu:Initialize(openTo)
 
     local matchBGColor = MenuAlias.transparent
     local matchText = "#menu.tab.match"
-    local matchTextSize = EFGM.MenuScale(surface.GetTextSize(matchText))
+    local matchTextSize = surface.GetTextSize(matchText)
 
     matchTab.Paint = function(s, w, h)
 
@@ -360,7 +360,7 @@ function Menu:Initialize(openTo)
 
     local inventoryBGColor = MenuAlias.transparent
     local inventoryText = "#menu.tab.inventory"
-    local inventoryTextSize = EFGM.MenuScale(surface.GetTextSize(inventoryText))
+    local inventoryTextSize = surface.GetTextSize(inventoryText)
 
     inventoryTab.Paint = function(s, w, h)
 
@@ -428,7 +428,7 @@ function Menu:Initialize(openTo)
 
     local tasksBGColor = MenuAlias.transparent
     local tasksText = "#menu.tab.tasks"
-    local tasksTextSize = EFGM.MenuScale(surface.GetTextSize(tasksText))
+    local tasksTextSize = surface.GetTextSize(tasksText)
 
     tasksTab.Paint = function(s, w, h)
 
@@ -487,7 +487,7 @@ function Menu:Initialize(openTo)
 
     local skillsBGColor = MenuAlias.transparent
     local skillsText = "#menu.tab.skills"
-    local skillsTextSize = EFGM.MenuScale(surface.GetTextSize(skillsText))
+    local skillsTextSize = surface.GetTextSize(skillsText)
 
     skillsTab.Paint = function(s, w, h)
 
@@ -555,7 +555,7 @@ function Menu:Initialize(openTo)
 
     local intelBGColor = MenuAlias.transparent
     local intelText = "#menu.tab.intel"
-    local intelTextSize = EFGM.MenuScale(surface.GetTextSize(intelText))
+    local intelTextSize = surface.GetTextSize(intelText)
 
     intelTab.Paint = function(s, w, h)
 
@@ -623,7 +623,7 @@ function Menu:Initialize(openTo)
 
     local achievementsBGColor = MenuAlias.transparent
     local achievementsText = "#menu.tab.achievements"
-    local achievementsTextSize = EFGM.MenuScale(surface.GetTextSize(achievementsText))
+    local achievementsTextSize = surface.GetTextSize(achievementsText)
 
     achievementsTab.Paint = function(s, w, h)
 
@@ -692,7 +692,7 @@ function Menu:Initialize(openTo)
 
     local settingsBGColor = MenuAlias.transparent
     local settingsText = "#menu.tab.settings"
-    local settingsTextSize = EFGM.MenuScale(surface.GetTextSize(settingsText))
+    local settingsTextSize = surface.GetTextSize(settingsText)
 
     settingsTab.Paint = function(s, w, h)
 
@@ -1022,15 +1022,16 @@ function Menu.OpenTab.Inventory()
     rigText:Dock(TOP)
     rigText:SetSize(0, EFGM.MenuScale(28))
     surface.SetFont("PuristaBold24")
+    local rigTextSize = surface.GetTextSize("RIG")
     rigText.Paint = function(s, w, h)
 
         BlurPanel(s, EFGM.MenuScale(3))
 
         surface.SetDrawColor(Color(80, 80, 80, 10))
-        surface.DrawRect(0, 0, surface.GetTextSize("RIG"), h)
+        surface.DrawRect(0, 0, rigTextSize + EFGM.MenuScale(10), h)
 
         surface.SetDrawColor(Color(255, 255, 255, 155))
-        surface.DrawRect(0, 0, surface.GetTextSize("RIG"), EFGM.MenuScale(2))
+        surface.DrawRect(0, 0, rigTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
 
         draw.SimpleTextOutlined("RIG", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(13), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
 
@@ -1085,15 +1086,16 @@ function Menu.OpenTab.Inventory()
     pocketsText:Dock(TOP)
     pocketsText:SetSize(0, EFGM.MenuScale(28))
     surface.SetFont("PuristaBold24")
+    local pocketsTextSize = surface.GetTextSize("POCKETS")
     pocketsText.Paint = function(s, w, h)
 
         BlurPanel(s, EFGM.MenuScale(3))
 
         surface.SetDrawColor(Color(80, 80, 80, 10))
-        surface.DrawRect(0, 0, surface.GetTextSize("POCKETS") + 10, h)
+        surface.DrawRect(0, 0, pocketsTextSize + EFGM.MenuScale(10), h)
 
         surface.SetDrawColor(Color(255, 255, 255, 155))
-        surface.DrawRect(0, 0, surface.GetTextSize("POCKETS") + 10, EFGM.MenuScale(2))
+        surface.DrawRect(0, 0, pocketsTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
 
         draw.SimpleTextOutlined("POCKETS", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(13), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
 
@@ -1148,15 +1150,16 @@ function Menu.OpenTab.Inventory()
     bagText:Dock(TOP)
     bagText:SetSize(0, EFGM.MenuScale(28))
     surface.SetFont("PuristaBold24")
+    local bagTextSize = surface.GetTextSize("BAG")
     bagText.Paint = function(s, w, h)
 
         BlurPanel(s, EFGM.MenuScale(3))
 
         surface.SetDrawColor(Color(80, 80, 80, 10))
-        surface.DrawRect(0, 0, surface.GetTextSize("BAG") + 10, h)
+        surface.DrawRect(0, 0, bagTextSize + EFGM.MenuScale(10), h)
 
         surface.SetDrawColor(Color(255, 255, 255, 155))
-        surface.DrawRect(0, 0, surface.GetTextSize("BAG") + 10, EFGM.MenuScale(2))
+        surface.DrawRect(0, 0, bagTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
 
         draw.SimpleTextOutlined("BAG", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(13), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
 
@@ -1211,15 +1214,16 @@ function Menu.OpenTab.Inventory()
     secureText:Dock(TOP)
     secureText:SetSize(0, EFGM.MenuScale(28))
     surface.SetFont("PuristaBold24")
+    local secureTextSize = surface.GetTextSize("CONTAINER")
     secureText.Paint = function(s, w, h)
 
         BlurPanel(s, EFGM.MenuScale(3))
 
         surface.SetDrawColor(Color(80, 80, 80, 10))
-        surface.DrawRect(0, 0, surface.GetTextSize("CONTAINER") + 10, h)
+        surface.DrawRect(0, 0, secureTextSize + EFGM.MenuScale(10), h)
 
         surface.SetDrawColor(Color(255, 255, 255, 155))
-        surface.DrawRect(0, 0, surface.GetTextSize("CONTAINER") + 10, EFGM.MenuScale(2))
+        surface.DrawRect(0, 0, secureTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
 
         draw.SimpleTextOutlined("CONTAINER", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(13), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
 
@@ -2978,7 +2982,7 @@ function Menu.OpenTab.Skills()
 
             -- for text size calculations
             surface.SetFont("Purista18")
-            local skillDescTextSize = EFGM.MenuScale(surface.GetTextSize(v1.Description))
+            local skillDescTextSize = surface.GetTextSize(v1.Description)
 
             local function UpdatePopOutPos()
 
