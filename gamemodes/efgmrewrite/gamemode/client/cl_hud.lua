@@ -283,14 +283,19 @@ net.Receive("PlayerRaidTransition", function()
     RaidTransition:MoveToFront()
 
     RaidTransition.Paint = function(self, w, h)
+
+        BlurPanel(RaidTransition, EFGM.MenuScale(13))
+        BlurPanel(RaidTransition, EFGM.MenuScale(13))
+
         surface.SetDrawColor(0, 0, 0, 255)
         surface.DrawRect(0, 0, ScrW(), ScrH())
+
     end
 
     RaidTransition:AlphaTo(255, 0.5, 0, function() end) -- why do i need to use a callback here???
     RaidTransition:AlphaTo(0, 0.35, 1, function() RaidTransition:Remove() end)
 
-    timer.Simple(1.5, function() RenderExtracts(ply) end)
+    timer.Simple(2.5, function() RenderExtracts(ply) end)
 
 end )
 
@@ -320,6 +325,7 @@ net.Receive("SendExtractionStatus", function()
         ExtractPopup:MoveToFront()
 
         ExtractPopup.Paint = function(self, w, h)
+
             surface.SetDrawColor(120, 180, 40, 125)
             surface.DrawRect(w / 2 - EFGM.ScreenScale(125), h - EFGM.ScreenScale(300), EFGM.ScreenScale(250), EFGM.ScreenScale(80))
 
@@ -331,6 +337,7 @@ net.Receive("SendExtractionStatus", function()
 
             surface.SetDrawColor(120, 180, 40, 125)
             surface.DrawRect((w / 2) - EFGM.ScreenScale(250) * (exitTimeLeft / exitTime) / 2, h - EFGM.ScreenScale(215), EFGM.ScreenScale(250) * (exitTimeLeft / exitTime), EFGM.ScreenScale(5))
+
         end
 
         ExtractPopup:AlphaTo(255, 0.1, 0, function() end) -- why do i need to use a callback here???

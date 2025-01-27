@@ -3684,7 +3684,7 @@ function Menu.OpenTab.Settings()
     menuParallaxPanel:SetSize(0, EFGM.MenuScale(50))
     function menuParallaxPanel:Paint(w, h)
 
-        draw.SimpleTextOutlined("Game Menu Parallax", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined("Menu Parallax", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
     end
 
