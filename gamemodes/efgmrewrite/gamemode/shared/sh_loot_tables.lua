@@ -24,6 +24,7 @@ LOOT[1]["arc9_eft_sag_ak545short"]      = {2}
 LOOT[1]["arc9_eft_sr3"]                 = {3}
 LOOT[1]["arc9_eft_svt"]                 = {2}
 LOOT[1]["arc9_eft_sks"]                 = {1}
+LOOT[1]["arc9_eft_vpo101"]              = {2}
 LOOT[1]["arc9_eft_vpo136"]              = {2}
 LOOT[1]["arc9_eft_vpo209"]              = {2}
 
@@ -99,6 +100,7 @@ LOOT[1]["arc9_eft_mr155"]               = {2}
 -- LOOT[1]["arc9_eft_mr43_sawedoff"]       = {1}
 LOOT[1]["arc9_eft_mr43"]                = {1}
 LOOT[1]["arc9_eft_aa12"]                = {3}
+LOOT[1]["arc9_eft_mts255"]              = {1}
 LOOT[1]["arc9_eft_m870"]                = {2}
 LOOT[1]["arc9_eft_saiga12fa"]           = {3}
 LOOT[1]["arc9_eft_saiga12k"]            = {2}
@@ -109,6 +111,7 @@ LOOT[1]["arc9_eft_toz106"]              = {1}
 LOOT[1]["arc9_eft_ai_axmc"]             = {3}
 LOOT[1]["arc9_eft_g28"]                 = {3}
 LOOT[1]["arc9_eft_sr25"]                = {3}
+LOOT[1]["arc9_eft_dvl10"]               = {3}
 LOOT[1]["arc9_eft_mk18_mjolnir"]        = {3}
 LOOT[1]["arc9_eft_mosin_infantry"]      = {1}
 LOOT[1]["arc9_eft_mosin_sniper"]        = {2}
@@ -119,6 +122,7 @@ LOOT[1]["arc9_eft_rsass"]               = {3}
 LOOT[1]["arc9_eft_m1a"]                 = {2}
 LOOT[1]["arc9_eft_sv98"]                = {2}
 LOOT[1]["arc9_eft_svds"]                = {3}
+LOOT[1]["arc9_eft_vpo215"]              = {1}
 LOOT[1]["arc9_eft_vss"]                 = {3}
 
 -- submachine guns
@@ -199,6 +203,7 @@ LOOT[5]["arc9_eft_sag_ak545short"]      = {2}
 LOOT[5]["arc9_eft_sr3"]                 = {3}
 LOOT[5]["arc9_eft_svt"]                 = {2}
 LOOT[5]["arc9_eft_sks"]                 = {1}
+LOOT[5]["arc9_eft_vpo101"]              = {2}
 LOOT[5]["arc9_eft_vpo136"]              = {2}
 LOOT[5]["arc9_eft_vpo209"]              = {2}
 
@@ -274,6 +279,7 @@ LOOT[5]["arc9_eft_mr155"]               = {2}
 -- LOOT[5]["arc9_eft_mr43_sawedoff"]       = {1}
 LOOT[5]["arc9_eft_mr43"]                = {1}
 LOOT[5]["arc9_eft_aa12"]                = {3}
+LOOT[5]["arc9_eft_mts255"]              = {1}
 LOOT[5]["arc9_eft_m870"]                = {2}
 LOOT[5]["arc9_eft_saiga12fa"]           = {3}
 LOOT[5]["arc9_eft_saiga12k"]            = {2}
@@ -284,6 +290,7 @@ LOOT[5]["arc9_eft_toz106"]              = {1}
 LOOT[5]["arc9_eft_ai_axmc"]             = {3}
 LOOT[5]["arc9_eft_g28"]                 = {3}
 LOOT[5]["arc9_eft_sr25"]                = {3}
+LOOT[5]["arc9_eft_dvl10"]               = {3}
 LOOT[5]["arc9_eft_mk18_mjolnir"]        = {3}
 LOOT[5]["arc9_eft_mosin_infantry"]      = {1}
 LOOT[5]["arc9_eft_mosin_sniper"]        = {2}
@@ -294,6 +301,7 @@ LOOT[5]["arc9_eft_rsass"]               = {3}
 LOOT[5]["arc9_eft_m1a"]                 = {2}
 LOOT[5]["arc9_eft_sv98"]                = {2}
 LOOT[5]["arc9_eft_svds"]                = {3}
+LOOT[5]["arc9_eft_vpo215"]              = {1}
 LOOT[5]["arc9_eft_vss"]                 = {3}
 
 -- submachine guns
