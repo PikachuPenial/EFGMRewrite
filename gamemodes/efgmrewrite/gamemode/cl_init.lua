@@ -1,16 +1,35 @@
 
 include("shared.lua")
 
-concommand.Add("derma_updateskin", function()
-	if GetConVar("sv_allowcslua"):GetInt() == 0 then return end
-	for k,v in pairs(derma.GetSkinTable()) do
+local function DeepSkinOverride(children, skin)
+
+	for k,v in pairs(children) do
+
+		v:SetSkin(skin)
+		if #v:GetChildren() != 0 then DeepSkinOverride(v:GetChildren(), skin) end
+
+	end
+
+end
+
+concommand.Add("efgm_dermarefresh", function()
+
+    DeepSkinOverride(vgui.GetWorldPanel():GetChildren(), "efgm")
+
+    for k,v in pairs(derma.GetSkinTable()) do
+
 		if v.GwenTexture then
+
 			local tex = v.GwenTexture:GetTexture("$basetexture")
 			if tex then tex:Download() end
+
 		end
+
 	end
+
 	derma.RefreshSkins()
-end,nil,"Updates skins for all Derma objects.")
+
+end)
 
 -- client globals
 EFGM = {}
@@ -146,10 +165,8 @@ end)
 
 hook.Add("CalcViewModelView", "AltlookVM", function(wep, vm, oPos, oAng, pos, ang)
 
-    local MWBased = wep.m_AimModeDeltaVelocity and -1.5 or 1
-
-    ang.p = ang.p + CoolAng.p / 2.5 * MWBased
-    ang.y = ang.y + CoolAng.y / 2.5 * MWBased
+    ang.p = ang.p + CoolAng.p / 2.5
+    ang.y = ang.y + CoolAng.y / 2.5
 
 end)
 

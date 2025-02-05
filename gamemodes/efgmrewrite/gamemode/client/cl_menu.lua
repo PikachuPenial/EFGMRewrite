@@ -90,15 +90,13 @@ function Menu:Initialize(openTo)
 
     function menuFrame:Paint(w, h)
 
-        surface.SetDrawColor(0, 0, 0, 200)
+        surface.SetDrawColor(0, 0, 0, 240)
         surface.DrawRect(EFGM.MenuScale(-20), EFGM.MenuScale(-20), ScrW() + EFGM.MenuScale(20), ScrH() + EFGM.MenuScale(20))
 
         -- draw.SimpleTextOutlined("Escape From Garry's Mod", "Purista32", EFGM.MenuScale(5), EFGM.MenuScale(0), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
         if self.Unblur then return end -- hide the blur when customizing certain settings and whatnot
-
-        -- calling this function twice is the only way to make the blur darker lmao
-        Derma_DrawBackgroundBlur(self, self.StartTime)
+        BlurPanel(menuFrame, 4)
 
     end
 
@@ -840,8 +838,7 @@ function Menu.OpenTab.Inventory()
     playerPanel:SetSize(EFGM.MenuScale(613), 0)
     playerPanel.Paint = function(s, w, h)
 
-        BlurPanel(s, EFGM.MenuScale(13))
-        BlurPanel(s, EFGM.MenuScale(13))
+        BlurPanel(s, EFGM.MenuScale(10))
 
         surface.SetDrawColor(Color(80, 80, 80, 10))
         surface.DrawRect(0, 0, w, h)
@@ -984,8 +981,7 @@ function Menu.OpenTab.Inventory()
     inventoryPanel:SetSize(EFGM.MenuScale(613), 0)
     inventoryPanel.Paint = function(s, w, h)
 
-        BlurPanel(s, EFGM.MenuScale(13))
-        BlurPanel(s, EFGM.MenuScale(13))
+        BlurPanel(s, EFGM.MenuScale(10))
 
         surface.SetDrawColor(Color(80, 80, 80, 10))
         surface.DrawRect(0, 0, w, h)
@@ -1272,8 +1268,7 @@ function Menu.OpenTab.Inventory()
     stashPanel:SetSize(EFGM.MenuScale(613), 0)
     stashPanel.Paint = function(s, w, h)
 
-        BlurPanel(s, EFGM.MenuScale(13))
-        BlurPanel(s, EFGM.MenuScale(13))
+        BlurPanel(s, EFGM.MenuScale(10))
 
         surface.SetDrawColor(Color(80, 80, 80, 10))
         surface.DrawRect(0, 0, w, h)
@@ -1343,7 +1338,7 @@ function Menu.OpenTab.Inventory()
     sortButtonText:SetAlpha(0)
     function sortButtonText:Paint(w, h)
 
-        BlurPanel(sortButtonText, EFGM.MenuScale(5))
+        BlurPanel(sortButtonText, EFGM.MenuScale(3))
 
         surface.SetDrawColor(Color(80, 80, 80, 10))
         surface.DrawRect(0, 0, w, h)
@@ -1404,6 +1399,7 @@ function Menu.OpenTab.Intel()
     local subEntryList = vgui.Create("DIconLayout", subEntryPanel)
     subEntryList:Dock(LEFT)
     subEntryList:SetSize(EFGM.MenuScale(180), 0)
+    subEntryList:SetSpaceY(EFGM.MenuScale(2))
 
     local entryPanel = vgui.Create("DPanel", contents)
     entryPanel:Dock(FILL)
@@ -1692,13 +1688,12 @@ function Menu.OpenTab.Match()
     squadNameBG = vgui.Create("DPanel", squadNamePanel)
     squadNameBG:SetPos(EFGM.MenuScale(85), EFGM.MenuScale(30))
     squadNameBG:SetSize(EFGM.MenuScale(150), EFGM.MenuScale(20))
-    squadNameBG:SetBackgroundColor(Color(25, 25, 25, 155))
+    squadNameBG:SetBackgroundColor(MenuAlias.transparent)
 
     local squadName = vgui.Create("DTextEntry", squadNameBG)
     squadName:Dock(FILL)
     squadName:SetPlaceholderText(" ")
     squadName:SetUpdateOnType(true)
-    squadName:SetPaintBackground(false)
     squadName:SetTextColor(MenuAlias.whiteColor)
     squadName:SetCursorColor(MenuAlias.whiteColor)
 
@@ -1723,13 +1718,12 @@ function Menu.OpenTab.Match()
     squadPasswordBG = vgui.Create("DPanel", squadPasswordPanel)
     squadPasswordBG:SetPos(EFGM.MenuScale(85), EFGM.MenuScale(30))
     squadPasswordBG:SetSize(EFGM.MenuScale(150), EFGM.MenuScale(20))
-    squadPasswordBG:SetBackgroundColor(Color(25, 25, 25, 155))
+    squadPasswordBG:SetBackgroundColor(MenuAlias.transparent)
 
     local squadPassword = vgui.Create("DTextEntry", squadPasswordBG)
     squadPassword:Dock(FILL)
     squadPassword:SetPlaceholderText(" ")
     squadPassword:SetUpdateOnType(true)
-    squadPassword:SetPaintBackground(false)
     squadPassword:SetTextColor(MenuAlias.whiteColor)
     squadPassword:SetCursorColor(MenuAlias.whiteColor)
 
@@ -1786,6 +1780,7 @@ function Menu.OpenTab.Match()
 
     end
     squadColorR:SetValue(255) -- refer to the DNumberWang above
+    print(squadColorR:GetHighlightColor())
 
     local squadColorG = vgui.Create("DNumberWang", squadColorPanel)
     squadColorG:SetPos(EFGM.MenuScale(135), EFGM.MenuScale(30))
@@ -1818,7 +1813,7 @@ function Menu.OpenTab.Match()
     local squadCreateButton = vgui.Create("DButton", squadColorPanel)
     squadCreateButton:SetPos(EFGM.MenuScale(85), EFGM.MenuScale(75))
     squadCreateButton:SetSize(EFGM.MenuScale(150), EFGM.MenuScale(20))
-    squadCreateButton:SetText("Create Squad")
+    squadCreateButton:SetText("CREATE SQUAD")
 
     squadCreateButton.OnCursorEntered = function(s)
 
@@ -3751,7 +3746,7 @@ function Menu.OpenTab.Settings()
     vmZPanel:SetSize(0, EFGM.MenuScale(50))
     function vmZPanel:Paint(w, h)
 
-        draw.SimpleTextOutlined("Viewmodel Y Position", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined("Viewmodel Z Position", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
     end
 

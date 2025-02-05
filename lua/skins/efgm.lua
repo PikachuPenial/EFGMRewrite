@@ -34,8 +34,8 @@ SKIN.text_normal				= Color( 180, 180, 180, 255 )
 SKIN.text_dark					= Color( 20, 20, 20, 255 )
 SKIN.text_highlight				= Color( 255, 20, 20, 255 )
 
-SKIN.texGradientUp				= Material( "gui/gradient_up" )
-SKIN.texGradientDown			= Material( "gui/gradient_down" )
+SKIN.texGradientUp				= Material("gui/gradient_up")
+SKIN.texGradientDown			= Material("gui/gradient_down")
 
 SKIN.combobox_selected			= SKIN.listview_selected
 
@@ -59,9 +59,9 @@ SKIN.fontCategoryHeader			= "TabLarge"
 SKIN.colNumberWangBG			= Color( 255, 240, 150, 255 )
 SKIN.colTextEntryBG				= Color( 240, 240, 240, 255 )
 SKIN.colTextEntryBorder			= Color( 20, 20, 20, 255 )
-SKIN.colTextEntryText			= Color( 20, 20, 20, 255 )
-SKIN.colTextEntryTextHighlight	= Color( 20, 200, 250, 255 )
-SKIN.colTextEntryTextCursor		= Color( 0, 0, 100, 255 )
+SKIN.colTextEntryText			= Color( 255, 255, 255, 255 )
+SKIN.colTextEntryTextHighlight	= Color( 20, 200, 250, 20 )
+SKIN.colTextEntryTextCursor		= Color( 255, 255, 255, 255 )
 SKIN.colTextEntryTextPlaceholder= Color( 128, 128, 128, 255 )
 
 SKIN.colNumSliderNotch			= Color( 0, 0, 0, 100 )
@@ -1058,6 +1058,44 @@ end
 function SKIN:PaintMenuBar( panel, w, h )
 
 	self.tex.Menu_Strip( 0, 0, w, h )
+
+end
+
+-- derma overrides
+function DBinder:UpdateText()
+
+    local str = input.GetKeyName(self:GetSelectedNumber())
+    if (!str) then str = "NONE" end
+
+    str = language.GetPhrase(str)
+
+    self:SetText(string.upper(str))
+
+end
+
+function DMenu:Paint(w, h)
+
+	if (!self:GetPaintBackground()) then return end
+
+	BlurPanel(self, 1)
+	derma.SkinHook("Paint", "Menu", self, w, h)
+	return true
+
+end
+
+function DButton:Paint(w, h)
+
+	BlurPanel(self, 1)
+	derma.SkinHook("Paint", "Button", self, w, h)
+	return false
+
+end
+
+function DTextEntry:Paint( w, h )
+
+	BlurPanel(self, 1)
+	derma.SkinHook("Paint", "TextEntry", self, w, h)
+	return false
 
 end
 
