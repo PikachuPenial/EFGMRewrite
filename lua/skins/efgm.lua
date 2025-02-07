@@ -10,7 +10,7 @@ SKIN.DermaVersion	= 1
 SKIN.GwenTexture	= Material("gwenskin/efgm.png")
 SKIN.fontFrame					= "DermaDefault"
 
-SKIN.text_dark					= Color(20, 20, 20, 255) -- used by ULX so lets not break compatibility
+SKIN.text_dark					= Color(255, 255, 255, 255) -- used by ULX so lets not break compatibility
 
 SKIN.texGradientUp				= Material("gui/gradient_up")
 SKIN.texGradientDown			= Material("gui/gradient_down")
@@ -854,6 +854,32 @@ function DTextEntry:Paint(w, h)
 	BlurPanel(self, 1)
 	derma.SkinHook("Paint", "TextEntry", self, w, h)
 	return false
+
+end
+
+function DTooltip:Paint(w, h)
+
+	BlurPanel(self, 1)
+	self:PositionTooltip()
+	derma.SkinHook("Paint", "Tooltip", self, w, h )
+
+end
+
+function DPropertySheet:Init()
+
+	self:SetShowIcons(true)
+
+	self.tabScroller = vgui.Create("DHorizontalScroller", self)
+	self.tabScroller:SetOverlap(1) -- set to 1 to remove tab overlap
+	self.tabScroller:Dock(TOP)
+	self.tabScroller:DockMargin(3, 0, 3, 0)
+
+	self:SetFadeTime(0.1)
+	self:SetPadding(8)
+
+	self.animFade = Derma_Anim("Fade", self, self.CrossFade)
+
+	self.Items = {}
 
 end
 
