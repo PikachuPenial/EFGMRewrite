@@ -1381,6 +1381,7 @@ function Menu.OpenTab.Intel()
     mainEntryList:Dock(LEFT)
     mainEntryList:SetSize(EFGM.MenuScale(180), 0)
     mainEntryList:SetBackgroundColor(Color(0, 0, 0, 0))
+    mainEntryList:GetVBar():SetSize(0, 0)
 
     local entryBar = mainEntryList:GetVBar()
     entryBar:SetHideButtons(true)

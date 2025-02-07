@@ -2,7 +2,7 @@
 -- has to be ran once all SWEPs are created
 hook.Add("InitPostEntity", "WeaponIntel", function()
 
-    -- grab all weapons in the  way possible, its 4am let this slide please
+    -- grab all weapons, its 4am let this slide please
     local weaponList = table.Copy(debugPrimWep)
     table.Add(weaponList, debugSecWep)
     table.Add(weaponList, debugNadeWep)
