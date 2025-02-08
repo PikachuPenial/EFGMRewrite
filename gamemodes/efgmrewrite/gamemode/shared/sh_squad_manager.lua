@@ -302,6 +302,34 @@ if SERVER then
 
     end)
 
+    -- remove player from squad if they disconnect
+    hook.Add("PlayerDisconnected", "KickFromSquadOnDisconnect", function(ply)
+
+        if !PlayerInSquad(ply) then return end
+
+        local squad = GetSquadOfPlayer(ply)
+
+        table.RemoveByValue(SQUADS[squad].MEMBERS, ply)
+
+        if table.Count(SQUADS[squad].MEMBERS) == 0 then
+
+            DisbandSquad(squad)
+            NetworkSquadInfoToClients()
+            return
+
+        end
+
+        if ply == SQUADS[squad].OWNER then
+
+            local newOwner = table.Random(SQUADS[squad].MEMBERS)
+            ReplaceSquadOwner(newOwner, squad)
+
+        end
+
+        NetworkSquadInfoToClients()
+
+    end)
+
 end
 
 if CLIENT then
@@ -398,33 +426,5 @@ hook.Add("PlayerDeath", "ClearEffectOnDeath", function(ply)
 
     if ply:CompareStatus(0) then return end
     ply:SetNW2String("TeamChatChannel", "nil")
-
-end)
-
--- remove player from squad if they disconnect
-hook.Add("PlayerDisconnected", "KickFromSquadOnDisconnect", function(ply)
-
-    if !PlayerInSquad(ply) then return end
-
-    local squad = GetSquadOfPlayer(ply)
-
-    table.RemoveByValue(SQUADS[squad].MEMBERS, ply)
-
-    if table.Count(SQUADS[squad].MEMBERS) == 0 then
-
-        DisbandSquad(squad)
-        NetworkSquadInfoToClients()
-        return
-
-    end
-
-    if ply == SQUADS[squad].OWNER then
-
-        local newOwner = table.Random(SQUADS[squad].MEMBERS)
-        ReplaceSquadOwner(newOwner, squad)
-
-    end
-
-    NetworkSquadInfoToClients()
 
 end)

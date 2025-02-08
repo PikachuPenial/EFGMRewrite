@@ -1,5 +1,5 @@
 ENT.Type = "anim"
-ENT.Base = "base_gmodentity"
+-- ENT.Base = "base_gmodentity"
 ENT.Category = "Escape From Garry's Mod"
 
 ENT.BaseHealth = 10
