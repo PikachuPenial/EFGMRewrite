@@ -63,8 +63,6 @@ if SERVER then
                 local threshold
                 local style = shotCaliber[entAmmo][3] == "bullet" -- returns true if bullet, false if explosive
 
-                print(entAmmo)
-
                 if entAmmo != nil then
 
                     bulletPitch = shotCaliber[entAmmo][1] or 100

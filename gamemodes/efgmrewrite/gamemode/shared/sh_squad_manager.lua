@@ -178,7 +178,7 @@ if SERVER then
         for k, v in pairs(SQUADS[squad].MEMBERS) do
 
             if v == ply then return end
-            v:SendLua("chat.AddText(ply, Color(105, 255, 105), ' has joined your squad!')")
+            v:ChatPrint(ply:GetName() .. " has joined your squad!")
 
         end
 
@@ -214,7 +214,7 @@ if SERVER then
 
         for k, v in pairs(SQUADS[squad].MEMBERS) do
 
-            v:SendLua("chat.AddText(ply, Color(255, 105, 105), ' has left your squad!')")
+            v:ChatPrint(ply:GetName() .. " has left your squad!")
 
         end
 
@@ -236,6 +236,11 @@ if SERVER then
 
                 ReplaceSquadOwner(v, squad)
                 newOwnerEnt = v
+                v:ChatPrint("You are now the squad owner!")
+
+            elseif v != ply then
+
+                v:ChatPrint("Squad ownership transfered to " .. newOwner .. "!")
 
             end
 
@@ -262,7 +267,7 @@ if SERVER then
                 table.RemoveByValue(SQUADS[squad].MEMBERS, v)
                 v:SetNW2String("PlayerInSquad", "nil")
                 v:SetNW2String("TeamChatChannel", "nil")
-                v:SendLua("chat.AddText(Color(255, 105, 105), 'You have been kicked from your squad!')")
+                v:ChatPrint("You have been kicked from your squad!")
 
             end
 
@@ -285,7 +290,7 @@ if SERVER then
 
             if v != ply then
 
-                v:SendLua("chat.AddText(Color(255, 105, 105), 'Your squad has been disbanded!')")
+                v:ChatPrint("Your squad has been disbanded!")
 
             end
 

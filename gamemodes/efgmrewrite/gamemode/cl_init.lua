@@ -78,6 +78,8 @@ function BlurPanel(panel, strength)
     surface.SetMaterial(blurMat)
     surface.SetDrawColor(255, 255, 255, 255)
 
+    if panel == nil then return end
+
     local blurX, blurY = panel:LocalToScreen(0, 0)
 
     for i = 0.33, 1, 0.33 do
