@@ -2058,9 +2058,11 @@ function Menu.OpenTab.Match()
                     squadPasswordEntry:SetCursorColor(MenuAlias.whiteColor)
                     squadPasswordEntry:RequestFocus()
 
+                    squadPasswordEntry.Think = function(self) squadPasswordEntry:RequestFocus() end
+
                     squadPasswordEntry.OnEnter = function(self)
 
-                        RunConsoleCommand("efgm_squad_join", name, password)
+                        RunConsoleCommand("efgm_squad_join", name, self:GetValue())
 
                     end
 
