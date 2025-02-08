@@ -110,7 +110,9 @@ function Menu:Initialize(openTo)
             menuFrame:SetMouseInputEnabled(false)
 
             menuFrame:AlphaTo(0, 0.1, 0, function()
+
                 menuFrame:Close()
+
             end)
 
         end
@@ -120,7 +122,9 @@ function Menu:Initialize(openTo)
     function menuFrame:Think()
 
         if (!gui.IsGameUIVisible() or !gui.IsConsoleVisible()) then
+
             menuFrame:Show()
+
         else
 
             if Menu.ActiveTab == "Match" then
@@ -131,6 +135,7 @@ function Menu:Initialize(openTo)
             end
 
             menuFrame:Remove()
+
         end
 
     end
@@ -173,12 +178,12 @@ function Menu:Initialize(openTo)
 
         if Menu.MenuFrame.Closing then return end
 
+        local x, y = menuFrame:CursorPos()
+
+        Menu.MouseX = (x / math.Round(EFGM.MenuScale(1900), 1)) - 0.5
+        Menu.MouseY = (y / math.Round(EFGM.MenuScale(1060), 1)) - 0.5
+
         if GetConVar("efgm_menu_parallax"):GetInt() == 1 then
-
-            local x, y = menuFrame:CursorPos()
-
-            Menu.MouseX = (x / math.Round(EFGM.MenuScale(1900), 1)) - 0.5
-            Menu.MouseY = (y / math.Round(EFGM.MenuScale(1060), 1)) - 0.5
 
             lowerPanel:SetPos(ScrW() / 2 - (EFGM.MenuScale(1900) / 2) + (Menu.MouseX * EFGM.MenuScale(20)), 1060 / 2 - (920 / 2) + (Menu.MouseY * EFGM.MenuScale(20)))
 
@@ -823,7 +828,8 @@ function Menu.OpenTab.Inventory()
 
     local contents = vgui.Create("DPanel", Menu.MenuFrame.LowerPanel)
     contents:Dock(FILL)
-    contents:DockPadding(EFGM.MenuScale(15), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10))
+    contents:DockPadding(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10))
+    contents:SetAlpha(0)
     contents.Paint = function(s, w, h)
 
         surface.SetDrawColor(MenuAlias.transparent)
@@ -856,7 +862,7 @@ function Menu.OpenTab.Inventory()
         surface.SetDrawColor(Color(155, 155, 155, 10))
         surface.DrawRect(0, 0, w, h)
 
-        draw.SimpleTextOutlined(string.upper(Menu.Player:GetName()), "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(19), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined(string.upper(Menu.Player:GetName()), "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
     end
 
@@ -999,7 +1005,7 @@ function Menu.OpenTab.Inventory()
         surface.SetDrawColor(Color(155, 155, 155, 10))
         surface.DrawRect(0, 0, w, h)
 
-        draw.SimpleTextOutlined("INVENTORY", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(19), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined("INVENTORY", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
     end
 
@@ -1029,7 +1035,7 @@ function Menu.OpenTab.Inventory()
         surface.SetDrawColor(Color(255, 255, 255, 155))
         surface.DrawRect(0, 0, rigTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
 
-        draw.SimpleTextOutlined("RIG", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(13), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined("RIG", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
     end
 
@@ -1093,7 +1099,7 @@ function Menu.OpenTab.Inventory()
         surface.SetDrawColor(Color(255, 255, 255, 155))
         surface.DrawRect(0, 0, pocketsTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
 
-        draw.SimpleTextOutlined("POCKETS", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(13), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined("POCKETS", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
     end
 
@@ -1157,7 +1163,7 @@ function Menu.OpenTab.Inventory()
         surface.SetDrawColor(Color(255, 255, 255, 155))
         surface.DrawRect(0, 0, bagTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
 
-        draw.SimpleTextOutlined("BAG", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(13), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined("BAG", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
     end
 
@@ -1221,7 +1227,7 @@ function Menu.OpenTab.Inventory()
         surface.SetDrawColor(Color(255, 255, 255, 155))
         surface.DrawRect(0, 0, secureTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
 
-        draw.SimpleTextOutlined("CONTAINER", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(13), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined("CONTAINER", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
     end
 
@@ -1287,8 +1293,8 @@ function Menu.OpenTab.Inventory()
         surface.SetDrawColor(Color(155, 155, 155, 10))
         surface.DrawRect(0, 0, w, h)
 
-        draw.SimpleTextOutlined("STASH", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(19), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
-        draw.SimpleTextOutlined(currentStashUsed .. "/144", "PuristaBold18", EFGM.MenuScale(95), EFGM.MenuScale(23), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined("STASH", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined(currentStashUsed .. "/144", "PuristaBold18", EFGM.MenuScale(95), EFGM.MenuScale(13), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
     end
 
@@ -1343,7 +1349,7 @@ function Menu.OpenTab.Inventory()
         surface.SetDrawColor(Color(80, 80, 80, 10))
         surface.DrawRect(0, 0, w, h)
 
-        draw.SimpleTextOutlined("AUTO-SORT", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(16), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined("AUTO-SORT", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(0), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
     end
 
@@ -2257,9 +2263,86 @@ function Menu.OpenTab.Match()
                 transferToMember:SetImage("icons/squad_transfer_icon.png")
                 transferToMember:SetDepressImage(false)
 
-                function transferToMember:OnCursorEntered()
+                local x, y = 0, 0
+                local sideH, sideV
 
+                transferToMember.OnCursorEntered = function(s)
+
+                    x, y = Menu.MenuFrame:CursorPos()
                     surface.PlaySound("ui/element_hover.wav")
+
+                    -- offset for pop up depending on the quadrant of the mouse when first selected, true = left/up, false = right/down
+                    if x <= (ScrW() / 2) then sideH = true else sideH = false end
+                    if y <= (ScrH() / 2) then sideV = true else sideV = false end
+
+                    -- for text size calculations
+                    surface.SetFont("Purista18")
+                    local text = "Transfer ownership to " .. v:GetName()
+                    local textSize = surface.GetTextSize(text)
+
+                    local function UpdatePopOutPos()
+
+                        if sideH == true then
+
+                            transferPopOut:SetX(math.Clamp(x - (Menu.MouseX * EFGM.MenuScale(20)), 0, ScrW() - transferPopOut:GetWide() - EFGM.MenuScale(40)))
+
+                        else
+
+                            transferPopOut:SetX(math.Clamp(x - transferPopOut:GetWide() - EFGM.MenuScale(10) - (Menu.MouseX * EFGM.MenuScale(20)), 0, ScrW() - transferPopOut:GetWide() - EFGM.MenuScale(40)))
+
+                        end
+
+                        if sideV == true then
+
+                            transferPopOut:SetY(math.Clamp(y - EFGM.MenuScale(45) - (Menu.MouseY * EFGM.MenuScale(20)), 0, ScrH() - transferPopOut:GetTall() - EFGM.MenuScale(100)))
+
+                        else
+
+                            transferPopOut:SetY(math.Clamp(y - transferPopOut:GetTall() - EFGM.MenuScale(65) - (Menu.MouseY * EFGM.MenuScale(20)), 0, ScrH() - transferPopOut:GetTall() - EFGM.MenuScale(100)))
+
+                        end
+
+                    end
+
+                    if IsValid(transferPopOut) then transferPopOut:Remove() end
+                    transferPopOut = vgui.Create("DPanel", Menu.MenuFrame.LowerPanel.Contents)
+                    transferPopOut:SetSize(EFGM.MenuScale(10) + textSize, EFGM.MenuScale(24))
+                    UpdatePopOutPos()
+                    transferPopOut:AlphaTo(255, 0.1, 0, function() end)
+
+                    transferPopOut.Paint = function(s, w, h)
+
+                        if !IsValid(s) then return end
+
+                        BlurPanel(s, EFGM.MenuScale(3))
+
+                        -- panel position follows mouse position
+                        x, y = Menu.MenuFrame:CursorPos()
+
+                        UpdatePopOutPos()
+
+                        surface.SetDrawColor(Color(25, 25, 25, 155))
+                        surface.DrawRect(0, 0, w, h)
+
+                        surface.SetDrawColor(Color(255, 255, 255, 155))
+                        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+                        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+                        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                        draw.SimpleTextOutlined(text, "Purista18", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                    end
+
+                end
+
+                transferToMember.OnCursorExited = function(s)
+
+                    if IsValid(transferPopOut) then
+
+                        transferPopOut:AlphaTo(0, 0.1, 0, function() transferPopOut:Remove() end)
+
+                    end
 
                 end
 
@@ -2277,9 +2360,83 @@ function Menu.OpenTab.Match()
                 kickMember:SetImage("icons/squad_kick_icon.png")
                 kickMember:SetDepressImage(false)
 
-                function kickMember:OnCursorEntered()
+                kickMember.OnCursorEntered = function(s)
 
+                    x, y = Menu.MenuFrame:CursorPos()
                     surface.PlaySound("ui/element_hover.wav")
+
+                    -- offset for pop up depending on the quadrant of the mouse when first selected, true = left/up, false = right/down
+                    if x <= (ScrW() / 2) then sideH = true else sideH = false end
+                    if y <= (ScrH() / 2) then sideV = true else sideV = false end
+
+                    -- for text size calculations
+                    surface.SetFont("Purista18")
+                    local text = "Kick " .. v:GetName()
+                    local textSize = surface.GetTextSize(text)
+
+                    local function UpdatePopOutPos()
+
+                        if sideH == true then
+
+                            kickPopOut:SetX(math.Clamp(x - (Menu.MouseX * EFGM.MenuScale(20)), 0, ScrW() - kickPopOut:GetWide() - EFGM.MenuScale(40)))
+
+                        else
+
+                            kickPopOut:SetX(math.Clamp(x - kickPopOut:GetWide() - EFGM.MenuScale(10) - (Menu.MouseX * EFGM.MenuScale(20)), 0, ScrW() - kickPopOut:GetWide() - EFGM.MenuScale(40)))
+
+                        end
+
+                        if sideV == true then
+
+                            kickPopOut:SetY(math.Clamp(y - EFGM.MenuScale(45) - (Menu.MouseY * EFGM.MenuScale(20)), 0, ScrH() - kickPopOut:GetTall() - EFGM.MenuScale(100)))
+
+                        else
+
+                            kickPopOut:SetY(math.Clamp(y - kickPopOut:GetTall() - EFGM.MenuScale(65) - (Menu.MouseY * EFGM.MenuScale(20)), 0, ScrH() - kickPopOut:GetTall() - EFGM.MenuScale(100)))
+
+                        end
+
+                    end
+
+                    if IsValid(kickPopOut) then kickPopOut:Remove() end
+                    kickPopOut = vgui.Create("DPanel", Menu.MenuFrame.LowerPanel.Contents)
+                    kickPopOut:SetSize(EFGM.MenuScale(10) + textSize, EFGM.MenuScale(24))
+                    UpdatePopOutPos()
+                    kickPopOut:AlphaTo(255, 0.1, 0, function() end)
+
+                    kickPopOut.Paint = function(s, w, h)
+
+                        if !IsValid(s) then return end
+
+                        BlurPanel(s, EFGM.MenuScale(3))
+
+                        -- panel position follows mouse position
+                        x, y = Menu.MenuFrame:CursorPos()
+
+                        UpdatePopOutPos()
+
+                        surface.SetDrawColor(Color(25, 25, 25, 155))
+                        surface.DrawRect(0, 0, w, h)
+
+                        surface.SetDrawColor(Color(255, 255, 255, 155))
+                        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+                        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+                        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                        draw.SimpleTextOutlined(text, "Purista18", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                    end
+
+                end
+
+                kickMember.OnCursorExited = function(s)
+
+                    if IsValid(kickPopOut) then
+
+                        kickPopOut:AlphaTo(0, 0.1, 0, function() kickPopOut:Remove() end)
+
+                    end
 
                 end
 
