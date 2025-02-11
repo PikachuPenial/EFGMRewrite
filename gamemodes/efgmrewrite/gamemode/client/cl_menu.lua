@@ -70,7 +70,7 @@ local conditions = {}
 function Menu:Initialize(openTo)
 
     local menuFrame = vgui.Create("DFrame")
-    menuFrame:SetSize(EFGM.MenuScale(1900), ScrH() - EFGM.MenuScale(20))
+    menuFrame:SetSize(ScrW(), ScrH())
     menuFrame:Center()
     menuFrame:SetTitle("")
     menuFrame:SetVisible(true)
@@ -91,9 +91,7 @@ function Menu:Initialize(openTo)
     function menuFrame:Paint(w, h)
 
         surface.SetDrawColor(0, 0, 0, 240)
-        surface.DrawRect(EFGM.MenuScale(-20), EFGM.MenuScale(-20), ScrW() + EFGM.MenuScale(20), ScrH() + EFGM.MenuScale(20))
-
-        -- draw.SimpleTextOutlined("Escape From Garry's Mod", "Purista32", EFGM.MenuScale(5), EFGM.MenuScale(0), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        surface.DrawRect(0, 0, ScrW(), ScrH())
 
         if self.Unblur then return end -- hide the blur when customizing certain settings and whatnot
         BlurPanel(menuFrame, 4)
@@ -155,7 +153,7 @@ function Menu:Initialize(openTo)
     self.MenuFrame = menuFrame
 
     local tabParentPanel = vgui.Create("DPanel", self.MenuFrame)
-    tabParentPanel:SetPos(0, 0)
+    tabParentPanel:SetPos(EFGM.MenuScale(10), EFGM.MenuScale(10))
     tabParentPanel:SetSize(ScrW(), EFGM.MenuScale(41))
 
     function tabParentPanel:Paint(w, h)
@@ -178,18 +176,18 @@ function Menu:Initialize(openTo)
 
         if Menu.MenuFrame.Closing then return end
 
-        local x, y = menuFrame:CursorPos()
+        Menu.MouseX, Menu.MouseY = menuFrame:CursorPos()
 
-        Menu.MouseX = (x / math.Round(EFGM.MenuScale(1900), 1)) - 0.5
-        Menu.MouseY = (y / math.Round(EFGM.MenuScale(1060), 1)) - 0.5
+        Menu.ParallaxX = (Menu.MouseX / math.Round(EFGM.MenuScale(1920), 1)) - 0.5
+        Menu.ParallaxY = (Menu.MouseY / math.Round(EFGM.MenuScale(1080), 1)) - 0.5
 
         if GetConVar("efgm_menu_parallax"):GetInt() == 1 then
 
-            lowerPanel:SetPos(ScrW() / 2 - (EFGM.MenuScale(1900) / 2) + (Menu.MouseX * EFGM.MenuScale(20)), 1060 / 2 - (920 / 2) + (Menu.MouseY * EFGM.MenuScale(20)))
+            lowerPanel:SetPos(ScrW() / 2 - (EFGM.MenuScale(1880) / 2) + (Menu.ParallaxX * EFGM.MenuScale(20)), 1060 / 2 - (920 / 2) + (Menu.ParallaxY * EFGM.MenuScale(20)))
 
         else
 
-            lowerPanel:SetPos(ScrW() / 2 - (EFGM.MenuScale(1900) / 2), 1060 / 2 - (920 / 2))
+            lowerPanel:SetPos(ScrW() / 2 - (EFGM.MenuScale(1880) / 2), 1060 / 2 - (920 / 2))
 
         end
 
@@ -1923,7 +1921,7 @@ function Menu.OpenTab.Match()
 
             squadEntry.OnCursorEntered = function(s)
 
-                x, y = Menu.MenuFrame:CursorPos()
+                x, y = Menu.MouseX, Menu.MouseY
                 surface.PlaySound("ui/element_hover.wav")
 
                 -- offset for pop up depending on the quadrant of the mouse when first selected, true = left/up, false = right/down
@@ -1934,20 +1932,20 @@ function Menu.OpenTab.Match()
 
                     if sideH == true then
 
-                        squadPopOut:SetX(math.Clamp(x - (Menu.MouseX * EFGM.MenuScale(20)), 0, ScrW() - squadPopOut:GetWide() - EFGM.MenuScale(40)))
+                        squadPopOut:SetX(math.Clamp(x , 0, ScrW() - squadPopOut:GetWide() - EFGM.MenuScale(40)))
 
                     else
 
-                        squadPopOut:SetX(math.Clamp(x - squadPopOut:GetWide() - EFGM.MenuScale(10) - (Menu.MouseX * EFGM.MenuScale(20)), 0, ScrW() - squadPopOut:GetWide() - EFGM.MenuScale(40)))
+                        squadPopOut:SetX(math.Clamp(x - squadPopOut:GetWide() - EFGM.MenuScale(10), 0, ScrW() - squadPopOut:GetWide() - EFGM.MenuScale(40)))
 
                     end
 
                     if sideV == true then
 
-                        squadPopOut:SetY(math.Clamp(y - EFGM.MenuScale(45) - (Menu.MouseY * EFGM.MenuScale(20)), 0, ScrH() - squadPopOut:GetTall() - EFGM.MenuScale(100)))
+                        squadPopOut:SetY(math.Clamp(y - EFGM.MenuScale(45), 0, ScrH() - squadPopOut:GetTall() - EFGM.MenuScale(100)))
                     else
 
-                        squadPopOut:SetY(math.Clamp(y - squadPopOut:GetTall() - EFGM.MenuScale(65) - (Menu.MouseY * EFGM.MenuScale(20)), 0, ScrH() - squadPopOut:GetTall() - EFGM.MenuScale(100)))
+                        squadPopOut:SetY(math.Clamp(y - squadPopOut:GetTall() - EFGM.MenuScale(65), 0, ScrH() - squadPopOut:GetTall() - EFGM.MenuScale(100)))
 
                     end
 
@@ -1981,7 +1979,7 @@ function Menu.OpenTab.Match()
                     BlurPanel(s, EFGM.MenuScale(3))
 
                     -- panel position follows mouse position
-                    x, y = Menu.MenuFrame:CursorPos()
+                    x, y = Menu.MouseX, Menu.MouseY
 
                     UpdatePopOutPos()
 
@@ -2268,7 +2266,7 @@ function Menu.OpenTab.Match()
 
                 transferToMember.OnCursorEntered = function(s)
 
-                    x, y = Menu.MenuFrame:CursorPos()
+                    x, y = Menu.MouseX, Menu.MouseY
                     surface.PlaySound("ui/element_hover.wav")
 
                     -- offset for pop up depending on the quadrant of the mouse when first selected, true = left/up, false = right/down
@@ -2284,21 +2282,21 @@ function Menu.OpenTab.Match()
 
                         if sideH == true then
 
-                            transferPopOut:SetX(math.Clamp(x - (Menu.MouseX * EFGM.MenuScale(20)), 0, ScrW() - transferPopOut:GetWide() - EFGM.MenuScale(40)))
+                            transferPopOut:SetX(math.Clamp(x, 0, ScrW() - transferPopOut:GetWide() - EFGM.MenuScale(40)))
 
                         else
 
-                            transferPopOut:SetX(math.Clamp(x - transferPopOut:GetWide() - EFGM.MenuScale(10) - (Menu.MouseX * EFGM.MenuScale(20)), 0, ScrW() - transferPopOut:GetWide() - EFGM.MenuScale(40)))
+                            transferPopOut:SetX(math.Clamp(x - transferPopOut:GetWide() - EFGM.MenuScale(10), 0, ScrW() - transferPopOut:GetWide() - EFGM.MenuScale(40)))
 
                         end
 
                         if sideV == true then
 
-                            transferPopOut:SetY(math.Clamp(y - EFGM.MenuScale(45) - (Menu.MouseY * EFGM.MenuScale(20)), 0, ScrH() - transferPopOut:GetTall() - EFGM.MenuScale(100)))
+                            transferPopOut:SetY(math.Clamp(y - EFGM.MenuScale(45), 0, ScrH() - transferPopOut:GetTall() - EFGM.MenuScale(100)))
 
                         else
 
-                            transferPopOut:SetY(math.Clamp(y - transferPopOut:GetTall() - EFGM.MenuScale(65) - (Menu.MouseY * EFGM.MenuScale(20)), 0, ScrH() - transferPopOut:GetTall() - EFGM.MenuScale(100)))
+                            transferPopOut:SetY(math.Clamp(y - transferPopOut:GetTall() - EFGM.MenuScale(65), 0, ScrH() - transferPopOut:GetTall() - EFGM.MenuScale(100)))
 
                         end
 
@@ -2317,7 +2315,7 @@ function Menu.OpenTab.Match()
                         BlurPanel(s, EFGM.MenuScale(3))
 
                         -- panel position follows mouse position
-                        x, y = Menu.MenuFrame:CursorPos()
+                        x, y = Menu.MouseX, Menu.MouseY
 
                         UpdatePopOutPos()
 
@@ -2362,7 +2360,7 @@ function Menu.OpenTab.Match()
 
                 kickMember.OnCursorEntered = function(s)
 
-                    x, y = Menu.MenuFrame:CursorPos()
+                    x, y = Menu.MouseX, Menu.MouseY
                     surface.PlaySound("ui/element_hover.wav")
 
                     -- offset for pop up depending on the quadrant of the mouse when first selected, true = left/up, false = right/down
@@ -2378,21 +2376,21 @@ function Menu.OpenTab.Match()
 
                         if sideH == true then
 
-                            kickPopOut:SetX(math.Clamp(x - (Menu.MouseX * EFGM.MenuScale(20)), 0, ScrW() - kickPopOut:GetWide() - EFGM.MenuScale(40)))
+                            kickPopOut:SetX(math.Clamp(x, 0, ScrW() - kickPopOut:GetWide() - EFGM.MenuScale(40)))
 
                         else
 
-                            kickPopOut:SetX(math.Clamp(x - kickPopOut:GetWide() - EFGM.MenuScale(10) - (Menu.MouseX * EFGM.MenuScale(20)), 0, ScrW() - kickPopOut:GetWide() - EFGM.MenuScale(40)))
+                            kickPopOut:SetX(math.Clamp(x - kickPopOut:GetWide() - EFGM.MenuScale(10), 0, ScrW() - kickPopOut:GetWide() - EFGM.MenuScale(40)))
 
                         end
 
                         if sideV == true then
 
-                            kickPopOut:SetY(math.Clamp(y - EFGM.MenuScale(45) - (Menu.MouseY * EFGM.MenuScale(20)), 0, ScrH() - kickPopOut:GetTall() - EFGM.MenuScale(100)))
+                            kickPopOut:SetY(math.Clamp(y - EFGM.MenuScale(45), 0, ScrH() - kickPopOut:GetTall() - EFGM.MenuScale(100)))
 
                         else
 
-                            kickPopOut:SetY(math.Clamp(y - kickPopOut:GetTall() - EFGM.MenuScale(65) - (Menu.MouseY * EFGM.MenuScale(20)), 0, ScrH() - kickPopOut:GetTall() - EFGM.MenuScale(100)))
+                            kickPopOut:SetY(math.Clamp(y - kickPopOut:GetTall() - EFGM.MenuScale(65), 0, ScrH() - kickPopOut:GetTall() - EFGM.MenuScale(100)))
 
                         end
 
@@ -2411,7 +2409,7 @@ function Menu.OpenTab.Match()
                         BlurPanel(s, EFGM.MenuScale(3))
 
                         -- panel position follows mouse position
-                        x, y = Menu.MenuFrame:CursorPos()
+                        x, y = Menu.MouseX, Menu.MouseY
 
                         UpdatePopOutPos()
 
@@ -3128,7 +3126,7 @@ function Menu.OpenTab.Skills()
 
         skillItem.OnCursorEntered = function(s)
 
-            x, y = Menu.MenuFrame:CursorPos()
+            x, y = Menu.MouseX, Menu.MouseY
             surface.PlaySound("ui/element_hover.wav")
 
             -- offset for pop up depending on the quadrant of the mouse when first selected, true = left/up, false = right/down
@@ -3143,21 +3141,21 @@ function Menu.OpenTab.Skills()
 
                 if sideH == true then
 
-                    skillPopOut:SetX(math.Clamp(x - (Menu.MouseX * EFGM.MenuScale(20)), 0, ScrW() - skillPopOut:GetWide() - EFGM.MenuScale(40)))
+                    skillPopOut:SetX(math.Clamp(x, 0, ScrW() - skillPopOut:GetWide() - EFGM.MenuScale(40)))
 
                 else
 
-                    skillPopOut:SetX(math.Clamp(x - skillPopOut:GetWide() - EFGM.MenuScale(10) - (Menu.MouseX * EFGM.MenuScale(20)), 0, ScrW() - skillPopOut:GetWide() - EFGM.MenuScale(40)))
+                    skillPopOut:SetX(math.Clamp(x - skillPopOut:GetWide() - EFGM.MenuScale(10), 0, ScrW() - skillPopOut:GetWide() - EFGM.MenuScale(40)))
 
                 end
 
                 if sideV == true then
 
-                    skillPopOut:SetY(math.Clamp(y - EFGM.MenuScale(45) - (Menu.MouseY * EFGM.MenuScale(20)), 0, ScrH() - skillPopOut:GetTall() - EFGM.MenuScale(100)))
+                    skillPopOut:SetY(math.Clamp(y - EFGM.MenuScale(45), 0, ScrH() - skillPopOut:GetTall() - EFGM.MenuScale(100)))
 
                 else
 
-                    skillPopOut:SetY(math.Clamp(y - skillPopOut:GetTall() - EFGM.MenuScale(65) - (Menu.MouseY * EFGM.MenuScale(20)), 0, ScrH() - skillPopOut:GetTall() - EFGM.MenuScale(100)))
+                    skillPopOut:SetY(math.Clamp(y - skillPopOut:GetTall() - EFGM.MenuScale(65), 0, ScrH() - skillPopOut:GetTall() - EFGM.MenuScale(100)))
 
                 end
 
@@ -3176,7 +3174,7 @@ function Menu.OpenTab.Skills()
                 BlurPanel(s, EFGM.MenuScale(3))
 
                 -- panel position follows mouse position
-                x, y = Menu.MenuFrame:CursorPos()
+                x, y = Menu.MouseX, Menu.MouseY
 
                 UpdatePopOutPos()
 
