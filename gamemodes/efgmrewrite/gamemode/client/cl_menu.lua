@@ -63,7 +63,16 @@ local function GetEntityGroups(ent, override)
 
 end
 
-local conditions = {}
+local cursor = Material("icons/cursors/cursor.png", "mips smooth")
+function draw.CustomCursor(panel, material)
+
+	local cursorX, cursorY = panel:LocalCursorPos()
+
+	surface.SetDrawColor(255, 255, 255, 240)
+	surface.SetMaterial(material)
+	surface.DrawTexturedRect(cursorX, cursorY, 24, 24)
+
+end
 
 -- called non-globally to initialize the menu, that way it can only be initialized once by Menu:Open()
 -- also openTab is the name of the tab it should open to
@@ -79,8 +88,9 @@ function Menu:Initialize(openTo)
     menuFrame:ShowCloseButton(false)
     menuFrame:MakePopup()
     menuFrame:SetAlpha(0)
-    menuFrame:SetBackgroundBlur(true)
+    -- menuFrame:SetBackgroundBlur(true)
     menuFrame:NoClipping(true)
+    menuFrame:MouseCapture(false)
 
     menuFrame:AlphaTo(255, 0.2, 0, function() end)
 
@@ -176,16 +186,19 @@ function Menu:Initialize(openTo)
 
         if Menu.MenuFrame.Closing then return end
 
-        Menu.MouseX, Menu.MouseY = menuFrame:CursorPos()
-
-        Menu.ParallaxX = (Menu.MouseX / math.Round(EFGM.MenuScale(1920), 1)) - 0.5
-        Menu.ParallaxY = (Menu.MouseY / math.Round(EFGM.MenuScale(1080), 1)) - 0.5
+        Menu.MouseX, Menu.MouseY = menuFrame:LocalCursorPos()
 
         if GetConVar("efgm_menu_parallax"):GetInt() == 1 then
 
-            lowerPanel:SetPos(ScrW() / 2 - (EFGM.MenuScale(1880) / 2) + (Menu.ParallaxX * EFGM.MenuScale(20)), 1060 / 2 - (920 / 2) + (Menu.ParallaxY * EFGM.MenuScale(20)))
+            Menu.ParallaxX = math.Clamp(((Menu.MouseX / math.Round(EFGM.MenuScale(1920), 1)) - 0.5) * EFGM.MenuScale(20), -10, 10)
+            Menu.ParallaxY = math.Clamp(((Menu.MouseY / math.Round(EFGM.MenuScale(1080), 1)) - 0.5) * EFGM.MenuScale(20), -10, 10)
+
+            lowerPanel:SetPos(ScrW() / 2 - (EFGM.MenuScale(1880) / 2) + Menu.ParallaxX, 1060 / 2 - (920 / 2) + Menu.ParallaxY)
 
         else
+
+            Menu.ParallaxX = 0
+            Menu.ParallaxY = 0
 
             lowerPanel:SetPos(ScrW() / 2 - (EFGM.MenuScale(1880) / 2), 1060 / 2 - (920 / 2))
 
@@ -1915,7 +1928,6 @@ function Menu.OpenTab.Match()
 
             end
 
-            -- mouse position
             local x, y = 0, 0
             local sideH, sideV
 
@@ -1924,7 +1936,6 @@ function Menu.OpenTab.Match()
                 x, y = Menu.MouseX, Menu.MouseY
                 surface.PlaySound("ui/element_hover.wav")
 
-                -- offset for pop up depending on the quadrant of the mouse when first selected, true = left/up, false = right/down
                 if x <= (ScrW() / 2) then sideH = true else sideH = false end
                 if y <= (ScrH() / 2) then sideV = true else sideV = false end
 
@@ -1932,31 +1943,33 @@ function Menu.OpenTab.Match()
 
                     if sideH == true then
 
-                        squadPopOut:SetX(math.Clamp(x , 0, ScrW() - squadPopOut:GetWide() - EFGM.MenuScale(40)))
+                        squadPopOut:SetX(math.Clamp(x + EFGM.MenuScale(15), EFGM.MenuScale(10), ScrW() - squadPopOut:GetWide() - EFGM.MenuScale(10)))
 
                     else
 
-                        squadPopOut:SetX(math.Clamp(x - squadPopOut:GetWide() - EFGM.MenuScale(10), 0, ScrW() - squadPopOut:GetWide() - EFGM.MenuScale(40)))
+                        squadPopOut:SetX(math.Clamp(x - squadPopOut:GetWide() - EFGM.MenuScale(15), EFGM.MenuScale(10), ScrW() - squadPopOut:GetWide() - EFGM.MenuScale(10)))
 
                     end
 
                     if sideV == true then
 
-                        squadPopOut:SetY(math.Clamp(y - EFGM.MenuScale(45), 0, ScrH() - squadPopOut:GetTall() - EFGM.MenuScale(100)))
+                        squadPopOut:SetY(math.Clamp(y + EFGM.MenuScale(15), EFGM.MenuScale(60), ScrH() - squadPopOut:GetTall() - EFGM.MenuScale(20)))
+
                     else
 
-                        squadPopOut:SetY(math.Clamp(y - squadPopOut:GetTall() - EFGM.MenuScale(65), 0, ScrH() - squadPopOut:GetTall() - EFGM.MenuScale(100)))
+                        squadPopOut:SetY(math.Clamp(y - squadPopOut:GetTall() + EFGM.MenuScale(15), EFGM.MenuScale(60), ScrH() - squadPopOut:GetTall() - EFGM.MenuScale(20)))
 
                     end
 
                 end
 
                 if IsValid(squadPopOut) then squadPopOut:Remove() end
-                squadPopOut = vgui.Create("DPanel", Menu.MenuFrame.LowerPanel.Contents)
+                squadPopOut = vgui.Create("DPanel", Menu.MenuFrame)
                 squadPopOut:SetSize(EFGM.MenuScale(200), EFGM.MenuScale(60) + (memberCount * EFGM.MenuScale(19)))
                 UpdatePopOutPos()
                 squadPopOut:SetAlpha(0)
                 squadPopOut:AlphaTo(255, 0.1, 0, function() end)
+                squadPopOut:SetMouseInputEnabled(false)
 
                 -- panel needs to be slightly taller for password entry
                 if protected and open and squad == "nil" then
@@ -2269,11 +2282,9 @@ function Menu.OpenTab.Match()
                     x, y = Menu.MouseX, Menu.MouseY
                     surface.PlaySound("ui/element_hover.wav")
 
-                    -- offset for pop up depending on the quadrant of the mouse when first selected, true = left/up, false = right/down
                     if x <= (ScrW() / 2) then sideH = true else sideH = false end
                     if y <= (ScrH() / 2) then sideV = true else sideV = false end
 
-                    -- for text size calculations
                     surface.SetFont("Purista18")
                     local text = "Transfer ownership to " .. v:GetName()
                     local textSize = surface.GetTextSize(text)
@@ -2282,31 +2293,32 @@ function Menu.OpenTab.Match()
 
                         if sideH == true then
 
-                            transferPopOut:SetX(math.Clamp(x, 0, ScrW() - transferPopOut:GetWide() - EFGM.MenuScale(40)))
+                            transferPopOut:SetX(math.Clamp(x + EFGM.MenuScale(15), EFGM.MenuScale(10), ScrW() - transferPopOut:GetWide() - EFGM.MenuScale(10)))
 
                         else
 
-                            transferPopOut:SetX(math.Clamp(x - transferPopOut:GetWide() - EFGM.MenuScale(10), 0, ScrW() - transferPopOut:GetWide() - EFGM.MenuScale(40)))
+                            transferPopOut:SetX(math.Clamp(x - transferPopOut:GetWide() - EFGM.MenuScale(15), EFGM.MenuScale(10), ScrW() - transferPopOut:GetWide() - EFGM.MenuScale(10)))
 
                         end
 
                         if sideV == true then
 
-                            transferPopOut:SetY(math.Clamp(y - EFGM.MenuScale(45), 0, ScrH() - transferPopOut:GetTall() - EFGM.MenuScale(100)))
+                            transferPopOut:SetY(math.Clamp(y + EFGM.MenuScale(15), EFGM.MenuScale(60), ScrH() - transferPopOut:GetTall() - EFGM.MenuScale(20)))
 
                         else
 
-                            transferPopOut:SetY(math.Clamp(y - transferPopOut:GetTall() - EFGM.MenuScale(65), 0, ScrH() - transferPopOut:GetTall() - EFGM.MenuScale(100)))
+                            transferPopOut:SetY(math.Clamp(y - transferPopOut:GetTall() + EFGM.MenuScale(15), EFGM.MenuScale(60), ScrH() - transferPopOut:GetTall() - EFGM.MenuScale(20)))
 
                         end
 
                     end
 
                     if IsValid(transferPopOut) then transferPopOut:Remove() end
-                    transferPopOut = vgui.Create("DPanel", Menu.MenuFrame.LowerPanel.Contents)
+                    transferPopOut = vgui.Create("DPanel", Menu.MenuFrame)
                     transferPopOut:SetSize(EFGM.MenuScale(10) + textSize, EFGM.MenuScale(24))
                     UpdatePopOutPos()
                     transferPopOut:AlphaTo(255, 0.1, 0, function() end)
+                    transferPopOut:SetMouseInputEnabled(false)
 
                     transferPopOut.Paint = function(s, w, h)
 
@@ -2363,11 +2375,9 @@ function Menu.OpenTab.Match()
                     x, y = Menu.MouseX, Menu.MouseY
                     surface.PlaySound("ui/element_hover.wav")
 
-                    -- offset for pop up depending on the quadrant of the mouse when first selected, true = left/up, false = right/down
                     if x <= (ScrW() / 2) then sideH = true else sideH = false end
                     if y <= (ScrH() / 2) then sideV = true else sideV = false end
 
-                    -- for text size calculations
                     surface.SetFont("Purista18")
                     local text = "Kick " .. v:GetName()
                     local textSize = surface.GetTextSize(text)
@@ -2376,31 +2386,32 @@ function Menu.OpenTab.Match()
 
                         if sideH == true then
 
-                            kickPopOut:SetX(math.Clamp(x, 0, ScrW() - kickPopOut:GetWide() - EFGM.MenuScale(40)))
+                            kickPopOut:SetX(math.Clamp(x + EFGM.MenuScale(15), EFGM.MenuScale(10), ScrW() - kickPopOut:GetWide() - EFGM.MenuScale(10)))
 
                         else
 
-                            kickPopOut:SetX(math.Clamp(x - kickPopOut:GetWide() - EFGM.MenuScale(10), 0, ScrW() - kickPopOut:GetWide() - EFGM.MenuScale(40)))
+                            kickPopOut:SetX(math.Clamp(x - kickPopOut:GetWide() - EFGM.MenuScale(15), EFGM.MenuScale(10), ScrW() - kickPopOut:GetWide() - EFGM.MenuScale(10)))
 
                         end
 
                         if sideV == true then
 
-                            kickPopOut:SetY(math.Clamp(y - EFGM.MenuScale(45), 0, ScrH() - kickPopOut:GetTall() - EFGM.MenuScale(100)))
+                            kickPopOut:SetY(math.Clamp(y + EFGM.MenuScale(15), EFGM.MenuScale(60), ScrH() - kickPopOut:GetTall() - EFGM.MenuScale(20)))
 
                         else
 
-                            kickPopOut:SetY(math.Clamp(y - kickPopOut:GetTall() - EFGM.MenuScale(65), 0, ScrH() - kickPopOut:GetTall() - EFGM.MenuScale(100)))
+                            kickPopOut:SetY(math.Clamp(y - kickPopOut:GetTall() + EFGM.MenuScale(15), EFGM.MenuScale(60), ScrH() - kickPopOut:GetTall() - EFGM.MenuScale(20)))
 
                         end
 
                     end
 
                     if IsValid(kickPopOut) then kickPopOut:Remove() end
-                    kickPopOut = vgui.Create("DPanel", Menu.MenuFrame.LowerPanel.Contents)
+                    kickPopOut = vgui.Create("DPanel", Menu.MenuFrame)
                     kickPopOut:SetSize(EFGM.MenuScale(10) + textSize, EFGM.MenuScale(24))
                     UpdatePopOutPos()
                     kickPopOut:AlphaTo(255, 0.1, 0, function() end)
+                    kickPopOut:SetMouseInputEnabled(false)
 
                     kickPopOut.Paint = function(s, w, h)
 
@@ -3129,11 +3140,9 @@ function Menu.OpenTab.Skills()
             x, y = Menu.MouseX, Menu.MouseY
             surface.PlaySound("ui/element_hover.wav")
 
-            -- offset for pop up depending on the quadrant of the mouse when first selected, true = left/up, false = right/down
             if x <= (ScrW() / 2) then sideH = true else sideH = false end
             if y <= (ScrH() / 2) then sideV = true else sideV = false end
 
-            -- for text size calculations
             surface.SetFont("Purista18")
             local skillDescTextSize = surface.GetTextSize(v1.Description)
 
@@ -3141,31 +3150,32 @@ function Menu.OpenTab.Skills()
 
                 if sideH == true then
 
-                    skillPopOut:SetX(math.Clamp(x, 0, ScrW() - skillPopOut:GetWide() - EFGM.MenuScale(40)))
+                    skillPopOut:SetX(math.Clamp(x + EFGM.MenuScale(15), EFGM.MenuScale(10), ScrW() - skillPopOut:GetWide() - EFGM.MenuScale(10)))
 
                 else
 
-                    skillPopOut:SetX(math.Clamp(x - skillPopOut:GetWide() - EFGM.MenuScale(10), 0, ScrW() - skillPopOut:GetWide() - EFGM.MenuScale(40)))
+                    skillPopOut:SetX(math.Clamp(x - skillPopOut:GetWide() - EFGM.MenuScale(15), EFGM.MenuScale(10), ScrW() - skillPopOut:GetWide() - EFGM.MenuScale(10)))
 
                 end
 
                 if sideV == true then
 
-                    skillPopOut:SetY(math.Clamp(y - EFGM.MenuScale(45), 0, ScrH() - skillPopOut:GetTall() - EFGM.MenuScale(100)))
+                    skillPopOut:SetY(math.Clamp(y + EFGM.MenuScale(15), EFGM.MenuScale(60), ScrH() - skillPopOut:GetTall() - EFGM.MenuScale(20)))
 
                 else
 
-                    skillPopOut:SetY(math.Clamp(y - skillPopOut:GetTall() - EFGM.MenuScale(65), 0, ScrH() - skillPopOut:GetTall() - EFGM.MenuScale(100)))
+                    skillPopOut:SetY(math.Clamp(y - skillPopOut:GetTall() + EFGM.MenuScale(15), EFGM.MenuScale(60), ScrH() - skillPopOut:GetTall() - EFGM.MenuScale(20)))
 
                 end
 
             end
 
             if IsValid(skillPopOut) then skillPopOut:Remove() end
-            skillPopOut = vgui.Create("DPanel", Menu.MenuFrame.LowerPanel.Contents)
+            skillPopOut = vgui.Create("DPanel", Menu.MenuFrame)
             skillPopOut:SetSize(EFGM.MenuScale(10) + skillDescTextSize, EFGM.MenuScale(80))
             UpdatePopOutPos()
             skillPopOut:AlphaTo(255, 0.1, 0, function() end)
+            skillPopOut:SetMouseInputEnabled(false)
 
             skillPopOut.Paint = function(s, w, h)
 
