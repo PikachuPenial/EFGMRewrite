@@ -4,25 +4,25 @@ if not plyMeta then Error("Could not find player table") return end
 
 if SERVER then
     
-    -- local playerInventories = {}
+    local inventories = {}
 
-    -- hook.Add( "PlayerSpawn", "PlayerInventoryInitialize", function(ply)
+    hook.Add( "PlayerSpawn", "PlayerInventoryInitialize", function(ply)
     
-    --     local id64 = ply:SteamID64()
+        local id64 = ply:SteamID64()
 
-    --     playerInventories[id64] = SetupPlayerInventory(ply)
+        playerInventories[id64] = SetupPlayerInventory(ply)
 
-    -- end)
+    end)
 
-    -- function SetupPlayerInventory(ply)
+    function SetupPlayerInventory(ply)
 
-    --     local inventory = {}
+        local playerInventory = {}
 
-    --     inventory.rig = {}
-    --     inventory.backpack = {}
-    --     inventory.pockets = {}
-    --     inventory.sc = {}
+        inventory.rigSlot = {}
+        inventory.backpackSlot = {}
+        inventory.pocketsSlot = {}
+        inventory.secureContainerSlot = {}
 
-    -- end
+    end
 
 end

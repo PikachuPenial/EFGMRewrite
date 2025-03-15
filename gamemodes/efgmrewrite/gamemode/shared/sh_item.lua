@@ -1,12 +1,12 @@
 
 ITEM = {}
 
-function ITEM.CreateItem( id )
+function ITEM.CreateItem( identifier, data, md )
 
     local item = {}
     item.identifier = identifier
-    item.data = {}
-    item.md = {}
+    item.data = data or {}
+    item.md = md or {}
 
     local info = EFGMITEMS[ id ]
 
