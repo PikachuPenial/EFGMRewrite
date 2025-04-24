@@ -9,7 +9,6 @@ function BetterRandom(haystack) -- this is literally never used ever
 end
 
 function GetValidRaidSpawn(status) -- status: 0 = lobby, 1 = pmc, 2 = scav (assuming 1)
-
     if status == 0 then return nil end
 
     spawns = ents.FindByClass("efgm_raid_spawn")
@@ -24,12 +23,10 @@ function GetValidRaidSpawn(status) -- status: 0 = lobby, 1 = pmc, 2 = scav (assu
             end
         end
 
-        return BetterRandom( pmcSpawns )
-
+        return BetterRandom(pmcSpawns)
     end
 
     if status == 2 then
-
         local scavSpawns = {}
 
         for k, v in ipairs(spawns) do
@@ -38,8 +35,6 @@ function GetValidRaidSpawn(status) -- status: 0 = lobby, 1 = pmc, 2 = scav (assu
             end
         end
 
-        return BetterRandom( scavSpawns )
-
+        return BetterRandom(scavSpawns)
     end
-    
 end

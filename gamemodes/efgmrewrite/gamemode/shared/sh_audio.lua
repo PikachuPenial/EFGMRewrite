@@ -1,15 +1,3 @@
-
--- footsteps
-hook.Add("PlayerFootstep", "FootSteps", function(ply)
-
-	if ply:GetMoveType() == MOVETYPE_LADDER then
-
-		return
-
-	end
-
-end)
-
 -- gun sounds
 shotSounds = {
     "cracks/distant/dist01.ogg",
@@ -42,13 +30,10 @@ shotCaliber["Pistol"] = {180, 0, "bullet"}       -- grenade shrapnel (no sex thi
 
 -- true gun version has been moved to sh_arc9_override.lua to fix audio playing at bullets destination
 if SERVER then
-
     util.AddNetworkString("DistantGunAudio")
 
     hook.Add("EntityFireBullets", "ClientDistantGunAudio", function(attacker, data)
-
         for k, v in pairs(player.GetAll()) do
-
             -- a hacky way to distinquish an ARC9 weapon and an entity, ARC9 doesn't set an AmmoType, we use this to create the monstrosity you are about to read 
             if data.AmmoType != "" then
 
@@ -64,19 +49,14 @@ if SERVER then
                 local style = shotCaliber[entAmmo][3] == "bullet" -- returns true if bullet, false if explosive
 
                 if entAmmo != nil then
-
                     bulletPitch = shotCaliber[entAmmo][1] or 100
                     threshold = shotCaliber[entAmmo][2] or 6000
-
                 else
-
                     bulletPitch = 100
                     threshold = 6000
-
                 end
 
                 for i = 1, data.Num do
-
                     net.Start("DistantGunAudio")
                     net.WriteVector(shootPos)
                     net.WriteFloat(plyDistance)
@@ -85,19 +65,13 @@ if SERVER then
                     net.WriteFloat(1)
                     net.WriteBool(style)
                     net.Send(v)
-
                 end
-
             end
-
 		end
-
 	end)
-
 end
 
 if CLIENT then
-
     net.Receive("DistantGunAudio", function()
         local chosenSound
         local receivedVect = net.ReadVector()
@@ -108,21 +82,13 @@ if CLIENT then
         local style = net.ReadBool()
 
         if style == true then
-
             chosenSound = shotSounds[math.random(#shotSounds)]
-
         else
-
             chosenSound = boomSounds[math.random(#boomSounds)]
-
         end
 
         if receivedVect then
-
             sound.Play(chosenSound, receivedVect, math.min(150, (150 * threshold) / distance), pitch + math.random(-15, 15), math.Rand(volume - 0.2, volume))
-
         end
-
     end)
-
 end

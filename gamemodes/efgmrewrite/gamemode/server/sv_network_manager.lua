@@ -1,9 +1,6 @@
-
 -- Eat shit penial i stole your titanmod code save manager code
 hook.Add("Initialize", "PDataInitialize", function()
-
     sql.Query( "CREATE TABLE IF NOT EXISTS EFGMPlayerData64 ( SteamID INTEGER, Key TEXT, Value TEXT);" )
-
 end)
 
 -- Important shit (I renamed playerdata64 so it can't conflict with titanmod)

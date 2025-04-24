@@ -1,11 +1,9 @@
-
 local enabled = GetConVar("efgm_hud_enable")
 cvars.AddChangeCallback("efgm_hud_enable", function(convar_name, value_old, value_new)
     enabled = tobool(value_new)
 end)
 
 local function RenderRaidTime(ply)
-
     -- time logic
     local raidTime = string.FormattedTime(GetGlobalInt("RaidTimeLeft", 0), "%2i:%02i")
     local raidStatus = GetGlobalInt("RaidStatus", 0)
@@ -19,12 +17,10 @@ local function RenderRaidTime(ply)
     surface.SetDrawColor(raidStatusTbl[raidStatus])
     surface.DrawRect(ScrW() - EFGM.ScreenScale(120), EFGM.ScreenScale(20), EFGM.ScreenScale(100), EFGM.ScreenScale(36))
     draw.DrawText(raidTime, "BenderExfilList", ScrW() - EFGM.ScreenScale(70), EFGM.ScreenScale(19), Color(255, 255, 255), TEXT_ALIGN_CENTER)
-
 end
 
 -- players current weapon and ammo
 local function RenderPlayerWeapon(ply)
-
     local wep = LocalPlayer():GetActiveWeapon()
     if wep == NULL then return end
 
@@ -52,13 +48,11 @@ local function RenderPlayerWeapon(ply)
 
     -- weapon name
     draw.DrawText(name, "BenderWeaponName", ScrW() - EFGM.ScreenScale(20), ScrH() - EFGM.ScreenScale(40), Color(214, 214, 214), TEXT_ALIGN_RIGHT)
-
 end
 
 -- players current stance and health
 local playerStance = 0
 local function RenderPlayerStance(ply)
-
     -- variables
     local health = ply:Health()
     local maxHealth = ply:GetMaxHealth()
@@ -137,20 +131,16 @@ local function RenderPlayerStance(ply)
     surface.SetDrawColor(255, 255, 255, CrouchingAlpha)
     surface.SetMaterial(Material("stances/crouch.png", "tarkovMaterial"))
     surface.DrawTexturedRect(EFGM.ScreenScale(25), ScrH() - EFGM.ScreenScale(151), EFGM.ScreenScale(127), EFGM.ScreenScale(114))
-
 end
 
 -- extracts
 function RenderExtracts(ply)
-
     -- no need to create the compass panel if it already exists
     if IsValid(extracts) then return end
 
     local extractList
     net.Receive("SendExtractList", function(len, ply)
-
         extractList = net.ReadTable()
-
     end )
 
     net.Start("GrabExtractList")
@@ -168,7 +158,6 @@ function RenderExtracts(ply)
     }
 
     extracts.Paint = function(self, w, h)
-
         if not ply:Alive() then return end
         if extractList == nil then return end
 
@@ -185,17 +174,14 @@ function RenderExtracts(ply)
             draw.DrawText(v.ExtractName, "BenderExfilName", ScrW() - EFGM.ScreenScale(380), EFGM.ScreenScale(65) + ((k - 1) * EFGM.ScreenScale(41)), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
 
         end
-
     end
 
     extracts:AlphaTo(255, 0.35, 0, function() end) -- why do i need to use a callback here???
     extracts:AlphaTo(0, 1, 4.65, function() extracts:Remove() end)
-
 end
 
 -- compass
 function RenderCompass(ply)
-
     -- no need to create the compass panel if it already exists
     if IsValid(compass) then return end
 
@@ -219,7 +205,6 @@ function RenderCompass(ply)
     }
 
     compass.Paint = function(self, w, h)
-
         if not ply:Alive() then return end
 
         local ang = ply:EyeAngles()
@@ -236,7 +221,6 @@ function RenderCompass(ply)
         fadeDistance = (ScrW() / 2) / fadeDistMultiplier
 
         for i = math.Round(-ang.y) % 360, (math.Round(-ang.y) % 360) + numOfLines do
-
             local x = ((compassX - (width / 2)) + (((i + ang.y) % 360) * spacing))
             local value = math.abs(x - compassX)
             local calc = 1 - ((value + (value - fadeDistance)) / (width / 2))
@@ -249,20 +233,15 @@ function RenderCompass(ply)
                 local text = adv_compass_tbl[360 - (a % 360)] and adv_compass_tbl[360 - (a % 360)] or 360 - (a % 360)
 
                 draw.DrawText(text, "BenderExfilList", x, compassY + height * EFGM.ScreenScale(0.6), Color(color.r, color.g, color.b, calculation), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
-
             end
-
         end
-
     end
 
     compass:AlphaTo(255, 0.35, 0, function() end) -- why do i need to use a callback here???
     compass:AlphaTo(0, 1, 4.65, function() compass:Remove() end)
-
 end
 
 local function DrawHUD()
-
     ply = LocalPlayer()
     if not ply:Alive() then return end
     if not enabled then return end
@@ -270,12 +249,10 @@ local function DrawHUD()
     RenderRaidTime(ply)
     RenderPlayerWeapon(ply)
     RenderPlayerStance(ply)
-
 end
 hook.Add("HUDPaint", "DrawHUD", DrawHUD)
 
 net.Receive("PlayerRaidTransition", function()
-
     RaidTransition = vgui.Create("DPanel")
     RaidTransition:SetSize(ScrW(), ScrH())
     RaidTransition:SetPos(0, 0)
@@ -283,28 +260,23 @@ net.Receive("PlayerRaidTransition", function()
     RaidTransition:MoveToFront()
 
     RaidTransition.Paint = function(self, w, h)
-
         BlurPanel(RaidTransition, EFGM.MenuScale(13))
         BlurPanel(RaidTransition, EFGM.MenuScale(13))
 
         surface.SetDrawColor(0, 0, 0, 255)
         surface.DrawRect(0, 0, ScrW(), ScrH())
-
     end
 
     RaidTransition:AlphaTo(255, 0.5, 0, function() end) -- why do i need to use a callback here???
     RaidTransition:AlphaTo(0, 0.35, 1, function() RaidTransition:Remove() end)
 
     timer.Simple(2.5, function() RenderExtracts(ply) end)
-
 end )
 
 net.Receive("SendExtractionStatus", function()
-
     local status = net.ReadBool()
 
     if status then
-
         if IsValid(ExtractPopup) then return end
 
         local exitTime = net.ReadInt(16)
@@ -325,7 +297,6 @@ net.Receive("SendExtractionStatus", function()
         ExtractPopup:MoveToFront()
 
         ExtractPopup.Paint = function(self, w, h)
-
             surface.SetDrawColor(120, 180, 40, 125)
             surface.DrawRect(w / 2 - EFGM.ScreenScale(125), h - EFGM.ScreenScale(300), EFGM.ScreenScale(250), EFGM.ScreenScale(80))
 
@@ -337,79 +308,54 @@ net.Receive("SendExtractionStatus", function()
 
             surface.SetDrawColor(120, 180, 40, 125)
             surface.DrawRect((w / 2) - EFGM.ScreenScale(250) * (exitTimeLeft / exitTime) / 2, h - EFGM.ScreenScale(215), EFGM.ScreenScale(250) * (exitTimeLeft / exitTime), EFGM.ScreenScale(5))
-
         end
 
         ExtractPopup:AlphaTo(255, 0.1, 0, function() end) -- why do i need to use a callback here???
-
     else
-
         if not IsValid(ExtractPopup) then return end
 
         ExtractPopup:AlphaTo(0, 0.1, 0, function() ExtractPopup:Remove() timer.Remove("TimeToExit") hook.Remove("Think", "TimeToExit") end)
-
     end
-
-end )
+end)
 
 function DrawTarget()
-
     if !LocalPlayer():CompareStatus(0) then return false end
-
 end
 hook.Add("HUDDrawTargetID", "HidePlayerInfo", DrawTarget)
 
 function DrawWeaponInfo()
-
     return false
-
 end
 hook.Add("HUDWeaponPickedUp", "WeaponPickedUp", DrawWeaponInfo)
 
 function DrawAmmoInfo()
-
     return false
-
 end
 hook.Add("HUDAmmoPickedUp", "AmmoPickedUp", DrawAmmoInfo)
 
 function DrawItemInfo()
-
     return false
-
 end
 hook.Add("HUDItemPickedUp", "ItemPickedUp", DrawItemInfo)
 
 function HideHud(name)
-
     for k, v in pairs({"CHudHealth", "CHudBattery", "CHudAmmo", "CHudSecondaryAmmo", "CHudZoom", "CHudVoiceStatus", "CHudDamageIndicator", "CHUDQuickInfo", "CHudCrosshair"}) do
         if name == v then
             return false
         end
     end
-
 end
 hook.Add("HUDShouldDraw", "HideDefaultHud", HideHud)
 
 -- disable scoreboard
-hook.Add("ScoreboardShow", "DisableHL2Scoreboard", function()
-
-    return true
-
-end )
+hook.Add("ScoreboardShow", "DisableHL2Scoreboard", function() return true end )
 
 -- hide voice chat panels
-hook.Add("PlayerStartVoice", "ImageOnVoice", function()
-
-    return false
-
-end)
+hook.Add("PlayerStartVoice", "ImageOnVoice", function() return false end)
 
 net.Receive("VoteableMaps", function(len)
-
     local tbl = net.ReadTable()
 
     LocalPlayer():PrintMessage(HUD_PRINTTALK, "Go into the console and type 'efgm_vote ___' and vote for one of the maps!")
     PrintTable(tbl)
-
 end)

@@ -1,4 +1,3 @@
-
 EQUIPTYPE = {}
 EQUIPTYPE.Weapon = 1
 EQUIPTYPE.Gear = 2
@@ -8,7 +7,6 @@ EQUIPTYPE.Spawn = 4 // For shit that spawns into the world on equip
 EFGMITEMS = {}
 
 function EFGMITEMS:__index( var )
-
 	return {
         ["fullName"] = "MISSING_ITEM",
         ["displayName"] = "MISSING",
@@ -19,15 +17,13 @@ function EFGMITEMS:__index( var )
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = "missing",
-    
+
         ["sizeX"] = 1,
         ["sizeY"] = 1
     }
-
 end
 
 // WEAPONS
-
     EFGMITEMS["arc9_eft_akm"] = {
 
         ["fullName"] = "AKM",
@@ -45,7 +41,6 @@ end
     }
 
 // RIGS
-
     EFGMITEMS["efgm_umka"] = {
 
         ["fullName"] = "Umka M33-SET1",
@@ -64,9 +59,8 @@ end
 
         ["containerLayoutSizeX"] = 4, // for the positioning of the child slots, penial you can thank me later
         ["containerLayoutSizeY"] = 4, // also look in the reference folder to see what I'm getting at better
-        
-        ["childContainers"] = {
 
+        ["childContainers"] = {
             { ["posX"] = 1, ["posY"] = 1, ["sizeX"] = 1, ["sizeY"] = 2 }, // Top 4 1x2's
             { ["posX"] = 2, ["posY"] = 1, ["sizeX"] = 1, ["sizeY"] = 2 },
             { ["posX"] = 3, ["posY"] = 1, ["sizeX"] = 1, ["sizeY"] = 2 },
@@ -78,12 +72,10 @@ end
             { ["posX"] = 2, ["posY"] = 4, ["sizeX"] = 1, ["sizeY"] = 1 },
 
             { ["posX"] = 3, ["posY"] = 3, ["sizeX"] = 2, ["sizeY"] = 2 } // Bottom right 2x2
-
         }
     }
 
 // POCKETS
-
     EFGMITEMS["efgm_default_pockets"] = {
 
         ["fullName"] = "",
@@ -102,14 +94,12 @@ end
 
         ["containerLayoutSizeX"] = 4,
         ["containerLayoutSizeY"] = 1,
-        
-        ["childContainers"] = {
 
+        ["childContainers"] = {
             { ["posX"] = 1, ["posY"] = 1, ["sizeX"] = 1, ["sizeY"] = 1 },
             { ["posX"] = 2, ["posY"] = 1, ["sizeX"] = 1, ["sizeY"] = 1 },
             { ["posX"] = 3, ["posY"] = 1, ["sizeX"] = 1, ["sizeY"] = 1 },
             { ["posX"] = 4, ["posY"] = 1, ["sizeX"] = 1, ["sizeY"] = 1 }
-
         }
     }
 
@@ -131,11 +121,9 @@ end
 
         ["containerLayoutSizeX"] = 1,
         ["containerLayoutSizeY"] = 2,
-        
+
         ["childContainers"] = {
-
             { ["posX"] = 1, ["posY"] = 1, ["sizeX"] = 1, ["sizeY"] = 2 }
-
         }
     }
 
@@ -157,19 +145,16 @@ end
 
         ["containerLayoutSizeX"] = 4,
         ["containerLayoutSizeY"] = 2,
-        
-        ["childContainers"] = {
 
+        ["childContainers"] = {
             { ["posX"] = 1, ["posY"] = 1, ["sizeX"] = 1, ["sizeY"] = 1 },
             { ["posX"] = 2, ["posY"] = 1, ["sizeX"] = 1, ["sizeY"] = 2 },
             { ["posX"] = 3, ["posY"] = 1, ["sizeX"] = 1, ["sizeY"] = 2 },
             { ["posX"] = 4, ["posY"] = 1, ["sizeX"] = 1, ["sizeY"] = 1 }
-
         }
     }
 
 // BACKPACKS
-
     EFGMITEMS["efgm_daypack"] = {
 
         ["fullName"] = "LBT-8005A Day Pack",
@@ -188,16 +173,13 @@ end
 
         ["containerLayoutSizeX"] = 4,
         ["containerLayoutSizeY"] = 5,
-        
+
         ["childContainers"] = {
-
             { ["posX"] = 1, ["posY"] = 1, ["sizeX"] = 4, ["sizeY"] = 5 }
-
         }
     }
 
 // SECURE CONTAINERS
-
     EFGMITEMS["efgm_sc_alpha"] = {
 
         ["fullName"] = "Secure Container Alpha",
@@ -216,11 +198,9 @@ end
 
         ["containerLayoutSizeX"] = 2,
         ["containerLayoutSizeY"] = 2,
-        
+
         ["childContainers"] = {
-
             { ["posX"] = 1, ["posY"] = 1, ["sizeX"] = 2, ["sizeY"] = 2 }
-
         }
     }
 
@@ -242,11 +222,9 @@ end
 
         ["containerLayoutSizeX"] = 3,
         ["containerLayoutSizeY"] = 2,
-        
+
         ["childContainers"] = {
-
             { ["posX"] = 1, ["posY"] = 1, ["sizeX"] = 3, ["sizeY"] = 2 }
-
         }
     }
 
@@ -268,11 +246,9 @@ end
 
         ["containerLayoutSizeX"] = 4,
         ["containerLayoutSizeY"] = 2,
-        
+
         ["childContainers"] = {
-
             { ["posX"] = 1, ["posY"] = 1, ["sizeX"] = 4, ["sizeY"] = 2 }
-
         }
     }
 
@@ -294,11 +270,9 @@ end
 
         ["containerLayoutSizeX"] = 3,
         ["containerLayoutSizeY"] = 3,
-        
+
         ["childContainers"] = {
-
             { ["posX"] = 1, ["posY"] = 1, ["sizeX"] = 3, ["sizeY"] = 3 }
-
         }
     }
 
@@ -320,16 +294,13 @@ end
 
         ["containerLayoutSizeX"] = 3,
         ["containerLayoutSizeY"] = 4,
-        
+
         ["childContainers"] = {
-
             { ["posX"] = 1, ["posY"] = 1, ["sizeX"] = 3, ["sizeY"] = 4 }
-
         }
     }
 
 // BARTER ITEMS / VALUABLES
-
     EFGMITEMS["efgm_roler"] = {
 
         ["fullName"] = "Roler Submariner",
@@ -346,7 +317,6 @@ end
     }
 
 // HL2 JEEP
-
     EFGMITEMS["hl2_jeep"] = {
 
         ["fullName"] = "The Jeep from Half Life 2",

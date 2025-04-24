@@ -1,16 +1,11 @@
 -- removing unneccessary server hook
 if SERVER then
-
 	hook.Add("Initialize", "SVHookRemoval", function()
-
 		if timer.Exists("CheckHookTimes") then timer.Remove("CheckHookTimes") end
-
 	end)
-
 end
 
 if CLIENT then
-
 	-- removing unneccessary client hooks
 	hook.Add("InitPostEntity", "CLHookRemoval", function()
 		hook.Remove("RenderScreenspaceEffects", "RenderColorModify")
@@ -38,29 +33,19 @@ if CLIENT then
 
 	-- remove widget code every tick
 	local function CLTickRemoval(ent)
-
 		if ent:IsWidget() then
-
 			hook.Add("PlayerTick", "TickWidgets", function(pl, mv)
-
 				widgets.PlayerTick(pl, mv)
-
 			end)
-
 			hook.Remove("OnEntityCreated", "WidgetCreated")
-
 		end
-
 	end
 	hook.Add("OnEntityCreated", "WidgetCreated", CLTickRemoval)
-
 end
 
 -- force multicore for clients
 hook.Add("InitPostEntity", "CLMulticore", function()
-
 	timer.Simple(3, function() -- just in case
-
 		RunConsoleCommand("gmod_mcore_test", "1")
 		RunConsoleCommand("mat_queue_mode", "-1")
 		RunConsoleCommand("cl_threaded_bone_setup", "1")
@@ -70,9 +55,7 @@ hook.Add("InitPostEntity", "CLMulticore", function()
 		RunConsoleCommand("r_threaded_renderables", "1")
 		RunConsoleCommand("r_queued_ropes", "1")
 		RunConsoleCommand("studio_queue_mode", "1")
-
 	end)
-
 end)
 
 -- map optimization

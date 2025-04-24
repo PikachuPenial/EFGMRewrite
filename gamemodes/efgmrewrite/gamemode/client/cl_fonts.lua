@@ -1,7 +1,5 @@
-
 -- create/reload fonts when needed
 local function CreateFonts()
-
     -- MENU (seriously, dont use this unless it is in the menu, it won't scale properly)
 
     -- use instead of 'DermaDefault' & just pick which will look better or smth
@@ -31,7 +29,6 @@ local function CreateFonts()
     surface.CreateFont("BenderExfilName", {font = "Bender", size = EFGM.ScreenScale(28), weight = 550, antialias = true, extended = true})
     surface.CreateFont("BenderWeaponName", { font = "Bender", size = EFGM.ScreenScale(21), weight = 550, antialias = true, extended = false })
     surface.CreateFont("BenderDebug", { font = "Bender", size = EFGM.ScreenScale(14), weight = 550, antialias = true, extended = true })
-
 end
 
 CreateFonts()

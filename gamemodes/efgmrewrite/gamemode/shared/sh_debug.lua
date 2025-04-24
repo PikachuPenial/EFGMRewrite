@@ -4,7 +4,6 @@
 DEBUG = {}
 
 function DEBUG.NotImplemented(doHalt, layer)
-
     doHalt = doHalt or false
     layer = layer or 1
 
@@ -19,5 +18,4 @@ function DEBUG.NotImplemented(doHalt, layer)
     end
 
     switch[doHalt]()
-
 end

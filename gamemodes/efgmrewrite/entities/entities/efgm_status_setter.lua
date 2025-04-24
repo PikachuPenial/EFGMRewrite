@@ -6,15 +6,11 @@ function ENT:Initialize()
 end
 
 function ENT:AcceptInput(name, ply, caller, data)
-
 	if name == "SetStatus" then
-
         if !ply:IsPlayer() then return end
 
-        local status = math.Clamp( tonumber( data ), 0, 1 ) 
+        local status = math.Clamp(tonumber(data), 0, 1) 
         
         ply:SetRaidStatus(status)
-
     end
-
 end

@@ -1,11 +1,8 @@
 -- skill systems go here
-
 Stats = {}
 
 -- stat convenience functions
-
 function Stats.InitializeAll(ply)
-
     -- stats
     InitializeNetworkBool(ply, "FreshWipe", true) -- false if player has logged on once this wipe
     InitializeNetworkInt(ply, "Level", 0)
@@ -35,11 +32,9 @@ function Stats.InitializeAll(ply)
     InitializeNetworkInt(ply, "BestKillStreak", 1)
     InitializeNetworkInt(ply, "CurrentExtractionStreak", 1)
     InitializeNetworkInt(ply, "BestExtractionStreak", 1)
-
 end
 
 function Stats.UninitializeAll(ply)
-
     -- stats
     UninitializeNetworkBool(ply, "FreshWipe")
     UninitializeNetworkInt(ply, "Level")
@@ -69,11 +64,9 @@ function Stats.UninitializeAll(ply)
     UninitializeNetworkInt(ply, "BestKillStreak")
     UninitializeNetworkInt(ply, "CurrentExtractionStreak")
     UninitializeNetworkInt(ply, "BestExtractionStreak")
-
 end
 
 function Stats.GetAll(ply)
-
     local tbl = {}
 
     -- stats
@@ -107,64 +100,45 @@ function Stats.GetAll(ply)
     tbl["BestExtractionStreak"] = ply:GetNWInt("BestExtractionStreak")
 
     return tbl
-
 end
 concommand.Add("efgm_get_stats", function(ply, cmd, args)
-
     PrintTable(Stats.GetAll(ply))
-
 end)
 
 -- hooks yippee
-
 hook.Add("PlayerInitialSpawn", "PlayerInitializeStats", function(ply)
-
 	-- setup nwints and custom pdatas (these only use regular pdata for now)
 
     Stats.InitializeAll(ply)
-
 end)
 
 hook.Add("PlayerDisconnected", "PlayerUninitializeStats", function(ply)
-
     ply:SetNWBool("FreshWipe", false)
 
     if !ply:CompareStatus(0) then
-
         ply:SetNWInt("Quits", ply:GetNWInt("Quits", 0) + 1)
-        
     end
 
 	Stats.UninitializeAll(ply)
-
 end)
 
 hook.Add("ShutDown", "ServerUninitializeStats", function(ply)
-
 	for k, v in pairs(player.GetHumans()) do
-
 		Stats.UninitializeAll(v)
-
 	end
-
 end)
 
 hook.Add("PlayerDeath", "DeathUpdateStats", function(victim, weapon, attacker)
-
     -- update victim's stats (cringe lootcel)
-
     victim:SetNWInt("Deaths", victim:GetNWInt("Deaths") + 1)
 
     -- update attacker stats (based and alivepilled)
-
     if attacker == victim then return end
 
     attacker:SetNWInt("Kills", attacker:GetNWInt("Kills") + 1)
-
 end)
 
 hook.Add("EntityTakeDamage", "DamageUpdateStats", function(ply, damageInfo)
-
     if !ply:IsPlayer() then return end
 
     local damageAmount = damageInfo:GetDamage()
@@ -185,11 +159,8 @@ hook.Add("EntityTakeDamage", "DamageUpdateStats", function(ply, damageInfo)
     elseif damageAmount > 0 then
         attacker:SetNWInt("DamageDealt", attacker:GetNWInt("DamageDealt") + damageAmount)
     end
-
 end)
 
 hook.Add("PlayerExtraction", "ExtractUpdateStats", function(ply, time, isGuranteed)
-
     ply:SetNWInt("Extractions", ply:GetNWInt("Extractions") + 1)
-
 end)

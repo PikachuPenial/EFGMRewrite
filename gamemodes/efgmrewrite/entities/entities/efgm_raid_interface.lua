@@ -24,40 +24,27 @@ function ENT:KeyValue(key, value)
 end
 
 function ENT:AcceptInput(name, ply, caller, data)
-
     if name == "StartRaid" then
-
         RAID:StartRaid(self.RaidTime)
-
     end
 
     if name == "EndRaid" then
-        
         RAID:EndRaid()
-
     end
 
     if name == "SetRaidTime" then
-
         if RAID.Status != raidStatus.ACTIVE then return end
         
         RAID.CurrentTime = tonumber(data)
-
     end
 
     if name == "SetPlayerReadiness" then
-
         local isReady = tobool(data)
 
-        ply:SetNWBool( "RaidReady", isReady )
+        ply:SetNWBool("RaidReady", isReady)
 
         if isReady then
-            
             hook.Run("CheckRaidAddPlayers", ply)
-
         end
-
     end
-
-
 end

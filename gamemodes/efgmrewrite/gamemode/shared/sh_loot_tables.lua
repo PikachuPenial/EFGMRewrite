@@ -1,4 +1,3 @@
-
 -- TODO ASAP: SEPARATE LOOT FOR SPAWNING AND LOOT FOR PURCHASE
 
 sellMultiplier = 1 -- placeholder basically

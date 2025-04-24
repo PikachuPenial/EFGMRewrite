@@ -1,7 +1,6 @@
 -- lua enum approx because fuck me and fuck you (and fuck ttt because thats how im learning metatables, please refer to words 5 through 9)
 
 -- player status
-
 playerStatus = {
     LOBBY = 0,
     PMC = 1,
@@ -9,7 +8,6 @@ playerStatus = {
 }
 
 -- raid status
-
 raidStatus = {
     PENDING = 0,
     ACTIVE = 1,
@@ -40,7 +38,6 @@ for k, v in pairs(cat) do
 end
 
 models = {
-
     -- k == itemname, v == modelpath
 
     ["Pistol"] = "models/Items/BoxSRounds.mdl",
@@ -52,5 +49,4 @@ models = {
     ["XBowBolt"] = "models/Items/CrossbowRounds.mdl",
     ["SMG1_Grenade"] = "models/Items/AR2_Grenade.mdl",
     ["AR2AltFire"] = "models/Items/combine_rifle_ammo01.mdl",
-
 }

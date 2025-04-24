@@ -1,7 +1,5 @@
-
 -- has to be ran once all SWEPs are created
 hook.Add("InitPostEntity", "WeaponIntel", function()
-
     -- grab all weapons, its 4am let this slide please
     local weaponList = table.Copy(debugPrimWep)
     table.Add(weaponList, debugSecWep)
@@ -9,7 +7,6 @@ hook.Add("InitPostEntity", "WeaponIntel", function()
     table.Add(weaponList, debugMeleeWep)
 
     for k, v in SortedPairsByValue(weaponList) do
-
         local wep = table.Copy(weapons.Get(v))
 
         -- weapon stats
@@ -47,7 +44,5 @@ Year: ]] .. year
         }
 
         table.insert(Intel.WEAPONS, wepTable)
-
     end
-
 end)

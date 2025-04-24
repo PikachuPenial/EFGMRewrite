@@ -50,7 +50,6 @@ function ENT:KeyValue(key, value)
 end
 
 function ENT:Initialize()
-
 	-- bitwise operation for flags yipp fucking ee (will require some explanation)
 
 	-- returns integer that is a representation of all the flags in binary
@@ -72,73 +71,50 @@ function ENT:Initialize()
 
 	-- You can guess what's happening here. Do it, guess, pussy.
 	self.InstantExtract = bit.band(flags, 4) == 4
-
 end
 
 function ENT:AcceptInput(name, ply, caller, data)
-	
 	if name == "EnableExtract" then
-
         self.IsDisabled = false
         self:TriggerOutput( "OnExtractEnabled", ply, data )
-
     end
 
 	if name == "DisableExtract" then
-
         self.IsDisabled = true
         self:TriggerOutput( "OnExtractDisabled", ply, data )
 
         for k, v in ipairs( player.GetHumans() ) do
-
             self:Fire( "StopExtractingPlayer", nil, 0, ply, caller )
-            
         end
-
     end
 
 	if name == "ToggleExtract" then
-
         if self.IsDisabled then
-            
             self:Fire( "EnableExtract", nil, 0, ply, caller )
             self:TriggerOutput( "OnExtractEnabled", ply, data )
-
         else
-
             self:Fire( "DisableExtract", nil, 0, ply, caller )
             self:TriggerOutput( "OnExtractDisabled", ply, data )
-
         end
-
     end
 
     if name == "StartExtractingPlayer" && ply:IsPlayer() then
-
         if ply:CompareStatus(0) or !ply:CompareSpawnGroup(self.ExtractGroup) then return end
 
         if self.IsDisabled then
-
             ply:PrintMessage( HUD_PRINTCENTER, self.DisabledMessage )
-
         else
-
             self:StartExtract(ply)
-
         end
-
     end
 
     if name == "StopExtractingPlayer" && !self.IsDisabled && ply:IsPlayer() then
-
         if !ply:CompareStatus( 0 ) && ply:CompareSpawnGroup( self.ExtractGroup ) then self:StopExtract( ply ) end
-
     end
 
 end
 
 function ENT:StartExtract(ply)
-
 	if self.InstantExtract then self.Extract(ply) return end
 
 	net.Start("SendExtractionStatus")
@@ -154,17 +130,12 @@ function ENT:StartExtract(ply)
 	if timer.Exists(timerName) then return end
 
 	-- actual extract logic
-
 	timer.Create(timerName, self.ExtractTime, 1, function()
-
 		self:Extract(ply)
-
 	end)
-
 end
 
 function ENT:StopExtract(ply)
-
 	net.Start("SendExtractionStatus")
 	net.WriteBool(false) -- false signals that the player left the extraction points boundaries
 	net.Send(ply)
@@ -176,15 +147,10 @@ function ENT:StopExtract(ply)
 	if !timer.Exists(timerName) then return end
 
 	-- actual stop extract logic
-
 	timer.Remove(timerName)
-
 end
 
 function ENT:Extract(ply)
-
-    self:TriggerOutput( "OnPlayerExtract", ply )
-    
+    self:TriggerOutput("OnPlayerExtract", ply)
     hook.Run("PlayerExtraction", ply, self.ExtractTime, self.IsGuranteed)
-
 end

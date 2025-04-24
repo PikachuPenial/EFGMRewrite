@@ -1,7 +1,5 @@
-
 -- self explanitory (erm actually its explanatory 🤓) (fuck off porty)
 if CLIENT then
-
     CreateClientConVar("efgm_bind_menu", KEY_TAB, true, true, "Determines the keybind that will display the menu")
     CreateClientConVar("efgm_bind_showcompass", KEY_M, true, true, "Determines the keybind that shows the compass")
     CreateClientConVar("efgm_bind_raidinfo", KEY_O, true, true, "Determines the keybind that will display available extracts and time remaining in the raid")
@@ -19,23 +17,18 @@ if CLIENT then
     CreateClientConVar("efgm_bind_equip_secondary", KEY_3, true, true, "Determines the keybind that equips your secondary")
     CreateClientConVar("efgm_bind_equip_melee", KEY_4, true, true, "Determines the keybind that equips your melee")
     CreateClientConVar("efgm_bind_equip_utility", KEY_G, true, true, "Determines the keybind that equips your grenade")
-
 end
 
 hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
-
     if SERVER then
-
         -- drop weapon
         if button == ply:GetInfoNum("efgm_bind_dropweapon", KEY_MINUS) then
             ply:DropWeapon(ply:GetActiveWeapon())
             return
         end
-
     end
 
     if CLIENT then
-
         -- toggle menu
         if button == ply:GetInfoNum("efgm_bind_menu", KEY_TAB) then
             ply:ConCommand("efgm_gamemenu Stats")
@@ -106,7 +99,6 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
             ply:ConCommand("efgm_inventory_equip 17")
             return
         end
-
     end
 
     -- SHARED (for networking/prediction)
@@ -138,9 +130,7 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
 end)
 
 hook.Add("PlayerButtonUp", "EFGMBindsUp", function(ply, button)
-
     if CLIENT then
-
         -- switching sights
         if button == ply:GetInfoNum("efgm_bind_changesight", MOUSE_MIDDLE) then
             ply:ConCommand("-arc9_switchsights")
@@ -157,7 +147,6 @@ hook.Add("PlayerButtonUp", "EFGMBindsUp", function(ply, button)
             ply:ConCommand("-arc9_inspect")
             return
         end
-
     end
 
     -- SHARED (for networking/prediction)
@@ -180,13 +169,11 @@ end)
 
 -- client sided keybinds do not work in singleplayer, rewriting multiplayer based keybindings to work when playing in a singleplayer instance
 if game.SinglePlayer() then
-
     hook.Remove("PlayerButtonDown", "EFGMBinds")
     hook.Remove("PlayerButtonUp", "EFGMBindsUp")
     hook.Add("PlayerButtonDown", "EFGMBindsSP", function(ply, button)
 
         if SERVER then
-
             -- drop weapon
             if button == ply:GetInfoNum("efgm_bind_dropweapon", KEY_MINUS) then
                 ply:DropWeapon(ply:GetActiveWeapon())
@@ -227,7 +214,6 @@ if game.SinglePlayer() then
                 ply:ConCommand("+arc9_inspect")
                 return
             end
-
         end
 
         -- SHARED (for networking/prediction)
@@ -285,11 +271,9 @@ if game.SinglePlayer() then
             end
             return
         end
-
     end)
 
     hook.Add("PlayerButtonUp", "EFGMBindsUp", function(ply, button)
-
         if SERVER then
 
             -- switching sights
@@ -308,7 +292,6 @@ if game.SinglePlayer() then
                 ply:ConCommand("-arc9_inspect")
                 return
             end
-
         end
 
         -- SHARED (for networking/prediction)
@@ -326,7 +309,5 @@ if game.SinglePlayer() then
             ply:SetNW2Var("leaning_right", false)
             return
         end
-
     end)
-
 end

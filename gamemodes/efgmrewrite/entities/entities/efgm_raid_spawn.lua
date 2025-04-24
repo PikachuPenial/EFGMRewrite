@@ -10,39 +10,27 @@ ENT.SpawnName = ""
 ENT.Spawns = {}
 
 function ENT:KeyValue(key, value)
-
     if key == "spawn_type" then
-
         self.SpawnType = tonumber(value)
-
     end
 
     if key == "spawn_group" then
-
         self.SpawnGroup = value
-
     end
 
     if key == "targetname" then
-
         self.SpawnName = value
-
     end
 
 end
 
 function ENT:Initialize()
 
-    timer.Simple( 1, function() -- gives all the team spawns a chance to initialize first
-    
-        for k, v in ipairs( ents.FindByClass( "efgm_team_spawn" ) ) do
-        
-            if v.MainSpawnName == self.SpawnName then table.insert( self.Spawns, v ) end
-    
+    timer.Simple(1, function() -- gives all the team spawns a chance to initialize first
+        for k, v in ipairs( ents.FindByClass("efgm_team_spawn")) do
+            if v.MainSpawnName == self.SpawnName then table.insert(self.Spawns, v) end
         end
-    
-        table.insert( self.Spawns, self )
 
+        table.insert(self.Spawns, self)
     end)
-
 end

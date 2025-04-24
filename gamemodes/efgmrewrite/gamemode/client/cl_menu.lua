@@ -1798,7 +1798,6 @@ function Menu.OpenTab.Match()
 
     end
     squadColorR:SetValue(255) -- refer to the DNumberWang above
-    print(squadColorR:GetHighlightColor())
 
     local squadColorG = vgui.Create("DNumberWang", squadColorPanel)
     squadColorG:SetPos(EFGM.MenuScale(135), EFGM.MenuScale(30))
@@ -3500,7 +3499,7 @@ function Menu.OpenTab.Settings()
     adsSensPanel:SetSize(0, EFGM.MenuScale(50))
     function adsSensPanel:Paint(w, h)
 
-        draw.SimpleTextOutlined("Aim Down Sight Sensitivity", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined("Aim Down Sights Sensitivity", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
     end
 
@@ -3511,6 +3510,20 @@ function Menu.OpenTab.Settings()
     adsSens:SetMin(0)
     adsSens:SetMax(2)
     adsSens:SetDecimals(2)
+
+    local gradualADSPanel = vgui.Create("DPanel", controls)
+    gradualADSPanel:Dock(TOP)
+    gradualADSPanel:SetSize(0, EFGM.MenuScale(50))
+    function gradualADSPanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Gradual Aim Down Sights Sensitivity", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local gradualADS = vgui.Create("DCheckBox", gradualADSPanel)
+    gradualADS:SetPos(EFGM.MenuScale(152), EFGM.MenuScale(30))
+    gradualADS:SetConVar("arc9_gradual_sens")
+    gradualADS:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
 
     local magnificationCompensationPanel = vgui.Create("DPanel", controls)
     magnificationCompensationPanel:Dock(TOP)

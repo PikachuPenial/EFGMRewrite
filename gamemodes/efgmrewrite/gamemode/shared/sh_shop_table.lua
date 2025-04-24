@@ -1,4 +1,3 @@
-
 sellMultiplier = 1 -- placeholder basically
 
 ITEMS = {}
@@ -54,7 +53,6 @@ ITEMS["SMG1_Grenade"]               = {2, cat.Alt       , 550, 1, 1}
 ITEMS["AR2AltFire"]                 = {2, cat.Alt       , 400, 1, 1}
 
 concommand.Add("efgm_debug_shoplist", function(ply, cmd, args)
-
     local itemString = "ITEM (Type, Category, Cost per Item, Required Level)\n\n"
 
     -- for readability
@@ -63,21 +61,15 @@ concommand.Add("efgm_debug_shoplist", function(ply, cmd, args)
     local tbl = {} tbl[1] = "Weapon" tbl[2] = "Ammo"
 
     for k, v in pairs(ITEMS) do -- k is "itemname", v is {1, 2, 3, 4, 5}
-
         int = int + 1
 
-        itemString = itemString .. k .. " ("..tbl[v[1]]..", "..revCat[v[2]]..", $".. math.Round( v[3]/v[5], 2 )..", "..v[4]..")\n"
+        itemString = itemString .. k .. " (" .. tbl[v[1]] .. ", " .. revCat[v[2]] .. ", $" .. math.Round(v[3]/v[5], 2) .. ", " .. v[4] .. ")\n"
 
         if int == 4 then
-            
             int = 0
-
             itemString = itemString .. "\n"
-
         end
-
     end
 
     print(itemString)
-
 end)

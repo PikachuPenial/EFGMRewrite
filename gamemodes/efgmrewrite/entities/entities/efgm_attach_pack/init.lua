@@ -7,7 +7,6 @@ ENT.AttachCount = 0
 ENT.AttachTable = {}
 
 function ENT:Initialize()
-
 	self:SetModel(self.Model)
 	self:PhysicsInit(SOLID_VPHYSICS)
 	self:SetMoveType(MOVETYPE_VPHYSICS)
@@ -24,20 +23,16 @@ function ENT:Initialize()
 
 	self:SetHealth(self.BaseHealth)
     self:GetAttatchments( 50, 150)
-
 end
 
 function ENT:GetAttatchments( minCount, maxCount )
-
     self.AttachCount = math.random( minCount, maxCount )
-    
+
     self.AttachTable = table.Copy(ARC9.Attachments_Index)
     table.Shuffle(self.AttachTable)
-
 end
 
 function ENT:Use(activator)
-
     if !activator:IsPlayer() then return end
     if table.IsEmpty( self.AttachTable ) then return end
 
@@ -52,7 +47,6 @@ function ENT:Use(activator)
 
     ARC9:PlayerSendAttInv(activator)
     self:Remove()
-
 end
 
 ENT.OnTakeDamage = nil
