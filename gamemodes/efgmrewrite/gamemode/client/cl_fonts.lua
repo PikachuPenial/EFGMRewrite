@@ -1,7 +1,6 @@
 -- create/reload fonts when needed
 local function CreateFonts()
     -- MENU (seriously, dont use this unless it is in the menu, it won't scale properly)
-
     -- use instead of 'DermaDefault' & just pick which will look better or smth
     surface.CreateFont("PuristaBold18", {font = "PuristaBold", size = EFGM.MenuScale(18), weight = 500, antialias = true, extended = true})
     surface.CreateFont("Purista18", {font = "Purista", size = EFGM.MenuScale(18), weight = 500, antialias = true, extended = true})
@@ -21,13 +20,13 @@ local function CreateFonts()
     surface.CreateFont("Default", {font = "Purista", size = EFGM.MenuScale(16), weight = 600, antialias = true, italic = false, extended = true})
 
     -- HUD
-
     surface.CreateFont("Bender24", {font = "Bender", size = EFGM.ScreenScale(24), weight = 550, antialias = true, extended = true})
     surface.CreateFont("BenderAmmoCount", { font = "Bender", size = EFGM.ScreenScale(32), weight = 550, antialias = true, extended = false })
     surface.CreateFont("BenderExfilList", { font = "BenderBold", size = EFGM.ScreenScale(40), weight = 550, antialias = true, extended = true })
     surface.CreateFont("BenderExfilTimer", { font = "BenderBold", size = EFGM.ScreenScale(60), weight = 550, antialias = true, extended = true })
     surface.CreateFont("BenderExfilName", {font = "Bender", size = EFGM.ScreenScale(28), weight = 550, antialias = true, extended = true})
     surface.CreateFont("BenderWeaponName", { font = "Bender", size = EFGM.ScreenScale(21), weight = 550, antialias = true, extended = false })
+    surface.CreateFont("BenderNotification", { font = "Bender", size = EFGM.ScreenScale(26), weight = 550, antialias = true, extended = true })
     surface.CreateFont("BenderDebug", { font = "Bender", size = EFGM.ScreenScale(14), weight = 550, antialias = true, extended = true })
 end
 

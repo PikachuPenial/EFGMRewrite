@@ -24,9 +24,9 @@ function ENT:AcceptInput(name, ply, caller, data)
 
     if name == "StartEvent" then
 
-        self:TriggerOutput( "OnEventStart", ply )
+        self:TriggerOutput("OnEventStart", ply)
 
-        hook.Run( "DoEventStart", self.EventName, self.EventDescription, ply )
+        hook.Run("DoEventStart", self.EventName, self.EventDescription, ply)
 
     end
 

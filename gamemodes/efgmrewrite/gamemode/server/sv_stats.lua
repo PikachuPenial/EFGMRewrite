@@ -1,71 +1,6 @@
 -- skill systems go here
 Stats = {}
 
--- stat convenience functions
-function Stats.InitializeAll(ply)
-    -- stats
-    InitializeNetworkBool(ply, "FreshWipe", true) -- false if player has logged on once this wipe
-    InitializeNetworkInt(ply, "Level", 0)
-    InitializeNetworkInt(ply, "Experience", 0)
-	InitializeNetworkInt(ply, "MoneyEarned", 0) -- all money earned
-	InitializeNetworkInt(ply, "MoneySpent", 0) -- all money spent (money would just be MoneyEarned - MoneySpent)
-	InitializeNetworkInt(ply, "Time", 0) -- playtime in minutes
-    InitializeNetworkInt(ply, "StashValue", 1) -- value of all items in stash
-
-    -- combat
-	InitializeNetworkInt(ply, "Kills", 0)
-	InitializeNetworkInt(ply, "Deaths", 0)
-    InitializeNetworkInt(ply, "Suicides", 0)
-	InitializeNetworkInt(ply, "DamageDealt", 0)
-	InitializeNetworkInt(ply, "DamageRecieved", 0)
-	InitializeNetworkInt(ply, "DamageHealed", 0)
-    InitializeNetworkInt(ply, "Headshots", 0)
-    InitializeNetworkInt(ply, "FarthestKill", 0)
-
-    -- raids
-	InitializeNetworkInt(ply, "Extractions", 0)
-	InitializeNetworkInt(ply, "Quits", 0)
-	InitializeNetworkInt(ply, "RaidsPlayed", 0) -- the amount of full raids played, counted if you join before the first minute and stay until the raid ends
-
-    -- streaks
-    InitializeNetworkInt(ply, "CurrentKillStreak", 1)
-    InitializeNetworkInt(ply, "BestKillStreak", 1)
-    InitializeNetworkInt(ply, "CurrentExtractionStreak", 1)
-    InitializeNetworkInt(ply, "BestExtractionStreak", 1)
-end
-
-function Stats.UninitializeAll(ply)
-    -- stats
-    UninitializeNetworkBool(ply, "FreshWipe")
-    UninitializeNetworkInt(ply, "Level")
-    UninitializeNetworkInt(ply, "Experience")
-	UninitializeNetworkInt(ply, "MoneyEarned")
-	UninitializeNetworkInt(ply, "MoneySpent")
-	UninitializeNetworkInt(ply, "Time")
-    UninitializeNetworkInt(ply, "StashValue")
-
-    -- combat
-	UninitializeNetworkInt(ply, "Kills")
-	UninitializeNetworkInt(ply, "Deaths")
-    UninitializeNetworkInt(ply, "Suicides")
-	UninitializeNetworkInt(ply, "DamageDealt")
-	UninitializeNetworkInt(ply, "DamageRecieved")
-	UninitializeNetworkInt(ply, "DamageHealed")
-    UninitializeNetworkInt(ply, "Headshots")
-    UninitializeNetworkInt(ply, "FarthestKill")
-
-    -- raids
-	UninitializeNetworkInt(ply, "Extractions")
-	UninitializeNetworkInt(ply, "Quits")
-	UninitializeNetworkInt(ply, "RaidsPlayed")
-
-    -- streaks
-    UninitializeNetworkInt(ply, "CurrentKillStreak")
-    UninitializeNetworkInt(ply, "BestKillStreak")
-    UninitializeNetworkInt(ply, "CurrentExtractionStreak")
-    UninitializeNetworkInt(ply, "BestExtractionStreak")
-end
-
 function Stats.GetAll(ply)
     local tbl = {}
 
@@ -107,9 +42,7 @@ end)
 
 -- hooks yippee
 hook.Add("PlayerInitialSpawn", "PlayerInitializeStats", function(ply)
-	-- setup nwints and custom pdatas (these only use regular pdata for now)
-
-    Stats.InitializeAll(ply)
+    SetupPlayerData(ply)
 end)
 
 hook.Add("PlayerDisconnected", "PlayerUninitializeStats", function(ply)
@@ -119,12 +52,12 @@ hook.Add("PlayerDisconnected", "PlayerUninitializeStats", function(ply)
         ply:SetNWInt("Quits", ply:GetNWInt("Quits", 0) + 1)
     end
 
-	Stats.UninitializeAll(ply)
+	SavePlayerData(ply)
 end)
 
 hook.Add("ShutDown", "ServerUninitializeStats", function(ply)
 	for k, v in pairs(player.GetHumans()) do
-		Stats.UninitializeAll(v)
+		SavePlayerData(v)
 	end
 end)
 

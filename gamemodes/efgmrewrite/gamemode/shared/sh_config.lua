@@ -6,7 +6,7 @@ debugPrimWep = {"arc9_eft_adar15", "arc9_eft_tx15", "arc9_eft_sag_ak545", "arc9_
 debugSecWep = {"arc9_eft_m9a3", "arc9_eft_pd20", "arc9_eft_deagle_l5", "arc9_eft_deagle_l6", "arc9_eft_deagle_xix", "arc9_eft_fn57", "arc9_eft_glock17", "arc9_eft_glock18c", "arc9_eft_glock19x", "arc9_eft_usp", "arc9_eft_pl15", "arc9_eft_pm", "arc9_eft_pb", "arc9_eft_rsh12", "arc9_eft_p226r", "arc9_eft_sr1mp", "arc9_eft_apb", "arc9_eft_aps", "arc9_eft_tt33", "arc9_eft_mr43_sawedoff", "arc9_eft_m1911", "arc9_eft_m45"}
 debugShitSecWep = {"arc9_eft_glock17", "arc9_eft_pm", "arc9_eft_pb", "arc9_eft_tt33", "arc9_eft_mr43_sawedoff", "arc9_eft_kedr", "arc9_eft_mp18"}
 debugNadeWep = {"arc9_eft_f1", "arc9_eft_m18", "arc9_eft_m18y", "arc9_eft_m67", "arc9_eft_m7290", "arc9_eft_rdg2b", "arc9_eft_rgd5", "arc9_eft_rgn", "arc9_eft_rgo", "arc9_eft_v40", "arc9_eft_vog17", "arc9_eft_vog25", "arc9_eft_zarya"}
-debugMeleeWep = {"arc9_eft_melee_taran", "arc9_eft_melee_6x5", "arc9_eft_melee_wycc", "arc9_eft_melee_a2607", "arc9_eft_melee_a2607d", "arc9_eft_melee_camper", "arc9_eft_melee_crash", "arc9_eft_melee_cultist", "arc9_eft_melee_fulcrum", "arc9_eft_melee_crowbar", "arc9_eft_melee_kiba", "arc9_eft_melee_kukri", "arc9_eft_melee_m2", "arc9_eft_melee_mpl50", "arc9_eft_melee_rebel", "arc9_eft_melee_voodoo", "arc9_eft_melee_sp8", "arc9_eft_melee_hultafors", "arc9_eft_melee_taiga"}
+debugMeleeWep = {"arc9_eft_melee_taran", "arc9_eft_melee_6x5", "arc9_eft_melee_akula", "arc9_eft_melee_wycc", "arc9_eft_melee_gladius", "arc9_eft_melee_a2607", "arc9_eft_melee_a2607d", "arc9_eft_melee_camper", "arc9_eft_melee_labris", "arc9_eft_melee_crash", "arc9_eft_melee_cultist", "arc9_eft_melee_fulcrum", "arc9_eft_melee_crowbar", "arc9_eft_melee_kiba", "arc9_eft_melee_kukri", "arc9_eft_melee_m2", "arc9_eft_melee_mpl50", "arc9_eft_melee_rebel", "arc9_eft_melee_voodoo", "arc9_eft_melee_sp8", "arc9_eft_melee_hultafors", "arc9_eft_melee_taiga"}
 
 -- get a copy of every attachment loaded by ARC9
 debugRandAtts = table.Copy(ARC9.Attachments_Index)
@@ -60,7 +60,7 @@ if SERVER then
     RunConsoleCommand("arc9_eft_taran_jam", "0")
     RunConsoleCommand("arc9_mod_peek", "0")
     RunConsoleCommand("sv_vmanip_pickups", "1")
-    RunConsoleCommand("arc9_eft_nontpik_mode", "1")
+    RunConsoleCommand("arc9_eft_nontpik_mode", "0")
     RunConsoleCommand("arc9_eft_singleuse_behaviour", "1")
 
     -- physics
@@ -149,8 +149,8 @@ if CLIENT then
     RunConsoleCommand("arc9_vm_cambobintensity", "0.66")
 
     -- tpik
-    RunConsoleCommand("arc9_tpik_others", "0")
-    RunConsoleCommand("arc9_tpik_framerate", "1")
+    RunConsoleCommand("arc9_tpik", "1")
+    RunConsoleCommand("arc9_tpik_others", "1")
 
     -- true names
     RunConsoleCommand("arc9_truenames", "1")

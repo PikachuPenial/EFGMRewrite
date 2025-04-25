@@ -7,10 +7,10 @@ if CLIENT then
     CreateClientConVar("efgm_bind_leanright", KEY_E, true, true, "Determines the keybind that will begin a right lean")
     CreateClientConVar("efgm_bind_freelook", MOUSE_MIDDLE, true, true, "Determines the keybind that will begin a free look")
     CreateClientConVar("efgm_bind_changesight", MOUSE_MIDDLE, true, true, "Determines the keybind that adjusts the zoom/reticle of your weapons sight")
+    CreateClientConVar("efgm_bind_changefiremode", KEY_B, true, true, "Determines the keybind that toggles between available fire modes for your weapon")
     CreateClientConVar("efgm_bind_inspectweapon", KEY_I, true, true, "Determines the keybind that inspects your weapon")
     CreateClientConVar("efgm_bind_dropweapon", KEY_MINUS, true, true, "Determines the keybind that drops your held weapon")
     CreateClientConVar("efgm_bind_teaminvite", KEY_PERIOD, true, true, "Determines the keybind that invites someone to your team, or accepts somebody else's team ivnite")
-
 
     CreateClientConVar("efgm_bind_equip_primary1", KEY_1, true, true, "Determines the keybind that equips your first primary")
     CreateClientConVar("efgm_bind_equip_primary2", KEY_2, true, true, "Determines the keybind that equips your second primary")
@@ -50,6 +50,13 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
         -- switching sights
         if button == ply:GetInfoNum("efgm_bind_changesight", MOUSE_MIDDLE) then
             ply:ConCommand("+arc9_switchsights")
+            return
+        end
+
+        -- toggle fire modes
+        if button == ply:GetInfoNum("efgm_bind_changefiremode", KEY_B) then
+            ply:ConCommand("+zoom")
+            return
         end
 
         -- free looking
@@ -134,6 +141,13 @@ hook.Add("PlayerButtonUp", "EFGMBindsUp", function(ply, button)
         -- switching sights
         if button == ply:GetInfoNum("efgm_bind_changesight", MOUSE_MIDDLE) then
             ply:ConCommand("-arc9_switchsights")
+            return
+        end
+
+        -- toggle fire modes
+        if button == ply:GetInfoNum("efgm_bind_changefiremode", KEY_B) then
+            ply:ConCommand("-zoom")
+            return
         end
 
         -- free looking
@@ -201,6 +215,13 @@ if game.SinglePlayer() then
             -- switching sights
             if button == ply:GetInfoNum("efgm_bind_changesight", MOUSE_MIDDLE) then
                 ply:ConCommand("+arc9_switchsights")
+                return
+            end
+
+            -- toggle fire modes
+            if button == ply:GetInfoNum("efgm_bind_changefiremode", KEY_B) then
+                ply:ConCommand("+zoom")
+                return
             end
 
             -- free looking
@@ -279,6 +300,13 @@ if game.SinglePlayer() then
             -- switching sights
             if button == ply:GetInfoNum("efgm_bind_changesight", MOUSE_MIDDLE) then
                 ply:ConCommand("-arc9_switchsights")
+                return
+            end
+
+            -- toggle fire modes
+            if button == ply:GetInfoNum("efgm_bind_changefiremode", KEY_B) then
+                ply:ConCommand("-zoom")
+                return
             end
 
             -- free looking

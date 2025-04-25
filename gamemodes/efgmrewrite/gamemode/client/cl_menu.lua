@@ -63,17 +63,6 @@ local function GetEntityGroups(ent, override)
 
 end
 
-local cursor = Material("icons/cursors/cursor.png", "mips smooth")
-function draw.CustomCursor(panel, material)
-
-	local cursorX, cursorY = panel:LocalCursorPos()
-
-	surface.SetDrawColor(255, 255, 255, 240)
-	surface.SetMaterial(material)
-	surface.DrawTexturedRect(cursorX, cursorY, 24, 24)
-
-end
-
 -- called non-globally to initialize the menu, that way it can only be initialized once by Menu:Open()
 -- also openTab is the name of the tab it should open to
 function Menu:Initialize(openTo)
@@ -92,7 +81,7 @@ function Menu:Initialize(openTo)
     menuFrame:NoClipping(true)
     menuFrame:MouseCapture(false)
 
-    menuFrame:AlphaTo(255, 0.2, 0, function() end)
+    menuFrame:AlphaTo(255, 0.2, 0, nil)
 
     self.StartTime = SysTime()
     self.Unblur = false
@@ -110,21 +99,15 @@ function Menu:Initialize(openTo)
 
     -- close menu with the game menu keybind
     function menuFrame:OnKeyCodeReleased(key)
-
         if key == menuBind then
-
             self.Closing = true
             menuFrame:SetKeyboardInputEnabled(false)
             menuFrame:SetMouseInputEnabled(false)
 
             menuFrame:AlphaTo(0, 0.1, 0, function()
-
                 menuFrame:Close()
-
             end)
-
         end
-
     end
 
     function menuFrame:Think()
@@ -286,7 +269,7 @@ function Menu:Initialize(openTo)
             Menu.OpenTab.Stats()
             Menu.ActiveTab = "Stats"
 
-            Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, function() end)
+            Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, nil)
 
         end)
 
@@ -354,7 +337,7 @@ function Menu:Initialize(openTo)
             Menu.OpenTab.Match()
             Menu.ActiveTab = "Match"
 
-            Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, function() end)
+            Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, nil)
 
         end)
 
@@ -424,7 +407,7 @@ function Menu:Initialize(openTo)
             Menu.OpenTab.Inventory()
             Menu.ActiveTab = "Inventory"
 
-            Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, function() end)
+            Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, nil)
 
         end)
 
@@ -551,7 +534,7 @@ function Menu:Initialize(openTo)
             Menu.OpenTab.Skills()
             Menu.ActiveTab = "Skills"
 
-            Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, function() end)
+            Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, nil)
 
         end)
 
@@ -619,7 +602,7 @@ function Menu:Initialize(openTo)
             Menu.OpenTab.Intel()
             Menu.ActiveTab = "Intel"
 
-            Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, function() end)
+            Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, nil)
 
         end)
 
@@ -756,7 +739,7 @@ function Menu:Initialize(openTo)
             Menu.OpenTab.Settings()
             Menu.ActiveTab = "Settings"
 
-            Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, function() end)
+            Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, nil)
 
         end)
 
@@ -813,7 +796,7 @@ function Menu:Initialize(openTo)
 
         -- i cant figure this out so enjoy the Stats tab
         Menu.OpenTab.Inventory()
-        Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, function() end)
+        Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, nil)
         Menu.ActiveTab = "Inventory"
 
     end
@@ -878,6 +861,7 @@ function Menu.OpenTab.Inventory()
     end
 
     local playerModel = vgui.Create("DModelPanel", playerPanel)
+    playerModel:SetAlpha(0)
     playerModel:Dock(FILL)
     playerModel:SetMouseInputEnabled(false)
     playerModel:SetFOV(26)
@@ -887,6 +871,7 @@ function Menu.OpenTab.Inventory()
     playerModel:SetDirectionalLight(BOX_LEFT, Color(80, 160, 255, 255))
     playerModel:SetAnimated(true)
     playerModel:SetModel(Menu.Player:GetModel())
+    playerModel:AlphaTo(255, 0.1, 0, nil)
 
     local groups = GetEntityGroups(Menu.Player, override)
 
@@ -1366,14 +1351,14 @@ function Menu.OpenTab.Inventory()
 
     sortButton.OnCursorEntered = function(s)
 
-        sortButtonText:AlphaTo(255, 0.05, 0)
+        sortButtonText:AlphaTo(255, 0.05, 0, nil)
         surface.PlaySound("ui/element_hover.wav")
 
     end
 
     sortButton.OnCursorExited = function(s)
 
-        sortButtonText:AlphaTo(0, 0.05, 0)
+        sortButtonText:AlphaTo(0, 0.05, 0, nil)
 
     end
 
@@ -1402,11 +1387,12 @@ function Menu.OpenTab.Intel()
 
     local entryBar = mainEntryList:GetVBar()
     entryBar:SetHideButtons(true)
+    entryBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
     function entryBar:Paint(w, h)
-        draw.RoundedBox(0, 0, 0, w, h, MenuAlias.transparent)
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
     end
     function entryBar.btnGrip:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.transparent)
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
     end
 
     local subEntryPanel = vgui.Create("DPanel", contents)
@@ -1584,11 +1570,12 @@ function Menu.OpenTab.Match()
 
     local pmcPanelBar = pmcPanel:GetVBar()
     pmcPanelBar:SetHideButtons(true)
+    pmcPanelBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
     function pmcPanelBar:Paint(w, h)
-        draw.RoundedBox(0, 0, 0, w, h, MenuAlias.transparent)
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
     end
     function pmcPanelBar.btnGrip:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.transparent)
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
     end
 
     pmcList = vgui.Create("DListLayout", pmcPanel)
@@ -1870,11 +1857,12 @@ function Menu.OpenTab.Match()
 
     local availableSquadsPanelBar = availableSquadsPanel:GetVBar()
     availableSquadsPanelBar:SetHideButtons(true)
+    availableSquadsPanelBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
     function availableSquadsPanelBar:Paint(w, h)
-        draw.RoundedBox(0, 0, 0, w, h, MenuAlias.transparent)
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
     end
     function availableSquadsPanelBar.btnGrip:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.transparent)
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
     end
 
     local availableSquadsList = vgui.Create("DListLayout", availableSquadsPanel)
@@ -1967,7 +1955,7 @@ function Menu.OpenTab.Match()
                 squadPopOut:SetSize(EFGM.MenuScale(200), EFGM.MenuScale(60) + (memberCount * EFGM.MenuScale(19)))
                 UpdatePopOutPos()
                 squadPopOut:SetAlpha(0)
-                squadPopOut:AlphaTo(255, 0.1, 0, function() end)
+                squadPopOut:AlphaTo(255, 0.1, 0, nil)
                 squadPopOut:SetMouseInputEnabled(false)
 
                 -- panel needs to be slightly taller for password entry
@@ -2316,7 +2304,7 @@ function Menu.OpenTab.Match()
                     transferPopOut = vgui.Create("DPanel", Menu.MenuFrame)
                     transferPopOut:SetSize(EFGM.MenuScale(10) + textSize, EFGM.MenuScale(24))
                     UpdatePopOutPos()
-                    transferPopOut:AlphaTo(255, 0.1, 0, function() end)
+                    transferPopOut:AlphaTo(255, 0.1, 0, nil)
                     transferPopOut:SetMouseInputEnabled(false)
 
                     transferPopOut.Paint = function(s, w, h)
@@ -2409,7 +2397,7 @@ function Menu.OpenTab.Match()
                     kickPopOut = vgui.Create("DPanel", Menu.MenuFrame)
                     kickPopOut:SetSize(EFGM.MenuScale(10) + textSize, EFGM.MenuScale(24))
                     UpdatePopOutPos()
-                    kickPopOut:AlphaTo(255, 0.1, 0, function() end)
+                    kickPopOut:AlphaTo(255, 0.1, 0, nil)
                     kickPopOut:SetMouseInputEnabled(false)
 
                     kickPopOut.Paint = function(s, w, h)
@@ -2968,11 +2956,12 @@ function Menu.OpenTab.Stats()
 
     local statsBar = stats:GetVBar()
     statsBar:SetHideButtons(true)
+    statsBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
     function statsBar:Paint(w, h)
-        draw.RoundedBox(0, 0, 0, w, h, MenuAlias.transparent)
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
     end
     function statsBar.btnGrip:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.transparent)
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
     end
 
     local importantStats = vgui.Create("DPanel", stats)
@@ -3080,11 +3069,12 @@ function Menu.OpenTab.Skills()
 
     local skillsBar = skills:GetVBar()
     skillsBar:SetHideButtons(true)
+    skillsBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
     function skillsBar:Paint(w, h)
-        draw.RoundedBox(0, 0, 0, w, h, MenuAlias.transparent)
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
     end
     function skillsBar.btnGrip:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.transparent)
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
     end
 
     local skillsList = vgui.Create("DIconLayout", skills)
@@ -3173,7 +3163,7 @@ function Menu.OpenTab.Skills()
             skillPopOut = vgui.Create("DPanel", Menu.MenuFrame)
             skillPopOut:SetSize(EFGM.MenuScale(10) + skillDescTextSize, EFGM.MenuScale(80))
             UpdatePopOutPos()
-            skillPopOut:AlphaTo(255, 0.1, 0, function() end)
+            skillPopOut:AlphaTo(255, 0.1, 0, nil)
             skillPopOut:SetMouseInputEnabled(false)
 
             skillPopOut.Paint = function(s, w, h)
@@ -3266,11 +3256,12 @@ function Menu.OpenTab.Settings()
 
     local gameplayBar = gameplay:GetVBar()
     gameplayBar:SetHideButtons(true)
+    gameplayBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
     function gameplayBar:Paint(w, h)
-        draw.RoundedBox(0, 0, 0, w, h, MenuAlias.transparent)
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
     end
     function gameplayBar.btnGrip:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.transparent)
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
     end
 
     local controls = vgui.Create("DScrollPanel", contents)
@@ -3297,11 +3288,12 @@ function Menu.OpenTab.Settings()
 
     local controlsBar = controls:GetVBar()
     controlsBar:SetHideButtons(true)
+    controlsBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
     function controlsBar:Paint(w, h)
-        draw.RoundedBox(0, 0, 0, w, h, MenuAlias.transparent)
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
     end
     function controlsBar.btnGrip:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.transparent)
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
     end
 
     local interface = vgui.Create("DScrollPanel", contents)
@@ -3328,11 +3320,12 @@ function Menu.OpenTab.Settings()
 
     local interfaceBar = interface:GetVBar()
     interfaceBar:SetHideButtons(true)
+    interfaceBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
     function interfaceBar:Paint(w, h)
-        draw.RoundedBox(0, 0, 0, w, h, MenuAlias.transparent)
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
     end
     function interfaceBar.btnGrip:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.transparent)
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
     end
 
     local visuals = vgui.Create("DScrollPanel", contents)
@@ -3359,11 +3352,12 @@ function Menu.OpenTab.Settings()
 
     local visualsBar = visuals:GetVBar()
     visualsBar:SetHideButtons(true)
+    visualsBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
     function visualsBar:Paint(w, h)
-        draw.RoundedBox(0, 0, 0, w, h, MenuAlias.transparent)
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
     end
     function visualsBar.btnGrip:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.transparent)
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
     end
 
     local account = vgui.Create("DScrollPanel", contents)
@@ -3390,11 +3384,12 @@ function Menu.OpenTab.Settings()
 
     local accountBar = account:GetVBar()
     accountBar:SetHideButtons(true)
+    accountBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
     function accountBar:Paint(w, h)
-        draw.RoundedBox(0, 0, 0, w, h, MenuAlias.transparent)
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
     end
     function accountBar.btnGrip:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.transparent)
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
     end
 
     local misc = vgui.Create("DScrollPanel", contents)
@@ -3421,11 +3416,12 @@ function Menu.OpenTab.Settings()
 
     local miscBar = misc:GetVBar()
     miscBar:SetHideButtons(true)
+    miscBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
     function miscBar:Paint(w, h)
-        draw.RoundedBox(0, 0, 0, w, h, MenuAlias.transparent)
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
     end
     function miscBar.btnGrip:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.transparent)
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
     end
 
     -- settings go below
@@ -3648,6 +3644,25 @@ function Menu.OpenTab.Settings()
     function freeLook:OnChange(num)
 
         RunConsoleCommand("efgm_bind_freelook", freeLook:GetSelectedNumber())
+
+    end
+
+    local toggleFireModePanel = vgui.Create("DPanel", controls)
+    toggleFireModePanel:Dock(TOP)
+    toggleFireModePanel:SetSize(0, EFGM.MenuScale(55))
+    function toggleFireModePanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Toggle Fire Mode keybind", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local toggleFireMode = vgui.Create("DBinder", toggleFireModePanel)
+    toggleFireMode:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(30))
+    toggleFireMode:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
+    toggleFireMode:SetSelectedNumber(GetConVar("efgm_bind_changefiremode"):GetInt())
+    function toggleFireMode:OnChange(num)
+
+        RunConsoleCommand("efgm_bind_changefiremode", toggleFireMode:GetSelectedNumber())
 
     end
 
@@ -3981,19 +3996,39 @@ function Menu.OpenTab.Settings()
     impactFX:SetConVar("efgm_visuals_highqualimpactfx")
     impactFX:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
 
-    local clTPIKPanel = vgui.Create("DPanel", visuals)
-    clTPIKPanel:Dock(TOP)
-    clTPIKPanel:SetSize(0, EFGM.MenuScale(50))
-    function clTPIKPanel:Paint(w, h)
+    local tpikFPSPanel = vgui.Create("DPanel", visuals)
+    tpikFPSPanel:Dock(TOP)
+    tpikFPSPanel:SetSize(0, EFGM.MenuScale(50))
+    function tpikFPSPanel:Paint(w, h)
 
-        draw.SimpleTextOutlined("High Quality TPP Animations", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined("TPP Animation Frame Rate", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
     end
 
-    local clTPIK = vgui.Create("DCheckBox", clTPIKPanel)
-    clTPIK:SetPos(EFGM.MenuScale(152), EFGM.MenuScale(30))
-    clTPIK:SetConVar("arc9_tpik")
-    clTPIK:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+    local tpikFPS = vgui.Create("DNumSlider", tpikFPSPanel)
+    tpikFPS:SetPos(EFGM.MenuScale(35), EFGM.MenuScale(30))
+    tpikFPS:SetSize(EFGM.MenuScale(200), EFGM.MenuScale(15))
+    tpikFPS:SetConVar("arc9_tpik_framerate")
+    tpikFPS:SetMin(30)
+    tpikFPS:SetMax(144)
+    tpikFPS:SetDecimals(0)
+
+    local lodDistancePanel = vgui.Create("DPanel", visuals)
+    lodDistancePanel:Dock(TOP)
+    lodDistancePanel:SetSize(0, EFGM.MenuScale(50))
+    function lodDistancePanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("LOD (Level Of Detail) Distance", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local lodDistance = vgui.Create("DNumSlider", lodDistancePanel)
+    lodDistance:SetPos(EFGM.MenuScale(35), EFGM.MenuScale(30))
+    lodDistance:SetSize(EFGM.MenuScale(200), EFGM.MenuScale(15))
+    lodDistance:SetConVar("arc9_lod_distance")
+    lodDistance:SetMin(0.3)
+    lodDistance:SetMax(3)
+    lodDistance:SetDecimals(1)
 
     -- account
 

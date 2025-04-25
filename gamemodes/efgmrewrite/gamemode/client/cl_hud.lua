@@ -52,6 +52,16 @@ end
 
 -- players current stance and health
 local playerStance = 0
+local healthMat = Material("stances/sprint_panel.png", "tarkovMaterial")
+local healthSliderMat = Material("stances/sprint_slider.png", "tarkovMaterial")
+local healthLowSliderMat = Material("stances/sprint_slider_exh.png", "tarkovMaterial")
+local stand = Material("stances/stand0.png", "tarkovMaterial")
+local stand1 = Material("stances/stand1.png", "tarkovMaterial")
+local stand2 = Material("stances/stand2.png", "tarkovMaterial")
+local stand3 = Material("stances/stand3.png", "tarkovMaterial")
+local stand4 = Material("stances/stand4.png", "tarkovMaterial")
+local stand5 = Material("stances/stand5.png", "tarkovMaterial")
+local crouch = Material("stances/crouch.png", "tarkovMaterial")
 local function RenderPlayerStance(ply)
     -- variables
     local health = ply:Health()
@@ -77,13 +87,13 @@ local function RenderPlayerStance(ply)
 
     -- draw health
     surface.SetDrawColor(255, 255, 255, 255)
-    surface.SetMaterial(Material("stances/sprint_panel.png", "tarkovMaterial"))
+    surface.SetMaterial(healthMat)
     surface.DrawTexturedRect(EFGM.ScreenScale(20), ScrH() - EFGM.ScreenScale(29), EFGM.ScreenScale(156), EFGM.ScreenScale(13))
     surface.SetDrawColor(255, 255, 255, healthAlpha)
-    surface.SetMaterial(Material("stances/sprint_slider.png", "tarkovMaterial"))
+    surface.SetMaterial(healthSliderMat)
     surface.DrawTexturedRect(EFGM.ScreenScale(25), ScrH() - EFGM.ScreenScale(25), EFGM.ScreenScale(hpBarPercent), EFGM.ScreenScale(3))
     surface.SetDrawColor(255, 255, 255, lowHealthAlpha)
-    surface.SetMaterial(Material("stances/sprint_slider_exh.png", "tarkovMaterial"))
+    surface.SetMaterial(healthLowSliderMat)
     surface.DrawTexturedRect(EFGM.ScreenScale(25), ScrH() - EFGM.ScreenScale(25), EFGM.ScreenScale(hpBarPercent), EFGM.ScreenScale(3))
 
     -- stance check
@@ -111,31 +121,30 @@ local function RenderPlayerStance(ply)
 
     -- draw stance
     surface.SetDrawColor(255, 255, 255, Standing0Alpha)
-    surface.SetMaterial(Material("stances/stand0.png", "tarkovMaterial"))
+    surface.SetMaterial(stand)
     surface.DrawTexturedRect(EFGM.ScreenScale(25), ScrH() - EFGM.ScreenScale(200), EFGM.ScreenScale(126), EFGM.ScreenScale(166))
     surface.SetDrawColor(255, 255, 255, Standing1Alpha)
-    surface.SetMaterial(Material("stances/stand1.png", "tarkovMaterial"))
+    surface.SetMaterial(stand1)
     surface.DrawTexturedRect(EFGM.ScreenScale(25), ScrH() - EFGM.ScreenScale(195), EFGM.ScreenScale(126), EFGM.ScreenScale(160))
     surface.SetDrawColor(255, 255, 255, Standing2Alpha)
-    surface.SetMaterial(Material("stances/stand2.png", "tarkovMaterial"))
+    surface.SetMaterial(stand2)
     surface.DrawTexturedRect(EFGM.ScreenScale(25), ScrH() - EFGM.ScreenScale(191), EFGM.ScreenScale(127), EFGM.ScreenScale(154))
     surface.SetDrawColor(255, 255, 255, Standing3Alpha)
-    surface.SetMaterial(Material("stances/stand3.png", "tarkovMaterial"))
+    surface.SetMaterial(stand3)
     surface.DrawTexturedRect(EFGM.ScreenScale(25), ScrH() - EFGM.ScreenScale(184), EFGM.ScreenScale(127), EFGM.ScreenScale(148))
     surface.SetDrawColor(255, 255, 255, Standing4Alpha)
-    surface.SetMaterial(Material("stances/stand4.png", "tarkovMaterial"))
+    surface.SetMaterial(stand4)
     surface.DrawTexturedRect(EFGM.ScreenScale(25), ScrH() - EFGM.ScreenScale(179), EFGM.ScreenScale(127), EFGM.ScreenScale(143))
     surface.SetDrawColor(255, 255, 255, Standing5Alpha)
-    surface.SetMaterial(Material("stances/stand5.png", "tarkovMaterial"))
+    surface.SetMaterial(stand5)
     surface.DrawTexturedRect(EFGM.ScreenScale(25), ScrH() - EFGM.ScreenScale(174), EFGM.ScreenScale(127), EFGM.ScreenScale(138))
     surface.SetDrawColor(255, 255, 255, CrouchingAlpha)
-    surface.SetMaterial(Material("stances/crouch.png", "tarkovMaterial"))
+    surface.SetMaterial(crouch)
     surface.DrawTexturedRect(EFGM.ScreenScale(25), ScrH() - EFGM.ScreenScale(151), EFGM.ScreenScale(127), EFGM.ScreenScale(114))
 end
 
 -- extracts
 function RenderExtracts(ply)
-    -- no need to create the compass panel if it already exists
     if IsValid(extracts) then return end
 
     local extractList
@@ -176,7 +185,7 @@ function RenderExtracts(ply)
         end
     end
 
-    extracts:AlphaTo(255, 0.35, 0, function() end) -- why do i need to use a callback here???
+    extracts:AlphaTo(255, 0.35, 0, nil)
     extracts:AlphaTo(0, 1, 4.65, function() extracts:Remove() end)
 end
 
@@ -212,8 +221,8 @@ function RenderCompass(ply)
         surface.SetDrawColor(color)
         surface.DrawLine(ScrW() / 2, 0, ScrW() / 2, EFGM.ScreenScale(6))
 
-        local compassX, compassY = (ScrW() / EFGM.ScreenScale(1)) * EFGM.ScreenScale(0.5), ScrH() * 0
-        local width, height = (ScrW() / EFGM.ScreenScale(1)) * EFGM.ScreenScale(0.5), EFGM.ScreenScale(10)
+        local compassX, compassY = (ScrW() / 2), EFGM.ScreenScale(-5)
+        local width, height = (EFGM.ScreenScale(ScrW()) / 2), EFGM.ScreenScale(10)
 
         spacing = width / 360
         numOfLines = width / spacing
@@ -237,7 +246,7 @@ function RenderCompass(ply)
         end
     end
 
-    compass:AlphaTo(255, 0.35, 0, function() end) -- why do i need to use a callback here???
+    compass:AlphaTo(255, 0.35, 0, nil)
     compass:AlphaTo(0, 1, 4.65, function() compass:Remove() end)
 end
 
@@ -267,7 +276,7 @@ net.Receive("PlayerRaidTransition", function()
         surface.DrawRect(0, 0, ScrW(), ScrH())
     end
 
-    RaidTransition:AlphaTo(255, 0.5, 0, function() end) -- why do i need to use a callback here???
+    RaidTransition:AlphaTo(255, 0.5, 0, nil)
     RaidTransition:AlphaTo(0, 0.35, 1, function() RaidTransition:Remove() end)
 
     timer.Simple(2.5, function() RenderExtracts(ply) end)
@@ -310,12 +319,66 @@ net.Receive("SendExtractionStatus", function()
             surface.DrawRect((w / 2) - EFGM.ScreenScale(250) * (exitTimeLeft / exitTime) / 2, h - EFGM.ScreenScale(215), EFGM.ScreenScale(250) * (exitTimeLeft / exitTime), EFGM.ScreenScale(5))
         end
 
-        ExtractPopup:AlphaTo(255, 0.1, 0, function() end) -- why do i need to use a callback here???
+        ExtractPopup:AlphaTo(255, 0.1, 0, nil)
     else
         if not IsValid(ExtractPopup) then return end
 
         ExtractPopup:AlphaTo(0, 0.1, 0, function() ExtractPopup:Remove() timer.Remove("TimeToExit") hook.Remove("Think", "TimeToExit") end)
     end
+end)
+
+-- notifications
+function CreateNotification(text, icon)
+    if IsValid(notif) then notif:Remove() end
+
+    surface.SetFont("BenderNotification")
+    local tw = surface.GetTextSize(text) + EFGM.ScreenScale(45)
+
+    local notif = vgui.Create("DPanel", GetHUDPanel())
+    notif:SetPos(ScrW() / 2 - (tw / 2), ScrH())
+    notif:SetSize(tw, EFGM.ScreenScale(30))
+    notif:SetAlpha(0)
+
+    notif:MoveTo(ScrW() / 2 - (tw / 2), ScrH() - EFGM.ScreenScale(40), 0.25, 0.1, 1, nil)
+    notif:AlphaTo(255, 0.3, 0.1, nil)
+
+    notif:AlphaTo(0, 0.2, 2.5, nil)
+    notif:MoveTo(ScrW() / 2 - (tw / 2), ScrH(), 0.25, 2.5, 1, function() notif:Remove() end)
+
+    notif:MoveToBack()
+
+    notif.Paint = function(self2, w, h)
+        surface.SetDrawColor(0, 0, 0, 200)
+        surface.DrawRect(0, 0, w, h)
+        surface.SetDrawColor(255, 255, 255, 255)
+        surface.SetMaterial(icon)
+        surface.DrawTexturedRect(EFGM.ScreenScale(2), 0, h, h)
+        surface.SetFont("BenderNotification")
+        surface.SetTextPos(w - tw + EFGM.ScreenScale(36), EFGM.ScreenScale(0.5))
+        surface.SetTextColor(255, 255, 255, 255)
+        surface.DrawText(text)
+    end
+end
+
+-- ads vignette
+local adsProg
+hook.Add("RenderScreenspaceEffects", "Vignette", function()
+    if !IsValid(ply) then ply = LocalPlayer() end
+    if !ply:Alive() then return end
+
+    local weapon = ply:GetActiveWeapon()
+
+    if type(weapon.GetSightAmount) == "function" then
+        adsProg = weapon:GetSightAmount()
+    else adsProg = 0 end
+
+    local texture = surface.GetTextureID("overlays/vignette")
+    local mult = 1 + (adsProg * (-0.66 * 1))
+
+    surface.SetTexture(texture)
+    surface.SetDrawColor(255, 255, 255, 255)
+
+    surface.DrawTexturedRect(0 - (ScrW() * mult), 0 - (ScrH() * mult), ScrW() * (1 + 2 * mult), ScrH() * (1 + 2 * mult))
 end)
 
 function DrawTarget()
