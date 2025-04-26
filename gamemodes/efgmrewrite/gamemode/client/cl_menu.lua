@@ -164,6 +164,13 @@ function Menu:Initialize(openTo)
 
     function lowerPanel:Paint(w, h)
 
+        if !Menu.Player:Alive() then
+            menuFrame:AlphaTo(0, 0.1, 0, function()
+                menuFrame:Close()
+            end)
+            return
+        end
+
         surface.SetDrawColor(MenuAlias.transparent)
         surface.DrawRect(0, 0, w, h)
 
@@ -4095,6 +4102,8 @@ end
 concommand.Add("efgm_gamemenu", function(ply, cmd, args)
 
     local tab = args[1] -- tab currently does jack
+
+    if !ply:Alive() then return end
 
     Menu:Open(tab)
 

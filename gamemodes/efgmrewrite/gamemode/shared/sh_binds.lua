@@ -50,7 +50,6 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
         -- switching sights
         if button == ply:GetInfoNum("efgm_bind_changesight", MOUSE_MIDDLE) then
             ply:ConCommand("+arc9_switchsights")
-            return
         end
 
         -- toggle fire modes
@@ -141,7 +140,6 @@ hook.Add("PlayerButtonUp", "EFGMBindsUp", function(ply, button)
         -- switching sights
         if button == ply:GetInfoNum("efgm_bind_changesight", MOUSE_MIDDLE) then
             ply:ConCommand("-arc9_switchsights")
-            return
         end
 
         -- toggle fire modes
@@ -215,7 +213,6 @@ if game.SinglePlayer() then
             -- switching sights
             if button == ply:GetInfoNum("efgm_bind_changesight", MOUSE_MIDDLE) then
                 ply:ConCommand("+arc9_switchsights")
-                return
             end
 
             -- toggle fire modes
@@ -300,7 +297,6 @@ if game.SinglePlayer() then
             -- switching sights
             if button == ply:GetInfoNum("efgm_bind_changesight", MOUSE_MIDDLE) then
                 ply:ConCommand("-arc9_switchsights")
-                return
             end
 
             -- toggle fire modes
