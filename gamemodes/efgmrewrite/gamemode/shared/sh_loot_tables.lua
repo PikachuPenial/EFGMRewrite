@@ -187,6 +187,9 @@ LOOT[1]["arc9_eft_rshg2"]               = {3}
 -- LOOT[1]["arc9_eft_melee_hultafors"]  = {3}
 -- LOOT[1]["arc9_eft_melee_taiga"]      = {2}
 
+-- specials
+LOOT[1]["arc9_eft_sp81"]                = {1}
+
 -- ATTACHMENST
 LOOT[3] = {}
 
@@ -348,10 +351,13 @@ LOOT[5]["arc9_eft_rshg2"]               = {3}
 -- melee
 -- LOOT[5]["arc9_eft_melee_taran"]      = {2}
 -- LOOT[5]["arc9_eft_melee_6x5"]        = {1}
+-- LOOT[5]["arc9_eft_melee_akula"]      = {1}
 -- LOOT[5]["arc9_eft_melee_wycc"]       = {2}
+-- LOOT[5]["arc9_eft_melee_gladius"]    = {3} 
 -- LOOT[5]["arc9_eft_melee_a2607"]      = {1}
 -- LOOT[5]["arc9_eft_melee_a2607d"]     = {1}
 -- LOOT[5]["arc9_eft_melee_camper"]     = {2}
+-- LOOT[5]["arc9_eft_melee_labris"]     = {3}
 -- LOOT[5]["arc9_eft_melee_crash"]      = {3}
 -- LOOT[5]["arc9_eft_melee_cultist"]    = {3}
 -- LOOT[5]["arc9_eft_melee_fulcrum"]    = {1}
@@ -365,3 +371,6 @@ LOOT[5]["arc9_eft_rshg2"]               = {3}
 -- LOOT[5]["arc9_eft_melee_sp8"]        = {2}
 -- LOOT[5]["arc9_eft_melee_hultafors"]  = {3}
 -- LOOT[5]["arc9_eft_melee_taiga"]      = {2}
+
+-- specials
+LOOT[5]["arc9_eft_sp81"]                = {1}

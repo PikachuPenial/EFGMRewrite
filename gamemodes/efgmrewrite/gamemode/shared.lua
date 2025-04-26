@@ -3,6 +3,9 @@ GM.Author = "Penial, Portanator"
 GM.Email = "kind programmer spreads christmas cheer through phone calls :blush:"
 GM.Website = "https://github.com/PikachuPenial/EFGMRewrite"
 
+if !ConVarExists("efgm_derivesbox") then CreateConVar("efgm_derivesbox", "0", FCVAR_REPLICATED + FCVAR_NOTIFY, "Hooks the sandbox gamemode into EFGM, allowing for things like the spawn menu to be accessed. Used for development purposes", 0, 1) end
+if !ConVarExists("efgm_arenamode") then CreateConVar("efgm_arenamode", "0", FCVAR_REPLICATED + FCVAR_NOTIFY, "Enables features such as infinite ammo, spawning with loadouts, etc. Keep disabled for the classic EFGM experience", 0, 1) end
+
 if CLIENT then
 
     CreateClientConVar("efgm_music", 1, false, true, "Enable/disable the music", 0, 1)
