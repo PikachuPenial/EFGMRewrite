@@ -9,6 +9,7 @@ if CLIENT then
     CreateClientConVar("efgm_bind_changesight", MOUSE_MIDDLE, true, true, "Determines the keybind that adjusts the zoom/reticle of your weapons sight")
     CreateClientConVar("efgm_bind_changefiremode", KEY_B, true, true, "Determines the keybind that toggles between available fire modes for your weapon")
     CreateClientConVar("efgm_bind_inspectweapon", KEY_I, true, true, "Determines the keybind that inspects your weapon")
+    CreateClientConVar("efgm_bind_toggleubgl", KEY_N, true, true, "Determines the keybind that toggles to and from your UBGL")
     CreateClientConVar("efgm_bind_dropweapon", KEY_MINUS, true, true, "Determines the keybind that drops your held weapon")
     CreateClientConVar("efgm_bind_teaminvite", KEY_PERIOD, true, true, "Determines the keybind that invites someone to your team, or accepts somebody else's team ivnite")
 
@@ -67,6 +68,12 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
         -- weapon inspecting
         if button == ply:GetInfoNum("efgm_bind_inspectweapon", KEY_I) then
             ply:ConCommand("+arc9_inspect")
+            return
+        end
+
+        -- toggle ubgl
+        if button == ply:GetInfoNum("efgm_bind_toggleubgl", KEY_N) then
+            ply:ConCommand("+arc9_ubgl")
             return
         end
 
@@ -159,6 +166,12 @@ hook.Add("PlayerButtonUp", "EFGMBindsUp", function(ply, button)
             ply:ConCommand("-arc9_inspect")
             return
         end
+
+        -- toggle ubgl
+        if button == ply:GetInfoNum("efgm_bind_toggleubgl", KEY_N) then
+            ply:ConCommand("-arc9_ubgl")
+            return
+        end
     end
 
     -- SHARED (for networking/prediction)
@@ -230,6 +243,12 @@ if game.SinglePlayer() then
             -- weapon inspecting
             if button == ply:GetInfoNum("efgm_bind_inspectweapon", KEY_I) then
                 ply:ConCommand("+arc9_inspect")
+                return
+            end
+
+            -- toggle ubgl
+            if button == ply:GetInfoNum("efgm_bind_toggleubgl", KEY_N) then
+                ply:ConCommand("+arc9_ubgl")
                 return
             end
         end
@@ -314,6 +333,12 @@ if game.SinglePlayer() then
             -- weapon inspecting
             if button == ply:GetInfoNum("efgm_bind_inspectweapon", KEY_I) then
                 ply:ConCommand("-arc9_inspect")
+                return
+            end
+
+            -- toggle ubgl
+            if button == ply:GetInfoNum("efgm_bind_toggleubgl", KEY_N) then
+                ply:ConCommand("-arc9_ubgl")
                 return
             end
         end

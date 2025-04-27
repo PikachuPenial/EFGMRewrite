@@ -26,7 +26,7 @@ if SERVER then
     RunConsoleCommand("arc9_mod_bodydamagecancel", "1")
     RunConsoleCommand("arc9_mod_damage", "1")
     RunConsoleCommand("arc9_mod_damagerand", "1")
-    RunConsoleCommand("arc9_mod_headshotdamage", "0.9")
+    RunConsoleCommand("arc9_mod_headshotdamage", "1")
     RunConsoleCommand("arc9_mod_malfunction", "0.15")
     RunConsoleCommand("arc9_mod_muzzlevelocity", "1")
     RunConsoleCommand("arc9_mod_recoil", "0.75")
@@ -60,7 +60,7 @@ if SERVER then
     RunConsoleCommand("arc9_eft_taran_jam", "0")
     RunConsoleCommand("arc9_mod_peek", "0")
     RunConsoleCommand("sv_vmanip_pickups", "1")
-    RunConsoleCommand("arc9_eft_nontpik_mode", "0")
+    RunConsoleCommand("arc9_eft_nontpik_mode", "1")
     RunConsoleCommand("arc9_eft_singleuse_behaviour", "1")
 
     -- physics
@@ -89,8 +89,8 @@ if SERVER then
 
     -- caching
     RunConsoleCommand("arc9_precache_allsounds_onstartup", "1")
-    RunConsoleCommand("arc9_precache_attsmodels_onstartup", "0")
-    RunConsoleCommand("arc9_precache_wepmodels_onstartup", "0")
+    RunConsoleCommand("arc9_precache_attsmodels_onstartup", "1")
+    RunConsoleCommand("arc9_precache_wepmodels_onstartup", "1")
 end
 
 -- variables for ARC9 multipliers and range, used for modifications that I will make directly in SWEPS

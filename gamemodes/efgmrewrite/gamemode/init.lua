@@ -72,6 +72,9 @@ function GM:PlayerSpawn(ply)
 	ply:SetupHands()
 	ply:AddEFlags(EFL_NO_DAMAGE_FORCES) -- disables knockback being applied when damage is taken
 	ply:SendLua("RunConsoleCommand('r_cleardecals')") -- clear decals for that extra 2 fps
+	ply:SetCrouched(false)
+	ply:SetEnteringCrouch(false)
+	ply:SetExitingCrouch(false)
 end
 
 hook.Add("PlayerInitialSpawn", "InitFirstSpawn", function(ply)
@@ -134,7 +137,7 @@ end
 
 hook.Add("PostPlayerDeath", "PlayerRemoveRaid", function(ply)
 	-- respawn timer
-	timer.Create(ply:SteamID() .. "respawnTime", 10, 1, function() ply:Spawn() end)
+	timer.Create(ply:SteamID() .. "respawnTime", respawnTime, 1, function() ply:Spawn() end)
 	ply:SetNWBool("RaidReady", false)
 end)
 
@@ -191,8 +194,8 @@ local function Regeneration()
 				if (ply.HealthRegen >= healthRegenSpeed) then
 					local add = math.floor(ply.HealthRegen / healthRegenSpeed)
 					ply.HealthRegen = ply.HealthRegen - (add * healthRegenSpeed)
-					if (ply:Health() < playerHealth or healthRegenSpeed < 0) then
-						ply:SetHealth(math.min(ply:Health() + add, playerHealth))
+					if (ply:Health() < 100 or healthRegenSpeed < 0) then
+						ply:SetHealth(math.min(ply:Health() + add, 100))
 					end
 				end
 			end

@@ -3692,6 +3692,25 @@ function Menu.OpenTab.Settings()
 
     end
 
+    local toggleUBGLPanel = vgui.Create("DPanel", controls)
+    toggleUBGLPanel:Dock(TOP)
+    toggleUBGLPanel:SetSize(0, EFGM.MenuScale(55))
+    function toggleUBGLPanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Toggle UBGL (Under Barrel Launcher) keybind", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local toggleUBGL = vgui.Create("DBinder", toggleUBGLPanel)
+    toggleUBGL:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(30))
+    toggleUBGL:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
+    toggleUBGL:SetSelectedNumber(GetConVar("efgm_bind_toggleubgl"):GetInt())
+    function toggleUBGL:OnChange(num)
+
+        RunConsoleCommand("efgm_bind_toggleubgl", changeSight:GetSelectedNumber())
+
+    end
+
     local inspectWeaponPanel = vgui.Create("DPanel", controls)
     inspectWeaponPanel:Dock(TOP)
     inspectWeaponPanel:SetSize(0, EFGM.MenuScale(55))
@@ -3974,6 +3993,20 @@ function Menu.OpenTab.Settings()
     headBob:SetPos(EFGM.MenuScale(152), EFGM.MenuScale(30))
     headBob:SetConVar("efgm_visuals_headbob")
     headBob:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+
+    local lensFlarePanel = vgui.Create("DPanel", visuals)
+    lensFlarePanel:Dock(TOP)
+    lensFlarePanel:SetSize(0, EFGM.MenuScale(50))
+    function lensFlarePanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Lens Flare", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local lensFlare = vgui.Create("DCheckBox", lensFlarePanel)
+    lensFlare:SetPos(EFGM.MenuScale(152), EFGM.MenuScale(30))
+    lensFlare:SetConVar("efgm_visuals_lensflare")
+    lensFlare:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
 
     local impactFXPanel = vgui.Create("DPanel", visuals)
     impactFXPanel:Dock(TOP)
