@@ -1,11 +1,79 @@
 -- removing unneccessary server hook
 if SERVER then
-	hook.Add("Initialize", "SVHookRemoval", function()
-		if timer.Exists("CheckHookTimes") then timer.Remove("CheckHookTimes") end
-	end)
+	hook.Add("Initialize", "SVHookRemoval", function() if timer.Exists("CheckHookTimes") then timer.Remove("CheckHookTimes") end end)
 end
 
 if CLIENT then
+	-- optimized indexs
+	local function RWEnt()
+		local M_Entity = FindMetaTable("Entity")
+
+		local E_GetTable = M_Entity.GetTable
+
+		local val
+		local et
+		function M_Entity:__index(key)
+			val = M_Entity[key]
+			if val != nil then return val end
+
+			et = E_GetTable(self)
+			if et then
+				return et[key]
+			end
+		end
+	end
+
+	local function RWPly()
+		local M_Player = FindMetaTable("Player")
+		local M_Entity = FindMetaTable("Entity")
+
+		local E_GetTable = M_Entity.GetTable
+
+		local val
+		local pt
+		function M_Player:__index(key)
+			val = M_Player[key]
+			if val != nil then return val end
+
+			val = M_Entity[key]
+			if val != nil then return val end
+
+			pt = E_GetTable(self)
+			if pt then
+				return pt[key]
+			end
+		end
+	end
+
+	local function RWWep()
+		local M_Weapon = FindMetaTable("Weapon")
+		local M_Entity = FindMetaTable("Entity")
+
+		local E_GetTable = M_Entity.GetTable
+		local E_GetOwner = M_Entity.GetOwner
+
+		local val
+		local wt
+		function M_Weapon:__index(key)
+			val = M_Weapon[key]
+			if val != nil then return val end
+
+			val = M_Entity[key]
+			if val != nil then return val end
+
+			if key == "Owner" then return E_GetOwner(self) end
+
+			wt = E_GetTable(self)
+			if wt then
+				return wt[key]
+			end
+		end
+	end
+
+	RWEnt()
+	RWPly()
+	RWWep()
+
 	-- removing unneccessary client hooks
 	hook.Add("InitPostEntity", "CLHookRemoval", function()
 		hook.Remove("RenderScreenspaceEffects", "RenderColorModify")
@@ -34,9 +102,7 @@ if CLIENT then
 	-- remove widget code every tick
 	local function CLTickRemoval(ent)
 		if ent:IsWidget() then
-			hook.Add("PlayerTick", "TickWidgets", function(pl, mv)
-				widgets.PlayerTick(pl, mv)
-			end)
+			hook.Add("PlayerTick", "TickWidgets", function(pl, mv) widgets.PlayerTick(pl, mv) end)
 			hook.Remove("OnEntityCreated", "WidgetCreated")
 		end
 	end
@@ -44,19 +110,20 @@ if CLIENT then
 end
 
 -- force multicore for clients
-hook.Add("InitPostEntity", "CLMulticore", function()
-	timer.Simple(3, function() -- just in case
-		RunConsoleCommand("gmod_mcore_test", "1")
-		RunConsoleCommand("mat_queue_mode", "-1")
-		RunConsoleCommand("cl_threaded_bone_setup", "1")
-		RunConsoleCommand("cl_threaded_client_leaf_system", "1")
-		RunConsoleCommand("r_threaded_client_shadow_manager", "1")
-		RunConsoleCommand("r_threaded_particles", "1")
-		RunConsoleCommand("r_threaded_renderables", "1")
-		RunConsoleCommand("r_queued_ropes", "1")
-		RunConsoleCommand("studio_queue_mode", "1")
+if CLIENT then
+	hook.Add("InitPostEntity", "CLMulticore", function()
+		timer.Simple(3, function() -- just in case
+			RunConsoleCommand("gmod_mcore_test", "1")
+			RunConsoleCommand("mat_queue_mode", "-1")
+			RunConsoleCommand("cl_threaded_bone_setup", "1")
+			RunConsoleCommand("r_threaded_client_shadow_manager", "1")
+			RunConsoleCommand("r_threaded_particles", "1")
+			RunConsoleCommand("r_threaded_renderables", "1")
+			RunConsoleCommand("r_queued_ropes", "1")
+			RunConsoleCommand("studio_queue_mode", "1")
+		end)
 	end)
-end)
+end
 
 -- map optimization
 hook.Add("InitPostEntityMap", "MapOptimization", function()
@@ -75,13 +142,8 @@ hook.Add("InitPostEntityMap", "MapOptimization", function()
 		end
 	end
 
-	for _, ent in pairs(ents.FindByClass("func_precipitation")) do
-		ent:Remove()
-	end
-
-	for _, ent in pairs(ents.FindByClass("func_smokevolume")) do
-		ent:Remove()
-	end
+	for _, ent in pairs(ents.FindByClass("func_precipitation")) do ent:Remove() end
+	for _, ent in pairs(ents.FindByClass("func_smokevolume")) do ent:Remove() end
 end)
 
 -- prevent model related crashes
@@ -89,11 +151,6 @@ hook.Add("PlayerInitialSpawn", "CLPreventCrash", function(ply)
 	ply:SendLua("RunConsoleCommand('r_drawmodeldecals', 0)")
 	ply:SendLua("RunConsoleCommand('r_maxmodeldecal', 50)")
 end)
-
--- automatic garbage collection
--- hook.Add("Think", "ManualGC", function()
-	-- collectgarbage("step", 192)
--- end)
 
 -- optimized surface and draw functions
 if SERVER or SurfaceRewrite then return end

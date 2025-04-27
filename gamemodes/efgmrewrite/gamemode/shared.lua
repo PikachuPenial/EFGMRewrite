@@ -15,7 +15,6 @@ if CLIENT then
     CreateClientConVar("efgm_menu_parallax", 1, false, true, "Adjust the main menu parallax/jiggle when moving your cursor", 0, 1)
     CreateClientConVar("efgm_visuals_highqualimpactfx", 1, false, true, "Adjust the quality of the bullets impact effects", 0, 1)
     CreateClientConVar("efgm_visuals_headbob", 1, true, true, "Adjust the bobbing motion of the players view while moving", 0, 1)
-    CreateClientConVar("efgm_visuals_viewroll", 1, true, true, "Adjust the rolling motion of the players view while moving sideways", 0, 1)
     CreateClientConVar("efgm_controls_togglecrouch", 1, true, true, "Adjust if player crouches are hold or toggle", 0, 1)
     CreateClientConVar("efgm_controls_togglelean", 1, true, true, "Adjust if player leans are hold or toggle", 0, 1)
     CreateClientConVar("efgm_faction_preference", 0, true, true, "Determines the faction that your playermodel is based on (0 = None, 1 = USEC, 2 = BEAR)", 0, 2)

@@ -3975,20 +3975,6 @@ function Menu.OpenTab.Settings()
     headBob:SetConVar("efgm_visuals_headbob")
     headBob:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
 
-    local viewRollPanel = vgui.Create("DPanel", visuals)
-    viewRollPanel:Dock(TOP)
-    viewRollPanel:SetSize(0, EFGM.MenuScale(50))
-    function viewRollPanel:Paint(w, h)
-
-        draw.SimpleTextOutlined("View Rolling", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-    end
-
-    local viewRoll = vgui.Create("DCheckBox", viewRollPanel)
-    viewRoll:SetPos(EFGM.MenuScale(152), EFGM.MenuScale(30))
-    viewRoll:SetConVar("efgm_visuals_viewroll")
-    viewRoll:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
-
     local impactFXPanel = vgui.Create("DPanel", visuals)
     impactFXPanel:Dock(TOP)
     impactFXPanel:SetSize(0, EFGM.MenuScale(50))
@@ -4003,29 +3989,26 @@ function Menu.OpenTab.Settings()
     impactFX:SetConVar("efgm_visuals_highqualimpactfx")
     impactFX:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
 
-    local tpikFPSPanel = vgui.Create("DPanel", visuals)
-    tpikFPSPanel:Dock(TOP)
-    tpikFPSPanel:SetSize(0, EFGM.MenuScale(50))
-    function tpikFPSPanel:Paint(w, h)
+    local tpikAllPanel = vgui.Create("DPanel", visuals)
+    tpikAllPanel:Dock(TOP)
+    tpikAllPanel:SetSize(0, EFGM.MenuScale(50))
+    function tpikAllPanel:Paint(w, h)
 
-        draw.SimpleTextOutlined("TPP Animation Frame Rate", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined("TPP Animations For Other Players", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
     end
 
-    local tpikFPS = vgui.Create("DNumSlider", tpikFPSPanel)
-    tpikFPS:SetPos(EFGM.MenuScale(35), EFGM.MenuScale(30))
-    tpikFPS:SetSize(EFGM.MenuScale(200), EFGM.MenuScale(15))
-    tpikFPS:SetConVar("arc9_tpik_framerate")
-    tpikFPS:SetMin(30)
-    tpikFPS:SetMax(144)
-    tpikFPS:SetDecimals(0)
+    local tpikAll = vgui.Create("DCheckBox", tpikAllPanel)
+    tpikAll:SetPos(EFGM.MenuScale(152), EFGM.MenuScale(30))
+    tpikAll:SetConVar("arc9_tpik_others")
+    tpikAll:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
 
     local lodDistancePanel = vgui.Create("DPanel", visuals)
     lodDistancePanel:Dock(TOP)
     lodDistancePanel:SetSize(0, EFGM.MenuScale(50))
     function lodDistancePanel:Paint(w, h)
 
-        draw.SimpleTextOutlined("LOD (Level Of Detail) Distance", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined("LOD (Level Of Detail) Distance Multiplier", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
     end
 

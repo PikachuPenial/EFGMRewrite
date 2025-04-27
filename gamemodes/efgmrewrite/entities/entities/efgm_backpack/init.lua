@@ -32,7 +32,6 @@ function ENT:SetBagData(inventory, attachments, name)
 end
 
 function ENT:Use(activator)
-
     if !activator:IsPlayer() then return end
 
     local effectdata = EffectData()
@@ -49,9 +48,7 @@ function ENT:Use(activator)
     if table.IsEmpty(self.Inventory.contents) and table.IsEmpty(self.Attachments) then return end
 
     for k, v in pairs(self.Inventory.contents) do
-
         GiveItem[v.type](activator, v.name, v.count, false)
-
     end
 
     for k, v in pairs(self.Attachments) do

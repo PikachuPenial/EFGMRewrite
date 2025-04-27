@@ -40,18 +40,18 @@ local allPMs = {"models/eft/pmcs/usec_extended_pm.mdl", "models/eft/pmcs/bear_ex
 function GM:PlayerSpawn(ply)
 	ply:SetRaidStatus(0, "") -- moving this in hopes that i wont 'fucking break the gamemode again goddamn it'
 
-	ply:SetGravity(.73)
+	ply:SetGravity(.72)
 	ply:SetMaxHealth(100)
 	ply:SetRunSpeed(215)
 	ply:SetWalkSpeed(130)
-	ply:SetJumpPower(172)
+	ply:SetJumpPower(140)
 
 	ply:SetLadderClimbSpeed(120)
 	ply:SetSlowWalkSpeed(95)
 
 	ply:SetCrouchedWalkSpeed(0.46)
-	ply:SetDuckSpeed(0.36)
-	ply:SetUnDuckSpeed(0.36)
+	ply:SetDuckSpeed(0.4)
+	ply:SetUnDuckSpeed(0.4)
 
 	if ply:GetInfoNum("efgm_faction_preference", 0) == 1 then
 		-- USEC prefered

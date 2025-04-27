@@ -40,7 +40,8 @@ hook.Add("StartCommand", "AdjustPlayerMovement", function(ply, cmd)
         ply:SetNW2Var("leaning_right", false)
     end
 
-    if !ply:IsOnGround() and ply:GetMoveType() == MOVETYPE_WALK then
+    if !ply:IsOnGround() then
+        cmd:RemoveKey(IN_SPEED)
         if ply:Crouching() then
             cmd:AddKey(IN_DUCK)
             ply:SetCrouched(true)
@@ -51,11 +52,8 @@ hook.Add("StartCommand", "AdjustPlayerMovement", function(ply, cmd)
         ply:SetCrouched(false)
     end
 
-    -- disable crouching/uncrouching in certain positions
-    if !ply:OnGround() and ply:WaterLevel() == 0 then
+    if !ply:OnGround() then
         cmd:RemoveKey(IN_ATTACK2)
-        ply:SetNW2Var("leaning_left", false)
-        ply:SetNW2Var("leaning_right", false)
     end
 
     -- disable jumping/slow walking while crouching
@@ -498,7 +496,6 @@ end
 
 local function Sighted_Process(wep, FT)
 	if GetSighted(wep) then
-
 		VBPosWeight = math.Approach(VBPosWeight, 0.15, FT * 2)
 		VBAngWeight = math.Approach(VBAngWeight, 0.05, FT * 2)
 		VBSighted = math.Approach(VBSighted, 0, FT * 4)
@@ -648,7 +645,6 @@ end)
 
 if CLIENT then
     local bobbing = GetConVar("efgm_visuals_headbob"):GetBool()
-    local rolling = GetConVar("efgm_visuals_viewroll"):GetBool()
 
     hook.Add("CalcView","VBCalcView", function(ply,pos,ang)
         if bobbing then
@@ -657,14 +653,9 @@ if CLIENT then
         end
 
         pos:Sub(calcpos)
-
-        if rolling then
-            ang.z = ang.z - (LerpedSway_Y + math.abs(LerpedSway_X * 0.25)) * 0.5 + (LerpedSway_Tilt * 0.5)
-        end
     end)
 
     cvars.AddChangeCallback("efgm_visuals_headbob", function(convar_name, value_old, value_new) if value_new == "1" then bobbing = true else bobbing = false end end)
-    cvars.AddChangeCallback("efgm_visuals_viewroll", function(convar_name, value_old, value_new) if value_new == "1" then rolling = true else rolling = false end end)
 end
 
 hook.Add("PlayerStepSoundTime", "VBPlayerStepSoundTime", function(ply)
