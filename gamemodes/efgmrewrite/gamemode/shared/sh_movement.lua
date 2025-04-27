@@ -1,3 +1,30 @@
+local plyMeta = FindMetaTable("Player")
+if not plyMeta then Error("Could not find player table") return end
+
+function plyMeta:SetCrouched(value)
+    self.Crouched = value
+end
+
+function plyMeta:GetCrouched()
+    return self.Crouched
+end
+
+function plyMeta:SetEnteringCrouch(value)
+    self.EnteringCrouch = value
+end
+
+function plyMeta:GetEnteringCrouch()
+    return self.EnteringCrouch
+end
+
+function plyMeta:SetExitingCrouch(value)
+    self.ExitingCrouch = value
+end
+
+function plyMeta:GetExitingCrouch()
+    return self.ExitingCrouch
+end
+
 -- disable crouch jumping because of animation abuse + dynamic crouch toggling
 hook.Add("StartCommand", "AdjustPlayerMovement", function(ply, cmd)
     if cmd:KeyDown(IN_BACK) or (cmd:KeyDown(IN_MOVELEFT) or cmd:KeyDown(IN_MOVERIGHT)) and !cmd:KeyDown(IN_FORWARD) or cmd:KeyDown(IN_ATTACK2) then
@@ -8,56 +35,80 @@ hook.Add("StartCommand", "AdjustPlayerMovement", function(ply, cmd)
         cmd:RemoveKey(IN_JUMP)
     end
 
-    if !ply:OnGround() then
-        cmd:RemoveKey(IN_ATTACK2)
-        ply:SetNW2Var("leaning_left", false)
-        ply:SetNW2Var("leaning_right", false)
-    end
-
     if cmd:KeyDown(IN_SPEED) then
         ply:SetNW2Var("leaning_left", false)
         ply:SetNW2Var("leaning_right", false)
     end
 
+    if !ply:IsOnGround() and ply:GetMoveType() == MOVETYPE_WALK then
+        if ply:Crouching() then
+            cmd:AddKey(IN_DUCK)
+            ply:SetCrouched(true)
+        elseif !ply:Crouching() and ply:GetCrouched() then
+            cmd:RemoveKey(IN_DUCK)
+        end
+    else
+        ply:SetCrouched(false)
+    end
+
     -- disable crouching/uncrouching in certain positions
-    if !ply:OnGround() then
-        cmd:RemoveKey(IN_DUCK)
+    if !ply:OnGround() and ply:WaterLevel() == 0 then
+        cmd:RemoveKey(IN_ATTACK2)
+        ply:SetNW2Var("leaning_left", false)
+        ply:SetNW2Var("leaning_right", false)
     end
 
     -- disable jumping/slow walking while crouching
-    if ply:Crouching() or ply:GetNW2Var("entering_crouch", false) then
+    if ply:Crouching() or ply:GetEnteringCrouch(false) then
         cmd:RemoveKey(IN_JUMP)
         cmd:RemoveKey(IN_WALK)
     end
 
     -- can not uncrouch until the crouching sequence is complete
-    if ply:GetNW2Var("entering_crouch", false) then
+    if ply:GetEnteringCrouch() then
         cmd:AddKey(IN_DUCK)
     end
 
     if ply:Crouching() then
-        ply:SetNW2Var("entering_crouch", false)
+        ply:SetEnteringCrouch(false)
     else
-        ply:SetNW2Var("exiting_crouch", false)
+        ply:SetExitingCrouch(false)
     end
 
     if ply:KeyPressed(IN_DUCK) then
-        ply:SetNW2Var("entering_crouch", true)
+        ply:SetEnteringCrouch(true)
     end
 
     -- can not crouch again while uncrouching lol
     if ply:Crouching() and !ply:KeyDown(IN_DUCK) then
-        ply:SetNW2Var("exiting_crouch", true)
+        ply:SetExitingCrouch(true)
     end
 
-    if ply:GetNW2Var("exiting_crouch", false) then
+    if ply:GetExitingCrouch() then
         cmd:RemoveKey(IN_DUCK)
     end
 end)
 
+-- jump viewpunch
+hook.Add("OnPlayerJump", "PlayerJump", function(ply, inWater, onFloater, speed)
+	ply:ViewPunch(Angle(-1, 0, 0))
+end)
+
 -- jump cooldown
-hook.Add("OnPlayerHitGround", "VelocityLimiter", function(ply) 
-    timer.Create(ply:SteamID64() .. "jumpCD", 0.5, 1, function() end)
+hook.Add("OnPlayerHitGround", "PlayerLand", function(ply, inWater, onFloater, speed)
+    timer.Create(ply:SteamID64() .. "jumpCD", 0.4, 1, function() end)
+
+    local vel = ply:GetVelocity()
+    ply:SetVelocity(Vector(-vel[1], -vel[2], 0) * 0.5)
+
+    if speed > 50 then
+        local ang = Angle(math.floor(math.exp(speed / 256)))
+        if ang:Unpack() > 45 then
+            ply:ViewPunch(Angle(45, 0, 0))
+        else
+            ply:ViewPunch(ang)
+        end
+    end
 end )
 
 -- leaning

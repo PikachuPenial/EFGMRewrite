@@ -21,9 +21,8 @@ end)
 
 -- disable ARC9 settings menu when needed
 if GetConVar("efgm_derivesbox"):GetInt() == 0 then
-    function ARC9_OpenSettings(page)
-        return
-    end
+    function ARC9_OpenSettings(page) return end
+    concommand.Remove("arc9_settings_open")
 end
 
 -- client globals
