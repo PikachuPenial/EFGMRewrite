@@ -179,6 +179,30 @@ hook.Add("PlayerCanHearPlayersVoice", "ProxVOIP", function(listener,talker)
 	end
 end )
 
+-- temp. health regen
+local healthRegenSpeed = 0.01
+local healthRegenDamageDelay = 20
+local function Regeneration()
+	for _, ply in pairs(player.GetAll()) do
+		if ply:Alive() then
+			if (ply:Health() < (ply.LastHealth or 0)) then ply.HealthRegenNext = CurTime() + healthRegenDamageDelay end
+			if (CurTime() > (ply.HealthRegenNext or 0)) then
+				ply.HealthRegen = (ply.HealthRegen or 0) + FrameTime()
+				if (ply.HealthRegen >= healthRegenSpeed) then
+					local add = math.floor(ply.HealthRegen / healthRegenSpeed)
+					ply.HealthRegen = ply.HealthRegen - (add * healthRegenSpeed)
+					if (ply:Health() < playerHealth or healthRegenSpeed < 0) then
+						ply:SetHealth(math.min(ply:Health() + add, playerHealth))
+					end
+				end
+			end
+
+			ply.LastHealth = ply:Health()
+		end
+	end
+end
+hook.Add("Think", "HealthRegen", Regeneration)
+
 -- light on bullet impact
 -- hook.Add("EntityFireBullets", "BulletLight", function(Entity, Other)
 	-- if IsValid(Entity) then
