@@ -269,6 +269,7 @@ net.Receive("PlayerRaidTransition", function()
     RaidTransition:MoveToFront()
 
     RaidTransition.Paint = function(self, w, h)
+        if not RaidTransition:IsValid() then return end
         BlurPanel(RaidTransition, EFGM.MenuScale(13))
         BlurPanel(RaidTransition, EFGM.MenuScale(13))
 
