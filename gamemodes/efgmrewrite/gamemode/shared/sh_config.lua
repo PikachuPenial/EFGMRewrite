@@ -20,13 +20,13 @@ flippedDebugMeleeWep = table.Flip(debugMeleeWep)
 -- server convars
 if SERVER then
     -- modifiers
-    local modif = "\\nRecoilKickMult\\t0.75\\nVisualRecoilPunchMult\\t1.5\\nVisualRecoilRollMult\\t1.5\\nVisualRecoilSideMult\\t1\\nVisualRecoilUpMult\\t1\\nVisualRecoilMult\\t2\\nRecoilRandomSideMult\\t1\\nSwayMultMidAir\\t1.5\\nRecoilAutoControlMultShooting\\t0.05\\nRecoilUpMult\\t0.5\\nRecoilAutoControlMult\\t0.5\\nFreeAimRadiusMult\\t1.33\\nSpreadMultSights\\t0.5 "
+    local modif = "\\nRecoilKickMult\\t0.75\\nVisualRecoilPunchMult\\t1.5\\nVisualRecoilRollMult\\t1.5\\nVisualRecoilSideMult\\t1\\nVisualRecoilUpMult\\t1\\nVisualRecoilMult\\t3\\nRecoilRandomSideMult\\t1\\nSwayMultMidAir\\t2\\nRecoilAutoControlMultShooting\\t0.05\\nRecoilUpMult\\t0.5\\nRecoilAutoControlMult\\t0.66\\nFreeAimRadiusMult\\t1.33\\nSpreadMultSights\\t0.5 "
     RunConsoleCommand("arc9_modifiers", modif)
     RunConsoleCommand("arc9_mod_adstime", "0.75")
     RunConsoleCommand("arc9_mod_bodydamagecancel", "1")
     RunConsoleCommand("arc9_mod_damage", "1")
     RunConsoleCommand("arc9_mod_damagerand", "1")
-    RunConsoleCommand("arc9_mod_headshotdamage", "0.8")
+    RunConsoleCommand("arc9_mod_headshotdamage", "0.9")
     RunConsoleCommand("arc9_mod_malfunction", "0.15")
     RunConsoleCommand("arc9_mod_muzzlevelocity", "1")
     RunConsoleCommand("arc9_mod_recoil", "0.75")

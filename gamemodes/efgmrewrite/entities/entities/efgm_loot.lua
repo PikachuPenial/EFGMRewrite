@@ -40,7 +40,7 @@ function ENT:Initialize()
 	self.SpawnOnStart = bit.band(flags, 1) == 1
 	self.Crated = bit.band(flags, 2) == 2
 
-    if self.SpawnOnStart then self:SpawnItem(self:SelectItem()) end
+    -- if self.SpawnOnStart then self:SpawnItem(self:SelectItem()) end
 end
 
 function ENT:SelectItem()
@@ -58,11 +58,11 @@ function ENT:SelectItem()
 
     local ent = ents.Create(tbl[math.random(#tbl)])
 
-    print("Spawning " .. tostring(ent))
+    -- print("Spawning " .. tostring(ent))
     return ent
 end
 
-function ENT:SpawnItem( item )
+function ENT:SpawnItem(item)
     if item == nil then return end
 
     item:SetPos(self:GetPos())
@@ -77,6 +77,6 @@ end
 function ENT:AcceptInput(name, activator, caller, data)
 	if name == "SpawnLoot" && self.HasValidType then
         local item = self:SelectItem()
-		self:SpawnItem(item)
+		-- self:SpawnItem(item)
 	end
 end

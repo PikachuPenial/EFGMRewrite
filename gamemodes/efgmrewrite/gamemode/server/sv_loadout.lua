@@ -17,7 +17,7 @@ end
 function LOADOUT.GetInventory(attatchmentCount)
     local inventory = INV.New()
 
-    local secondary = debugShitSecWep[ math.random(#debugShitSecWep)] -- nerfing the nekeds
+    local secondary = debugShitSecWep[math.random(#debugShitSecWep)] -- nerfing the nekeds
     local grenade = debugNadeWep[math.random(#debugNadeWep)]
     local melee = debugMeleeWep[math.random(#debugMeleeWep)]
 
@@ -45,13 +45,15 @@ function LOADOUT.GetInventory(attatchmentCount)
     return inventory
 end
 
-function LOADOUT.GetArenaInventory( attatchmentCount )
+function LOADOUT.GetArenaInventory(attatchmentCount)
     local inventory = INV.New()
 
-    local secondary = debugShitSecWep[math.random(#debugShitSecWep)]
+    local primary = debugPrimWep[math.random(#debugPrimWep)]
+    local secondary = debugSecWep[math.random(#debugSecWep)]
     local grenade = debugNadeWep[math.random(#debugNadeWep)]
     local melee = debugMeleeWep[math.random(#debugMeleeWep)]
 
+    inventory:Add(primary, 1, 1)
     inventory:Add(secondary, 1, 1) -- should be inventory.contents[1] and so on
     inventory:Add(grenade, 1, 1)
     inventory:Add(melee, 1, 1)
@@ -88,14 +90,14 @@ hook.Add("PlayerSpawn", "GiveBackpack", function(ply)
         local inventory
 
         if isArena then
-            print("arena mode is on")
-            inventory = LOADOUT.GetArenaInventory(200)
+            -- print("arena mode is on")
+            inventory = LOADOUT.GetArenaInventory(400)
         else
-            print("arena mode is off")
+            -- print("arena mode is off")
             inventory = LOADOUT.GetInventory(200)
         end
 
-        print("Printing inventory from hook PlayerSpawn in sv_inventory_manager.lua:")
+        -- print("Printing inventory from hook PlayerSpawn in sv_inventory_manager.lua:")
         -- PrintTable(inventory) wow this flooded the console so bad
         LOADOUT.Equip(ply, inventory)
 
