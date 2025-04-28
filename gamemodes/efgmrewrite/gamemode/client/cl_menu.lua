@@ -149,14 +149,112 @@ function Menu:Initialize(openTo)
     tabParentPanel:SetPos(EFGM.MenuScale(10), EFGM.MenuScale(10))
     tabParentPanel:SetSize(ScrW(), EFGM.MenuScale(41))
 
+    local roubles = "500000"
+
     function tabParentPanel:Paint(w, h)
 
         surface.SetDrawColor(MenuAlias.transparent)
         surface.DrawRect(0, 0, w, h)
 
+        draw.SimpleTextOutlined(roubles, "PuristaBold32", w - EFGM.MenuScale(26), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
     end
 
     self.MenuFrame.TabParentPanel = tabParentPanel
+
+    surface.SetFont("PuristaBold32")
+    local roublesTextSize = surface.GetTextSize(roubles)
+
+    local roubleIcon = vgui.Create("DImageButton", self.MenuFrame.TabParentPanel)
+    roubleIcon:SetPos(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(66) - roublesTextSize, EFGM.MenuScale(2))
+    roubleIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
+    roubleIcon:SetImage("icons/rouble_icon.png")
+    roubleIcon:SetDepressImage(false)
+
+    local x, y = 0, 0
+    local sideH, sideV
+
+    roubleIcon.OnCursorEntered = function(s)
+
+        x, y = Menu.MouseX, Menu.MouseY
+        surface.PlaySound("ui/element_hover.wav")
+
+        if x <= (ScrW() / 2) then sideH = true else sideH = false end
+        if y <= (ScrH() / 2) then sideV = true else sideV = false end
+
+        local function UpdatePopOutPos()
+
+            if sideH == true then
+
+                roublePopOut:SetX(math.Clamp(x + EFGM.MenuScale(15), EFGM.MenuScale(10), ScrW() - roublePopOut:GetWide() - EFGM.MenuScale(10)))
+
+            else
+
+                roublePopOut:SetX(math.Clamp(x - roublePopOut:GetWide() - EFGM.MenuScale(15), EFGM.MenuScale(10), ScrW() - roublePopOut:GetWide() - EFGM.MenuScale(10)))
+
+            end
+
+            if sideV == true then
+
+                roublePopOut:SetY(math.Clamp(y + EFGM.MenuScale(15), EFGM.MenuScale(60), ScrH() - roublePopOut:GetTall() - EFGM.MenuScale(20)))
+
+            else
+
+                roublePopOut:SetY(math.Clamp(y - roublePopOut:GetTall() + EFGM.MenuScale(15), EFGM.MenuScale(60), ScrH() - roublePopOut:GetTall() - EFGM.MenuScale(20)))
+
+            end
+
+        end
+
+        if IsValid(roublePopOut) then roublePopOut:Remove() end
+        roublePopOut = vgui.Create("DPanel", Menu.MenuFrame)
+        roublePopOut:SetSize(EFGM.MenuScale(625), EFGM.MenuScale(50))
+        UpdatePopOutPos()
+        roublePopOut:AlphaTo(255, 0.1, 0, nil)
+        roublePopOut:SetMouseInputEnabled(false)
+
+        roublePopOut.Paint = function(s, w, h)
+
+            if !IsValid(s) then return end
+
+            BlurPanel(s, EFGM.MenuScale(3))
+
+            -- panel position follows mouse position
+            x, y = Menu.MouseX, Menu.MouseY
+
+            UpdatePopOutPos()
+
+            surface.SetDrawColor(Color(0, 0, 0, 205))
+            surface.DrawRect(0, 0, w, h)
+
+            surface.SetDrawColor(Color(50, 100, 50, 45))
+            surface.DrawRect(0, 0, w, h)
+
+            surface.SetDrawColor(Color(50, 100, 50, 255))
+            surface.DrawRect(0, 0, w, EFGM.MenuScale(5))
+
+            surface.SetDrawColor(Color(255, 255, 255, 155))
+            surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+            surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+            draw.SimpleTextOutlined("ROUBLES", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            draw.SimpleTextOutlined("Your primary currency when purchasing goods, using services and trading with other operatives.", "Purista18", EFGM.MenuScale(5), EFGM.MenuScale(25), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        end
+
+    end
+
+    roubleIcon.OnCursorExited = function(s)
+
+        if IsValid(roublePopOut) then
+
+            roublePopOut:AlphaTo(0, 0.1, 0, function() roublePopOut:Remove() end)
+
+        end
+
+    end
 
     local lowerPanel = vgui.Create("DPanel", self.MenuFrame)
     lowerPanel:SetSize(EFGM.MenuScale(1880), EFGM.MenuScale(980))
@@ -752,52 +850,6 @@ function Menu:Initialize(openTo)
 
     end
 
-    local helpTab = vgui.Create("DPanel", self.MenuFrame.TabParentPanel)
-    helpTab:Dock(RIGHT)
-    helpTab:SetSize(EFGM.MenuScale(54), 0)
-
-    local helpIcon = vgui.Create("DImageButton", helpTab)
-    helpIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
-    helpIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
-    helpIcon:SetImage("icons/help_icon.png")
-    helpIcon:SetDepressImage(false)
-
-    local helpBGColor = MenuAlias.transparent
-
-    helpTab.Paint = function(s, w, h)
-
-        surface.SetDrawColor(helpBGColor)
-        surface.DrawRect(0, 0, w, h)
-
-    end
-
-    helpIcon.OnCursorEntered = function(s)
-
-        statsTab:SizeTo(EFGM.MenuScale(46) + statsTextSize, statsTab:GetTall(), 0.15, 0, 0.5)
-        matchTab:SizeTo(EFGM.MenuScale(46) + matchTextSize, matchTab:GetTall(), 0.15, 0, 0.5)
-        inventoryTab:SizeTo(EFGM.MenuScale(46) + inventoryTextSize, inventoryTab:GetTall(), 0.15, 0, 0.5)
-        tasksTab:SizeTo(EFGM.MenuScale(46) + tasksTextSize, tasksTab:GetTall(), 0.15, 0, 0.5)
-        skillsTab:SizeTo(EFGM.MenuScale(46) + skillsTextSize, skillsTab:GetTall(), 0.15, 0, 0.5)
-        intelTab:SizeTo(EFGM.MenuScale(46) + intelTextSize, intelTab:GetTall(), 0.15, 0, 0.5)
-        achievementsTab:SizeTo(EFGM.MenuScale(46) + achievementsTextSize, achievementsTab:GetTall(), 0.15, 0, 0.5)
-        settingsTab:SizeTo(EFGM.MenuScale(46) + settingsTextSize, settingsTab:GetTall(), 0.15, 0, 0.5)
-        surface.PlaySound("ui/element_hover.wav")
-
-    end
-
-    helpIcon.OnCursorExited = function(s)
-
-        statsTab:SizeTo(EFGM.MenuScale(38), statsTab:GetTall(), 0.15, 0, 0.5)
-        matchTab:SizeTo(EFGM.MenuScale(38), matchTab:GetTall(), 0.15, 0, 0.5)
-        inventoryTab:SizeTo(EFGM.MenuScale(38), inventoryTab:GetTall(), 0.15, 0, 0.5)
-        tasksTab:SizeTo(EFGM.MenuScale(38), tasksTab:GetTall(), 0.15, 0, 0.5)
-        skillsTab:SizeTo(EFGM.MenuScale(38), skillsTab:GetTall(), 0.15, 0, 0.5)
-        intelTab:SizeTo(EFGM.MenuScale(38), intelTab:GetTall(), 0.15, 0, 0.5)
-        achievementsTab:SizeTo(EFGM.MenuScale(38), achievementsTab:GetTall(), 0.15, 0, 0.5)
-        settingsTab:SizeTo(EFGM.MenuScale(38), settingsTab:GetTall(), 0.15, 0, 0.5)
-
-    end
-
     -- if provided, open to the tab of the users choice
     if openTo != nil then
 
@@ -913,7 +965,7 @@ function Menu.OpenTab.Inventory()
     end
 
     local primaryWeaponHolder = vgui.Create("DPanel", playerPanel)
-    primaryWeaponHolder:SetPos(EFGM.MenuScale(313), EFGM.MenuScale(700))
+    primaryWeaponHolder:SetPos(EFGM.MenuScale(303), EFGM.MenuScale(690))
     primaryWeaponHolder:SetSize(EFGM.MenuScale(300), EFGM.MenuScale(120))
     function primaryWeaponHolder:Paint(w, h)
 
@@ -937,7 +989,7 @@ function Menu.OpenTab.Inventory()
     primaryWeaponIcon:SetImageColor(Color(255, 255, 255, 10))
 
     local secondaryWeaponHolder = vgui.Create("DPanel", playerPanel)
-    secondaryWeaponHolder:SetPos(EFGM.MenuScale(313), EFGM.MenuScale(840))
+    secondaryWeaponHolder:SetPos(EFGM.MenuScale(303), EFGM.MenuScale(830))
     secondaryWeaponHolder:SetSize(EFGM.MenuScale(300), EFGM.MenuScale(120))
     function secondaryWeaponHolder:Paint(w, h)
 
@@ -961,7 +1013,7 @@ function Menu.OpenTab.Inventory()
     secondaryWeaponIcon:SetImageColor(Color(255, 255, 255, 10))
 
     local holsterWeaponHolder = vgui.Create("DPanel", playerPanel)
-    holsterWeaponHolder:SetPos(EFGM.MenuScale(493), EFGM.MenuScale(560))
+    holsterWeaponHolder:SetPos(EFGM.MenuScale(483), EFGM.MenuScale(550))
     holsterWeaponHolder:SetSize(EFGM.MenuScale(120), EFGM.MenuScale(120))
     function holsterWeaponHolder:Paint(w, h)
 
@@ -983,6 +1035,66 @@ function Menu.OpenTab.Inventory()
     holsterWeaponIcon:SetSize(EFGM.MenuScale(80), EFGM.MenuScale(54))
     holsterWeaponIcon:SetImage("icons/inventory_holster_icon.png")
     holsterWeaponIcon:SetImageColor(Color(255, 255, 255, 10))
+
+    local meleeWeaponHolder = vgui.Create("DPanel", playerPanel)
+    meleeWeaponHolder:SetPos(EFGM.MenuScale(483), EFGM.MenuScale(410))
+    meleeWeaponHolder:SetSize(EFGM.MenuScale(120), EFGM.MenuScale(120))
+    function meleeWeaponHolder:Paint(w, h)
+
+        BlurPanel(meleeWeaponHolder, EFGM.MenuScale(3))
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+    end
+
+    local meleeWeaponIcon = vgui.Create("DImage", meleeWeaponHolder)
+    meleeWeaponIcon:SetPos(EFGM.MenuScale(22), EFGM.MenuScale(32))
+    meleeWeaponIcon:SetSize(EFGM.MenuScale(80), EFGM.MenuScale(54))
+    meleeWeaponIcon:SetImage("icons/inventory_melee_icon.png")
+    meleeWeaponIcon:SetImageColor(Color(255, 255, 255, 10))
+
+    local weightHolder = vgui.Create("DPanel", playerPanel)
+    weightHolder:SetPos(EFGM.MenuScale(10), EFGM.MenuScale(835))
+    weightHolder:SetSize(EFGM.MenuScale(125), EFGM.MenuScale(55))
+    function weightHolder:Paint(w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.DrawRect(EFGM.MenuScale(4), 0, w, EFGM.MenuScale(1))
+
+        draw.SimpleTextOutlined("5", "PuristaBold50", EFGM.MenuScale(60), EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined(".2KG", "PuristaBold24", EFGM.MenuScale(84), EFGM.MenuScale(23), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local weightIcon = vgui.Create("DImage", weightHolder)
+    weightIcon:SetPos(EFGM.MenuScale(1), EFGM.MenuScale(1))
+    weightIcon:SetSize(EFGM.MenuScale(53), EFGM.MenuScale(53))
+    weightIcon:SetImage("icons/weight_icon.png")
+
+    local healthHolder = vgui.Create("DPanel", playerPanel)
+    healthHolder:SetPos(EFGM.MenuScale(10), EFGM.MenuScale(895))
+    healthHolder:SetSize(EFGM.MenuScale(125), EFGM.MenuScale(55))
+    function healthHolder:Paint(w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.DrawRect(EFGM.MenuScale(4), 0, w, EFGM.MenuScale(1))
+
+        draw.SimpleTextOutlined(Menu.Player:Health() or "0", "PuristaBold50", EFGM.MenuScale(60), EFGM.MenuScale(1), Color(25, 255, 25), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local healthIcon = vgui.Create("DImage", healthHolder)
+    healthIcon:SetPos(EFGM.MenuScale(1), EFGM.MenuScale(1))
+    healthIcon:SetSize(EFGM.MenuScale(53), EFGM.MenuScale(53))
+    healthIcon:SetImage("icons/health_icon.png")
+    healthIcon:SetImageColor(Color(25, 255, 25))
 
     local inventoryPanel = vgui.Create("DPanel", contents)
     inventoryPanel:Dock(LEFT)
