@@ -61,30 +61,6 @@ hook.Add("StartCommand", "AdjustPlayerMovement", function(ply, cmd)
         cmd:RemoveKey(IN_JUMP)
         cmd:RemoveKey(IN_WALK)
     end
-
-    -- can not uncrouch until the crouching sequence is complete
-    if ply:GetEnteringCrouch() then
-        cmd:AddKey(IN_DUCK)
-    end
-
-    if ply:Crouching() then
-        ply:SetEnteringCrouch(false)
-    else
-        ply:SetExitingCrouch(false)
-    end
-
-    if ply:KeyPressed(IN_DUCK) then
-        ply:SetEnteringCrouch(true)
-    end
-
-    -- can not crouch again while uncrouching lol
-    if ply:Crouching() and !ply:KeyDown(IN_DUCK) then
-        ply:SetExitingCrouch(true)
-    end
-
-    if ply:GetExitingCrouch() then
-        cmd:RemoveKey(IN_DUCK)
-    end
 end)
 
 -- jump viewpunch
@@ -95,9 +71,6 @@ end)
 -- jump cooldown
 hook.Add("OnPlayerHitGround", "PlayerLand", function(ply, inWater, onFloater, speed)
     timer.Create(ply:SteamID64() .. "jumpCD", 0.4, 1, function() end)
-
-    local vel = ply:GetVelocity()
-    ply:SetVelocity(Vector(-vel[1], -vel[2], 0) * 0.5)
 
     if speed > 50 then
         local ang = Angle(math.floor(math.exp(speed / 256)))

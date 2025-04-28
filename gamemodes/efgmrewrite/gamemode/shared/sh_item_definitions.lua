@@ -2,7 +2,7 @@ EQUIPTYPE = {}
 EQUIPTYPE.Weapon = 1
 EQUIPTYPE.Gear = 2
 EQUIPTYPE.None = 3
-EQUIPTYPE.Spawn = 4 // For shit that spawns into the world on equip
+EQUIPTYPE.Spawn = 4 -- for shit that spawns into the world on equip
 
 EFGMITEMS = {}
 
@@ -23,26 +23,812 @@ function EFGMITEMS:__index( var )
     }
 end
 
-// WEAPONS
-    EFGMITEMS["arc9_eft_akm"] = {
-
-        ["fullName"] = "AKM",
-        ["displayName"] = "AKM",
-        ["displayType"] = "Assault Rifle",
-        ["weight"] = 2.5,
-        ["value"] = 12000,
+-- WEAPONS
+    -- assault carbines
+    EFGMITEMS["arc9_eft_adar15"] = {
+        ["fullName"] = "ADAR 2-15 5.56x45 carbine",
+        ["displayName"] = "ADAR 2-15",
+        ["displayType"] = "Assault Carbine",
+        ["weight"] = 2.9,
+        ["value"] = 41000,
         ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = "idk",
+        ["icon"] = "items/weapons/adar15.png",
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
     }
 
-// RIGS
-    EFGMITEMS["efgm_umka"] = {
+    EFGMITEMS["arc9_eft_vsk94"] = {
+        ["fullName"] = "KBP VSK-94 9x39 rifle",
+        ["displayName"] = "KBP VSK-94",
+        ["displayType"] = "Assault Carbine",
+        ["weight"] = 2.9,
+        ["value"] = 65000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/vsk94.png",
 
+        ["sizeX"] = 5,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_rfb"] = {
+        ["fullName"] = "Kel-Tec RFB 7.62x51 rifle",
+        ["displayName"] = "Kal-Tec RFB",
+        ["displayType"] = "Assault Carbine",
+        ["weight"] = 3.6,
+        ["value"] = 54000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/rfb.png",
+
+        ["sizeX"] = 4,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_tx15"] = {
+        ["fullName"] = "Lone Star TX-15 DML 5.56x45 carbine",
+        ["displayName"] = "Lone Star TX-15 DML",
+        ["displayType"] = "Assault Carbine",
+        ["weight"] = 3.3,
+        ["value"] = 95000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/tx15.png",
+
+        ["sizeX"] = 6,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_sag_ak545"] = {
+        ["fullName"] = "SAG AK-545 5.45x39 carbine",
+        ["displayName"] = "SAG AK-545",
+        ["displayType"] = "Assault Carbine",
+        ["weight"] = 4.4,
+        ["value"] = 54000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/sag_ak545.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_sag_ak545short"] = {
+        ["fullName"] = "SAG AK-545 Short 5.45x39 carbine",
+        ["displayName"] = "SAG AK-545 Short",
+        ["displayType"] = "Assault Carbine",
+        ["weight"] = 4.3,
+        ["value"] = 63000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/sag_ak545_short.png",
+
+        ["sizeX"] = 4,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_sr3"] = {
+        ["fullName"] = "SR-3M 9x39 compact assault rifle",
+        ["displayName"] = "SR-3M",
+        ["displayType"] = "Assault Carbine",
+        ["weight"] = 2.5,
+        ["value"] = 147000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/sr3m.png",
+
+        ["sizeX"] = 3,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_svt"] = {
+        ["fullName"] = "Tokarev SVT-40 7.62x54R rifle",
+        ["displayName"] = "Tokarev SVT-40",
+        ["displayType"] = "Assault Carbine",
+        ["weight"] = 4.1,
+        ["value"] = 64000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/svt.png",
+
+        ["sizeX"] = 6,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_sks"] = {
+        ["fullName"] = "TOZ Simonov SKS 7.62x39 carbine",
+        ["displayName"] = "TOZ SKS",
+        ["displayType"] = "Assault Carbine",
+        ["weight"] = 3.7,
+        ["value"] = 29000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/sks.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_vpo101"] = {
+        ["fullName"] = "Molot Arms VPO-101 Vepr-Hunter 7.62x51 carbine",
+        ["displayName"] = 'VPO-101 "Vepr-Hunter"',
+        ["displayType"] = "Assault Carbine",
+        ["weight"] = 3.8,
+        ["value"] = 44000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/vpo101.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_vpo136"] = {
+        ["fullName"] = "Molot Arms VPO-136 Vepr-KM 7.62x39 carbine",
+        ["displayName"] = 'VPO-136 "Vepr-KM"',
+        ["displayType"] = "Assault Carbine",
+        ["weight"] = 3.2,
+        ["value"] = 33000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/vpo136.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_vpo209"] = {
+        ["fullName"] = "Molot Arms VPO-209 .366 TKM carbine",
+        ["displayName"] = "VPO-209",
+        ["displayType"] = "Assault Carbine",
+        ["weight"] = 3.2,
+        ["value"] = 35000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/vpo209.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2
+    }
+
+    -- assault rifles
+    EFGMITEMS["arc9_eft_velociraptor"] = {
+        ["fullName"] = "Aklys Defense Velociraptor .300 Blackout assault rifle",
+        ["displayName"] = "AD Velociraptor",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 3.5,
+        ["value"] = 90000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/velociraptor.png",
+
+        ["sizeX"] = 4,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_ak101"] = {
+        ["fullName"] = "Kalashnikov AK-101 5.56x45 assault rifle",
+        ["displayName"] = "AK-101",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 3.6,
+        ["value"] = 39000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/ak101.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_ak102"] = {
+        ["fullName"] = "Kalashnikov AK-102 5.56x45 assault rifle",
+        ["displayName"] = "AK-102",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 3.2,
+        ["value"] = 45000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/ak102.png",
+
+        ["sizeX"] = 4,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_ak103"] = {
+        ["fullName"] = "Kalashnikov AK-103 7.62x39 assault rifle",
+        ["displayName"] = "AK-103",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 3.6,
+        ["value"] = 48000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/ak103.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_ak104"] = {
+        ["fullName"] = "Kalashnikov AK-104 7.62x39 assault rifle",
+        ["displayName"] = "AK-104",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 3.2,
+        ["value"] = 41000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/ak104.png",
+
+        ["sizeX"] = 4,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_ak105"] = {
+        ["fullName"] = "Kalashnikov AK-105 5.45x39 assault rifle",
+        ["displayName"] = "AK-105",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 3.2,
+        ["value"] = 46000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/ak105.png",
+
+        ["sizeX"] = 4,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_ak12"] = {
+        ["fullName"] = "Kalashnikov AK-12 5.45x39 assault rifle",
+        ["displayName"] = "AK-12",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 3.6,
+        ["value"] = 88000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/ak12.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_ak74"] = {
+        ["fullName"] = "Kalashnikov AK-74 5.45x39 assault rifle",
+        ["displayName"] = "AK-74",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 3.3,
+        ["value"] = 38000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/ak74.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_ak74m"] = {
+        ["fullName"] = "Kalashnikov AK-74M 5.45x39 assault rifle",
+        ["displayName"] = "AK-74M",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 3.6,
+        ["value"] = 40000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/ak74m.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_akm"] = {
+        ["fullName"] = "Kalashnikov AKM 7.62x39 assault rifle",
+        ["displayName"] = "AKM",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 3.5,
+        ["value"] = 46000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/akm.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_akms"] = {
+        ["fullName"] = "Kalashnikov AKMS 7.62x39 assault rifle",
+        ["displayName"] = "AKMS",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 3.4,
+        ["value"] = 44000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/akms.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_aks74"] = {
+        ["fullName"] = "Kalashnikov AKS-74 5.45x39 assault rifle",
+        ["displayName"] = "AKS-74",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 3.1,
+        ["value"] = 35000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/aks74.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_aks74u"] = {
+        ["fullName"] = "Kalashnikov AKS-74U 5.45x39 assault rifle",
+        ["displayName"] = "AKS-74U",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 2.6,
+        ["value"] = 29000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/aks74u.png",
+
+        ["sizeX"] = 4,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_asval"] = {
+        ["fullName"] = "AS VAL 9x39 special assault rifle",
+        ["displayName"] = "AS VAL",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 2.5,
+        ["value"] = 145000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/asval.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_ash12"] = {
+        ["fullName"] = "ASh-12 12.7x55 assault rifle",
+        ["displayName"] = "ASh-12",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 6.1,
+        ["value"] = 90000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/ash12.png",
+
+        ["sizeX"] = 4,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_m4a1"] = {
+        ["fullName"] = "Colt M4A1 5.56x45 assault rifle",
+        ["displayName"] = "Colt M4A1",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 2.9,
+        ["value"] = 97000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/m4a1.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_sa58"] = {
+        ["fullName"] = "DS Arms SA58 7.62x51 assault rifle",
+        ["displayName"] = "DS Arms SA58",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 3.9,
+        ["value"] = 108000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/sa58.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_mdr"] = {
+        ["fullName"] = "Desert Tech MDR 7.62x51 assault rifle",
+        ["displayName"] = "DT MDR .308",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 4.4,
+        ["value"] = 189000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/mdr.png",
+
+        ["sizeX"] = 4,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_mdr556"] = {
+        ["fullName"] = "Desert Tech MDR 5.56x45 assault rifle",
+        ["displayName"] = "DT MDR 5.56",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 3.9,
+        ["value"] = 83000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/mdr556.png",
+
+        ["sizeX"] = 4,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_scarh"] = {
+        ["fullName"] = "FN SCAR-H 7.62x51 assault rifle",
+        ["displayName"] = "FN SCAR-H",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 3.8,
+        ["value"] = 149000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/scarh.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_scarl"] = {
+        ["fullName"] = "FN SCAR-L 5.56x45 assault rifle",
+        ["displayName"] = "FN SCAR-L",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 3.2,
+        ["value"] = 64000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/scarl.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_hk416"] = {
+        ["fullName"] = "HK 416A5 5.56x45 assault rifle",
+        ["displayName"] = "HK 416A5",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 3.8,
+        ["value"] = 99000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/hk416.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_g36"] = {
+        ["fullName"] = "HK G36 5.56x45 assault rifle",
+        ["displayName"] = "HK G36",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 3,
+        ["value"] = 47000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/g36.png",
+
+        ["sizeX"] = 6,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_9a91"] = {
+        ["fullName"] = "KBP 9A-91 9x39 compact assault rifle",
+        ["displayName"] = "KBP 9A-91",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 2.4,
+        ["value"] = 36000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/9a91.png",
+
+        ["sizeX"] = 4,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_mk47_mutant"] = {
+        ["fullName"] = "CMMG Mk47 Mutant 7.62x39 assault rifle",
+        ["displayName"] = "Mk47 Mutant",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 2.3,
+        ["value"] = 110000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/mk47_mutant.png",
+
+        ["sizeX"] = 4,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_rd704"] = {
+        ["fullName"] = "Rifle Dynamics RD-704 7.62x39 assault rifle",
+        ["displayName"] = "RD-704",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 3.8,
+        ["value"] = 88000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/rd704.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_scarx17"] = {
+        ["fullName"] = "FN SCAR-H X-17 7.62x51 assault rifle",
+        ["displayName"] = "SCAR-H X-17",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 3.8,
+        ["value"] = 169000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/scarh.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_mcx"] = {
+        ["fullName"] = "SIG MCX .300 Blackout assault rifle",
+        ["displayName"] = "SIG MCX .300 BLK",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 2.7,
+        ["value"] = 97000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/mcx.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_spear"] = {
+        ["fullName"] = "SIG MCX-SPEAR 6.8x51 assault rifle",
+        ["displayName"] = "SIG MCX-SPEAR",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 4.2,
+        ["value"] = 249000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/spear.png",
+
+        ["sizeX"] = 6,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_auga1"] = {
+        ["fullName"] = "Steyr AUG A1 5.56x45 assault rifle",
+        ["displayName"] = "Steyr AUG A1",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 3.8,
+        ["value"] = 43000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/auga1.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_aug"] = {
+        ["fullName"] = "Steyr AUG A3 5.56x45 assault rifle",
+        ["displayName"] = "Steyr AUG A3",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 4,
+        ["value"] = 56000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/aug.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_avt"] = {
+        ["fullName"] = "Tokarev AVT-40 7.62x54R automatic rifle",
+        ["displayName"] = "Tokarev AVT-40",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 4.2,
+        ["value"] = 61000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/avt.png",
+
+        ["sizeX"] = 6,
+        ["sizeY"] = 2
+    }
+
+    -- light machine guns
+    EFGMITEMS["arc9_eft_m60e4"] = {
+        ["fullName"] = "U.S. Ordnance M60E4 7.62x51 light machine gun",
+        ["displayName"] = "M60E4",
+        ["displayType"] = "Light Machine Gun",
+        ["weight"] = 10,
+        ["value"] = 100000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/m60e4.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_m60e6"] = {
+        ["fullName"] = "U.S. Ordnance M60E6 7.62x51 light machine gun",
+        ["displayName"] = "M60E6",
+        ["displayType"] = "Light Machine Gun",
+        ["weight"] = 9.4,
+        ["value"] = 110000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/m60e6.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_pkm"] = {
+        ["fullName"] = "Kalashnikov PKM 7.62x54R machine gun",
+        ["displayName"] = "PKM",
+        ["displayType"] = "Light Machine Gun",
+        ["weight"] = 8.9,
+        ["value"] = 205000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/pkm.png",
+
+        ["sizeX"] = 6,
+        ["sizeY"] = 3
+    }
+
+    EFGMITEMS["arc9_eft_pkp"] = {
+        ["fullName"] = "Kalashnikov PKP 7.62x54R infantry machine gun",
+        ["displayName"] = 'PKP "Pecheneg"',
+        ["displayType"] = "Light Machine Gun",
+        ["weight"] = 9.6,
+        ["value"] = 230100,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/pkp.png",
+
+        ["sizeX"] = 6,
+        ["sizeY"] = 3
+    }
+
+    EFGMITEMS["arc9_eft_rpd"] = {
+        ["fullName"] = "Degtyarev RPD 7.62x39 machine gun",
+        ["displayName"] = 'RPD',
+        ["displayType"] = "Light Machine Gun",
+        ["weight"] = 7.4,
+        ["value"] = 99000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/rpd.png",
+
+        ["sizeX"] = 6,
+        ["sizeY"] = 3
+    }
+
+    EFGMITEMS["arc9_eft_rpk16"] = {
+        ["fullName"] = "RPK-16 5.45x39 light machine gun",
+        ["displayName"] = 'RPK-16',
+        ["displayType"] = "Light Machine Gun",
+        ["weight"] = 3.6,
+        ["value"] = 68000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/rpk16.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2
+    }
+
+-- RIGS
+    EFGMITEMS["efgm_umka"] = {
         ["fullName"] = "Umka M33-SET1",
         ["displayName"] = "Umka",
         ["displayType"] = "Chest Rig",
@@ -57,27 +843,26 @@ end
         ["sizeX"] = 3,
         ["sizeY"] = 4,
 
-        ["containerLayoutSizeX"] = 4, // for the positioning of the child slots, penial you can thank me later
-        ["containerLayoutSizeY"] = 4, // also look in the reference folder to see what I'm getting at better
+        ["containerLayoutSizeX"] = 4, -- for the positioning of the child slots, penial you can thank me later
+        ["containerLayoutSizeY"] = 4, -- also look in the reference folder to see what I'm getting at better
 
         ["childContainers"] = {
-            { ["posX"] = 1, ["posY"] = 1, ["sizeX"] = 1, ["sizeY"] = 2 }, // Top 4 1x2's
+            { ["posX"] = 1, ["posY"] = 1, ["sizeX"] = 1, ["sizeY"] = 2 }, -- Top 4 1x2's
             { ["posX"] = 2, ["posY"] = 1, ["sizeX"] = 1, ["sizeY"] = 2 },
             { ["posX"] = 3, ["posY"] = 1, ["sizeX"] = 1, ["sizeY"] = 2 },
             { ["posX"] = 4, ["posY"] = 1, ["sizeX"] = 1, ["sizeY"] = 2 },
 
-            { ["posX"] = 1, ["posY"] = 3, ["sizeX"] = 1, ["sizeY"] = 1 }, // Bottom left 4 1x1's
+            { ["posX"] = 1, ["posY"] = 3, ["sizeX"] = 1, ["sizeY"] = 1 }, -- Bottom left 4 1x1's
             { ["posX"] = 2, ["posY"] = 3, ["sizeX"] = 1, ["sizeY"] = 1 },
             { ["posX"] = 1, ["posY"] = 4, ["sizeX"] = 1, ["sizeY"] = 1 },
             { ["posX"] = 2, ["posY"] = 4, ["sizeX"] = 1, ["sizeY"] = 1 },
 
-            { ["posX"] = 3, ["posY"] = 3, ["sizeX"] = 2, ["sizeY"] = 2 } // Bottom right 2x2
+            { ["posX"] = 3, ["posY"] = 3, ["sizeX"] = 2, ["sizeY"] = 2 } -- Bottom right 2x2
         }
     }
 
-// POCKETS
+-- POCKETS
     EFGMITEMS["efgm_default_pockets"] = {
-
         ["fullName"] = "",
         ["displayName"] = "",
         ["displayType"] = "",
@@ -104,7 +889,6 @@ end
     }
 
     EFGMITEMS["efgm_alt_pockets"] = {
-
         ["fullName"] = "",
         ["displayName"] = "",
         ["displayType"] = "",
@@ -128,7 +912,6 @@ end
     }
 
     EFGMITEMS["efgm_eod_pockets"] = {
-
         ["fullName"] = "",
         ["displayName"] = "",
         ["displayType"] = "",
@@ -154,9 +937,8 @@ end
         }
     }
 
-// BACKPACKS
+-- BACKPACKS
     EFGMITEMS["efgm_daypack"] = {
-
         ["fullName"] = "LBT-8005A Day Pack",
         ["displayName"] = "Daypack",
         ["displayType"] = "Backpack",
@@ -179,9 +961,8 @@ end
         }
     }
 
-// SECURE CONTAINERS
+-- SECURE CONTAINERS
     EFGMITEMS["efgm_sc_alpha"] = {
-
         ["fullName"] = "Secure Container Alpha",
         ["displayName"] = "Alpha",
         ["displayType"] = "Secure Container",
@@ -205,7 +986,6 @@ end
     }
 
     EFGMITEMS["efgm_sc_beta"] = {
-
         ["fullName"] = "Secure Container Beta",
         ["displayName"] = "Beta",
         ["displayType"] = "Secure Container",
@@ -229,7 +1009,6 @@ end
     }
 
     EFGMITEMS["efgm_sc_epsilon"] = {
-
         ["fullName"] = "Secure Container Epsilon",
         ["displayName"] = "Epsilon",
         ["displayType"] = "Secure Container",
@@ -253,7 +1032,6 @@ end
     }
 
     EFGMITEMS["efgm_sc_gamma"] = {
-
         ["fullName"] = "Secure Container Gamma",
         ["displayName"] = "Gamma",
         ["displayType"] = "Secure Container",
@@ -277,7 +1055,6 @@ end
     }
 
     EFGMITEMS["efgm_sc_kappa"] = {
-
         ["fullName"] = "Secure Container Kappa",
         ["displayName"] = "Kappa",
         ["displayType"] = "Secure Container",
@@ -300,9 +1077,8 @@ end
         }
     }
 
-// BARTER ITEMS / VALUABLES
+-- BARTER ITEMS / VALUABLES
     EFGMITEMS["efgm_roler"] = {
-
         ["fullName"] = "Roler Submariner",
         ["displayType"] = "Barter Item",
         ["weight"] = 0.18,
@@ -316,9 +1092,8 @@ end
         ["sizeY"] = 1
     }
 
-// HL2 JEEP
+-- HL2 JEEP
     EFGMITEMS["hl2_jeep"] = {
-
         ["fullName"] = "The Jeep from Half Life 2",
         ["displayType"] = "Vehicle",
         ["weight"] = 1800,

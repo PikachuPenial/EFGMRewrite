@@ -183,7 +183,7 @@ hook.Add("PlayerCanHearPlayersVoice", "ProxVOIP", function(listener,talker)
 end )
 
 -- temp. health regen
-local healthRegenSpeed = 0.01
+local healthRegenSpeed = 1.5
 local healthRegenDamageDelay = 20
 local function Regeneration()
 	for _, ply in pairs(player.GetAll()) do
