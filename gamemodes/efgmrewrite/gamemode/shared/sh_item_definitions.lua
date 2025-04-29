@@ -1421,6 +1421,937 @@ end
         ["sizeY"] = 1
     }
 
+    EFGMITEMS["arc9_eft_ai_axmc"] = {
+        ["fullName"] = "Accuracy International AXMC .338 LM bolt-action sniper rifle",
+        ["displayName"] = "AI AXMC",
+        ["displayType"] = "Sniper Rifle",
+        ["weight"] = 5.7,
+        ["value"] = 270000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/axmc.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_g28"] = {
+        ["fullName"] = "HK G28 7.62x51 marksman rifle",
+        ["displayName"] = "HK G28",
+        ["displayType"] = "Marksman Rifle",
+        ["weight"] = 5.4,
+        ["value"] = 210000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/g28.png",
+
+        ["sizeX"] = 6,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_sr25"] = {
+        ["fullName"] = "Knight's Armament Company SR-25 7.62x51 marksman rifle",
+        ["displayName"] = "KAC SR-25",
+        ["displayType"] = "Marksman Rifle",
+        ["weight"] = 3.8,
+        ["value"] = 120000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/sr25.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_dvl10"] = {
+        ["fullName"] = "Lobaev Arms DVL-10 7.62x51 bolt-action sniper rifle",
+        ["displayName"] = "Lobaev Arms DVL-10",
+        ["displayType"] = "Sniper Rifle",
+        ["weight"] = 5.0,
+        ["value"] = 150000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/dvl.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_mk18_mjolnir"] = {
+        ["fullName"] = "SWORD International Mk-18 .338 LM marksman rifle",
+        ["displayName"] = "Mk-18 Mjölnir",
+        ["displayType"] = "Marksman Rifle",
+        ["weight"] = 6.5,
+        ["value"] = 330000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/mk18_mjolnir.png",
+
+        ["sizeX"] = 6,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_mosin_infantry"] = {
+        ["fullName"] = "Mosin 7.62x54R bolt-action rifle (Infantry)",
+        ["displayName"] = "Mosin rifle (Infantry)",
+        ["displayType"] = "Sniper Rifle",
+        ["weight"] = 4.8,
+        ["value"] = 38000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/mosin_infantry.png",
+
+        ["sizeX"] = 6,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_mosin_sniper"] = {
+        ["fullName"] = "Mosin 7.62x54R bolt-action rifle (Sniper)",
+        ["displayName"] = "Mosin rifle (Sniper)",
+        ["displayType"] = "Sniper Rifle",
+        ["weight"] = 4.8,
+        ["value"] = 44000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/mosin_sniper.png",
+
+        ["sizeX"] = 6,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_mp18"] = {
+        ["fullName"] = "MP-18 7.62x54R single-shot rifle",
+        ["displayName"] = "MP-18",
+        ["displayType"] = "Sniper Rifle",
+        ["weight"] = 2.8,
+        ["value"] = 17000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/mp18.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_t5000"] = {
+        ["fullName"] = "ORSIS T-5000M 7.62x51 bolt-action sniper rifle",
+        ["displayName"] = "ORSIS T-5000M",
+        ["displayType"] = "Sniper Rifle",
+        ["weight"] = 5.9,
+        ["value"] = 88000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/t5000.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_m700"] = {
+        ["fullName"] = "Remington Model 700 7.62x51 bolt-action sniper rifle",
+        ["displayName"] = "Remington M700",
+        ["displayType"] = "Sniper Rifle",
+        ["weight"] = 4.0,
+        ["value"] = 63000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/m700.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_rsass"] = {
+        ["fullName"] = "Remington R11 RSASS 7.62x51 marksman rifle",
+        ["displayName"] = "Remington R11 RSASS",
+        ["displayType"] = "Marksman Rifle",
+        ["weight"] = 4.9,
+        ["value"] = 130000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/rsass.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_m1a"] = {
+        ["fullName"] = "Springfield Armory M1A 7.62x51 rifle",
+        ["displayName"] = "Springfield M1A",
+        ["displayType"] = "Marksman Rifle",
+        ["weight"] = 3.9,
+        ["value"] = 105000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/m1a.png",
+
+        ["sizeX"] = 4,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_sv98"] = {
+        ["fullName"] = "SV-98 7.62x54R bolt-action sniper rifle",
+        ["displayName"] = "SV-98",
+        ["displayType"] = "Sniper Rifle",
+        ["weight"] = 5.1,
+        ["value"] = 74000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/sv98.png",
+
+        ["sizeX"] = 6,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_svds"] = {
+        ["fullName"] = "SVDS 7.62x54R sniper rifle",
+        ["displayName"] = "SVDS",
+        ["displayType"] = "Marksman Rifle",
+        ["weight"] = 4.3,
+        ["value"] = 85000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/svds.png",
+
+        ["sizeX"] = 6,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_vpo215"] = {
+        ["fullName"] = "Molot Arms VPO-215 Gornostay .366 TKM bolt-action rifle",
+        ["displayName"] = 'VPO-215 "Gornostay"',
+        ["displayType"] = "Sniper Rifle",
+        ["weight"] = 3.3,
+        ["value"] = 27000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/vpo215.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_vss"] = {
+        ["fullName"] = "VSS Vintorez 9x39 special sniper rifle",
+        ["displayName"] = "VSS Vintorez",
+        ["displayType"] = "Marksman Rifle",
+        ["weight"] = 2.6,
+        ["value"] = 143000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/vss.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2
+    }
+
+    -- submachine guns
+    EFGMITEMS["arc9_eft_mp9"] = {
+        ["fullName"] = "B&T MP9 9x19 submachine gun",
+        ["displayName"] = "B&T MP9",
+        ["displayType"] = "Submachine Gun",
+        ["weight"] = 1.3,
+        ["value"] = 43000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/mp9.png",
+
+        ["sizeX"] = 3,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_mp9n"] = {
+        ["fullName"] = "B&T MP9-N 9x19 submachine gun",
+        ["displayName"] = "B&T MP9-N",
+        ["displayType"] = "Submachine Gun",
+        ["weight"] = 1.4,
+        ["value"] = 50000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/mp9n.png",
+
+        ["sizeX"] = 3,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_fn_p90"] = {
+        ["fullName"] = "FN P90 5.7x28 submachine gun",
+        ["displayName"] = "FN P90",
+        ["displayType"] = "Submachine Gun",
+        ["weight"] = 2.9,
+        ["value"] = 72000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/p90.png",
+
+        ["sizeX"] = 3,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_mp5"] = {
+        ["fullName"] = "HK MP5 9x19 submachine gun",
+        ["displayName"] = "HK MP5",
+        ["displayType"] = "Submachine Gun",
+        ["weight"] = 2.4,
+        ["value"] = 41000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/mp5.png",
+
+        ["sizeX"] = 4,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_mp5k"] = {
+        ["fullName"] = "HK MP5K 9x19 submachine gun",
+        ["displayName"] = "HK MP5K",
+        ["displayType"] = "Submachine Gun",
+        ["weight"] = 1.8,
+        ["value"] = 32000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/mp5k.png",
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_mp7a1"] = {
+        ["fullName"] = "HK MP7A1 4.6x30 submachine gun",
+        ["displayName"] = "HK MP7A1",
+        ["displayType"] = "Submachine Gun",
+        ["weight"] = 2.2,
+        ["value"] = 73000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/mp7a1.png",
+
+        ["sizeX"] = 3,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_mp7a2"] = {
+        ["fullName"] = "HK MP7A2 4.6x30 submachine gun",
+        ["displayName"] = "HK MP7A2",
+        ["displayType"] = "Submachine Gun",
+        ["weight"] = 2.2,
+        ["value"] = 81000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/mp7a2.png",
+
+        ["sizeX"] = 3,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_ump"] = {
+        ["fullName"] = "HK UMP .45 ACP submachine gun",
+        ["displayName"] = "HK UMP .45",
+        ["displayType"] = "Submachine Gun",
+        ["weight"] = 2.2,
+        ["value"] = 35000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/ump.png",
+
+        ["sizeX"] = 3,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_uzi"] = {
+        ["fullName"] = "IWI UZI 9x19 submachine gun",
+        ["displayName"] = "IWI UZI",
+        ["displayType"] = "Submachine Gun",
+        ["weight"] = 3.7,
+        ["value"] = 29000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/uzi.png",
+
+        ["sizeX"] = 3,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_uzi_pro"] = {
+        ["fullName"] = "IWI UZI PRO Pistol 9x19 submachine gun",
+        ["displayName"] = "IWI UZI PRO Pistol",
+        ["displayType"] = "Submachine Gun",
+        ["weight"] = 1.6,
+        ["value"] = 48000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/uzi_pro.png",
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_vector45"] = {
+        ["fullName"] = "TDI KRISS Vector Gen.2 .45 ACP submachine gun",
+        ["displayName"] = "KRISS Vector .45",
+        ["displayType"] = "Submachine Gun",
+        ["weight"] = 2.6,
+        ["value"] = 78000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/vector45.png",
+
+        ["sizeX"] = 3,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_vector9"] = {
+        ["fullName"] = "TDI KRISS Vector Gen.2 9x19 submachine gun",
+        ["displayName"] = "KRISS Vector 9x19",
+        ["displayType"] = "Submachine Gun",
+        ["weight"] = 2.5,
+        ["value"] = 72000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/vector9.png",
+
+        ["sizeX"] = 3,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_pp1901"] = {
+        ["fullName"] = "PP-19-01 Vityaz 9x19 submachine gun",
+        ["displayName"] = 'PP-19-01 "Vityaz"',
+        ["displayType"] = "Submachine Gun",
+        ["weight"] = 2.8,
+        ["value"] = 22000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/pp1901.png",
+
+        ["sizeX"] = 3,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_kedr"] = {
+        ["fullName"] = "PP-91 Kedr 9x18PM submachine gun",
+        ["displayName"] = 'PP-91 "Kedr"',
+        ["displayType"] = "Submachine Gun",
+        ["weight"] = 1.5,
+        ["value"] = 18000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/kedr.png",
+
+        ["sizeX"] = 3,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_ppsh41"] = {
+        ["fullName"] = "PPSh-41 7.62x25 submachine gun",
+        ["displayName"] = "PPSh-41",
+        ["displayType"] = "Submachine Gun",
+        ["weight"] = 4.0,
+        ["value"] = 26000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/ppsh.png",
+
+        ["sizeX"] = 4,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_saiga9"] = {
+        ["fullName"] = "Saiga-9 9x19 carbine",
+        ["displayName"] = "Saiga-9",
+        ["displayType"] = "Submachine Gun",
+        ["weight"] = 3.0,
+        ["value"] = 17000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/saiga9.png",
+
+        ["sizeX"] = 4,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_mpx"] = {
+        ["fullName"] = "SIG MPX 9x19 submachine gun",
+        ["displayName"] = "SIG MPX",
+        ["displayType"] = "Submachine Gun",
+        ["weight"] = 2.8,
+        ["value"] = 54000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/mpx.png",
+
+        ["sizeX"] = 4,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_stm9"] = {
+        ["fullName"] = "Soyuz-TM STM-9 Gen.2 9x19 carbine",
+        ["displayName"] = "Soyuz-TM STM-9",
+        ["displayType"] = "Submachine Gun",
+        ["weight"] = 2.0,
+        ["value"] = 43000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/stm9.png",
+
+        ["sizeX"] = 4,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_sr2m"] = {
+        ["fullName"] = "SR-2M Veresk 9x21 submachine gun",
+        ["displayName"] = 'SR-2M "Veresk"',
+        ["displayType"] = "Submachine Gun",
+        ["weight"] = 1.7,
+        ["value"] = 53000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/sr2m.png",
+
+        ["sizeX"] = 3,
+        ["sizeY"] = 2
+    }
+
+    -- melee
+    EFGMITEMS["arc9_eft_melee_taran"] = {
+        ["fullName"] = "PR-Taran police baton",
+        ["displayName"] = '"PR-Taran"',
+        ["displayType"] = "Melee",
+        ["weight"] = 0.7,
+        ["value"] = 25000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Melee",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/melee/taran.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_melee_6x5"] = {
+        ["fullName"] = "6Kh5 Bayonet",
+        ["displayName"] = "6Kh5 Bayonet",
+        ["displayType"] = "Melee",
+        ["weight"] = 0.2,
+        ["value"] = 15000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Melee",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/melee/6x5.png",
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_melee_akula"] = {
+        ["fullName"] = "Akula push dagger",
+        ["displayName"] = "Akula push dagger",
+        ["displayType"] = "Melee",
+        ["weight"] = 0.1,
+        ["value"] = 600000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Melee",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/melee/akula.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_melee_wycc"] = {
+        ["fullName"] = "Antique axe",
+        ["displayName"] = "Antique axe",
+        ["displayType"] = "Melee",
+        ["weight"] = 1.1,
+        ["value"] = 70000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Melee",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/melee/axe.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_melee_gladius"] = {
+        ["fullName"] = "APOK Tactical Wasteland Gladius",
+        ["displayName"] = "APOK Gladius",
+        ["displayType"] = "Melee",
+        ["weight"] = 1.2,
+        ["value"] = 1000000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Melee",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/melee/gladius.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 4
+    }
+
+    EFGMITEMS["arc9_eft_melee_a2607"] = {
+        ["fullName"] = "Bars A-2607 95Kh18 knife",
+        ["displayName"] = "Bars A-2607",
+        ["displayType"] = "Melee",
+        ["weight"] = 0.2,
+        ["value"] = 9000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Melee",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/melee/a2607.png",
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_melee_a2607d"] = {
+        ["fullName"] = "Bars A-2607 Damascus knife",
+        ["displayName"] = "Bars A-2607 Damascus",
+        ["displayType"] = "Melee",
+        ["weight"] = 0.2,
+        ["value"] = 9000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Melee",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/melee/a2607d.png",
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_melee_camper"] = {
+        ["fullName"] = "Camper axe",
+        ["displayName"] = "Camper axe",
+        ["displayType"] = "Melee",
+        ["weight"] = 0.6,
+        ["value"] = 30000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Melee",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/melee/camper.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 3
+    }
+
+    EFGMITEMS["arc9_eft_melee_labris"] = {
+        ["fullName"] = "Chained Labrys",
+        ["displayName"] = "Chained Labrys",
+        ["displayType"] = "Melee",
+        ["weight"] = 19.0,
+        ["value"] = 4000000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Melee",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/melee/labris.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 5
+    }
+
+    EFGMITEMS["arc9_eft_melee_crash"] = {
+        ["fullName"] = "Crash axe",
+        ["displayName"] = "Crash axe",
+        ["displayType"] = "Melee",
+        ["weight"] = 1.4,
+        ["value"] = 2000000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Melee",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/melee/crash.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 3
+    }
+
+    EFGMITEMS["arc9_eft_melee_cultist"] = {
+        ["fullName"] = "Cultist knife",
+        ["displayName"] = "Cultist knife",
+        ["displayType"] = "Melee",
+        ["weight"] = 0.2,
+        ["value"] = 75000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Melee",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/melee/cultist.png",
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_melee_fulcrum"] = {
+        ["fullName"] = "ER FULCRUM BAYONET",
+        ["displayName"] = "ER FULCRUM BAYONET",
+        ["displayType"] = "Melee",
+        ["weight"] = 0.4,
+        ["value"] = 16000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Melee",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/melee/fulcrum.png",
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_melee_crowbar"] = {
+        ["fullName"] = "Freeman crowbar",
+        ["displayName"] = "Freeman crowbar",
+        ["displayType"] = "Melee",
+        ["weight"] = 1.9,
+        ["value"] = 15000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Melee",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/melee/crowbar.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 3
+    }
+
+    EFGMITEMS["arc9_eft_melee_kiba"] = {
+        ["fullName"] = "Kiba Arms Tactical Tomahawk",
+        ["displayName"] = "KATT",
+        ["displayType"] = "Melee",
+        ["weight"] = 1.8,
+        ["value"] = 80000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Melee",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/melee/katt.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 3
+    }
+
+    EFGMITEMS["arc9_eft_melee_kukri"] = {
+        ["fullName"] = "United Cutlery M48 Tactical Kukri",
+        ["displayName"] = "M48 Tactical Kukri",
+        ["displayType"] = "Melee",
+        ["weight"] = 0.4,
+        ["value"] = 200000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Melee",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/melee/kukri.png",
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_melee_m2"] = {
+        ["fullName"] = "Miller Bros. Blades M-2 Tactical Sword",
+        ["displayName"] = "Miller Bros. Blades M-2",
+        ["displayType"] = "Melee",
+        ["weight"] = 1.3,
+        ["value"] = 1000000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Melee",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/melee/m2.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 3
+    }
+
+    EFGMITEMS["arc9_eft_melee_mpl50"] = {
+        ["fullName"] = "MPL-50 entrenching tool",
+        ["displayName"] = "MPL-50 entr. tool",
+        ["displayType"] = "Melee",
+        ["weight"] = 0.8,
+        ["value"] = 10000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Melee",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/melee/mpl50.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 3
+    }
+
+    EFGMITEMS["arc9_eft_melee_rebel"] = {
+        ["fullName"] = "Red Rebel ice pick",
+        ["displayName"] = "Red Rebel ice pick",
+        ["displayType"] = "Melee",
+        ["weight"] = 0.6,
+        ["value"] = 2500000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Melee",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/melee/rebel.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 3
+    }
+
+    EFGMITEMS["arc9_eft_melee_rebel"] = {
+        ["fullName"] = "Red Rebel ice pick",
+        ["displayName"] = "Red Rebel ice pick",
+        ["displayType"] = "Melee",
+        ["weight"] = 0.6,
+        ["value"] = 2500000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Melee",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/melee/rebel.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 3
+    }
+
+    EFGMITEMS["arc9_eft_melee_voodoo"] = {
+        ["fullName"] = "SOG Voodoo Hawk tactical tomahawk",
+        ["displayName"] = "SOG Voodoo Hawk",
+        ["displayType"] = "Melee",
+        ["weight"] = 0.8,
+        ["value"] = 3600000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Melee",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/melee/voodoo.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_melee_sp8"] = {
+        ["fullName"] = "SP-8 Survival Machete",
+        ["displayName"] = "SP-8 Machete",
+        ["displayType"] = "Melee",
+        ["weight"] = 0.6,
+        ["value"] = 64000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Melee",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/melee/sp8.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 3
+    }
+
+    EFGMITEMS["arc9_eft_melee_taiga"] = {
+        ["fullName"] = "UVSR Taiga-1 survival machete",
+        ["displayName"] = "UVSR Taiga-1",
+        ["displayType"] = "Melee",
+        ["weight"] = 0.6,
+        ["value"] = 500000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Melee",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/melee/taiga.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 3
+    }
+
+    -- specials
+    EFGMITEMS["arc9_eft_sp81"] = {
+        ["fullName"] = "ZiD SP-81 26x75 signal pistol",
+        ["displayName"] = "ZiD SP-81",
+        ["displayType"] = "Special",
+        ["weight"] = 0.6,
+        ["value"] = 25000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Secondary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/melee/sp81.png",
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 1
+    }
+
 -- RIGS
     EFGMITEMS["efgm_umka"] = {
         ["fullName"] = "Umka M33-SET1",

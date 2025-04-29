@@ -149,7 +149,7 @@ LOOT[1]["arc9_eft_mpx"]                 = {2}
 LOOT[1]["arc9_eft_stm9"]                = {2}
 LOOT[1]["arc9_eft_sr2m"]                = {3}
 
--- grenades and grenade launcher
+-- grenades and grenade launchers
 -- LOOT[1]["arc9_eft_f1"]                  = {1}
 LOOT[1]["arc9_eft_fn40gl"]              = {3}
 -- LOOT[1]["arc9_eft_m18"]                 = {1}
@@ -338,7 +338,7 @@ LOOT[5]["arc9_eft_mpx"]                 = {2}
 LOOT[5]["arc9_eft_stm9"]                = {2}
 LOOT[5]["arc9_eft_sr2m"]                = {3}
 
--- grenades and grenade launcher
+-- grenades and grenade launchers
 -- LOOT[5]["arc9_eft_f1"]                  = {1}
 LOOT[5]["arc9_eft_fn40gl"]              = {3}
 -- LOOT[5]["arc9_eft_m18"]                 = {1}
