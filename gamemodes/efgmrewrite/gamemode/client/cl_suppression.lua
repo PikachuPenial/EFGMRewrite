@@ -50,13 +50,9 @@ hook.Add("Think", "suppression_loop", function()
 	started_effect = true
 end)
 
-local sharpen_lerp = 0
 local bloom_lerp = 0
 hook.Add("RenderScreenspaceEffects", "suppression_ApplySuppression", function()
 	if effect_amount == 0 then return end
-
-	-- sharpen_lerp = Lerp(6 * FrameTime(), sharpen_lerp, effect_amount * suppression_sharpen_intensity)
-	-- DrawSharpen(sharpen_lerp , 0.4)
 
 	bloom_lerp = Lerp(6 * FrameTime(), bloom_lerp, effect_amount * bloom_intensity)
 	DrawBloom(0.30, bloom_lerp , 0.33, 4.5, 1, 0, 1, 1, 1)

@@ -11,7 +11,7 @@ function INV.New()
 
     inv.contents = {} -- items within
 
-    function inv:Add( name, type, count )
+    function inv:Add(name, type, count)
         local key = table.insert(self.contents, {})
 
         self.contents[key].name = name

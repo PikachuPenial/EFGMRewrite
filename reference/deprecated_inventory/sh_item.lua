@@ -9,7 +9,7 @@ function ITEM.CreateItem(identifier, data, md)
     local info = EFGMITEMS[id]
 
     if info.equipType == EQUIPTYPE.Gear then
-        for k, v in ipairs( info.childContainers ) do
+        for k, v in ipairs(info.childContainers) do
             item.data[k] = {}
             item.md[k] = {}
         end
@@ -19,7 +19,7 @@ function ITEM.CreateItem(identifier, data, md)
 end
 
 function ITEM.AddItem(container, childContainerID, item, posX, posY, isRotated)
-    // should probably be checks here for whether the item can fit or not
+    -- should probably be checks here for whether the item can fit or not
 
     local index = table.insert(container.data[childContainerID], item)
     container.md[childContainerID][index] = {
