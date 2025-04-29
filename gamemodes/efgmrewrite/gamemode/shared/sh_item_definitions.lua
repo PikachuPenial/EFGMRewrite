@@ -797,7 +797,7 @@ end
 
     EFGMITEMS["arc9_eft_rpd"] = {
         ["fullName"] = "Degtyarev RPD 7.62x39 machine gun",
-        ["displayName"] = 'RPD',
+        ["displayName"] = "RPD",
         ["displayType"] = "Light Machine Gun",
         ["weight"] = 7.4,
         ["value"] = 99000,
@@ -813,7 +813,7 @@ end
 
     EFGMITEMS["arc9_eft_rpk16"] = {
         ["fullName"] = "RPK-16 5.45x39 light machine gun",
-        ["displayName"] = 'RPK-16',
+        ["displayName"] = "RPK-16",
         ["displayType"] = "Light Machine Gun",
         ["weight"] = 3.6,
         ["value"] = 68000,
@@ -825,6 +825,600 @@ end
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
+    }
+
+    -- pistols
+    EFGMITEMS["arc9_eft_m9a3"] = {
+        ["fullName"] = "Beretta M9A3 9x19 pistol",
+        ["displayName"] = "Beretta M9A3",
+        ["displayType"] = "Pistol",
+        ["weight"] = 0.8,
+        ["value"] = 23000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Secondary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/m9a3.png",
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_pd20"] = {
+        ["fullName"] = "20x1mm toy gun",
+        ["displayName"] = "Blicky",
+        ["displayType"] = "Pistol",
+        ["weight"] = 0.1,
+        ["value"] = 10000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Secondary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/blicky.png",
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_m1911"] = {
+        ["fullName"] = "Colt M1911A1 .45 ACP pistol",
+        ["displayName"] = "Colt M1911A1",
+        ["displayType"] = "Pistol",
+        ["weight"] = 1.2,
+        ["value"] = 19000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Secondary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/m1911.png",
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_m45"] = {
+        ["fullName"] = "Colt M45A1 .45 ACP pistol",
+        ["displayName"] = "Colt M45A1",
+        ["displayType"] = "Pistol",
+        ["weight"] = 1.1,
+        ["value"] = 22000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Secondary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/m45.png",
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_deagle_l5"] = {
+        ["fullName"] = "Magnum Research Desert Eagle L5 .357 pistol",
+        ["displayName"] = "Desert Eagle L5",
+        ["displayType"] = "Pistol",
+        ["weight"] = 1.5,
+        ["value"] = 32000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Secondary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/deagle_l5.png",
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_deagle_l5"] = {
+        ["fullName"] = "Magnum Research Desert Eagle L5 .357 pistol",
+        ["displayName"] = "Desert Eagle L5",
+        ["displayType"] = "Pistol",
+        ["weight"] = 1.5,
+        ["value"] = 32000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Secondary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/deagle_l5.png",
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_deagle_l6"] = {
+        ["fullName"] = "Magnum Research Desert Eagle L6 .50 AE pistol",
+        ["displayName"] = "Desert Eagle L6",
+        ["displayType"] = "Pistol",
+        ["weight"] = 1.7,
+        ["value"] = 38000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Secondary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/deagle_l6.png",
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_deagle_xix"] = {
+        ["fullName"] = "Magnum Research Desert Eagle Mk XIX .50 AE pistol",
+        ["displayName"] = "Desert Eagle Mk XIX",
+        ["displayType"] = "Pistol",
+        ["weight"] = 1.9,
+        ["value"] = 43000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Secondary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/deagle_xix.png",
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_fn57"] = {
+        ["fullName"] = "FN Five-seveN MK2 5.7x28 pistol",
+        ["displayName"] = "FN Five-seveN MK2",
+        ["displayType"] = "Pistol",
+        ["weight"] = 0.6,
+        ["value"] = 44000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Secondary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/fn57.png",
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_glock17"] = {
+        ["fullName"] = "Glock 17 9x19 pistol",
+        ["displayName"] = "Glock 17",
+        ["displayType"] = "Pistol",
+        ["weight"] = 0.8,
+        ["value"] = 19000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Secondary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/glock17.png",
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_glock18c"] = {
+        ["fullName"] = "Glock 18C 9x19 machine pistol",
+        ["displayName"] = "Glock 18C",
+        ["displayType"] = "Pistol",
+        ["weight"] = 0.8,
+        ["value"] = 37000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Secondary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/glock18c.png",
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_glock19x"] = {
+        ["fullName"] = "Glock 19X 9x19 pistol",
+        ["displayName"] = "Glock 19X",
+        ["displayType"] = "Pistol",
+        ["weight"] = 0.6,
+        ["value"] = 20000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Secondary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/glock19x.png",
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_usp"] = {
+        ["fullName"] = "HK USP .45 ACP pistol",
+        ["displayName"] = "HK USP .45",
+        ["displayType"] = "Pistol",
+        ["weight"] = 0.8,
+        ["value"] = 26000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Secondary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/usp.png",
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_pl15"] = {
+        ["fullName"] = "Lebedev PL-15 9x19 pistol",
+        ["displayName"] = "Lebedev PL-15",
+        ["displayType"] = "Pistol",
+        ["weight"] = 0.9,
+        ["value"] = 24000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Secondary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/pl15.png",
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_pm"] = {
+        ["fullName"] = "Makarov PM 9x18PM pistol",
+        ["displayName"] = "Makarov PM",
+        ["displayType"] = "Pistol",
+        ["weight"] = 0.7,
+        ["value"] = 15000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Secondary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/pm.png",
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_mp443"] = {
+        ["fullName"] = "Yarygin MP-443 Grach 9x19 pistol",
+        ["displayName"] = "MP-443 Grach",
+        ["displayType"] = "Pistol",
+        ["weight"] = 0.9,
+        ["value"] = 18000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Secondary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/mp443.png",
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_pb"] = {
+        ["fullName"] = "PB 9x18PM silenced pistol",
+        ["displayName"] = "PB",
+        ["displayType"] = "Pistol",
+        ["weight"] = 0.9,
+        ["value"] = 17000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Secondary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/pb.png",
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_rsh12"] = {
+        ["fullName"] = "RSh-12 12.7x55 revolver",
+        ["displayName"] = "RSh-12",
+        ["displayType"] = "Pistol",
+        ["weight"] = 2.2,
+        ["value"] = 78000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Secondary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/rsh12.png",
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_p226r"] = {
+        ["fullName"] = "SIG P226R 9x19 pistol",
+        ["displayName"] = "SIG P226R",
+        ["displayType"] = "Pistol",
+        ["weight"] = 0.8,
+        ["value"] = 41000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Secondary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/p226r.png",
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_sr1mp"] = {
+        ["fullName"] = "Serdyukov SR-1MP Gyurza 9x21 pistol",
+        ["displayName"] = "SR-1MP Gyurza",
+        ["displayType"] = "Pistol",
+        ["weight"] = 0.8,
+        ["value"] = 32000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Secondary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/sr1mp.png",
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_apb"] = {
+        ["fullName"] = "Stechkin APB 9x18PM silenced machine pistol",
+        ["displayName"] = "Stechkin APB",
+        ["displayType"] = "Pistol",
+        ["weight"] = 1.6,
+        ["value"] = 34000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Secondary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/apb.png",
+
+        ["sizeX"] = 4,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_aps"] = {
+        ["fullName"] = "Stechkin APS 9x18PM machine pistol",
+        ["displayName"] = "Stechkin APS",
+        ["displayType"] = "Pistol",
+        ["weight"] = 1.0,
+        ["value"] = 28000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Secondary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/aps.png",
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_tt33"] = {
+        ["fullName"] = "TT-33 7.62x25 TT pistol",
+        ["displayName"] = "TT-33",
+        ["displayType"] = "Pistol",
+        ["weight"] = 0.8,
+        ["value"] = 9000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Secondary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/tt33.png",
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 1
+    }
+
+    -- shotguns
+    EFGMITEMS["arc9_eft_m3super90"] = {
+        ["fullName"] = "Benelli M3 Super 90 12ga dual-mode shotgun",
+        ["displayName"] = "Benelli M3 Super 90",
+        ["displayType"] = "Shotgun",
+        ["weight"] = 3.3,
+        ["value"] = 39000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/m3super90.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_m590"] = {
+        ["fullName"] = "Mossberg 590A1 12ga pump-action shotgun",
+        ["displayName"] = "Mossberg 590A1",
+        ["displayType"] = "Shotgun",
+        ["weight"] = 3.4,
+        ["value"] = 30000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/m590.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_mr133"] = {
+        ["fullName"] = "MP-133 12ga pump-action shotgun",
+        ["displayName"] = "MP-133",
+        ["displayType"] = "Shotgun",
+        ["weight"] = 3.5,
+        ["value"] = 25000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/mr133.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_mr153"] = {
+        ["fullName"] = "MP-153 12ga semi-automatic shotgun",
+        ["displayName"] = "MP-153",
+        ["displayType"] = "Shotgun",
+        ["weight"] = 3.6,
+        ["value"] = 40000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/mr153.png",
+
+        ["sizeX"] = 7,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_mr155"] = {
+        ["fullName"] = "MP-155 12ga semi-automatic shotgun",
+        ["displayName"] = "MP-155",
+        ["displayType"] = "Shotgun",
+        ["weight"] = 3.4,
+        ["value"] = 45000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/mr155.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_mr43_sawedoff"] = {
+        ["fullName"] = "MP-43 12ga sawed-off double-barrel shotgun",
+        ["displayName"] = "MP-43 Sawed-off",
+        ["displayType"] = "Shotgun",
+        ["weight"] = 2.1,
+        ["value"] = 19000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Secondary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/mr43_sawedoff.png",
+
+        ["sizeX"] = 3,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_mr43"] = {
+        ["fullName"] = "MP-43-1C 12ga double-barrel shotgun",
+        ["displayName"] = "MP-43-1C",
+        ["displayType"] = "Shotgun",
+        ["weight"] = 3.6,
+        ["value"] = 20000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/mr43.png",
+
+        ["sizeX"] = 6,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_aa12"] = {
+        ["fullName"] = "MPS Auto Assault-12 Gen 1 12ga automatic shotgun",
+        ["displayName"] = "MPS AA-12",
+        ["displayType"] = "Shotgun",
+        ["weight"] = 5.0,
+        ["value"] = 120000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/aa12.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_mts255"] = {
+        ["fullName"] = "MTs-255-12 12ga shotgun",
+        ["displayName"] = "MTs-255-12",
+        ["displayType"] = "Shotgun",
+        ["weight"] = 4.2,
+        ["value"] = 24000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/mts255.png",
+
+        ["sizeX"] = 6,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_m870"] = {
+        ["fullName"] = "Remington Model 870 12ga pump-action shotgun",
+        ["displayName"] = "Remington M870",
+        ["displayType"] = "Shotgun",
+        ["weight"] = 3.1,
+        ["value"] = 35000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/m870.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_saiga12fa"] = {
+        ["fullName"] = "Saiga-12K 12ga automatic shotgun",
+        ["displayName"] = "Saiga-12K FA",
+        ["displayType"] = "Shotgun",
+        ["weight"] = 5.6,
+        ["value"] = 140000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/saiga12fa.png",
+
+        ["sizeX"] = 6,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_saiga12k"] = {
+        ["fullName"] = "Saiga-12K ver.10 12ga semi-automatic shotgun",
+        ["displayName"] = "Saiga-12K ver.10",
+        ["displayType"] = "Shotgun",
+        ["weight"] = 3.6,
+        ["value"] = 40000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/saiga12k.png",
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_ks23"] = {
+        ["fullName"] = "TOZ KS-23M 23x75mm pump-action shotgun",
+        ["displayName"] = "TOZ KS-23M",
+        ["displayType"] = "Shotgun",
+        ["weight"] = 3.8,
+        ["value"] = 75000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/ks23.png",
+
+        ["sizeX"] = 6,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_toz106"] = {
+        ["fullName"] = "TOZ-106 20ga bolt-action shotgun",
+        ["displayName"] = "TOZ-106",
+        ["displayType"] = "Shotgun",
+        ["weight"] = 2.7,
+        ["value"] = 17000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/toz106.png",
+
+        ["sizeX"] = 4,
+        ["sizeY"] = 1
     }
 
 -- RIGS
