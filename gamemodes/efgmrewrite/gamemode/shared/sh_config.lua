@@ -32,8 +32,10 @@ if SERVER then
     RunConsoleCommand("arc9_mod_recoil", "0.75")
     RunConsoleCommand("arc9_mod_rpm", "1")
     RunConsoleCommand("arc9_mod_spread", "1")
+    RunConsoleCommand("arc9_mod_dispersionspread", "1")
     RunConsoleCommand("arc9_mod_sprinttime", "1")
     RunConsoleCommand("arc9_mod_visualrecoil", "0.75")
+    RunConsoleCommand("arc9_eft_mult_ergo", "1")
 
     -- damage falloff (in meters)
     RunConsoleCommand("arc9_eft_mindmgrange", "160")
@@ -46,6 +48,7 @@ if SERVER then
     RunConsoleCommand("arc9_eft_mult_pistol", "0.35")
     RunConsoleCommand("arc9_eft_mult_rifle", "0.4")
     RunConsoleCommand("arc9_eft_mult_shotgun", "0.4")
+    RunConsoleCommand("arc9_eft_mult_explosive", "1")
 
     -- mechanics
     if GetConVar("efgm_derivesbox"):GetInt() == 1 then RunConsoleCommand("arc9_infinite_ammo", "1") else RunConsoleCommand("arc9_infinite_ammo", "0") end
@@ -158,6 +161,7 @@ if CLIENT then
     -- performance
     RunConsoleCommand("arc9_cheapscopes", "0")
     RunConsoleCommand("arc9_allflash", "0")
+    RunConsoleCommand("arc9_indoorsound", "1")
 
     -- fx
     RunConsoleCommand("arc9_cust_blur", "1")

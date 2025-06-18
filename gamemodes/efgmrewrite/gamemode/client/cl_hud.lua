@@ -250,6 +250,23 @@ function RenderCompass(ply)
     compass:AlphaTo(0, 1, 4.65, function() compass:Remove() end)
 end
 
+function RenderPlayerInfo(ply, ent)
+    if !ent:IsPlayer() then return end
+    if hook.Run("ShouldDrawTargetID", ent) == false then return end
+
+    local name = string.upper(ent:Name())
+    surface.SetFont("BenderExfilTimer")
+    local nameTextSize = surface.GetTextSize(name) + EFGM.ScreenScale(20)
+
+    surface.SetDrawColor(0, 0, 0, 128)
+    surface.DrawRect(ScrW() / 2 - (nameTextSize / 2), ScrH() - EFGM.ScreenScale(100), nameTextSize, EFGM.ScreenScale(80))
+
+    surface.SetDrawColor(Color(255, 255, 255, 155))
+    surface.DrawRect(ScrW() / 2 - (nameTextSize / 2), ScrH() - EFGM.ScreenScale(100), nameTextSize, EFGM.MenuScale(1))
+
+    draw.DrawText(name, "BenderExfilTimer", ScrW() / 2, ScrH() - EFGM.ScreenScale(100), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+end
+
 local function DrawHUD()
     ply = LocalPlayer()
     if not ply:Alive() then return end
@@ -382,8 +399,24 @@ hook.Add("RenderScreenspaceEffects", "Vignette", function()
     surface.DrawTexturedRect(0 - (ScrW() * mult), 0 - (ScrH() * mult), ScrW() * (1 + 2 * mult), ScrH() * (1 + 2 * mult))
 end)
 
+local function default_trace()
+	local eye_pos = EyePos()
+	return util.TraceLine({
+		start = eye_pos,
+		endpos = eye_pos + EyeAngles():Forward() * 6000,
+		filter = ply,
+	})
+end
+
 function DrawTarget()
-    if !LocalPlayer():CompareStatus(0) then return false end
+    if !IsValid(ply) then ply = LocalPlayer() end
+    if !ply:CompareStatus(0) then return false end
+
+    local ent = (ply:Alive() and ply:GetEyeTrace() or default_trace()).Entity
+	if !IsValid(ent) then return end
+
+    RenderPlayerInfo(ply, ent)
+    return true
 end
 hook.Add("HUDDrawTargetID", "HidePlayerInfo", DrawTarget)
 

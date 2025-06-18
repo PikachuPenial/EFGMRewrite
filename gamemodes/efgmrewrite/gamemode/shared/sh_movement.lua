@@ -35,11 +35,6 @@ hook.Add("StartCommand", "AdjustPlayerMovement", function(ply, cmd)
         cmd:RemoveKey(IN_JUMP)
     end
 
-    if cmd:KeyDown(IN_SPEED) then
-        ply:SetNW2Var("leaning_left", false)
-        ply:SetNW2Var("leaning_right", false)
-    end
-
     if !ply:IsOnGround() then
         cmd:RemoveKey(IN_SPEED)
         if ply:Crouching() then
@@ -98,12 +93,16 @@ hook.Add("SetupMove", "Leaning", function(ply, mv, cmd)
 
     local leaning_left = ply:GetNW2Bool("leaning_left")
     local leaning_right = ply:GetNW2Bool("leaning_right")
-
-    if leaning_left then fraction = Lerp(FrameTime() * 5 * speed + FrameTime(), fraction, -1) end
-
-    if leaning_right then fraction = Lerp(FrameTime() * 5 * speed + FrameTime(), fraction, 1) end
-
-    if !leaning_left and !leaning_right then fraction = Lerp(FrameTime() * 5 * speed + FrameTime(), fraction, 0) end
+    
+    if !cmd:KeyDown(IN_SPEED) then
+        if leaning_left then fraction = Lerp(FrameTime() * 5 * speed + FrameTime(), fraction, -1) end
+        if leaning_right then fraction = Lerp(FrameTime() * 5 * speed + FrameTime(), fraction, 1) end
+        if !leaning_left and !leaning_right then fraction = Lerp(FrameTime() * 5 * speed + FrameTime(), fraction, 0) end
+    else
+        fraction = Lerp(FrameTime() * 5 * speed + FrameTime(), fraction, 0)
+        ply:SetNW2Var("leaning_left", false)
+        ply:SetNW2Var("leaning_right", false)
+    end
 
     if math.abs(fraction) <= 0.0001 then fraction = 0 end
 
@@ -193,7 +192,7 @@ end
 if SERVER then
     hook.Add("Think", "LeaningBend", function()
 
-        for k, ply in ipairs(player.GetAll()) do
+        for k, ply in ipairs(player.GetHumans()) do
 
             local absolute = math.abs(ply:GetNW2Float("leaning_fraction_smooth"))
 
@@ -210,8 +209,7 @@ end
 
 if CLIENT then
     hook.Add("PreRender", "LeaningBend", function()
-        for k, ply in ipairs(player.GetAll()) do
-
+        for k, ply in ipairs(player.GetHumans()) do
             ply.leaning_fraction_true_smooth = Lerp(FrameTime() / (engine.TickInterval() * interp), ply.leaning_fraction_true_smooth or 0, ply:GetNW2Float("leaning_fraction_smooth") * distance)
             local absolute = math.abs(ply.leaning_fraction_true_smooth)
 

@@ -1,9 +1,28 @@
 -- https://www.youtube.com/watch?v=Iv3F5ARdu58
 -- code below is deprecated but is needed for the meantime to make deaths function
 
-local plyMeta = FindMetaTable( "Player" )
+local plyMeta = FindMetaTable("Player")
 if not plyMeta then Error("Could not find player table") return end
 
+if SERVER then
+    -- create inventory on connect
+    function plyMeta:CreateInventory()
+        self.inv = {}
+
+        self.inv.containers = {}
+
+        self.inv.containers.primary = nil
+        self.inv.containers.secondary = nil
+        self.inv.containers.holster = nil
+        self.inv.containers.melee = nil
+
+        self.inv.containers.backpack = {}
+    end
+
+    hook.Add("PlayerInitialSpawn", "CreatePlayerInventory", function(ply) ply:CreateInventory() end)
+end
+
+-- OLD SHIT
 INV = {}
 
 function INV.New()

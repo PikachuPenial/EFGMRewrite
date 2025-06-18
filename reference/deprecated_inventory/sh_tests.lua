@@ -3,8 +3,6 @@
 
 if !SERVER then return end
 
-local inventories = {}
-
 concommand.Add("efgm_inventory_create", function(ply, cmd, args)
     if table.IsEmpty(args) then
         print("Arguments: Player name, rig, pocket type, backpack, secure container")
