@@ -446,8 +446,6 @@ local calcpos = Vector()
 
 local UCT = CurTime()
 local VBPosWeight, VBAngWeight = 1, 1
-local VBSighted = 1
-local stepweight = 1
 
 VBSightChecks = {
 	["arc9_base"] = function(wep) return wep.dt and wep.dt.InSights end,
@@ -469,11 +467,9 @@ local function Sighted_Process(wep, FT)
 	if GetSighted(wep) then
 		VBPosWeight = math.Approach(VBPosWeight, 0.15, FT * 2)
 		VBAngWeight = math.Approach(VBAngWeight, 0.05, FT * 2)
-		VBSighted = math.Approach(VBSighted, 0, FT * 4)
 	else
 		VBPosWeight = math.Approach(VBPosWeight, 1, FT)
 		VBAngWeight = math.Approach(VBAngWeight, 1, FT)
-		VBSighted = math.Approach(VBSighted, 1, FT * 4)
 	end
 end
 
@@ -563,8 +559,6 @@ hook.Add("CalcViewModelView", "VBCalcViewModelView", function(wep, vm, oldpos, o
 		ply:VBSpring(SpringTilt)
 	end
 
-	stepweight = math.Approach(stepweight, 0.5, FT)
-
 	VBPosCalc:Add(up * math.sin(VMTime * 10) * 0.1)
 	VBPosCalc:Add(r * math.sin(VMTime * 5) * 0.05)
 	VBPosCalc:Sub(f * math.sin(VMTime * 5) * 0.15)
@@ -628,26 +622,6 @@ if CLIENT then
 
     cvars.AddChangeCallback("efgm_visuals_headbob", function(convar_name, value_old, value_new) if value_new == "1" then bobbing = true else bobbing = false end end)
 end
-
-hook.Add("PlayerStepSoundTime", "VBPlayerStepSoundTime", function(ply)
-	if ply:GetMoveType() == MOVETYPE_LADDER then return end
-	return 1
-end)
-
-hook.Add("PlayerFootstep", "VBPlayerFootstep", function(ply)
-	if ply:GetMoveType() == MOVETYPE_LADDER then
-		return
-	end
-
-	if !ply:GetNW2Bool("DoStep", false) then
-		return true
-	end
-
-	if SP then
-		ply:SetNW2Bool("DoStep", false)
-		ply:SetNW2Float("LastVMTime", ply:GetNW2Float("VMTime", 0) % 0.64 - 99)
-	end
-end)
 
 local VBAngN = Angle()
 local function BoneVB(ply, vm, m)

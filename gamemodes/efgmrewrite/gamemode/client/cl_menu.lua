@@ -4165,6 +4165,23 @@ function Menu.OpenTab.Settings()
     lodDistance:SetMax(3)
     lodDistance:SetDecimals(1)
 
+    local soundQuality = vgui.Create("DPanel", visuals)
+    soundQuality:Dock(TOP)
+    soundQuality:SetSize(0, EFGM.MenuScale(50))
+    function soundQuality:Paint(w, h)
+
+        draw.SimpleTextOutlined("Sound Calculation Quality", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local soundQualitySlider = vgui.Create("DNumSlider", soundQuality)
+    soundQualitySlider:SetPos(EFGM.MenuScale(35), EFGM.MenuScale(30))
+    soundQualitySlider:SetSize(EFGM.MenuScale(200), EFGM.MenuScale(15))
+    soundQualitySlider:SetConVar("arc9_indoorsound")
+    soundQualitySlider:SetMin(0)
+    soundQualitySlider:SetMax(2)
+    soundQualitySlider:SetDecimals(0)
+
     -- account
 
     local factionPreferencePanel = vgui.Create("DPanel", account)
