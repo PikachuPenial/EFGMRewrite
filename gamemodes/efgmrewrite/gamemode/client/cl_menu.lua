@@ -1423,24 +1423,9 @@ function Menu.OpenTab.Inventory()
 
         surface.SetDrawColor(Color(255, 255, 255, 25))
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
         surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
-
-        for i = 1, stashHolder:GetTall() do
-
-            if i % EFGM.MenuScale(64) == 0 then
-
-                surface.DrawRect(0, i, w, EFGM.MenuScale(1))
-
-                if i <= EFGM.MenuScale(576) then
-
-                    surface.DrawRect(i, 0, EFGM.MenuScale(1), h)
-
-                end
-
-            end
-
-        end
 
     end
 

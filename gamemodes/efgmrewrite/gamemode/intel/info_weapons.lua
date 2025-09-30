@@ -16,9 +16,10 @@ hook.Add("InitPostEntity", "WeaponIntel", function()
         local range = math.Round(wep["RangeMax"] * 0.0254) or ""
         local velocity = math.Round(wep["PhysBulletMuzzleVelocity"] * 0.0254) or ""
 
-        local manufacturer = wep["Trivia"]["Manufacturer1"] or ""
-        local caliber = wep["Caliber"] or ""
-        local year = wep["Trivia"]["Year5"] or ""
+        local manufacturer = ARC9:GetPhrase(wep["Trivia"]["eft_trivia_manuf1"]) or ""
+        local country = ARC9:GetPhrase(wep["Trivia"]["eft_trivia_country4"]) or ""
+        local caliber = ARC9:GetPhrase(wep["Trivia"]["eft_trivia_cal2"]) or ""
+        local year = wep["Trivia"]["eft_trivia_year5"] or ""
 
         local wepTable = {
 
@@ -36,6 +37,8 @@ Muzzle Velocity: ]] .. velocity .. "m/s" .. [[
 
 
 Manufacturer: ]] .. manufacturer .. [[
+
+Country: ]] .. country .. [[
 
 Caliber: ]] .. caliber .. [[
 

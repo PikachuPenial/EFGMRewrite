@@ -112,6 +112,7 @@ LOOT[1]["arc9_eft_toz106"]              = {1}
 
 -- sniper/marksman rifles
 LOOT[1]["arc9_eft_ai_axmc"]             = {3}
+LOOT[1]["arc9_eft_ak50"]                = {3}
 LOOT[1]["arc9_eft_g28"]                 = {3}
 LOOT[1]["arc9_eft_sr25"]                = {3}
 LOOT[1]["arc9_eft_dvl10"]               = {3}
@@ -301,6 +302,7 @@ LOOT[5]["arc9_eft_toz106"]              = {1}
 
 -- sniper/marksman rifles
 LOOT[5]["arc9_eft_ai_axmc"]             = {3}
+LOOT[5]["arc9_eft_ak50"]                = {3}
 LOOT[5]["arc9_eft_g28"]                 = {3}
 LOOT[5]["arc9_eft_sr25"]                = {3}
 LOOT[5]["arc9_eft_dvl10"]               = {3}

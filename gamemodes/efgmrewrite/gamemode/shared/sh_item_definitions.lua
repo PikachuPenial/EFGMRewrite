@@ -1470,6 +1470,22 @@ end
         ["sizeY"] = 2
     }
 
+        EFGMITEMS["arc9_eft_ak50"] = {
+        ["fullName"] = "AK-50 .50 BMG sniper rifle",
+        ["displayName"] = "AK-50",
+        ["displayType"] = "Sniper Rifle",
+        ["weight"] = 12.8,
+        ["value"] = 400000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Primary",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/weapons/ak50.png",
+
+        ["sizeX"] = 7,
+        ["sizeY"] = 2
+    }
+
     EFGMITEMS["arc9_eft_g28"] = {
         ["fullName"] = "HK G28 7.62x51 marksman rifle",
         ["displayName"] = "G28",
