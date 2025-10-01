@@ -1060,24 +1060,6 @@ function Menu.OpenTab.Inventory()
     meleeWeaponIcon:SetImage("icons/inventory_melee_icon.png")
     meleeWeaponIcon:SetImageColor(Color(255, 255, 255, 10))
 
-    local weightHolder = vgui.Create("DPanel", playerPanel)
-    weightHolder:SetPos(EFGM.MenuScale(10), EFGM.MenuScale(835))
-    weightHolder:SetSize(EFGM.MenuScale(125), EFGM.MenuScale(55))
-    function weightHolder:Paint(w, h)
-
-        surface.SetDrawColor(Color(255, 255, 255, 25))
-        surface.DrawRect(EFGM.MenuScale(4), 0, w, EFGM.MenuScale(1))
-
-        draw.SimpleTextOutlined("5", "PuristaBold50", EFGM.MenuScale(60), EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-        draw.SimpleTextOutlined(".2KG", "PuristaBold24", EFGM.MenuScale(84), EFGM.MenuScale(23), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-    end
-
-    local weightIcon = vgui.Create("DImage", weightHolder)
-    weightIcon:SetPos(EFGM.MenuScale(1), EFGM.MenuScale(1))
-    weightIcon:SetSize(EFGM.MenuScale(53), EFGM.MenuScale(53))
-    weightIcon:SetImage("icons/weight_icon.png")
-
     local healthHolder = vgui.Create("DPanel", playerPanel)
     healthHolder:SetPos(EFGM.MenuScale(10), EFGM.MenuScale(895))
     healthHolder:SetSize(EFGM.MenuScale(125), EFGM.MenuScale(55))
@@ -1124,42 +1106,65 @@ function Menu.OpenTab.Inventory()
 
     end
 
-    local rigHolder = vgui.Create("DPanel", inventoryPanel)
-    rigHolder:Dock(TOP)
-    rigHolder:DockMargin(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(9))
-    rigHolder:SetSize(0, EFGM.MenuScale(152))
-    rigHolder.Paint = function(s, w, h)
+    local itemsHolder = vgui.Create("DPanel", inventoryPanel)
+    itemsHolder:Dock(FILL)
+    itemsHolder:DockMargin(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(9))
+    itemsHolder:SetSize(0, 0)
+    itemsHolder.Paint = function(s, w, h)
 
         surface.SetDrawColor(Color(0, 0, 0, 0))
         surface.DrawRect(0, 0, w, h)
 
     end
 
-    local rigText = vgui.Create("DPanel", rigHolder)
-    rigText:Dock(TOP)
-    rigText:SetSize(0, EFGM.MenuScale(28))
+    local itemsText = vgui.Create("DPanel", itemsHolder)
+    itemsText:Dock(TOP)
+    itemsText:SetSize(0, EFGM.MenuScale(28))
     surface.SetFont("PuristaBold24")
-    local rigTextSize = surface.GetTextSize("RIG")
-    rigText.Paint = function(s, w, h)
+    local usedWeight = 14.2
+    local maxWeight = 80
+    local weightText = usedWeight .. " / " .. maxWeight .. "KG"
+    local weightTextSize = surface.GetTextSize(weightText)
+    itemsText.Paint = function(s, w, h)
 
         BlurPanel(s, EFGM.MenuScale(3))
 
         surface.SetDrawColor(Color(80, 80, 80, 10))
-        surface.DrawRect(0, 0, rigTextSize + EFGM.MenuScale(10), h)
+        surface.DrawRect(0, 0, weightTextSize + EFGM.MenuScale(220), h)
 
         surface.SetDrawColor(Color(255, 255, 255, 155))
-        surface.DrawRect(0, 0, rigTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
+        surface.DrawRect(0, 0, weightTextSize + EFGM.MenuScale(220), EFGM.MenuScale(2))
 
-        draw.SimpleTextOutlined("RIG", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined(weightText, "PuristaBold24", EFGM.MenuScale(215), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        -- total weight capacity
+        surface.SetDrawColor(Color(0, 0, 0, 100))
+        surface.DrawRect(EFGM.MenuScale(30), EFGM.MenuScale(7), EFGM.MenuScale(180), EFGM.MenuScale(16))
+
+        -- used weight capacity
+        surface.SetDrawColor(Color(255, 255, 255, 225))
+        surface.DrawRect(EFGM.MenuScale(30), EFGM.MenuScale(7), EFGM.MenuScale((usedWeight / maxWeight) * 180), EFGM.MenuScale(16))
+
+        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.DrawRect(EFGM.MenuScale(30), EFGM.MenuScale(7), EFGM.MenuScale(180), EFGM.MenuScale(1))
+        surface.DrawRect(EFGM.MenuScale(30), EFGM.MenuScale(23), EFGM.MenuScale(180), EFGM.MenuScale(1))
+        surface.DrawRect(EFGM.MenuScale(30), EFGM.MenuScale(7), EFGM.MenuScale(1), EFGM.MenuScale(16))
+        surface.DrawRect(EFGM.MenuScale(210) - EFGM.MenuScale(1), EFGM.MenuScale(7), EFGM.MenuScale(1), EFGM.MenuScale(16))
 
     end
 
-    local rigEquipedHolder = vgui.Create("DPanel", rigHolder)
-    rigEquipedHolder:SetPos(0, EFGM.MenuScale(32))
-    rigEquipedHolder:SetSize(EFGM.MenuScale(120), EFGM.MenuScale(120))
-    function rigEquipedHolder:Paint(w, h)
+    local weightIcon = vgui.Create("DImage", itemsHolder)
+    weightIcon:SetPos(EFGM.MenuScale(0), EFGM.MenuScale(1))
+    weightIcon:SetSize(EFGM.MenuScale(28), EFGM.MenuScale(28))
+    weightIcon:SetImage("icons/weight_icon.png")
 
-        BlurPanel(rigEquipedHolder, EFGM.MenuScale(3))
+    local searchButton = vgui.Create("DButton", itemsHolder)
+    searchButton:SetPos(EFGM.MenuScale(527), EFGM.MenuScale(1))
+    searchButton:SetSize(EFGM.MenuScale(28), EFGM.MenuScale(28))
+    searchButton:SetText("")
+    searchButton.Paint = function(s, w, h)
+
+        BlurPanel(s, EFGM.MenuScale(3))
 
         surface.SetDrawColor(Color(80, 80, 80, 10))
         surface.DrawRect(0, 0, w, h)
@@ -1172,211 +1177,118 @@ function Menu.OpenTab.Inventory()
 
     end
 
-    local rigEquipedIcon = vgui.Create("DImage", rigEquipedHolder)
-    rigEquipedIcon:SetPos(EFGM.MenuScale(10), EFGM.MenuScale(10))
-    rigEquipedIcon:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(100))
-    rigEquipedIcon:SetImage("icons/inventory_rig_icon.png")
-    rigEquipedIcon:SetImageColor(Color(255, 255, 255, 10))
+    local searchIcon = vgui.Create("DImage", searchButton)
+    searchIcon:SetPos(EFGM.MenuScale(1), EFGM.MenuScale(1))
+    searchIcon:SetSize(EFGM.MenuScale(26), EFGM.MenuScale(26))
+    searchIcon:SetImage("icons/search_icon.png")
 
-    local rigSlotHolder = vgui.Create("DPanel", rigHolder)
-    rigSlotHolder:SetPos(EFGM.MenuScale(124), EFGM.MenuScale(32))
-    rigSlotHolder:SetSize(EFGM.MenuScale(448), EFGM.MenuScale(120))
-    rigSlotHolder.Paint = function(s, w, h)
+    searchButton.OnCursorEntered = function(s)
 
-        surface.SetDrawColor(Color(0, 0, 0, 0))
-        surface.DrawRect(0, 0, w, h)
+        surface.PlaySound("ui/element_hover.wav")
 
     end
 
-    local pocketsHolder = vgui.Create("DPanel", inventoryPanel)
-    pocketsHolder:Dock(TOP)
-    pocketsHolder:DockMargin(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(9))
-    pocketsHolder:SetSize(0, EFGM.MenuScale(96))
-    pocketsHolder.Paint = function(s, w, h)
+    function searchButton:DoClick()
 
-        surface.SetDrawColor(Color(0, 0, 0, 0))
-        surface.DrawRect(0, 0, w, h)
+        surface.PlaySound("ui/element_select.wav")
 
     end
 
-    local pocketsText = vgui.Create("DPanel", pocketsHolder)
-    pocketsText:Dock(TOP)
-    pocketsText:SetSize(0, EFGM.MenuScale(28))
-    surface.SetFont("PuristaBold24")
-    local pocketsTextSize = surface.GetTextSize("POCKETS")
-    pocketsText.Paint = function(s, w, h)
+    local filterButton = vgui.Create("DButton", itemsHolder)
+    filterButton:SetPos(EFGM.MenuScale(560), EFGM.MenuScale(1))
+    filterButton:SetSize(EFGM.MenuScale(28), EFGM.MenuScale(28))
+    filterButton:SetText("")
+    filterButton.Paint = function(s, w, h)
 
         BlurPanel(s, EFGM.MenuScale(3))
 
         surface.SetDrawColor(Color(80, 80, 80, 10))
-        surface.DrawRect(0, 0, pocketsTextSize + EFGM.MenuScale(10), h)
-
-        surface.SetDrawColor(Color(255, 255, 255, 155))
-        surface.DrawRect(0, 0, pocketsTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
-
-        draw.SimpleTextOutlined("POCKETS", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-    end
-
-    local pocketsSlotHolder = vgui.Create("DPanel", pocketsHolder)
-    pocketsSlotHolder:Dock(TOP)
-    pocketsSlotHolder:DockMargin(0, EFGM.MenuScale(4), 0, 0)
-    pocketsSlotHolder:SetSize(0, EFGM.MenuScale(64))
-    pocketsSlotHolder.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Color(0, 0, 0, 0))
         surface.DrawRect(0, 0, w, h)
 
+        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
     end
 
-    for i = 1, 5 do
+    local filterIcon = vgui.Create("DImage", filterButton)
+    filterIcon:SetPos(EFGM.MenuScale(1), EFGM.MenuScale(1))
+    filterIcon:SetSize(EFGM.MenuScale(26), EFGM.MenuScale(26))
+    filterIcon:SetImage("icons/filter_icon.png")
 
-        local pocketSlot = vgui.Create("DPanel", pocketsSlotHolder)
-        pocketSlot:Dock(LEFT)
-        pocketSlot:DockMargin(0, 0, EFGM.MenuScale(4), 0)
-        pocketSlot:SetSize(EFGM.MenuScale(64), EFGM.MenuScale(64))
-        pocketSlot.Paint = function(s, w, h)
+    filterButton.OnCursorEntered = function(s)
 
-            BlurPanel(s, EFGM.MenuScale(3))
+        surface.PlaySound("ui/element_hover.wav")
 
-            surface.SetDrawColor(Color(80, 80, 80, 10))
-            surface.DrawRect(0, 0, w, h)
+    end
 
-            surface.SetDrawColor(Color(255, 255, 255, 25))
-            surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
-            surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+    function filterButton:DoClick()
+
+        surface.PlaySound("ui/element_select.wav")
+
+    end
+
+    local playerItemsHolder = vgui.Create("DScrollPanel", itemsHolder)
+    playerItemsHolder:SetPos(0, EFGM.MenuScale(32))
+    playerItemsHolder:SetSize(EFGM.MenuScale(593), EFGM.MenuScale(500))
+    function playerItemsHolder:Paint(w, h)
+
+        BlurPanel(playerItemsHolder, EFGM.MenuScale(3))
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+    end
+
+    local playerItemsBar = playerItemsHolder:GetVBar()
+    playerItemsBar:SetHideButtons(true)
+    playerItemsBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+    function playerItemsBar:Paint(w, h)
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
+    end
+    function playerItemsBar.btnGrip:Paint(w, h)
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
+    end
+
+    -- from here on, this is a visual test of inventory items
+    local rawWeps = Menu.Player:GetWeapons()
+    local weps = {}
+
+    for k, v in ipairs(rawWeps) do table.insert(weps, v:GetClass()) end
+
+    table.sort(weps, function(a, b) return string.lower(a) < string.lower(b) end)
+
+    -- inventory item entry
+    for k, v in pairs(weps) do
+
+        local item = playerItemsHolder:Add("DButton")
+        item:Dock(TOP)
+        item:SetSize(0, EFGM.MenuScale(80))
+        item:SetText(v)
+
+        function item:Paint(w, h)
 
         end
 
-    end
+        item.OnCursorEntered = function(s)
 
-    local bagHolder = vgui.Create("DPanel", inventoryPanel)
-    bagHolder:Dock(TOP)
-    bagHolder:DockMargin(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), 0)
-    bagHolder:SetSize(0, EFGM.MenuScale(152))
-    bagHolder.Paint = function(s, w, h)
+            surface.PlaySound("ui/element_hover.wav")
 
-        surface.SetDrawColor(Color(0, 0, 0, 0))
-        surface.DrawRect(0, 0, w, h)
+        end
 
-    end
+        function item:DoClick()
 
-    local bagText = vgui.Create("DPanel", bagHolder)
-    bagText:Dock(TOP)
-    bagText:SetSize(0, EFGM.MenuScale(28))
-    surface.SetFont("PuristaBold24")
-    local bagTextSize = surface.GetTextSize("BAG")
-    bagText.Paint = function(s, w, h)
+            surface.PlaySound("ui/element_select.wav")
 
-        BlurPanel(s, EFGM.MenuScale(3))
-
-        surface.SetDrawColor(Color(80, 80, 80, 10))
-        surface.DrawRect(0, 0, bagTextSize + EFGM.MenuScale(10), h)
-
-        surface.SetDrawColor(Color(255, 255, 255, 155))
-        surface.DrawRect(0, 0, bagTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
-
-        draw.SimpleTextOutlined("BAG", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-    end
-
-    local bagEquipedHolder = vgui.Create("DPanel", bagHolder)
-    bagEquipedHolder:SetPos(0, EFGM.MenuScale(32))
-    bagEquipedHolder:SetSize(EFGM.MenuScale(120), EFGM.MenuScale(120))
-    function bagEquipedHolder:Paint(w, h)
-
-        BlurPanel(bagEquipedHolder, EFGM.MenuScale(3))
-
-        surface.SetDrawColor(Color(80, 80, 80, 10))
-        surface.DrawRect(0, 0, w, h)
-
-        surface.SetDrawColor(Color(255, 255, 255, 25))
-        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
-        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
-
-    end
-
-    local bagEquipedIcon = vgui.Create("DImage", bagEquipedHolder)
-    bagEquipedIcon:SetPos(EFGM.MenuScale(10), EFGM.MenuScale(8))
-    bagEquipedIcon:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(100))
-    bagEquipedIcon:SetImage("icons/inventory_bag_icon.png")
-    bagEquipedIcon:SetImageColor(Color(255, 255, 255, 10))
-
-    local bagSlotHolder = vgui.Create("DPanel", bagHolder)
-    bagSlotHolder:SetPos(EFGM.MenuScale(124), EFGM.MenuScale(32))
-    bagSlotHolder:SetSize(EFGM.MenuScale(448), EFGM.MenuScale(120))
-    bagSlotHolder.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Color(0, 0, 0, 0))
-        surface.DrawRect(0, 0, w, h)
-
-    end
-
-    local secureHolder = vgui.Create("DPanel", inventoryPanel)
-    secureHolder:Dock(TOP)
-    secureHolder:DockMargin(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), 0)
-    secureHolder:SetSize(0, EFGM.MenuScale(152))
-    secureHolder.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Color(0, 0, 0, 0))
-        surface.DrawRect(0, 0, w, h)
-
-    end
-
-    local secureText = vgui.Create("DPanel", secureHolder)
-    secureText:Dock(TOP)
-    secureText:SetSize(0, EFGM.MenuScale(28))
-    surface.SetFont("PuristaBold24")
-    local secureTextSize = surface.GetTextSize("CONTAINER")
-    secureText.Paint = function(s, w, h)
-
-        BlurPanel(s, EFGM.MenuScale(3))
-
-        surface.SetDrawColor(Color(80, 80, 80, 10))
-        surface.DrawRect(0, 0, secureTextSize + EFGM.MenuScale(10), h)
-
-        surface.SetDrawColor(Color(255, 255, 255, 155))
-        surface.DrawRect(0, 0, secureTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
-
-        draw.SimpleTextOutlined("CONTAINER", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-    end
-
-    local secureEquipedHolder = vgui.Create("DPanel", secureHolder)
-    secureEquipedHolder:SetPos(0, EFGM.MenuScale(32))
-    secureEquipedHolder:SetSize(EFGM.MenuScale(120), EFGM.MenuScale(120))
-    function secureEquipedHolder:Paint(w, h)
-
-        BlurPanel(secureEquipedHolder, EFGM.MenuScale(3))
-
-        surface.SetDrawColor(Color(80, 80, 80, 10))
-        surface.DrawRect(0, 0, w, h)
-
-        surface.SetDrawColor(Color(255, 255, 255, 25))
-        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
-        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
-
-    end
-
-    local secureEquipedIcon = vgui.Create("DImage", secureEquipedHolder)
-    secureEquipedIcon:SetPos(EFGM.MenuScale(1), EFGM.MenuScale(18))
-    secureEquipedIcon:SetSize(EFGM.MenuScale(120), EFGM.MenuScale(80))
-    secureEquipedIcon:SetImage("icons/inventory_container_icon.png")
-    secureEquipedIcon:SetImageColor(Color(255, 255, 255, 10))
-
-    local secureSlotHolder = vgui.Create("DPanel", secureHolder)
-    secureSlotHolder:SetPos(EFGM.MenuScale(124), EFGM.MenuScale(32))
-    secureSlotHolder:SetSize(EFGM.MenuScale(448), EFGM.MenuScale(120))
-    secureSlotHolder.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Color(0, 0, 0, 0))
-        surface.DrawRect(0, 0, w, h)
+        end
 
     end
 
