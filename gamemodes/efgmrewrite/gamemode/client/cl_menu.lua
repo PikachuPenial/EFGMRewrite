@@ -1159,8 +1159,8 @@ function Menu.OpenTab.Inventory()
     weightIcon:SetImage("icons/weight_icon.png")
 
     local searchButton = vgui.Create("DButton", itemsHolder)
-    searchButton:SetPos(EFGM.MenuScale(527), EFGM.MenuScale(1))
-    searchButton:SetSize(EFGM.MenuScale(28), EFGM.MenuScale(28))
+    searchButton:SetPos(EFGM.MenuScale(325), EFGM.MenuScale(1))
+    searchButton:SetSize(EFGM.MenuScale(27), EFGM.MenuScale(27))
     searchButton:SetText("")
     searchButton.Paint = function(s, w, h)
 
@@ -1179,7 +1179,7 @@ function Menu.OpenTab.Inventory()
 
     local searchIcon = vgui.Create("DImage", searchButton)
     searchIcon:SetPos(EFGM.MenuScale(1), EFGM.MenuScale(1))
-    searchIcon:SetSize(EFGM.MenuScale(26), EFGM.MenuScale(26))
+    searchIcon:SetSize(EFGM.MenuScale(25), EFGM.MenuScale(25))
     searchIcon:SetImage("icons/search_icon.png")
 
     searchButton.OnCursorEntered = function(s)
@@ -1195,8 +1195,8 @@ function Menu.OpenTab.Inventory()
     end
 
     local filterButton = vgui.Create("DButton", itemsHolder)
-    filterButton:SetPos(EFGM.MenuScale(560), EFGM.MenuScale(1))
-    filterButton:SetSize(EFGM.MenuScale(28), EFGM.MenuScale(28))
+    filterButton:SetPos(EFGM.MenuScale(356), EFGM.MenuScale(1))
+    filterButton:SetSize(EFGM.MenuScale(27), EFGM.MenuScale(27))
     filterButton:SetText("")
     filterButton.Paint = function(s, w, h)
 
@@ -1232,7 +1232,7 @@ function Menu.OpenTab.Inventory()
 
     local playerItemsHolder = vgui.Create("DScrollPanel", itemsHolder)
     playerItemsHolder:SetPos(0, EFGM.MenuScale(32))
-    playerItemsHolder:SetSize(EFGM.MenuScale(593), EFGM.MenuScale(500))
+    playerItemsHolder:SetSize(EFGM.MenuScale(593), EFGM.MenuScale(872))
     function playerItemsHolder:Paint(w, h)
 
         BlurPanel(playerItemsHolder, EFGM.MenuScale(3))
@@ -1264,19 +1264,48 @@ function Menu.OpenTab.Inventory()
 
     for k, v in ipairs(rawWeps) do table.insert(weps, v:GetClass()) end
 
-    table.sort(weps, function(a, b) return string.lower(a) < string.lower(b) end)
+    table.sort(weps, function(a, b) return string.lower(EFGMITEMS[a].displayName) < string.lower(EFGMITEMS[b].displayName) end)
 
     -- inventory item entry
     for k, v in pairs(weps) do
 
+        local i = EFGMITEMS[v]
+
         local item = playerItemsHolder:Add("DButton")
         item:Dock(TOP)
-        item:SetSize(0, EFGM.MenuScale(80))
-        item:SetText(v)
+        item:SetSize(0, EFGM.MenuScale(45) + (i.sizeY * EFGM.MenuScale(70)))
+        item:SetText("")
+        item:IsDraggable(true)
 
         function item:Paint(w, h)
 
+            surface.SetDrawColor(Color(255, 255, 255, 50))
+            surface.DrawRect(EFGM.MenuScale(10), h - EFGM.MenuScale(1), w - EFGM.MenuScale(10), EFGM.MenuScale(1))
+
+            draw.SimpleTextOutlined(i.displayName, "PuristaBold24", EFGM.MenuScale(10), EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
         end
+
+        local iconHolder = vgui.Create("DPanel", item)
+        iconHolder:SetMouseInputEnabled(false)
+        iconHolder:SetPos(EFGM.MenuScale(10), EFGM.MenuScale(30))
+        iconHolder:SetSize(EFGM.MenuScale(70 * i.sizeX), EFGM.MenuScale(70 * i.sizeY))
+        iconHolder.Paint = function(s, w, h)
+
+            surface.SetDrawColor(Color(5, 5, 5, 20))
+            surface.DrawRect(0, 0, w, h)
+
+            surface.SetDrawColor(Color(255, 255, 255, 2))
+            surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+            surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+        end
+
+        local icon = vgui.Create("DImage", iconHolder)
+        icon:Dock(FILL)
+        icon:SetImage(i.icon)
 
         item.OnCursorEntered = function(s)
 

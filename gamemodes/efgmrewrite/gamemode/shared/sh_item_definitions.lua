@@ -1096,7 +1096,7 @@ end
         ["stackSize"] = 1,
         ["icon"] = "items/weapons/pb.png",
 
-        ["sizeX"] = 2,
+        ["sizeX"] = 3,
         ["sizeY"] = 1
     }
 
@@ -2433,6 +2433,232 @@ end
         ["sizeY"] = 3
     }
 
+    -- grenades
+    EFGMITEMS["arc9_eft_melee_taiga"] = {
+        ["fullName"] = "UVSR Taiga-1 Survival Machete",
+        ["displayName"] = "Taiga-1",
+        ["displayType"] = "Melee",
+        ["weight"] = 0.6,
+        ["value"] = 500000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Melee",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/melee/taiga.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 3
+    }
+
+    -- grenades
+    EFGMITEMS["arc9_eft_f1"] = {
+        ["fullName"] = "F-1 hand grenade",
+        ["displayName"] = "F-1",
+        ["displayType"] = "Grenade",
+        ["weight"] = 0.6,
+        ["value"] = 15000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Grenade",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/grenades/f1.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_m18"] = {
+        ["fullName"] = "M18 smoke grenade (Green)",
+        ["displayName"] = "M18 (g)",
+        ["displayType"] = "Grenade",
+        ["weight"] = 0.5,
+        ["value"] = 4000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Grenade",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/grenades/m18.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_m18y"] = {
+        ["fullName"] = "M18 smoke grenade (Yellow)",
+        ["displayName"] = "M18 (y)",
+        ["displayType"] = "Grenade",
+        ["weight"] = 0.5,
+        ["value"] = 4000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Grenade",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/grenades/m18y.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_m67"] = {
+        ["fullName"] = "M67 hand grenade",
+        ["displayName"] = "M67",
+        ["displayType"] = "Grenade",
+        ["weight"] = 0.4,
+        ["value"] = 20000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Grenade",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/grenades/m67.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_m7290"] = {
+        ["fullName"] = "Model 7290 Flash Bang grenade",
+        ["displayName"] = "M7290",
+        ["displayType"] = "Grenade",
+        ["weight"] = 0.4,
+        ["value"] = 18000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Grenade",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/grenades/m7290.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_rdg2b"] = {
+        ["fullName"] = "RDG-2B smoke grenade",
+        ["displayName"] = "RDG-2B",
+        ["displayType"] = "Grenade",
+        ["weight"] = 0.6,
+        ["value"] = 3000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Grenade",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/grenades/rdg2b.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 2
+    }
+
+    EFGMITEMS["arc9_eft_rgd5"] = {
+        ["fullName"] = "RGD-5 hand grenade",
+        ["displayName"] = "RGD-5",
+        ["displayType"] = "Grenade",
+        ["weight"] = 0.3,
+        ["value"] = 18000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Grenade",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/grenades/rgd5.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_rgn"] = {
+        ["fullName"] = "RGN hand grenade",
+        ["displayName"] = "RGN",
+        ["displayType"] = "Grenade",
+        ["weight"] = 0.3,
+        ["value"] = 38000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Grenade",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/grenades/rgn.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_rgo"] = {
+        ["fullName"] = "RGO hand grenade",
+        ["displayName"] = "RGO",
+        ["displayType"] = "Grenade",
+        ["weight"] = 0.5,
+        ["value"] = 33000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Grenade",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/grenades/rgo.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_v40"] = {
+        ["fullName"] = "V40 Mini-Grenade",
+        ["displayName"] = "V40",
+        ["displayType"] = "Grenade",
+        ["weight"] = 0.1,
+        ["value"] = 25000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Grenade",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/grenades/v40.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_vog17"] = {
+        ["fullName"] = "VOG-17 Khattabka improvised hand grenade",
+        ["displayName"] = "VOG-17",
+        ["displayType"] = "Grenade",
+        ["weight"] = 0.2,
+        ["value"] = 30000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Grenade",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/grenades/vog17.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_vog25"] = {
+        ["fullName"] = "VOG-25 Khattabka improvised hand grenade",
+        ["displayName"] = "VOG-25",
+        ["displayType"] = "Grenade",
+        ["weight"] = 0.2,
+        ["value"] = 40000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Grenade",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/grenades/vog25.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_zarya"] = {
+        ["fullName"] = "Zarya stun grenade",
+        ["displayName"] = "Zarya",
+        ["displayType"] = "Grenade",
+        ["weight"] = 0.1,
+        ["value"] = 12000,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Grenade",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/grenades/zarya.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
     -- specials
     EFGMITEMS["arc9_eft_sp81"] = {
         ["fullName"] = "ZiD SP-81 26x75 signal pistol",
@@ -2441,12 +2667,28 @@ end
         ["weight"] = 0.6,
         ["value"] = 25000,
         ["equipType"] = EQUIPTYPE.Weapon,
+        ["wepSlot"] = "Utility",
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/special/sp81.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_rangefinder"] = {
+        ["fullName"] = "Vortex Ranger 1500 rangefinder",
+        ["displayName"] = "R1500",
+        ["displayType"] = "Special",
+        ["weight"] = 0.2,
+        ["value"] = 20000,
+        ["equipType"] = EQUIPTYPE.Weapon,
         ["wepSlot"] = "Secondary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = "items/melee/sp81.png",
+        ["icon"] = "items/special/r1500.png",
 
-        ["sizeX"] = 2,
+        ["sizeX"] = 1,
         ["sizeY"] = 1
     }
 
