@@ -1658,7 +1658,7 @@ end
         ["stackSize"] = 1,
         ["icon"] = "items/weapons/m1a.png",
 
-        ["sizeX"] = 4,
+        ["sizeX"] = 5,
         ["sizeY"] = 2
     }
 
