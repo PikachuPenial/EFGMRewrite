@@ -970,7 +970,6 @@ function Menu.OpenTab.Inventory()
     equipmentHolder:SetSize(EFGM.MenuScale(450), EFGM.MenuScale(850))
     function equipmentHolder:Paint(w, h)
 
-        BlurPanel(primaryWeaponHolder, EFGM.MenuScale(3))
         surface.SetDrawColor(Color(0, 0, 0, 0))
         surface.DrawRect(0, 0, w, h)
 
@@ -1131,7 +1130,7 @@ function Menu.OpenTab.Inventory()
     end
 
     local meleeWeaponIcon = vgui.Create("DImage", meleeWeaponHolder)
-    meleeWeaponIcon:SetPos(EFGM.MenuScale(27), EFGM.MenuScale(8))
+    meleeWeaponIcon:SetPos(EFGM.MenuScale(22), EFGM.MenuScale(8))
     meleeWeaponIcon:SetSize(EFGM.MenuScale(60), EFGM.MenuScale(40))
     meleeWeaponIcon:SetImage("icons/inventory_melee_icon.png")
     meleeWeaponIcon:SetImageColor(Color(255, 255, 255, 10))
