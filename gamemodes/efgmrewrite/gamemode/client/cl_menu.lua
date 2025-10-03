@@ -1266,14 +1266,18 @@ function Menu.OpenTab.Inventory()
 
     local plyItems = {}
 
-    for k, v in ipairs(playerInventory) do plyItems[k] = v.name end
+    for k, v in ipairs(playerInventory) do
+        plyItems[k] = {}
+        plyItems[k].name = v.name
+        plyItems[k].id = k
+    end
 
-    table.sort(plyItems, function(a, b) return (EFGMITEMS[a].sizeX * EFGMITEMS[a].sizeY) > (EFGMITEMS[b].sizeX * EFGMITEMS[b].sizeY) end)
+    table.sort(plyItems, function(a, b) return (EFGMITEMS[a.name].sizeX * EFGMITEMS[a.name].sizeY) > (EFGMITEMS[b.name].sizeX * EFGMITEMS[b.name].sizeY) end)
 
     -- inventory item entry
     for k, v in pairs(plyItems) do
 
-        local i = EFGMITEMS[v]
+        local i = EFGMITEMS[v.name]
 
         local item = playerItems:Add("DButton")
         item:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
@@ -1379,7 +1383,7 @@ function Menu.OpenTab.Inventory()
 
                 if !IsValid(contextMenu) then hook.Remove("Think", "CheckIfContextMenuStillFocused") return end
                 if input.IsMouseDown(MOUSE_LEFT) and !contextMenu:IsChildHovered() then contextMenu:KillFocus() hook.Remove("Think", "CheckIfContextMenuStillFocused") end
-                print("WEE")
+                -- print("WEE")
 
             end)
 
@@ -1494,6 +1498,9 @@ function Menu.OpenTab.Inventory()
                 function itemDropButton:DoClick()
 
                     surface.PlaySound("ui/element_select.wav")
+                    DropItemFromInventory(v.id)
+                    contextMenu:Remove()
+                    item:Remove()
 
                 end
 

@@ -1,28 +1,25 @@
 
 playerInventory = {}
 
-net.Receive( "ModifyPlayerInventory", function( len, ply )
+net.Receive( "PlayerInventoryAddItem", function( len, ply )
 
-    local name, type, data, arg
+    local name, type, data, index
 
     name = net.ReadString()
     type = net.ReadUInt( 4 )
     data = net.ReadTable()
-    arg = net.ReadUInt(4)
+    index = net.ReadUInt( 16 )
 
-    if arg == 0 then
-
-        table.insert( playerInventory, ITEM.Instantiate(name, type, data) )
-
-    end
-    
-    if arg == 1 then
-
-        -- TODO: Remove specified item
-
-    end
-
-    PrintTable(playerInventory)
-
+    table.insert( playerInventory, index, ITEM.Instantiate(name, type, data) )
 
 end )
+
+function DropItemFromInventory(itemIndex)
+
+    net.Start( "PlayerInventoryDropItem", false )
+        net.WriteUInt( itemIndex, 16 )
+    net.SendToServer()
+
+    table.remove( playerInventory, itemIndex )
+
+end
