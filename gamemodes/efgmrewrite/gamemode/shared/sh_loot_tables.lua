@@ -189,7 +189,6 @@ LOOT[1]["arc9_eft_rshg2"]               = {3}
 -- LOOT[1]["arc9_eft_melee_rebel"]      = {3}
 -- LOOT[1]["arc9_eft_melee_voodoo"]     = {3}
 -- LOOT[1]["arc9_eft_melee_sp8"]        = {2}
--- LOOT[1]["arc9_eft_melee_hultafors"]  = {3}
 -- LOOT[1]["arc9_eft_melee_taiga"]      = {2}
 
 -- specials
@@ -379,7 +378,6 @@ LOOT[5]["arc9_eft_rshg2"]               = {3}
 -- LOOT[5]["arc9_eft_melee_rebel"]      = {3}
 -- LOOT[5]["arc9_eft_melee_voodoo"]     = {3}
 -- LOOT[5]["arc9_eft_melee_sp8"]        = {2}
--- LOOT[5]["arc9_eft_melee_hultafors"]  = {3}
 -- LOOT[5]["arc9_eft_melee_taiga"]      = {2}
 
 -- specials

@@ -630,7 +630,7 @@ end
         ["stackSize"] = 1,
         ["icon"] = "items/weapons/rd704.png",
 
-        ["sizeX"] = 5,
+        ["sizeX"] = 4,
         ["sizeY"] = 2
     }
 
@@ -662,7 +662,7 @@ end
         ["stackSize"] = 1,
         ["icon"] = "items/weapons/mcx.png",
 
-        ["sizeX"] = 5,
+        ["sizeX"] = 4,
         ["sizeY"] = 2
     }
 
@@ -1499,7 +1499,7 @@ end
         ["icon"] = "items/weapons/g28.png",
 
         ["sizeX"] = 6,
-        ["sizeY"] = 2
+        ["sizeY"] = 3
     }
 
     EFGMITEMS["arc9_eft_sr25"] = {
@@ -1756,7 +1756,7 @@ end
         ["icon"] = "items/weapons/mp9.png",
 
         ["sizeX"] = 3,
-        ["sizeY"] = 1
+        ["sizeY"] = 2
     }
 
     EFGMITEMS["arc9_eft_mp9n"] = {
@@ -1772,7 +1772,7 @@ end
         ["icon"] = "items/weapons/mp9n.png",
 
         ["sizeX"] = 3,
-        ["sizeY"] = 1
+        ["sizeY"] = 2
     }
 
     EFGMITEMS["arc9_eft_fn_p90"] = {
@@ -2058,7 +2058,7 @@ end
         ["wepSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = "items/melee/fn40gl.png",
+        ["icon"] = "items/weapons/fn40gl.png",
 
         ["sizeX"] = 3,
         ["sizeY"] = 2
@@ -2074,7 +2074,7 @@ end
         ["wepSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = "items/melee/m32a1.png",
+        ["icon"] = "items/weapons/m32a1.png",
 
         ["sizeX"] = 4,
         ["sizeY"] = 2
@@ -2090,7 +2090,7 @@ end
         ["wepSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = "items/melee/rshg2.png",
+        ["icon"] = "items/weapons/rshg2.png",
 
         ["sizeX"] = 4,
         ["sizeY"] = 1

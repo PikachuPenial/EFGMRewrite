@@ -1248,6 +1248,11 @@ function Menu.OpenTab.Inventory()
 
     end
 
+    local playerItems = vgui.Create("DIconLayout", playerItemsHolder)
+    playerItems:Dock(FILL)
+    playerItems:SetSpaceY(-1)
+    playerItems:SetSpaceX(-1)
+
     local playerItemsBar = playerItemsHolder:GetVBar()
     playerItemsBar:SetHideButtons(true)
     playerItemsBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
@@ -1264,33 +1269,19 @@ function Menu.OpenTab.Inventory()
 
     for k, v in ipairs(rawWeps) do table.insert(weps, v:GetClass()) end
 
-    table.sort(weps, function(a, b) return string.lower(EFGMITEMS[a].displayName) < string.lower(EFGMITEMS[b].displayName) end)
+    table.sort(weps, function(a, b) return (EFGMITEMS[a].sizeX * EFGMITEMS[a].sizeY) > (EFGMITEMS[b].sizeX * EFGMITEMS[b].sizeY) end)
 
     -- inventory item entry
     for k, v in pairs(weps) do
 
         local i = EFGMITEMS[v]
 
-        local item = playerItemsHolder:Add("DButton")
-        item:Dock(TOP)
-        item:SetSize(0, EFGM.MenuScale(45) + (i.sizeY * EFGM.MenuScale(70)))
+        local item = playerItems:Add("DButton")
+        item:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
         item:SetText("")
-        item:IsDraggable(true)
+        item:Droppable("items")
 
         function item:Paint(w, h)
-
-            surface.SetDrawColor(Color(255, 255, 255, 50))
-            surface.DrawRect(EFGM.MenuScale(10), h - EFGM.MenuScale(1), w - EFGM.MenuScale(10), EFGM.MenuScale(1))
-
-            draw.SimpleTextOutlined(i.displayName, "PuristaBold24", EFGM.MenuScale(10), EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-        end
-
-        local iconHolder = vgui.Create("DPanel", item)
-        iconHolder:SetMouseInputEnabled(false)
-        iconHolder:SetPos(EFGM.MenuScale(10), EFGM.MenuScale(30))
-        iconHolder:SetSize(EFGM.MenuScale(70 * i.sizeX), EFGM.MenuScale(70 * i.sizeY))
-        iconHolder.Paint = function(s, w, h)
 
             surface.SetDrawColor(Color(5, 5, 5, 20))
             surface.DrawRect(0, 0, w, h)
@@ -1303,9 +1294,21 @@ function Menu.OpenTab.Inventory()
 
         end
 
-        local icon = vgui.Create("DImage", iconHolder)
+        local icon = vgui.Create("DImage", item)
         icon:Dock(FILL)
         icon:SetImage(i.icon)
+
+        surface.SetFont("Purista18")
+        local nameSize = surface.GetTextSize(i.displayName)
+        local nameFont
+        if nameSize >= (EFGM.MenuScale(55 * i.sizeX)) then nameFont = "PuristaBold12" else nameFont = "PuristaBold18" end
+
+        function item:PaintOver(w, h)
+
+            draw.SimpleTextOutlined(i.displayName, nameFont, EFGM.MenuScale(w - 3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        end
+
 
         item.OnCursorEntered = function(s)
 
@@ -1354,57 +1357,48 @@ function Menu.OpenTab.Inventory()
 
     end
 
-    local stashHolder = vgui.Create("DScrollPanel", stashPanel)
+    local stashHolder = vgui.Create("DPanel", stashPanel)
     stashHolder:Dock(FILL)
-    stashHolder:DockMargin(EFGM.MenuScale(37), 0, 0, 0)
-    function stashHolder:Paint(w, h)
+    stashHolder:DockMargin(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(9))
+    stashHolder:SetSize(0, 0)
+    stashHolder.Paint = function(s, w, h)
+
+        surface.SetDrawColor(Color(0, 0, 0, 0))
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
+    local stashItemsHolder = vgui.Create("DScrollPanel", stashHolder)
+    stashItemsHolder:SetPos(0, EFGM.MenuScale(32))
+    stashItemsHolder:SetSize(EFGM.MenuScale(593), EFGM.MenuScale(872))
+    function stashItemsHolder:Paint(w, h)
+
+        BlurPanel(stashItemsHolder, EFGM.MenuScale(3))
 
         surface.SetDrawColor(Color(80, 80, 80, 10))
         surface.DrawRect(0, 0, w, h)
 
         surface.SetDrawColor(Color(255, 255, 255, 25))
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-        surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
         surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
 
     end
 
-    local stashBar = stashHolder:GetVBar()
-    stashBar:SetSize(0, 0)
+    local stashItems = vgui.Create("DIconLayout", stashItemsHolder)
+    stashItems:Dock(FILL)
+    stashItems:SetSpaceY(-1)
+    stashItems:SetSpaceX(-1)
 
-    local sortButton = vgui.Create("DImageButton", stashPanel)
-    sortButton:SetPos(EFGM.MenuScale(0), EFGM.MenuScale(924))
-    sortButton:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
-    sortButton:SetImage("icons/sort_icon.png")
-    sortButton:SetDepressImage(false)
-
-    local sortButtonText = vgui.Create("DPanel", stashPanel)
-    sortButtonText:SetSize(EFGM.MenuScale(577), EFGM.MenuScale(36))
-    sortButtonText:SetPos(EFGM.MenuScale(37), EFGM.MenuScale(924))
-    sortButtonText:SetAlpha(0)
-    function sortButtonText:Paint(w, h)
-
-        BlurPanel(sortButtonText, EFGM.MenuScale(3))
-
-        surface.SetDrawColor(Color(80, 80, 80, 10))
-        surface.DrawRect(0, 0, w, h)
-
-        draw.SimpleTextOutlined("AUTO-SORT", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(0), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
+    local stashItemsBar = playerItemsHolder:GetVBar()
+    stashItemsBar:SetHideButtons(true)
+    stashItemsBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+    function stashItemsBar:Paint(w, h)
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
     end
-
-    sortButton.OnCursorEntered = function(s)
-
-        sortButtonText:AlphaTo(255, 0.05, 0, nil)
-        surface.PlaySound("ui/element_hover.wav")
-
-    end
-
-    sortButton.OnCursorExited = function(s)
-
-        sortButtonText:AlphaTo(0, 0.05, 0, nil)
-
+    function stashItemsBar.btnGrip:Paint(w, h)
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
     end
 
 end
