@@ -1263,11 +1263,10 @@ function Menu.OpenTab.Inventory()
         draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
     end
 
-    -- from here on, this is a visual test of inventory items
-    local rawWeps = Menu.Player:GetWeapons()
+    -- from here on, this is mostly a visual test of inventory items
     local weps = {}
 
-    for k, v in ipairs(rawWeps) do table.insert(weps, v:GetClass()) end
+    for k, v in ipairs(playerInventory) do  weps[k] = v.name end
 
     table.sort(weps, function(a, b) return (EFGMITEMS[a].sizeX * EFGMITEMS[a].sizeY) > (EFGMITEMS[b].sizeX * EFGMITEMS[b].sizeY) end)
 
