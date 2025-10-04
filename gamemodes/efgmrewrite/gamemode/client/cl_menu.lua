@@ -1397,8 +1397,9 @@ function Menu.OpenTab.Inventory()
         if i.equipType == EQUIPTYPE.Weapon then
 
             if i.equipSlot == "Primary" then item:Droppable("slot_primary") end
-            if i.equipSlot == "Secondary" then item:Droppable("slot_holster") end
+            if i.equipSlot == "Holster" then item:Droppable("slot_holster") end
             if i.equipSlot == "Melee" then item:Droppable("slot_melee") end
+            if i.equipSlot == "Grenade" then item:Droppable("slot_grenade") end
 
         end
 
