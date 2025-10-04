@@ -2,14 +2,16 @@
 playerInventory = {}
 
 -- for dev. purposes, dont need to start new map to give yourself items after a reload
-function ReinstantiateInventory(ply)
+function ReinstantiateInventory()
 
-    print("client inventory cleared")
+    print("client inventory flushed")
     table.Empty(playerInventory)
     table.ClearKeys(playerInventory)
 
 end
 
+hook.Add("OnReloaded", "InventoryReload", function() ReinstantiateInventory() RunConsoleCommand("efgm_flush_inventory") end)
+net.Receive("PlayerReinstantiateInventory", function(len, ply) ReinstantiateInventory() end)
 
 net.Receive("PlayerInventoryAddItem", function(len, ply)
 

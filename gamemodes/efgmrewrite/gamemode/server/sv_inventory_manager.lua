@@ -1,4 +1,5 @@
 
+util.AddNetworkString("PlayerReinstantiateInventory")
 util.AddNetworkString("PlayerInventoryAddItem")
 util.AddNetworkString("PlayerInventoryDropItem")
 
@@ -8,11 +9,23 @@ end)
 
 function ReinstantiateInventory(ply)
 
-    print("server inventory cleared")
+    print("server inventory flushed")
     table.Empty(ply.inventory)
     table.ClearKeys(ply.inventory)
 
 end
+concommand.Add("efgm_flush_inventory", function(ply, cmd, args) ReinstantiateInventory(ply) end)
+
+hook.Add("OnReloaded", "InventoryReload", function()
+
+    for k, ply in pairs(player.GetAll()) do
+        ReinstantiateInventory(ply)
+    end
+
+    net.Start("PlayerReinstantiateInventory", false)
+    net.Broadcast()
+
+end)
 
 hook.Add("PlayerCanPickupWeapon", "InventoryWeaponPickup", function(ply, wep)
 

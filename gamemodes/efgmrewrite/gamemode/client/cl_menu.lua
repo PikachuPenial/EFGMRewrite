@@ -1478,7 +1478,7 @@ function Menu.OpenTab.Inventory()
             hook.Add("Think", "CheckIfContextMenuStillFocused", function()
 
                 if !IsValid(contextMenu) then hook.Remove("Think", "CheckIfContextMenuStillFocused") return end
-                if input.IsMouseDown(MOUSE_LEFT) and !contextMenu:IsChildHovered() then contextMenu:KillFocus() hook.Remove("Think", "CheckIfContextMenuStillFocused") end
+                if (input.IsMouseDown(MOUSE_LEFT) or input.IsMouseDown(MOUSE_RIGHT) or input.IsMouseDown(MOUSE_MIDDLE)) and !contextMenu:IsChildHovered() then contextMenu:KillFocus() hook.Remove("Think", "CheckIfContextMenuStillFocused") end
 
             end)
 
