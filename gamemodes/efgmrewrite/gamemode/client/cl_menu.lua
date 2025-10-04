@@ -982,10 +982,17 @@ function Menu.OpenTab.Inventory()
 
     end
 
+    local function WeaponSlotDrop(self, panels, bDoDrop, Command, x, y)
+        if (bDoDrop) then
+            surface.PlaySound("ui/element_hover.wav")
+        end
+    end
+
     -- secondary slot
     local secondaryWeaponHolder = vgui.Create("DPanel", equipmentHolder)
     secondaryWeaponHolder:SetSize(EFGM.MenuScale(285), EFGM.MenuScale(114))
     secondaryWeaponHolder:SetPos(equipmentHolder:GetWide() - secondaryWeaponHolder:GetWide(), equipmentHolder:GetTall() - secondaryWeaponHolder:GetTall())
+    secondaryWeaponHolder:Receiver("slot_primary", WeaponSlotDrop())
     function secondaryWeaponHolder:Paint(w, h)
 
         BlurPanel(secondaryWeaponHolder, EFGM.MenuScale(3))
@@ -1347,7 +1354,6 @@ function Menu.OpenTab.Inventory()
 
     local plyItems = {}
 
-    PrintTable(playerInventory)
     for k, v in ipairs(playerInventory) do
         plyItems[k] = {}
         plyItems[k].name = v.name
@@ -1365,6 +1371,14 @@ function Menu.OpenTab.Inventory()
         item:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
         item:SetText("")
         item:Droppable("items")
+
+        if i.equipType == EQUIPTYPE.Weapon then
+
+            if i.equipSlot == "Primary" then item:Droppable("slot_primary") end
+            if i.equipSlot == "Secondary" then item:Droppable("slot_holster") end
+            if i.equipSlot == "Melee" then item:Droppable("slot_melee") end
+
+        end
 
         function item:Paint(w, h)
 
@@ -1502,6 +1516,7 @@ function Menu.OpenTab.Inventory()
             }
 
             actions.equipable = i.equipType == EQUIPTYPE.Weapon
+            actions.splittable = i.stackSize > 1
 
             if actions.equipable then
 

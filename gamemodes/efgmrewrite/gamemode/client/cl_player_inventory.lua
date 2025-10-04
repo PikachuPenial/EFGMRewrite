@@ -1,12 +1,15 @@
 
 playerInventory = {}
 
-net.Receive("PlayerReloadInventory", function(len, ply)
+-- for dev. purposes, dont need to start new map to give yourself items after a reload
+function ReinstantiateInventory(ply)
 
+    print("client inventory cleared")
     table.Empty(playerInventory)
     table.ClearKeys(playerInventory)
 
-end )
+end
+
 
 net.Receive("PlayerInventoryAddItem", function(len, ply)
 

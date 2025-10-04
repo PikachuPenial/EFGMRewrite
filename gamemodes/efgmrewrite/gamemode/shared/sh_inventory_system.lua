@@ -1,4 +1,14 @@
+
 -- https://www.youtube.com/watch?v=Iv3F5ARdu58
+
+-- for dev. purposes, dont need to start new map to give yourself items after a reload
+hook.Add("OnReloaded", "InventoryReload", function()
+
+    for k, ply in pairs(player.GetAll()) do
+        ReinstantiateInventory(ply)
+    end
+
+end)
 
 ITEM = {}
 

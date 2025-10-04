@@ -1,5 +1,4 @@
 
-util.AddNetworkString("PlayerReloadInventory")
 util.AddNetworkString("PlayerInventoryAddItem")
 util.AddNetworkString("PlayerInventoryDropItem")
 
@@ -7,15 +6,13 @@ hook.Add("PlayerSpawn", "InventorySetup", function(ply)
 	ply.inventory = {}
 end)
 
--- for dev. purposes, dont need to start new map to give yourself items after a reload
-hook.Add("OnReloaded", "InventoryReload", function()
-    for k, ply in pairs(player.GetAll()) do
-        table.Empty(ply.inventory)
-        table.ClearKeys(ply.inventory)
-        net.Start("PlayerReloadInventory", false)
-        net.Send(ply)
-    end
-end)
+function ReinstantiateInventory(ply)
+
+    print("server inventory cleared")
+    table.Empty(ply.inventory)
+    table.ClearKeys(ply.inventory)
+
+end
 
 hook.Add("PlayerCanPickupWeapon", "InventoryWeaponPickup", function(ply, wep)
 
