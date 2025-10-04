@@ -1155,9 +1155,24 @@ function Menu.OpenTab.Inventory()
     function healthHolder:Paint(w, h)
 
         surface.SetDrawColor(Color(255, 255, 255, 25))
-        surface.DrawRect(EFGM.MenuScale(4), 0, w, EFGM.MenuScale(1))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
 
         draw.SimpleTextOutlined(Menu.Player:Health() or "0", "PuristaBold50", EFGM.MenuScale(60), EFGM.MenuScale(1), Color(25, 255, 25), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local healthText = vgui.Create("DPanel", playerPanel)
+    healthText:SetSize(EFGM.MenuScale(80), EFGM.MenuScale(30))
+    healthText:SetPos(EFGM.MenuScale(10), EFGM.MenuScale(865))
+    healthText.Paint = function(s, w, h)
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, EFGM.MenuScale(220), EFGM.MenuScale(2))
+
+        draw.SimpleTextOutlined("HEALTH", "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
     end
 
@@ -1166,6 +1181,13 @@ function Menu.OpenTab.Inventory()
     healthIcon:SetSize(EFGM.MenuScale(53), EFGM.MenuScale(53))
     healthIcon:SetImage("icons/health_icon.png")
     healthIcon:SetImageColor(Color(25, 255, 25))
+
+    local factionIcon = vgui.Create("DImage", playerPanel)
+    factionIcon:SetPos(EFGM.MenuScale(20), EFGM.MenuScale(50))
+    factionIcon:SetSize(EFGM.MenuScale(115), EFGM.MenuScale(119))
+    factionIcon:SetImageColor(Color(255, 255, 255, 2))
+    if Menu.Player:GetModel() == "models/eft/pmcs/usec_extended_pm.mdl" then factionIcon:SetImage("icons/usec_icon.png") else factionIcon:SetImage("icons/bear_icon.png") end
+
 
     local inventoryPanel = vgui.Create("DPanel", contents)
     inventoryPanel:Dock(LEFT)
