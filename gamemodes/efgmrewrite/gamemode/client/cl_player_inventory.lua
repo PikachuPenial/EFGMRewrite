@@ -35,3 +35,9 @@ function DropItemFromInventory(itemIndex)
     table.remove(playerInventory, itemIndex)
 
 end
+
+function EquipItemFromInventory(itemIndex)
+
+    -- TODO
+
+end

@@ -2,6 +2,7 @@
 util.AddNetworkString("PlayerReinstantiateInventory")
 util.AddNetworkString("PlayerInventoryAddItem")
 util.AddNetworkString("PlayerInventoryDropItem")
+util.AddNetworkString("PlayerInventoryEquipItem")
 
 hook.Add("PlayerSpawn", "InventorySetup", function(ply)
 	ply.inventory = {}
@@ -37,17 +38,17 @@ hook.Add("PlayerCanPickupWeapon", "InventoryWeaponPickup", function(ply, wep)
     local index = table.insert(ply.inventory, item)
 
     net.Start("PlayerInventoryAddItem", false)
-        net.WriteString( wepClass )
-        net.WriteUInt(1, 4)
-        net.WriteTable( {} ) -- Writing a table isn't great but we ball for now
-        net.WriteUInt(index, 16)
+    net.WriteString(wepClass)
+    net.WriteUInt(1, 4)
+    net.WriteTable({}) -- Writing a table isn't great but we ball for now
+    net.WriteUInt(index, 16)
     net.Send(ply)
 
     return wepClass == "gmod_tool"
 
 end)
 
-net.Receive("PlayerInventoryDropItem", function( len, ply)
+net.Receive("PlayerInventoryDropItem", function(len, ply)
 
     local itemIndex = net.ReadUInt(16)
     local item = ply.inventory[itemIndex]
@@ -58,5 +59,11 @@ net.Receive("PlayerInventoryDropItem", function( len, ply)
     wep:PhysWake()
 
     table.remove(ply.inventory, itemIndex)
+
+end)
+
+net.Receive("PlayerInventoryEquipItem", function(len, ply)
+
+    -- TODO
 
 end)
