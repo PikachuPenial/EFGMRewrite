@@ -1,25 +1,32 @@
 
 playerInventory = {}
 
-net.Receive( "PlayerInventoryAddItem", function( len, ply )
+net.Receive("PlayerReloadInventory", function(len, ply)
+
+    table.Empty(playerInventory)
+    table.ClearKeys(playerInventory)
+
+end )
+
+net.Receive("PlayerInventoryAddItem", function(len, ply)
 
     local name, type, data, index
 
     name = net.ReadString()
-    type = net.ReadUInt( 4 )
+    type = net.ReadUInt(4)
     data = net.ReadTable()
-    index = net.ReadUInt( 16 )
+    index = net.ReadUInt(16)
 
-    table.insert( playerInventory, index, ITEM.Instantiate(name, type, data) )
+    table.insert(playerInventory, index, ITEM.Instantiate(name, type, data))
 
 end )
 
 function DropItemFromInventory(itemIndex)
 
-    net.Start( "PlayerInventoryDropItem", false )
-        net.WriteUInt( itemIndex, 16 )
+    net.Start("PlayerInventoryDropItem", false)
+    net.WriteUInt(itemIndex, 16)
     net.SendToServer()
 
-    table.remove( playerInventory, itemIndex )
+    table.remove(playerInventory, itemIndex)
 
 end

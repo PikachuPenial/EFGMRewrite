@@ -8,6 +8,13 @@ Menu.TabList = {"stats", "match", "inventory", "intel", "achievements", "setting
 Menu.ActiveTab = ""
 Menu.MouseX = 0
 Menu.MouseY = 0
+Menu.Player = LocalPlayer()
+
+hook.Add("OnReloaded", "Reload", function()
+
+    Menu.Player = LocalPlayer()
+
+end)
 
 local menuBind = GetConVar("efgm_bind_menu"):GetInt()
 cvars.AddChangeCallback("efgm_bind_menu", function(convar_name, value_old, value_new)
@@ -273,7 +280,7 @@ function Menu:Initialize(openTo)
         surface.SetDrawColor(MenuAlias.transparent)
         surface.DrawRect(0, 0, w, h)
 
-        if Menu.MenuFrame.Closing then return end
+        if IsValid(Menu.MenuFrame) and Menu.MenuFrame.Closing then return end
 
         Menu.MouseX, Menu.MouseY = menuFrame:LocalCursorPos()
 
@@ -1130,7 +1137,7 @@ function Menu.OpenTab.Inventory()
     end
 
     local meleeWeaponIcon = vgui.Create("DImage", meleeWeaponHolder)
-    meleeWeaponIcon:SetPos(EFGM.MenuScale(22), EFGM.MenuScale(8))
+    meleeWeaponIcon:SetPos(EFGM.MenuScale(25), EFGM.MenuScale(8))
     meleeWeaponIcon:SetSize(EFGM.MenuScale(60), EFGM.MenuScale(40))
     meleeWeaponIcon:SetImage("icons/inventory_melee_icon.png")
     meleeWeaponIcon:SetImageColor(Color(255, 255, 255, 10))
@@ -1340,6 +1347,7 @@ function Menu.OpenTab.Inventory()
 
     local plyItems = {}
 
+    PrintTable(playerInventory)
     for k, v in ipairs(playerInventory) do
         plyItems[k] = {}
         plyItems[k].name = v.name
@@ -1492,6 +1500,8 @@ function Menu.OpenTab.Inventory()
                 consumable = false,
                 splittable = false
             }
+
+            actions.equipable = i.equipType == EQUIPTYPE.Weapon
 
             if actions.equipable then
 
