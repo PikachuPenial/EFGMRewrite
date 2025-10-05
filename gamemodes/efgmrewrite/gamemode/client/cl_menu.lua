@@ -1361,8 +1361,8 @@ function Menu.OpenTab.Inventory()
 
     local playerItems = vgui.Create("DIconLayout", playerItemsHolder)
     playerItems:Dock(FILL)
-    playerItems:SetSpaceY(-1)
-    playerItems:SetSpaceX(-1)
+    playerItems:SetSpaceY(0)
+    playerItems:SetSpaceX(0)
 
     local playerItemsBar = playerItemsHolder:GetVBar()
     playerItemsBar:SetHideButtons(true)
@@ -1380,6 +1380,7 @@ function Menu.OpenTab.Inventory()
         plyItems[k] = {}
         plyItems[k].name = v.name
         plyItems[k].id = k
+        plyItems[k].count = 1
     end
 
     table.sort(plyItems, function(a, b) return (EFGMITEMS[a.name].sizeX * EFGMITEMS[a.name].sizeY) > (EFGMITEMS[b.name].sizeX * EFGMITEMS[b.name].sizeY) end)
@@ -1423,11 +1424,14 @@ function Menu.OpenTab.Inventory()
         surface.SetFont("Purista18")
         local nameSize = surface.GetTextSize(i.displayName)
         local nameFont
-        if nameSize >= (EFGM.MenuScale(50 * i.sizeX)) then nameFont = "PuristaBold14" else nameFont = "PuristaBold18" end
+
+        if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18"
+        else nameFont = "PuristaBold14" end
 
         function item:PaintOver(w, h)
 
             draw.SimpleTextOutlined(i.displayName, nameFont, EFGM.MenuScale(w - 3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            draw.SimpleTextOutlined(v.count, "PuristaBold18", EFGM.MenuScale(w - 3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
 
         end
 

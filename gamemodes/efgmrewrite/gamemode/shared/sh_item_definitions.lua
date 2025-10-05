@@ -2672,7 +2672,7 @@ end
         ["stackSize"] = 1,
         ["icon"] = "items/special/sp81.png",
 
-        ["sizeX"] = 1,
+        ["sizeX"] = 2,
         ["sizeY"] = 1
     }
 
