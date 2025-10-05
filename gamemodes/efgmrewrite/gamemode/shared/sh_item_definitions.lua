@@ -2692,6 +2692,405 @@ end
         ["sizeY"] = 1
     }
 
+-- AMMUNITION
+    -- pistol cartirdges
+    EFGMITEMS["efgm_ammo_762x25"] = {
+        ["fullName"] = "7.62x25mm Tokarev",
+        ["displayName"] = "7.62x25",
+        ["displayType"] = "Ammunition",
+        ["weight"] = 0.01,
+        ["value"] = 80,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 60,
+        ["icon"] = "items/ammo/762x25.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["efgm_ammo_9x18"] = {
+        ["fullName"] = "9x18mm Makarov",
+        ["displayName"] = "9x18",
+        ["displayType"] = "Ammunition",
+        ["weight"] = 0.012,
+        ["value"] = 90,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 60,
+        ["icon"] = "items/ammo/9x18.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["efgm_ammo_9x19"] = {
+        ["fullName"] = "9x19mm Parabellum",
+        ["displayName"] = "9x19",
+        ["displayType"] = "Ammunition",
+        ["weight"] = 0.005,
+        ["value"] = 100,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 60,
+        ["icon"] = "items/ammo/9x19.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["efgm_ammo_9x21"] = {
+        ["fullName"] = "9x21mm Gyurza",
+        ["displayName"] = "9x21",
+        ["displayType"] = "Ammunition",
+        ["weight"] = 0.011,
+        ["value"] = 190,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 60,
+        ["icon"] = "items/ammo/9x21.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["efgm_ammo_357"] = {
+        ["fullName"] = ".357 Magnum",
+        ["displayName"] = ".357",
+        ["displayType"] = "Ammunition",
+        ["weight"] = 0.016,
+        ["value"] = 100,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 60,
+        ["icon"] = "items/ammo/357.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["efgm_ammo_45"] = {
+        ["fullName"] = ".45 ACP",
+        ["displayName"] = ".45",
+        ["displayType"] = "Ammunition",
+        ["weight"] = 0.016,
+        ["value"] = 210,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 60,
+        ["icon"] = "items/ammo/45.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["efgm_ammo_50ae"] = {
+        ["fullName"] = ".50 Action Express",
+        ["displayName"] = ".50 AE",
+        ["displayType"] = "Ammunition",
+        ["weight"] = 0.029,
+        ["value"] = 420,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 60,
+        ["icon"] = "items/ammo/50ae.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["efgm_ammo_20x1"] = {
+        ["fullName"] = "20x1mm",
+        ["displayName"] = "Disk",
+        ["displayType"] = "Ammunition",
+        ["weight"] = 0.001,
+        ["value"] = 10,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 20,
+        ["icon"] = "items/ammo/20x1.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    -- pdw cartirdges
+    EFGMITEMS["efgm_ammo_46x30"] = {
+        ["fullName"] = "4.6x30mm HK",
+        ["displayName"] = "4.6x30",
+        ["displayType"] = "Ammunition",
+        ["weight"] = 0.007,
+        ["value"] = 380,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 60,
+        ["icon"] = "items/ammo/46x30.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["efgm_ammo_57x28"] = {
+        ["fullName"] = "5.7x28mm FN",
+        ["displayName"] = "5.7x28",
+        ["displayType"] = "Ammunition",
+        ["weight"] = 0.006,
+        ["value"] = 310,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 60,
+        ["icon"] = "items/ammo/57x28.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    -- rifle cartirdges
+    EFGMITEMS["efgm_ammo_545x39"] = {
+        ["fullName"] = "5.45x39mm",
+        ["displayName"] = "5.45x39",
+        ["displayType"] = "Ammunition",
+        ["weight"] = 0.01,
+        ["value"] = 220,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 60,
+        ["icon"] = "items/ammo/545x39.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["efgm_ammo_556x45"] = {
+        ["fullName"] = "5.56x45mm NATO",
+        ["displayName"] = "5.56x45",
+        ["displayType"] = "Ammunition",
+        ["weight"] = 0.012,
+        ["value"] = 270,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 60,
+        ["icon"] = "items/ammo/556x45.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["efgm_ammo_68x51"] = {
+        ["fullName"] = "6.8x51mm",
+        ["displayName"] = "6.8x51",
+        ["displayType"] = "Ammunition",
+        ["weight"] = 0.024,
+        ["value"] = 680,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 40,
+        ["icon"] = "items/ammo/68x51.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["efgm_ammo_300"] = {
+        ["fullName"] = ".300 Blackout",
+        ["displayName"] = ".300",
+        ["displayType"] = "Ammunition",
+        ["weight"] = 0.014,
+        ["value"] = 330,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 60,
+        ["icon"] = "items/ammo/300.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["efgm_ammo_762x39"] = {
+        ["fullName"] = "7.62x39mm",
+        ["displayName"] = "7.62x39",
+        ["displayType"] = "Ammunition",
+        ["weight"] = 0.016,
+        ["value"] = 290,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 60,
+        ["icon"] = "items/ammo/762x39.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["efgm_ammo_762x51"] = {
+        ["fullName"] = "7.62x51mm NATO",
+        ["displayName"] = "7.62x51",
+        ["displayType"] = "Ammunition",
+        ["weight"] = 0.022,
+        ["value"] = 360,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 40,
+        ["icon"] = "items/ammo/762x51.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["efgm_ammo_762x54"] = {
+        ["fullName"] = "7.62x54mmR",
+        ["displayName"] = "7.62x54",
+        ["displayType"] = "Ammunition",
+        ["weight"] = 0.024,
+        ["value"] = 350,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 40,
+        ["icon"] = "items/ammo/762x54.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["efgm_ammo_338"] = {
+        ["fullName"] = ".338 Lapua Magnum",
+        ["displayName"] = ".338",
+        ["displayType"] = "Ammunition",
+        ["weight"] = 0.049,
+        ["value"] = 880,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 40,
+        ["icon"] = "items/ammo/338.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["efgm_ammo_9x39"] = {
+        ["fullName"] = "9x39mm",
+        ["displayName"] = "9x39",
+        ["displayType"] = "Ammunition",
+        ["weight"] = 0.023,
+        ["value"] = 400,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 60,
+        ["icon"] = "items/ammo/9x39.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["efgm_ammo_366"] = {
+        ["fullName"] = ".366 TKM",
+        ["displayName"] = ".366",
+        ["displayType"] = "Ammunition",
+        ["weight"] = 0.019,
+        ["value"] = 320,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 60,
+        ["icon"] = "items/ammo/366.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["efgm_ammo_127x55"] = {
+        ["fullName"] = "12.7x55mm",
+        ["displayName"] = "12.7x55",
+        ["displayType"] = "Ammunition",
+        ["weight"] = 0.055,
+        ["value"] = 700,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 40,
+        ["icon"] = "items/ammo/127x55.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["efgm_ammo_50bmg"] = {
+        ["fullName"] = ".50 BMG",
+        ["displayName"] = ".50",
+        ["displayType"] = "Ammunition",
+        ["weight"] = 0.1,
+        ["value"] = 1300,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 20,
+        ["icon"] = "items/ammo/50bmg.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    -- shotgun cartirdges
+    EFGMITEMS["efgm_ammo_12gauge"] = {
+        ["fullName"] = "12 gauge",
+        ["displayName"] = "12/70",
+        ["displayType"] = "Ammunition",
+        ["weight"] = 0.05,
+        ["value"] = 220,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 20,
+        ["icon"] = "items/ammo/12gauge.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["efgm_ammo_20gauge"] = {
+        ["fullName"] = "20 gauge",
+        ["displayName"] = "20/70",
+        ["displayType"] = "Ammunition",
+        ["weight"] = 0.04,
+        ["value"] = 200,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 20,
+        ["icon"] = "items/ammo/20gauge.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["efgm_ammo_4gauge"] = {
+        ["fullName"] = "23x75mmR",
+        ["displayName"] = "23x75",
+        ["displayType"] = "Ammunition",
+        ["weight"] = 0.08,
+        ["value"] = 420,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 20,
+        ["icon"] = "items/ammo/4gauge.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    -- launcher cartirdges
+    EFGMITEMS["efgm_ammo_40x46"] = {
+        ["fullName"] = "40x46mm",
+        ["displayName"] = "40x46",
+        ["displayType"] = "Ammunition",
+        ["weight"] = 0.23,
+        ["value"] = 7000,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/ammo/40x46.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["efgm_ammo_40x53"] = {
+        ["fullName"] = "40x53mm",
+        ["displayName"] = "40x53",
+        ["displayType"] = "Ammunition",
+        ["weight"] = 0.25,
+        ["value"] = 8000,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/ammo/40x53.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    -- flare cartirdges
+    EFGMITEMS["efgm_ammo_26x75"] = {
+        ["fullName"] = "26x75mm",
+        ["displayName"] = "26x75",
+        ["displayType"] = "Ammunition",
+        ["weight"] = 0.04,
+        ["value"] = 5000,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = "items/ammo/26x75.png",
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
 -- RIGS
     EFGMITEMS["efgm_umka"] = {
         ["fullName"] = "Umka M33-SET1",
