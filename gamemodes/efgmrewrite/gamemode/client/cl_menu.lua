@@ -1423,7 +1423,7 @@ function Menu.OpenTab.Inventory()
         surface.SetFont("Purista18")
         local nameSize = surface.GetTextSize(i.displayName)
         local nameFont
-        if nameSize >= (EFGM.MenuScale(55 * i.sizeX)) then nameFont = "PuristaBold12" else nameFont = "PuristaBold18" end
+        if nameSize >= (EFGM.MenuScale(50 * i.sizeX)) then nameFont = "PuristaBold14" else nameFont = "PuristaBold18" end
 
         function item:PaintOver(w, h)
 

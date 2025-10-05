@@ -11,8 +11,7 @@ end)
 function ReinstantiateInventory(ply)
 
     print("server inventory flushed")
-    table.Empty(ply.inventory)
-    table.ClearKeys(ply.inventory)
+    ply.inventory = {}
 
 end
 concommand.Add("efgm_flush_inventory", function(ply, cmd, args) ReinstantiateInventory(ply) end)
@@ -67,3 +66,21 @@ net.Receive("PlayerInventoryEquipItem", function(len, ply)
     -- TODO
 
 end)
+
+function GiveAmmo(ply)
+
+    local ammoType = "efgm_ammo_556x45"
+
+    local item = ITEM.Instantiate(ammoType, 1)
+
+    local index = table.insert(ply.inventory, item)
+
+    net.Start("PlayerInventoryAddItem", false)
+    net.WriteString(ammoType)
+    net.WriteUInt(1, 4)
+    net.WriteTable({}) -- Writing a table isn't great but we ball for now
+    net.WriteUInt(index, 16)
+    net.Send(ply)
+
+end
+concommand.Add("giveammo", function(ply, cmd, args) GiveAmmo(ply) end)

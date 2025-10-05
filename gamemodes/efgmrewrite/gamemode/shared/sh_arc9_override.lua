@@ -81,4 +81,204 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
 
         return pos, ang
     end
+
+    function SWEP:Initialize()
+        local owner = self:GetOwner()
+
+        self.HoldTypeDefault = self.HoldType
+
+        self:SetShouldHoldType()
+
+        if owner:IsNPC() then
+            self:PostModify()
+            self:NPC_Initialize()
+            return
+        end
+
+
+        self:SetLastMeleeTime(0)
+        self:SetNthShot(0)
+
+        self.SpawnTime = CurTime()
+        self:SetSpawnEffect(false)
+
+        self:InitTimers()
+
+        self:ClientInitialize()
+
+        self.DefaultAttachments = table.Copy(self.Attachments)
+
+        self:BuildSubAttachments(self.DefaultAttachments)
+
+        if !IsValid(owner) then
+            self:PostModify()
+            timer.Simple(0.1, function()
+                if IsValid(self) and !IsValid(self:GetOwner()) then
+                    self:NoOwner_Initialize()
+                end
+            end)
+        end
+
+        self.LastClipSize = self:GetProcessedValue("ClipSize")
+        self.Primary.Ammo = self:GetProcessedValue("Ammo")
+        self.LastAmmo = self.Primary.Ammo
+
+        local clip = self.LastClipSize
+        self.Primary.DefaultClip = self.ForceDefaultClip or (clip + (bottomless and 0 or 0))
+
+        if self.Primary.DefaultClip == 1 then
+            self:SetClip1(0)
+            self.Primary.DefaultClip = 0
+        end
+
+        if self:GetValue("UBGL") then
+            self.Secondary.Ammo = self:GetValue("UBGLAmmo")
+            self.Secondary.DefaultClip = 0
+        end
+
+        self:SetClip1(0)
+        self:SetClip2(0)
+
+        self:SetLastLoadedRounds(self.LastClipSize)
+
+        timer.Simple(0.4, function()
+            if IsValid(self) then
+                if self:LookupPoseParameter("sights") != -1 then self.HasSightsPoseparam = true end
+                if self:LookupPoseParameter("firemode") != -1 then self.HasFiremodePoseparam = true end
+                if SERVER then self:InitialDefaultClip() end
+            end
+        end)
+
+        ARC9.CacheWepSounds(self, self:GetClass())
+    end
+
+    function SWEP:PostModify(toggleonly)
+        self:InvalidateCache()
+
+        if !toggleonly then
+            self.ScrollLevels = {}
+            self:CancelReload()
+            self:SetNthReload(0)
+        end
+
+        local client = self:GetOwner()
+        local validplayerowner = IsValid(client) and client:IsPlayer()
+
+        local base = baseclass.Get(self:GetClass())
+
+        if ARC9:UseTrueNames() then
+            self.PrintName = base.TrueName
+            self.PrintName = self:GetValue("TrueName")
+        else
+            self.PrintName = base.PrintName
+            self.PrintName = self:GetValue("PrintName")
+        end
+
+        if !self.PrintName then
+            self.PrintName = base.PrintName
+            self.PrintName = self:GetValue("PrintName")
+        end
+
+        self.Description = base.Description
+
+        self.PrintName = self:RunHook("HookP_NameChange", self.PrintName)
+        self.Description = self:RunHook("HookP_DescriptionChange", self.Description)
+
+        if CLIENT then
+            self:SendWeapon()
+            self:KillModel()
+            self:SetupModel(true)
+            self:SetupModel(false)
+            if !toggleonly then
+                self:SavePreset()
+            end
+            self:BuildMultiSight()
+            self.InvalidateSelectIcon = true
+        else
+            if validplayerowner then
+                if self:GetValue("ToggleOnF") and client:FlashlightIsOn() then
+                    client:Flashlight(false)
+                end
+
+                timer.Simple(0, function()
+                    if self.LastAmmo != self:GetValue("Ammo") or self.LastClipSize != self:GetValue("ClipSize") then
+                        if self.AlreadyGaveAmmo then
+                            self:Unload()
+                            self:SetRequestReload(true)
+                        else
+                            -- self:SetClip1(self:GetProcessedValue("ClipSize"))
+                            self.AlreadyGaveAmmo = true
+                        end
+                    end
+
+                    self.LastAmmo = self:GetValue("Ammo")
+                    self.LastClipSize = self:GetValue("ClipSize")
+                end)
+
+
+                if self:GetValue("UBGL") then
+                    if !self.AlreadyGaveUBGLAmmo then
+                        self:SetClip2(self:GetMaxClip2())
+                        self.AlreadyGaveUBGLAmmo = true
+                    end
+
+                    if (self.LastUBGLAmmo) then
+                        if (self.LastUBGLAmmo != self:GetValue("UBGLAmmo") or self.LastUBGLClipSize != self:GetValue("UBGLClipSize")) then
+                            client:GiveAmmo(self:Clip2(), self.LastUBGLAmmo)
+                            self:SetClip2(0)
+                            self:SetRequestReload(true)
+                        end
+                    end
+
+                    self.LastUBGLAmmo = self:GetValue("UBGLAmmo")
+                    self.LastUBGLClipSize = self:GetValue("UBGLClipSize")
+
+                    local capacity = self:GetCapacity(true)
+                    if capacity > 0 and self:Clip2() > capacity then
+                        client:GiveAmmo(self:Clip2() - capacity, self.LastUBGLAmmo)
+                        self:SetClip2(capacity)
+                    end
+                end
+
+                local capacity = self:GetCapacity(false)
+                if capacity > 0 and self:Clip1() > capacity then
+                    client:GiveAmmo(self:Clip1() - capacity, self.LastAmmo)
+                    self:SetClip1(capacity)
+                end
+
+                if self:GetProcessedValue("BottomlessClip", true) then
+                    self:RestoreClip()
+                end
+            end
+        end
+
+        if self:GetUBGL() and !self:GetProcessedValue("UBGL") then
+            self:ToggleUBGL(false)
+        end
+
+        if game.SinglePlayer() and validplayerowner then
+            self:CallOnClient("RecalculateIKGunMotionOffset")
+        end
+
+        self:SetupAnimProxy()
+
+        self:SetBaseSettings()
+
+        if self:GetAnimLockTime() <= CurTime() then
+            self:Idle()
+        end
+    end
+
+    -- replace ammo amount with the amount of ammo in the players inventory
+    function SWEP:Ammo1()
+        if !IsValid(self:GetOwner()) then return math.huge end
+
+        if self:GetInfiniteAmmo() then
+            return math.huge
+        end
+
+        -- return self:GetOwner():GetAmmoCount(self:GetProcessedValue("Ammo"))
+        return self:GetOwner():GetAmmoOrSomeShit("yesking")
+    end
+
 end)

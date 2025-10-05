@@ -5,8 +5,7 @@ playerInventory = {}
 function ReinstantiateInventory()
 
     print("client inventory flushed")
-    table.Empty(playerInventory)
-    table.ClearKeys(playerInventory)
+    playerInventory = {}
 
 end
 
