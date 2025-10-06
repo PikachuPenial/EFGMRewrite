@@ -49,10 +49,11 @@ net.Receive("PlayerInventoryDeleteItem", function(len, ply)
 
 end )
 
-function DropItemFromInventory(itemIndex)
+function DropItemFromInventory(itemIndex, data)
 
     net.Start("PlayerInventoryDropItem", false)
     net.WriteUInt(itemIndex, 16)
+    net.WriteTable(data)
     net.SendToServer()
 
     table.remove(playerInventory, itemIndex)

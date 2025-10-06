@@ -30,36 +30,36 @@ hook.Add("OnReloaded", "InventoryReload", function()
 
 end)
 
-hook.Add("PlayerCanPickupWeapon", "InventoryWeaponPickup", function(ply, wep)
+function AddItemToInventory(ply, name, type, data)
 
-    local wepClass = wep:GetClass()
-    wep:Remove()
+    local def = EFGMITEMS[name]
 
-    local item = ITEM.Instantiate(wepClass, EQUIPTYPE.Weapon)
+    data.count = math.Clamp(tonumber(data.count) or 1, 1, def.stackSize)
+
+    local item = ITEM.Instantiate(name, type, data)
     local index = table.insert(ply.inventory, item)
-    local data = {}
-    data.count = 1
 
     net.Start("PlayerInventoryAddItem", false)
-    net.WriteString(wepClass)
-    net.WriteUInt(EQUIPTYPE.Weapon, 4)
+    net.WriteString(name)
+    net.WriteUInt(type, 4)
     net.WriteTable(data) -- Writing a table isn't great but we ball for now
     net.WriteUInt(index, 16)
     net.Send(ply)
 
-    return false
-
-end)
+end
 
 net.Receive("PlayerInventoryDropItem", function(len, ply)
 
     local itemIndex = net.ReadUInt(16)
+    local data = net.ReadTable()
     local item = ply.inventory[itemIndex]
 
     local wep = ents.Create(item.name)
     wep:SetPos(ply:GetShootPos() + ply:GetForward() * 128)
     wep:Spawn()
     wep:PhysWake()
+
+    if type(wep.GetData) == "function" then wep:GetData(data) end
 
     table.remove(ply.inventory, itemIndex)
 
@@ -89,7 +89,7 @@ net.Receive("PlayerInventoryConsumeItem", function(len, ply)
         ply:SetHealth(math.min(ply:Health() + healAmount, 100))
         ply.inventory[itemIndex].data.durability = durability - healAmount
 
-        if durability > 0 then
+        if ply.inventory[itemIndex].data.durability > 0 then
 
             net.Start("PlayerInventoryUpdateItem", false)
             net.WriteTable(item.data)
@@ -112,22 +112,11 @@ end)
 
 function GiveAmmo(ply, count)
 
-    local ammoType = "efgm_ammo_556x45"
-
-    local def = EFGMITEMS[ammoType]
-
+    local ammo = "efgm_ammo_556x45"
     local data = {}
-    data.count = math.Clamp(tonumber(count) or 1, 1, def.stackSize)
-    local item = ITEM.Instantiate(ammoType, EQUIPTYPE.Ammunition, data)
+    data.count = count
 
-    local index = table.insert(ply.inventory, item)
-
-    net.Start("PlayerInventoryAddItem", false)
-    net.WriteString(ammoType)
-    net.WriteUInt(EQUIPTYPE.Ammunition, 4)
-    net.WriteTable(data) -- Writing a table isn't great but we ball for now
-    net.WriteUInt(index, 16)
-    net.Send(ply)
+    AddItemToInventory(ply, ammo, EQUIPTYPE.Ammunition, data)
 
 end
 concommand.Add("efgm_giveammo", function(ply, cmd, args) GiveAmmo(ply, args[1]) end)

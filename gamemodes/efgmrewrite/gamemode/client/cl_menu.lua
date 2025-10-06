@@ -1655,7 +1655,7 @@ function Menu.OpenTab.Inventory()
                     function itemDropButton:DoClick()
 
                         surface.PlaySound("ui/element_select.wav")
-                        DropItemFromInventory(v.id)
+                        DropItemFromInventory(v.id, v.data)
                         contextMenu:Remove()
                         playerItems:InvalidateLayout()
 
