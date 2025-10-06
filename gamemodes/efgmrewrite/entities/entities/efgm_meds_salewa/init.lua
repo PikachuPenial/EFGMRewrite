@@ -3,6 +3,8 @@ AddCSLuaFile("shared.lua")
 
 include("shared.lua")
 
+ENT.Durability = 100
+
 function ENT:Initialize()
 
 	self:SetModel(self.Model)
@@ -23,18 +25,23 @@ function ENT:Initialize()
 
 end
 
+function ENT:SetDurability(value) self.Durability = value end
+
 function ENT:Use(activator)
 
-    local ent = self:GetClass()
+    local entity = self:GetClass()
     self:Remove()
 
-    local item = ITEM.Instantiate(ent, 1)
+    local data = {}
+    data.durability = self.Durability
+    local item = ITEM.Instantiate(entity, EQUIPTYPE.Consumable, data)
+
     local index = table.insert(activator.inventory, item)
 
     net.Start("PlayerInventoryAddItem", false)
-    net.WriteString(ent)
-    net.WriteUInt(1, 4)
-    net.WriteTable({}) -- Writing a table isn't great but we ball for now
+    net.WriteString(entity)
+    net.WriteUInt(EQUIPTYPE.Consumable, 4)
+    net.WriteTable(data) -- Writing a table isn't great but we ball for now
     net.WriteUInt(index, 16)
     net.Send(activator)
 

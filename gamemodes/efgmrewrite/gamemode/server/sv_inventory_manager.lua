@@ -1,6 +1,8 @@
 
 util.AddNetworkString("PlayerReinstantiateInventory")
 util.AddNetworkString("PlayerInventoryAddItem")
+util.AddNetworkString("PlayerInventoryUpdateItem")
+util.AddNetworkString("PlayerInventoryDeleteItem")
 util.AddNetworkString("PlayerInventoryDropItem")
 util.AddNetworkString("PlayerInventoryEquipItem")
 util.AddNetworkString("PlayerInventoryConsumeItem")
@@ -34,13 +36,14 @@ hook.Add("PlayerCanPickupWeapon", "InventoryWeaponPickup", function(ply, wep)
     wep:Remove()
 
     local item = ITEM.Instantiate(wepClass, EQUIPTYPE.Weapon)
-
     local index = table.insert(ply.inventory, item)
+    local data = {}
+    data.count = 1
 
     net.Start("PlayerInventoryAddItem", false)
     net.WriteString(wepClass)
     net.WriteUInt(EQUIPTYPE.Weapon, 4)
-    net.WriteTable({}) -- Writing a table isn't great but we ball for now
+    net.WriteTable(data) -- Writing a table isn't great but we ball for now
     net.WriteUInt(index, 16)
     net.Send(ply)
 
@@ -72,16 +75,38 @@ net.Receive("PlayerInventoryConsumeItem", function(len, ply)
 
     local itemIndex = net.ReadUInt(16)
     local item = ply.inventory[itemIndex]
+    local durability = item.data.durability
 
-    -- TODO, prob store this stuff on the item itself, idrk tbh
     local i = EFGMITEMS[item.name]
 
-    -- TODO, only consume some of the item if it has a durability and keep it in the inventory
-
     -- heal
-    if i.consumableType == "heal" then ply:SetHealth(math.min(ply:Health() + i.consumableValue, 100)) end
+    if i.consumableType == "heal" then
 
-    table.remove(ply.inventory, itemIndex)
+        local healAmount = ply:GetMaxHealth() - ply:Health()
+
+        if durability < healAmount then healAmount = durability end
+
+        ply:SetHealth(math.min(ply:Health() + healAmount, 100))
+        ply.inventory[itemIndex].data.durability = durability - healAmount
+
+        if durability > 0 then
+
+            net.Start("PlayerInventoryUpdateItem", false)
+            net.WriteTable(item.data)
+            net.WriteUInt(itemIndex, 16)
+            net.Send(ply)
+
+        else
+
+            net.Start("PlayerInventoryDeleteItem", false)
+            net.WriteUInt(itemIndex, 16)
+            net.Send(ply)
+
+            table.remove(ply.inventory, itemIndex)
+
+        end
+
+    end
 
 end)
 
@@ -92,7 +117,7 @@ function GiveAmmo(ply, count)
     local def = EFGMITEMS[ammoType]
 
     local data = {}
-    data.count = math.Clamp(tonumber( count ) or 1, 1, def.stackSize)
+    data.count = math.Clamp(tonumber(count) or 1, 1, def.stackSize)
     local item = ITEM.Instantiate(ammoType, EQUIPTYPE.Ammunition, data)
 
     local index = table.insert(ply.inventory, item)

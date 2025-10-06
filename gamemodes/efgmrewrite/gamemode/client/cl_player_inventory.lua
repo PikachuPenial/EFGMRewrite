@@ -22,6 +22,30 @@ net.Receive("PlayerInventoryAddItem", function(len, ply)
     index = net.ReadUInt(16)
 
     table.insert(playerInventory, index, ITEM.Instantiate(name, type, data))
+    ReloadInventory()
+
+end )
+
+net.Receive("PlayerInventoryUpdateItem", function(len, ply)
+
+    local newData, index
+
+    newData = net.ReadTable()
+    index = net.ReadUInt(16)
+
+    playerInventory[index].data = newData
+    ReloadInventory()
+
+end )
+
+net.Receive("PlayerInventoryDeleteItem", function(len, ply)
+
+    local index
+
+    index = net.ReadUInt(16)
+
+    table.remove(playerInventory, index)
+    ReloadInventory()
 
 end )
 
@@ -32,6 +56,7 @@ function DropItemFromInventory(itemIndex)
     net.SendToServer()
 
     table.remove(playerInventory, itemIndex)
+    ReloadInventory()
 
 end
 
@@ -39,6 +64,7 @@ function EquipItemFromInventory(itemIndex)
 
     -- can receive "Primary", "Holster", "Melee" and "Grenade"
     -- if it receives a primary weapon, check if the primary weapon slot is used. If it isn't, put it there, if it is, put it in the secondary weapon slot instead
+    ReloadInventory()
 
 end
 
@@ -47,7 +73,6 @@ function ConsumeItemFromInventory(itemIndex)
     net.Start("PlayerInventoryConsumeItem", false)
     net.WriteUInt(itemIndex, 16)
     net.SendToServer()
-
-    table.remove(playerInventory, itemIndex)
+    ReloadInventory()
 
 end

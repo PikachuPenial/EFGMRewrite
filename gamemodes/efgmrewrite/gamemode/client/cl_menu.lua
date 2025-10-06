@@ -1376,282 +1376,290 @@ function Menu.OpenTab.Inventory()
 
     local plyItems = {}
 
-    for k, v in ipairs(playerInventory) do
-        plyItems[k] = {}
-        plyItems[k].name = v.name
-        plyItems[k].id = k
-        plyItems[k].data = v.data
-        plyItems[k].type = v.type
-    end
+    function ReloadInventory()
 
-    table.sort(plyItems, function(a, b) return (EFGMITEMS[a.name].sizeX * EFGMITEMS[a.name].sizeY) > (EFGMITEMS[b.name].sizeX * EFGMITEMS[b.name].sizeY) end)
+        playerItems:Clear()
+        plyItems = {}
 
-    -- inventory item entry
-    for k, v in pairs(plyItems) do
-
-        local i = EFGMITEMS[v.name]
-
-        local item = playerItems:Add("DButton")
-        item:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
-        item:SetText("")
-        item:Droppable("items")
-
-        if i.equipType == EQUIPTYPE.Weapon then
-
-            if i.equipSlot == "Primary" then item:Droppable("slot_primary") end
-            if i.equipSlot == "Holster" then item:Droppable("slot_holster") end
-            if i.equipSlot == "Melee" then item:Droppable("slot_melee") end
-            if i.equipSlot == "Grenade" then item:Droppable("slot_grenade") end
-
+        for k, v in ipairs(playerInventory) do
+            plyItems[k] = {}
+            plyItems[k].name = v.name
+            plyItems[k].id = k
+            plyItems[k].data = v.data
+            plyItems[k].type = v.type
         end
 
-        function item:Paint(w, h)
+        table.sort(plyItems, function(a, b) return (EFGMITEMS[a.name].sizeX * EFGMITEMS[a.name].sizeY) > (EFGMITEMS[b.name].sizeX * EFGMITEMS[b.name].sizeY) end)
 
-            surface.SetDrawColor(Color(5, 5, 5, 20))
-            surface.DrawRect(0, 0, w, h)
+        -- inventory item entry
+        for k, v in pairs(plyItems) do
 
-            surface.SetDrawColor(Color(255, 255, 255, 2))
-            surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
-            surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+            local i = EFGMITEMS[v.name]
 
-        end
+            local item = playerItems:Add("DButton")
+            item:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
+            item:SetText("")
+            item:Droppable("items")
 
-        local icon = vgui.Create("DImage", item)
-        icon:Dock(FILL)
-        icon:SetImage(i.icon)
+            if i.equipType == EQUIPTYPE.Weapon then
 
-        surface.SetFont("Purista18")
-
-        local nameSize = surface.GetTextSize(i.displayName)
-        local nameFont
-
-        if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18"
-        else nameFont = "PuristaBold14" end
-
-        local duraSize = nil
-        local duraFont = nil
-
-        if i.equipType == EQUIPTYPE.Consumable then
-            duraSize = surface.GetTextSize(i.consumableValue .. "/" .. i.consumableValue)
-
-            if duraSize <= (EFGM.MenuScale(49 * i.sizeX)) then duraFont = "PuristaBold18"
-            else duraFont = "PuristaBold14" end
-        end
-
-        function item:PaintOver(w, h)
-
-            draw.SimpleTextOutlined(i.displayName, nameFont, EFGM.MenuScale(w - 3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-            if i.equipType != EQUIPTYPE.Consumable then
-                draw.SimpleTextOutlined(v.count, "PuristaBold18", EFGM.MenuScale(w - 3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
-            else
-                draw.SimpleTextOutlined(i.consumableValue .. "/" .. i.consumableValue, duraFont, EFGM.MenuScale(w - 3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
-            end
-
-        end
-
-        item.OnCursorEntered = function(s)
-
-            surface.PlaySound("ui/element_hover.wav")
-
-        end
-
-        function item:DoDoubleClick()
-
-            surface.PlaySound("ui/element_select.wav")
-
-        end
-
-        function item:DoRightClick()
-
-            local x, y = playerItemsHolder:LocalCursorPos()
-            surface.PlaySound("ui/element_hover.wav")
-
-            if x <= (playerItemsHolder:GetWide() / 2) then sideH = true else sideH = false end
-            if y <= (playerItemsHolder:GetTall() / 2) then sideV = true else sideV = false end
-
-            if IsValid(contextMenu) then contextMenu:Remove() end
-            contextMenu = vgui.Create("DPanel", playerItemsHolder)
-            contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(30))
-            contextMenu:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
-            contextMenu:SetAlpha(0)
-            contextMenu:AlphaTo(255, 0.1, 0, nil)
-            contextMenu:RequestFocus()
-
-            if sideH == true then
-
-                contextMenu:SetX(math.Clamp(x + EFGM.MenuScale(5), EFGM.MenuScale(5), playerItemsHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
-
-            else
-
-                contextMenu:SetX(math.Clamp(x - contextMenu:GetWide() - EFGM.MenuScale(5), EFGM.MenuScale(5), playerItemsHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+                if i.equipSlot == "Primary" then item:Droppable("slot_primary") end
+                if i.equipSlot == "Holster" then item:Droppable("slot_holster") end
+                if i.equipSlot == "Melee" then item:Droppable("slot_melee") end
+                if i.equipSlot == "Grenade" then item:Droppable("slot_grenade") end
 
             end
 
-            if sideV == true then
+            function item:Paint(w, h)
 
-                contextMenu:SetY(math.Clamp(y + EFGM.MenuScale(5), EFGM.MenuScale(5), playerItemsHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
-
-            else
-
-                contextMenu:SetY(math.Clamp(y - contextMenu:GetTall() + EFGM.MenuScale(5), EFGM.MenuScale(5), playerItemsHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
-
-            end
-
-            contextMenu.Paint = function(s, w, h)
-
-                if !IsValid(s) then return end
-
-                BlurPanel(s, EFGM.MenuScale(5))
-
-                surface.SetDrawColor(Color(5, 5, 5, 50))
+                surface.SetDrawColor(Color(5, 5, 5, 20))
                 surface.DrawRect(0, 0, w, h)
 
-                surface.SetDrawColor(Color(255, 255, 255, 30))
+                surface.SetDrawColor(Color(255, 255, 255, 2))
                 surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
                 surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
                 surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
 
-                contextMenu:SizeToChildren(true, true)
+            end
+
+            local icon = vgui.Create("DImage", item)
+            icon:Dock(FILL)
+            icon:SetImage(i.icon)
+
+            surface.SetFont("Purista18")
+
+            local nameSize = surface.GetTextSize(i.displayName)
+            local nameFont
+
+            if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18"
+            else nameFont = "PuristaBold14" end
+
+            local duraSize = nil
+            local duraFont = nil
+
+            if i.equipType == EQUIPTYPE.Consumable then
+                duraSize = surface.GetTextSize(i.consumableValue .. "/" .. i.consumableValue)
+
+                if duraSize <= (EFGM.MenuScale(49 * i.sizeX)) then duraFont = "PuristaBold18"
+                else duraFont = "PuristaBold14" end
+            end
+
+            function item:PaintOver(w, h)
+
+                draw.SimpleTextOutlined(i.displayName, nameFont, EFGM.MenuScale(w - 3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                if i.equipType != EQUIPTYPE.Consumable then
+                    draw.SimpleTextOutlined(v.data.count, "PuristaBold18", EFGM.MenuScale(w - 3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                else
+                    draw.SimpleTextOutlined(v.data.durability .. "/" .. i.consumableValue, duraFont, EFGM.MenuScale(w - 3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                end
 
             end
 
-            hook.Add("Think", "CheckIfContextMenuStillFocused", function()
-
-                if !IsValid(contextMenu) then hook.Remove("Think", "CheckIfContextMenuStillFocused") return end
-                if (input.IsMouseDown(MOUSE_LEFT) or input.IsMouseDown(MOUSE_RIGHT) or input.IsMouseDown(MOUSE_MIDDLE)) and !contextMenu:IsChildHovered() then contextMenu:KillFocus() hook.Remove("Think", "CheckIfContextMenuStillFocused") end
-
-            end)
-
-            function contextMenu:OnFocusChanged(focus)
-
-                if !focus then contextMenu:AlphaTo(0, 0.1, 0, function() contextMenu:Remove() hook.Remove("Think", "CheckIfContextMenuStillFocused") end) end
-
-            end
-
-            local itemInspectButton = vgui.Create("DButton", contextMenu)
-            itemInspectButton:Dock(TOP)
-            itemInspectButton:SetSize(0, EFGM.MenuScale(25))
-            itemInspectButton:SetText("INSPECT")
-
-            itemInspectButton.OnCursorEntered = function(s)
+            item.OnCursorEntered = function(s)
 
                 surface.PlaySound("ui/element_hover.wav")
 
             end
 
-            function itemInspectButton:DoClick()
+            function item:DoDoubleClick()
 
                 surface.PlaySound("ui/element_select.wav")
-                contextMenu:KillFocus()
 
             end
 
-            -- actions that can be performed on this specific item
-            -- default
-            local actions = {
-                droppable = true,
-                equipable = false,
-                consumable = false,
-                splittable = false
-            }
+            function item:DoRightClick()
 
-            actions.equipable = i.equipType == EQUIPTYPE.Weapon
-            actions.splittable = i.stackSize > 1
-            actions.consumable = i.equipType == EQUIPTYPE.Consumable
+                local x, y = playerItemsHolder:LocalCursorPos()
+                surface.PlaySound("ui/element_hover.wav")
 
-            if actions.equipable then
+                if x <= (playerItemsHolder:GetWide() / 2) then sideH = true else sideH = false end
+                if y <= (playerItemsHolder:GetTall() / 2) then sideV = true else sideV = false end
 
-                local itemEquipButton = vgui.Create("DButton", contextMenu)
-                itemEquipButton:Dock(TOP)
-                itemEquipButton:SetSize(0, EFGM.MenuScale(25))
-                itemEquipButton:SetText("EQUIP")
+                if IsValid(contextMenu) then contextMenu:Remove() end
+                contextMenu = vgui.Create("DPanel", playerItemsHolder)
+                contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(30))
+                contextMenu:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
+                contextMenu:SetAlpha(0)
+                contextMenu:AlphaTo(255, 0.1, 0, nil)
+                contextMenu:RequestFocus()
 
-                itemEquipButton.OnCursorEntered = function(s)
+                if sideH == true then
+
+                    contextMenu:SetX(math.Clamp(x + EFGM.MenuScale(5), EFGM.MenuScale(5), playerItemsHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+                else
+
+                    contextMenu:SetX(math.Clamp(x - contextMenu:GetWide() - EFGM.MenuScale(5), EFGM.MenuScale(5), playerItemsHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+                end
+
+                if sideV == true then
+
+                    contextMenu:SetY(math.Clamp(y + EFGM.MenuScale(5), EFGM.MenuScale(5), playerItemsHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
+
+                else
+
+                    contextMenu:SetY(math.Clamp(y - contextMenu:GetTall() + EFGM.MenuScale(5), EFGM.MenuScale(5), playerItemsHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
+
+                end
+
+                contextMenu.Paint = function(s, w, h)
+
+                    if !IsValid(s) then return end
+
+                    BlurPanel(s, EFGM.MenuScale(5))
+
+                    surface.SetDrawColor(Color(5, 5, 5, 50))
+                    surface.DrawRect(0, 0, w, h)
+
+                    surface.SetDrawColor(Color(255, 255, 255, 30))
+                    surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+                    surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                    surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+                    surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                    contextMenu:SizeToChildren(true, true)
+
+                end
+
+                hook.Add("Think", "CheckIfContextMenuStillFocused", function()
+
+                    if !IsValid(contextMenu) then hook.Remove("Think", "CheckIfContextMenuStillFocused") return end
+                    if (input.IsMouseDown(MOUSE_LEFT) or input.IsMouseDown(MOUSE_RIGHT) or input.IsMouseDown(MOUSE_MIDDLE)) and !contextMenu:IsChildHovered() then contextMenu:KillFocus() hook.Remove("Think", "CheckIfContextMenuStillFocused") end
+
+                end)
+
+                function contextMenu:OnFocusChanged(focus)
+
+                    if !focus then contextMenu:AlphaTo(0, 0.1, 0, function() contextMenu:Remove() hook.Remove("Think", "CheckIfContextMenuStillFocused") end) end
+
+                end
+
+                local itemInspectButton = vgui.Create("DButton", contextMenu)
+                itemInspectButton:Dock(TOP)
+                itemInspectButton:SetSize(0, EFGM.MenuScale(25))
+                itemInspectButton:SetText("INSPECT")
+
+                itemInspectButton.OnCursorEntered = function(s)
 
                     surface.PlaySound("ui/element_hover.wav")
 
                 end
 
-                function itemEquipButton:DoClick()
-
-                    surface.PlaySound("ui/element_select.wav")
-                    EquipItemFromInventory(v.id, i.equipSlot)
-                    contextMenu:Remove()
-                    item:Remove()
-
-                end
-
-            end
-
-            if actions.consumable then
-
-                local itemConsumeButton = vgui.Create("DButton", contextMenu)
-                itemConsumeButton:Dock(TOP)
-                itemConsumeButton:SetSize(0, EFGM.MenuScale(25))
-                itemConsumeButton:SetText("USE")
-
-                itemConsumeButton.OnCursorEntered = function(s)
-
-                    surface.PlaySound("ui/element_hover.wav")
-
-                end
-
-                function itemConsumeButton:DoClick()
-
-                    surface.PlaySound("ui/element_select.wav")
-                    ConsumeItemFromInventory(v.id)
-                    contextMenu:Remove()
-                    item:Remove()
-
-                end
-
-            end
-
-            if actions.splittable then
-
-                local itemSplitButton = vgui.Create("DButton", contextMenu)
-                itemSplitButton:Dock(TOP)
-                itemSplitButton:SetSize(0, EFGM.MenuScale(25))
-                itemSplitButton:SetText("SPLIT")
-
-                itemSplitButton.OnCursorEntered = function(s)
-
-                    surface.PlaySound("ui/element_hover.wav")
-
-                end
-
-                function itemSplitButton:DoClick()
+                function itemInspectButton:DoClick()
 
                     surface.PlaySound("ui/element_select.wav")
                     contextMenu:KillFocus()
 
                 end
 
-            end
+                -- actions that can be performed on this specific item
+                -- default
+                local actions = {
+                    droppable = true,
+                    equipable = false,
+                    consumable = false,
+                    splittable = false
+                }
 
-            if actions.droppable then
+                actions.equipable = i.equipType == EQUIPTYPE.Weapon
+                actions.splittable = i.stackSize > 1
+                actions.consumable = i.equipType == EQUIPTYPE.Consumable
 
-                local itemDropButton = vgui.Create("DButton", contextMenu)
-                itemDropButton:Dock(TOP)
-                itemDropButton:SetSize(0, EFGM.MenuScale(25))
-                itemDropButton:SetText("DROP")
+                if actions.equipable then
 
-                itemDropButton.OnCursorEntered = function(s)
+                    local itemEquipButton = vgui.Create("DButton", contextMenu)
+                    itemEquipButton:Dock(TOP)
+                    itemEquipButton:SetSize(0, EFGM.MenuScale(25))
+                    itemEquipButton:SetText("EQUIP")
 
-                    surface.PlaySound("ui/element_hover.wav")
+                    itemEquipButton.OnCursorEntered = function(s)
+
+                        surface.PlaySound("ui/element_hover.wav")
+
+                    end
+
+                    function itemEquipButton:DoClick()
+
+                        surface.PlaySound("ui/element_select.wav")
+                        EquipItemFromInventory(v.id, i.equipSlot)
+                        contextMenu:Remove()
+                        playerItems:InvalidateLayout()
+
+                    end
 
                 end
 
-                function itemDropButton:DoClick()
+                if actions.consumable then
 
-                    surface.PlaySound("ui/element_select.wav")
-                    DropItemFromInventory(v.id)
-                    contextMenu:Remove()
-                    item:Remove()
+                    local itemConsumeButton = vgui.Create("DButton", contextMenu)
+                    itemConsumeButton:Dock(TOP)
+                    itemConsumeButton:SetSize(0, EFGM.MenuScale(25))
+                    itemConsumeButton:SetText("USE")
+
+                    itemConsumeButton.OnCursorEntered = function(s)
+
+                        surface.PlaySound("ui/element_hover.wav")
+
+                    end
+
+                    function itemConsumeButton:DoClick()
+
+                        surface.PlaySound("ui/element_select.wav")
+                        ConsumeItemFromInventory(v.id)
+                        contextMenu:Remove()
+                        playerItems:InvalidateLayout()
+
+                    end
+
+                end
+
+                if actions.splittable then
+
+                    local itemSplitButton = vgui.Create("DButton", contextMenu)
+                    itemSplitButton:Dock(TOP)
+                    itemSplitButton:SetSize(0, EFGM.MenuScale(25))
+                    itemSplitButton:SetText("SPLIT")
+
+                    itemSplitButton.OnCursorEntered = function(s)
+
+                        surface.PlaySound("ui/element_hover.wav")
+
+                    end
+
+                    function itemSplitButton:DoClick()
+
+                        surface.PlaySound("ui/element_select.wav")
+                        contextMenu:KillFocus()
+                        playerItems:InvalidateLayout()
+
+                    end
+
+                end
+
+                if actions.droppable then
+
+                    local itemDropButton = vgui.Create("DButton", contextMenu)
+                    itemDropButton:Dock(TOP)
+                    itemDropButton:SetSize(0, EFGM.MenuScale(25))
+                    itemDropButton:SetText("DROP")
+
+                    itemDropButton.OnCursorEntered = function(s)
+
+                        surface.PlaySound("ui/element_hover.wav")
+
+                    end
+
+                    function itemDropButton:DoClick()
+
+                        surface.PlaySound("ui/element_select.wav")
+                        DropItemFromInventory(v.id)
+                        contextMenu:Remove()
+                        playerItems:InvalidateLayout()
+
+                    end
 
                 end
 
@@ -1660,6 +1668,8 @@ function Menu.OpenTab.Inventory()
         end
 
     end
+
+    ReloadInventory()
 
     -- dont show stash when player is in a raid
     if !Menu.Player:CompareStatus(0) then return end
