@@ -33,18 +33,18 @@ hook.Add("PlayerCanPickupWeapon", "InventoryWeaponPickup", function(ply, wep)
     local wepClass = wep:GetClass()
     wep:Remove()
 
-    local item = ITEM.Instantiate(wepClass, 1)
+    local item = ITEM.Instantiate(wepClass, EQUIPTYPE.Weapon)
 
     local index = table.insert(ply.inventory, item)
 
     net.Start("PlayerInventoryAddItem", false)
     net.WriteString(wepClass)
-    net.WriteUInt(1, 4)
+    net.WriteUInt(EQUIPTYPE.Weapon, 4)
     net.WriteTable({}) -- Writing a table isn't great but we ball for now
     net.WriteUInt(index, 16)
     net.Send(ply)
 
-    return wepClass == "gmod_tool"
+    return false
 
 end)
 
@@ -85,20 +85,24 @@ net.Receive("PlayerInventoryConsumeItem", function(len, ply)
 
 end)
 
-function GiveAmmo(ply)
+function GiveAmmo(ply, count)
 
     local ammoType = "efgm_ammo_556x45"
 
-    local item = ITEM.Instantiate(ammoType, 1)
+    local def = EFGMITEMS[ammoType]
+
+    local data = {}
+    data.count = math.Clamp(tonumber( count ) or 1, 1, def.stackSize)
+    local item = ITEM.Instantiate(ammoType, EQUIPTYPE.Ammunition, data)
 
     local index = table.insert(ply.inventory, item)
 
     net.Start("PlayerInventoryAddItem", false)
     net.WriteString(ammoType)
-    net.WriteUInt(1, 4)
-    net.WriteTable({}) -- Writing a table isn't great but we ball for now
+    net.WriteUInt(EQUIPTYPE.Ammunition, 4)
+    net.WriteTable(data) -- Writing a table isn't great but we ball for now
     net.WriteUInt(index, 16)
     net.Send(ply)
 
 end
-concommand.Add("giveammo", function(ply, cmd, args) GiveAmmo(ply) end)
+concommand.Add("efgm_giveammo", function(ply, cmd, args) GiveAmmo(ply, args[1]) end)

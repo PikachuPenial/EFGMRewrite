@@ -1380,7 +1380,8 @@ function Menu.OpenTab.Inventory()
         plyItems[k] = {}
         plyItems[k].name = v.name
         plyItems[k].id = k
-        plyItems[k].count = 1
+        plyItems[k].data = v.data
+        plyItems[k].type = v.type
     end
 
     table.sort(plyItems, function(a, b) return (EFGMITEMS[a.name].sizeX * EFGMITEMS[a.name].sizeY) > (EFGMITEMS[b.name].sizeX * EFGMITEMS[b.name].sizeY) end)
@@ -3120,84 +3121,84 @@ function Menu.OpenTab.Shop()
 
     -- { INVENTORY INITIALIZATION
 
-        playerInventory = inv.NewInventory() -- self[itemname] = table, table.count = int, table.type = int, table.transferCount = int (should be under or equal to count)
+    --     playerInventory = inv.NewInventory() -- self[itemname] = table, table.count = int, table.type = int, table.transferCount = int (should be under or equal to count)
 
-        sellerInventory = inv.NewInventory()
+    --     sellerInventory = inv.NewInventory()
 
-        function playerInventory:TransferItem(item, tCount)
+    --     function playerInventory:TransferItem(item, tCount)
 
-            print("transferring "..item.." with transfer count of "..tCount)
+    --         print("transferring "..item.." with transfer count of "..tCount)
 
-            if self[item] == nil then return end
+    --         if self[item] == nil then return end
 
-            self[item].tCount = tCount
+    --         self[item].tCount = tCount
             
-            if tCount == 0 then
+    --         if tCount == 0 then
 
-                SHOP:RemoveOrder(item, false)
+    --             SHOP:RemoveOrder(item, false)
 
-            elseif tCount > 0 && tCount <= transferLimit then
+    --         elseif tCount > 0 && tCount <= transferLimit then
                 
-                SHOP:AddOrder(item, self[item].type, tCount, false)
+    --             SHOP:AddOrder(item, self[item].type, tCount, false)
 
-            end
+    --         end
 
-        end
+    --     end
 
-        function sellerInventory:TransferItem(item, tCount)
+    --     function sellerInventory:TransferItem(item, tCount)
 
-            print("transferring "..item.." with transfer count of "..tCount)
+    --         print("transferring "..item.." with transfer count of "..tCount)
 
-            if self[item] == nil then return end
+    --         if self[item] == nil then return end
 
-            self[item].tCount = tCount
+    --         self[item].tCount = tCount
             
-            if tCount == 0 then
+    --         if tCount == 0 then
 
-                SHOP:RemoveOrder(item, true)
+    --             SHOP:RemoveOrder(item, true)
 
-            elseif tCount > 0 && tCount <= transferLimit then
+    --         elseif tCount > 0 && tCount <= transferLimit then
                 
-                SHOP:AddOrder(item, self[item].type, tCount, true)
+    --             SHOP:AddOrder(item, self[item].type, tCount, true)
 
-            end
+    --         end
 
-        end
+    --     end
 
-        for k, v in pairs(Menu.Player:GetWeapons()) do
+    --     for k, v in pairs(Menu.Player:GetWeapons()) do
             
-            local wep = v:GetClass()
+    --         local wep = v:GetClass()
 
-            if CheckExists[1](wep) then
+    --         if CheckExists[1](wep) then
                 
-                playerInventory:AddItem(wep, 1, 1)
+    --             playerInventory:AddItem(wep, 1, 1)
 
-            end
+    --         end
 
-        end
+    --     end
 
-        for k, v in pairs(Menu.Player:GetAmmo()) do
+    --     for k, v in pairs(Menu.Player:GetAmmo()) do
             
-            local ammo = game.GetAmmoName(k)
+    --         local ammo = game.GetAmmoName(k)
 
-            if CheckExists[2](ammo) then
+    --         if CheckExists[2](ammo) then
                 
-                playerInventory:AddItem(ammo, 2, v)
+    --             playerInventory:AddItem(ammo, 2, v)
 
-            end
+    --         end
 
-        end
+    --     end
 
-        for k, v in pairs(ITEMS) do
+    --     for k, v in pairs(ITEMS) do
                 
-            sellerInventory:AddItem(k, v[1], -1)
+    --         sellerInventory:AddItem(k, v[1], -1)
 
-            sellerInventory[k] = {}
-            sellerInventory[k].count = -1
-            sellerInventory[k].type = v[1]
-            sellerInventory[k].transferCount = 0
+    --         sellerInventory[k] = {}
+    --         sellerInventory[k].count = -1
+    --         sellerInventory[k].type = v[1]
+    --         sellerInventory[k].transferCount = 0
             
-        end
+    --     end
 
     -- }
 
