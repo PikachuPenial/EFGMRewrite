@@ -277,8 +277,8 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
             return math.huge
         end
 
-        -- return self:GetOwner():GetAmmoCount(self:GetProcessedValue("Ammo"))
-        return self:GetOwner():GetAmmoOrSomeShit("yesking")
+        -- return self:GetOwner():GetAmmoOrSomeShit("yesking")
+        return math.huge
     end
 
 end)

@@ -1422,16 +1422,32 @@ function Menu.OpenTab.Inventory()
         icon:SetImage(i.icon)
 
         surface.SetFont("Purista18")
+
         local nameSize = surface.GetTextSize(i.displayName)
         local nameFont
 
         if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18"
         else nameFont = "PuristaBold14" end
 
+        local duraSize = nil
+        local duraFont = nil
+
+        if i.equipType == EQUIPTYPE.Consumable then
+            duraSize = surface.GetTextSize(i.consumableValue .. "/" .. i.consumableValue)
+
+            if duraSize <= (EFGM.MenuScale(49 * i.sizeX)) then duraFont = "PuristaBold18"
+            else duraFont = "PuristaBold14" end
+        end
+
         function item:PaintOver(w, h)
 
             draw.SimpleTextOutlined(i.displayName, nameFont, EFGM.MenuScale(w - 3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-            draw.SimpleTextOutlined(v.count, "PuristaBold18", EFGM.MenuScale(w - 3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+
+            if i.equipType != EQUIPTYPE.Consumable then
+                draw.SimpleTextOutlined(v.count, "PuristaBold18", EFGM.MenuScale(w - 3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+            else
+                draw.SimpleTextOutlined(i.consumableValue .. "/" .. i.consumableValue, duraFont, EFGM.MenuScale(w - 3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+            end
 
         end
 
@@ -1544,6 +1560,7 @@ function Menu.OpenTab.Inventory()
 
             actions.equipable = i.equipType == EQUIPTYPE.Weapon
             actions.splittable = i.stackSize > 1
+            actions.consumable = i.equipType == EQUIPTYPE.Consumable
 
             if actions.equipable then
 
@@ -1585,7 +1602,9 @@ function Menu.OpenTab.Inventory()
                 function itemConsumeButton:DoClick()
 
                     surface.PlaySound("ui/element_select.wav")
-                    contextMenu:KillFocus()
+                    ConsumeItemFromInventory(v.id)
+                    contextMenu:Remove()
+                    item:Remove()
 
                 end
 

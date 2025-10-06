@@ -1,6 +1,6 @@
 ENT.Type = "anim"
 -- ENT.Base = "base_gmodentity"
-ENT.Category = "Escape From Garry's Mod"
+ENT.Category = "EFGM"
 
 ENT.BaseHealth = 10
 ENT.Limit = 999

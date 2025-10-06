@@ -41,3 +41,13 @@ function EquipItemFromInventory(itemIndex)
     -- if it receives a primary weapon, check if the primary weapon slot is used. If it isn't, put it there, if it is, put it in the secondary weapon slot instead
 
 end
+
+function ConsumeItemFromInventory(itemIndex)
+
+    net.Start("PlayerInventoryConsumeItem", false)
+    net.WriteUInt(itemIndex, 16)
+    net.SendToServer()
+
+    table.remove(playerInventory, itemIndex)
+
+end

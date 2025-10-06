@@ -3,6 +3,7 @@ util.AddNetworkString("PlayerReinstantiateInventory")
 util.AddNetworkString("PlayerInventoryAddItem")
 util.AddNetworkString("PlayerInventoryDropItem")
 util.AddNetworkString("PlayerInventoryEquipItem")
+util.AddNetworkString("PlayerInventoryConsumeItem")
 
 hook.Add("PlayerSpawn", "InventorySetup", function(ply)
 	ply.inventory = {}
@@ -64,6 +65,23 @@ end)
 net.Receive("PlayerInventoryEquipItem", function(len, ply)
 
     -- TODO
+
+end)
+
+net.Receive("PlayerInventoryConsumeItem", function(len, ply)
+
+    local itemIndex = net.ReadUInt(16)
+    local item = ply.inventory[itemIndex]
+
+    -- TODO, prob store this stuff on the item itself, idrk tbh
+    local i = EFGMITEMS[item.name]
+
+    -- TODO, only consume some of the item if it has a durability and keep it in the inventory
+
+    -- heal
+    if i.consumableType == "heal" then ply:SetHealth(math.min(ply:Health() + i.consumableValue, 100)) end
+
+    table.remove(ply.inventory, itemIndex)
 
 end)
 
