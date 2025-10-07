@@ -119,7 +119,7 @@ function GiveAmmo(ply, count)
     AddItemToInventory(ply, ammo, EQUIPTYPE.Ammunition, data)
 
 end
-concommand.Add("efgm_giveammo", function(ply, cmd, args) GiveAmmo(ply, args[1]) end)
+concommand.Add("efgm_debug_giveammo", function(ply, cmd, args) GiveAmmo(ply, args[1]) end)
 
 function GiveAttachment(ply)
 
@@ -129,4 +129,4 @@ function GiveAttachment(ply)
     AddItemToInventory(ply, attachment, EQUIPTYPE.Attachment, data)
 
 end
-concommand.Add("efgm_giveattachment", function(ply, cmd, args) GiveAttachment(ply) end)
+concommand.Add("efgm_debug_giveattachment", function(ply, cmd, args) GiveAttachment(ply) end)

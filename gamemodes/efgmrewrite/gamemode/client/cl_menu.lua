@@ -1449,9 +1449,9 @@ function Menu.OpenTab.Inventory()
 
                 draw.SimpleTextOutlined(i.displayName, nameFont, EFGM.MenuScale(w - 3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
-                if i.equipType != EQUIPTYPE.Consumable then
+                if i.equipType == EQUIPTYPE.Ammunition then
                     draw.SimpleTextOutlined(v.data.count, "PuristaBold18", EFGM.MenuScale(w - 3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
-                else
+                elseif i.equipType == EQUIPTYPE.Consumable then
                     draw.SimpleTextOutlined(v.data.durability .. "/" .. i.consumableValue, duraFont, EFGM.MenuScale(w - 3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
                 end
 
