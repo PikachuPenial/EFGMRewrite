@@ -3226,8 +3226,8 @@ hook.Add("InitPostEntity", "AttsItemDef", function()
             ["stackSize"] = 1,
             ["icon"] = v.EFGMIcon or v.Icon,
 
-            ["sizeX"] = 1,
-            ["sizeY"] = 1
+            ["sizeX"] = v.SizeX or 1,
+            ["sizeY"] = v.SizeY or 1
 
         }
 
