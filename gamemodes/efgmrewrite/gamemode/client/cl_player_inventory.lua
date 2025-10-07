@@ -45,6 +45,7 @@ net.Receive("PlayerInventoryDeleteItem", function(len, ply)
     index = net.ReadUInt(16)
 
     table.remove(playerInventory, index)
+
     ReloadInventory()
 
 end )

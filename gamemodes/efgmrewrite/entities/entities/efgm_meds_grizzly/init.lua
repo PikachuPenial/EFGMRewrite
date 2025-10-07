@@ -27,7 +27,7 @@ end
 
 function ENT:SetDurability(value) self.Durability = value end
 
-function ENT:GetData(data) ENT:SetDurability(data.durability) end
+function ENT:GetData(data) self:SetDurability(data.durability) end
 
 function ENT:Use(activator)
 

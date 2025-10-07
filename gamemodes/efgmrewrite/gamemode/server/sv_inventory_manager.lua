@@ -120,3 +120,13 @@ function GiveAmmo(ply, count)
 
 end
 concommand.Add("efgm_giveammo", function(ply, cmd, args) GiveAmmo(ply, args[1]) end)
+
+function GiveAttachment(ply)
+
+    local attachment = "arc9_att_eft_foregrip_rk0"
+    local data = {}
+
+    AddItemToInventory(ply, attachment, EQUIPTYPE.Attachment, data)
+
+end
+concommand.Add("efgm_giveattachment", function(ply, cmd, args) GiveAttachment(ply) end)

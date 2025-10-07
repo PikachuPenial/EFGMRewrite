@@ -4,7 +4,8 @@ EQUIPTYPE.Ammunition = 2
 EQUIPTYPE.Gear = 3
 EQUIPTYPE.Spawn = 4 -- for shit that spawns into the world on equip
 EQUIPTYPE.Consumable = 5
-EQUIPTYPE.None = 6
+EQUIPTYPE.Attachment = 6
+EQUIPTYPE.None = 7
 
 EFGMITEMS = {}
 
@@ -3206,3 +3207,30 @@ end
         ["sizeY"] = 10
 
     }
+
+-- add attachment item definitions
+hook.Add("InitPostEntity", "AttsItemDef", function()
+
+    local arc9atts = ARC9.Attachments
+
+    for k, v in pairs(arc9atts) do
+
+        EFGMITEMS["arc9_att_" .. v.ShortName] = {
+            ["fullName"] = v.PrintName,
+            ["displayName"] = v.CompactName or v.PrintName,
+            ["displayType"] = v.DisplayType or "Attachment",
+            ["weight"] = v.Weight or 1,
+            ["value"] = v.Value or 10000,
+            ["equipType"] = EQUIPTYPE.Attachment,
+            ["appearInInventory"] = true,
+            ["stackSize"] = 1,
+            ["icon"] = v.EFGMIcon or v.Icon,
+
+            ["sizeX"] = 1,
+            ["sizeY"] = 1
+
+        }
+
+    end
+
+end)

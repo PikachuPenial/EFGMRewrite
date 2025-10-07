@@ -277,8 +277,15 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
             return math.huge
         end
 
-        -- return self:GetOwner():GetAmmoOrSomeShit("yesking")
+        -- return AmountInInventory(self:GetOwner(), self:GetValue("Ammo"))
         return math.huge
     end
+
+end)
+
+hook.Add("ARC9_PlayerGetAtts", "ARC9Override", function(ply, att, wep)
+
+    -- return AmountInInventory(ply, "arc9_att_" .. att)
+    return 69
 
 end)

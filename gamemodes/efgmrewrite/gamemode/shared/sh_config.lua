@@ -85,10 +85,11 @@ if SERVER then
 
     -- attachments
     RunConsoleCommand("arc9_atts_nocustomize", "0") -- why would anyone do this
+    RunConsoleCommand("arc9_atts_generate_entities", "1")
     RunConsoleCommand("arc9_atts_max", "100")
     RunConsoleCommand("arc9_atts_lock", "0")
     RunConsoleCommand("arc9_atts_loseondie", "1")
-    if GetConVar("efgm_derivesbox"):GetInt() == 1 then RunConsoleCommand("arc9_free_atts", "1") else RunConsoleCommand("arc9_free_atts", "0") end
+    if GetConVar("efgm_derivesbox"):GetInt() == 1 then RunConsoleCommand("arc9_free_atts", "0") else RunConsoleCommand("arc9_free_atts", "0") end
 
     -- caching
     RunConsoleCommand("arc9_precache_allsounds_onstartup", "1")

@@ -4,6 +4,7 @@
 ITEM = {}
 
 function ITEM.Instantiate(name, type, data)
+
     local item = {}
 
     item.name = name or "ERROR"
@@ -11,4 +12,5 @@ function ITEM.Instantiate(name, type, data)
     item.data = data or {} -- instance data like count, attachments, durability, whatever the fuck
 
     return item
+
 end
