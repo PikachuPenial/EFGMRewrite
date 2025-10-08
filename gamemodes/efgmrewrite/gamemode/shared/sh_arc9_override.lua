@@ -305,25 +305,29 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
 
         if self:GetUBGL() then
             lastclip = self:Clip2()
+            local efgmdeduct = math.min(math.min(clip + amt, self:GetCapacity(false)), reserve) - lastclip
 
             self:SetClip2(math.min(math.min(clip + amt, self:GetCapacity(true)), reserve))
 
             reserve = reserve - self:Clip2()
 
             if !inf and IsValid(self:GetOwner()) then
-                self:GetOwner():SetAmmo(reserve, self.Secondary.Ammo)
+                DeflowItemsFromInventory(self:GetOwner(), self.Secondary.Ammo, efgmdeduct)
+                -- self:GetOwner():SetAmmo(reserve, self.Secondary.Ammo)
             end
 
             clip = self:Clip2()
         else
             lastclip = self:Clip1()
+            local efgmdeduct = math.min(math.min(clip + amt, self:GetCapacity(false)), reserve) - lastclip
 
             self:SetClip1(math.min(math.min(clip + amt, self:GetCapacity(false)), reserve))
 
             reserve = reserve - self:Clip1()
 
             if !inf and IsValid(self:GetOwner()) then
-                self:GetOwner():SetAmmo(reserve, self.Primary.Ammo)
+                DeflowItemsFromInventory(self:GetOwner(), self.Primary.Ammo, efgmdeduct)
+                -- self:GetOwner():SetAmmo(reserve, self.Primary.Ammo)
             end
 
             clip = self:Clip1()
