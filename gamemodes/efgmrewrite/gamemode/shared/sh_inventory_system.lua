@@ -15,7 +15,7 @@ function ITEM.Instantiate(name, type, data)
 
 end
 
-function AmountInInventory( ply, itemName )
+function AmountInInventory(ply, itemName)
 
     local inventory = {}
     if SERVER then inventory = ply.inventory end
@@ -24,7 +24,7 @@ function AmountInInventory( ply, itemName )
     local count = 0
 
     for k, v in ipairs(inventory) do
-        
+
         if v.name == itemName then count = count + v.data.count or 1 end
 
     end
@@ -32,11 +32,6 @@ function AmountInInventory( ply, itemName )
     return count
 
 end
-concommand.Add("efgm_debug_getinvamount", function(ply, cmd, args)
-
-    print( AmountInInventory( ply, args[1] ).." amount of "..args[1].." found!" )
-
-end)
 
 concommand.Add("efgm_debug_getinventory", function(ply, cmd, args)
 

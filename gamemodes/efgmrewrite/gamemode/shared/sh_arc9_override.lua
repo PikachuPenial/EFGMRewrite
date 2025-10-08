@@ -277,15 +277,80 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
             return math.huge
         end
 
-        -- return AmountInInventory(self:GetOwner(), self:GetValue("Ammo"))
-        return math.huge
+        return AmountInInventory(self:GetOwner(), self:GetValue("Ammo"))
+    end
+
+    function SWEP:RestoreClip(amt)
+        if CLIENT then return end
+
+        amt = amt or math.huge
+
+        amt = math.Round(amt)
+
+        local inf = self:GetInfiniteAmmo()
+        local clip = self:Clip1()
+        local ammo = self:Ammo1()
+
+        if self:GetUBGL() then
+            clip = self:Clip2()
+            ammo = self:Ammo2()
+        end
+
+        -- amt = math.max(amt, -clip)
+
+        -- clip can be -1 here if defaultclip is being set
+        local reserve = inf and math.huge or (math.max(0, clip) + ammo)
+
+        local lastclip
+
+        if self:GetUBGL() then
+            lastclip = self:Clip2()
+
+            self:SetClip2(math.min(math.min(clip + amt, self:GetCapacity(true)), reserve))
+
+            reserve = reserve - self:Clip2()
+
+            if !inf and IsValid(self:GetOwner()) then
+                self:GetOwner():SetAmmo(reserve, self.Secondary.Ammo)
+            end
+
+            clip = self:Clip2()
+        else
+            lastclip = self:Clip1()
+
+            self:SetClip1(math.min(math.min(clip + amt, self:GetCapacity(false)), reserve))
+
+            reserve = reserve - self:Clip1()
+
+            if !inf and IsValid(self:GetOwner()) then
+                self:GetOwner():SetAmmo(reserve, self.Primary.Ammo)
+            end
+
+            clip = self:Clip1()
+
+            if !self.NoForceSetLoadedRoundsOnReload then -- sorry
+                self:SetLoadedRounds(self:Clip1())
+                self:SetLastLoadedRounds(self:Clip1())
+            end
+        end
+
+        return clip - lastclip
+    end
+
+    function SWEP:Unload()
+        if SERVER then
+            local data = {}
+            data.count = self:Clip1()
+            FlowItemToInventory(self:GetOwner(), self.Ammo, EQUIPTYPE.Ammunition, data)
+        end
+        self:SetClip1(0)
+        self:SetLoadedRounds(0)
     end
 
 end)
 
 hook.Add("ARC9_PlayerGetAtts", "ARC9Override", function(ply, att, wep)
 
-    -- return AmountInInventory(ply, "arc9_att_" .. att)
-    return 69
+    return AmountInInventory(ply, "arc9_att_" .. att)
 
 end)

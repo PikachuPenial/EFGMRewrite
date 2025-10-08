@@ -12,6 +12,12 @@ end
 hook.Add("OnReloaded", "InventoryReload", function() ReinstantiateInventory() RunConsoleCommand("efgm_flush_inventory") end)
 net.Receive("PlayerReinstantiateInventory", function(len, ply) ReinstantiateInventory() end)
 
+net.Receive("PlayerInventoryReload", function(len, ply)
+
+    ReloadInventory()
+
+end )
+
 net.Receive("PlayerInventoryAddItem", function(len, ply)
 
     local name, type, data, index

@@ -34,6 +34,7 @@ function AddItemToInventory(ply, name, type, data)
 
     local def = EFGMITEMS[name]
 
+    if data.count == 0 then return end -- dont add an item that doesnt exist lol!
     data.count = math.Clamp(tonumber(data.count) or 1, 1, def.stackSize)
 
     local item = ITEM.Instantiate(name, type, data)
@@ -42,9 +43,79 @@ function AddItemToInventory(ply, name, type, data)
     net.Start("PlayerInventoryAddItem", false)
     net.WriteString(name)
     net.WriteUInt(type, 4)
-    net.WriteTable(data) -- Writing a table isn't great but we ball for now
+    net.WriteTable(data) -- writing a table isn't great but we ball for now
     net.WriteUInt(index, 16)
     net.Send(ply)
+
+end
+
+function UpdateItemFromInventory(ply, index, data)
+
+    ply.inventory[index].data = data
+
+    net.Start("PlayerInventoryUpdateItem", false)
+    net.WriteTable(ply.inventory[index].data)
+    net.WriteUInt(index, 16)
+    net.Send(ply)
+
+end
+
+function FlowItemToInventory(ply, name, type, data)
+
+    local def = EFGMITEMS[name]
+    local stackSize = def.stackSize
+
+    if data.count == 0 then return end -- dont add an item that doesnt exist lol!
+
+    local amount = tonumber(data.count)
+
+    for k, v in ipairs(ply.inventory) do
+
+        if v.name == name and v.data.count != def.stackSize and amount > 0 then
+
+            local countToMax = stackSize - v.data.count
+
+            if amount >= countToMax then
+
+                local newData = {}
+                newData.count = stackSize
+                UpdateItemFromInventory(ply, k, newData)
+                amount = amount - countToMax
+
+            elseif amount < countToMax then
+
+                local newData = {}
+                newData.count = ply.inventory[k].data.count + amount
+                UpdateItemFromInventory(ply, k, newData)
+                amount = 0
+                break
+
+            end
+
+        end
+
+    end
+
+    -- if leftover after checking every similar item type
+    while amount > 0 do
+
+        if amount >= stackSize then
+
+            local data = {}
+            data.count = stackSize
+            AddItemToInventory(ply, name, type, data)
+            amount = amount - stackSize
+
+        else
+
+            local data = {}
+            data.count = amount
+            AddItemToInventory(ply, name, type, data)
+            break
+
+        end
+
+    end
 
 end
 
@@ -116,14 +187,14 @@ function GiveAmmo(ply, count)
     local data = {}
     data.count = count
 
-    AddItemToInventory(ply, ammo, EQUIPTYPE.Ammunition, data)
+    FlowItemToInventory(ply, ammo, EQUIPTYPE.Ammunition, data)
 
 end
 concommand.Add("efgm_debug_giveammo", function(ply, cmd, args) GiveAmmo(ply, args[1]) end)
 
 function GiveAttachment(ply)
 
-    local attachment = "arc9_att_eft_foregrip_rk0"
+    local attachment = "arc9_att_eft_optic_boss"
     local data = {}
 
     AddItemToInventory(ply, attachment, EQUIPTYPE.Attachment, data)

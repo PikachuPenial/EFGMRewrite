@@ -1421,11 +1421,11 @@ function Menu.OpenTab.Inventory()
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
                 surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
 
-            end
+                surface.SetDrawColor(255, 255, 255, 255)
+                surface.SetMaterial(i.icon)
+                surface.DrawTexturedRect(0, 0, w, h)
 
-            local icon = vgui.Create("DImage", item)
-            icon:Dock(FILL)
-            icon:SetImage(i.icon)
+            end
 
             surface.SetFont("Purista18")
 
