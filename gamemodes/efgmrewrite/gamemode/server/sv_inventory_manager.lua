@@ -60,6 +60,16 @@ function UpdateItemFromInventory(ply, index, data)
 
 end
 
+function DeleteItemFromInventory(ply, index)
+
+    table.remove(ply.inventory, index)
+
+    net.Start("PlayerInventoryDeleteItem", false)
+    net.WriteUInt(index, 16)
+    net.Send(ply)
+
+end
+
 function FlowItemToInventory(ply, name, type, data)
 
     local def = EFGMITEMS[name]
@@ -101,21 +111,52 @@ function FlowItemToInventory(ply, name, type, data)
 
         if amount >= stackSize then
 
-            local data = {}
-            data.count = stackSize
-            AddItemToInventory(ply, name, type, data)
+            local newData = {}
+            newData.count = stackSize
+            AddItemToInventory(ply, name, type, newData)
             amount = amount - stackSize
 
         else
 
-            local data = {}
-            data.count = amount
-            AddItemToInventory(ply, name, type, data)
+            local newData = {}
+            newData.count = amount
+            AddItemToInventory(ply, name, type, newData)
             break
 
         end
 
     end
+
+end
+
+function DeflowItemsFromInventory(ply, name, count)
+
+    local amount = count
+
+    for k, v in ipairs(ply.inventory) do
+
+        if v.name == name and v.data.count > 0 and amount > 0 then
+
+            if amount >= v.data.count then
+
+                amount = amount - v.data.count
+                DeleteItemFromInventory(ply, k)
+
+            elseif amount < v.data.count then
+
+                local newData = {}
+                newData.count = ply.inventory[k].data.count - amount
+                UpdateItemFromInventory(ply, k, newData)
+                amount = 0
+                break
+
+            end
+
+        end
+
+    end
+
+    return amount
 
 end
 
