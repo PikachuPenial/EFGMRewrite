@@ -353,8 +353,22 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
 
 end)
 
-hook.Add("ARC9_PlayerGetAtts", "ARC9Override", function(ply, att, wep)
+hook.Add("ARC9_PlayerGetAtts", "ARC9GetAtts", function(ply, att, wep)
 
     return AmountInInventory(ply, "arc9_att_" .. att)
+
+end)
+
+hook.Add("ARC9_PlayerGiveAtt", "ARC9GiveAtt", function(ply, att, amt)
+
+    local data = {}
+    data.count = amt
+    return FlowItemToInventory(ply, "arc9_att_" .. att, EQUIPTYPE.Attachment, data)
+
+end)
+
+hook.Add("ARC9_PlayerTakeAtt", "ARC9TakeAtt", function(ply, att, amt)
+
+    return DeflowItemsFromInventory(ply, "arc9_att_" .. att, amt)
 
 end)

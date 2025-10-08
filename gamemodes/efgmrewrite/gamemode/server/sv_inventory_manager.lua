@@ -129,6 +129,7 @@ function FlowItemToInventory(ply, name, type, data)
 
 end
 
+-- TODO!!! SORT BY ITEMS WITH THE LEAST AMOUNT IN THEIR DATA COUNT!!! itll be nicer to take from the lower stacks than to take 2 bullets from your perfect 60 stacks of ammo
 function DeflowItemsFromInventory(ply, name, count)
 
     local amount = count
