@@ -168,6 +168,19 @@ net.Receive("PlayerInventoryDropItem", function(len, ply)
     local item = ply.inventory[itemIndex]
 
     local wep = ents.Create(item.name)
+
+    if data.att then
+
+        local attachments = util.JSONToTable(data.att)
+
+        for k, v in pairs(attachments) do DecompressTableRecursive(v) end
+
+        wep.Attachments = table.Copy(attachments)
+
+    end
+
+    PrintTable(wep.Attachments)
+
     wep:SetPos(ply:GetShootPos() + ply:GetForward() * 128)
     wep:Spawn()
     wep:PhysWake()

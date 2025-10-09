@@ -225,3 +225,30 @@ hook.Add("Think", "HealthRegen", Regeneration)
 		-- end
 	-- end
 -- end)
+
+-- put weapons picked up into players inventory
+hook.Add("PlayerCanPickupWeapon", "InventoryWeaponPickup", function(ply, wep)
+
+	if (GetConVar("efgm_debug_pickupinv"):GetInt() == 0) or false then return end
+
+	local wepClass = wep:GetClass()
+	wep:Remove()
+
+	local data = {}
+
+	local atts = table.Copy(wep.Attachments)
+
+	PrintTable(atts)
+
+	for k, v in pairs(atts) do
+		PruneUnnecessaryAttachmentDataRecursive(v)
+	end
+
+	data.att = util.TableToJSON(atts)
+	data.count = 1
+
+	AddItemToInventory(ply, wepClass, EQUIPTYPE.Weapon, data)
+
+	return false
+
+end)

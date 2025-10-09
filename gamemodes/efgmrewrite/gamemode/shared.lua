@@ -5,6 +5,7 @@ GM.Website = "https://github.com/PikachuPenial/EFGMRewrite"
 
 if !ConVarExists("efgm_derivesbox") then CreateConVar("efgm_derivesbox", "0", FCVAR_REPLICATED + FCVAR_NOTIFY, "Hooks the sandbox gamemode into EFGM, allowing for things like the spawn menu to be accessed. Used for development purposes", 0, 1) end
 if !ConVarExists("efgm_arenamode") then CreateConVar("efgm_arenamode", "0", FCVAR_REPLICATED + FCVAR_NOTIFY, "Enables features such as infinite ammo, spawning with loadouts, etc. Keep disabled for the classic EFGM experience", 0, 1) end
+if !ConVarExists("efgm_debug_pickupinv") then CreateConVar("efgm_debug_pickupinv", "1", FCVAR_REPLICATED + FCVAR_NOTIFY, "", 0, 1) end
 
 if CLIENT then
     CreateClientConVar("efgm_music", 1, false, true, "Enable/disable the music", 0, 1)
@@ -50,4 +51,58 @@ function comma_value(amount)
         end
     end
     return formatted
+end
+
+-- necessary to send over weapon data via the inventory
+function PruneUnnecessaryAttachmentDataRecursive(tbl)
+
+    tbl.t = tbl.ToggleNum
+	tbl.i = tbl.Installed
+    tbl.c = tbl.Category
+	tbl.s = tbl.SubAttachments
+    tbl.a = tbl.Address
+
+    for i, k in pairs(tbl) do
+        if i != "t" and i != "i" and i != "c" and i != "s" and i != "a" and i != "ToggleNum" then
+            tbl[i] = nil
+        end
+    end
+
+    if table.Count(tbl.s or {}) > 0 then
+        for i, k in pairs(tbl.s) do
+            PruneUnnecessaryAttachmentDataRecursive(k)
+        end
+    else
+        tbl.s = nil
+    end
+
+    tbl.BaseClass = nil
+
+end
+
+function DecompressTableRecursive(tbl)
+    for i, k in pairs(tbl) do
+        if i == "t" then
+            tbl["t"] = nil
+            tbl["ToggleNum"] = k
+        elseif i == "i" then
+            tbl["i"] = nil
+            tbl["Installed"] = k
+        elseif i == "c" then
+            tbl["c"] = nil
+            tbl["Category"] = k
+        elseif i == "s" then
+            tbl["s"] = nil
+            tbl["SubAttachments"] = k
+        elseif i == "a" then
+            tbl["a"] = nil
+            tbl["Address"] = k
+        end
+    end
+
+    if table.Count(tbl.SubAttachments or {}) > 0 then
+        for i, k in pairs(tbl.SubAttachments) do
+            DecompressTableRecursive(k)
+        end
+    end
 end
