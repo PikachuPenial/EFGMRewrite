@@ -238,11 +238,7 @@ hook.Add("PlayerCanPickupWeapon", "InventoryWeaponPickup", function(ply, wep)
 
 	local atts = table.Copy(wep.Attachments)
 
-	PrintTable(atts)
-
-	for k, v in pairs(atts) do
-		PruneUnnecessaryAttachmentDataRecursive(v)
-	end
+	for k, v in pairs(atts) do PruneUnnecessaryAttachmentDataRecursive(v) end
 
 	data.att = util.TableToJSON(atts)
 	data.count = 1

@@ -92,6 +92,9 @@ if SERVER then
     if GetConVar("efgm_derivesbox"):GetInt() == 1 then RunConsoleCommand("arc9_free_atts", "0") else RunConsoleCommand("arc9_free_atts", "0") end
 
     -- caching
+    RunConsoleCommand("arc9_precache_sounds_onfirsttake", "0")
+    RunConsoleCommand("arc9_precache_attsmodels_onfirsttake", "0")
+    RunConsoleCommand("arc9_precache_wepmodels_onfirsttake", "0")
     RunConsoleCommand("arc9_precache_allsounds_onstartup", "1")
     RunConsoleCommand("arc9_precache_attsmodels_onstartup", "1")
     RunConsoleCommand("arc9_precache_wepmodels_onstartup", "1")

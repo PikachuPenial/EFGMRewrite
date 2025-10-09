@@ -179,8 +179,6 @@ net.Receive("PlayerInventoryDropItem", function(len, ply)
 
     end
 
-    PrintTable(wep.Attachments)
-
     wep:SetPos(ply:GetShootPos() + ply:GetForward() * 128)
     wep:Spawn()
     wep:PhysWake()

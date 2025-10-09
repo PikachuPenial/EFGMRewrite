@@ -363,7 +363,7 @@ hook.Add("ARC9_PlayerGiveAtt", "ARC9GiveAtt", function(ply, att, amt)
 
     local data = {}
     data.count = amt
-    return FlowItemToInventory(ply, "arc9_att_" .. att, EQUIPTYPE.Attachment, data)
+    if SERVER then return FlowItemToInventory(ply, "arc9_att_" .. att, EQUIPTYPE.Attachment, data) end
 
 end)
 
