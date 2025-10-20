@@ -1,11 +1,40 @@
 
 playerInventory = {}
 
+playerWeaponSlots = {}
+for k, v in pairs( WEAPONSLOTS ) do
+    
+    playerWeaponSlots[v.ID] = {}
+
+    for i = 1, v.COUNT, 1 do
+        playerWeaponSlots[v.ID][i] = {}
+    end
+
+end
+
+playerEquippedSlot = 0
+playerEquippedSubSlot = 0
+
 -- for dev. purposes, dont need to start new map to give yourself items after a reload
 function ReinstantiateInventory()
 
-    print("client inventory flushed")
     playerInventory = {}
+
+    playerWeaponSlots = {}
+    for k, v in pairs( WEAPONSLOTS ) do
+    
+    playerWeaponSlots[v.ID] = {}
+
+    for i = 1, v.COUNT, 1 do
+        playerWeaponSlots[v.ID][i] = {}
+    end
+
+    print("client inventory flushed")
+
+end
+
+playerEquippedSlot = 0
+playerEquippedSubSlot = 0
 
 end
 
@@ -68,11 +97,44 @@ function DropItemFromInventory(itemIndex, data)
 
 end
 
-function EquipItemFromInventory(itemIndex)
+-- returns bool whether or not it could equip an item clientside (desync may be an issue since server could disagree and neither side would know)
+function EquipItemFromInventory(itemIndex, equipSlot)
+    
+    local item = playerInventory[itemIndex]
+    if item == nil then return end
 
-    -- can receive "Primary", "Holster", "Melee" and "Grenade"
-    -- if it receives a primary weapon, check if the primary weapon slot is used. If it isn't, put it there, if it is, put it in the secondary weapon slot instead
-    ReloadInventory()
+    print(itemIndex)
+    print(equipSlot)
+
+    if AmountInInventory( playerWeaponSlots[ equipSlot ], item.name ) != 0 then return end -- can't have multiple of the same item
+
+    -- checking item equip slots
+    for k, v in ipairs( playerWeaponSlots[ equipSlot ] ) do
+
+        if table.IsEmpty(v) then
+            
+            playerWeaponSlots[ equipSlot ][ k ] = item
+
+            table.remove(playerInventory, itemIndex)
+
+            net.Start("PlayerInventoryEquipItem", false )
+                net.WriteUInt(itemIndex, 16)
+                net.WriteUInt(equipSlot, 4)
+                net.WriteUInt(k, 16)
+            net.SendToServer()
+            
+            ReloadInventory()
+
+            return true
+
+        end
+
+    end
+
+    PrintTable(playerInventory)
+    PrintTable(playerWeaponSlots)
+
+    return false
 
 end
 
@@ -84,3 +146,78 @@ function ConsumeItemFromInventory(itemIndex)
     ReloadInventory()
 
 end
+
+-- concommand.Add("efgm_inventory_equip", function(ply, cmd, args)
+
+--     PrintTable( LocalPlayer():GetWeapons() )
+--     input.SelectWeapon( LocalPlayer():GetWeapons()[1] )
+
+--     return
+
+--     -- -- if subslot is specified it tries to equip that specific slot, and if not it cycles through all subslots for that slot type (eg, for grenades or utility)
+--     -- local equipSlot = tonumber( args[1] )
+--     -- if equipSlot == nil then return end
+--     -- local equipSubSlot = tonumber( args[2] )
+
+--     -- if equipSubSlot == nil then
+
+--     --     if playerEquippedSlot == equipSlot then
+
+--     --         local subSlotCount = #playerWeaponSlots[equipSlot]
+
+--     --         if subSlotCount == 1 or playerEquippedSubSlot == subSlotCount then -- selecting first subslot
+
+--     --             local item = playerWeaponSlots[equipSlot][1]
+--     --             if !istable(item) then return end
+--     --             if table.IsEmpty(item) then return end
+
+--     --             weapon = LocalPlayer():GetWeapon(item.name)
+--     --             input.SelectWeapon(weapon)
+
+--     --             playerEquippedSlot = equipSlot
+--     --             playerEquippedSubSlot = 1
+
+--     --         else -- cycling to next subslot
+
+--     --             local item = playerWeaponSlots[equipSlot][playerEquippedSubSlot + 1]
+--     --             if !istable(item) then return end
+--     --             if table.IsEmpty(item) then return end
+
+--     --             weapon = LocalPlayer():GetWeapon(item.name)
+--     --             input.SelectWeapon(weapon)
+
+--     --             playerEquippedSlot = equipSlot
+--     --             playerEquippedSubSlot = playerEquippedSubSlot + 1
+                
+--     --         end
+
+--     --     else -- selecting first subslot
+
+--     --         local item = playerWeaponSlots[equipSlot][1]
+--     --         if !istable(item) then return end
+--     --         if table.IsEmpty(item) then return end
+
+--     --         weapon = LocalPlayer():GetWeapon(item.name)
+--     --         input.SelectWeapon(weapon)
+
+--     --         playerEquippedSlot = equipSlot
+--     --         playerEquippedSubSlot = 1
+
+--     --     end
+
+--     -- else -- selecting from subslot
+
+--     --     local item = playerWeaponSlots[equipSlot][equipSubSlot]
+--     --     if !istable(item) then return end
+--     --     if table.IsEmpty(item) then return end
+
+--     --     weapon = LocalPlayer():GetWeapon(item.name)
+--     --     print("item.name = "..item.name)
+--     --     input.SelectWeapon(weapon)
+
+--     --     playerEquippedSlot = equipSlot
+--     --     playerEquippedSubSlot = equipSubSlot
+        
+--     -- end
+
+-- end)

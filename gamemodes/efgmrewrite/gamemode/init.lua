@@ -226,13 +226,15 @@ hook.Add("Think", "HealthRegen", Regeneration)
 	-- end
 -- end)
 
+equipWeaponName = ""
+
 -- put weapons picked up into players inventory
 hook.Add("PlayerCanPickupWeapon", "InventoryWeaponPickup", function(ply, wep)
 
-	if (GetConVar("efgm_debug_pickupinv"):GetInt() == 0) or false then return end
+	-- if (GetConVar("efgm_debug_pickupinv"):GetInt() == 0) or false then return end
 
 	local wepClass = wep:GetClass()
-	wep:Remove()
+    if wep:IsInWorld() then wep:Remove() end
 
 	local data = {}
 
@@ -245,6 +247,12 @@ hook.Add("PlayerCanPickupWeapon", "InventoryWeaponPickup", function(ply, wep)
 
 	AddItemToInventory(ply, wepClass, EQUIPTYPE.Weapon, data)
 
-	return false
+    tempEquipWeaponName = equipWeaponName
+    equipWeaponName = ""
+
+    print("wepClass = "..wepClass)
+    print("tempEquipWeaponName = "..tempEquipWeaponName)
+    PrintTable( ply:GetWeapons() )
+	return true
 
 end)

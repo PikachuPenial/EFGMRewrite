@@ -277,7 +277,11 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
             return math.huge
         end
 
-        return AmountInInventory(self:GetOwner(), self:GetValue("Ammo"))
+        local inventory = {}
+        if SERVER then inventory = self:GetOwner().inventory end
+        if CLIENT then inventory = playerInventory end
+
+        return AmountInInventory(inventory, self:GetValue("Ammo"))
     end
 
     function SWEP:RestoreClip(amt)
@@ -355,7 +359,11 @@ end)
 
 hook.Add("ARC9_PlayerGetAtts", "ARC9GetAtts", function(ply, att, wep)
 
-    return AmountInInventory(ply, "arc9_att_" .. att)
+    local inventory = {}
+    if SERVER then inventory = ply.inventory end
+    if CLIENT then inventory = playerInventory end
+
+    return AmountInInventory(inventory, "arc9_att_" .. att)
 
 end)
 

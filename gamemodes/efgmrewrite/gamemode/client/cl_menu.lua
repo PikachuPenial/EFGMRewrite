@@ -1584,9 +1584,10 @@ function Menu.OpenTab.Inventory()
                     function itemEquipButton:DoClick()
 
                         surface.PlaySound("ui/element_select.wav")
-                        EquipItemFromInventory(v.id, i.equipSlot)
                         contextMenu:Remove()
                         playerItems:InvalidateLayout()
+
+                        EquipItemFromInventory(v.id, i.equipSlot)
 
                     end
 

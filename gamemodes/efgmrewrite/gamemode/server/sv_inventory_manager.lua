@@ -8,13 +8,38 @@ util.AddNetworkString("PlayerInventoryEquipItem")
 util.AddNetworkString("PlayerInventoryConsumeItem")
 
 hook.Add("PlayerSpawn", "InventorySetup", function(ply)
+
 	ply.inventory = {}
+
+    ply.weaponSlots = {}
+    for k, v in pairs( WEAPONSLOTS ) do
+        
+        ply.weaponSlots[v.ID] = {}
+
+        for i = 1, v.COUNT, 1 do
+            ply.weaponSlots[v.ID][i] = {}
+        end
+
+    end
+
 end)
 
 function ReinstantiateInventory(ply)
 
-    print("server inventory flushed")
     ply.inventory = {}
+
+    ply.weaponSlots = {}
+    for k, v in pairs( WEAPONSLOTS ) do
+        
+        ply.weaponSlots[v.ID] = {}
+
+        for i = 1, v.COUNT, 1 do
+            ply.weaponSlots[v.ID][i] = {}
+        end
+
+    end
+    
+    print("server inventory flushed")
 
 end
 concommand.Add("efgm_flush_inventory", function(ply, cmd, args) ReinstantiateInventory(ply) end)
@@ -191,7 +216,43 @@ end)
 
 net.Receive("PlayerInventoryEquipItem", function(len, ply)
 
-    -- TODO
+    local itemIndex, equipSlot, equipSubSlot
+
+    itemIndex = net.ReadUInt(16)
+    equipSlot = net.ReadUInt(4)
+    equipSubSlot = net.ReadUInt(16)
+
+    print(itemIndex)
+    print(equipSlot)
+    print(equipSubSlot)
+
+    local item = ply.inventory[itemIndex]
+    if item == nil then return end
+
+    print("got past item nil check")
+
+    print(AmountInInventory( ply.weaponSlots[ equipSlot ], item.name ).." of "..item.name.." in inventory")
+    if AmountInInventory( ply.weaponSlots[ equipSlot ], item.name ) > 0 then return end -- can't have multiple of the same item
+
+    print("got past amountininventory check")
+
+    if table.IsEmpty( ply.weaponSlots[equipSlot][equipSubSlot] ) then
+    
+    print("got past amountininventory check")
+        
+        table.remove(ply.inventory, itemIndex)
+        ply.weaponSlots[equipSlot][equipSubSlot] = item
+
+        print("Success! Equipping " .. item.name)
+
+        equipWeaponName = item.name
+        ply:Give(item.name, true)
+        -- go crazy with attachments here penal
+
+    end
+
+    PrintTable(ply.inventory)
+    PrintTable(ply.weaponSlots)
 
 end)
 
@@ -254,3 +315,4 @@ function GiveAttachment(ply)
 
 end
 concommand.Add("efgm_debug_giveattachment", function(ply, cmd, args) GiveAttachment(ply) end)
+
