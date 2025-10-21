@@ -19,7 +19,7 @@ function EFGMITEMS:__index(var)
         ["equipType"] = EQUIPTYPE.None,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("missing", "mips smooth"),
+        ["icon"] = Material("missing", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -38,7 +38,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/adar15.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/adar15.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
@@ -54,7 +54,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/vsk94.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/vsk94.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
@@ -70,7 +70,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/rfb.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/rfb.png", "smooth"),
 
         ["sizeX"] = 4,
         ["sizeY"] = 2
@@ -86,7 +86,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/tx15.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/tx15.png", "smooth"),
 
         ["sizeX"] = 6,
         ["sizeY"] = 2
@@ -102,7 +102,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/sag_ak545.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/sag_ak545.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
@@ -118,7 +118,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/sag_ak545_short.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/sag_ak545_short.png", "smooth"),
 
         ["sizeX"] = 4,
         ["sizeY"] = 2
@@ -134,7 +134,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/sr3m.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/sr3m.png", "smooth"),
 
         ["sizeX"] = 3,
         ["sizeY"] = 2
@@ -150,7 +150,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/svt.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/svt.png", "smooth"),
 
         ["sizeX"] = 6,
         ["sizeY"] = 1
@@ -166,7 +166,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/sks.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/sks.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 1
@@ -182,7 +182,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/vpo101.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/vpo101.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
@@ -198,7 +198,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/vpo136.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/vpo136.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
@@ -214,7 +214,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/vpo209.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/vpo209.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
@@ -231,7 +231,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/velociraptor.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/velociraptor.png", "smooth"),
 
         ["sizeX"] = 4,
         ["sizeY"] = 2
@@ -247,7 +247,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/ak101.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/ak101.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
@@ -263,7 +263,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/ak102.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/ak102.png", "smooth"),
 
         ["sizeX"] = 4,
         ["sizeY"] = 2
@@ -279,7 +279,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/ak103.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/ak103.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
@@ -295,7 +295,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/ak104.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/ak104.png", "smooth"),
 
         ["sizeX"] = 4,
         ["sizeY"] = 2
@@ -311,7 +311,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/ak105.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/ak105.png", "smooth"),
 
         ["sizeX"] = 4,
         ["sizeY"] = 2
@@ -327,7 +327,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/ak12.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/ak12.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
@@ -343,7 +343,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/ak74.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/ak74.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
@@ -359,7 +359,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/ak74m.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/ak74m.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
@@ -375,7 +375,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/akm.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/akm.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
@@ -391,7 +391,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/akms.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/akms.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
@@ -407,7 +407,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/aks74.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/aks74.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
@@ -423,7 +423,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/aks74u.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/aks74u.png", "smooth"),
 
         ["sizeX"] = 4,
         ["sizeY"] = 2
@@ -439,7 +439,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/asval.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/asval.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
@@ -455,7 +455,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/ash12.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/ash12.png", "smooth"),
 
         ["sizeX"] = 4,
         ["sizeY"] = 2
@@ -471,7 +471,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/m4a1.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/m4a1.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
@@ -487,7 +487,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/sa58.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/sa58.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
@@ -503,7 +503,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/mdr.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/mdr.png", "smooth"),
 
         ["sizeX"] = 4,
         ["sizeY"] = 2
@@ -519,7 +519,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/mdr556.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/mdr556.png", "smooth"),
 
         ["sizeX"] = 4,
         ["sizeY"] = 2
@@ -535,7 +535,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/scarh.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/scarh.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
@@ -551,7 +551,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/scarl.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/scarl.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
@@ -567,7 +567,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/hk416.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/hk416.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
@@ -583,7 +583,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/g36.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/g36.png", "smooth"),
 
         ["sizeX"] = 6,
         ["sizeY"] = 2
@@ -599,7 +599,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/9a91.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/9a91.png", "smooth"),
 
         ["sizeX"] = 4,
         ["sizeY"] = 2
@@ -615,7 +615,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/mk47_mutant.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/mk47_mutant.png", "smooth"),
 
         ["sizeX"] = 4,
         ["sizeY"] = 2
@@ -631,7 +631,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/rd704.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/rd704.png", "smooth"),
 
         ["sizeX"] = 4,
         ["sizeY"] = 2
@@ -647,7 +647,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/scarh.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/scarh.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
@@ -663,7 +663,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/mcx.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/mcx.png", "smooth"),
 
         ["sizeX"] = 4,
         ["sizeY"] = 2
@@ -679,7 +679,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/spear.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/spear.png", "smooth"),
 
         ["sizeX"] = 6,
         ["sizeY"] = 2
@@ -695,7 +695,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/auga1.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/auga1.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
@@ -711,7 +711,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/aug.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/aug.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
@@ -727,7 +727,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/avt.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/avt.png", "smooth"),
 
         ["sizeX"] = 6,
         ["sizeY"] = 2
@@ -744,7 +744,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/m60e4.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/m60e4.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
@@ -760,7 +760,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/m60e6.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/m60e6.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
@@ -776,7 +776,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/pkm.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/pkm.png", "smooth"),
 
         ["sizeX"] = 6,
         ["sizeY"] = 3
@@ -792,7 +792,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/pkp.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/pkp.png", "smooth"),
 
         ["sizeX"] = 6,
         ["sizeY"] = 3
@@ -808,7 +808,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/rpd.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/rpd.png", "smooth"),
 
         ["sizeX"] = 6,
         ["sizeY"] = 3
@@ -824,7 +824,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/rpk16.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/rpk16.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
@@ -841,7 +841,7 @@ end
         ["equipSlot"] = "Holster",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/m9a3.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/m9a3.png", "smooth"),
 
         ["sizeX"] = 2,
         ["sizeY"] = 1
@@ -857,7 +857,7 @@ end
         ["equipSlot"] = "Holster",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/blicky.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/blicky.png", "smooth"),
 
         ["sizeX"] = 2,
         ["sizeY"] = 1
@@ -873,7 +873,7 @@ end
         ["equipSlot"] = "Holster",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/m1911.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/m1911.png", "smooth"),
 
         ["sizeX"] = 2,
         ["sizeY"] = 1
@@ -889,7 +889,7 @@ end
         ["equipSlot"] = "Holster",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/m45.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/m45.png", "smooth"),
 
         ["sizeX"] = 2,
         ["sizeY"] = 1
@@ -905,7 +905,7 @@ end
         ["equipSlot"] = "Holster",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/deagle_l5.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/deagle_l5.png", "smooth"),
 
         ["sizeX"] = 2,
         ["sizeY"] = 1
@@ -921,7 +921,7 @@ end
         ["equipSlot"] = "Holster",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/deagle_l5.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/deagle_l5.png", "smooth"),
 
         ["sizeX"] = 2,
         ["sizeY"] = 1
@@ -937,7 +937,7 @@ end
         ["equipSlot"] = "Holster",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/deagle_l6.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/deagle_l6.png", "smooth"),
 
         ["sizeX"] = 2,
         ["sizeY"] = 1
@@ -953,7 +953,7 @@ end
         ["equipSlot"] = "Holster",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/deagle_xix.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/deagle_xix.png", "smooth"),
 
         ["sizeX"] = 2,
         ["sizeY"] = 1
@@ -969,7 +969,7 @@ end
         ["equipSlot"] = "Holster",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/fn57.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/fn57.png", "smooth"),
 
         ["sizeX"] = 2,
         ["sizeY"] = 1
@@ -985,7 +985,7 @@ end
         ["equipSlot"] = "Holster",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/glock17.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/glock17.png", "smooth"),
 
         ["sizeX"] = 2,
         ["sizeY"] = 1
@@ -1001,7 +1001,7 @@ end
         ["equipSlot"] = "Holster",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/glock18c.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/glock18c.png", "smooth"),
 
         ["sizeX"] = 2,
         ["sizeY"] = 1
@@ -1017,7 +1017,7 @@ end
         ["equipSlot"] = "Holster",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/glock19x.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/glock19x.png", "smooth"),
 
         ["sizeX"] = 2,
         ["sizeY"] = 1
@@ -1033,7 +1033,7 @@ end
         ["equipSlot"] = "Holster",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/usp.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/usp.png", "smooth"),
 
         ["sizeX"] = 2,
         ["sizeY"] = 1
@@ -1049,7 +1049,7 @@ end
         ["equipSlot"] = "Holster",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/pl15.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/pl15.png", "smooth"),
 
         ["sizeX"] = 2,
         ["sizeY"] = 1
@@ -1065,7 +1065,7 @@ end
         ["equipSlot"] = "Holster",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/pm.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/pm.png", "smooth"),
 
         ["sizeX"] = 2,
         ["sizeY"] = 1
@@ -1081,7 +1081,7 @@ end
         ["equipSlot"] = "Holster",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/mp443.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/mp443.png", "smooth"),
 
         ["sizeX"] = 2,
         ["sizeY"] = 1
@@ -1097,7 +1097,7 @@ end
         ["equipSlot"] = "Holster",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/pb.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/pb.png", "smooth"),
 
         ["sizeX"] = 3,
         ["sizeY"] = 1
@@ -1113,7 +1113,7 @@ end
         ["equipSlot"] = "Holster",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/rsh12.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/rsh12.png", "smooth"),
 
         ["sizeX"] = 2,
         ["sizeY"] = 1
@@ -1129,7 +1129,7 @@ end
         ["equipSlot"] = "Holster",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/p226r.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/p226r.png", "smooth"),
 
         ["sizeX"] = 2,
         ["sizeY"] = 1
@@ -1145,7 +1145,7 @@ end
         ["equipSlot"] = "Holster",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/sr1mp.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/sr1mp.png", "smooth"),
 
         ["sizeX"] = 2,
         ["sizeY"] = 1
@@ -1161,7 +1161,7 @@ end
         ["equipSlot"] = "Holster",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/apb.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/apb.png", "smooth"),
 
         ["sizeX"] = 4,
         ["sizeY"] = 1
@@ -1177,7 +1177,7 @@ end
         ["equipSlot"] = "Holster",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/aps.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/aps.png", "smooth"),
 
         ["sizeX"] = 2,
         ["sizeY"] = 1
@@ -1193,7 +1193,7 @@ end
         ["equipSlot"] = "Holster",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/tt33.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/tt33.png", "smooth"),
 
         ["sizeX"] = 2,
         ["sizeY"] = 1
@@ -1209,7 +1209,7 @@ end
         ["equipSlot"] = "Holster",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/cr200ds.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/cr200ds.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -1225,7 +1225,7 @@ end
         ["equipSlot"] = "Holster",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/cr50ds.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/cr50ds.png", "smooth"),
 
         ["sizeX"] = 2,
         ["sizeY"] = 1
@@ -1242,7 +1242,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/m3super90.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/m3super90.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
@@ -1258,7 +1258,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/m590.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/m590.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 1
@@ -1274,7 +1274,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/mr133.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/mr133.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 1
@@ -1290,7 +1290,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/mr153.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/mr153.png", "smooth"),
 
         ["sizeX"] = 7,
         ["sizeY"] = 1
@@ -1306,7 +1306,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/mr155.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/mr155.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 1
@@ -1322,7 +1322,7 @@ end
         ["equipSlot"] = "Holster",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/mr43_sawedoff.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/mr43_sawedoff.png", "smooth"),
 
         ["sizeX"] = 3,
         ["sizeY"] = 1
@@ -1338,7 +1338,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/mr43.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/mr43.png", "smooth"),
 
         ["sizeX"] = 6,
         ["sizeY"] = 1
@@ -1354,7 +1354,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/aa12.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/aa12.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
@@ -1370,7 +1370,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/mts255.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/mts255.png", "smooth"),
 
         ["sizeX"] = 6,
         ["sizeY"] = 1
@@ -1386,7 +1386,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/m870.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/m870.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 1
@@ -1402,7 +1402,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/saiga12fa.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/saiga12fa.png", "smooth"),
 
         ["sizeX"] = 6,
         ["sizeY"] = 2
@@ -1418,7 +1418,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/saiga12k.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/saiga12k.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
@@ -1434,7 +1434,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/ks23.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/ks23.png", "smooth"),
 
         ["sizeX"] = 6,
         ["sizeY"] = 1
@@ -1450,7 +1450,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/toz106.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/toz106.png", "smooth"),
 
         ["sizeX"] = 4,
         ["sizeY"] = 1
@@ -1467,7 +1467,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/axmc.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/axmc.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
@@ -1483,7 +1483,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/ak50.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/ak50.png", "smooth"),
 
         ["sizeX"] = 7,
         ["sizeY"] = 2
@@ -1499,7 +1499,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/g28.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/g28.png", "smooth"),
 
         ["sizeX"] = 6,
         ["sizeY"] = 3
@@ -1515,7 +1515,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/sr25.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/sr25.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
@@ -1531,7 +1531,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/dvl.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/dvl.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
@@ -1547,7 +1547,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/mk18_mjolnir.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/mk18_mjolnir.png", "smooth"),
 
         ["sizeX"] = 6,
         ["sizeY"] = 2
@@ -1563,7 +1563,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/mosin_infantry.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/mosin_infantry.png", "smooth"),
 
         ["sizeX"] = 6,
         ["sizeY"] = 1
@@ -1579,7 +1579,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/mosin_sniper.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/mosin_sniper.png", "smooth"),
 
         ["sizeX"] = 6,
         ["sizeY"] = 1
@@ -1595,7 +1595,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/mp18.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/mp18.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 1
@@ -1611,7 +1611,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/t5000.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/t5000.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
@@ -1627,7 +1627,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/m700.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/m700.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 1
@@ -1643,7 +1643,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/rsass.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/rsass.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
@@ -1659,7 +1659,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/m1a.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/m1a.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
@@ -1675,7 +1675,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/sv98.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/sv98.png", "smooth"),
 
         ["sizeX"] = 6,
         ["sizeY"] = 2
@@ -1691,7 +1691,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/svds.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/svds.png", "smooth"),
 
         ["sizeX"] = 6,
         ["sizeY"] = 2
@@ -1707,7 +1707,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/vpo215.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/vpo215.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 1
@@ -1723,7 +1723,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/vss.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/vss.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 2
@@ -1739,7 +1739,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/sako.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/sako.png", "smooth"),
 
         ["sizeX"] = 6,
         ["sizeY"] = 2
@@ -1756,7 +1756,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/mp9.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/mp9.png", "smooth"),
 
         ["sizeX"] = 3,
         ["sizeY"] = 2
@@ -1772,7 +1772,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/mp9n.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/mp9n.png", "smooth"),
 
         ["sizeX"] = 3,
         ["sizeY"] = 2
@@ -1788,7 +1788,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/p90.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/p90.png", "smooth"),
 
         ["sizeX"] = 3,
         ["sizeY"] = 2
@@ -1804,7 +1804,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/mp5.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/mp5.png", "smooth"),
 
         ["sizeX"] = 4,
         ["sizeY"] = 2
@@ -1820,7 +1820,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/mp5k.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/mp5k.png", "smooth"),
 
         ["sizeX"] = 2,
         ["sizeY"] = 1
@@ -1836,7 +1836,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/mp7a1.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/mp7a1.png", "smooth"),
 
         ["sizeX"] = 3,
         ["sizeY"] = 1
@@ -1852,7 +1852,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/mp7a2.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/mp7a2.png", "smooth"),
 
         ["sizeX"] = 3,
         ["sizeY"] = 1
@@ -1868,7 +1868,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/ump.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/ump.png", "smooth"),
 
         ["sizeX"] = 3,
         ["sizeY"] = 2
@@ -1884,7 +1884,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/uzi.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/uzi.png", "smooth"),
 
         ["sizeX"] = 3,
         ["sizeY"] = 2
@@ -1900,7 +1900,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/uzi_pro.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/uzi_pro.png", "smooth"),
 
         ["sizeX"] = 2,
         ["sizeY"] = 1
@@ -1916,7 +1916,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/vector45.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/vector45.png", "smooth"),
 
         ["sizeX"] = 3,
         ["sizeY"] = 2
@@ -1932,7 +1932,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/vector9.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/vector9.png", "smooth"),
 
         ["sizeX"] = 3,
         ["sizeY"] = 2
@@ -1948,7 +1948,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/pp1901.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/pp1901.png", "smooth"),
 
         ["sizeX"] = 3,
         ["sizeY"] = 2
@@ -1964,7 +1964,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/kedr.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/kedr.png", "smooth"),
 
         ["sizeX"] = 3,
         ["sizeY"] = 2
@@ -1980,7 +1980,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/ppsh.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/ppsh.png", "smooth"),
 
         ["sizeX"] = 4,
         ["sizeY"] = 2
@@ -1996,7 +1996,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/saiga9.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/saiga9.png", "smooth"),
 
         ["sizeX"] = 4,
         ["sizeY"] = 2
@@ -2012,7 +2012,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/mpx.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/mpx.png", "smooth"),
 
         ["sizeX"] = 4,
         ["sizeY"] = 2
@@ -2028,7 +2028,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/stm9.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/stm9.png", "smooth"),
 
         ["sizeX"] = 4,
         ["sizeY"] = 2
@@ -2044,7 +2044,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/sr2m.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/sr2m.png", "smooth"),
 
         ["sizeX"] = 3,
         ["sizeY"] = 2
@@ -2061,7 +2061,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/fn40gl.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/fn40gl.png", "smooth"),
 
         ["sizeX"] = 3,
         ["sizeY"] = 2
@@ -2077,7 +2077,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/m32a1.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/m32a1.png", "smooth"),
 
         ["sizeX"] = 4,
         ["sizeY"] = 2
@@ -2093,7 +2093,7 @@ end
         ["equipSlot"] = "Primary",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/weapons/rshg2.png", "mips smooth"),
+        ["icon"] = Material("items/weapons/rshg2.png", "smooth"),
 
         ["sizeX"] = 4,
         ["sizeY"] = 1
@@ -2110,7 +2110,7 @@ end
         ["equipSlot"] = "Melee",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/melee/taran.png", "mips smooth"),
+        ["icon"] = Material("items/melee/taran.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 2
@@ -2126,7 +2126,7 @@ end
         ["equipSlot"] = "Melee",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/melee/6x5.png", "mips smooth"),
+        ["icon"] = Material("items/melee/6x5.png", "smooth"),
 
         ["sizeX"] = 2,
         ["sizeY"] = 1
@@ -2142,7 +2142,7 @@ end
         ["equipSlot"] = "Melee",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/melee/akula.png", "mips smooth"),
+        ["icon"] = Material("items/melee/akula.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -2158,7 +2158,7 @@ end
         ["equipSlot"] = "Melee",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/melee/axe.png", "mips smooth"),
+        ["icon"] = Material("items/melee/axe.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 2
@@ -2174,7 +2174,7 @@ end
         ["equipSlot"] = "Melee",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/melee/gladius.png", "mips smooth"),
+        ["icon"] = Material("items/melee/gladius.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 4
@@ -2190,7 +2190,7 @@ end
         ["equipSlot"] = "Melee",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/melee/a2607.png", "mips smooth"),
+        ["icon"] = Material("items/melee/a2607.png", "smooth"),
 
         ["sizeX"] = 2,
         ["sizeY"] = 1
@@ -2206,7 +2206,7 @@ end
         ["equipSlot"] = "Melee",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/melee/a2607d.png", "mips smooth"),
+        ["icon"] = Material("items/melee/a2607d.png", "smooth"),
 
         ["sizeX"] = 2,
         ["sizeY"] = 1
@@ -2222,7 +2222,7 @@ end
         ["equipSlot"] = "Melee",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/melee/camper.png", "mips smooth"),
+        ["icon"] = Material("items/melee/camper.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 3
@@ -2238,7 +2238,7 @@ end
         ["equipSlot"] = "Melee",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/melee/labris.png", "mips smooth"),
+        ["icon"] = Material("items/melee/labris.png", "smooth"),
 
         ["sizeX"] = 5,
         ["sizeY"] = 5
@@ -2254,7 +2254,7 @@ end
         ["equipSlot"] = "Melee",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/melee/crash.png", "mips smooth"),
+        ["icon"] = Material("items/melee/crash.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 3
@@ -2270,7 +2270,7 @@ end
         ["equipSlot"] = "Melee",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/melee/cultist.png", "mips smooth"),
+        ["icon"] = Material("items/melee/cultist.png", "smooth"),
 
         ["sizeX"] = 2,
         ["sizeY"] = 1
@@ -2286,7 +2286,7 @@ end
         ["equipSlot"] = "Melee",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/melee/fulcrum.png", "mips smooth"),
+        ["icon"] = Material("items/melee/fulcrum.png", "smooth"),
 
         ["sizeX"] = 2,
         ["sizeY"] = 1
@@ -2302,7 +2302,7 @@ end
         ["equipSlot"] = "Melee",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/melee/crowbar.png", "mips smooth"),
+        ["icon"] = Material("items/melee/crowbar.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 3
@@ -2318,7 +2318,7 @@ end
         ["equipSlot"] = "Melee",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/melee/katt.png", "mips smooth"),
+        ["icon"] = Material("items/melee/katt.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 3
@@ -2334,7 +2334,7 @@ end
         ["equipSlot"] = "Melee",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/melee/kukri.png", "mips smooth"),
+        ["icon"] = Material("items/melee/kukri.png", "smooth"),
 
         ["sizeX"] = 2,
         ["sizeY"] = 1
@@ -2350,7 +2350,7 @@ end
         ["equipSlot"] = "Melee",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/melee/m2.png", "mips smooth"),
+        ["icon"] = Material("items/melee/m2.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 3
@@ -2366,7 +2366,7 @@ end
         ["equipSlot"] = "Melee",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/melee/mpl50.png", "mips smooth"),
+        ["icon"] = Material("items/melee/mpl50.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 3
@@ -2382,7 +2382,7 @@ end
         ["equipSlot"] = "Melee",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/melee/rebel.png", "mips smooth"),
+        ["icon"] = Material("items/melee/rebel.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 3
@@ -2398,7 +2398,7 @@ end
         ["equipSlot"] = "Melee",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/melee/voodoo.png", "mips smooth"),
+        ["icon"] = Material("items/melee/voodoo.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 2
@@ -2414,7 +2414,7 @@ end
         ["equipSlot"] = "Melee",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/melee/sp8.png", "mips smooth"),
+        ["icon"] = Material("items/melee/sp8.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 3
@@ -2430,7 +2430,7 @@ end
         ["equipSlot"] = "Melee",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/melee/taiga.png", "mips smooth"),
+        ["icon"] = Material("items/melee/taiga.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 3
@@ -2447,7 +2447,7 @@ end
         ["equipSlot"] = "Melee",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/melee/taiga.png", "mips smooth"),
+        ["icon"] = Material("items/melee/taiga.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 3
@@ -2464,7 +2464,7 @@ end
         ["equipSlot"] = "Grenade",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/grenades/f1.png", "mips smooth"),
+        ["icon"] = Material("items/grenades/f1.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -2480,7 +2480,7 @@ end
         ["equipSlot"] = "Grenade",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/grenades/m18.png", "mips smooth"),
+        ["icon"] = Material("items/grenades/m18.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -2496,7 +2496,7 @@ end
         ["equipSlot"] = "Grenade",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/grenades/m18y.png", "mips smooth"),
+        ["icon"] = Material("items/grenades/m18y.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -2512,7 +2512,7 @@ end
         ["equipSlot"] = "Grenade",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/grenades/m67.png", "mips smooth"),
+        ["icon"] = Material("items/grenades/m67.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -2528,7 +2528,7 @@ end
         ["equipSlot"] = "Grenade",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/grenades/m7290.png", "mips smooth"),
+        ["icon"] = Material("items/grenades/m7290.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -2544,7 +2544,7 @@ end
         ["equipSlot"] = "Grenade",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/grenades/rdg2b.png", "mips smooth"),
+        ["icon"] = Material("items/grenades/rdg2b.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 2
@@ -2560,7 +2560,7 @@ end
         ["equipSlot"] = "Grenade",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/grenades/rgd5.png", "mips smooth"),
+        ["icon"] = Material("items/grenades/rgd5.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -2576,7 +2576,7 @@ end
         ["equipSlot"] = "Grenade",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/grenades/rgn.png", "mips smooth"),
+        ["icon"] = Material("items/grenades/rgn.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -2592,7 +2592,7 @@ end
         ["equipSlot"] = "Grenade",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/grenades/rgo.png", "mips smooth"),
+        ["icon"] = Material("items/grenades/rgo.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -2608,7 +2608,7 @@ end
         ["equipSlot"] = "Grenade",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/grenades/v40.png", "mips smooth"),
+        ["icon"] = Material("items/grenades/v40.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -2624,7 +2624,7 @@ end
         ["equipSlot"] = "Grenade",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/grenades/vog17.png", "mips smooth"),
+        ["icon"] = Material("items/grenades/vog17.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -2640,7 +2640,7 @@ end
         ["equipSlot"] = "Grenade",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/grenades/vog25.png", "mips smooth"),
+        ["icon"] = Material("items/grenades/vog25.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -2656,7 +2656,7 @@ end
         ["equipSlot"] = "Grenade",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/grenades/zarya.png", "mips smooth"),
+        ["icon"] = Material("items/grenades/zarya.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -2673,7 +2673,7 @@ end
         ["equipSlot"] = "Utility",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/special/sp81.png", "mips smooth"),
+        ["icon"] = Material("items/special/sp81.png", "smooth"),
 
         ["sizeX"] = 2,
         ["sizeY"] = 1
@@ -2689,7 +2689,7 @@ end
         ["equipSlot"] = "Holster",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/special/r1500.png", "mips smooth"),
+        ["icon"] = Material("items/special/r1500.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -2706,7 +2706,7 @@ end
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
-        ["icon"] = Material("items/ammo/762x25.png", "mips smooth"),
+        ["icon"] = Material("items/ammo/762x25.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -2721,7 +2721,7 @@ end
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
-        ["icon"] = Material("items/ammo/9x18.png", "mips smooth"),
+        ["icon"] = Material("items/ammo/9x18.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -2736,7 +2736,7 @@ end
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
-        ["icon"] = Material("items/ammo/9x19.png", "mips smooth"),
+        ["icon"] = Material("items/ammo/9x19.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -2751,7 +2751,7 @@ end
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
-        ["icon"] = Material("items/ammo/9x21.png", "mips smooth"),
+        ["icon"] = Material("items/ammo/9x21.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -2766,7 +2766,7 @@ end
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
-        ["icon"] = Material("items/ammo/357.png", "mips smooth"),
+        ["icon"] = Material("items/ammo/357.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -2781,7 +2781,7 @@ end
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
-        ["icon"] = Material("items/ammo/45.png", "mips smooth"),
+        ["icon"] = Material("items/ammo/45.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -2796,7 +2796,7 @@ end
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
-        ["icon"] = Material("items/ammo/50ae.png", "mips smooth"),
+        ["icon"] = Material("items/ammo/50ae.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -2811,7 +2811,7 @@ end
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 20,
-        ["icon"] = Material("items/ammo/20x1.png", "mips smooth"),
+        ["icon"] = Material("items/ammo/20x1.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -2827,7 +2827,7 @@ end
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
-        ["icon"] = Material("items/ammo/46x30.png", "mips smooth"),
+        ["icon"] = Material("items/ammo/46x30.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -2842,7 +2842,7 @@ end
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
-        ["icon"] = Material("items/ammo/57x28.png", "mips smooth"),
+        ["icon"] = Material("items/ammo/57x28.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -2858,7 +2858,7 @@ end
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
-        ["icon"] = Material("items/ammo/545x39.png", "mips smooth"),
+        ["icon"] = Material("items/ammo/545x39.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -2873,7 +2873,7 @@ end
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
-        ["icon"] = Material("items/ammo/556x45.png", "mips smooth"),
+        ["icon"] = Material("items/ammo/556x45.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -2888,7 +2888,7 @@ end
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 40,
-        ["icon"] = Material("items/ammo/68x51.png", "mips smooth"),
+        ["icon"] = Material("items/ammo/68x51.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -2903,7 +2903,7 @@ end
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
-        ["icon"] = Material("items/ammo/300.png", "mips smooth"),
+        ["icon"] = Material("items/ammo/300.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -2918,7 +2918,7 @@ end
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
-        ["icon"] = Material("items/ammo/762x39.png", "mips smooth"),
+        ["icon"] = Material("items/ammo/762x39.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -2933,7 +2933,7 @@ end
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 40,
-        ["icon"] = Material("items/ammo/762x51.png", "mips smooth"),
+        ["icon"] = Material("items/ammo/762x51.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -2948,7 +2948,7 @@ end
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 40,
-        ["icon"] = Material("items/ammo/762x54.png", "mips smooth"),
+        ["icon"] = Material("items/ammo/762x54.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -2963,7 +2963,7 @@ end
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 40,
-        ["icon"] = Material("items/ammo/338.png", "mips smooth"),
+        ["icon"] = Material("items/ammo/338.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -2978,7 +2978,7 @@ end
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
-        ["icon"] = Material("items/ammo/9x39.png", "mips smooth"),
+        ["icon"] = Material("items/ammo/9x39.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -2993,7 +2993,7 @@ end
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
-        ["icon"] = Material("items/ammo/366.png", "mips smooth"),
+        ["icon"] = Material("items/ammo/366.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -3008,7 +3008,7 @@ end
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 40,
-        ["icon"] = Material("items/ammo/127x55.png", "mips smooth"),
+        ["icon"] = Material("items/ammo/127x55.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -3023,7 +3023,7 @@ end
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 20,
-        ["icon"] = Material("items/ammo/50bmg.png", "mips smooth"),
+        ["icon"] = Material("items/ammo/50bmg.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -3039,7 +3039,7 @@ end
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 20,
-        ["icon"] = Material("items/ammo/12gauge.png", "mips smooth"),
+        ["icon"] = Material("items/ammo/12gauge.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -3054,7 +3054,7 @@ end
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 20,
-        ["icon"] = Material("items/ammo/20gauge.png", "mips smooth"),
+        ["icon"] = Material("items/ammo/20gauge.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -3069,7 +3069,7 @@ end
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 20,
-        ["icon"] = Material("items/ammo/4gauge.png", "mips smooth"),
+        ["icon"] = Material("items/ammo/4gauge.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -3085,7 +3085,7 @@ end
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/ammo/40x46.png", "mips smooth"),
+        ["icon"] = Material("items/ammo/40x46.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -3100,7 +3100,7 @@ end
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/ammo/40x53.png", "mips smooth"),
+        ["icon"] = Material("items/ammo/40x53.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -3116,7 +3116,7 @@ end
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/ammo/26x75.png", "mips smooth"),
+        ["icon"] = Material("items/ammo/26x75.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -3134,7 +3134,7 @@ end
         ["consumableValue"] = 20,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/meds/ai2.png", "mips smooth"),
+        ["icon"] = Material("items/meds/ai2.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -3151,7 +3151,7 @@ end
         ["consumableValue"] = 60,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/meds/ifak.png", "mips smooth"),
+        ["icon"] = Material("items/meds/ifak.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -3168,7 +3168,7 @@ end
         ["consumableValue"] = 100,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/meds/salewa.png", "mips smooth"),
+        ["icon"] = Material("items/meds/salewa.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 2
@@ -3185,7 +3185,7 @@ end
         ["consumableValue"] = 200,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/meds/grizzly.png", "mips smooth"),
+        ["icon"] = Material("items/meds/grizzly.png", "smooth"),
 
         ["sizeX"] = 2,
         ["sizeY"] = 2
@@ -3201,7 +3201,7 @@ end
         ["spawnOnEquip"] = "Jeep",
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("idk", "mips smooth"),
+        ["icon"] = Material("idk", "smooth"),
 
         ["sizeX"] = 12,
         ["sizeY"] = 10

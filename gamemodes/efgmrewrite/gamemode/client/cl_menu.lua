@@ -526,6 +526,74 @@ function Menu:Initialize(openTo)
 
     end
 
+    local marketTab = vgui.Create("DPanel", self.MenuFrame.TabParentPanel)
+    marketTab:Dock(LEFT)
+    marketTab:SetSize(EFGM.MenuScale(38), 0)
+
+    local marketIcon = vgui.Create("DImageButton", marketTab)
+    marketIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
+    marketIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
+    marketIcon:SetImage("icons/market_icon.png")
+    marketIcon:SetDepressImage(false)
+
+    local marketBGColor = MenuAlias.transparent
+    local marketText = "#menu.tab.market"
+    local marketTextSize = surface.GetTextSize(marketText)
+
+    marketTab.Paint = function(s, w, h)
+
+        surface.SetDrawColor(marketBGColor)
+        surface.DrawRect(0, 0, w, h)
+
+        draw.SimpleTextOutlined(marketText, "PuristaBold32", EFGM.MenuScale(43), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        if Menu.ActiveTab == "Market" then
+
+            surface.SetDrawColor(MenuAlias.whiteColor)
+            surface.DrawRect(EFGM.MenuScale(2), EFGM.MenuScale(39), w - EFGM.MenuScale(2), EFGM.MenuScale(2))
+
+        end
+
+    end
+
+    marketIcon.OnCursorEntered = function(s)
+
+        marketTab:SizeTo(EFGM.MenuScale(46) + marketTextSize, marketTab:GetTall(), 0.15, 0, 0.5)
+        surface.PlaySound("ui/element_hover.wav")
+
+    end
+
+    marketIcon.OnCursorExited = function(s)
+
+        marketTab:SizeTo(EFGM.MenuScale(38), marketTab:GetTall(), 0.15, 0, 0.5)
+
+    end
+
+    function marketIcon:DoClick()
+
+        if Menu.ActiveTab == "Market" then return end
+
+        if Menu.ActiveTab == "Match" then
+
+            net.Start("RemovePlayerSquadRF")
+            net.SendToServer()
+
+        end
+
+        surface.PlaySound("ui/element_select.wav")
+
+        Menu.MenuFrame.LowerPanel.Contents:AlphaTo(0, 0.05, 0, function()
+
+            Menu.MenuFrame.LowerPanel.Contents:Remove()
+            Menu.OpenTab.Market()
+            Menu.ActiveTab = "Market"
+
+            Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, nil)
+
+        end)
+
+    end
+
     local tasksTab = vgui.Create("DPanel", self.MenuFrame.TabParentPanel)
     tasksTab:Dock(LEFT)
     tasksTab:SetSize(EFGM.MenuScale(38), 0)
@@ -1840,6 +1908,262 @@ function Menu.OpenTab.Inventory()
     end
     function stashItemsBar.btnGrip:Paint(w, h)
         draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
+    end
+
+end
+
+function Menu.OpenTab.Market()
+
+    local contents = vgui.Create("DPanel", Menu.MenuFrame.LowerPanel)
+    contents:Dock(FILL)
+    contents:DockPadding(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10))
+    contents:SetAlpha(0)
+    contents.Paint = function(s, w, h)
+
+        surface.SetDrawColor(MenuAlias.transparent)
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
+    Menu.MenuFrame.LowerPanel.Contents = contents
+
+    local stashPanel = vgui.Create("DPanel", contents)
+    stashPanel:Dock(LEFT)
+    stashPanel:DockMargin(EFGM.MenuScale(13), 0, 0, 0)
+    stashPanel:SetSize(EFGM.MenuScale(613), 0)
+    stashPanel.Paint = function(s, w, h)
+
+        BlurPanel(s, EFGM.MenuScale(10))
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
+
+    end
+
+    local currentStashUsed = 0
+    local maxStash = 150
+    local stashText = vgui.Create("DPanel", stashPanel)
+    stashText:Dock(TOP)
+    stashText:SetSize(0, EFGM.MenuScale(36))
+    function stashText:Paint(w, h)
+
+        surface.SetDrawColor(Color(155, 155, 155, 10))
+        surface.DrawRect(0, 0, w, h)
+
+        draw.SimpleTextOutlined("STASH", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined(currentStashUsed .. "/" .. maxStash, "PuristaBold18", EFGM.MenuScale(95), EFGM.MenuScale(13), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local stashHolder = vgui.Create("DPanel", stashPanel)
+    stashHolder:Dock(FILL)
+    stashHolder:DockMargin(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(9))
+    stashHolder:SetSize(0, 0)
+    stashHolder.Paint = function(s, w, h)
+
+        surface.SetDrawColor(Color(0, 0, 0, 0))
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
+    local stashInfoText = vgui.Create("DPanel", stashHolder)
+    stashInfoText:Dock(TOP)
+    stashInfoText:SetSize(0, EFGM.MenuScale(28))
+    surface.SetFont("PuristaBold24")
+    local stashValue = 676767
+    local valueText = "EST. VALUE: " .. comma_value(stashValue)
+    local valueTextSize = surface.GetTextSize(valueText)
+    stashInfoText.Paint = function(s, w, h)
+
+        BlurPanel(s, EFGM.MenuScale(3))
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, valueTextSize + EFGM.MenuScale(10), h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, valueTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
+
+        draw.SimpleTextOutlined(valueText, "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local stashSearchButton = vgui.Create("DButton", stashHolder)
+    stashSearchButton:SetPos(EFGM.MenuScale(15) + valueTextSize, EFGM.MenuScale(1))
+    stashSearchButton:SetSize(EFGM.MenuScale(27), EFGM.MenuScale(27))
+    stashSearchButton:SetText("")
+    stashSearchButton.Paint = function(s, w, h)
+
+        BlurPanel(s, EFGM.MenuScale(3))
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+    end
+
+    local stashSearchIcon = vgui.Create("DImage", stashSearchButton)
+    stashSearchIcon:SetPos(EFGM.MenuScale(1), EFGM.MenuScale(1))
+    stashSearchIcon:SetSize(EFGM.MenuScale(25), EFGM.MenuScale(25))
+    stashSearchIcon:SetImage("icons/search_icon.png")
+
+    stashSearchButton.OnCursorEntered = function(s)
+
+        surface.PlaySound("ui/element_hover.wav")
+
+    end
+
+    function stashSearchButton:DoClick()
+
+        surface.PlaySound("ui/element_select.wav")
+
+    end
+
+    local stashFilterButton = vgui.Create("DButton", stashHolder)
+    stashFilterButton:SetPos(EFGM.MenuScale(32) + stashSearchButton:GetX(), EFGM.MenuScale(1))
+    stashFilterButton:SetSize(EFGM.MenuScale(27), EFGM.MenuScale(27))
+    stashFilterButton:SetText("")
+    stashFilterButton.Paint = function(s, w, h)
+
+        BlurPanel(s, EFGM.MenuScale(3))
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+    end
+
+    local stashFilterIcon = vgui.Create("DImage", stashFilterButton)
+    stashFilterIcon:SetPos(EFGM.MenuScale(1), EFGM.MenuScale(1))
+    stashFilterIcon:SetSize(EFGM.MenuScale(26), EFGM.MenuScale(26))
+    stashFilterIcon:SetImage("icons/filter_icon.png")
+
+    stashFilterButton.OnCursorEntered = function(s)
+
+        surface.PlaySound("ui/element_hover.wav")
+
+    end
+
+    function stashFilterButton:DoClick()
+
+        surface.PlaySound("ui/element_select.wav")
+
+    end
+
+    local stashItemsHolder = vgui.Create("DScrollPanel", stashHolder)
+    stashItemsHolder:SetPos(0, EFGM.MenuScale(32))
+    stashItemsHolder:SetSize(EFGM.MenuScale(593), EFGM.MenuScale(872))
+    function stashItemsHolder:Paint(w, h)
+
+        BlurPanel(stashItemsHolder, EFGM.MenuScale(3))
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+    end
+
+    local stashItems = vgui.Create("DIconLayout", stashItemsHolder)
+    stashItems:Dock(FILL)
+    stashItems:SetSpaceY(-1)
+    stashItems:SetSpaceX(-1)
+
+    local stashItemsBar = stashItemsHolder:GetVBar()
+    stashItemsBar:SetHideButtons(true)
+    stashItemsBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+    function stashItemsBar:Paint(w, h)
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
+    end
+    function stashItemsBar.btnGrip:Paint(w, h)
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
+    end
+
+    local marketPanel = vgui.Create("DPanel", contents)
+    marketPanel:Dock(LEFT)
+    marketPanel:DockMargin(EFGM.MenuScale(13), 0, 0, 0)
+    marketPanel:SetSize(EFGM.MenuScale(1226), 0)
+    marketPanel.Paint = function(s, w, h)
+
+        BlurPanel(s, EFGM.MenuScale(10))
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
+
+    end
+
+    local marketText = vgui.Create("DPanel", marketPanel)
+    marketText:Dock(TOP)
+    marketText:SetSize(0, EFGM.MenuScale(36))
+    function marketText:Paint(w, h)
+
+        surface.SetDrawColor(Color(155, 155, 155, 10))
+        surface.DrawRect(0, 0, w, h)
+
+        draw.SimpleTextOutlined("MARKET", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local marketHolder = vgui.Create("DPanel", marketPanel)
+    marketHolder:Dock(FILL)
+    marketHolder:DockMargin(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(9))
+    marketHolder:SetSize(0, 0)
+    marketHolder.Paint = function(s, w, h)
+
+        surface.SetDrawColor(Color(0, 0, 0, 0))
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
+    local marketSearchBox = vgui.Create("DTextEntry", marketHolder)
+    marketSearchBox:SetSize(EFGM.MenuScale(200), EFGM.MenuScale(27))
+    marketSearchBox:SetPos(marketPanel:GetWide() - EFGM.MenuScale(220), EFGM.MenuScale(1))
+    marketSearchBox:SetPlaceholderText("search for items...")
+    marketSearchBox:SetUpdateOnType(true)
+    marketSearchBox:SetTextColor(MenuAlias.whiteColor)
+    marketSearchBox:SetCursorColor(MenuAlias.whiteColor)
+
+    marketSearchBox.OnValueChange = function(self, value)
+
+        -- only show items that fit the text entered
+
+    end
+
+    local marketEntryHolder = vgui.Create("DScrollPanel", marketHolder)
+    marketEntryHolder:SetPos(0, EFGM.MenuScale(32))
+    marketEntryHolder:SetSize(EFGM.MenuScale(1206), EFGM.MenuScale(872))
+    function marketEntryHolder:Paint(w, h)
+
+        BlurPanel(marketEntryHolder, EFGM.MenuScale(3))
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
     end
 
 end
