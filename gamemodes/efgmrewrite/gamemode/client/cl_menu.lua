@@ -2134,6 +2134,81 @@ function Menu.OpenTab.Market()
 
     end
 
+    local marketPageText = vgui.Create("DPanel", marketHolder)
+    marketPageText:Dock(TOP)
+    marketPageText:SetSize(0, EFGM.MenuScale(28))
+    local currentPage = 1
+    local totalPages = 1
+    local pageTextSize = 0
+    marketPageText.Paint = function(s, w, h)
+
+        surface.SetFont("PuristaBold24")
+        local pageText = "PAGE " .. currentPage .. "/" .. totalPages
+        pageTextSize = surface.GetTextSize(pageText)
+
+        BlurPanel(s, EFGM.MenuScale(3))
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, pageTextSize + EFGM.MenuScale(54), h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, pageTextSize + EFGM.MenuScale(54), EFGM.MenuScale(2))
+
+        draw.SimpleTextOutlined(pageText, "PuristaBold24", EFGM.MenuScale(26), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local lastPageIcon = Material("icons/arrow_back_icon.png")
+    local lastPageButton = vgui.Create("DButton", marketPageText)
+    lastPageButton:SetPos(EFGM.MenuScale(0), EFGM.MenuScale(2))
+    lastPageButton:SetSize(EFGM.MenuScale(26), EFGM.MenuScale(26))
+    lastPageButton:SetText("")
+    lastPageButton.Paint = function(s, w, h)
+
+        surface.SetDrawColor(255, 255, 255, 255)
+        surface.SetMaterial(lastPageIcon)
+        surface.DrawTexturedRect(EFGM.MenuScale(3), EFGM.MenuScale(3), EFGM.MenuScale(20), EFGM.MenuScale(20))
+
+    end
+
+    lastPageButton.OnCursorEntered = function(s)
+
+        surface.PlaySound("ui/element_hover.wav")
+
+    end
+
+    function lastPageButton:DoClick()
+
+        surface.PlaySound("ui/element_select.wav")
+
+    end
+
+    local nextPageIcon = Material("icons/arrow_forward_icon.png")
+    local nextPageButton = vgui.Create("DButton", marketPageText)
+    nextPageButton:SetPos(pageTextSize + EFGM.MenuScale(29), EFGM.MenuScale(2))
+    nextPageButton:SetSize(EFGM.MenuScale(26), EFGM.MenuScale(26))
+    nextPageButton:SetText("")
+    nextPageButton.Paint = function(s, w, h)
+
+        s:SetX(pageTextSize + EFGM.MenuScale(29))
+        surface.SetDrawColor(255, 255, 255, 255)
+        surface.SetMaterial(nextPageIcon)
+        surface.DrawTexturedRect(EFGM.MenuScale(3), EFGM.MenuScale(3), EFGM.MenuScale(20), EFGM.MenuScale(20))
+
+    end
+
+    nextPageButton.OnCursorEntered = function(s)
+
+        surface.PlaySound("ui/element_hover.wav")
+
+    end
+
+    function nextPageButton:DoClick()
+
+        surface.PlaySound("ui/element_select.wav")
+
+    end
+
     local marketSearchBox = vgui.Create("DTextEntry", marketHolder)
     marketSearchBox:SetSize(EFGM.MenuScale(200), EFGM.MenuScale(27))
     marketSearchBox:SetPos(marketPanel:GetWide() - EFGM.MenuScale(220), EFGM.MenuScale(1))
@@ -2163,6 +2238,155 @@ function Menu.OpenTab.Market()
         surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
         surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+    end
+
+    local marketCategoryHolder = vgui.Create("DPanel", marketEntryHolder)
+    marketCategoryHolder:SetPos(0, 0)
+    marketCategoryHolder:SetSize(EFGM.MenuScale(216), EFGM.MenuScale(872))
+
+    function marketCategoryHolder:Paint(w, h)
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+    end
+
+    local marketCategoryEntryList = vgui.Create("DCategoryList", marketCategoryHolder)
+    marketCategoryEntryList:Dock(FILL)
+    marketCategoryEntryList:SetBackgroundColor(Color(0, 0, 0, 0))
+    marketCategoryEntryList:GetVBar():SetSize(0, 0)
+
+    local categoryBar = marketCategoryEntryList:GetVBar()
+    categoryBar:SetHideButtons(true)
+    categoryBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+    function categoryBar:Paint(w, h)
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
+    end
+    function categoryBar.btnGrip:Paint(w, h)
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
+    end
+
+    -- market categories
+    -- will load items based on the items "displayType" in it's item def.
+    MarketCat = {}
+
+    MarketCat.WEAPONS = {
+
+        name = "Weapons",
+        items = {"Assault Carbine", "Assault Rifle", "Light Machine Gun", "Pistol", "Shotgun", "Sniper Rifle", "Marksman Rifle", "Submachine Gun", "Launcher", "Melee", "Grenade", "Special"},
+
+        children = {
+
+            ["Assault Carbines"] = "Assault Carbine",
+            ["Assault Rifles"] = "Assault Rifle",
+            ["Light Machine Guns"] = "Light Machine Gun",
+            ["Pistols"] = "Pistol",
+            ["Shotguns"] = "Shotgun",
+            ["Sniper Rifles"] = "Sniper Rifle",
+            ["Marksman Rifles"] = "Marksman Rifle",
+            ["Submachine Guns"] = "Submachine Gun",
+            ["Launchers"] = "Launcher",
+            ["Melee"] = "Melee",
+            ["Grenades"] = "Grenade",
+            ["Specials"] = "Special"
+
+        }
+
+    }
+
+    MarketCat.AMMUNITION = {
+
+        name = "Ammunition",
+        items = {},
+
+        children = {}
+
+    }
+
+    MarketCat.ATTACHMENTS = {
+
+        name = "Attachments",
+        items = {},
+
+        children = {}
+
+    }
+
+    MarketCat.MEDICAL = {
+
+        name = "Medical",
+        items = {},
+
+        children = {}
+
+    }
+
+    MarketCat.KEYS = {
+
+        name = "Keys",
+        items = {},
+
+        children = {}
+
+    }
+
+    MarketCat.BARTER = {
+
+        name = "Barter",
+        items = {},
+
+        children = {}
+
+    }
+
+    MarketCat.MISCELLANEOUS = {
+
+        name = "Miscellaneous",
+        items = {},
+
+        children = {}
+
+    }
+
+    for k1, v1 in pairs(MarketCat) do
+
+        local category = marketCategoryEntryList:Add(string.upper(v1.name))
+        category:DoExpansion(false)
+
+        function category:OnCursorEntered()
+
+            surface.PlaySound("ui/element_hover.wav")
+
+        end
+
+        function category:DoClick()
+
+            surface.PlaySound("ui/element_select.wav")
+
+        end
+
+        for k2, v2 in pairs(v1.children) do
+
+            local entry = category:Add(string.upper(k2))
+
+            function entry:OnCursorEntered()
+
+                surface.PlaySound("ui/element_hover.wav")
+
+            end
+
+            function entry:DoClick()
+
+                surface.PlaySound("ui/element_select.wav")
+
+            end
+
+        end
+
 
     end
 
