@@ -9,23 +9,6 @@ EQUIPTYPE.None = 7
 
 EFGMITEMS = {}
 
-function EFGMITEMS:__index(var)
-	return {
-        ["fullName"] = "MISSING_ITEM",
-        ["displayName"] = "MISSING",
-        ["displayType"] = "???",
-        ["weight"] = 0.1,
-        ["value"] = 0,
-        ["equipType"] = EQUIPTYPE.None,
-        ["appearInInventory"] = true,
-        ["stackSize"] = 1,
-        ["icon"] = Material("missing", "smooth"),
-
-        ["sizeX"] = 1,
-        ["sizeY"] = 1
-    }
-end
-
 -- WEAPONS
     -- assault carbines
     EFGMITEMS["arc9_eft_adar15"] = {

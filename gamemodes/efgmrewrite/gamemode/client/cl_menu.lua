@@ -4,7 +4,7 @@
 Menu = {}
 
 Menu.MusicList = {"sound/music/menu_01.mp4", "sound/music/menu_02.mp4", "sound/music/menu_03.mp4", "sound/music/menu_04.mp4"}
-Menu.TabList = {"stats", "match", "inventory", "intel", "achievements", "settings"}
+Menu.TabList = {"stats", "match", "inventory", "market", "tasks", "skills", "intel", "achievements", "settings"}
 Menu.ActiveTab = ""
 Menu.MouseX = 0
 Menu.MouseY = 0
@@ -1929,7 +1929,6 @@ function Menu.OpenTab.Market()
 
     local stashPanel = vgui.Create("DPanel", contents)
     stashPanel:Dock(LEFT)
-    stashPanel:DockMargin(EFGM.MenuScale(13), 0, 0, 0)
     stashPanel:SetSize(EFGM.MenuScale(613), 0)
     stashPanel.Paint = function(s, w, h)
 
@@ -2098,7 +2097,7 @@ function Menu.OpenTab.Market()
     local marketPanel = vgui.Create("DPanel", contents)
     marketPanel:Dock(LEFT)
     marketPanel:DockMargin(EFGM.MenuScale(13), 0, 0, 0)
-    marketPanel:SetSize(EFGM.MenuScale(1226), 0)
+    marketPanel:SetSize(EFGM.MenuScale(1239), 0)
     marketPanel.Paint = function(s, w, h)
 
         BlurPanel(s, EFGM.MenuScale(10))
@@ -2177,12 +2176,6 @@ function Menu.OpenTab.Market()
 
     end
 
-    function lastPageButton:DoClick()
-
-        surface.PlaySound("ui/element_select.wav")
-
-    end
-
     local nextPageIcon = Material("icons/arrow_forward_icon.png")
     local nextPageButton = vgui.Create("DButton", marketPageText)
     nextPageButton:SetPos(pageTextSize + EFGM.MenuScale(29), EFGM.MenuScale(2))
@@ -2203,12 +2196,6 @@ function Menu.OpenTab.Market()
 
     end
 
-    function nextPageButton:DoClick()
-
-        surface.PlaySound("ui/element_select.wav")
-
-    end
-
     local marketSearchBox = vgui.Create("DTextEntry", marketHolder)
     marketSearchBox:SetSize(EFGM.MenuScale(200), EFGM.MenuScale(27))
     marketSearchBox:SetPos(marketPanel:GetWide() - EFGM.MenuScale(220), EFGM.MenuScale(1))
@@ -2223,9 +2210,9 @@ function Menu.OpenTab.Market()
 
     end
 
-    local marketEntryHolder = vgui.Create("DScrollPanel", marketHolder)
+    local marketEntryHolder = vgui.Create("DPanel", marketHolder)
     marketEntryHolder:SetPos(0, EFGM.MenuScale(32))
-    marketEntryHolder:SetSize(EFGM.MenuScale(1206), EFGM.MenuScale(872))
+    marketEntryHolder:SetSize(EFGM.MenuScale(1219), EFGM.MenuScale(872))
     function marketEntryHolder:Paint(w, h)
 
         BlurPanel(marketEntryHolder, EFGM.MenuScale(3))
@@ -2241,9 +2228,12 @@ function Menu.OpenTab.Market()
 
     end
 
+    local marketTab = "Weapons"
+
     local marketCategoryHolder = vgui.Create("DPanel", marketEntryHolder)
     marketCategoryHolder:SetPos(0, 0)
     marketCategoryHolder:SetSize(EFGM.MenuScale(216), EFGM.MenuScale(872))
+    marketCategoryHolder:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
 
     function marketCategoryHolder:Paint(w, h)
 
@@ -2301,7 +2291,7 @@ function Menu.OpenTab.Market()
     MarketCat.AMMUNITION = {
 
         name = "Ammunition",
-        items = {},
+        items = {"Ammunition"},
 
         children = {}
 
@@ -2310,16 +2300,33 @@ function Menu.OpenTab.Market()
     MarketCat.ATTACHMENTS = {
 
         name = "Attachments",
-        items = {},
+        items = {"Accessory", "Barrel", "Cover", "Foregrip", "Gas Block", "Handguard", "Magazine", "Mount", "Muzzle", "Optic", "Pistol Grip", "Receiver", "Sight", "Stock"},
 
-        children = {}
+        children = {
+
+            ["Accessories"] = "Accessory",
+            ["Barrels"] = "Barrel",
+            ["Dust Covers"] = "Cover",
+            ["Foregrips"] = "Foregrip",
+            ["Gas Blocks"] = "Gas Block",
+            ["Handguards"] = "Handguard",
+            ["Magazines"] = "Magazine",
+            ["Mounts"] = "Mount",
+            ["Muzzles"] = "Muzzle",
+            ["Optics"] = "Optic",
+            ["Pistol Grips"] = "Pistol Grip",
+            ["Receivers"] = "Receiver",
+            ["Sights"] = "Sight",
+            ["Stocks"] = "Stock"
+
+        }
 
     }
 
     MarketCat.MEDICAL = {
 
         name = "Medical",
-        items = {},
+        items = {"Medical"},
 
         children = {}
 
@@ -2328,16 +2335,21 @@ function Menu.OpenTab.Market()
     MarketCat.KEYS = {
 
         name = "Keys",
-        items = {},
+        items = {"Physical Key", "Mechanical Key"},
 
-        children = {}
+        children = {
+
+            ["Physical"] = "Physical Key",
+            ["Mechanical"] = "Mechanical Key",
+
+        }
 
     }
 
     MarketCat.BARTER = {
 
         name = "Barter",
-        items = {},
+        items = {"Barter"},
 
         children = {}
 
@@ -2352,10 +2364,181 @@ function Menu.OpenTab.Market()
 
     }
 
-    for k1, v1 in pairs(MarketCat) do
+    local marketTbl = {}
+
+    local marketItemHolder = vgui.Create("DPanel", marketEntryHolder)
+    marketItemHolder:SetPos(EFGM.MenuScale(216), 0)
+    marketItemHolder:SetSize(EFGM.MenuScale(1003), EFGM.MenuScale(872))
+    marketItemHolder:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
+    function marketItemHolder:Paint(w, h)
+
+        surface.SetDrawColor(Color(0, 0, 0, 0))
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
+    local marketItems = vgui.Create("DIconLayout", marketItemHolder)
+    marketItems:Dock(FILL)
+    marketItems:SetSpaceY(0)
+    marketItems:SetSpaceX(0)
+
+    local function ReloadMarket()
+
+        marketItems:Clear()
+
+        for k, v in pairs(marketTbl) do
+
+            if k >= ((currentPage * 20) - 19) and k <= (currentPage * 20) then
+
+                local item = marketItems:Add("DButton")
+                item:SetSize(EFGM.MenuScale(198), EFGM.MenuScale(216))
+                item:SetText("")
+
+                function item:Paint(w, h)
+
+                    surface.SetDrawColor(Color(5, 5, 5, 20))
+                    surface.DrawRect(0, 0, w, h)
+
+                    surface.SetDrawColor(Color(255, 255, 255, 2))
+                    surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+                    surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                    surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+                    surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                    surface.SetDrawColor(255, 255, 255, 255)
+                    surface.SetMaterial(v.icon)
+
+                    local originalWidth, originalHeight = EFGM.MenuScale(57 * v.sizeX), EFGM.MenuScale(57 * v.sizeY)
+                    local scaleFactor
+                    local targetMaxDimension = EFGM.MenuScale(158)
+
+                    if originalWidth > originalHeight then
+
+                        scaleFactor = targetMaxDimension / originalWidth
+
+                    else
+
+                        scaleFactor = targetMaxDimension / originalHeight
+
+                    end
+
+                    newWidth = math.Round(originalWidth * scaleFactor)
+                    newHeight = math.Round(originalHeight * scaleFactor)
+
+                    surface.DrawTexturedRect(EFGM.MenuScale(20), EFGM.MenuScale(20), newWidth, newHeight)
+
+                end
+
+                local countText
+                surface.SetFont("PuristaBold18")
+
+                if v.durability then countText = v.durability .. "/" .. v.durability else countText = v.stack .. "x" end
+                local countTextSize = surface.GetTextSize(countText)
+
+                local levelText = "LEVEL " .. v.level
+                local levelTextSize = surface.GetTextSize(levelText)
+
+                function item:PaintOver(w, h)
+
+                    surface.SetDrawColor(Color(5, 5, 5, 100))
+                    surface.DrawRect(EFGM.MenuScale(1), h - EFGM.MenuScale(31), w - EFGM.MenuScale(2), EFGM.MenuScale(30))
+
+                    surface.SetDrawColor(Color(80, 80, 80, 50))
+                    surface.DrawRect(EFGM.MenuScale(1), h - EFGM.MenuScale(46), countTextSize + EFGM.MenuScale(10), EFGM.MenuScale(15))
+                    surface.DrawRect(w - levelTextSize - EFGM.MenuScale(8), h - EFGM.MenuScale(46), levelTextSize + EFGM.MenuScale(8), EFGM.MenuScale(15))
+
+                    draw.SimpleTextOutlined(v.name, "PuristaBold18", EFGM.MenuScale(5), EFGM.MenuScale(0), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                    draw.SimpleTextOutlined(countText, "PuristaBold18", EFGM.MenuScale(5), h - EFGM.MenuScale(31), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                    draw.SimpleTextOutlined(levelText, "PuristaBold18", EFGM.MenuScale(w - 3), h - EFGM.MenuScale(31), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+
+                end
+
+            end
+
+        end
+
+    end
+
+    local function UpdateMarketList(items)
+
+        if table.IsEmpty(items) then return end
+
+        marketTbl = {}
+        local numOfItems = 0
+        currentPage = 1
+        totalPages = 0
+
+        for k1, v1 in pairs(items) do
+
+            for k2, v2 in pairs(EFGMITEMS) do
+
+                if v2.displayType == v1 then
+
+                    numOfItems = numOfItems + 1
+
+                    local canPurchase = v2.purchasable or true
+
+                    if !canPurchase then return end
+
+                    local entry = {}
+                    entry.name = v2.displayName
+                    entry.id = k2
+                    entry.icon = v2.icon
+                    entry.value = v2.value or 1000
+                    entry.level = v2.levelreq or 1
+                    if v2.equipType == EQUIPTYPE.Consumable then entry.durability = v2.durability end
+                    entry.stack = v2.stackSize
+                    entry.sizeX = v2.sizeX or 1
+                    entry.sizeY = v2.sizeY or 1
+                    table.insert(marketTbl, entry)
+
+                end
+
+            end
+
+        end
+
+        table.SortByMember(marketTbl, "name", true)
+
+        totalPages = math.ceil(numOfItems / 20)
+        ReloadMarket()
+
+    end
+
+    function nextPageButton:DoClick()
+
+        if currentPage >= totalPages then surface.PlaySound("ui/element_deselect.wav") return end
+
+        surface.PlaySound("ui/element_select.wav")
+
+        currentPage = currentPage + 1
+
+        ReloadMarket()
+
+    end
+
+    function lastPageButton:DoClick()
+
+        if currentPage <= 1 then surface.PlaySound("ui/element_deselect.wav") return end
+
+    surface.PlaySound("ui/element_select.wav")
+
+        currentPage = currentPage - 1
+
+        ReloadMarket()
+
+    end
+
+    -- default to the weapons tab
+    UpdateMarketList(MarketCat.WEAPONS.items)
+
+    for k1, v1 in SortedPairs(MarketCat) do
 
         local category = marketCategoryEntryList:Add(string.upper(v1.name))
-        category:DoExpansion(false)
+        category:SetExpanded(true)
+        category:SetHeaderHeight(EFGM.MenuScale(30))
+
+        if v1.name == "Weapons" then category:SetExpanded(true) end
 
         function category:OnCursorEntered()
 
@@ -2363,13 +2546,20 @@ function Menu.OpenTab.Market()
 
         end
 
-        function category:DoClick()
+        function category:Toggle()
 
             surface.PlaySound("ui/element_select.wav")
 
+            marketCategoryEntryList:UnselectAll()
+
+            if marketTab == v1.name then return end
+
+            marketTab = v1.name
+            UpdateMarketList(v1.items)
+
         end
 
-        for k2, v2 in pairs(v1.children) do
+        for k2, v2 in SortedPairsByValue(v1.children) do
 
             local entry = category:Add(string.upper(k2))
 
@@ -2383,10 +2573,16 @@ function Menu.OpenTab.Market()
 
                 surface.PlaySound("ui/element_select.wav")
 
+                if marketTab == k2 then return end
+
+                marketTab = k2
+                local items = {}
+                table.insert(items, v2)
+                UpdateMarketList(items)
+
             end
 
         end
-
 
     end
 
@@ -3565,383 +3761,6 @@ function Menu.OpenTab.Match()
 
     net.Start("GrabSquadData")
     net.SendToServer()
-
-end
-
-function Menu.OpenTab.Shop()
-
-    local contents = vgui.Create("DPanel", Menu.MenuFrame.LowerPanel)
-    contents:Dock(FILL)
-    contents:DockPadding(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10))
-    contents:SetAlpha(0)
-    contents.Paint = function(s, w, h)
-
-        surface.SetDrawColor(MenuAlias.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
-
-    Menu.MenuFrame.LowerPanel.Contents = contents
-
-    local sellerInventoryPanel, buyInventoryPanel, playerInventoryPanel, sellInventoryPanel = {}, {}, {}, {}
-
-    -- { SELLER (Inventory on right)
-
-        local sellerBackground = vgui.Create("DPanel", contents)
-        sellerBackground:Dock(LEFT)
-        sellerBackground:SetSize(EFGM.MenuScale(650), 0)
-        sellerBackground:DockPadding(unpack(MenuAlias.margins))
-        sellerBackground.Paint = function(s, w, h)
-
-            surface.SetDrawColor(MenuAlias.primaryColor)
-            surface.DrawRect(0, 0, w, h)
-
-        end
-
-        local sellerInventoryScroller = vgui.Create("DScrollPanel", sellerBackground)
-        sellerInventoryScroller:Dock(BOTTOM)
-        sellerInventoryScroller:SetSize(0, EFGM.MenuScale(450))
-        sellerInventoryScroller.Paint = nil
-
-        local buyScroller = vgui.Create("DScrollPanel", sellerBackground)
-        buyScroller:Dock(TOP)
-        buyScroller:SetSize(0, EFGM.MenuScale(200))
-        buyScroller.Paint = nil
-
-    -- }
-
-    -- { PLAYER (Inventory on left)
-
-        local playerBackground = vgui.Create("DPanel", contents)
-        playerBackground:Dock(RIGHT)
-        playerBackground:SetSize(EFGM.MenuScale(650), 0)
-        playerBackground:DockPadding(unpack(MenuAlias.margins))
-        playerBackground.Paint = function(s, w, h)
-
-            surface.SetDrawColor(MenuAlias.primaryColor)
-            surface.DrawRect(0, 0, w, h)
-
-        end
-
-        local playerInventoryScroller = vgui.Create("DScrollPanel", playerBackground)
-        playerInventoryScroller:Dock(BOTTOM)
-        playerInventoryScroller:SetSize(0, EFGM.MenuScale(450))
-        playerInventoryScroller.Paint = nil
-
-        local sellScroller = vgui.Create("DScrollPanel", playerBackground)
-        sellScroller:Dock(TOP)
-        sellScroller:SetSize(0, EFGM.MenuScale(200))
-        sellScroller.Paint = nil
-
-    -- }
-
-    -- { MIDDLE ROW
-
-        local purchaseInfoPanel = vgui.Create("DPanel", contents)
-        purchaseInfoPanel:Dock(TOP)
-        purchaseInfoPanel:SetSize(0, EFGM.MenuScale(200))
-        purchaseInfoPanel.Paint = function(s, w, h)
-
-            surface.SetDrawColor(MenuAlias.secondaryColor)
-            surface.DrawRect(0, 0, w, h)
-
-        end
-
-        local purchaseButton = vgui.Create("DButton", purchaseInfoPanel)
-        purchaseButton:Dock(TOP)
-        purchaseButton:SetText("DEAL")
-        purchaseButton:SetConsoleCommand("efgm_shop_transaction", SHOP:CompileOrders())
-
-    -- }
-
-    -- ima do this shit later
-    -- fucking hell its later
-    
-    local transferLimit = {}
-    transferLimit[1] = 1
-    transferLimit[2] = 500
-
-    local lotToLimit = {}
-
-    lotToLimit[1] = {
-        [-1] = transferLimit[1] -- setting arbitrary transfer limit to 500
-    }
-
-    lotToLimit[2] = {
-        [-1] = transferLimit[2] -- setting arbitrary transfer limit to 500
-    }
-
-    local countNames = {
-
-        [-1] = "A lot"
-
-    }
-
-    -- { INVENTORY INITIALIZATION
-
-    --     playerInventory = inv.NewInventory() -- self[itemname] = table, table.count = int, table.type = int, table.transferCount = int (should be under or equal to count)
-
-    --     sellerInventory = inv.NewInventory()
-
-    --     function playerInventory:TransferItem(item, tCount)
-
-    --         print("transferring "..item.." with transfer count of "..tCount)
-
-    --         if self[item] == nil then return end
-
-    --         self[item].tCount = tCount
-            
-    --         if tCount == 0 then
-
-    --             SHOP:RemoveOrder(item, false)
-
-    --         elseif tCount > 0 && tCount <= transferLimit then
-                
-    --             SHOP:AddOrder(item, self[item].type, tCount, false)
-
-    --         end
-
-    --     end
-
-    --     function sellerInventory:TransferItem(item, tCount)
-
-    --         print("transferring "..item.." with transfer count of "..tCount)
-
-    --         if self[item] == nil then return end
-
-    --         self[item].tCount = tCount
-            
-    --         if tCount == 0 then
-
-    --             SHOP:RemoveOrder(item, true)
-
-    --         elseif tCount > 0 && tCount <= transferLimit then
-                
-    --             SHOP:AddOrder(item, self[item].type, tCount, true)
-
-    --         end
-
-    --     end
-
-    --     for k, v in pairs(Menu.Player:GetWeapons()) do
-            
-    --         local wep = v:GetClass()
-
-    --         if CheckExists[1](wep) then
-                
-    --             playerInventory:AddItem(wep, 1, 1)
-
-    --         end
-
-    --     end
-
-    --     for k, v in pairs(Menu.Player:GetAmmo()) do
-            
-    --         local ammo = game.GetAmmoName(k)
-
-    --         if CheckExists[2](ammo) then
-                
-    --             playerInventory:AddItem(ammo, 2, v)
-
-    --         end
-
-    --     end
-
-    --     for k, v in pairs(ITEMS) do
-                
-    --         sellerInventory:AddItem(k, v[1], -1)
-
-    --         sellerInventory[k] = {}
-    --         sellerInventory[k].count = -1
-    --         sellerInventory[k].type = v[1]
-    --         sellerInventory[k].transferCount = 0
-            
-    --     end
-
-    -- }
-
-    local function drawIcon(item, type, count, iconLayout)
-
-        if !CheckExists[type](item) then return end
-
-        local displayName, model, category, price = GetShopIconInfo[type](item)
-
-        local iconPanel = iconLayout:Add("DPanel")
-        iconPanel:SetSize(EFGM.MenuScale(120), EFGM.MenuScale(120))
-
-        function iconPanel:Paint(w, h)
-
-            surface.SetDrawColor(MenuAlias.secondaryColor)
-            surface.DrawRect(EFGM.MenuScale(5), EFGM.MenuScale(5), w, h)
-
-            draw.DrawText(displayName, "DermaDefaultBold", w / 2, 7, MenuAlias.blackColor, TEXT_ALIGN_CENTER)
-            draw.DrawText(countNames[count] or count, "DermaDefaultBold", w / 2, h - 7, MenuAlias.blackColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
-
-        end
-
-        iconPanel.spawnButton = vgui.Create("SpawnIcon", iconPanel)
-        iconPanel.spawnButton:SetSize(EFGM.MenuScale(80), EFGM.MenuScale(80))
-        iconPanel.spawnButton:Center()
-        iconPanel.spawnButton:SetModel(model)
-        iconPanel.spawnButton:SetTooltip(displayName .." (".. revCat[category] ..")\n$"..price)
-
-        return iconPanel
-
-    end
-
-    local function shitFart(item, itemType, itemCount, itemTCount, iconLayoutP, iconLayoutT, inventory) -- i really dont know what else to call it
-    
-        local iconP, iconT = {} -- shitty solution but idc (p meaning primary, t meaning transfer)
-
-        if itemTCount == 0 then -- if not transferring
-
-            iconP = drawIcon(item, itemType, itemCount, iconLayoutP)
-
-            function iconP.spawnButton:DoClick()
-
-                inventory:TransferItem( item, math.random(0, math.min( lotToLimit[itemCount] or itemCount, transferLimit ) ) )
-                redrawMenus()
-
-            end
-        
-        elseif itemTCount == itemCount then -- if transferring everything
-            
-            iconT = drawIcon(item, itemType, itemTCount, iconLayoutT)
-
-            function iconT.spawnButton:DoClick()
-
-                inventory:TransferItem( item, math.random(0, math.min( lotToLimit[itemCount] or itemCount, transferLimit ) ) )
-                redrawMenus()
-
-            end
-        
-        else -- if partial transfer
-
-            iconT = drawIcon(item, itemType, itemTCount, iconLayoutT)
-
-            function iconT.spawnButton:DoClick()
-
-                inventory:TransferItem( item, math.random(0, math.min( lotToLimit[itemCount] or itemCount, transferLimit ) ) )
-                redrawMenus()
-
-            end
-
-            iconP = drawIcon(item, itemType, math.Clamp( itemCount - itemTCount, -1, transferLimit ), iconLayoutP)
-
-            function iconP.spawnButton:DoClick()
-
-                inventory:TransferItem( item, math.random(0, math.min( lotToLimit[itemCount] or itemCount, transferLimit ) ) )
-                redrawMenus()
-
-            end
-            
-        end
-
-    end
-
-    function drawMenu()
-
-        --{ BULLSHIT
-
-            sellerInventoryPanel = vgui.Create("DIconLayout", sellerInventoryScroller)
-            sellerInventoryPanel:Dock(FILL)
-            sellerInventoryPanel:SetSpaceY(5)
-            sellerInventoryPanel:SetSpaceX(5)
-            sellerInventoryPanel:SetPaintBackgroundEnabled(true)
-            sellerInventoryPanel.Paint = function(self, w, h)
-
-                surface.SetDrawColor(Color(255, 0, 0))
-                surface.DrawRect(0, 0, w, h)
-
-            end
-
-            buyInventoryPanel = vgui.Create("DIconLayout", buyScroller)
-            buyInventoryPanel:Dock(FILL)
-            buyInventoryPanel:SetSpaceY(5)
-            buyInventoryPanel:SetSpaceX(5)
-            buyInventoryPanel:SetPaintBackgroundEnabled(true)
-            buyInventoryPanel.Paint = function(self, w, h)
-
-                surface.SetDrawColor(Color(255, 0, 0))
-                surface.DrawRect(0, 0, w, h)
-
-            end
-
-            playerInventoryPanel = vgui.Create("DIconLayout", playerInventoryScroller)
-            playerInventoryPanel:Dock(FILL)
-            playerInventoryPanel:SetSpaceY(5)
-            playerInventoryPanel:SetSpaceX(5)
-            playerInventoryPanel:SetPaintBackgroundEnabled(true)
-            playerInventoryPanel.Paint = function(self, w, h)
-
-                surface.SetDrawColor(Color(255, 0, 0))
-                surface.DrawRect(0, 0, w, h)
-
-            end
-
-            sellInventoryPanel = vgui.Create("DIconLayout", sellScroller)
-            sellInventoryPanel:Dock(FILL)
-            sellInventoryPanel:SetSpaceY(5)
-            sellInventoryPanel:SetSpaceX(5)
-            sellInventoryPanel:SetPaintBackgroundEnabled(true)
-            sellInventoryPanel.Paint = function(self, w, h)
-
-                surface.SetDrawColor(Color(255, 0, 0))
-                surface.DrawRect(0, 0, w, h)
-
-            end
-
-        --}
-
-        for k, v in pairs(playerInventory) do
-            
-            if(type(v)) == "table" then
-
-                shitFart(k, v.type, v.count, v.tCount or 0, playerInventoryPanel, sellInventoryPanel, playerInventory)
-
-            end
-
-        end
-
-        for k, v in pairs(sellerInventory) do
-            
-            if(type(v)) == "table" then
-
-                shitFart(k, v.type, v.count, v.tCount or 0, sellerInventoryPanel, buyInventoryPanel, sellerInventory)
-                
-            end
-            
-        end
-        
-        -- i hate this awfulness
-        
-        local contentWidth1, contentHeight1 = sellerInventoryPanel:GetContentSize()
-        sellerInventoryScroller:GetCanvas():SetSize(contentWidth1, contentHeight1)
-        
-        local contentWidth2, contentHeight2 = buyInventoryPanel:GetContentSize()
-        buyScroller:GetCanvas():SetSize(contentWidth2, contentHeight2)
-        
-        local contentWidth3, contentHeight3 = playerInventoryPanel:GetContentSize()
-        playerInventoryScroller:GetCanvas():SetSize(contentWidth3, contentHeight3)
-        
-        local contentWidth4, contentHeight4 = sellInventoryPanel:GetContentSize()
-        sellScroller:GetCanvas():SetSize(contentWidth4, contentHeight4)
-
-    end
-
-    function redrawMenus()
-
-        sellerInventoryPanel:Remove()
-        playerInventoryPanel:Remove()
-
-        buyInventoryPanel:Remove()
-        sellInventoryPanel:Remove()
-
-        drawMenu()
-
-    end
-
-    drawMenu()
 
 end
 
