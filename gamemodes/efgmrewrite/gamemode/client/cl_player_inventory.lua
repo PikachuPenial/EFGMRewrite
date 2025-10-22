@@ -115,7 +115,7 @@ function EquipItemFromInventory(itemIndex, equipSlot)
             
             playerWeaponSlots[ equipSlot ][ k ] = item
 
-            table.remove(playerInventory, itemIndex)
+            ReloadInventory()
 
             net.Start("PlayerInventoryEquipItem", false )
                 net.WriteUInt(itemIndex, 16)
@@ -147,77 +147,72 @@ function ConsumeItemFromInventory(itemIndex)
 
 end
 
--- concommand.Add("efgm_inventory_equip", function(ply, cmd, args)
+concommand.Add("efgm_inventory_equip", function(ply, cmd, args)
 
---     PrintTable( LocalPlayer():GetWeapons() )
---     input.SelectWeapon( LocalPlayer():GetWeapons()[1] )
+    -- if subslot is specified it tries to equip that specific slot, and if not it cycles through all subslots for that slot type (eg, for grenades or utility)
+    local equipSlot = tonumber( args[1] )
+    if equipSlot == nil then return end
+    local equipSubSlot = tonumber( args[2] )
 
---     return
+    if equipSubSlot == nil then
 
---     -- -- if subslot is specified it tries to equip that specific slot, and if not it cycles through all subslots for that slot type (eg, for grenades or utility)
---     -- local equipSlot = tonumber( args[1] )
---     -- if equipSlot == nil then return end
---     -- local equipSubSlot = tonumber( args[2] )
+        if playerEquippedSlot == equipSlot then
 
---     -- if equipSubSlot == nil then
+            local subSlotCount = #playerWeaponSlots[equipSlot]
 
---     --     if playerEquippedSlot == equipSlot then
+            if subSlotCount == 1 or playerEquippedSubSlot == subSlotCount then -- selecting first subslot
 
---     --         local subSlotCount = #playerWeaponSlots[equipSlot]
+                local item = playerWeaponSlots[equipSlot][1]
+                if !istable(item) then return end
+                if table.IsEmpty(item) then return end
 
---     --         if subSlotCount == 1 or playerEquippedSubSlot == subSlotCount then -- selecting first subslot
+                weapon = LocalPlayer():GetWeapon(item.name)
+                input.SelectWeapon(weapon)
 
---     --             local item = playerWeaponSlots[equipSlot][1]
---     --             if !istable(item) then return end
---     --             if table.IsEmpty(item) then return end
+                playerEquippedSlot = equipSlot
+                playerEquippedSubSlot = 1
 
---     --             weapon = LocalPlayer():GetWeapon(item.name)
---     --             input.SelectWeapon(weapon)
+            else -- cycling to next subslot
 
---     --             playerEquippedSlot = equipSlot
---     --             playerEquippedSubSlot = 1
+                local item = playerWeaponSlots[equipSlot][playerEquippedSubSlot + 1]
+                if !istable(item) then return end
+                if table.IsEmpty(item) then return end
 
---     --         else -- cycling to next subslot
+                weapon = LocalPlayer():GetWeapon(item.name)
+                input.SelectWeapon(weapon)
 
---     --             local item = playerWeaponSlots[equipSlot][playerEquippedSubSlot + 1]
---     --             if !istable(item) then return end
---     --             if table.IsEmpty(item) then return end
-
---     --             weapon = LocalPlayer():GetWeapon(item.name)
---     --             input.SelectWeapon(weapon)
-
---     --             playerEquippedSlot = equipSlot
---     --             playerEquippedSubSlot = playerEquippedSubSlot + 1
+                playerEquippedSlot = equipSlot
+                playerEquippedSubSlot = playerEquippedSubSlot + 1
                 
---     --         end
+            end
 
---     --     else -- selecting first subslot
+        else -- selecting first subslot
 
---     --         local item = playerWeaponSlots[equipSlot][1]
---     --         if !istable(item) then return end
---     --         if table.IsEmpty(item) then return end
+            local item = playerWeaponSlots[equipSlot][1]
+            if !istable(item) then return end
+            if table.IsEmpty(item) then return end
 
---     --         weapon = LocalPlayer():GetWeapon(item.name)
---     --         input.SelectWeapon(weapon)
+            weapon = LocalPlayer():GetWeapon(item.name)
+            input.SelectWeapon(weapon)
 
---     --         playerEquippedSlot = equipSlot
---     --         playerEquippedSubSlot = 1
+            playerEquippedSlot = equipSlot
+            playerEquippedSubSlot = 1
 
---     --     end
+        end
 
---     -- else -- selecting from subslot
+    else -- selecting from subslot
 
---     --     local item = playerWeaponSlots[equipSlot][equipSubSlot]
---     --     if !istable(item) then return end
---     --     if table.IsEmpty(item) then return end
+        local item = playerWeaponSlots[equipSlot][equipSubSlot]
+        if !istable(item) then return end
+        if table.IsEmpty(item) then return end
 
---     --     weapon = LocalPlayer():GetWeapon(item.name)
---     --     print("item.name = "..item.name)
---     --     input.SelectWeapon(weapon)
+        weapon = LocalPlayer():GetWeapon(item.name)
+        print("item.name = "..item.name)
+        input.SelectWeapon(weapon)
 
---     --     playerEquippedSlot = equipSlot
---     --     playerEquippedSubSlot = equipSubSlot
+        playerEquippedSlot = equipSlot
+        playerEquippedSubSlot = equipSubSlot
         
---     -- end
+    end
 
--- end)
+end)

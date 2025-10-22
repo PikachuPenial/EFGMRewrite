@@ -87,6 +87,7 @@ end
 
 function DeleteItemFromInventory(ply, index)
 
+    print("Deleting "..ply.inventory[index].name.." at index "..index)
     table.remove(ply.inventory, index)
 
     net.Start("PlayerInventoryDeleteItem", false)
@@ -240,7 +241,7 @@ net.Receive("PlayerInventoryEquipItem", function(len, ply)
     
     print("got past amountininventory check")
         
-        table.remove(ply.inventory, itemIndex)
+        DeleteItemFromInventory(ply, itemIndex)
         ply.weaponSlots[equipSlot][equipSubSlot] = item
 
         print("Success! Equipping " .. item.name)
@@ -250,9 +251,6 @@ net.Receive("PlayerInventoryEquipItem", function(len, ply)
         -- go crazy with attachments here penal
 
     end
-
-    PrintTable(ply.inventory)
-    PrintTable(ply.weaponSlots)
 
 end)
 

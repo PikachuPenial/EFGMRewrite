@@ -231,10 +231,7 @@ equipWeaponName = ""
 -- put weapons picked up into players inventory
 hook.Add("PlayerCanPickupWeapon", "InventoryWeaponPickup", function(ply, wep)
 
-	-- if (GetConVar("efgm_debug_pickupinv"):GetInt() == 0) or false then return end
-
 	local wepClass = wep:GetClass()
-    if wep:IsInWorld() then wep:Remove() end
 
 	local data = {}
 
@@ -245,7 +242,6 @@ hook.Add("PlayerCanPickupWeapon", "InventoryWeaponPickup", function(ply, wep)
 	data.att = util.TableToJSON(atts)
 	data.count = 1
 
-	AddItemToInventory(ply, wepClass, EQUIPTYPE.Weapon, data)
 
     tempEquipWeaponName = equipWeaponName
     equipWeaponName = ""
@@ -253,6 +249,21 @@ hook.Add("PlayerCanPickupWeapon", "InventoryWeaponPickup", function(ply, wep)
     print("wepClass = "..wepClass)
     print("tempEquipWeaponName = "..tempEquipWeaponName)
     PrintTable( ply:GetWeapons() )
-	return true
+        
+    if wepClass != tempEquipWeaponName && GetConVar("efgm_debug_pickupinv"):GetInt() == 0 or false then
+        
+	    AddItemToInventory(ply, wepClass, EQUIPTYPE.Weapon, data)
+
+        timer.Simple(0, function()
+            if IsValid(wep) then
+                wep:Remove()
+            end
+        end)
+        
+    end
+
+	if GetConVar("efgm_debug_pickupinv"):GetInt() == 1 or false then return true end
+
+	return wepClass == tempEquipWeaponName
 
 end)
