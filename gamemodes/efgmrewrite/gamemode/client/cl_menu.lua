@@ -2425,7 +2425,10 @@ function Menu.OpenTab.Market()
                     newWidth = math.Round(originalWidth * scaleFactor)
                     newHeight = math.Round(originalHeight * scaleFactor)
 
-                    surface.DrawTexturedRect(EFGM.MenuScale(20), EFGM.MenuScale(20), newWidth, newHeight)
+                    local x = (EFGM.MenuScale(198) / 2) - (newWidth / 2)
+                    local y = (EFGM.MenuScale(216) / 2) - (newHeight / 2)
+
+                    surface.DrawTexturedRect(x, y - EFGM.MenuScale(20), newWidth, newHeight)
 
                 end
 
@@ -2445,11 +2448,11 @@ function Menu.OpenTab.Market()
 
                     surface.SetDrawColor(Color(80, 80, 80, 50))
                     surface.DrawRect(EFGM.MenuScale(1), h - EFGM.MenuScale(46), countTextSize + EFGM.MenuScale(10), EFGM.MenuScale(15))
-                    surface.DrawRect(w - levelTextSize - EFGM.MenuScale(8), h - EFGM.MenuScale(46), levelTextSize + EFGM.MenuScale(8), EFGM.MenuScale(15))
+                    surface.DrawRect(EFGM.MenuScale(1), EFGM.MenuScale(17), levelTextSize + EFGM.MenuScale(8), EFGM.MenuScale(15))
 
                     draw.SimpleTextOutlined(v.name, "PuristaBold18", EFGM.MenuScale(5), EFGM.MenuScale(0), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
                     draw.SimpleTextOutlined(countText, "PuristaBold18", EFGM.MenuScale(5), h - EFGM.MenuScale(31), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
-                    draw.SimpleTextOutlined(levelText, "PuristaBold18", EFGM.MenuScale(w - 3), h - EFGM.MenuScale(31), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                    draw.SimpleTextOutlined(levelText, "PuristaBold18", EFGM.MenuScale(5), EFGM.MenuScale(14), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
                 end
 
