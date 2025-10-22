@@ -155,6 +155,7 @@ function FlowItemToInventory(ply, name, type, data)
 end
 
 -- TODO!!! SORT BY ITEMS WITH THE LEAST AMOUNT IN THEIR DATA COUNT!!! itll be nicer to take from the lower stacks than to take 2 bullets from your perfect 60 stacks of ammo
+-- for some reason this is also not working properly with stacks but i cant be bothered rn
 function DeflowItemsFromInventory(ply, name, count)
 
     local amount = count
@@ -168,12 +169,11 @@ function DeflowItemsFromInventory(ply, name, count)
                 amount = amount - v.data.count
                 DeleteItemFromInventory(ply, k)
 
-            elseif amount < v.data.count then
+            else
 
                 local newData = {}
                 newData.count = ply.inventory[k].data.count - amount
                 UpdateItemFromInventory(ply, k, newData)
-                amount = 0
                 break
 
             end
