@@ -1789,7 +1789,7 @@ EFGMITEMS = {}
         ["stackSize"] = 1,
         ["icon"] = Material("items/weapons/mp5.png", "smooth"),
 
-        ["sizeX"] = 4,
+        ["sizeX"] = 3,
         ["sizeY"] = 2
     }
 

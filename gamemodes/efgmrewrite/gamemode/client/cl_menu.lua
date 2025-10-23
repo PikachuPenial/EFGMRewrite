@@ -2197,20 +2197,6 @@ function Menu.OpenTab.Market()
 
     end
 
-    local marketSearchBox = vgui.Create("DTextEntry", marketHolder)
-    marketSearchBox:SetSize(EFGM.MenuScale(200), EFGM.MenuScale(27))
-    marketSearchBox:SetPos(marketPanel:GetWide() - EFGM.MenuScale(220), EFGM.MenuScale(1))
-    marketSearchBox:SetPlaceholderText("search for items...")
-    marketSearchBox:SetUpdateOnType(true)
-    marketSearchBox:SetTextColor(MenuAlias.whiteColor)
-    marketSearchBox:SetCursorColor(MenuAlias.whiteColor)
-
-    marketSearchBox.OnValueChange = function(self, value)
-
-        -- only show items that fit the text entered
-
-    end
-
     local marketEntryHolder = vgui.Create("DPanel", marketHolder)
     marketEntryHolder:SetPos(0, EFGM.MenuScale(32))
     marketEntryHolder:SetSize(EFGM.MenuScale(1219), EFGM.MenuScale(872))
@@ -2230,6 +2216,7 @@ function Menu.OpenTab.Market()
     end
 
     local marketTab = "Weapons"
+    local marketSearchText = ""
 
     local marketCategoryHolder = vgui.Create("DPanel", marketEntryHolder)
     marketCategoryHolder:SetPos(0, 0)
@@ -2243,6 +2230,40 @@ function Menu.OpenTab.Market()
 
         surface.SetDrawColor(Color(255, 255, 255, 25))
         surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+    end
+
+    local marketSearchBox = vgui.Create("DTextEntry", marketCategoryHolder)
+    marketSearchBox:Dock(TOP)
+    marketSearchBox:DockMargin(0, 0, 0, EFGM.MenuScale(5))
+    marketSearchBox:SetPlaceholderText("search for items...")
+    marketSearchBox:SetUpdateOnType(true)
+    marketSearchBox:SetTextColor(MenuAlias.whiteColor)
+    marketSearchBox:SetCursorColor(MenuAlias.whiteColor)
+
+    local sortBy = "name"
+    local marketSortByButton = vgui.Create("DButton", marketCategoryHolder)
+    marketSortByButton:Dock(TOP)
+    marketSortByButton:SetSize(0, EFGM.MenuScale(20))
+    marketSortByButton:DockMargin(0, 0, 0, EFGM.MenuScale(5))
+    marketSortByButton:SetText("SORT BY NAME")
+
+    marketSortByButton.OnCursorEntered = function(s)
+
+        surface.PlaySound("ui/element_hover.wav")
+
+    end
+
+    local sortWith = "ascending"
+    local marketSortWithButton = vgui.Create("DButton", marketCategoryHolder)
+    marketSortWithButton:Dock(TOP)
+    marketSortWithButton:SetSize(0, EFGM.MenuScale(20))
+    marketSortWithButton:DockMargin(0, 0, 0, EFGM.MenuScale(5))
+    marketSortWithButton:SetText("ASCENDING ORDER")
+
+    marketSortWithButton.OnCursorEntered = function(s)
+
+        surface.PlaySound("ui/element_hover.wav")
 
     end
 
@@ -2264,6 +2285,15 @@ function Menu.OpenTab.Market()
     -- market categories
     -- will load items based on the items "displayType" in it's item def.
     MarketCat = {}
+
+    MarketCat.ALLITEMS = {
+
+        name = "All Items",
+        items = {"Assault Carbine", "Assault Rifle", "Light Machine Gun", "Pistol", "Shotgun", "Sniper Rifle", "Marksman Rifle", "Submachine Gun", "Launcher", "Melee", "Grenade", "Special", "Ammunition", "Accessory", "Barrel", "Cover", "Foregrip", "Gas Block", "Handguard", "Magazine", "Mount", "Muzzle", "Optic", "Pistol Grip", "Receiver", "Sight", "Stock", "Medical", "Physical Key", "Mechanical Key", "Barter"},
+
+        children = {}
+
+    }
 
     MarketCat.WEAPONS = {
 
@@ -2442,6 +2472,12 @@ function Menu.OpenTab.Market()
                 local levelText = "LEVEL " .. v.level
                 local levelTextSize = surface.GetTextSize(levelText)
 
+                surface.SetFont("PuristaBold22")
+                local itemValueText = comma_value(v.value)
+                local itemValueTextSize = surface.GetTextSize(itemValueText)
+
+                local roubleIcon = Material("icons/rouble_icon.png")
+
                 function item:PaintOver(w, h)
 
                     surface.SetDrawColor(Color(5, 5, 5, 100))
@@ -2454,6 +2490,111 @@ function Menu.OpenTab.Market()
                     draw.SimpleTextOutlined(v.name, "PuristaBold18", EFGM.MenuScale(5), EFGM.MenuScale(0), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
                     draw.SimpleTextOutlined(countText, "PuristaBold18", EFGM.MenuScale(5), h - EFGM.MenuScale(31), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
                     draw.SimpleTextOutlined(levelText, "PuristaBold18", EFGM.MenuScale(5), EFGM.MenuScale(14), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                    draw.SimpleTextOutlined(itemValueText, "PuristaBold22", (w / 2) + EFGM.MenuScale(12), h - EFGM.MenuScale(18), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
+
+                    surface.SetDrawColor(255, 255, 255, 255)
+                    surface.SetMaterial(roubleIcon)
+                    surface.DrawTexturedRect((w / 2) - EFGM.MenuScale(12) - (itemValueTextSize / 2), h - EFGM.MenuScale(27), EFGM.MenuScale(20), EFGM.MenuScale(20))
+
+                end
+
+                item.OnCursorEntered = function(s)
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
+                function item:DoClick()
+
+                    surface.PlaySound("ui/element_select.wav")
+
+                end
+
+                function item:DoRightClick()
+
+                    local x, y = marketItemHolder:LocalCursorPos()
+                    surface.PlaySound("ui/element_hover.wav")
+
+                    if x <= (marketItemHolder:GetWide() / 2) then sideH = true else sideH = false end
+                    if y <= (marketItemHolder:GetTall() / 2) then sideV = true else sideV = false end
+
+                    if IsValid(contextMenu) then contextMenu:Remove() end
+                    contextMenu = vgui.Create("DPanel", marketItemHolder)
+                    contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(30))
+                    contextMenu:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
+                    contextMenu:SetAlpha(0)
+                    contextMenu:AlphaTo(255, 0.1, 0, nil)
+                    contextMenu:RequestFocus()
+
+                    if sideH == true then
+
+                        contextMenu:SetX(math.Clamp(x + EFGM.MenuScale(5), EFGM.MenuScale(5), marketItemHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+                    else
+
+                        contextMenu:SetX(math.Clamp(x - contextMenu:GetWide() - EFGM.MenuScale(5), EFGM.MenuScale(5), marketItemHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+                    end
+
+                    if sideV == true then
+
+                        contextMenu:SetY(math.Clamp(y + EFGM.MenuScale(5), EFGM.MenuScale(5), marketItemHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
+
+                    else
+
+                        contextMenu:SetY(math.Clamp(y - contextMenu:GetTall() + EFGM.MenuScale(5), EFGM.MenuScale(5), marketItemHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
+
+                    end
+
+                    contextMenu.Paint = function(s, w, h)
+
+                        if !IsValid(s) then return end
+
+                        BlurPanel(s, EFGM.MenuScale(5))
+
+                        surface.SetDrawColor(Color(5, 5, 5, 50))
+                        surface.DrawRect(0, 0, w, h)
+
+                        surface.SetDrawColor(Color(255, 255, 255, 30))
+                        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+                        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+                        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                        contextMenu:SizeToChildren(true, true)
+
+                    end
+
+                    hook.Add("Think", "CheckIfContextMenuStillFocused", function()
+
+                        if !IsValid(contextMenu) then hook.Remove("Think", "CheckIfContextMenuStillFocused") return end
+                        if (input.IsMouseDown(MOUSE_LEFT) or input.IsMouseDown(MOUSE_RIGHT) or input.IsMouseDown(MOUSE_MIDDLE)) and !contextMenu:IsChildHovered() then contextMenu:KillFocus() hook.Remove("Think", "CheckIfContextMenuStillFocused") end
+
+                    end)
+
+                    function contextMenu:OnFocusChanged(focus)
+
+                        if !focus then contextMenu:AlphaTo(0, 0.1, 0, function() contextMenu:Remove() hook.Remove("Think", "CheckIfContextMenuStillFocused") end) end
+
+                    end
+
+                    local itemInspectButton = vgui.Create("DButton", contextMenu)
+                    itemInspectButton:Dock(TOP)
+                    itemInspectButton:SetSize(0, EFGM.MenuScale(25))
+                    itemInspectButton:SetText("INSPECT")
+
+                    itemInspectButton.OnCursorEntered = function(s)
+
+                        surface.PlaySound("ui/element_hover.wav")
+
+                    end
+
+                    function itemInspectButton:DoClick()
+
+                        surface.PlaySound("ui/element_select.wav")
+                        contextMenu:KillFocus()
+
+                    end
 
                 end
 
@@ -2463,18 +2604,22 @@ function Menu.OpenTab.Market()
 
     end
 
+    local curItems = MarketCat.WEAPONS.items
     local function UpdateMarketList(items)
 
-        if table.IsEmpty(items) then return end
+        if items == nil then items = curItems end
 
         marketTbl = {}
         local numOfItems = 0
         currentPage = 1
         totalPages = 0
+        curItems = items
 
         for k1, v1 in pairs(items) do
 
             for k2, v2 in pairs(EFGMITEMS) do
+
+                if marketSearchText != "" and !(string.find((v2.fullName and v2.fullName or v2.displayName):lower(), marketSearchText) or string.find((k2):lower(), marketSearchText)) then continue end
 
                 if v2.displayType == v1 then
 
@@ -2502,7 +2647,31 @@ function Menu.OpenTab.Market()
 
         end
 
-        table.SortByMember(marketTbl, "name", true)
+        if sortBy == "name" then
+
+            if sortWith == "ascending" then
+
+                table.SortByMember(marketTbl, "name", true)
+
+            else
+
+                table.SortByMember(marketTbl, "name", false)
+
+            end
+
+        elseif sortBy == "value" then
+
+            if sortWith == "ascending" then
+
+                table.SortByMember(marketTbl, "value", true)
+
+            else
+
+                table.SortByMember(marketTbl, "value", false)
+
+            end
+
+        end
 
         totalPages = math.ceil(numOfItems / 20)
         ReloadMarket()
@@ -2525,11 +2694,59 @@ function Menu.OpenTab.Market()
 
         if currentPage <= 1 then surface.PlaySound("ui/element_deselect.wav") return end
 
-    surface.PlaySound("ui/element_select.wav")
+        surface.PlaySound("ui/element_select.wav")
 
         currentPage = currentPage - 1
 
         ReloadMarket()
+
+    end
+
+    marketSearchBox.OnChange = function(self)
+
+        marketSearchText = self:GetValue():lower()
+
+        UpdateMarketList()
+
+    end
+
+    function marketSortByButton:DoClick()
+
+        surface.PlaySound("ui/element_select.wav")
+
+        if sortBy == "name" then
+
+            sortBy = "value"
+            marketSortByButton:SetText("SORT BY VALUE")
+
+        else
+
+            sortBy = "name"
+            marketSortByButton:SetText("SORT BY NAME")
+
+        end
+
+        UpdateMarketList()
+
+    end
+
+    function marketSortWithButton:DoClick()
+
+        surface.PlaySound("ui/element_select.wav")
+
+        if sortWith == "ascending" then
+
+            sortWith = "descending"
+            marketSortWithButton:SetText("DESCENDING ORDER")
+
+        else
+
+            sortWith = "ascending"
+            marketSortWithButton:SetText("ASCENDING ORDER")
+
+        end
+
+        UpdateMarketList()
 
     end
 
@@ -2559,6 +2776,8 @@ function Menu.OpenTab.Market()
             if marketTab == v1.name then return end
 
             marketTab = v1.name
+            marketSearchText = ""
+            marketSearchBox:SetValue("")
             UpdateMarketList(v1.items)
 
         end
@@ -2582,6 +2801,8 @@ function Menu.OpenTab.Market()
                 marketTab = k2
                 local items = {}
                 table.insert(items, v2)
+                marketSearchText = ""
+                marketSearchBox:SetValue("")
                 UpdateMarketList(items)
 
             end

@@ -6,6 +6,7 @@ local function CreateFonts()
     surface.CreateFont("PuristaBold14", {font = "PuristaBold", size = EFGM.MenuScale(14), weight = 500, antialias = true, extended = true})
     surface.CreateFont("PuristaBold16", {font = "PuristaBold", size = EFGM.MenuScale(16), weight = 500, antialias = true, extended = true})
     surface.CreateFont("PuristaBold18", {font = "PuristaBold", size = EFGM.MenuScale(18), weight = 500, antialias = true, extended = true})
+    surface.CreateFont("PuristaBold22", {font = "PuristaBold", size = EFGM.MenuScale(22), weight = 500, antialias = true, extended = true})
     surface.CreateFont("Purista18", {font = "Purista", size = EFGM.MenuScale(18), weight = 500, antialias = true, extended = true})
 
     -- use instead of 'DermaLarge' & refer to the second instruction on line 6
