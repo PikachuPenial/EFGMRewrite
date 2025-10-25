@@ -2,8 +2,8 @@
 playerInventory = {}
 
 playerWeaponSlots = {}
-for k, v in pairs( WEAPONSLOTS ) do
-    
+for k, v in pairs(WEAPONSLOTS) do
+
     playerWeaponSlots[v.ID] = {}
 
     for i = 1, v.COUNT, 1 do
@@ -21,8 +21,8 @@ function ReinstantiateInventory()
     playerInventory = {}
 
     playerWeaponSlots = {}
-    for k, v in pairs( WEAPONSLOTS ) do
-    
+    for k, v in pairs(WEAPONSLOTS) do
+
     playerWeaponSlots[v.ID] = {}
 
     for i = 1, v.COUNT, 1 do
@@ -99,7 +99,7 @@ end
 
 -- returns bool whether or not it could equip an item clientside (desync may be an issue since server could disagree and neither side would know)
 function EquipItemFromInventory(itemIndex, equipSlot)
-    
+
     local item = playerInventory[itemIndex]
     if item == nil then return end
 
@@ -112,7 +112,7 @@ function EquipItemFromInventory(itemIndex, equipSlot)
     for k, v in ipairs( playerWeaponSlots[ equipSlot ] ) do
 
         if table.IsEmpty(v) then
-            
+
             playerWeaponSlots[ equipSlot ][ k ] = item
 
             ReloadInventory()
@@ -122,7 +122,7 @@ function EquipItemFromInventory(itemIndex, equipSlot)
                 net.WriteUInt(equipSlot, 4)
                 net.WriteUInt(k, 16)
             net.SendToServer()
-            
+
             ReloadInventory()
 
             return true
@@ -183,7 +183,7 @@ concommand.Add("efgm_inventory_equip", function(ply, cmd, args)
 
                 playerEquippedSlot = equipSlot
                 playerEquippedSubSlot = playerEquippedSubSlot + 1
-                
+
             end
 
         else -- selecting first subslot
@@ -207,12 +207,12 @@ concommand.Add("efgm_inventory_equip", function(ply, cmd, args)
         if table.IsEmpty(item) then return end
 
         weapon = LocalPlayer():GetWeapon(item.name)
-        print("item.name = "..item.name)
+        -- print("item.name = " .. item.name)
         input.SelectWeapon(weapon)
 
         playerEquippedSlot = equipSlot
         playerEquippedSubSlot = equipSubSlot
-        
+
     end
 
 end)

@@ -13,7 +13,7 @@ hook.Add("PlayerSpawn", "InventorySetup", function(ply)
 
     ply.weaponSlots = {}
     for k, v in pairs( WEAPONSLOTS ) do
-        
+
         ply.weaponSlots[v.ID] = {}
 
         for i = 1, v.COUNT, 1 do
@@ -30,7 +30,7 @@ function ReinstantiateInventory(ply)
 
     ply.weaponSlots = {}
     for k, v in pairs( WEAPONSLOTS ) do
-        
+
         ply.weaponSlots[v.ID] = {}
 
         for i = 1, v.COUNT, 1 do
@@ -38,7 +38,7 @@ function ReinstantiateInventory(ply)
         end
 
     end
-    
+
     print("server inventory flushed")
 
 end
@@ -87,7 +87,7 @@ end
 
 function DeleteItemFromInventory(ply, index)
 
-    print("Deleting "..ply.inventory[index].name.." at index "..index)
+    print("Deleting " .. ply.inventory[index].name .. " at index " .. index)
     table.remove(ply.inventory, index)
 
     net.Start("PlayerInventoryDeleteItem", false)
@@ -232,15 +232,15 @@ net.Receive("PlayerInventoryEquipItem", function(len, ply)
 
     print("got past item nil check")
 
-    print(AmountInInventory( ply.weaponSlots[ equipSlot ], item.name ).." of "..item.name.." in inventory")
+    print(AmountInInventory( ply.weaponSlots[ equipSlot ], item.name ) .. " of " .. item.name .. " in inventory")
     if AmountInInventory( ply.weaponSlots[ equipSlot ], item.name ) > 0 then return end -- can't have multiple of the same item
 
     print("got past amountininventory check")
 
     if table.IsEmpty( ply.weaponSlots[equipSlot][equipSubSlot] ) then
-    
+
     print("got past amountininventory check")
-        
+
         DeleteItemFromInventory(ply, itemIndex)
         ply.weaponSlots[equipSlot][equipSubSlot] = item
 

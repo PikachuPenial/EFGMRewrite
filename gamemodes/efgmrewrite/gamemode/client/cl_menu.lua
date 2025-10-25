@@ -1050,17 +1050,11 @@ function Menu.OpenTab.Inventory()
 
     end
 
-    local function WeaponSlotDrop(self, panels, bDoDrop, Command, x, y)
-        if (bDoDrop) then
-            surface.PlaySound("ui/element_hover.wav")
-        end
-    end
-
     -- secondary slot
     local secondaryWeaponHolder = vgui.Create("DPanel", equipmentHolder)
     secondaryWeaponHolder:SetSize(EFGM.MenuScale(285), EFGM.MenuScale(114))
     secondaryWeaponHolder:SetPos(equipmentHolder:GetWide() - secondaryWeaponHolder:GetWide(), equipmentHolder:GetTall() - secondaryWeaponHolder:GetTall())
-    secondaryWeaponHolder:Receiver("slot_primary", WeaponSlotDrop())
+
     function secondaryWeaponHolder:Paint(w, h)
 
         BlurPanel(secondaryWeaponHolder, EFGM.MenuScale(3))
@@ -1101,6 +1095,7 @@ function Menu.OpenTab.Inventory()
     local primaryWeaponHolder = vgui.Create("DPanel", equipmentHolder)
     primaryWeaponHolder:SetSize(EFGM.MenuScale(285), EFGM.MenuScale(114))
     primaryWeaponHolder:SetPos(equipmentHolder:GetWide() - primaryWeaponHolder:GetWide(), secondaryWeaponHolder:GetY() - primaryWeaponHolder:GetTall() - EFGM.MenuScale(40))
+
     function primaryWeaponHolder:Paint(w, h)
 
         BlurPanel(primaryWeaponHolder, EFGM.MenuScale(3))
@@ -1141,6 +1136,7 @@ function Menu.OpenTab.Inventory()
     local holsterWeaponHolder = vgui.Create("DPanel", equipmentHolder)
     holsterWeaponHolder:SetSize(EFGM.MenuScale(114), EFGM.MenuScale(57))
     holsterWeaponHolder:SetPos(equipmentHolder:GetWide() - holsterWeaponHolder:GetWide(), primaryWeaponHolder:GetY() - holsterWeaponHolder:GetTall() - EFGM.MenuScale(40))
+
     function holsterWeaponHolder:Paint(w, h)
 
         BlurPanel(holsterWeaponHolder, EFGM.MenuScale(3))
@@ -1181,6 +1177,7 @@ function Menu.OpenTab.Inventory()
     local meleeWeaponHolder = vgui.Create("DPanel", equipmentHolder)
     meleeWeaponHolder:SetSize(EFGM.MenuScale(114), EFGM.MenuScale(57))
     meleeWeaponHolder:SetPos(equipmentHolder:GetWide() - meleeWeaponHolder:GetWide(), holsterWeaponHolder:GetY() - meleeWeaponHolder:GetTall() - EFGM.MenuScale(40))
+
     function meleeWeaponHolder:Paint(w, h)
 
         BlurPanel(meleeWeaponHolder, EFGM.MenuScale(3))
@@ -1216,6 +1213,632 @@ function Menu.OpenTab.Inventory()
     meleeWeaponIcon:SetSize(EFGM.MenuScale(60), EFGM.MenuScale(40))
     meleeWeaponIcon:SetImage("icons/inventory_melee_icon.png")
     meleeWeaponIcon:SetImageColor(Color(255, 255, 255, 10))
+
+    function ReloadSlots()
+
+        if !table.IsEmpty(playerWeaponSlots[1][1]) then
+
+            -- PRIMARY
+
+            local i = EFGMITEMS[playerWeaponSlots[1][1].name]
+
+            if IsValid(primaryItem) then primaryItem:Remove() end
+            primaryItem = vgui.Create("DButton", primaryWeaponHolder)
+            primaryItem:Dock(FILL)
+            primaryItem:SetText("")
+
+            primaryWeaponHolder:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
+            primaryWeaponIcon:Hide()
+
+            function primaryItem:Paint(w, h)
+
+                surface.SetDrawColor(Color(5, 5, 5, 20))
+                surface.DrawRect(0, 0, w, h)
+
+                surface.SetDrawColor(Color(255, 255, 255, 2))
+                surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+                surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+                surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                surface.SetDrawColor(255, 255, 255, 255)
+                surface.SetMaterial(i.icon)
+                surface.DrawTexturedRect(0, 0, w, h)
+
+            end
+
+            surface.SetFont("Purista18")
+
+            local nameSize = surface.GetTextSize(i.displayName)
+            local nameFont
+
+            if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18"
+            else nameFont = "PuristaBold14" end
+
+            function primaryItem:PaintOver(w, h)
+
+                draw.SimpleTextOutlined(i.displayName, nameFont, EFGM.MenuScale(w - 3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            end
+
+            primaryItem.OnCursorEntered = function(s)
+
+                surface.PlaySound("ui/element_hover.wav")
+
+            end
+
+            function primaryItem:DoRightClick()
+
+                local x, y = equipmentHolder:LocalCursorPos()
+                surface.PlaySound("ui/element_hover.wav")
+
+                if x <= (equipmentHolder:GetWide() / 2) then sideH = true else sideH = false end
+                if y <= (equipmentHolder:GetTall() / 2) then sideV = true else sideV = false end
+
+                if IsValid(contextMenu) then contextMenu:Remove() end
+                contextMenu = vgui.Create("DPanel", equipmentHolder)
+                contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(30))
+                contextMenu:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
+                contextMenu:SetAlpha(0)
+                contextMenu:AlphaTo(255, 0.1, 0, nil)
+                contextMenu:RequestFocus()
+
+                if sideH == true then
+
+                    contextMenu:SetX(math.Clamp(x + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+                else
+
+                    contextMenu:SetX(math.Clamp(x - contextMenu:GetWide() - EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+                end
+
+                if sideV == true then
+
+                    contextMenu:SetY(math.Clamp(y + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
+
+                else
+
+                    contextMenu:SetY(math.Clamp(y - contextMenu:GetTall() + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
+
+                end
+
+                contextMenu.Paint = function(s, w, h)
+
+                    if !IsValid(s) then return end
+
+                    BlurPanel(s, EFGM.MenuScale(5))
+
+                    surface.SetDrawColor(Color(5, 5, 5, 50))
+                    surface.DrawRect(0, 0, w, h)
+
+                    surface.SetDrawColor(Color(255, 255, 255, 30))
+                    surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+                    surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                    surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+                    surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                    contextMenu:SizeToChildren(true, true)
+
+                end
+
+                hook.Add("Think", "CheckIfContextMenuStillFocused", function()
+
+                    if !IsValid(contextMenu) then hook.Remove("Think", "CheckIfContextMenuStillFocused") return end
+                    if (input.IsMouseDown(MOUSE_LEFT) or input.IsMouseDown(MOUSE_RIGHT) or input.IsMouseDown(MOUSE_MIDDLE)) and !contextMenu:IsChildHovered() then contextMenu:KillFocus() hook.Remove("Think", "CheckIfContextMenuStillFocused") end
+
+                end)
+
+                function contextMenu:OnFocusChanged(focus)
+
+                    if !focus then contextMenu:AlphaTo(0, 0.1, 0, function() contextMenu:Remove() hook.Remove("Think", "CheckIfContextMenuStillFocused") end) end
+
+                end
+
+                local itemInspectButton = vgui.Create("DButton", contextMenu)
+                itemInspectButton:Dock(TOP)
+                itemInspectButton:SetSize(0, EFGM.MenuScale(25))
+                itemInspectButton:SetText("INSPECT")
+
+                itemInspectButton.OnCursorEntered = function(s)
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
+                function itemInspectButton:DoClick()
+
+                    surface.PlaySound("ui/element_select.wav")
+                    contextMenu:KillFocus()
+
+                end
+
+            end
+
+        else primaryWeaponIcon:Show() end
+
+        if !table.IsEmpty(playerWeaponSlots[1][2]) then
+
+            -- SECONDARY
+            local i = EFGMITEMS[playerWeaponSlots[1][2].name]
+
+            if IsValid(secondaryItem) then secondaryItem:Remove() end
+            secondaryItem = vgui.Create("DButton", secondaryWeaponHolder)
+            secondaryItem:Dock(FILL)
+            secondaryItem:SetText("")
+
+            secondaryWeaponHolder:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
+            secondaryWeaponIcon:Hide()
+
+            function secondaryItem:Paint(w, h)
+
+                surface.SetDrawColor(Color(5, 5, 5, 20))
+                surface.DrawRect(0, 0, w, h)
+
+                surface.SetDrawColor(Color(255, 255, 255, 2))
+                surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+                surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+                surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                surface.SetDrawColor(255, 255, 255, 255)
+                surface.SetMaterial(i.icon)
+                surface.DrawTexturedRect(0, 0, w, h)
+
+            end
+
+            surface.SetFont("Purista18")
+
+            local nameSize = surface.GetTextSize(i.displayName)
+            local nameFont
+
+            if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18"
+            else nameFont = "PuristaBold14" end
+
+            function secondaryItem:PaintOver(w, h)
+
+                draw.SimpleTextOutlined(i.displayName, nameFont, EFGM.MenuScale(w - 3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            end
+
+            secondaryItem.OnCursorEntered = function(s)
+
+                surface.PlaySound("ui/element_hover.wav")
+
+            end
+
+            function secondaryItem:DoRightClick()
+
+                local x, y = equipmentHolder:LocalCursorPos()
+                surface.PlaySound("ui/element_hover.wav")
+
+                if x <= (equipmentHolder:GetWide() / 2) then sideH = true else sideH = false end
+                if y <= (equipmentHolder:GetTall() / 2) then sideV = true else sideV = false end
+
+                if IsValid(contextMenu) then contextMenu:Remove() end
+                contextMenu = vgui.Create("DPanel", equipmentHolder)
+                contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(30))
+                contextMenu:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
+                contextMenu:SetAlpha(0)
+                contextMenu:AlphaTo(255, 0.1, 0, nil)
+                contextMenu:RequestFocus()
+
+                if sideH == true then
+
+                    contextMenu:SetX(math.Clamp(x + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+                else
+
+                    contextMenu:SetX(math.Clamp(x - contextMenu:GetWide() - EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+                end
+
+                if sideV == true then
+
+                    contextMenu:SetY(math.Clamp(y + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
+
+                else
+
+                    contextMenu:SetY(math.Clamp(y - contextMenu:GetTall() + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
+
+                end
+
+                contextMenu.Paint = function(s, w, h)
+
+                    if !IsValid(s) then return end
+
+                    BlurPanel(s, EFGM.MenuScale(5))
+
+                    surface.SetDrawColor(Color(5, 5, 5, 50))
+                    surface.DrawRect(0, 0, w, h)
+
+                    surface.SetDrawColor(Color(255, 255, 255, 30))
+                    surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+                    surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                    surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+                    surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                    contextMenu:SizeToChildren(true, true)
+
+                end
+
+                hook.Add("Think", "CheckIfContextMenuStillFocused", function()
+
+                    if !IsValid(contextMenu) then hook.Remove("Think", "CheckIfContextMenuStillFocused") return end
+                    if (input.IsMouseDown(MOUSE_LEFT) or input.IsMouseDown(MOUSE_RIGHT) or input.IsMouseDown(MOUSE_MIDDLE)) and !contextMenu:IsChildHovered() then contextMenu:KillFocus() hook.Remove("Think", "CheckIfContextMenuStillFocused") end
+
+                end)
+
+                function contextMenu:OnFocusChanged(focus)
+
+                    if !focus then contextMenu:AlphaTo(0, 0.1, 0, function() contextMenu:Remove() hook.Remove("Think", "CheckIfContextMenuStillFocused") end) end
+
+                end
+
+                local itemInspectButton = vgui.Create("DButton", contextMenu)
+                itemInspectButton:Dock(TOP)
+                itemInspectButton:SetSize(0, EFGM.MenuScale(25))
+                itemInspectButton:SetText("INSPECT")
+
+                itemInspectButton.OnCursorEntered = function(s)
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
+                function itemInspectButton:DoClick()
+
+                    surface.PlaySound("ui/element_select.wav")
+                    contextMenu:KillFocus()
+
+                end
+
+            end
+
+        else secondaryWeaponIcon:Show() end
+
+        if !table.IsEmpty(playerWeaponSlots[2][1]) then
+
+            -- HOLSTER
+
+            local i = EFGMITEMS[playerWeaponSlots[2][1].name]
+
+            if IsValid(holsterItem) then holsterItem:Remove() end
+            holsterItem = vgui.Create("DButton", holsterWeaponHolder)
+            holsterItem:Dock(FILL)
+            holsterItem:SetText("")
+
+            holsterWeaponHolder:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
+            holsterWeaponIcon:Hide()
+
+            function holsterItem:Paint(w, h)
+
+                surface.SetDrawColor(Color(5, 5, 5, 20))
+                surface.DrawRect(0, 0, w, h)
+
+                surface.SetDrawColor(Color(255, 255, 255, 2))
+                surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+                surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+                surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                surface.SetDrawColor(255, 255, 255, 255)
+                surface.SetMaterial(i.icon)
+                surface.DrawTexturedRect(0, 0, w, h)
+
+            end
+
+            surface.SetFont("Purista18")
+
+            local nameSize = surface.GetTextSize(i.displayName)
+            local nameFont
+
+            if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18"
+            else nameFont = "PuristaBold14" end
+
+            function holsterItem:PaintOver(w, h)
+
+                draw.SimpleTextOutlined(i.displayName, nameFont, EFGM.MenuScale(w - 3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            end
+
+            holsterItem.OnCursorEntered = function(s)
+
+                surface.PlaySound("ui/element_hover.wav")
+
+            end
+
+            function holsterItem:DoRightClick()
+
+                local x, y = equipmentHolder:LocalCursorPos()
+                surface.PlaySound("ui/element_hover.wav")
+
+                if x <= (equipmentHolder:GetWide() / 2) then sideH = true else sideH = false end
+                if y <= (equipmentHolder:GetTall() / 2) then sideV = true else sideV = false end
+
+                if IsValid(contextMenu) then contextMenu:Remove() end
+                contextMenu = vgui.Create("DPanel", equipmentHolder)
+                contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(30))
+                contextMenu:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
+                contextMenu:SetAlpha(0)
+                contextMenu:AlphaTo(255, 0.1, 0, nil)
+                contextMenu:RequestFocus()
+
+                if sideH == true then
+
+                    contextMenu:SetX(math.Clamp(x + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+                else
+
+                    contextMenu:SetX(math.Clamp(x - contextMenu:GetWide() - EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+                end
+
+                if sideV == true then
+
+                    contextMenu:SetY(math.Clamp(y + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
+
+                else
+
+                    contextMenu:SetY(math.Clamp(y - contextMenu:GetTall() + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
+
+                end
+
+                contextMenu.Paint = function(s, w, h)
+
+                    if !IsValid(s) then return end
+
+                    BlurPanel(s, EFGM.MenuScale(5))
+
+                    surface.SetDrawColor(Color(5, 5, 5, 50))
+                    surface.DrawRect(0, 0, w, h)
+
+                    surface.SetDrawColor(Color(255, 255, 255, 30))
+                    surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+                    surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                    surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+                    surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                    contextMenu:SizeToChildren(true, true)
+
+                end
+
+                hook.Add("Think", "CheckIfContextMenuStillFocused", function()
+
+                    if !IsValid(contextMenu) then hook.Remove("Think", "CheckIfContextMenuStillFocused") return end
+                    if (input.IsMouseDown(MOUSE_LEFT) or input.IsMouseDown(MOUSE_RIGHT) or input.IsMouseDown(MOUSE_MIDDLE)) and !contextMenu:IsChildHovered() then contextMenu:KillFocus() hook.Remove("Think", "CheckIfContextMenuStillFocused") end
+
+                end)
+
+                function contextMenu:OnFocusChanged(focus)
+
+                    if !focus then contextMenu:AlphaTo(0, 0.1, 0, function() contextMenu:Remove() hook.Remove("Think", "CheckIfContextMenuStillFocused") end) end
+
+                end
+
+                local itemInspectButton = vgui.Create("DButton", contextMenu)
+                itemInspectButton:Dock(TOP)
+                itemInspectButton:SetSize(0, EFGM.MenuScale(25))
+                itemInspectButton:SetText("INSPECT")
+
+                itemInspectButton.OnCursorEntered = function(s)
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
+                function itemInspectButton:DoClick()
+
+                    surface.PlaySound("ui/element_select.wav")
+                    contextMenu:KillFocus()
+
+                end
+
+            end
+
+        else holsterWeaponIcon:Show() end
+
+        if !table.IsEmpty(playerWeaponSlots[3][1]) then
+
+            -- MELEE
+
+            local i = EFGMITEMS[playerWeaponSlots[3][1].name]
+
+            if IsValid(meleeItem) then meleeItem:Remove() end
+            meleeItem = vgui.Create("DButton", meleeWeaponHolder)
+            meleeItem:Dock(FILL)
+            meleeItem:SetText("")
+
+            meleeWeaponHolder:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
+            meleeWeaponIcon:Hide()
+
+            function meleeItem:Paint(w, h)
+
+                surface.SetDrawColor(Color(5, 5, 5, 20))
+                surface.DrawRect(0, 0, w, h)
+
+                surface.SetDrawColor(Color(255, 255, 255, 2))
+                surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+                surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+                surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                surface.SetDrawColor(255, 255, 255, 255)
+                surface.SetMaterial(i.icon)
+                surface.DrawTexturedRect(0, 0, w, h)
+
+            end
+
+            surface.SetFont("Purista18")
+
+            local nameSize = surface.GetTextSize(i.displayName)
+            local nameFont
+
+            if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18"
+            else nameFont = "PuristaBold14" end
+
+            function meleeItem:PaintOver(w, h)
+
+                draw.SimpleTextOutlined(i.displayName, nameFont, EFGM.MenuScale(w - 3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            end
+
+            meleeItem.OnCursorEntered = function(s)
+
+                surface.PlaySound("ui/element_hover.wav")
+
+            end
+
+            function meleeItem:DoRightClick()
+
+                local x, y = equipmentHolder:LocalCursorPos()
+                surface.PlaySound("ui/element_hover.wav")
+
+                if x <= (equipmentHolder:GetWide() / 2) then sideH = true else sideH = false end
+                if y <= (equipmentHolder:GetTall() / 2) then sideV = true else sideV = false end
+
+                if IsValid(contextMenu) then contextMenu:Remove() end
+                contextMenu = vgui.Create("DPanel", equipmentHolder)
+                contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(30))
+                contextMenu:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
+                contextMenu:SetAlpha(0)
+                contextMenu:AlphaTo(255, 0.1, 0, nil)
+                contextMenu:RequestFocus()
+
+                if sideH == true then
+
+                    contextMenu:SetX(math.Clamp(x + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+                else
+
+                    contextMenu:SetX(math.Clamp(x - contextMenu:GetWide() - EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+                end
+
+                if sideV == true then
+
+                    contextMenu:SetY(math.Clamp(y + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
+
+                else
+
+                    contextMenu:SetY(math.Clamp(y - contextMenu:GetTall() + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
+
+                end
+
+                contextMenu.Paint = function(s, w, h)
+
+                    if !IsValid(s) then return end
+
+                    BlurPanel(s, EFGM.MenuScale(5))
+
+                    surface.SetDrawColor(Color(5, 5, 5, 50))
+                    surface.DrawRect(0, 0, w, h)
+
+                    surface.SetDrawColor(Color(255, 255, 255, 30))
+                    surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+                    surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                    surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+                    surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                    contextMenu:SizeToChildren(true, true)
+
+                end
+
+                hook.Add("Think", "CheckIfContextMenuStillFocused", function()
+
+                    if !IsValid(contextMenu) then hook.Remove("Think", "CheckIfContextMenuStillFocused") return end
+                    if (input.IsMouseDown(MOUSE_LEFT) or input.IsMouseDown(MOUSE_RIGHT) or input.IsMouseDown(MOUSE_MIDDLE)) and !contextMenu:IsChildHovered() then contextMenu:KillFocus() hook.Remove("Think", "CheckIfContextMenuStillFocused") end
+
+                end)
+
+                function contextMenu:OnFocusChanged(focus)
+
+                    if !focus then contextMenu:AlphaTo(0, 0.1, 0, function() contextMenu:Remove() hook.Remove("Think", "CheckIfContextMenuStillFocused") end) end
+
+                end
+
+                local itemInspectButton = vgui.Create("DButton", contextMenu)
+                itemInspectButton:Dock(TOP)
+                itemInspectButton:SetSize(0, EFGM.MenuScale(25))
+                itemInspectButton:SetText("INSPECT")
+
+                itemInspectButton.OnCursorEntered = function(s)
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
+                function itemInspectButton:DoClick()
+
+                    surface.PlaySound("ui/element_select.wav")
+                    contextMenu:KillFocus()
+
+                end
+
+            end
+
+        else meleeWeaponIcon:Show() end
+
+        secondaryWeaponHolder:SetPos(equipmentHolder:GetWide() - secondaryWeaponHolder:GetWide(), equipmentHolder:GetTall() - secondaryWeaponHolder:GetTall())
+        secondaryWeaponText:SetPos(equipmentHolder:GetWide() - secondaryWeaponText:GetWide(), secondaryWeaponHolder:GetY() - EFGM.MenuScale(30))
+        primaryWeaponHolder:SetPos(equipmentHolder:GetWide() - primaryWeaponHolder:GetWide(), secondaryWeaponHolder:GetY() - primaryWeaponHolder:GetTall() - EFGM.MenuScale(40))
+        primaryWeaponText:SetPos(equipmentHolder:GetWide() - primaryWeaponText:GetWide(), primaryWeaponHolder:GetY() - EFGM.MenuScale(30))
+        holsterWeaponHolder:SetPos(equipmentHolder:GetWide() - holsterWeaponHolder:GetWide(), primaryWeaponHolder:GetY() - holsterWeaponHolder:GetTall() - EFGM.MenuScale(40))
+        holsterWeaponText:SetPos(equipmentHolder:GetWide() - holsterWeaponText:GetWide(), holsterWeaponHolder:GetY() - EFGM.MenuScale(30))
+        meleeWeaponHolder:SetPos(equipmentHolder:GetWide() - meleeWeaponHolder:GetWide(), holsterWeaponHolder:GetY() - meleeWeaponHolder:GetTall() - EFGM.MenuScale(40))
+        meleeWeaponText:SetPos(equipmentHolder:GetWide() - meleeWeaponText:GetWide(), meleeWeaponHolder:GetY() - EFGM.MenuScale(30))
+
+    end
+
+    ReloadSlots()
+
+    secondaryWeaponHolder:Receiver("slot_primary", function(self, panels, dropped, _, x, y)
+
+        if dropped then
+
+            surface.PlaySound("ui/element_select.wav")
+            EquipItemFromInventory(panels[1].ID, panels[1].SLOT)
+            ReloadSlots()
+
+        end
+
+    end)
+
+    primaryWeaponHolder:Receiver("slot_primary", function(self, panels, dropped, _, x, y)
+
+        if dropped then
+
+            surface.PlaySound("ui/element_select.wav")
+            EquipItemFromInventory(panels[1].ID, panels[1].SLOT)
+            ReloadSlots()
+
+        end
+
+    end)
+
+    holsterWeaponHolder:Receiver("slot_holster", function(self, panels, dropped, _, x, y)
+
+        if dropped then
+
+            surface.PlaySound("ui/element_select.wav")
+            EquipItemFromInventory(panels[1].ID, panels[1].SLOT)
+            ReloadSlots()
+
+        end
+
+    end)
+
+    meleeWeaponHolder:Receiver("slot_melee", function(self, panels, dropped, _, x, y)
+
+        if dropped then
+
+            surface.PlaySound("ui/element_select.wav")
+            EquipItemFromInventory(panels[1].ID, panels[1].SLOT)
+            ReloadSlots()
+
+        end
+
+    end)
 
     local healthHolder = vgui.Create("DPanel", playerPanel)
     healthHolder:SetPos(EFGM.MenuScale(10), EFGM.MenuScale(895))
@@ -1468,13 +2091,15 @@ function Menu.OpenTab.Inventory()
             item:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
             item:SetText("")
             item:Droppable("items")
+            item.ID = v.id
+            item.SLOT = i.equipSlot
 
-            if i.equipType == EQUIPTYPE.Weapon then
+            if item.SLOT == EQUIPTYPE.Weapon then
 
-                if i.equipSlot == "Primary" then item:Droppable("slot_primary") end
-                if i.equipSlot == "Holster" then item:Droppable("slot_holster") end
-                if i.equipSlot == "Melee" then item:Droppable("slot_melee") end
-                if i.equipSlot == "Grenade" then item:Droppable("slot_grenade") end
+                if i.equipSlot == WEAPONSLOTS.PRIMARY.ID then item:Droppable("slot_primary") end
+                if i.equipSlot == WEAPONSLOTS.HOLSTER.ID then item:Droppable("slot_holster") end
+                if i.equipSlot == WEAPONSLOTS.MELEE.ID then item:Droppable("slot_melee") end
+                if i.equipSlot == WEAPONSLOTS.GRENADE.ID then item:Droppable("slot_grenade") end
 
             end
 
