@@ -6,6 +6,7 @@ util.AddNetworkString("PlayerInventoryDeleteItem")
 util.AddNetworkString("PlayerInventoryDropItem")
 util.AddNetworkString("PlayerInventoryEquipItem")
 util.AddNetworkString("PlayerInventoryUnEquipItem")
+util.AddNetworkString("PlayerInventoryDropEquippedItem")
 util.AddNetworkString("PlayerInventoryConsumeItem")
 
 hook.Add("PlayerSpawn", "InventorySetup", function(ply)
@@ -303,6 +304,53 @@ net.Receive("PlayerInventoryUnEquipItem", function(len, ply)
     net.WriteTable(item.data)
     net.WriteUInt(index, 16)
     net.Send(ply)
+
+end)
+
+net.Receive("PlayerInventoryDropEquippedItem", function(len, ply)
+
+    equipID = net.ReadUInt(4)
+    equipSlot = net.ReadUInt(4)
+
+    local item = table.Copy(ply.weaponSlots[equipID][equipSlot])
+
+    if table.IsEmpty(item) then return end
+
+    table.Empty(ply.weaponSlots[equipID][equipSlot])
+
+    local wep = ply:GetWeapon(item.name)
+
+    if wep != NULL and item.data.att then
+
+        local atts = table.Copy(wep.Attachments)
+
+        for k, v in pairs(atts) do PruneUnnecessaryAttachmentDataRecursive(v) end
+
+        item.data.att = util.TableToJSON(atts)
+
+    end
+
+    ply:StripWeapon(item.name)
+
+    local newWep = ents.Create(item.name)
+
+    if item.data.att then
+
+        local attachments = util.JSONToTable(item.data.att)
+
+        for k, v in pairs(attachments) do DecompressTableRecursive(v) end
+
+        newWep.Attachments = table.Copy(attachments)
+
+    end
+
+    newWep:SetPos(ply:GetShootPos() + ply:GetForward() * 128)
+    newWep:Spawn()
+    newWep:PhysWake()
+
+    if type(newWep.GetData) == "function" then newWep:GetData(data) end
+
+    table.remove(ply.inventory, itemIndex)
 
 end)
 

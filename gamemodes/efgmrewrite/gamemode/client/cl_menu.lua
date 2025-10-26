@@ -1226,8 +1226,11 @@ function Menu.OpenTab.Inventory()
             primaryItem = vgui.Create("DButton", primaryWeaponHolder)
             primaryItem:Dock(FILL)
             primaryItem:SetText("")
+            primaryItem:Droppable("items")
+            primaryItem:Droppable("slot_primary")
             primaryItem.SLOTID = 1
             primaryItem.SLOT = 1
+            primaryItem.ORIGIN = "equipped"
 
             primaryWeaponHolder:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
             primaryWeaponIcon:Hide()
@@ -1388,6 +1391,8 @@ function Menu.OpenTab.Inventory()
 
                 function itemDropButton:DoClick()
 
+                    DropEquippedItem(primaryItem.SLOTID, primaryItem.SLOT)
+
                     surface.PlaySound("ui/element_select.wav")
                     contextMenu:KillFocus()
 
@@ -1412,8 +1417,11 @@ function Menu.OpenTab.Inventory()
             secondaryItem = vgui.Create("DButton", secondaryWeaponHolder)
             secondaryItem:Dock(FILL)
             secondaryItem:SetText("")
+            secondaryItem:Droppable("items")
+            secondaryItem:Droppable("slot_primary")
             secondaryItem.SLOTID = 1
             secondaryItem.SLOT = 2
+            secondaryItem.ORIGIN = "equipped"
 
             secondaryWeaponHolder:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
             secondaryWeaponIcon:Hide()
@@ -1574,6 +1582,8 @@ function Menu.OpenTab.Inventory()
 
                 function itemDropButton:DoClick()
 
+                    DropEquippedItem(secondaryItem.SLOTID, secondaryItem.SLOT)
+
                     surface.PlaySound("ui/element_select.wav")
                     contextMenu:KillFocus()
 
@@ -1583,7 +1593,7 @@ function Menu.OpenTab.Inventory()
 
         else
 
-            secondaryWeaponIcon:SetSize(EFGM.MenuScale(285), EFGM.MenuScale(114))
+            secondaryWeaponHolder:SetSize(EFGM.MenuScale(285), EFGM.MenuScale(114))
             secondaryWeaponIcon:Show()
             if IsValid(secondaryItem) then secondaryItem:Remove() end
 
@@ -1599,8 +1609,11 @@ function Menu.OpenTab.Inventory()
             holsterItem = vgui.Create("DButton", holsterWeaponHolder)
             holsterItem:Dock(FILL)
             holsterItem:SetText("")
+            holsterItem:Droppable("items")
+            holsterItem:Droppable("slot_holster")
             holsterItem.SLOTID = 2
             holsterItem.SLOT = 1
+            holsterItem.ORIGIN = "equipped"
 
             holsterWeaponHolder:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
             holsterWeaponIcon:Hide()
@@ -1761,6 +1774,8 @@ function Menu.OpenTab.Inventory()
 
                 function itemDropButton:DoClick()
 
+                    DropEquippedItem(holsterItem.SLOTID, holsterItem.SLOT)
+
                     surface.PlaySound("ui/element_select.wav")
                     contextMenu:KillFocus()
 
@@ -1786,8 +1801,11 @@ function Menu.OpenTab.Inventory()
             meleeItem = vgui.Create("DButton", meleeWeaponHolder)
             meleeItem:Dock(FILL)
             meleeItem:SetText("")
+            meleeItem:Droppable("items")
+            meleeItem:Droppable("slot_melee")
             meleeItem.SLOTID = 3
             meleeItem.SLOT = 1
+            meleeItem.ORIGIN = "equipped"
 
             meleeWeaponHolder:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
             meleeWeaponIcon:Hide()
@@ -1948,6 +1966,8 @@ function Menu.OpenTab.Inventory()
 
                 function itemDropButton:DoClick()
 
+                    DropEquippedItem(meleeItem.SLOTID, meleeItem.SLOT)
+
                     surface.PlaySound("ui/element_select.wav")
                     contextMenu:KillFocus()
 
@@ -1978,10 +1998,12 @@ function Menu.OpenTab.Inventory()
 
     secondaryWeaponHolder:Receiver("slot_primary", function(self, panels, dropped, _, x, y)
 
-        if dropped then
+        if !dropped then return end
+
+        if panels[1].ORIGIN == "inventory" and table.IsEmpty(playerWeaponSlots[1][2]) then
 
             surface.PlaySound("ui/element_select.wav")
-            EquipItemFromInventory(panels[1].ID, panels[1].SLOT)
+            EquipItemFromInventory(panels[1].ID, panels[1].SLOT, 2)
             ReloadSlots()
 
         end
@@ -1990,10 +2012,12 @@ function Menu.OpenTab.Inventory()
 
     primaryWeaponHolder:Receiver("slot_primary", function(self, panels, dropped, _, x, y)
 
-        if dropped then
+        if !dropped then return end
+
+        if panels[1].ORIGIN == "inventory" and table.IsEmpty(playerWeaponSlots[1][1]) then
 
             surface.PlaySound("ui/element_select.wav")
-            EquipItemFromInventory(panels[1].ID, panels[1].SLOT)
+            EquipItemFromInventory(panels[1].ID, panels[1].SLOT, 1)
             ReloadSlots()
 
         end
@@ -2002,7 +2026,9 @@ function Menu.OpenTab.Inventory()
 
     holsterWeaponHolder:Receiver("slot_holster", function(self, panels, dropped, _, x, y)
 
-        if dropped then
+        if !dropped then return end
+
+        if panels[1].ORIGIN == "inventory" and table.IsEmpty(playerWeaponSlots[2][1]) then
 
             surface.PlaySound("ui/element_select.wav")
             EquipItemFromInventory(panels[1].ID, panels[1].SLOT)
@@ -2014,7 +2040,9 @@ function Menu.OpenTab.Inventory()
 
     meleeWeaponHolder:Receiver("slot_melee", function(self, panels, dropped, _, x, y)
 
-        if dropped then
+        if !dropped then return end
+
+        if panels[1].ORIGIN == "inventory" and table.IsEmpty(playerWeaponSlots[3][1]) then
 
             surface.PlaySound("ui/element_select.wav")
             EquipItemFromInventory(panels[1].ID, panels[1].SLOT)
@@ -2234,6 +2262,19 @@ function Menu.OpenTab.Inventory()
 
     end
 
+    playerItemsHolder:Receiver("items", function(self, panels, dropped, _, x, y)
+
+        if !dropped then return end
+
+        if panels[1].ORIGIN == "equipped" then
+
+            surface.PlaySound("ui/element_select.wav")
+            UnEquipItemFromInventory(panels[1].SLOTID, panels[1].SLOT)
+
+        end
+
+    end)
+
     local playerItems = vgui.Create("DIconLayout", playerItemsHolder)
     playerItems:Dock(FILL)
     playerItems:SetSpaceY(0)
@@ -2277,6 +2318,7 @@ function Menu.OpenTab.Inventory()
             item:Droppable("items")
             item.ID = v.id
             item.SLOT = i.equipSlot
+            item.ORIGIN = "inventory"
 
             if item.SLOT == EQUIPTYPE.Weapon then
 

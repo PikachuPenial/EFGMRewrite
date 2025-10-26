@@ -77,30 +77,30 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
 
         -- equip primary
         if button == ply:GetInfoNum("efgm_bind_equip_primary1", KEY_1) then
-            ply:ConCommand("efgm_inventory_equip "..WEAPONSLOTS.PRIMARY.ID.." 1")
+            ply:ConCommand("efgm_inventory_equip " .. WEAPONSLOTS.PRIMARY.ID .. " 1")
             return
         end
 
         if button == ply:GetInfoNum("efgm_bind_equip_primary2", KEY_2) then
-            ply:ConCommand("efgm_inventory_equip "..WEAPONSLOTS.PRIMARY.ID.." 2")
+            ply:ConCommand("efgm_inventory_equip " .. WEAPONSLOTS.PRIMARY.ID .. " 2")
             return
         end
 
         -- equip holster
         if button == ply:GetInfoNum("efgm_bind_equip_secondary", KEY_3) then
-            ply:ConCommand("efgm_inventory_equip "..WEAPONSLOTS.HOLSTER.ID)
+            ply:ConCommand("efgm_inventory_equip " .. WEAPONSLOTS.HOLSTER.ID)
             return
         end
 
         -- equip melee
         if button == ply:GetInfoNum("efgm_bind_equip_melee", KEY_V) then
-            ply:ConCommand("efgm_inventory_equip "..WEAPONSLOTS.MELEE.ID)
+            ply:ConCommand("efgm_inventory_equip " .. WEAPONSLOTS.MELEE.ID)
             return
         end
 
         -- equip grenade
         if button == ply:GetInfoNum("efgm_bind_equip_grenade", KEY_4) then
-            ply:ConCommand("efgm_inventory_equip "..WEAPONSLOTS.GRENADE.ID)
+            ply:ConCommand("efgm_inventory_equip " .. WEAPONSLOTS.GRENADE.ID)
             return
         end
 

@@ -98,29 +98,44 @@ function DropItemFromInventory(itemIndex, data)
 end
 
 -- returns bool whether or not it could equip an item clientside (desync may be an issue since server could disagree and neither side would know)
-function EquipItemFromInventory(itemIndex, equipSlot)
+function EquipItemFromInventory(itemIndex, equipSlot, primaryPref)
 
     local item = playerInventory[itemIndex]
     if item == nil then return end
 
-    print(itemIndex)
-    print(equipSlot)
+    print("SLOT IS " .. equipSlot)
 
-    if AmountInInventory( playerWeaponSlots[ equipSlot ], item.name ) != 0 then return end -- can't have multiple of the same item
+    if AmountInInventory(playerWeaponSlots[equipSlot], item.name ) != 0 then return end -- can't have multiple of the same item
 
     -- checking item equip slots
-    for k, v in ipairs( playerWeaponSlots[ equipSlot ] ) do
+    if equipSlot == 1 and primaryPref != nil then
 
-        if table.IsEmpty(v) then
+        if primaryPref == 1 then
 
-            playerWeaponSlots[ equipSlot ][ k ] = item
+            playerWeaponSlots[equipSlot][1] = item
 
             ReloadInventory()
 
             net.Start("PlayerInventoryEquipItem", false )
                 net.WriteUInt(itemIndex, 16)
                 net.WriteUInt(equipSlot, 4)
-                net.WriteUInt(k, 16)
+                net.WriteUInt(1, 16)
+            net.SendToServer()
+
+            ReloadInventory()
+
+            return true
+
+        else
+
+            playerWeaponSlots[equipSlot][2] = item
+
+            ReloadInventory()
+
+            net.Start("PlayerInventoryEquipItem", false )
+                net.WriteUInt(itemIndex, 16)
+                net.WriteUInt(equipSlot, 4)
+                net.WriteUInt(2, 16)
             net.SendToServer()
 
             ReloadInventory()
@@ -129,10 +144,31 @@ function EquipItemFromInventory(itemIndex, equipSlot)
 
         end
 
-    end
+    else
 
-    PrintTable(playerInventory)
-    PrintTable(playerWeaponSlots)
+        for k, v in ipairs(playerWeaponSlots[equipSlot]) do
+
+            if table.IsEmpty(v) then
+
+                playerWeaponSlots[equipSlot][k] = item
+
+                ReloadInventory()
+
+                net.Start("PlayerInventoryEquipItem", false )
+                    net.WriteUInt(itemIndex, 16)
+                    net.WriteUInt(equipSlot, 4)
+                    net.WriteUInt(k, 16)
+                net.SendToServer()
+
+                ReloadInventory()
+
+                return true
+
+            end
+
+        end
+
+    end
 
     return false
 
@@ -157,6 +193,25 @@ function UnEquipItemFromInventory(equipID, equipSlot)
 
 end
 
+function DropEquippedItem(equipID, equipSlot)
+
+    local item = playerWeaponSlots[equipID][equipSlot]
+
+    if table.IsEmpty(item) then return end
+
+    table.Empty(playerWeaponSlots[equipID][equipSlot])
+
+    ReloadSlots()
+
+    net.Start("PlayerInventoryDropEquippedItem", false)
+        net.WriteUInt(equipID, 4)
+        net.WriteUInt(equipSlot, 4)
+    net.SendToServer()
+
+    ReloadSlots()
+
+end
+
 function ConsumeItemFromInventory(itemIndex)
 
     net.Start("PlayerInventoryConsumeItem", false)
@@ -169,9 +224,9 @@ end
 concommand.Add("efgm_inventory_equip", function(ply, cmd, args)
 
     -- if subslot is specified it tries to equip that specific slot, and if not it cycles through all subslots for that slot type (eg, for grenades or utility)
-    local equipSlot = tonumber( args[1] )
+    local equipSlot = tonumber(args[1])
     if equipSlot == nil then return end
-    local equipSubSlot = tonumber( args[2] )
+    local equipSubSlot = tonumber(args[2])
 
     if equipSubSlot == nil then
 
