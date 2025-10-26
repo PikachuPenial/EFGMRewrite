@@ -10,7 +10,6 @@ if CLIENT then
     CreateClientConVar("efgm_bind_changefiremode", KEY_B, true, true, "Determines the keybind that toggles between available fire modes for your weapon")
     CreateClientConVar("efgm_bind_inspectweapon", KEY_I, true, true, "Determines the keybind that inspects your weapon")
     CreateClientConVar("efgm_bind_toggleubgl", KEY_N, true, true, "Determines the keybind that toggles to and from your UBGL")
-    CreateClientConVar("efgm_bind_dropweapon", KEY_MINUS, true, true, "Determines the keybind that drops your held weapon")
     CreateClientConVar("efgm_bind_teaminvite", KEY_PERIOD, true, true, "Determines the keybind that invites someone to your team, or accepts somebody else's team ivnite")
 
     CreateClientConVar("efgm_bind_equip_primary1", KEY_1, true, true, "Determines the keybind that equips your first primary")
@@ -21,13 +20,6 @@ if CLIENT then
 end
 
 hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
-    if SERVER then
-        -- drop weapon
-        if button == ply:GetInfoNum("efgm_bind_dropweapon", KEY_MINUS) then
-            ply:DropWeapon(ply:GetActiveWeapon())
-            return
-        end
-    end
 
     if CLIENT then
         -- toggle menu
@@ -205,12 +197,6 @@ if game.SinglePlayer() then
     hook.Add("PlayerButtonDown", "EFGMBindsSP", function(ply, button)
 
         if SERVER then
-            -- drop weapon
-            if button == ply:GetInfoNum("efgm_bind_dropweapon", KEY_MINUS) then
-                ply:DropWeapon(ply:GetActiveWeapon())
-                return
-            end
-
             -- toggle menu
             if button == ply:GetInfoNum("efgm_bind_menu", KEY_TAB) then
                 ply:ConCommand("efgm_gamemenu Stats")

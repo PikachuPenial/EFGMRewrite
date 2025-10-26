@@ -1226,6 +1226,8 @@ function Menu.OpenTab.Inventory()
             primaryItem = vgui.Create("DButton", primaryWeaponHolder)
             primaryItem:Dock(FILL)
             primaryItem:SetText("")
+            primaryItem.SLOTID = 1
+            primaryItem.SLOT = 1
 
             primaryWeaponHolder:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
             primaryWeaponIcon:Hide()
@@ -1353,9 +1355,53 @@ function Menu.OpenTab.Inventory()
 
                 end
 
+                local itemUnequipButton = vgui.Create("DButton", contextMenu)
+                itemUnequipButton:Dock(TOP)
+                itemUnequipButton:SetSize(0, EFGM.MenuScale(25))
+                itemUnequipButton:SetText("UNEQUIP")
+
+                itemUnequipButton.OnCursorEntered = function(s)
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
+                function itemUnequipButton:DoClick()
+
+                    UnEquipItemFromInventory(primaryItem.SLOTID, primaryItem.SLOT)
+
+                    surface.PlaySound("ui/element_select.wav")
+                    contextMenu:KillFocus()
+
+                end
+
+                local itemDropButton = vgui.Create("DButton", contextMenu)
+                itemDropButton:Dock(TOP)
+                itemDropButton:SetSize(0, EFGM.MenuScale(25))
+                itemDropButton:SetText("DROP")
+
+                itemDropButton.OnCursorEntered = function(s)
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
+                function itemDropButton:DoClick()
+
+                    surface.PlaySound("ui/element_select.wav")
+                    contextMenu:KillFocus()
+
+                end
+
             end
 
-        else primaryWeaponIcon:Show() end
+        else
+
+            primaryWeaponHolder:SetSize(EFGM.MenuScale(285), EFGM.MenuScale(114))
+            primaryWeaponIcon:Show()
+            if IsValid(primaryItem) then primaryItem:Remove() end
+
+        end
 
         if !table.IsEmpty(playerWeaponSlots[1][2]) then
 
@@ -1366,6 +1412,8 @@ function Menu.OpenTab.Inventory()
             secondaryItem = vgui.Create("DButton", secondaryWeaponHolder)
             secondaryItem:Dock(FILL)
             secondaryItem:SetText("")
+            secondaryItem.SLOTID = 1
+            secondaryItem.SLOT = 2
 
             secondaryWeaponHolder:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
             secondaryWeaponIcon:Hide()
@@ -1493,9 +1541,53 @@ function Menu.OpenTab.Inventory()
 
                 end
 
+                local itemUnequipButton = vgui.Create("DButton", contextMenu)
+                itemUnequipButton:Dock(TOP)
+                itemUnequipButton:SetSize(0, EFGM.MenuScale(25))
+                itemUnequipButton:SetText("UNEQUIP")
+
+                itemUnequipButton.OnCursorEntered = function(s)
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
+                function itemUnequipButton:DoClick()
+
+                    UnEquipItemFromInventory(secondaryItem.SLOTID, secondaryItem.SLOT)
+
+                    surface.PlaySound("ui/element_select.wav")
+                    contextMenu:KillFocus()
+
+                end
+
+                local itemDropButton = vgui.Create("DButton", contextMenu)
+                itemDropButton:Dock(TOP)
+                itemDropButton:SetSize(0, EFGM.MenuScale(25))
+                itemDropButton:SetText("DROP")
+
+                itemDropButton.OnCursorEntered = function(s)
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
+                function itemDropButton:DoClick()
+
+                    surface.PlaySound("ui/element_select.wav")
+                    contextMenu:KillFocus()
+
+                end
+
             end
 
-        else secondaryWeaponIcon:Show() end
+        else
+
+            secondaryWeaponIcon:SetSize(EFGM.MenuScale(285), EFGM.MenuScale(114))
+            secondaryWeaponIcon:Show()
+            if IsValid(secondaryItem) then secondaryItem:Remove() end
+
+        end
 
         if !table.IsEmpty(playerWeaponSlots[2][1]) then
 
@@ -1507,6 +1599,8 @@ function Menu.OpenTab.Inventory()
             holsterItem = vgui.Create("DButton", holsterWeaponHolder)
             holsterItem:Dock(FILL)
             holsterItem:SetText("")
+            holsterItem.SLOTID = 2
+            holsterItem.SLOT = 1
 
             holsterWeaponHolder:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
             holsterWeaponIcon:Hide()
@@ -1634,9 +1728,53 @@ function Menu.OpenTab.Inventory()
 
                 end
 
+                local itemUnequipButton = vgui.Create("DButton", contextMenu)
+                itemUnequipButton:Dock(TOP)
+                itemUnequipButton:SetSize(0, EFGM.MenuScale(25))
+                itemUnequipButton:SetText("UNEQUIP")
+
+                itemUnequipButton.OnCursorEntered = function(s)
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
+                function itemUnequipButton:DoClick()
+
+                    UnEquipItemFromInventory(holsterItem.SLOTID, holsterItem.SLOT)
+
+                    surface.PlaySound("ui/element_select.wav")
+                    contextMenu:KillFocus()
+
+                end
+
+                local itemDropButton = vgui.Create("DButton", contextMenu)
+                itemDropButton:Dock(TOP)
+                itemDropButton:SetSize(0, EFGM.MenuScale(25))
+                itemDropButton:SetText("DROP")
+
+                itemDropButton.OnCursorEntered = function(s)
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
+                function itemDropButton:DoClick()
+
+                    surface.PlaySound("ui/element_select.wav")
+                    contextMenu:KillFocus()
+
+                end
+
             end
 
-        else holsterWeaponIcon:Show() end
+        else
+
+            holsterWeaponHolder:SetSize(EFGM.MenuScale(114), EFGM.MenuScale(57))
+            holsterWeaponIcon:Show()
+            if IsValid(holsterItem) then holsterItem:Remove() end
+
+        end
 
         if !table.IsEmpty(playerWeaponSlots[3][1]) then
 
@@ -1648,6 +1786,8 @@ function Menu.OpenTab.Inventory()
             meleeItem = vgui.Create("DButton", meleeWeaponHolder)
             meleeItem:Dock(FILL)
             meleeItem:SetText("")
+            meleeItem.SLOTID = 3
+            meleeItem.SLOT = 1
 
             meleeWeaponHolder:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
             meleeWeaponIcon:Hide()
@@ -1775,9 +1915,53 @@ function Menu.OpenTab.Inventory()
 
                 end
 
+                local itemUnequipButton = vgui.Create("DButton", contextMenu)
+                itemUnequipButton:Dock(TOP)
+                itemUnequipButton:SetSize(0, EFGM.MenuScale(25))
+                itemUnequipButton:SetText("UNEQUIP")
+
+                itemUnequipButton.OnCursorEntered = function(s)
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
+                function itemUnequipButton:DoClick()
+
+                    UnEquipItemFromInventory(meleeItem.SLOTID, meleeItem.SLOT)
+
+                    surface.PlaySound("ui/element_select.wav")
+                    contextMenu:KillFocus()
+
+                end
+
+                local itemDropButton = vgui.Create("DButton", contextMenu)
+                itemDropButton:Dock(TOP)
+                itemDropButton:SetSize(0, EFGM.MenuScale(25))
+                itemDropButton:SetText("DROP")
+
+                itemDropButton.OnCursorEntered = function(s)
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
+                function itemDropButton:DoClick()
+
+                    surface.PlaySound("ui/element_select.wav")
+                    contextMenu:KillFocus()
+
+                end
+
             end
 
-        else meleeWeaponIcon:Show() end
+        else
+
+            meleeWeaponIcon:Show()
+            meleeWeaponHolder:SetSize(EFGM.MenuScale(114), EFGM.MenuScale(57))
+            if IsValid(meleeItem) then meleeItem:Remove() end
+
+        end
 
         secondaryWeaponHolder:SetPos(equipmentHolder:GetWide() - secondaryWeaponHolder:GetWide(), equipmentHolder:GetTall() - secondaryWeaponHolder:GetTall())
         secondaryWeaponText:SetPos(equipmentHolder:GetWide() - secondaryWeaponText:GetWide(), secondaryWeaponHolder:GetY() - EFGM.MenuScale(30))
@@ -2281,6 +2465,8 @@ function Menu.OpenTab.Inventory()
                         playerItems:InvalidateLayout()
 
                         EquipItemFromInventory(v.id, i.equipSlot)
+
+                        ReloadSlots()
 
                     end
 
@@ -5417,25 +5603,6 @@ function Menu.OpenTab.Settings()
     function inspectWeapon:OnChange(num)
 
         RunConsoleCommand("efgm_bind_inspectweapon", inspectWeapon:GetSelectedNumber())
-
-    end
-
-    local dropWeaponPanel = vgui.Create("DPanel", controls)
-    dropWeaponPanel:Dock(TOP)
-    dropWeaponPanel:SetSize(0, EFGM.MenuScale(55))
-    function dropWeaponPanel:Paint(w, h)
-
-        draw.SimpleTextOutlined("Drop Weapon keybind", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-    end
-
-    local dropWeapon = vgui.Create("DBinder", dropWeaponPanel)
-    dropWeapon:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(30))
-    dropWeapon:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
-    dropWeapon:SetSelectedNumber(GetConVar("efgm_bind_dropweapon"):GetInt())
-    function dropWeapon:OnChange(num)
-
-        RunConsoleCommand("efgm_bind_dropweapon", dropWeapon:GetSelectedNumber())
 
     end
 

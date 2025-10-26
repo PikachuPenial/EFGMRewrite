@@ -138,6 +138,25 @@ function EquipItemFromInventory(itemIndex, equipSlot)
 
 end
 
+function UnEquipItemFromInventory(equipID, equipSlot)
+
+    local item = playerWeaponSlots[equipID][equipSlot]
+
+    if table.IsEmpty(item) then return end
+
+    table.Empty(playerWeaponSlots[equipID][equipSlot])
+
+    ReloadSlots()
+
+    net.Start("PlayerInventoryUnEquipItem", false)
+        net.WriteUInt(equipID, 4)
+        net.WriteUInt(equipSlot, 4)
+    net.SendToServer()
+
+    ReloadSlots()
+
+end
+
 function ConsumeItemFromInventory(itemIndex)
 
     net.Start("PlayerInventoryConsumeItem", false)

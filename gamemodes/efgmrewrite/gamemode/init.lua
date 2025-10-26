@@ -242,24 +242,23 @@ hook.Add("PlayerCanPickupWeapon", "InventoryWeaponPickup", function(ply, wep)
 	data.att = util.TableToJSON(atts)
 	data.count = 1
 
-
     tempEquipWeaponName = equipWeaponName
     equipWeaponName = ""
 
     print("wepClass = "..wepClass)
     print("tempEquipWeaponName = "..tempEquipWeaponName)
     PrintTable( ply:GetWeapons() )
-        
+
     if wepClass != tempEquipWeaponName && GetConVar("efgm_debug_pickupinv"):GetInt() == 0 or false then
-        
-	    AddItemToInventory(ply, wepClass, EQUIPTYPE.Weapon, data)
+
+		AddItemToInventory(ply, wepClass, EQUIPTYPE.Weapon, data)
 
         timer.Simple(0, function()
             if IsValid(wep) then
                 wep:Remove()
             end
         end)
-        
+
     end
 
 	if GetConVar("efgm_debug_pickupinv"):GetInt() == 1 or false then return true end

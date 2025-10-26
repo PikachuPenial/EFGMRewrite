@@ -5,6 +5,7 @@ util.AddNetworkString("PlayerInventoryUpdateItem")
 util.AddNetworkString("PlayerInventoryDeleteItem")
 util.AddNetworkString("PlayerInventoryDropItem")
 util.AddNetworkString("PlayerInventoryEquipItem")
+util.AddNetworkString("PlayerInventoryUnEquipItem")
 util.AddNetworkString("PlayerInventoryConsumeItem")
 
 hook.Add("PlayerSpawn", "InventorySetup", function(ply)
@@ -247,10 +248,61 @@ net.Receive("PlayerInventoryEquipItem", function(len, ply)
         print("Success! Equipping " .. item.name)
 
         equipWeaponName = item.name
-        ply:Give(item.name, true)
-        -- go crazy with attachments here penal
+        local wpn = ply:Give(item.name)
+
+        wpn:SetNoPresets(true)
+        timer.Simple(0.1, function() -- needs to be delayed <3
+
+            if IsValid(wpn) then
+
+                local attachments = util.JSONToTable(item.data.att)
+
+                for k, v in pairs(attachments) do DecompressTableRecursive(v) end
+
+                wpn.Attachments = table.Copy(attachments)
+
+            end
+
+        end)
 
     end
+
+end)
+
+net.Receive("PlayerInventoryUnEquipItem", function(len, ply)
+
+    equipID = net.ReadUInt(4)
+    equipSlot = net.ReadUInt(4)
+
+    local item = table.Copy(ply.weaponSlots[equipID][equipSlot])
+
+    if table.IsEmpty(item) then return end
+
+    table.Empty(ply.weaponSlots[equipID][equipSlot])
+
+    local wep = ply:GetWeapon(item.name)
+
+    if wep != NULL and item.data.att then
+
+        local atts = table.Copy(wep.Attachments)
+
+        for k, v in pairs(atts) do PruneUnnecessaryAttachmentDataRecursive(v) end
+
+        item.data.att = util.TableToJSON(atts)
+
+    end
+
+    ply:StripWeapon(item.name)
+
+    local newItem = ITEM.Instantiate(item.name, item.type, item.data)
+    local index = table.insert(ply.inventory, newItem)
+
+    net.Start("PlayerInventoryAddItem", false)
+    net.WriteString(item.name)
+    net.WriteUInt(item.type, 4)
+    net.WriteTable(item.data)
+    net.WriteUInt(index, 16)
+    net.Send(ply)
 
 end)
 
