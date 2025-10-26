@@ -2320,12 +2320,12 @@ function Menu.OpenTab.Inventory()
             item.SLOT = i.equipSlot
             item.ORIGIN = "inventory"
 
-            if item.SLOT == EQUIPTYPE.Weapon then
+            if i.equipType == EQUIPTYPE.Weapon then
 
-                if i.equipSlot == WEAPONSLOTS.PRIMARY.ID then item:Droppable("slot_primary") end
-                if i.equipSlot == WEAPONSLOTS.HOLSTER.ID then item:Droppable("slot_holster") end
-                if i.equipSlot == WEAPONSLOTS.MELEE.ID then item:Droppable("slot_melee") end
-                if i.equipSlot == WEAPONSLOTS.GRENADE.ID then item:Droppable("slot_grenade") end
+                if item.SLOT == WEAPONSLOTS.PRIMARY.ID then item:Droppable("slot_primary") end
+                if item.SLOT == WEAPONSLOTS.HOLSTER.ID then item:Droppable("slot_holster") end
+                if item.SLOT == WEAPONSLOTS.MELEE.ID then item:Droppable("slot_melee") end
+                if item.SLOT == WEAPONSLOTS.GRENADE.ID then item:Droppable("slot_grenade") end
 
             end
 

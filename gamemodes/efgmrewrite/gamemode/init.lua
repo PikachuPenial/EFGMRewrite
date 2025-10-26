@@ -82,32 +82,18 @@ hook.Add("PlayerInitialSpawn", "InitFirstSpawn", function(ply)
 	HostID = tonumber(ply:SteamID64())
 end)
 
-local blacklist = table.Flip({"arc9_eft_melee_taran", "arc9_eft_melee_6x5", "arc9_eft_melee_akula", "arc9_eft_melee_wycc", "arc9_eft_melee_gladius", "arc9_eft_melee_a2607", "arc9_eft_melee_a2607d", "arc9_eft_melee_camper", "arc9_eft_melee_labris", "arc9_eft_melee_crash", "arc9_eft_melee_cultist", "arc9_eft_melee_fulcrum", "arc9_eft_melee_crowbar", "arc9_eft_melee_kiba", "arc9_eft_melee_kukri", "arc9_eft_melee_m2", "arc9_eft_melee_mpl50", "arc9_eft_melee_rebel", "arc9_eft_melee_voodoo", "arc9_eft_melee_sp8", "arc9_eft_melee_taiga"})
-
 function GM:PlayerDeath(victim, inflictor, attacker)
-	local weps = victim:GetWeapons()
-	local ammo = victim:GetAmmo()
 
-	local inventory = INV.New()
+	UnequipAll(ply) -- unload all equipped items into inventory, helps clean this all up
 
-	for k, v in ipairs(weps) do -- i tried for an entire hour to do this within the entity itself, but alas, it didn't fucking work, i genuinely don't even know anymore
-		local item = v:GetClass()
+	if !table.IsEmpty(victim.inventory) then
 
-		if blacklist[item] == nil then
-			inventory:Add(item, 1, 1)
-		end
-	end
-
-	for k, v in pairs(ammo) do
-		inventory:Add(k, 2, v)
-	end
-
-	if !table.IsEmpty(inventory.contents) then
 		local backpack = ents.Create("efgm_backpack")
 		backpack:SetPos(victim:GetPos() + Vector(0, 0, 64))
 		backpack:Spawn()
 		backpack:Activate()
-		backpack:SetBagData(inventory, victim.ARC9_AttInv, victim:GetName())
+		backpack:SetBagData(victim.inventory, victim:GetName())
+
 	end
 
 	-- death sound
@@ -133,6 +119,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 
 	-- death information
 	victim:PrintMessage(HUD_PRINTCENTER, attacker:GetName() .. " [" .. attacker:Health() .. " HP] killed you with " .. weaponCal .. " from " .. distance .. "m away")
+
 end
 
 hook.Add("PostPlayerDeath", "PlayerRemoveRaid", function(ply)

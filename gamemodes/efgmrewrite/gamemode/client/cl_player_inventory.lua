@@ -85,6 +85,21 @@ net.Receive("PlayerInventoryDeleteItem", function(len, ply)
 
 end )
 
+net.Receive("PlayerInventoryUnEquipAll", function(len, ply)
+
+    playerWeaponSlots = {}
+    for k, v in pairs(WEAPONSLOTS) do
+
+        playerWeaponSlots[v.ID] = {}
+
+        for i = 1, v.COUNT, 1 do
+            playerWeaponSlots[v.ID][i] = {}
+        end
+
+    end
+
+end )
+
 function DropItemFromInventory(itemIndex, data)
 
     net.Start("PlayerInventoryDropItem", false)

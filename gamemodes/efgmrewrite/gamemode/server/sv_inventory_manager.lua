@@ -6,6 +6,7 @@ util.AddNetworkString("PlayerInventoryDeleteItem")
 util.AddNetworkString("PlayerInventoryDropItem")
 util.AddNetworkString("PlayerInventoryEquipItem")
 util.AddNetworkString("PlayerInventoryUnEquipItem")
+util.AddNetworkString("PlayerInventoryUnEquipAll")
 util.AddNetworkString("PlayerInventoryDropEquippedItem")
 util.AddNetworkString("PlayerInventoryConsumeItem")
 
@@ -307,6 +308,41 @@ net.Receive("PlayerInventoryUnEquipItem", function(len, ply)
 
 end)
 
+function UnequipAll(ply)
+
+    for i = 1, 5 do
+
+        for k, v in pairs(ply.weaponSlots[i]) do
+
+            if !table.IsEmpty(v) then
+
+                local item = table.Copy(v)
+
+                if item == nil then return end
+
+                table.Empty(ply.weaponSlots[i][k])
+
+                local newItem = ITEM.Instantiate(item.name, item.type, item.data)
+                local index = table.insert(ply.inventory, newItem)
+
+                net.Start("PlayerInventoryAddItem", false)
+                net.WriteString(item.name)
+                net.WriteUInt(item.type, 4)
+                net.WriteTable(item.data)
+                net.WriteUInt(index, 16)
+                net.Send(ply)
+
+                net.Start("PlayerInventoryUnEquipAll")
+                net.Send(ply)
+
+            end
+
+        end
+
+    end
+
+end
+
 net.Receive("PlayerInventoryDropEquippedItem", function(len, ply)
 
     equipID = net.ReadUInt(4)
@@ -414,3 +450,9 @@ function GiveAttachment(ply)
 end
 concommand.Add("efgm_debug_giveattachment", function(ply, cmd, args) GiveAttachment(ply) end)
 
+function ClearInventory(ply)
+
+    UnequipAll(ply)
+
+end
+concommand.Add("clearinventory", function(ply, cmd, args) ClearInventory(ply) end)
