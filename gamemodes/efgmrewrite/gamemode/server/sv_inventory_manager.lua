@@ -200,7 +200,7 @@ net.Receive("PlayerInventoryDropItem", function(len, ply)
 
     if data.att then
 
-        -- load attachments
+        LoadPresetFromCode(wep, data.att)
 
     end
 
@@ -225,27 +225,16 @@ net.Receive("PlayerInventoryEquipItem", function(len, ply)
     local item = ply.inventory[itemIndex]
     if item == nil then return end
 
-    if AmountInInventory( ply.weaponSlots[ equipSlot ], item.name ) > 0 then return end -- can't have multiple of the same item
+    if AmountInInventory(ply.weaponSlots[equipSlot], item.name) > 0 then return end -- can't have multiple of the same item
 
-    if table.IsEmpty( ply.weaponSlots[equipSlot][equipSubSlot] ) then
+    if table.IsEmpty(ply.weaponSlots[equipSlot][equipSubSlot]) then
 
         DeleteItemFromInventory(ply, itemIndex)
         ply.weaponSlots[equipSlot][equipSubSlot] = item
 
         equipWeaponName = item.name
         local wpn = ply:Give(item.name)
-
-        wpn:SetNoPresets(true)
-
-        timer.Simple(0.1, function() -- needs to be delayed <3
-
-            if IsValid(wpn) then
-
-                -- load attachments
-
-            end
-
-        end)
+        LoadPresetFromCode(wpn, item.data.att)
 
     end
 
@@ -266,7 +255,9 @@ net.Receive("PlayerInventoryUnEquipItem", function(len, ply)
 
     if wep != NULL and item.data.att then
 
-        -- save attachments
+        local atts = table.Copy(wep.Attachments)
+        local str = GenerateAttachString(atts)
+        item.data.att = str
 
     end
 
@@ -297,6 +288,16 @@ function UnequipAll(ply)
                 if item == nil then return end
 
                 table.Empty(ply.weaponSlots[i][k])
+
+                local wep = ply:GetWeapon(item.name)
+
+                if wep != NULL and item.data.att then
+
+                    local atts = table.Copy(wep.Attachments)
+                    local str = GenerateAttachString(atts)
+                    item.data.att = str
+
+                end
 
                 local newItem = ITEM.Instantiate(item.name, item.type, item.data)
                 local index = table.insert(ply.inventory, newItem)
@@ -334,7 +335,9 @@ net.Receive("PlayerInventoryDropEquippedItem", function(len, ply)
 
     if wep != NULL and item.data.att then
 
-        -- save attachments
+        local atts = table.Copy(wep.Attachments)
+        local str = GenerateAttachString(atts)
+        item.data.att = str
 
     end
 
@@ -344,7 +347,7 @@ net.Receive("PlayerInventoryDropEquippedItem", function(len, ply)
 
     if item.data.att then
 
-        -- load attachments
+        LoadPresetFromCode(newWep, item.data.att)
 
     end
 

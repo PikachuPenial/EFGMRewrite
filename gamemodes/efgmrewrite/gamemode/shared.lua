@@ -53,7 +53,7 @@ function comma_value(amount)
     return formatted
 end
 
--- necessary to send over weapon data via the inventory
+-- necessary functions to sync attachments cleanly between inventories
 function PruneUnnecessaryAttachmentDataRecursive(tbl)
 
     tbl.t = tbl.ToggleNum
@@ -61,39 +61,131 @@ function PruneUnnecessaryAttachmentDataRecursive(tbl)
     tbl.s = tbl.SubAttachments
 
     for i, k in pairs(tbl) do
+
         if i != "i" and i != "s" and i != "t" and i != "ToggleNum" then
+
             tbl[i] = nil
+
         end
+
     end
 
     if table.Count(tbl.s or {}) > 0 then
+
         for i, k in pairs(tbl.s) do
+
             PruneUnnecessaryAttachmentDataRecursive(k)
+
         end
+
     else
+
         tbl.s = nil
+
     end
 
     tbl.BaseClass = nil
+
 end
 
 function DecompressTableRecursive(tbl)
+
     for i, k in pairs(tbl) do
+
         if i == "i" then
+
             tbl["i"] = nil
             tbl["Installed"] = k
+
         elseif i == "s" then
+
             tbl["s"] = nil
             tbl["SubAttachments"] = k
+
         elseif i == "t" then
+
             tbl["t"] = nil
             tbl["ToggleNum"] = k
+
         end
+
     end
 
     if table.Count(tbl.SubAttachments or {}) > 0 then
+
         for i, k in pairs(tbl.SubAttachments) do
+
             DecompressTableRecursive(k)
+
         end
+
     end
+
+end
+
+function GenerateAttachString(tbl)
+
+    for i, k in pairs(tbl) do PruneUnnecessaryAttachmentDataRecursive(k) end
+
+    local str = util.TableToJSON(tbl)
+
+    str = util.Compress(str)
+    str = util.Base64Encode(str, true)
+
+    return str
+
+end
+
+function ImportPresetCode(str)
+
+    if !str then return end
+    str = util.Base64Decode(str)
+    str = util.Decompress(str)
+
+    if !str then return end
+
+    local tbl = util.JSONToTable(str)
+
+    if tbl then
+
+        for i, k in pairs(tbl) do
+
+            DecompressTableRecursive(k)
+
+        end
+
+    end
+
+    return tbl
+
+end
+
+function LoadPresetFromTable(wep, tbl)
+
+    wep:SetNoPresets(true)
+
+    wep.Attachments = baseclass.Get(wep:GetClass()).Attachments
+
+    for slot, slottbl in ipairs(wep.Attachments) do
+
+        slottbl.Installed = nil
+        slottbl.SubAttachments = nil
+
+    end
+
+    wep:PruneAttachments()
+
+    wep:BuildSubAttachments(tbl)
+    wep:PostModify()
+
+end
+
+function LoadPresetFromCode(wep, str)
+
+    local tbl = ImportPresetCode(str)
+
+    if !tbl then return false end
+
+    LoadPresetFromTable(wep, tbl)
+
 end
