@@ -3,8 +3,10 @@ AddCSLuaFile("shared.lua")
 
 include("shared.lua")
 
+util.AddNetworkString("PlayerOpenContainer")
+
 ENT.Inventory = {}
-ENT.VictimName = ""
+ENT.Name = ""
 
 function ENT:Initialize()
 
@@ -27,13 +29,19 @@ end
 function ENT:SetBagData(inventory, name)
 
     self.Inventory = inventory
-    self.VictimName = name
+    self.Name = name
 
 end
 
 function ENT:Use(activator)
 
     if !activator:IsPlayer() then return end
+
+	net.Start("PlayerOpenContainer", false)
+		net.WriteEntity(self)
+		net.WriteString(self.Name)
+		net.WriteTable(self.Inventory, true)
+	net.Send(activator)
 
 end
 

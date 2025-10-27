@@ -9,6 +9,7 @@ util.AddNetworkString("PlayerInventoryUnEquipItem")
 util.AddNetworkString("PlayerInventoryUnEquipAll")
 util.AddNetworkString("PlayerInventoryDropEquippedItem")
 util.AddNetworkString("PlayerInventoryConsumeItem")
+util.AddNetworkString("PlayerInventoryLootItemFromContainer")
 
 hook.Add("PlayerSpawn", "InventorySetup", function(ply)
 
@@ -41,8 +42,6 @@ function ReinstantiateInventory(ply)
         end
 
     end
-
-    print("server inventory flushed")
 
 end
 concommand.Add("efgm_flush_inventory", function(ply, cmd, args) ReinstantiateInventory(ply) end)
@@ -90,7 +89,6 @@ end
 
 function DeleteItemFromInventory(ply, index)
 
-    print("Deleting " .. ply.inventory[index].name .. " at index " .. index)
     table.remove(ply.inventory, index)
 
     net.Start("PlayerInventoryDeleteItem", false)
@@ -196,15 +194,13 @@ net.Receive("PlayerInventoryDropItem", function(len, ply)
     local data = net.ReadTable()
     local item = ply.inventory[itemIndex]
 
+    if table.IsEmpty(item) then return end
+
     local wep = ents.Create(item.name)
 
     if data.att then
 
-        local attachments = util.JSONToTable(data.att)
-
-        for k, v in pairs(attachments) do DecompressTableRecursive(v) end
-
-        wep.Attachments = table.Copy(attachments)
+        -- load attachments
 
     end
 
@@ -226,42 +222,26 @@ net.Receive("PlayerInventoryEquipItem", function(len, ply)
     equipSlot = net.ReadUInt(4)
     equipSubSlot = net.ReadUInt(16)
 
-    print(itemIndex)
-    print(equipSlot)
-    print(equipSubSlot)
-
     local item = ply.inventory[itemIndex]
     if item == nil then return end
 
-    print("got past item nil check")
-
-    print(AmountInInventory( ply.weaponSlots[ equipSlot ], item.name ) .. " of " .. item.name .. " in inventory")
     if AmountInInventory( ply.weaponSlots[ equipSlot ], item.name ) > 0 then return end -- can't have multiple of the same item
-
-    print("got past amountininventory check")
 
     if table.IsEmpty( ply.weaponSlots[equipSlot][equipSubSlot] ) then
 
-    print("got past amountininventory check")
-
         DeleteItemFromInventory(ply, itemIndex)
         ply.weaponSlots[equipSlot][equipSubSlot] = item
-
-        print("Success! Equipping " .. item.name)
 
         equipWeaponName = item.name
         local wpn = ply:Give(item.name)
 
         wpn:SetNoPresets(true)
+
         timer.Simple(0.1, function() -- needs to be delayed <3
 
             if IsValid(wpn) then
 
-                local attachments = util.JSONToTable(item.data.att)
-
-                for k, v in pairs(attachments) do DecompressTableRecursive(v) end
-
-                wpn.Attachments = table.Copy(attachments)
+                -- load attachments
 
             end
 
@@ -286,11 +266,7 @@ net.Receive("PlayerInventoryUnEquipItem", function(len, ply)
 
     if wep != NULL and item.data.att then
 
-        local atts = table.Copy(wep.Attachments)
-
-        for k, v in pairs(atts) do PruneUnnecessaryAttachmentDataRecursive(v) end
-
-        item.data.att = util.TableToJSON(atts)
+        -- save attachments
 
     end
 
@@ -358,11 +334,7 @@ net.Receive("PlayerInventoryDropEquippedItem", function(len, ply)
 
     if wep != NULL and item.data.att then
 
-        local atts = table.Copy(wep.Attachments)
-
-        for k, v in pairs(atts) do PruneUnnecessaryAttachmentDataRecursive(v) end
-
-        item.data.att = util.TableToJSON(atts)
+        -- save attachments
 
     end
 
@@ -372,11 +344,7 @@ net.Receive("PlayerInventoryDropEquippedItem", function(len, ply)
 
     if item.data.att then
 
-        local attachments = util.JSONToTable(item.data.att)
-
-        for k, v in pairs(attachments) do DecompressTableRecursive(v) end
-
-        newWep.Attachments = table.Copy(attachments)
+        -- load attachments
 
     end
 
@@ -384,9 +352,7 @@ net.Receive("PlayerInventoryDropEquippedItem", function(len, ply)
     newWep:Spawn()
     newWep:PhysWake()
 
-    if type(newWep.GetData) == "function" then newWep:GetData(data) end
-
-    table.remove(ply.inventory, itemIndex)
+    if type(newWep.GetData) == "function" then newWep:GetData(item.data) end
 
 end)
 
@@ -429,6 +395,27 @@ net.Receive("PlayerInventoryConsumeItem", function(len, ply)
 
 end)
 
+net.Receive("PlayerInventoryLootItemFromContainer", function(len, ply)
+
+    local container = net.ReadEntity()
+    local index = net.ReadUInt(16)
+
+    local newItem = table.Copy(container.Inventory[index])
+    local newIndex = table.insert(ply.inventory, newItem)
+
+    net.Start("PlayerInventoryAddItem", false)
+        net.WriteString(newItem.name)
+        net.WriteUInt(newItem.type, 4)
+        net.WriteTable(newItem.data)
+        net.WriteUInt(newIndex, 16)
+    net.Send(ply)
+
+    table.remove(container.Inventory, index)
+
+    if table.IsEmpty(container.Inventory) then container:Remove() end
+
+end)
+
 function GiveAmmo(ply, count)
 
     local ammo = "efgm_ammo_556x45"
@@ -449,10 +436,3 @@ function GiveAttachment(ply)
 
 end
 concommand.Add("efgm_debug_giveattachment", function(ply, cmd, args) GiveAttachment(ply) end)
-
-function ClearInventory(ply)
-
-    UnequipAll(ply)
-
-end
-concommand.Add("clearinventory", function(ply, cmd, args) ClearInventory(ply) end)

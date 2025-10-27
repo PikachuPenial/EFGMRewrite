@@ -72,7 +72,7 @@ end
 
 -- called non-globally to initialize the menu, that way it can only be initialized once by Menu:Open()
 -- also openTab is the name of the tab it should open to
-function Menu:Initialize(openTo)
+function Menu:Initialize(openTo, container)
 
     local menuFrame = vgui.Create("DFrame")
     menuFrame:SetSize(ScrW(), ScrH())
@@ -517,7 +517,7 @@ function Menu:Initialize(openTo)
         Menu.MenuFrame.LowerPanel.Contents:AlphaTo(0, 0.05, 0, function()
 
             Menu.MenuFrame.LowerPanel.Contents:Remove()
-            Menu.OpenTab.Inventory()
+            Menu.OpenTab.Inventory(container)
             Menu.ActiveTab = "Inventory"
 
             Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, nil)
@@ -929,8 +929,8 @@ function Menu:Initialize(openTo)
     -- if provided, open to the tab of the users choice
     if openTo != nil then
 
-        -- i cant figure this out so enjoy the Stats tab
-        Menu.OpenTab.Inventory()
+        -- i cant figure this out so enjoy the Inventory tab
+        Menu.OpenTab.Inventory(container)
         Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, nil)
         Menu.ActiveTab = "Inventory"
 
@@ -939,7 +939,9 @@ function Menu:Initialize(openTo)
 end
 
 -- called to either initialize or open the menu
-function Menu:Open(openTo)
+function Menu:Open(openTo, container)
+
+    if container == nil then container = {} end
 
     if self.MenuFrame != nil then
 
@@ -947,13 +949,13 @@ function Menu:Open(openTo)
 
     end
 
-    self:Initialize(openTo)
+    self:Initialize(openTo, container)
 
 end
 
 Menu.OpenTab = {}
 
-function Menu.OpenTab.Inventory()
+function Menu.OpenTab.Inventory(container)
 
     local contents = vgui.Create("DPanel", Menu.MenuFrame.LowerPanel)
     contents:Dock(FILL)
@@ -2273,10 +2275,25 @@ function Menu.OpenTab.Inventory()
 
         end
 
+        if panels[1].ORIGIN == "container" then
+
+            surface.PlaySound("ui/element_select.wav")
+            table.remove(container.items, panels[1].ID)
+
+            net.Start("PlayerInventoryLootItemFromContainer", false)
+                net.WriteEntity(container.entity)
+                net.WriteUInt(panels[1].ID, 16)
+            net.SendToServer()
+
+            ReloadContainer()
+            ReloadInventory()
+
+        end
+
     end)
 
     local playerItems = vgui.Create("DIconLayout", playerItemsHolder)
-    playerItems:Dock(FILL)
+    playerItems:Dock(TOP)
     playerItems:SetSpaceY(0)
     playerItems:SetSpaceX(0)
 
@@ -2297,13 +2314,17 @@ function Menu.OpenTab.Inventory()
         playerItems:Clear()
         plyItems = {}
 
-        for k, v in ipairs(playerInventory) do
+        for k, v in pairs(playerInventory) do
+
             plyItems[k] = {}
             plyItems[k].name = v.name
             plyItems[k].id = k
             plyItems[k].data = v.data
             plyItems[k].type = v.type
+
         end
+
+        if table.IsEmpty(plyItems) then return end
 
         table.sort(plyItems, function(a, b) return (EFGMITEMS[a.name].sizeX * EFGMITEMS[a.name].sizeY) > (EFGMITEMS[b.name].sizeX * EFGMITEMS[b.name].sizeY) end)
 
@@ -2311,6 +2332,7 @@ function Menu.OpenTab.Inventory()
         for k, v in pairs(plyItems) do
 
             local i = EFGMITEMS[v.name]
+            if i == nil then return end
 
             local item = playerItems:Add("DButton")
             item:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
@@ -2589,12 +2611,322 @@ function Menu.OpenTab.Inventory()
 
         end
 
+        playerItems:InvalidateLayout()
+
     end
 
     ReloadInventory()
 
     -- dont show stash when player is in a raid
     if !Menu.Player:CompareStatus(0) then return end
+    if !table.IsEmpty(container) then
+
+        local containerPanel = vgui.Create("DPanel", contents)
+        containerPanel:Dock(LEFT)
+        containerPanel:DockMargin(EFGM.MenuScale(13), 0, 0, 0)
+        containerPanel:SetSize(EFGM.MenuScale(613), 0)
+        containerPanel.Paint = function(s, w, h)
+
+            BlurPanel(s, EFGM.MenuScale(10))
+
+            surface.SetDrawColor(Color(80, 80, 80, 10))
+            surface.DrawRect(0, 0, w, h)
+
+            surface.SetDrawColor(Color(255, 255, 255, 155))
+            surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
+
+        end
+
+        local containerText = vgui.Create("DPanel", containerPanel)
+        containerText:Dock(TOP)
+        containerText:SetSize(0, EFGM.MenuScale(36))
+        function containerText:Paint(w, h)
+
+            surface.SetDrawColor(Color(155, 155, 155, 10))
+            surface.DrawRect(0, 0, w, h)
+
+            draw.SimpleTextOutlined(container.name .. "'S COPRSE", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        end
+
+        local containerHolder = vgui.Create("DPanel", containerPanel)
+        containerHolder:Dock(FILL)
+        containerHolder:DockMargin(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(9))
+        containerHolder:SetSize(0, 0)
+        containerHolder.Paint = function(s, w, h)
+
+            surface.SetDrawColor(Color(0, 0, 0, 0))
+            surface.DrawRect(0, 0, w, h)
+
+        end
+
+        local containerItemsHolder = vgui.Create("DScrollPanel", containerHolder)
+        containerItemsHolder:SetPos(0, EFGM.MenuScale(32))
+        containerItemsHolder:SetSize(EFGM.MenuScale(593), EFGM.MenuScale(872))
+        function containerItemsHolder:Paint(w, h)
+
+            BlurPanel(containerItemsHolder, EFGM.MenuScale(3))
+
+            surface.SetDrawColor(Color(80, 80, 80, 10))
+            surface.DrawRect(0, 0, w, h)
+
+            surface.SetDrawColor(Color(255, 255, 255, 25))
+            surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+            surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+        end
+
+        local containerItems = vgui.Create("DIconLayout", containerItemsHolder)
+        containerItems:Dock(FILL)
+        containerItems:SetSpaceY(-1)
+        containerItems:SetSpaceX(-1)
+
+        local containerItemsBar = containerItemsHolder:GetVBar()
+        containerItemsBar:SetHideButtons(true)
+        containerItemsBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+        function containerItemsBar:Paint(w, h)
+            draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
+        end
+        function containerItemsBar.btnGrip:Paint(w, h)
+            draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
+        end
+
+        function ReloadContainer()
+
+            containerItems:Clear()
+            conItems = {}
+            for k, v in ipairs(container.items) do
+
+                conItems[k] = {}
+                conItems[k].name = v.name
+                conItems[k].id = k
+                conItems[k].data = v.data
+                conItems[k].type = v.type
+
+            end
+
+            if table.IsEmpty(conItems) then return end
+
+            table.sort(conItems, function(a, b) return (EFGMITEMS[a.name].sizeX * EFGMITEMS[a.name].sizeY) > (EFGMITEMS[b.name].sizeX * EFGMITEMS[b.name].sizeY) end)
+
+            for k, v in pairs(conItems) do
+
+                local i = EFGMITEMS[v.name]
+                if i == nil then return end
+
+                local item = containerItems:Add("DButton")
+                item:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
+                item:SetText("")
+                item:Droppable("items")
+                item.ID = v.id
+                item.ORIGIN = "container"
+
+                if i.equipType == EQUIPTYPE.Weapon then
+
+                    if item.SLOT == WEAPONSLOTS.PRIMARY.ID then item:Droppable("slot_primary") end
+                    if item.SLOT == WEAPONSLOTS.HOLSTER.ID then item:Droppable("slot_holster") end
+                    if item.SLOT == WEAPONSLOTS.MELEE.ID then item:Droppable("slot_melee") end
+                    if item.SLOT == WEAPONSLOTS.GRENADE.ID then item:Droppable("slot_grenade") end
+
+                end
+
+                function item:Paint(w, h)
+
+                    surface.SetDrawColor(Color(5, 5, 5, 20))
+                    surface.DrawRect(0, 0, w, h)
+
+                    surface.SetDrawColor(Color(255, 255, 255, 2))
+                    surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+                    surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                    surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+                    surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                    surface.SetDrawColor(255, 255, 255, 255)
+                    surface.SetMaterial(i.icon)
+                    surface.DrawTexturedRect(0, 0, w, h)
+
+                end
+
+                surface.SetFont("Purista18")
+
+                local nameSize = surface.GetTextSize(i.displayName)
+                local nameFont
+
+                if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18"
+                else nameFont = "PuristaBold14" end
+
+                local duraSize = nil
+                local duraFont = nil
+
+                if i.equipType == EQUIPTYPE.Consumable then
+                    duraSize = surface.GetTextSize(i.consumableValue .. "/" .. i.consumableValue)
+
+                    if duraSize <= (EFGM.MenuScale(49 * i.sizeX)) then duraFont = "PuristaBold18"
+                    else duraFont = "PuristaBold14" end
+                end
+
+                function item:PaintOver(w, h)
+
+                    draw.SimpleTextOutlined(i.displayName, nameFont, EFGM.MenuScale(w - 3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                    if i.equipType == EQUIPTYPE.Ammunition then
+                        draw.SimpleTextOutlined(v.data.count, "PuristaBold18", EFGM.MenuScale(w - 3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                    elseif i.equipType == EQUIPTYPE.Consumable then
+                        draw.SimpleTextOutlined(v.data.durability .. "/" .. i.consumableValue, duraFont, EFGM.MenuScale(w - 3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                    end
+
+                end
+
+                item.OnCursorEntered = function(s)
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
+                function item:DoDoubleClick()
+
+                    surface.PlaySound("ui/element_select.wav")
+
+                end
+
+                function item:DoRightClick()
+
+                    local x, y = containerItemsHolder:LocalCursorPos()
+                    surface.PlaySound("ui/element_hover.wav")
+
+                    if x <= (containerItemsHolder:GetWide() / 2) then sideH = true else sideH = false end
+                    if y <= (containerItemsHolder:GetTall() / 2) then sideV = true else sideV = false end
+
+                    if IsValid(contextMenu) then contextMenu:Remove() end
+                    contextMenu = vgui.Create("DPanel", containerItemsHolder)
+                    contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(30))
+                    contextMenu:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
+                    contextMenu:SetAlpha(0)
+                    contextMenu:AlphaTo(255, 0.1, 0, nil)
+                    contextMenu:RequestFocus()
+
+                    if sideH == true then
+
+                        contextMenu:SetX(math.Clamp(x + EFGM.MenuScale(5), EFGM.MenuScale(5), containerItemsHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+                    else
+
+                        contextMenu:SetX(math.Clamp(x - contextMenu:GetWide() - EFGM.MenuScale(5), EFGM.MenuScale(5), containerItemsHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+                    end
+
+                    if sideV == true then
+
+                        contextMenu:SetY(math.Clamp(y + EFGM.MenuScale(5), EFGM.MenuScale(5), containerItemsHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
+
+                    else
+
+                        contextMenu:SetY(math.Clamp(y - contextMenu:GetTall() + EFGM.MenuScale(5), EFGM.MenuScale(5), containerItemsHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
+
+                    end
+
+                    contextMenu.Paint = function(s, w, h)
+
+                        if !IsValid(s) then return end
+
+                        BlurPanel(s, EFGM.MenuScale(5))
+
+                        surface.SetDrawColor(Color(5, 5, 5, 50))
+                        surface.DrawRect(0, 0, w, h)
+
+                        surface.SetDrawColor(Color(255, 255, 255, 30))
+                        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+                        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+                        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                        contextMenu:SizeToChildren(true, true)
+
+                    end
+
+                    hook.Add("Think", "CheckIfContextMenuStillFocused", function()
+
+                        if !IsValid(contextMenu) then hook.Remove("Think", "CheckIfContextMenuStillFocused") return end
+                        if (input.IsMouseDown(MOUSE_LEFT) or input.IsMouseDown(MOUSE_RIGHT) or input.IsMouseDown(MOUSE_MIDDLE)) and !contextMenu:IsChildHovered() then contextMenu:KillFocus() hook.Remove("Think", "CheckIfContextMenuStillFocused") end
+
+                    end)
+
+                    function contextMenu:OnFocusChanged(focus)
+
+                        if !focus then contextMenu:AlphaTo(0, 0.1, 0, function() contextMenu:Remove() hook.Remove("Think", "CheckIfContextMenuStillFocused") end) end
+
+                    end
+
+                    local itemInspectButton = vgui.Create("DButton", contextMenu)
+                    itemInspectButton:Dock(TOP)
+                    itemInspectButton:SetSize(0, EFGM.MenuScale(25))
+                    itemInspectButton:SetText("INSPECT")
+
+                    itemInspectButton.OnCursorEntered = function(s)
+
+                        surface.PlaySound("ui/element_hover.wav")
+
+                    end
+
+                    function itemInspectButton:DoClick()
+
+                        surface.PlaySound("ui/element_select.wav")
+                        contextMenu:KillFocus()
+
+                    end
+
+                    -- actions that can be performed on this specific item
+                    -- default
+                    local actions = {
+                        lootable = true
+                    }
+
+                    if actions.lootable then
+
+                        local itemLootButton = vgui.Create("DButton", contextMenu)
+                        itemLootButton:Dock(TOP)
+                        itemLootButton:SetSize(0, EFGM.MenuScale(25))
+                        itemLootButton:SetText("LOOT")
+
+                        itemLootButton.OnCursorEntered = function(s)
+
+                            surface.PlaySound("ui/element_hover.wav")
+
+                        end
+
+                        function itemLootButton:DoClick()
+
+                            surface.PlaySound("ui/element_select.wav")
+                            contextMenu:Remove()
+
+                            table.remove(container.items, v.id)
+
+                            net.Start("PlayerInventoryLootItemFromContainer", false)
+                                net.WriteEntity(container.entity)
+                                net.WriteUInt(v.id, 16)
+                            net.SendToServer()
+
+                            ReloadContainer()
+                            ReloadInventory()
+
+
+                        end
+
+                    end
+
+                end
+
+            end
+
+        end
+
+        ReloadContainer()
+
+        return
+
+    end
 
     local stashPanel = vgui.Create("DPanel", contents)
     stashPanel:Dock(LEFT)
@@ -6040,3 +6372,16 @@ concommand.Add("efgm_gamemenu", function(ply, cmd, args)
     Menu:Open(tab)
 
 end)
+
+net.Receive("PlayerOpenContainer", function(len, ply)
+
+    local tab = "Inventory"
+
+    local container = {}
+    container.entity = net.ReadEntity()
+    container.name = net.ReadString()
+    container.items = net.ReadTable(true)
+
+    Menu:Open(tab, container)
+
+end )

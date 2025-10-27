@@ -57,13 +57,11 @@ end
 function PruneUnnecessaryAttachmentDataRecursive(tbl)
 
     tbl.t = tbl.ToggleNum
-	tbl.i = tbl.Installed
-    tbl.c = tbl.Category
-	tbl.s = tbl.SubAttachments
-    tbl.a = tbl.Address
+    tbl.i = tbl.Installed
+    tbl.s = tbl.SubAttachments
 
     for i, k in pairs(tbl) do
-        if i != "t" and i != "i" and i != "c" and i != "s" and i != "a" and i != "ToggleNum" then
+        if i != "i" and i != "s" and i != "t" and i != "ToggleNum" then
             tbl[i] = nil
         end
     end
@@ -77,26 +75,19 @@ function PruneUnnecessaryAttachmentDataRecursive(tbl)
     end
 
     tbl.BaseClass = nil
-
 end
 
 function DecompressTableRecursive(tbl)
     for i, k in pairs(tbl) do
-        if i == "t" then
-            tbl["t"] = nil
-            tbl["ToggleNum"] = k
-        elseif i == "i" then
+        if i == "i" then
             tbl["i"] = nil
             tbl["Installed"] = k
-        elseif i == "c" then
-            tbl["c"] = nil
-            tbl["Category"] = k
         elseif i == "s" then
             tbl["s"] = nil
             tbl["SubAttachments"] = k
-        elseif i == "a" then
-            tbl["a"] = nil
-            tbl["Address"] = k
+        elseif i == "t" then
+            tbl["t"] = nil
+            tbl["ToggleNum"] = k
         end
     end
 

@@ -29,8 +29,6 @@ function ReinstantiateInventory()
         playerWeaponSlots[v.ID][i] = {}
     end
 
-    print("client inventory flushed")
-
 end
 
 playerEquippedSlot = 0
@@ -117,8 +115,6 @@ function EquipItemFromInventory(itemIndex, equipSlot, primaryPref)
 
     local item = playerInventory[itemIndex]
     if item == nil then return end
-
-    print("SLOT IS " .. equipSlot)
 
     if AmountInInventory(playerWeaponSlots[equipSlot], item.name ) != 0 then return end -- can't have multiple of the same item
 
@@ -294,9 +290,9 @@ concommand.Add("efgm_inventory_equip", function(ply, cmd, args)
         local item = playerWeaponSlots[equipSlot][equipSubSlot]
         if !istable(item) then return end
         if table.IsEmpty(item) then return end
+        if item == NULL then return end
 
         weapon = LocalPlayer():GetWeapon(item.name)
-        -- print("item.name = " .. item.name)
         input.SelectWeapon(weapon)
 
         playerEquippedSlot = equipSlot

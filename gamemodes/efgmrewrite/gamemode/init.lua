@@ -4,6 +4,8 @@ AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 include("shared.lua")
 
+util.AddNetworkString("PlayerReinstantiateInventory")
+
 for _, v in ipairs(file.Find("gamemodes/efgmrewrite/gamemode/shared/*.lua", "GAME", "nameasc")) do
 	AddCSLuaFile("shared/" .. v)
 	include("shared/" .. v)
@@ -84,7 +86,7 @@ end)
 
 function GM:PlayerDeath(victim, inflictor, attacker)
 
-	UnequipAll(ply) -- unload all equipped items into inventory, helps clean this all up
+	UnequipAll(victim) -- unload all equipped items into inventory, helps clean this all up
 
 	if !table.IsEmpty(victim.inventory) then
 
@@ -96,8 +98,12 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 
 	end
 
+	ReinstantiateInventory(victim)
+	net.Start("PlayerReinstantiateInventory", false)
+    net.Send(victim)
+
 	-- death sound
-	victim:EmitSound(Sound("deathsounds/death" .. math.random(1, 116) .. ".wav"), 80) -- holy shit thats a few
+	victim:EmitSound(Sound("deathsounds/death" .. math.random(1, 116) .. ".wav"), math.random(65, 80)) -- holy shit thats a few
 
 	-- when a player suicides
 	if !IsValid(attacker) or victim == attacker or !attacker:IsPlayer() then
@@ -126,6 +132,7 @@ hook.Add("PostPlayerDeath", "PlayerRemoveRaid", function(ply)
 	-- respawn timer
 	timer.Create(ply:SteamID() .. "respawnTime", respawnTime, 1, function() ply:Spawn() end)
 	ply:SetNWBool("RaidReady", false)
+
 end)
 
 hook.Add("PlayerDeathSound", "RemoveDefaultDeathSound", function()
@@ -229,22 +236,18 @@ hook.Add("PlayerCanPickupWeapon", "InventoryWeaponPickup", function(ply, wep)
 	data.att = util.TableToJSON(atts)
 	data.count = 1
 
-    tempEquipWeaponName = equipWeaponName
-    equipWeaponName = ""
+	tempEquipWeaponName = equipWeaponName
+	equipWeaponName = ""
 
-    print("wepClass = "..wepClass)
-    print("tempEquipWeaponName = "..tempEquipWeaponName)
-    PrintTable( ply:GetWeapons() )
-
-    if wepClass != tempEquipWeaponName && GetConVar("efgm_debug_pickupinv"):GetInt() == 0 or false then
+	if wepClass != tempEquipWeaponName and GetConVar("efgm_debug_pickupinv"):GetInt() == 0 or false then
 
 		AddItemToInventory(ply, wepClass, EQUIPTYPE.Weapon, data)
 
-        timer.Simple(0, function()
-            if IsValid(wep) then
-                wep:Remove()
-            end
-        end)
+		timer.Simple(0, function()
+
+			if IsValid(wep) then wep:Remove() end
+
+		end)
 
     end
 
