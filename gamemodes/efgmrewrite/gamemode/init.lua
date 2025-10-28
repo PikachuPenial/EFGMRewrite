@@ -94,7 +94,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		backpack:SetPos(victim:GetPos() + Vector(0, 0, 64))
 		backpack:Spawn()
 		backpack:Activate()
-		backpack:SetBagData(victim.inventory, victim:GetName())
+		backpack:SetBagData(victim.inventory, victim:GetName() .. "'S CORPSE")
 
 	end
 

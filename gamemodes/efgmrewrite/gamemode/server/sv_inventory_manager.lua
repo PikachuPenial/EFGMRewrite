@@ -198,6 +198,8 @@ net.Receive("PlayerInventoryDropItem", function(len, ply)
 
     local wep = ents.Create(item.name)
 
+    if wep == NULL then return end
+
     if data.att then
 
         LoadPresetFromCode(wep, data.att)

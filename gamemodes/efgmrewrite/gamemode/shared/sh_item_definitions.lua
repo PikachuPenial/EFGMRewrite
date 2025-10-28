@@ -3174,22 +3174,77 @@ EFGMITEMS = {}
         ["sizeY"] = 2
     }
 
--- HL2 JEEP
-    EFGMITEMS["hl2_jeep"] = {
-        ["fullName"] = "The Jeep from Half Life 2",
-        ["displayType"] = "Vehicle",
-        ["weight"] = 1800,
-        ["value"] = 69,
-        ["equipType"] = EQUIPTYPE.Spawn,
-        ["spawnOnEquip"] = "Jeep",
-        ["appearInInventory"] = true,
-        ["stackSize"] = 1,
-        ["icon"] = Material("idk", "smooth"),
+sellMultiplier = 1 -- placeholder basically
 
-        ["sizeX"] = 12,
-        ["sizeY"] = 10
+-- types:
+-- 0 == any item
+-- 1 == military box (weapons, attachments, ammunition)
+-- 2 == ammunition box (ammunition, grenades)
+-- 3 == medical box (medical items)
+-- 4 == barter box (assorted barter items)
+-- 5 == attachment box (attachments)
 
-    }
+-- format: array[type][items]
+
+function GenerateLootTables()
+
+    LOOT = {}
+    LOOT[0] = {}
+    LOOT[1] = {}
+    LOOT[2] = {}
+    LOOT[3] = {}
+    LOOT[4] = {}
+    LOOT[5] = {}
+
+    for k, v in pairs(EFGMITEMS) do
+
+        LOOT[0][k] = v
+
+        if v.displayType == "Assault Carbine" or v.displayType == "Assault Rifle" or v.displayType == "Light Machine Gun" or v.displayType == "Pistol" or v.displayType == "Shotgun" or v.displayType == "Sniper Rifle" or v.displayType == "Marksman Rifle" or v.displayType == "Submachine Gun" or v.displayType == "Launcher" or v.displayType == "Melee" or v.displayType == "Grenade" or v.displayType == "Special" or v.displayType == "Ammunition" or v.displayType == "Accessory" or v.displayType == "Barrel" or v.displayType == "Cover" or v.displayType == "Foregrip" or v.displayType == "Gas Block" or v.displayType == "Handguard" or v.displayType == "Magazine" or v.displayType == "Mount" or v.displayType == "Muzzle" or v.displayType == "Optic" or v.displayType == "Pistol Grip" or v.displayType == "Receiver" or v.displayType == "Sight" or v.displayType == "Stock" then
+
+            LOOT[1][k] = v
+
+        end
+
+        if v.displayType == "Ammunition" or v.displayType == "Grenade" then
+
+            LOOT[2][k] = v
+
+        end
+
+        if v.displayType == "Medical" then
+
+            LOOT[3][k] = v
+
+        end
+
+        if v.displayType == "Barter" then
+
+            LOOT[4][k] = v
+
+        end
+
+        if v.displayType == "Accessory" or v.displayType == "Barrel" or v.displayType == "Cover" or v.displayType == "Foregrip" or v.displayType == "Gas Block" or v.displayType == "Handguard" or v.displayType == "Magazine" or v.displayType == "Mount" or v.displayType == "Muzzle" or v.displayType == "Optic" or v.displayType == "Pistol Grip" or v.displayType == "Receiver" or v.displayType == "Sight" or v.displayType == "Stock" then
+
+            LOOT[5][k] = v
+
+        end
+
+    end
+
+end
+
+function SpawnAllLoot()
+
+    if SERVER then
+
+        for _, ent in ipairs(ents.FindByName("efgm_loot")) do
+            ent:Fire("SpawnLoot", 0, 0)
+        end
+
+    end
+
+end
 
 -- add attachment item definitions
 hook.Add("InitPostEntity", "AttsItemDef", function()
@@ -3216,6 +3271,9 @@ hook.Add("InitPostEntity", "AttsItemDef", function()
 
     end
 
+    GenerateLootTables()
+    SpawnAllLoot()
+
 end)
 
 hook.Add("OnReloaded", "AttsItemDefReload", function()
@@ -3241,5 +3299,7 @@ hook.Add("OnReloaded", "AttsItemDefReload", function()
         }
 
     end
+
+    GenerateLootTables()
 
 end)

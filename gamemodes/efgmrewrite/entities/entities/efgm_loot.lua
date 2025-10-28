@@ -3,80 +3,106 @@ ENT.Base = "base_point"
 
 -- vars
 
-ENT.SpawnChance = 100 -- this used a 1-5 range earlier? what the fuck? why not just use 1-100 lmao
-ENT.LootType = 0
-ENT.LootTier = 0
+ENT.SpawnChance = 100
+ENT.ItemChancePerRoll = 10
+ENT.LootType = 1
+ENT.ContainerLoot = {}
+ENT.ContainerName = ""
 
 -- flags
 
 ENT.SpawnOnStart = false
-ENT.Crated = true
-
 ENT.HasValidType = true
 
 function ENT:KeyValue(key, value)
-	if key == "spawn_chance" then
-		self.SpawnChance = tonumber(value)
-	end
 
-	if key == "loot_type" then
-		self.LootType = tonumber(value)
-	end
+	if key == "spawn_chance" then self.SpawnChance = tonumber(value) end
 
-	if key == "loot_tier" then
-		self.LootTier = tonumber(value)
-	end
+    if key == "item_chance_per_roll" then self.ItemChancePerRoll = tonumber(value) end
+
+	if key == "loot_type" then self.LootType = tonumber(value) end
+
 end
 
 function ENT:Initialize()
-    if self.LootTier == 0 then self.LootTier = math.random(1, 3) end
-    if self.LootType != 1 and self.LootType != 3 and self.LootType != 5 then -- placeholder until loot tables for other types are complete and until there is a reason to have literally anything other than guns
+
+    if self.LootType == 4 then -- barter items do not exist yet
+
         self.HasValidType = false
         return
+
     end
+
+    if self.LootType == 0 then self.ContainerName = "ASSORTED BOX"
+    elseif self.LootType == 1 then self.ContainerName = "MILITARY BOX"
+    elseif self.LootType == 2 then self.ContainerName = "AMMUNITION BOX"
+    elseif self.LootType == 3 then self.ContainerName = "MEDICAL BOX"
+    elseif self.LootType == 4 then self.ContainerName = "BARTER BOX"
+    elseif self.LootType == 5 then self.ContainerName = "ATTACHMENT BOX" end
 
 	local flags = tonumber(self:GetSpawnFlags())
 
 	self.SpawnOnStart = bit.band(flags, 1) == 1
-	self.Crated = bit.band(flags, 2) == 2
 
-    -- if self.SpawnOnStart then self:SpawnItem(self:SelectItem()) end
 end
 
-function ENT:SelectItem()
+function ENT:SelectItems()
+
     if self.SpawnChance > math.random(0, 100) then return nil end
 
-    local lootTable = LOOT[self.LootType]
+    local containerLoot = {}
+    local chance = 100
+    local chanceRand = math.random(0, 100)
 
-    local tbl = {}
+    while chance >= chanceRand do
 
-    for k, v in pairs(lootTable) do
-        if v[1] == self.LootTier or v[1] == 0 then table.insert(tbl, k) end
+        chance = chance - self.ItemChancePerRoll
+
+        local itemVal, itemKey = table.Random(LOOT[self.LootType])
+        local def = EFGMITEMS[itemKey]
+
+        local data = {}
+        data.count = math.Clamp(math.random(math.Round(def.stackSize / 6), def.stackSize), 1, def.stackSize)
+
+        if def.equipType == EQUIPTYPE.Consumable then
+            data.durability = math.Clamp(math.random(math.Round(def.consumableValue / 4), def.consumableValue), 1, def.consumableValue)
+        end
+
+        local item = ITEM.Instantiate(itemKey, def.equipType, data)
+        table.insert(containerLoot, item)
+
     end
 
-    if table.IsEmpty(tbl) then print("loot table " .. self.LootType .. " is empty you fucking idiot") return nil end
+    if table.IsEmpty(LOOT[self.LootType]) then print("loot table " .. self.LootType .. " is empty you fucking idiot") return nil end
 
-    local ent = ents.Create(tbl[math.random(#tbl)])
+    return containerLoot
 
-    -- print("Spawning " .. tostring(ent))
-    return ent
 end
 
-function ENT:SpawnItem(item)
-    if item == nil then return end
+function ENT:SpawnContainer(tbl)
 
-    item:SetPos(self:GetPos())
-    item:SetAngles(self:GetAngles())
+    if tbl == nil or table.IsEmpty(tbl) then return end
+    self.ContainerLoot = tbl
 
-    item:Spawn()
-    item:PhysWake()
+    local container = ents.Create("efgm_container")
+	container:SetPos(self:GetPos())
+    container:SetAngles(self:GetAngles())
+	container:Spawn()
+	container:Activate()
+	container:SetContainerData(self.ContainerLoot, self.ContainerName)
 
-	self:TriggerOutput("OnSpawn", nil, nil)
+    self:TriggerOutput("OnSpawn", nil, nil)
+
 end
 
 function ENT:AcceptInput(name, activator, caller, data)
+
 	if name == "SpawnLoot" && self.HasValidType then
-        local item = self:SelectItem()
-		-- self:SpawnItem(item)
+
+        local items = self:SelectItems()
+        if items == nil then return end
+		self:SpawnContainer(items)
+
 	end
+
 end

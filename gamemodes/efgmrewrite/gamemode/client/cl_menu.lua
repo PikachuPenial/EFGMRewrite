@@ -2617,8 +2617,6 @@ function Menu.OpenTab.Inventory(container)
 
     ReloadInventory()
 
-    -- dont show stash when player is in a raid
-    if !Menu.Player:CompareStatus(0) then return end
     if !table.IsEmpty(container) then
 
         local containerPanel = vgui.Create("DPanel", contents)
@@ -2645,7 +2643,7 @@ function Menu.OpenTab.Inventory(container)
             surface.SetDrawColor(Color(155, 155, 155, 10))
             surface.DrawRect(0, 0, w, h)
 
-            draw.SimpleTextOutlined(container.name .. "'S COPRSE", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            draw.SimpleTextOutlined(container.name, "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
         end
 
@@ -2928,6 +2926,8 @@ function Menu.OpenTab.Inventory(container)
 
     end
 
+    -- dont show stash when player is in a raid
+    if !Menu.Player:CompareStatus(0) and table.IsEmpty(container) then return end
     local stashPanel = vgui.Create("DPanel", contents)
     stashPanel:Dock(LEFT)
     stashPanel:DockMargin(EFGM.MenuScale(13), 0, 0, 0)

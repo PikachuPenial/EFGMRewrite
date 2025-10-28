@@ -135,41 +135,35 @@
 
 ]
 
-@PointClass base(Targetname, Angles, Origin) studio("models/efgm/low_crate02.mdl") = efgm_loot : "Spawns a customizable loot object."
+@PointClass base(Targetname, Angles, Origin) studio("models/efgm/low_crate02.mdl") = efgm_loot : "Spawns a customizable loot container."
 [
 
     // Key Values
-    spawn_chance(integer) : "Weapon Spawn Chance": 100 : "The chance this spawn will create loot. 100 is always, 0 is never."
+    spawn_chance(integer) : "Container Spawn Chance": 100 : "The chance this spawn will create a container. 100 is always, 0 is never."
 
-    loot_type(choices) : "Loot Type" : 0 : "The type of loot this spawn should make" =
-    [
-        0 : "Any"
-        1 : "Weapons"
-        2 : "Ammo"
-        3 : "Attachments"
-        4 : "Medical"
-        5 : "Valuables"
-    ]
+    item_chance_per_roll(integer) : "Item Chance Per Roll": 10 : "After rolling an item to add to the container, it will decrease the chance by this value. If it does not hit a roll, the container will finish adding items."
 
-    loot_tier(choices) : "Loot Tier" : 0 : "The tier of crate spawned from this" =
+    loot_type(choices) : "Loot Type" : 1 : "The type of loot that this container should create." =
     [
-        0 : "Any"
-        1 : "Low"
-        2 : "Medium"
-        3 : "High"
+        1 : "Any"
+        2 : "Military Box"
+        3 : "Ammunition Box"
+        4 : "Medical Box"
+        5 : "Barter Box"
+        6 : "Attachment Box"
     ]
 
     // Inputs
-    input SpawnLoot(void) : "Spawns loot, regardless of whether loot has already been spawned."
+    input SpawnLoot(void) : "Spawns the container, regardless of whether the container has already been spawned or not."
 
     // Outputs
-    output OnSpawn(void) : "Fires when the loot spawns"
+    output OnSpawn(void) : "Fires when the container spawns."
 
-    output OnOpen(void) : "(PLANNED) Fires for crates when the loot spawns from the crate. Have fun."
+    output OnOpen(void) : "Fires when the container is opened."
 
     spawnflags(flags) =
     [
-        1 : "Spawn on Start" : 0
-        2 : "Loot in Crate (PLANNED)" : 1
+        1 : "Spawn on Start" : 1
     ]
+
 ]
