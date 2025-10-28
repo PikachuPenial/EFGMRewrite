@@ -91,7 +91,9 @@ net.Receive("PlayerInventoryUnEquipAll", function(len, ply)
         playerWeaponSlots[v.ID] = {}
 
         for i = 1, v.COUNT, 1 do
+
             playerWeaponSlots[v.ID][i] = {}
+
         end
 
     end
@@ -116,7 +118,7 @@ function EquipItemFromInventory(itemIndex, equipSlot, primaryPref)
     local item = playerInventory[itemIndex]
     if item == nil then return end
 
-    if AmountInInventory(playerWeaponSlots[equipSlot], item.name ) != 0 then return end -- can't have multiple of the same item
+    if AmountInInventory(playerWeaponSlots[equipSlot], item.name) != 0 then return end -- can't have multiple of the same item
 
     -- checking item equip slots
     if equipSlot == 1 and primaryPref != nil then
@@ -127,7 +129,7 @@ function EquipItemFromInventory(itemIndex, equipSlot, primaryPref)
 
             ReloadInventory()
 
-            net.Start("PlayerInventoryEquipItem", false )
+            net.Start("PlayerInventoryEquipItem", false)
                 net.WriteUInt(itemIndex, 16)
                 net.WriteUInt(equipSlot, 4)
                 net.WriteUInt(1, 16)
@@ -143,7 +145,7 @@ function EquipItemFromInventory(itemIndex, equipSlot, primaryPref)
 
             ReloadInventory()
 
-            net.Start("PlayerInventoryEquipItem", false )
+            net.Start("PlayerInventoryEquipItem", false)
                 net.WriteUInt(itemIndex, 16)
                 net.WriteUInt(equipSlot, 4)
                 net.WriteUInt(2, 16)
@@ -165,7 +167,7 @@ function EquipItemFromInventory(itemIndex, equipSlot, primaryPref)
 
                 ReloadInventory()
 
-                net.Start("PlayerInventoryEquipItem", false )
+                net.Start("PlayerInventoryEquipItem", false)
                     net.WriteUInt(itemIndex, 16)
                     net.WriteUInt(equipSlot, 4)
                     net.WriteUInt(k, 16)

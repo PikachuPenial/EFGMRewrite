@@ -953,6 +953,112 @@ function Menu:Open(openTo, container)
 
 end
 
+function Menu.InspectItem(item)
+
+    if IsValid(inspectPanel) then inspectPanel:Remove() end
+
+    local i = EFGMITEMS[item]
+    if i == nil then inspectPanel:Remove() return end
+
+    surface.SetFont("PuristaBold24")
+    local itemNameText = string.upper(i.fullName)
+    local itemNameSize = surface.GetTextSize(itemNameText)
+
+    surface.SetFont("PuristaBold18")
+    local itemDescText = string.upper(i.displayType) .. " / " .. string.upper(i.weight) .. "KG" .. " / ₽" .. string.upper(i.value)
+    local itemDescSize = surface.GetTextSize(itemDescText)
+
+    local iconSizeX, iconSizeY = EFGM.MenuScale(114 * i.sizeX), EFGM.MenuScale(114 * i.sizeY)
+
+    local panelWidth
+    if iconSizeX >= itemNameSize then panelWidth = iconSizeX else panelWidth = itemNameSize end
+    if itemDescSize >= panelWidth then panelWidth = itemDescSize end
+
+    inspectPanel = vgui.Create("DFrame", Menu.MenuFrame)
+    inspectPanel:SetSize(EFGM.MenuScale(panelWidth) + EFGM.MenuScale(40), EFGM.MenuScale(400))
+    inspectPanel:Center()
+    inspectPanel:SetAlpha(0)
+    inspectPanel:SetTitle("")
+    inspectPanel:ShowCloseButton(false)
+    inspectPanel:SetScreenLock(true)
+    inspectPanel:AlphaTo(255, 0.1, 0, nil)
+
+    local originalWidth, originalHeight = EFGM.MenuScale(114 * i.sizeX), EFGM.MenuScale(114 * i.sizeY)
+    local scaleFactor
+    local targetMaxDimension = math.min(panelWidth, i.sizeX * 200)
+
+    inspectPanel.Paint = function(s, w, h)
+
+        BlurPanel(s, EFGM.MenuScale(3))
+
+        surface.SetDrawColor(Color(20, 20, 20, 205))
+        surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
+
+        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+        draw.SimpleTextOutlined(itemNameText, "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined(itemDescText, "PuristaBold18", EFGM.MenuScale(5), EFGM.MenuScale(25), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        surface.SetDrawColor(255, 255, 255, 255)
+        surface.SetMaterial(i.icon)
+
+        if originalWidth > originalHeight then
+
+            scaleFactor = targetMaxDimension / originalWidth
+
+        else
+
+            scaleFactor = targetMaxDimension / originalHeight
+
+        end
+
+        newWidth = math.Round(originalWidth * scaleFactor)
+        newHeight = math.Round(originalHeight * scaleFactor)
+
+        -- panel width = 198, panel height = 216
+        local x = (EFGM.MenuScale(inspectPanel:GetWide()) / 2) - (newWidth / 2)
+        local y = (EFGM.MenuScale(inspectPanel:GetTall()) / 2) - (newHeight / 2)
+
+        surface.DrawTexturedRect(x, y, newWidth, newHeight)
+
+        inspectPanel:SetTall(newHeight + EFGM.MenuScale(100))
+
+    end
+
+    local closeButtonIcon = Material("icons/close_icon.png")
+    local closeButton = vgui.Create("DButton", inspectPanel)
+    closeButton:SetSize(EFGM.MenuScale(32), EFGM.MenuScale(32))
+    closeButton:SetPos(inspectPanel:GetWide() - EFGM.MenuScale(32), EFGM.MenuScale(5))
+    closeButton:SetText("")
+    closeButton.Paint = function(s, w, h)
+
+        surface.SetDrawColor(255, 255, 255, 255)
+        surface.SetMaterial(closeButtonIcon)
+        surface.DrawTexturedRect(EFGM.MenuScale(0), EFGM.MenuScale(0), EFGM.MenuScale(32), EFGM.MenuScale(32))
+
+    end
+
+    closeButton.OnCursorEntered = function(s)
+
+        surface.PlaySound("ui/element_hover.wav")
+
+    end
+
+    function closeButton:DoClick()
+
+        inspectPanel:AlphaTo(0, 0.1, 0, function() inspectPanel:Remove() end)
+
+    end
+
+end
+
 Menu.OpenTab = {}
 
 function Menu.OpenTab.Inventory(container)
@@ -1355,6 +1461,7 @@ function Menu.OpenTab.Inventory(container)
 
                 function itemInspectButton:DoClick()
 
+                    Menu.InspectItem(playerWeaponSlots[1][1].name)
                     surface.PlaySound("ui/element_select.wav")
                     contextMenu:KillFocus()
 
@@ -1546,6 +1653,7 @@ function Menu.OpenTab.Inventory(container)
 
                 function itemInspectButton:DoClick()
 
+                    Menu.InspectItem(playerWeaponSlots[1][2].name)
                     surface.PlaySound("ui/element_select.wav")
                     contextMenu:KillFocus()
 
@@ -1738,6 +1846,7 @@ function Menu.OpenTab.Inventory(container)
 
                 function itemInspectButton:DoClick()
 
+                    Menu.InspectItem(playerWeaponSlots[2][1].name)
                     surface.PlaySound("ui/element_select.wav")
                     contextMenu:KillFocus()
 
@@ -1930,6 +2039,7 @@ function Menu.OpenTab.Inventory(container)
 
                 function itemInspectButton:DoClick()
 
+                    Menu.InspectItem(playerWeaponSlots[3][1].name)
                     surface.PlaySound("ui/element_select.wav")
                     contextMenu:KillFocus()
 
@@ -2324,6 +2434,7 @@ function Menu.OpenTab.Inventory(container)
 
         end
 
+        PrintTable(plyItems)
         if table.IsEmpty(plyItems) then return end
 
         table.sort(plyItems, function(a, b) return (EFGMITEMS[a.name].sizeX * EFGMITEMS[a.name].sizeY) > (EFGMITEMS[b.name].sizeX * EFGMITEMS[b.name].sizeY) end)
@@ -2406,6 +2517,7 @@ function Menu.OpenTab.Inventory(container)
 
             function item:DoDoubleClick()
 
+                Menu.InspectItem(v.name)
                 surface.PlaySound("ui/element_select.wav")
 
             end
@@ -2491,6 +2603,7 @@ function Menu.OpenTab.Inventory(container)
 
                 function itemInspectButton:DoClick()
 
+                    Menu.InspectItem(v.name)
                     surface.PlaySound("ui/element_select.wav")
                     contextMenu:KillFocus()
 
@@ -2785,6 +2898,7 @@ function Menu.OpenTab.Inventory(container)
 
                 function item:DoDoubleClick()
 
+                    Menu.InspectItem(v.name)
                     surface.PlaySound("ui/element_select.wav")
 
                 end
@@ -2870,6 +2984,7 @@ function Menu.OpenTab.Inventory(container)
 
                     function itemInspectButton:DoClick()
 
+                        Menu.InspectItem(v.name)
                         surface.PlaySound("ui/element_select.wav")
                         contextMenu:KillFocus()
 
@@ -3776,6 +3891,7 @@ function Menu.OpenTab.Market()
 
                     function itemInspectButton:DoClick()
 
+                        Menu.InspectItem(v.id)
                         surface.PlaySound("ui/element_select.wav")
                         contextMenu:KillFocus()
 

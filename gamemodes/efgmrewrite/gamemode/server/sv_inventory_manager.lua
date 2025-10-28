@@ -198,7 +198,7 @@ net.Receive("PlayerInventoryDropItem", function(len, ply)
 
     local wep = ents.Create(item.name)
 
-    if wep == NULL then return end
+    if wep == NULL then table.remove(ply.inventory, itemIndex) return end
 
     if data.att then
 
@@ -263,10 +263,21 @@ net.Receive("PlayerInventoryUnEquipItem", function(len, ply)
 
     end
 
+    local clip1 = wep:Clip1()
+    if clip1 != -1 then
+
+        local data = {}
+        data.count = wep:Clip1()
+        FlowItemToInventory(ply, wep.Ammo, EQUIPTYPE.Ammunition, data)
+
+    end
+
     ply:StripWeapon(item.name)
 
     local newItem = ITEM.Instantiate(item.name, item.type, item.data)
     local index = table.insert(ply.inventory, newItem)
+
+    PrintTable(ply.inventory)
 
     net.Start("PlayerInventoryAddItem", false)
     net.WriteString(item.name)
@@ -298,6 +309,15 @@ function UnequipAll(ply)
                     local atts = table.Copy(wep.Attachments)
                     local str = GenerateAttachString(atts)
                     item.data.att = str
+
+                end
+
+                local clip1 = wep:Clip1()
+                if clip1 != -1 then
+
+                    local data = {}
+                    data.count = wep:Clip1()
+                    FlowItemToInventory(ply, wep.Ammo, EQUIPTYPE.Ammunition, data)
 
                 end
 
