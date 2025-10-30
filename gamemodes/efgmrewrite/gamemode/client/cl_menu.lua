@@ -1380,6 +1380,13 @@ function Menu.OpenTab.Inventory(container)
 
             end
 
+            function primaryItem:DoDoubleClick()
+
+                Menu.InspectItem(playerWeaponSlots[1][1].name)
+                surface.PlaySound("ui/element_select.wav")
+
+            end
+
             function primaryItem:DoRightClick()
 
                 local x, y = equipmentHolder:LocalCursorPos()
@@ -1563,6 +1570,13 @@ function Menu.OpenTab.Inventory(container)
             function secondaryItem:PaintOver(w, h)
 
                 draw.SimpleTextOutlined(i.displayName, nameFont, EFGM.MenuScale(w - 3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            end
+
+            function secondaryItem:DoDoubleClick()
+
+                Menu.InspectItem(playerWeaponSlots[1][2].name)
+                surface.PlaySound("ui/element_select.wav")
 
             end
 
@@ -1759,6 +1773,13 @@ function Menu.OpenTab.Inventory(container)
 
             end
 
+            function holsterItem:DoDoubleClick()
+
+                Menu.InspectItem(playerWeaponSlots[2][1].name)
+                surface.PlaySound("ui/element_select.wav")
+
+            end
+
             holsterItem.OnCursorEntered = function(s)
 
                 surface.PlaySound("ui/element_hover.wav")
@@ -1949,6 +1970,13 @@ function Menu.OpenTab.Inventory(container)
             function meleeItem:PaintOver(w, h)
 
                 draw.SimpleTextOutlined(i.displayName, nameFont, EFGM.MenuScale(w - 3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            end
+
+            function meleeItem:DoDoubleClick()
+
+                Menu.InspectItem(playerWeaponSlots[3][1].name)
+                surface.PlaySound("ui/element_select.wav")
 
             end
 
@@ -2434,7 +2462,6 @@ function Menu.OpenTab.Inventory(container)
 
         end
 
-        PrintTable(plyItems)
         if table.IsEmpty(plyItems) then return end
 
         table.sort(plyItems, function(a, b) return (EFGMITEMS[a.name].sizeX * EFGMITEMS[a.name].sizeY) > (EFGMITEMS[b.name].sizeX * EFGMITEMS[b.name].sizeY) end)

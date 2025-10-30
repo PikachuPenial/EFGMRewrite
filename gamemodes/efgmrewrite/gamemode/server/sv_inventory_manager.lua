@@ -277,8 +277,6 @@ net.Receive("PlayerInventoryUnEquipItem", function(len, ply)
     local newItem = ITEM.Instantiate(item.name, item.type, item.data)
     local index = table.insert(ply.inventory, newItem)
 
-    PrintTable(ply.inventory)
-
     net.Start("PlayerInventoryAddItem", false)
     net.WriteString(item.name)
     net.WriteUInt(item.type, 4)

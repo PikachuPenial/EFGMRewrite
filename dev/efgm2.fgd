@@ -5,7 +5,6 @@
 //-------------------------------------------------------------------------
 
 @include "base.fgd"
-@include "halflife2.fgd"
 
 @PointClass base(Targetname) = efgm_raid_interface : "Raid System Interface"
 [
@@ -151,6 +150,14 @@
         4 : "Medical Box"
         5 : "Barter Box"
         6 : "Attachment Box"
+
+        // OLD
+    //  0 : "Any"
+    //  1 : "Weapons"
+    //  2 : "Ammo"
+    //  3 : "Attachments"
+    //  4 : "Medical"
+    //  5 : "Valuables"
     ]
 
     // Inputs
