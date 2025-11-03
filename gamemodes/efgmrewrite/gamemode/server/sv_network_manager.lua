@@ -159,6 +159,7 @@ function SetupPlayerData(ply)
     InitializeNetworkInt(ply, query, "BestKillStreak", 1)
     InitializeNetworkInt(ply, query, "CurrentExtractionStreak", 1)
     InitializeNetworkInt(ply, query, "BestExtractionStreak", 1)
+
 end
 
 function SavePlayerData(ply)

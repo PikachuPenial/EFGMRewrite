@@ -3616,7 +3616,7 @@ function Menu.OpenTab.Market()
     MarketCat.ALLITEMS = {
 
         name = "All Items",
-        items = {"Assault Carbine", "Assault Rifle", "Light Machine Gun", "Pistol", "Shotgun", "Sniper Rifle", "Marksman Rifle", "Submachine Gun", "Launcher", "Melee", "Grenade", "Special", "Ammunition", "Accessory", "Barrel", "Cover", "Foregrip", "Gas Block", "Handguard", "Magazine", "Mount", "Muzzle", "Optic", "Pistol Grip", "Receiver", "Sight", "Stock", "Medical", "Physical Key", "Mechanical Key", "Barter"},
+        items = {"Assault Carbine", "Assault Rifle", "Light Machine Gun", "Pistol", "Shotgun", "Sniper Rifle", "Marksman Rifle", "Submachine Gun", "Launcher", "Melee", "Grenade", "Special", "Ammunition", "Accessory", "Barrel", "Cover", "Foregrip", "Gas Block", "Handguard", "Magazine", "Mount", "Muzzle", "Optic", "Pistol Grip", "Receiver", "Sight", "Stock", "Tactical", "Medical", "Physical Key", "Mechanical Key", "Barter"},
 
         children = {}
 
@@ -3658,7 +3658,7 @@ function Menu.OpenTab.Market()
     MarketCat.ATTACHMENTS = {
 
         name = "Attachments",
-        items = {"Accessory", "Barrel", "Cover", "Foregrip", "Gas Block", "Handguard", "Magazine", "Mount", "Muzzle", "Optic", "Pistol Grip", "Receiver", "Sight", "Stock"},
+        items = {"Accessory", "Barrel", "Cover", "Foregrip", "Gas Block", "Handguard", "Magazine", "Mount", "Muzzle", "Optic", "Pistol Grip", "Receiver", "Sight", "Stock", "Tactical"},
 
         children = {
 
@@ -3675,7 +3675,8 @@ function Menu.OpenTab.Market()
             ["Pistol Grips"] = "Pistol Grip",
             ["Receivers"] = "Receiver",
             ["Sights"] = "Sight",
-            ["Stocks"] = "Stock"
+            ["Stocks"] = "Stock",
+            ["Tacticals"] = "Tactical"
 
         }
 
