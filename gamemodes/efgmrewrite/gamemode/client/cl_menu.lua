@@ -302,6 +302,13 @@ function Menu:Initialize(openTo, container)
 
     end
 
+    function lowerPanel:OnMouseWheeled(delta)
+
+        if !IsValid(contextMenu) then return end
+        contextMenu:AlphaTo(0, 0.1, 0, function() contextMenu:Remove() hook.Remove("Think", "CheckIfContextMenuStillFocused") end)
+
+    end
+
     self.MenuFrame.LowerPanel = lowerPanel
 
     local contents = vgui.Create("DPanel", Menu.MenuFrame.LowerPanel)
@@ -1397,7 +1404,7 @@ function Menu.OpenTab.Inventory(container)
 
                 if IsValid(contextMenu) then contextMenu:Remove() end
                 contextMenu = vgui.Create("DPanel", equipmentHolder)
-                contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(30))
+                contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(85))
                 contextMenu:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
                 contextMenu:SetAlpha(0)
                 contextMenu:AlphaTo(255, 0.1, 0, nil)
@@ -1445,7 +1452,7 @@ function Menu.OpenTab.Inventory(container)
                 hook.Add("Think", "CheckIfContextMenuStillFocused", function()
 
                     if !IsValid(contextMenu) then hook.Remove("Think", "CheckIfContextMenuStillFocused") return end
-                    if (input.IsMouseDown(MOUSE_LEFT) or input.IsMouseDown(MOUSE_RIGHT) or input.IsMouseDown(MOUSE_MIDDLE)) and !contextMenu:IsChildHovered() then contextMenu:KillFocus() hook.Remove("Think", "CheckIfContextMenuStillFocused") end
+                    if (input.IsMouseDown(MOUSE_LEFT) or input.IsMouseDown(MOUSE_RIGHT) or input.IsMouseDown(MOUSE_MIDDLE) or input.IsMouseDown(MOUSE_WHEEL_DOWN) or input.IsMouseDown(MOUSE_WHEEL_UP)) and !contextMenu:IsChildHovered() then contextMenu:KillFocus() hook.Remove("Think", "CheckIfContextMenuStillFocused") end
 
                 end)
 
@@ -1596,7 +1603,7 @@ function Menu.OpenTab.Inventory(container)
 
                 if IsValid(contextMenu) then contextMenu:Remove() end
                 contextMenu = vgui.Create("DPanel", equipmentHolder)
-                contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(30))
+                contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(85))
                 contextMenu:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
                 contextMenu:SetAlpha(0)
                 contextMenu:AlphaTo(255, 0.1, 0, nil)
@@ -1608,7 +1615,7 @@ function Menu.OpenTab.Inventory(container)
 
                 else
 
-                    contextMenu:SetX(math.Clamp(x - contextMenu:GetWide() - EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+                    contextMenu:SetX(math.Clamp(x - contextMenu:GetWide(), EFGM.MenuScale(5), equipmentHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
 
                 end
 
@@ -1644,7 +1651,7 @@ function Menu.OpenTab.Inventory(container)
                 hook.Add("Think", "CheckIfContextMenuStillFocused", function()
 
                     if !IsValid(contextMenu) then hook.Remove("Think", "CheckIfContextMenuStillFocused") return end
-                    if (input.IsMouseDown(MOUSE_LEFT) or input.IsMouseDown(MOUSE_RIGHT) or input.IsMouseDown(MOUSE_MIDDLE)) and !contextMenu:IsChildHovered() then contextMenu:KillFocus() hook.Remove("Think", "CheckIfContextMenuStillFocused") end
+                    if (input.IsMouseDown(MOUSE_LEFT) or input.IsMouseDown(MOUSE_RIGHT) or input.IsMouseDown(MOUSE_MIDDLE) or input.IsMouseDown(MOUSE_WHEEL_DOWN) or input.IsMouseDown(MOUSE_WHEEL_UP)) and !contextMenu:IsChildHovered() then contextMenu:KillFocus() hook.Remove("Think", "CheckIfContextMenuStillFocused") end
 
                 end)
 
@@ -1796,7 +1803,7 @@ function Menu.OpenTab.Inventory(container)
 
                 if IsValid(contextMenu) then contextMenu:Remove() end
                 contextMenu = vgui.Create("DPanel", equipmentHolder)
-                contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(30))
+                contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(85))
                 contextMenu:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
                 contextMenu:SetAlpha(0)
                 contextMenu:AlphaTo(255, 0.1, 0, nil)
@@ -1844,7 +1851,7 @@ function Menu.OpenTab.Inventory(container)
                 hook.Add("Think", "CheckIfContextMenuStillFocused", function()
 
                     if !IsValid(contextMenu) then hook.Remove("Think", "CheckIfContextMenuStillFocused") return end
-                    if (input.IsMouseDown(MOUSE_LEFT) or input.IsMouseDown(MOUSE_RIGHT) or input.IsMouseDown(MOUSE_MIDDLE)) and !contextMenu:IsChildHovered() then contextMenu:KillFocus() hook.Remove("Think", "CheckIfContextMenuStillFocused") end
+                    if (input.IsMouseDown(MOUSE_LEFT) or input.IsMouseDown(MOUSE_RIGHT) or input.IsMouseDown(MOUSE_MIDDLE) or input.IsMouseDown(MOUSE_WHEEL_DOWN) or input.IsMouseDown(MOUSE_WHEEL_UP)) and !contextMenu:IsChildHovered() then contextMenu:KillFocus() hook.Remove("Think", "CheckIfContextMenuStillFocused") end
 
                 end)
 
@@ -1996,7 +2003,7 @@ function Menu.OpenTab.Inventory(container)
 
                 if IsValid(contextMenu) then contextMenu:Remove() end
                 contextMenu = vgui.Create("DPanel", equipmentHolder)
-                contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(30))
+                contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(85))
                 contextMenu:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
                 contextMenu:SetAlpha(0)
                 contextMenu:AlphaTo(255, 0.1, 0, nil)
@@ -2044,7 +2051,7 @@ function Menu.OpenTab.Inventory(container)
                 hook.Add("Think", "CheckIfContextMenuStillFocused", function()
 
                     if !IsValid(contextMenu) then hook.Remove("Think", "CheckIfContextMenuStillFocused") return end
-                    if (input.IsMouseDown(MOUSE_LEFT) or input.IsMouseDown(MOUSE_RIGHT) or input.IsMouseDown(MOUSE_MIDDLE)) and !contextMenu:IsChildHovered() then contextMenu:KillFocus() hook.Remove("Think", "CheckIfContextMenuStillFocused") end
+                    if (input.IsMouseDown(MOUSE_LEFT) or input.IsMouseDown(MOUSE_RIGHT) or input.IsMouseDown(MOUSE_MIDDLE) or input.IsMouseDown(MOUSE_WHEEL_DOWN) or input.IsMouseDown(MOUSE_WHEEL_UP)) and !contextMenu:IsChildHovered() then contextMenu:KillFocus() hook.Remove("Think", "CheckIfContextMenuStillFocused") end
 
                 end)
 
@@ -2402,6 +2409,14 @@ function Menu.OpenTab.Inventory(container)
 
     end
 
+    function playerItemsHolder:OnVScroll(offset)
+
+        self.pnlCanvas:SetPos(0, offset)
+        if !IsValid(contextMenu) then return end
+        contextMenu:AlphaTo(0, 0.1, 0, function() contextMenu:Remove() hook.Remove("Think", "CheckIfContextMenuStillFocused") end)
+
+    end
+
     playerItemsHolder:Receiver("items", function(self, panels, dropped, _, x, y)
 
         if !dropped then return end
@@ -2551,39 +2566,19 @@ function Menu.OpenTab.Inventory(container)
 
             function item:DoRightClick()
 
-                local x, y = playerItemsHolder:LocalCursorPos()
+                local x, y = itemsHolder:LocalCursorPos()
                 surface.PlaySound("ui/element_hover.wav")
 
-                if x <= (playerItemsHolder:GetWide() / 2) then sideH = true else sideH = false end
-                if y <= (playerItemsHolder:GetTall() / 2) then sideV = true else sideV = false end
+                if x <= (itemsHolder:GetWide() / 2) then sideH = true else sideH = false end
+                if y <= (itemsHolder:GetTall() / 2) then sideV = true else sideV = false end
 
                 if IsValid(contextMenu) then contextMenu:Remove() end
-                contextMenu = vgui.Create("DPanel", playerItemsHolder)
-                contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(30))
+                contextMenu = vgui.Create("DPanel", itemsHolder)
+                contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(35))
                 contextMenu:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
                 contextMenu:SetAlpha(0)
                 contextMenu:AlphaTo(255, 0.1, 0, nil)
                 contextMenu:RequestFocus()
-
-                if sideH == true then
-
-                    contextMenu:SetX(math.Clamp(x + EFGM.MenuScale(5), EFGM.MenuScale(5), playerItemsHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
-
-                else
-
-                    contextMenu:SetX(math.Clamp(x - contextMenu:GetWide() - EFGM.MenuScale(5), EFGM.MenuScale(5), playerItemsHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
-
-                end
-
-                if sideV == true then
-
-                    contextMenu:SetY(math.Clamp(y + EFGM.MenuScale(5), EFGM.MenuScale(5), playerItemsHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
-
-                else
-
-                    contextMenu:SetY(math.Clamp(y - contextMenu:GetTall() + EFGM.MenuScale(5), EFGM.MenuScale(5), playerItemsHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
-
-                end
 
                 contextMenu.Paint = function(s, w, h)
 
@@ -2651,6 +2646,8 @@ function Menu.OpenTab.Inventory(container)
 
                 if actions.equipable then
 
+                    contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
+
                     local itemEquipButton = vgui.Create("DButton", contextMenu)
                     itemEquipButton:Dock(TOP)
                     itemEquipButton:SetSize(0, EFGM.MenuScale(25))
@@ -2678,6 +2675,8 @@ function Menu.OpenTab.Inventory(container)
 
                 if actions.consumable then
 
+                    contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
+
                     local itemConsumeButton = vgui.Create("DButton", contextMenu)
                     itemConsumeButton:Dock(TOP)
                     itemConsumeButton:SetSize(0, EFGM.MenuScale(25))
@@ -2702,6 +2701,8 @@ function Menu.OpenTab.Inventory(container)
 
                 if actions.splittable then
 
+                    contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
+
                     local itemSplitButton = vgui.Create("DButton", contextMenu)
                     itemSplitButton:Dock(TOP)
                     itemSplitButton:SetSize(0, EFGM.MenuScale(25))
@@ -2725,6 +2726,8 @@ function Menu.OpenTab.Inventory(container)
 
                 if actions.droppable then
 
+                    contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
+
                     local itemDropButton = vgui.Create("DButton", contextMenu)
                     itemDropButton:Dock(TOP)
                     itemDropButton:SetSize(0, EFGM.MenuScale(25))
@@ -2744,6 +2747,26 @@ function Menu.OpenTab.Inventory(container)
                         playerItems:InvalidateLayout()
 
                     end
+
+                end
+
+                if sideH == true then
+
+                    contextMenu:SetX(math.Clamp(x + EFGM.MenuScale(5), EFGM.MenuScale(5), itemsHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+                else
+
+                    contextMenu:SetX(math.Clamp(x - contextMenu:GetWide() - EFGM.MenuScale(5), EFGM.MenuScale(5), itemsHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+                end
+
+                if sideV == true then
+
+                    contextMenu:SetY(math.Clamp(y + EFGM.MenuScale(5), EFGM.MenuScale(5), itemsHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
+
+                else
+
+                    contextMenu:SetY(math.Clamp(y - contextMenu:GetTall() + EFGM.MenuScale(5), EFGM.MenuScale(5), itemsHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
 
                 end
 
@@ -2813,6 +2836,14 @@ function Menu.OpenTab.Inventory(container)
             surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
             surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+        end
+
+        function playerItemsHolder:OnVScroll(offset)
+
+            self.pnlCanvas:SetPos(0, offset)
+            if !IsValid(contextMenu) then return end
+            contextMenu:AlphaTo(0, 0.1, 0, function() contextMenu:Remove() hook.Remove("Think", "CheckIfContextMenuStillFocused") end)
 
         end
 
@@ -2940,7 +2971,7 @@ function Menu.OpenTab.Inventory(container)
 
                     if IsValid(contextMenu) then contextMenu:Remove() end
                     contextMenu = vgui.Create("DPanel", containerItemsHolder)
-                    contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(30))
+                    contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(35))
                     contextMenu:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
                     contextMenu:SetAlpha(0)
                     contextMenu:AlphaTo(255, 0.1, 0, nil)
@@ -2988,7 +3019,7 @@ function Menu.OpenTab.Inventory(container)
                     hook.Add("Think", "CheckIfContextMenuStillFocused", function()
 
                         if !IsValid(contextMenu) then hook.Remove("Think", "CheckIfContextMenuStillFocused") return end
-                        if (input.IsMouseDown(MOUSE_LEFT) or input.IsMouseDown(MOUSE_RIGHT) or input.IsMouseDown(MOUSE_MIDDLE)) and !contextMenu:IsChildHovered() then contextMenu:KillFocus() hook.Remove("Think", "CheckIfContextMenuStillFocused") end
+                        if (input.IsMouseDown(MOUSE_LEFT) or input.IsMouseDown(MOUSE_RIGHT) or input.IsMouseDown(MOUSE_MIDDLE) or input.IsMouseDown(MOUSE_WHEEL_DOWN) or input.IsMouseDown(MOUSE_WHEEL_UP)) and !contextMenu:IsChildHovered() then contextMenu:KillFocus() hook.Remove("Think", "CheckIfContextMenuStillFocused") end
 
                     end)
 
@@ -3000,7 +3031,7 @@ function Menu.OpenTab.Inventory(container)
 
                     local itemInspectButton = vgui.Create("DButton", contextMenu)
                     itemInspectButton:Dock(TOP)
-                    itemInspectButton:SetSize(0, EFGM.MenuScale(25))
+                    itemInspectButton:SetSize(0, EFGM.MenuScale(35))
                     itemInspectButton:SetText("INSPECT")
 
                     itemInspectButton.OnCursorEntered = function(s)
@@ -3024,6 +3055,8 @@ function Menu.OpenTab.Inventory(container)
                     }
 
                     if actions.lootable then
+
+                        contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
 
                         local itemLootButton = vgui.Create("DButton", contextMenu)
                         itemLootButton:Dock(TOP)
@@ -3220,6 +3253,14 @@ function Menu.OpenTab.Inventory(container)
         surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
         surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+    end
+
+    function stashItemsHolder:OnVScroll(offset)
+
+        self.pnlCanvas:SetPos(0, offset)
+        if !IsValid(contextMenu) then return end
+        contextMenu:AlphaTo(0, 0.1, 0, function() contextMenu:Remove() hook.Remove("Think", "CheckIfContextMenuStillFocused") end)
 
     end
 
@@ -3848,7 +3889,7 @@ function Menu.OpenTab.Market()
 
                     if IsValid(contextMenu) then contextMenu:Remove() end
                     contextMenu = vgui.Create("DPanel", marketItemHolder)
-                    contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(30))
+                    contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(35))
                     contextMenu:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
                     contextMenu:SetAlpha(0)
                     contextMenu:AlphaTo(255, 0.1, 0, nil)
@@ -3896,7 +3937,7 @@ function Menu.OpenTab.Market()
                     hook.Add("Think", "CheckIfContextMenuStillFocused", function()
 
                         if !IsValid(contextMenu) then hook.Remove("Think", "CheckIfContextMenuStillFocused") return end
-                        if (input.IsMouseDown(MOUSE_LEFT) or input.IsMouseDown(MOUSE_RIGHT) or input.IsMouseDown(MOUSE_MIDDLE)) and !contextMenu:IsChildHovered() then contextMenu:KillFocus() hook.Remove("Think", "CheckIfContextMenuStillFocused") end
+                        if (input.IsMouseDown(MOUSE_LEFT) or input.IsMouseDown(MOUSE_RIGHT) or input.IsMouseDown(MOUSE_MIDDLE) or input.IsMouseDown(MOUSE_WHEEL_DOWN) or input.IsMouseDown(MOUSE_WHEEL_UP)) and !contextMenu:IsChildHovered() then contextMenu:KillFocus() hook.Remove("Think", "CheckIfContextMenuStillFocused") end
 
                     end)
 
