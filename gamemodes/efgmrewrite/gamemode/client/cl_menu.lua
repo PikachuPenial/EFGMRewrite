@@ -2282,11 +2282,17 @@ function Menu.OpenTab.Inventory(container)
     itemsText:Dock(TOP)
     itemsText:SetSize(0, EFGM.MenuScale(28))
     surface.SetFont("PuristaBold24")
-    local usedWeight = 14.2
-    local maxWeight = 80
+    local usedWeight = string.format("%04.2f", ply:GetNWFloat("InventoryWeight", 0.00))
+    local maxWeight = 70
     local weightText = usedWeight .. " / " .. maxWeight .. "KG"
     local weightTextSize = surface.GetTextSize(weightText)
     itemsText.Paint = function(s, w, h)
+
+        surface.SetFont("PuristaBold24")
+        usedWeight = string.format("%04.2f", ply:GetNWFloat("InventoryWeight", 0.00))
+        maxWeight = 70
+        weightText = usedWeight .. " / " .. maxWeight .. "KG"
+        weightTextSize = surface.GetTextSize(weightText)
 
         BlurPanel(s, EFGM.MenuScale(3))
 
@@ -2304,7 +2310,7 @@ function Menu.OpenTab.Inventory(container)
 
         -- used weight capacity
         surface.SetDrawColor(Color(255, 255, 255, 225))
-        surface.DrawRect(EFGM.MenuScale(30), EFGM.MenuScale(7), EFGM.MenuScale((usedWeight / maxWeight) * 180), EFGM.MenuScale(16))
+        surface.DrawRect(EFGM.MenuScale(30), EFGM.MenuScale(7), math.min(EFGM.MenuScale((usedWeight / maxWeight) * 180), 180), EFGM.MenuScale(16))
 
         surface.SetDrawColor(Color(255, 255, 255, 25))
         surface.DrawRect(EFGM.MenuScale(30), EFGM.MenuScale(7), EFGM.MenuScale(180), EFGM.MenuScale(1))
@@ -2324,6 +2330,8 @@ function Menu.OpenTab.Inventory(container)
     searchButton:SetSize(EFGM.MenuScale(27), EFGM.MenuScale(27))
     searchButton:SetText("")
     searchButton.Paint = function(s, w, h)
+
+        searchButton:SetX(EFGM.MenuScale(225) + weightTextSize)
 
         BlurPanel(s, EFGM.MenuScale(3))
 
@@ -2360,6 +2368,8 @@ function Menu.OpenTab.Inventory(container)
     filterButton:SetSize(EFGM.MenuScale(27), EFGM.MenuScale(27))
     filterButton:SetText("")
     filterButton.Paint = function(s, w, h)
+
+        filterButton:SetX(EFGM.MenuScale(32) + searchButton:GetX())
 
         BlurPanel(s, EFGM.MenuScale(3))
 
@@ -2963,39 +2973,19 @@ function Menu.OpenTab.Inventory(container)
 
                 function item:DoRightClick()
 
-                    local x, y = containerItemsHolder:LocalCursorPos()
+                    local x, y = containerHolder:LocalCursorPos()
                     surface.PlaySound("ui/element_hover.wav")
 
-                    if x <= (containerItemsHolder:GetWide() / 2) then sideH = true else sideH = false end
-                    if y <= (containerItemsHolder:GetTall() / 2) then sideV = true else sideV = false end
+                    if x <= (containerHolder:GetWide() / 2) then sideH = true else sideH = false end
+                    if y <= (containerHolder:GetTall() / 2) then sideV = true else sideV = false end
 
                     if IsValid(contextMenu) then contextMenu:Remove() end
-                    contextMenu = vgui.Create("DPanel", containerItemsHolder)
+                    contextMenu = vgui.Create("DPanel", containerHolder)
                     contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(35))
                     contextMenu:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
                     contextMenu:SetAlpha(0)
                     contextMenu:AlphaTo(255, 0.1, 0, nil)
                     contextMenu:RequestFocus()
-
-                    if sideH == true then
-
-                        contextMenu:SetX(math.Clamp(x + EFGM.MenuScale(5), EFGM.MenuScale(5), containerItemsHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
-
-                    else
-
-                        contextMenu:SetX(math.Clamp(x - contextMenu:GetWide() - EFGM.MenuScale(5), EFGM.MenuScale(5), containerItemsHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
-
-                    end
-
-                    if sideV == true then
-
-                        contextMenu:SetY(math.Clamp(y + EFGM.MenuScale(5), EFGM.MenuScale(5), containerItemsHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
-
-                    else
-
-                        contextMenu:SetY(math.Clamp(y - contextMenu:GetTall() + EFGM.MenuScale(5), EFGM.MenuScale(5), containerItemsHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
-
-                    end
 
                     contextMenu.Paint = function(s, w, h)
 
@@ -3031,7 +3021,7 @@ function Menu.OpenTab.Inventory(container)
 
                     local itemInspectButton = vgui.Create("DButton", contextMenu)
                     itemInspectButton:Dock(TOP)
-                    itemInspectButton:SetSize(0, EFGM.MenuScale(35))
+                    itemInspectButton:SetSize(0, EFGM.MenuScale(25))
                     itemInspectButton:SetText("INSPECT")
 
                     itemInspectButton.OnCursorEntered = function(s)
@@ -3086,6 +3076,26 @@ function Menu.OpenTab.Inventory(container)
 
 
                         end
+
+                    end
+
+                    if sideH == true then
+
+                        contextMenu:SetX(math.Clamp(x + EFGM.MenuScale(5), EFGM.MenuScale(5), itemsHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+                    else
+
+                        contextMenu:SetX(math.Clamp(x - contextMenu:GetWide() - EFGM.MenuScale(5), EFGM.MenuScale(5), itemsHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+                    end
+
+                    if sideV == true then
+
+                        contextMenu:SetY(math.Clamp(y + EFGM.MenuScale(5), EFGM.MenuScale(5), itemsHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
+
+                    else
+
+                        contextMenu:SetY(math.Clamp(y - contextMenu:GetTall() + EFGM.MenuScale(5), EFGM.MenuScale(5), itemsHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
 
                     end
 

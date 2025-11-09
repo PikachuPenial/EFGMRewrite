@@ -26,6 +26,8 @@ hook.Add("PlayerSpawn", "InventorySetup", function(ply)
 
     end
 
+    ply:SetNWFloat("InventoryWeight", 0.00)
+
 end)
 
 function ReinstantiateInventory(ply)
@@ -42,6 +44,8 @@ function ReinstantiateInventory(ply)
         end
 
     end
+
+    ply:SetNWFloat("InventoryWeight", 0.00)
 
 end
 concommand.Add("efgm_flush_inventory", function(ply, cmd, args) ReinstantiateInventory(ply) end)
@@ -74,6 +78,8 @@ function AddItemToInventory(ply, name, type, data)
     net.WriteUInt(index, 16)
     net.Send(ply)
 
+    AddWeightToPlayer(ply, name)
+
 end
 
 function UpdateItemFromInventory(ply, index, data)
@@ -87,7 +93,14 @@ function UpdateItemFromInventory(ply, index, data)
 
 end
 
-function DeleteItemFromInventory(ply, index)
+function DeleteItemFromInventory(ply, index, isEquipped)
+
+    if !isEquipped then
+
+        local item = ply.inventory[index]
+        RemoveWeightFromPlayer(ply, item.name)
+
+    end
 
     table.remove(ply.inventory, index)
 
@@ -169,7 +182,7 @@ function DeflowItemsFromInventory(ply, name, count)
             if amount >= v.data.count then
 
                 amount = amount - v.data.count
-                DeleteItemFromInventory(ply, k)
+                DeleteItemFromInventory(ply, k, false)
 
             else
 
@@ -198,7 +211,7 @@ net.Receive("PlayerInventoryDropItem", function(len, ply)
 
     local wep = ents.Create(item.name)
 
-    if wep == NULL then table.remove(ply.inventory, itemIndex) return end
+    if wep == NULL then table.remove(ply.inventory, itemIndex) RemoveWeightFromPlayer(ply, item.name) return end
 
     if data.att then
 
@@ -213,6 +226,7 @@ net.Receive("PlayerInventoryDropItem", function(len, ply)
     if type(wep.GetData) == "function" then wep:GetData(data) end
 
     table.remove(ply.inventory, itemIndex)
+    RemoveWeightFromPlayer(ply, item.name)
 
 end)
 
@@ -231,7 +245,7 @@ net.Receive("PlayerInventoryEquipItem", function(len, ply)
 
     if table.IsEmpty(ply.weaponSlots[equipSlot][equipSubSlot]) then
 
-        DeleteItemFromInventory(ply, itemIndex)
+        DeleteItemFromInventory(ply, itemIndex, true)
         ply.weaponSlots[equipSlot][equipSubSlot] = item
 
         equipWeaponName = item.name
@@ -377,6 +391,8 @@ net.Receive("PlayerInventoryDropEquippedItem", function(len, ply)
 
     if type(newWep.GetData) == "function" then newWep:GetData(item.data) end
 
+    RemoveWeightFromPlayer(ply, item.name)
+
 end)
 
 net.Receive("PlayerInventoryConsumeItem", function(len, ply)
@@ -412,6 +428,8 @@ net.Receive("PlayerInventoryConsumeItem", function(len, ply)
 
             table.remove(ply.inventory, itemIndex)
 
+            RemoveWeightFromPlayer(ply, item.name)
+
         end
 
     end
@@ -433,11 +451,41 @@ net.Receive("PlayerInventoryLootItemFromContainer", function(len, ply)
         net.WriteUInt(newIndex, 16)
     net.Send(ply)
 
+    AddWeightToPlayer(ply, newItem.name)
+
     table.remove(container.Inventory, index)
 
     if table.IsEmpty(container.Inventory) then container:Remove() end
 
 end)
+
+function AddWeightToPlayer(ply, item)
+
+    local def = EFGMITEMS[item]
+
+    if def.weight == nil then return false end
+
+    local curWeight = ply:GetNWFloat("InventoryWeight", 0.00)
+    local newWeight = math.Round(curWeight + def.weight, 2)
+
+    ply:SetNWFloat("InventoryWeight", newWeight)
+    return newWeight
+
+end
+
+function RemoveWeightFromPlayer(ply, item)
+
+    local def = EFGMITEMS[item]
+
+    if def.weight == nil then return false end
+
+    local curWeight = ply:GetNWFloat("InventoryWeight", 0.00)
+    local newWeight = math.Round(curWeight - def.weight, 2)
+
+    ply:SetNWFloat("InventoryWeight", newWeight)
+    return newWeight
+
+end
 
 function GiveAmmo(ply, count)
 
