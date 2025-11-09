@@ -78,11 +78,24 @@ function AddItemToInventory(ply, name, type, data)
     net.WriteUInt(index, 16)
     net.Send(ply)
 
-    AddWeightToPlayer(ply, name)
+    AddWeightToPlayer(ply, name, data.count)
 
 end
 
 function UpdateItemFromInventory(ply, index, data)
+
+    local item = ply.inventory[index]
+    local oldData = ply.inventory[index].data
+
+    if oldData.count < data.count then
+
+        AddWeightToPlayer(ply, item.name, data.count - oldData.count)
+
+    elseif oldData.count > data.count then
+
+        RemoveWeightFromPlayer(ply, item.name, oldData.count - data.count)
+
+    end
 
     ply.inventory[index].data = data
 
@@ -98,7 +111,7 @@ function DeleteItemFromInventory(ply, index, isEquipped)
     if !isEquipped then
 
         local item = ply.inventory[index]
-        RemoveWeightFromPlayer(ply, item.name)
+        RemoveWeightFromPlayer(ply, item.name, item.data.count)
 
     end
 
@@ -211,7 +224,7 @@ net.Receive("PlayerInventoryDropItem", function(len, ply)
 
     local wep = ents.Create(item.name)
 
-    if wep == NULL then table.remove(ply.inventory, itemIndex) RemoveWeightFromPlayer(ply, item.name) return end
+    if wep == NULL then table.remove(ply.inventory, itemIndex) RemoveWeightFromPlayer(ply, item.name, item.data.count) return end
 
     if data.att then
 
@@ -226,7 +239,7 @@ net.Receive("PlayerInventoryDropItem", function(len, ply)
     if type(wep.GetData) == "function" then wep:GetData(data) end
 
     table.remove(ply.inventory, itemIndex)
-    RemoveWeightFromPlayer(ply, item.name)
+    RemoveWeightFromPlayer(ply, item.name, item.data.count)
 
 end)
 
@@ -391,7 +404,7 @@ net.Receive("PlayerInventoryDropEquippedItem", function(len, ply)
 
     if type(newWep.GetData) == "function" then newWep:GetData(item.data) end
 
-    RemoveWeightFromPlayer(ply, item.name)
+    RemoveWeightFromPlayer(ply, item.name, item.data.count)
 
 end)
 
@@ -428,7 +441,7 @@ net.Receive("PlayerInventoryConsumeItem", function(len, ply)
 
             table.remove(ply.inventory, itemIndex)
 
-            RemoveWeightFromPlayer(ply, item.name)
+            RemoveWeightFromPlayer(ply, item.name, item.data.count)
 
         end
 
@@ -451,7 +464,7 @@ net.Receive("PlayerInventoryLootItemFromContainer", function(len, ply)
         net.WriteUInt(newIndex, 16)
     net.Send(ply)
 
-    AddWeightToPlayer(ply, newItem.name)
+    AddWeightToPlayer(ply, newItem.name, newItem.data.count)
 
     table.remove(container.Inventory, index)
 
@@ -459,30 +472,32 @@ net.Receive("PlayerInventoryLootItemFromContainer", function(len, ply)
 
 end)
 
-function AddWeightToPlayer(ply, item)
+function AddWeightToPlayer(ply, item, count)
 
     local def = EFGMITEMS[item]
 
+    if count == 0 then count = 1 end
     if def.weight == nil then return false end
 
     local curWeight = ply:GetNWFloat("InventoryWeight", 0.00)
-    local newWeight = math.Round(curWeight + def.weight, 2)
+    local newWeight = math.Round(curWeight + (def.weight * count), 2)
 
     ply:SetNWFloat("InventoryWeight", newWeight)
     return newWeight
 
 end
 
-function RemoveWeightFromPlayer(ply, item)
+function RemoveWeightFromPlayer(ply, item, count)
 
     local def = EFGMITEMS[item]
 
+    if count == 0 then count = 1 end
     if def.weight == nil then return false end
 
     local curWeight = ply:GetNWFloat("InventoryWeight", 0.00)
-    local newWeight = math.Round(curWeight - def.weight, 2)
+    local newWeight = math.Round(curWeight - (def.weight * count), 2)
 
-    ply:SetNWFloat("InventoryWeight", newWeight)
+    ply:SetNWFloat("InventoryWeight", math.min(0.00, newWeight))
     return newWeight
 
 end
