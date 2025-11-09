@@ -497,7 +497,7 @@ function RemoveWeightFromPlayer(ply, item, count)
     local curWeight = ply:GetNWFloat("InventoryWeight", 0.00)
     local newWeight = math.Round(curWeight - (def.weight * count), 2)
 
-    ply:SetNWFloat("InventoryWeight", math.min(0.00, newWeight))
+    ply:SetNWFloat("InventoryWeight", math.max(0.00, newWeight))
     return newWeight
 
 end

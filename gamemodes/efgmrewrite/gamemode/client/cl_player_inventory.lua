@@ -77,9 +77,6 @@ net.Receive("PlayerInventoryDeleteItem", function(len, ply)
 
     index = net.ReadUInt(16)
 
-    print("INDEX IS:")
-    print(index)
-
     table.remove(playerInventory, index)
 
     ReloadInventory()
