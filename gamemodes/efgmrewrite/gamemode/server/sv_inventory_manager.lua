@@ -104,15 +104,16 @@ function UpdateItemFromInventory(ply, index, data)
     net.WriteUInt(index, 16)
     net.Send(ply)
 
+    return item
+
 end
 
 function DeleteItemFromInventory(ply, index, isEquipped)
 
+    local item = ply.inventory[index]
+
     if !isEquipped then
-
-        local item = ply.inventory[index]
         RemoveWeightFromPlayer(ply, item.name, item.data.count)
-
     end
 
     table.remove(ply.inventory, index)
@@ -120,6 +121,8 @@ function DeleteItemFromInventory(ply, index, isEquipped)
     net.Start("PlayerInventoryDeleteItem", false)
     net.WriteUInt(index, 16)
     net.Send(ply)
+
+    return item
 
 end
 
