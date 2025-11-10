@@ -2457,8 +2457,8 @@ function Menu.OpenTab.Inventory(container)
 
     local playerItems = vgui.Create("DIconLayout", playerItemsHolder)
     playerItems:Dock(TOP)
-    playerItems:SetSpaceY(0)
-    playerItems:SetSpaceX(0)
+    playerItems:SetSpaceY(-1)
+    playerItems:SetSpaceX(-1)
 
     local playerItemsBar = playerItemsHolder:GetVBar()
     playerItemsBar:SetHideButtons(true)
@@ -2647,12 +2647,43 @@ function Menu.OpenTab.Inventory(container)
                     droppable = true,
                     equipable = false,
                     consumable = false,
-                    splittable = false
+                    splittable = false,
+                    stashable = false
                 }
 
+                actions.stashable = Menu.Player:CompareStatus(0) and table.IsEmpty(container)
                 actions.equipable = i.equipType == EQUIPTYPE.Weapon
                 actions.splittable = i.stackSize > 1
                 actions.consumable = i.equipType == EQUIPTYPE.Consumable
+
+                if actions.stashable then
+
+                    contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
+
+                    local itemStashButton = vgui.Create("DButton", contextMenu)
+                    itemStashButton:Dock(TOP)
+                    itemStashButton:SetSize(0, EFGM.MenuScale(25))
+                    itemStashButton:SetText("STASH")
+
+                    itemStashButton.OnCursorEntered = function(s)
+
+                        surface.PlaySound("ui/element_hover.wav")
+
+                    end
+
+                    function itemStashButton:DoClick()
+
+                        surface.PlaySound("ui/element_select.wav")
+                        contextMenu:Remove()
+                        playerItems:InvalidateLayout()
+
+                        StashItemFromInventory(v.id)
+
+                        ReloadStash()
+
+                    end
+
+                end
 
                 if actions.equipable then
 
@@ -2849,7 +2880,7 @@ function Menu.OpenTab.Inventory(container)
 
         end
 
-        function playerItemsHolder:OnVScroll(offset)
+        function containerItemsHolder:OnVScroll(offset)
 
             self.pnlCanvas:SetPos(0, offset)
             if !IsValid(contextMenu) then return end
@@ -3159,10 +3190,14 @@ function Menu.OpenTab.Inventory(container)
     stashInfoText:Dock(TOP)
     stashInfoText:SetSize(0, EFGM.MenuScale(28))
     surface.SetFont("PuristaBold24")
-    local stashValue = 676767
-    local valueText = "EST. VALUE: " .. comma_value(stashValue)
+    local stashValue = 0
+    local valueText = "EST. VALUE: ₽" .. comma_value(stashValue)
     local valueTextSize = surface.GetTextSize(valueText)
     stashInfoText.Paint = function(s, w, h)
+
+        surface.SetFont("PuristaBold24")
+        valueText = "EST. VALUE: ₽" .. comma_value(stashValue)
+        valueTextSize = surface.GetTextSize(valueText)
 
         BlurPanel(s, EFGM.MenuScale(3))
 
@@ -3181,6 +3216,8 @@ function Menu.OpenTab.Inventory(container)
     stashSearchButton:SetSize(EFGM.MenuScale(27), EFGM.MenuScale(27))
     stashSearchButton:SetText("")
     stashSearchButton.Paint = function(s, w, h)
+
+        stashSearchButton:SetX(EFGM.MenuScale(15) + valueTextSize)
 
         BlurPanel(s, EFGM.MenuScale(3))
 
@@ -3217,6 +3254,8 @@ function Menu.OpenTab.Inventory(container)
     stashFilterButton:SetSize(EFGM.MenuScale(27), EFGM.MenuScale(27))
     stashFilterButton:SetText("")
     stashFilterButton.Paint = function(s, w, h)
+
+        stashFilterButton:SetX(EFGM.MenuScale(32) + stashSearchButton:GetX())
 
         BlurPanel(s, EFGM.MenuScale(3))
 
@@ -3279,7 +3318,7 @@ function Menu.OpenTab.Inventory(container)
     stashItems:SetSpaceY(-1)
     stashItems:SetSpaceX(-1)
 
-    local stashItemsBar = playerItemsHolder:GetVBar()
+    local stashItemsBar = stashItemsHolder:GetVBar()
     stashItemsBar:SetHideButtons(true)
     stashItemsBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
     function stashItemsBar:Paint(w, h)
@@ -3288,6 +3327,305 @@ function Menu.OpenTab.Inventory(container)
     function stashItemsBar.btnGrip:Paint(w, h)
         draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
     end
+
+    local plyStashItems = {}
+
+    function ReloadStash()
+
+        stashValue = 0
+        stashItems:Clear()
+        plyStashItems = {}
+
+        for k, v in pairs(playerStash) do
+
+            plyStashItems[k] = {}
+            plyStashItems[k].name = v.name
+            plyStashItems[k].id = k
+            plyStashItems[k].data = v.data
+            plyStashItems[k].type = v.type
+
+        end
+
+        if table.IsEmpty(plyStashItems) then return end
+
+        table.sort(plyStashItems, function(a, b) return (EFGMITEMS[a.name].sizeX * EFGMITEMS[a.name].sizeY) > (EFGMITEMS[b.name].sizeX * EFGMITEMS[b.name].sizeY) end)
+
+        -- stash item entry
+        for k, v in pairs(plyStashItems) do
+
+            local i = EFGMITEMS[v.name]
+            if i == nil then return end
+
+            stashValue = stashValue + (i.value * v.data.count)
+
+            local item = stashItems:Add("DButton")
+            item:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
+            item:SetText("")
+            item:Droppable("items")
+            item.ID = v.id
+            item.SLOT = i.equipSlot
+            item.ORIGIN = "stash"
+
+            if i.equipType == EQUIPTYPE.Weapon then
+
+                if item.SLOT == WEAPONSLOTS.PRIMARY.ID then item:Droppable("slot_primary") end
+                if item.SLOT == WEAPONSLOTS.HOLSTER.ID then item:Droppable("slot_holster") end
+                if item.SLOT == WEAPONSLOTS.MELEE.ID then item:Droppable("slot_melee") end
+                if item.SLOT == WEAPONSLOTS.GRENADE.ID then item:Droppable("slot_grenade") end
+
+            end
+
+            function item:Paint(w, h)
+
+                surface.SetDrawColor(Color(5, 5, 5, 20))
+                surface.DrawRect(0, 0, w, h)
+
+                surface.SetDrawColor(Color(255, 255, 255, 2))
+                surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+                surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+                surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                surface.SetDrawColor(255, 255, 255, 255)
+                surface.SetMaterial(i.icon)
+                surface.DrawTexturedRect(0, 0, w, h)
+
+            end
+
+            surface.SetFont("Purista18")
+
+            local nameSize = surface.GetTextSize(i.displayName)
+            local nameFont
+
+            if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18"
+            else nameFont = "PuristaBold14" end
+
+            local duraSize = nil
+            local duraFont = nil
+
+            if i.equipType == EQUIPTYPE.Consumable then
+
+                duraSize = surface.GetTextSize(i.consumableValue .. "/" .. i.consumableValue)
+
+                if duraSize <= (EFGM.MenuScale(49 * i.sizeX)) then duraFont = "PuristaBold18"
+                else duraFont = "PuristaBold14" end
+
+            end
+
+            function item:PaintOver(w, h)
+
+                draw.SimpleTextOutlined(i.displayName, nameFont, EFGM.MenuScale(w - 3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                if i.equipType == EQUIPTYPE.Ammunition then
+                    draw.SimpleTextOutlined(v.data.count, "PuristaBold18", EFGM.MenuScale(w - 3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                elseif i.equipType == EQUIPTYPE.Consumable then
+                    draw.SimpleTextOutlined(v.data.durability .. "/" .. i.consumableValue, duraFont, EFGM.MenuScale(w - 3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                end
+
+            end
+
+            item.OnCursorEntered = function(s)
+
+                surface.PlaySound("ui/element_hover.wav")
+
+            end
+
+            function item:DoDoubleClick()
+
+                Menu.InspectItem(v.name)
+                surface.PlaySound("ui/element_select.wav")
+
+            end
+
+            function item:DoRightClick()
+
+                local x, y = stashHolder:LocalCursorPos()
+                surface.PlaySound("ui/element_hover.wav")
+
+                if x <= (stashHolder:GetWide() / 2) then sideH = true else sideH = false end
+                if y <= (stashHolder:GetTall() / 2) then sideV = true else sideV = false end
+
+                if IsValid(contextMenu) then contextMenu:Remove() end
+                contextMenu = vgui.Create("DPanel", stashHolder)
+                contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(35))
+                contextMenu:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
+                contextMenu:SetAlpha(0)
+                contextMenu:AlphaTo(255, 0.1, 0, nil)
+                contextMenu:RequestFocus()
+
+                contextMenu.Paint = function(s, w, h)
+
+                    if !IsValid(s) then return end
+
+                    BlurPanel(s, EFGM.MenuScale(5))
+
+                    surface.SetDrawColor(Color(5, 5, 5, 50))
+                    surface.DrawRect(0, 0, w, h)
+
+                    surface.SetDrawColor(Color(255, 255, 255, 30))
+                    surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+                    surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                    surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+                    surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                    contextMenu:SizeToChildren(true, true)
+
+                end
+
+                hook.Add("Think", "CheckIfContextMenuStillFocused", function()
+
+                    if !IsValid(contextMenu) then hook.Remove("Think", "CheckIfContextMenuStillFocused") return end
+                    if (input.IsMouseDown(MOUSE_LEFT) or input.IsMouseDown(MOUSE_RIGHT) or input.IsMouseDown(MOUSE_MIDDLE)) and !contextMenu:IsChildHovered() then contextMenu:KillFocus() hook.Remove("Think", "CheckIfContextMenuStillFocused") end
+
+                end)
+
+                function contextMenu:OnFocusChanged(focus)
+
+                    if !focus then contextMenu:AlphaTo(0, 0.1, 0, function() contextMenu:Remove() hook.Remove("Think", "CheckIfContextMenuStillFocused") end) end
+
+                end
+
+                local itemInspectButton = vgui.Create("DButton", contextMenu)
+                itemInspectButton:Dock(TOP)
+                itemInspectButton:SetSize(0, EFGM.MenuScale(25))
+                itemInspectButton:SetText("INSPECT")
+
+                itemInspectButton.OnCursorEntered = function(s)
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
+                function itemInspectButton:DoClick()
+
+                    Menu.InspectItem(v.name)
+                    surface.PlaySound("ui/element_select.wav")
+                    contextMenu:KillFocus()
+
+                end
+
+                -- actions that can be performed on this specific item
+                -- default
+                local actions = {
+                    equipable = false,
+                    consumable = false,
+                    splittable = false
+                }
+
+                actions.equipable = i.equipType == EQUIPTYPE.Weapon
+                actions.splittable = i.stackSize > 1
+                actions.consumable = i.equipType == EQUIPTYPE.Consumable
+
+                if actions.equipable then
+
+                    contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
+
+                    local itemEquipButton = vgui.Create("DButton", contextMenu)
+                    itemEquipButton:Dock(TOP)
+                    itemEquipButton:SetSize(0, EFGM.MenuScale(25))
+                    itemEquipButton:SetText("EQUIP")
+
+                    itemEquipButton.OnCursorEntered = function(s)
+
+                        surface.PlaySound("ui/element_hover.wav")
+
+                    end
+
+                    function itemEquipButton:DoClick()
+
+                        surface.PlaySound("ui/element_select.wav")
+                        contextMenu:Remove()
+                        stashItems:InvalidateLayout()
+
+                        -- EquipItemFromInventory(v.id, i.equipSlot)
+
+                        -- ReloadSlots()
+
+                    end
+
+                end
+
+                if actions.consumable then
+
+                    contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
+
+                    local itemConsumeButton = vgui.Create("DButton", contextMenu)
+                    itemConsumeButton:Dock(TOP)
+                    itemConsumeButton:SetSize(0, EFGM.MenuScale(25))
+                    itemConsumeButton:SetText("USE")
+
+                    itemConsumeButton.OnCursorEntered = function(s)
+
+                        surface.PlaySound("ui/element_hover.wav")
+
+                    end
+
+                    function itemConsumeButton:DoClick()
+
+                        surface.PlaySound("ui/element_select.wav")
+                        contextMenu:Remove()
+                        stashItems:InvalidateLayout()
+
+                        -- ConsumeItemFromInventory(v.id)
+
+                    end
+
+                end
+
+                if actions.splittable then
+
+                    contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
+
+                    local itemSplitButton = vgui.Create("DButton", contextMenu)
+                    itemSplitButton:Dock(TOP)
+                    itemSplitButton:SetSize(0, EFGM.MenuScale(25))
+                    itemSplitButton:SetText("SPLIT")
+
+                    itemSplitButton.OnCursorEntered = function(s)
+
+                        surface.PlaySound("ui/element_hover.wav")
+
+                    end
+
+                    function itemSplitButton:DoClick()
+
+                        surface.PlaySound("ui/element_select.wav")
+                        contextMenu:KillFocus()
+                        stashItems:InvalidateLayout()
+
+                    end
+
+                end
+
+                if sideH == true then
+
+                    contextMenu:SetX(math.Clamp(x + EFGM.MenuScale(5), EFGM.MenuScale(5), stashHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+                else
+
+                    contextMenu:SetX(math.Clamp(x - contextMenu:GetWide() - EFGM.MenuScale(5), EFGM.MenuScale(5), stashHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+                end
+
+                if sideV == true then
+
+                    contextMenu:SetY(math.Clamp(y + EFGM.MenuScale(5), EFGM.MenuScale(5), stashHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
+
+                else
+
+                    contextMenu:SetY(math.Clamp(y - contextMenu:GetTall() + EFGM.MenuScale(5), EFGM.MenuScale(5), stashHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
+
+                end
+
+            end
+
+        end
+
+        stashItems:InvalidateLayout()
+
+    end
+
+    ReloadStash()
 
 end
 
@@ -3308,6 +3646,7 @@ function Menu.OpenTab.Market()
 
     local stashPanel = vgui.Create("DPanel", contents)
     stashPanel:Dock(LEFT)
+    stashPanel:DockMargin(EFGM.MenuScale(13), 0, 0, 0)
     stashPanel:SetSize(EFGM.MenuScale(613), 0)
     stashPanel.Paint = function(s, w, h)
 
@@ -3351,10 +3690,14 @@ function Menu.OpenTab.Market()
     stashInfoText:Dock(TOP)
     stashInfoText:SetSize(0, EFGM.MenuScale(28))
     surface.SetFont("PuristaBold24")
-    local stashValue = 676767
-    local valueText = "EST. VALUE: " .. comma_value(stashValue)
+    local stashValue = 0
+    local valueText = "EST. VALUE: ₽" .. comma_value(stashValue)
     local valueTextSize = surface.GetTextSize(valueText)
     stashInfoText.Paint = function(s, w, h)
+
+        surface.SetFont("PuristaBold24")
+        valueText = "EST. VALUE: ₽" .. comma_value(stashValue)
+        valueTextSize = surface.GetTextSize(valueText)
 
         BlurPanel(s, EFGM.MenuScale(3))
 
@@ -3373,6 +3716,8 @@ function Menu.OpenTab.Market()
     stashSearchButton:SetSize(EFGM.MenuScale(27), EFGM.MenuScale(27))
     stashSearchButton:SetText("")
     stashSearchButton.Paint = function(s, w, h)
+
+        stashSearchButton:SetX(EFGM.MenuScale(15) + valueTextSize)
 
         BlurPanel(s, EFGM.MenuScale(3))
 
@@ -3409,6 +3754,8 @@ function Menu.OpenTab.Market()
     stashFilterButton:SetSize(EFGM.MenuScale(27), EFGM.MenuScale(27))
     stashFilterButton:SetText("")
     stashFilterButton.Paint = function(s, w, h)
+
+        stashFilterButton:SetX(EFGM.MenuScale(32) + stashSearchButton:GetX())
 
         BlurPanel(s, EFGM.MenuScale(3))
 
@@ -3458,6 +3805,14 @@ function Menu.OpenTab.Market()
 
     end
 
+    function stashItemsHolder:OnVScroll(offset)
+
+        self.pnlCanvas:SetPos(0, offset)
+        if !IsValid(contextMenu) then return end
+        contextMenu:AlphaTo(0, 0.1, 0, function() contextMenu:Remove() hook.Remove("Think", "CheckIfContextMenuStillFocused") end)
+
+    end
+
     local stashItems = vgui.Create("DIconLayout", stashItemsHolder)
     stashItems:Dock(FILL)
     stashItems:SetSpaceY(-1)
@@ -3472,6 +3827,217 @@ function Menu.OpenTab.Market()
     function stashItemsBar.btnGrip:Paint(w, h)
         draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
     end
+
+    local plyStashItems = {}
+
+    function ReloadStash()
+
+        stashValue = 0
+        stashItems:Clear()
+        plyStashItems = {}
+
+        for k, v in pairs(playerStash) do
+
+            plyStashItems[k] = {}
+            plyStashItems[k].name = v.name
+            plyStashItems[k].id = k
+            plyStashItems[k].data = v.data
+            plyStashItems[k].type = v.type
+
+        end
+
+        if table.IsEmpty(plyStashItems) then return end
+
+        table.sort(plyStashItems, function(a, b) return (EFGMITEMS[a.name].sizeX * EFGMITEMS[a.name].sizeY) > (EFGMITEMS[b.name].sizeX * EFGMITEMS[b.name].sizeY) end)
+
+        -- stash item entry
+        for k, v in pairs(plyStashItems) do
+
+            local i = EFGMITEMS[v.name]
+            if i == nil then return end
+
+            stashValue = stashValue + (i.value * v.data.count)
+
+            local item = stashItems:Add("DButton")
+            item:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
+            item:SetText("")
+            item:Droppable("items")
+            item.ID = v.id
+            item.SLOT = i.equipSlot
+            item.ORIGIN = "stash"
+
+            if i.equipType == EQUIPTYPE.Weapon then
+
+                if item.SLOT == WEAPONSLOTS.PRIMARY.ID then item:Droppable("slot_primary") end
+                if item.SLOT == WEAPONSLOTS.HOLSTER.ID then item:Droppable("slot_holster") end
+                if item.SLOT == WEAPONSLOTS.MELEE.ID then item:Droppable("slot_melee") end
+                if item.SLOT == WEAPONSLOTS.GRENADE.ID then item:Droppable("slot_grenade") end
+
+            end
+
+            function item:Paint(w, h)
+
+                surface.SetDrawColor(Color(5, 5, 5, 20))
+                surface.DrawRect(0, 0, w, h)
+
+                surface.SetDrawColor(Color(255, 255, 255, 2))
+                surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+                surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+                surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                surface.SetDrawColor(255, 255, 255, 255)
+                surface.SetMaterial(i.icon)
+                surface.DrawTexturedRect(0, 0, w, h)
+
+            end
+
+            surface.SetFont("Purista18")
+
+            local nameSize = surface.GetTextSize(i.displayName)
+            local nameFont
+
+            if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18"
+            else nameFont = "PuristaBold14" end
+
+            local duraSize = nil
+            local duraFont = nil
+
+            if i.equipType == EQUIPTYPE.Consumable then
+
+                duraSize = surface.GetTextSize(i.consumableValue .. "/" .. i.consumableValue)
+
+                if duraSize <= (EFGM.MenuScale(49 * i.sizeX)) then duraFont = "PuristaBold18"
+                else duraFont = "PuristaBold14" end
+
+            end
+
+            function item:PaintOver(w, h)
+
+                draw.SimpleTextOutlined(i.displayName, nameFont, EFGM.MenuScale(w - 3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                if i.equipType == EQUIPTYPE.Ammunition then
+                    draw.SimpleTextOutlined(v.data.count, "PuristaBold18", EFGM.MenuScale(w - 3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                elseif i.equipType == EQUIPTYPE.Consumable then
+                    draw.SimpleTextOutlined(v.data.durability .. "/" .. i.consumableValue, duraFont, EFGM.MenuScale(w - 3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                end
+
+            end
+
+            item.OnCursorEntered = function(s)
+
+                surface.PlaySound("ui/element_hover.wav")
+
+            end
+
+            function item:DoDoubleClick()
+
+                Menu.InspectItem(v.name)
+                surface.PlaySound("ui/element_select.wav")
+
+            end
+
+            function item:DoRightClick()
+
+                local x, y = stashHolder:LocalCursorPos()
+                surface.PlaySound("ui/element_hover.wav")
+
+                if x <= (stashHolder:GetWide() / 2) then sideH = true else sideH = false end
+                if y <= (stashHolder:GetTall() / 2) then sideV = true else sideV = false end
+
+                if IsValid(contextMenu) then contextMenu:Remove() end
+                contextMenu = vgui.Create("DPanel", stashHolder)
+                contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(35))
+                contextMenu:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
+                contextMenu:SetAlpha(0)
+                contextMenu:AlphaTo(255, 0.1, 0, nil)
+                contextMenu:RequestFocus()
+
+                contextMenu.Paint = function(s, w, h)
+
+                    if !IsValid(s) then return end
+
+                    BlurPanel(s, EFGM.MenuScale(5))
+
+                    surface.SetDrawColor(Color(5, 5, 5, 50))
+                    surface.DrawRect(0, 0, w, h)
+
+                    surface.SetDrawColor(Color(255, 255, 255, 30))
+                    surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+                    surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                    surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+                    surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                    contextMenu:SizeToChildren(true, true)
+
+                end
+
+                hook.Add("Think", "CheckIfContextMenuStillFocused", function()
+
+                    if !IsValid(contextMenu) then hook.Remove("Think", "CheckIfContextMenuStillFocused") return end
+                    if (input.IsMouseDown(MOUSE_LEFT) or input.IsMouseDown(MOUSE_RIGHT) or input.IsMouseDown(MOUSE_MIDDLE)) and !contextMenu:IsChildHovered() then contextMenu:KillFocus() hook.Remove("Think", "CheckIfContextMenuStillFocused") end
+
+                end)
+
+                function contextMenu:OnFocusChanged(focus)
+
+                    if !focus then contextMenu:AlphaTo(0, 0.1, 0, function() contextMenu:Remove() hook.Remove("Think", "CheckIfContextMenuStillFocused") end) end
+
+                end
+
+                local itemInspectButton = vgui.Create("DButton", contextMenu)
+                itemInspectButton:Dock(TOP)
+                itemInspectButton:SetSize(0, EFGM.MenuScale(25))
+                itemInspectButton:SetText("INSPECT")
+
+                itemInspectButton.OnCursorEntered = function(s)
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
+                function itemInspectButton:DoClick()
+
+                    Menu.InspectItem(v.name)
+                    surface.PlaySound("ui/element_select.wav")
+                    contextMenu:KillFocus()
+
+                end
+
+                -- actions that can be performed on this specific item
+                -- default
+                local actions = {
+                }
+
+                if sideH == true then
+
+                    contextMenu:SetX(math.Clamp(x + EFGM.MenuScale(5), EFGM.MenuScale(5), stashHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+                else
+
+                    contextMenu:SetX(math.Clamp(x - contextMenu:GetWide() - EFGM.MenuScale(5), EFGM.MenuScale(5), stashHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+                end
+
+                if sideV == true then
+
+                    contextMenu:SetY(math.Clamp(y + EFGM.MenuScale(5), EFGM.MenuScale(5), stashHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
+
+                else
+
+                    contextMenu:SetY(math.Clamp(y - contextMenu:GetTall() + EFGM.MenuScale(5), EFGM.MenuScale(5), stashHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
+
+                end
+
+            end
+
+        end
+
+        stashItems:InvalidateLayout()
+
+    end
+
+    ReloadStash()
 
     local marketPanel = vgui.Create("DPanel", contents)
     marketPanel:Dock(LEFT)

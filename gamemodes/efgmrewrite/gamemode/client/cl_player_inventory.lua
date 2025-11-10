@@ -1,19 +1,10 @@
 
-playerInventory = {}
+net.Receive("PlayerNetworkInventory", function(len, ply)
 
-playerWeaponSlots = {}
-for k, v in pairs(WEAPONSLOTS) do
+    -- will eventually allow for inventory saving, but for now just instantiate it here
+    ReinstantiateInventory()
 
-    playerWeaponSlots[v.ID] = {}
-
-    for i = 1, v.COUNT, 1 do
-        playerWeaponSlots[v.ID][i] = {}
-    end
-
-end
-
-playerEquippedSlot = 0
-playerEquippedSubSlot = 0
+end )
 
 -- for dev. purposes, dont need to start new map to give yourself items after a reload
 function ReinstantiateInventory()

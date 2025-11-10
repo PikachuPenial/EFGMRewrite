@@ -86,6 +86,27 @@ function InitializeNetworkString(ply, query, key, value)
 
 end
 
+-- an adderall fueled discovery
+function InitializeStashString(ply, query, value)
+
+	if query == "new" then ply.stashStr = tostring(value) return tostring(value) end
+
+	for k, v in ipairs(query) do
+
+		if v.Key == "Stash" then
+
+			ply.stashStr = tostring(v.Value)
+			return tostring(v.Value)
+
+		end
+
+	end
+
+	ply.stashStr = tostring(value)
+    return tostring(value)
+
+end
+
 function UninitializeNetworkBool(ply, query, key)
 
 	local id64 = ply:SteamID64()
@@ -188,6 +209,43 @@ function UninitializeNetworkString(ply, query, key, valueOverride)
 
 end
 
+-- lord please save me
+function UninitializeStashString(ply, query, valueOverride)
+
+	local id64 = ply:SteamID64()
+	local name = ply:Name()
+    local value = ""
+
+    if valueOverride == nil then
+
+	    value = tostring(ply.stashStr)
+
+    else
+
+	    value = tostring(valueOverride)
+
+    end
+
+	if query == "new" then tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr("Stash") .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), " return end
+
+	for k, v in ipairs(query) do
+
+		if v.Key == "Stash" then
+
+			tempCMD = tempCMD .. "WHEN " .. SQLStr("Stash") .. " THEN " .. SQLStr(value) .. " "
+			return
+
+		end
+
+	end
+
+	tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr("Stash") .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), "
+
+end
+
+util.AddNetworkString("PlayerNetworkInventory")
+util.AddNetworkString("PlayerNetworkStash")
+
 -- Yo the way this shit works is very cool, nice job pene
 function SetupPlayerData(ply)
 
@@ -226,8 +284,16 @@ function SetupPlayerData(ply)
     InitializeNetworkInt(ply, query, "BestExtractionStreak", 1)
 
     -- stash
-    local stashString = InitializeNetworkString(ply, query, "Stash", "")
+    local stashString = InitializeStashString(ply, query, "")
 	ply.stash = DecodeStash(ply, stashString)
+	if ply.stash == nil then ply.stash = {} end
+
+	net.Start("PlayerNetworkInventory", false)
+    net.Send(ply)
+
+    net.Start("PlayerNetworkStash", false)
+    net.WriteString(stashString)
+    net.Send(ply)
 
 end
 
@@ -240,6 +306,8 @@ function SavePlayerData(ply)
 
 	tempNewCMD = "INSERT INTO EFGMPlayerData64 (SteamID, Key, Value, SteamName) VALUES"
 	tempCMD = "UPDATE EFGMPlayerData64 SET Value = CASE Key "
+
+	UpdateStashString(ply)
 
 	sql.Begin()
 
@@ -274,7 +342,7 @@ function SavePlayerData(ply)
     UninitializeNetworkInt(ply, query, "BestExtractionStreak")
 
     -- stash
-    UninitializeNetworkString(ply, query, "Stash")
+    UninitializeStashString(ply, query)
 
 	tempNewCMD = string.sub(tempNewCMD, 1, -3) .. ";"
 	tempCMD = tempCMD .. "ELSE Value END WHERE SteamID = " .. id64 .. ";"

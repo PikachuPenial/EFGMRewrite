@@ -59,8 +59,6 @@ end)
 
 function AddItemToInventory(ply, name, type, data)
 
-    print("I DO NOT UNDERSTAND")
-
     local def = EFGMITEMS[name]
 
     if data.count == 0 then return end -- dont add an item that doesnt exist lol!
