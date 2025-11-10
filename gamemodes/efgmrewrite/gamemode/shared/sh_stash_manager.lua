@@ -1,8 +1,6 @@
 
 if SERVER then
 
-    print("penis")
-
     concommand.Add("efgm_debug_addtostash", function(ply, cmd, args)
 
         local item = ITEM.Instantiate(args[1], tonumber(args[2]), {})
@@ -15,10 +13,10 @@ if SERVER then
 
         PrintTable(ply.stash)
         print(stashString)
-    
+
     end)
 
-    concommand.Add("efgm_debug_addtostash", function(ply, cmd, args)
+    concommand.Add("efgm_debug_movetostash", function(ply, cmd, args)
 
         local index = tonumber(args[1])
         local item = DeleteItemFromInventory(ply, index, false)
@@ -31,8 +29,22 @@ if SERVER then
 
         PrintTable(ply.stash)
         print(stashString)
-    
+
     end)
+
+    function DecodeStash(ply, str)
+
+        if !str then return end
+        str = util.Base64Decode(str)
+        str = util.Decompress(str)
+
+        if !str then return end
+
+        local tbl = util.JSONToTable(str)
+
+        return tbl
+
+    end
 
 end
 

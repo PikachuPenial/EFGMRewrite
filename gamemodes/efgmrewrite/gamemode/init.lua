@@ -240,7 +240,7 @@ hook.Add("PlayerCanPickupWeapon", "InventoryWeaponPickup", function(ply, wep)
 
 	if wepClass != tempEquipWeaponName and GetConVar("efgm_debug_pickupinv"):GetInt() == 0 or false then
 
-		AddItemToInventory(ply, wepClass, EQUIPTYPE.Weapon, data)
+		-- AddItemToInventory(ply, wepClass, EQUIPTYPE.Weapon, data)
 
 		timer.Simple(0, function()
 

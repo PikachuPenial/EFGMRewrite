@@ -7,62 +7,87 @@ local tempCMD = nil
 local tempNewCMD = nil
 
 function InitializeNetworkBool(ply, query, key, value)
+
 	if query == "new" then ply:SetNWBool(key, tobool(value)) return tobool(value) end
 
 	for k, v in ipairs(query) do
+
 		if key == v.Key then
+
 			ply:SetNWBool(key, tobool(v.Value))
 			return tobool(v.Value)
+
 		end
+
 	end
 
 	ply:SetNWBool(key, tobool(value))
     return tobool(value)
+
 end
 
 function InitializeNetworkInt(ply, query, key, value)
+
 	if query == "new" then ply:SetNWInt(key, tonumber(value)) return tonumber(value) end
 
 	for k, v in ipairs(query) do
+
 		if key == v.Key then
+
 			ply:SetNWInt(key, tonumber(v.Value))
 			return tonumber(v.Value)
+
 		end
+
 	end
 
 	ply:SetNWInt(key, tonumber(value))
     return tonumber(value)
+
 end
 
 function InitializeNetworkFloat(ply, query, key, value)
+
 	if query == "new" then ply:SetNWFloat(key, tonumber(value)) return tonumber(value) end
 
 	for k, v in ipairs(query) do
+
 		if key == v.Key then
+
 			ply:SetNWFloat(key, tonumber(v.Value))
 			return tonumber(v.Value)
+
 		end
+
 	end
 
 	ply:SetNWFloat(key, tonumber(value))
-    return tonumber(value)
+	return tonumber(value)
+
 end
 
 function InitializeNetworkString(ply, query, key, value)
+
 	if query == "new" then ply:SetNWString(key, tostring(value)) return tostring(value) end
 
 	for k, v in ipairs(query) do
+
 		if key == v.Key then
+
 			ply:SetNWString(key, tostring(v.Value))
 			return tostring(v.Value)
+
 		end
+
 	end
 
 	ply:SetNWString(key, tostring(value))
     return tostring(value)
+
 end
 
 function UninitializeNetworkBool(ply, query, key)
+
 	local id64 = ply:SteamID64()
 	local name = ply:Name()
 	local value = tobool(ply:GetNWBool(key))
@@ -70,16 +95,22 @@ function UninitializeNetworkBool(ply, query, key)
 	if query == "new" then tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr(key) .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), " return end
 
 	for k, v in ipairs(query) do
+
 		if key == v.Key then
+
 			tempCMD = tempCMD .. "WHEN " .. SQLStr(key) .. " THEN " .. SQLStr(value) .. " "
 			return
+
 		end
+
 	end
 
 	tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr(key) .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), "
+
 end
 
 function UninitializeNetworkInt(ply, query, key)
+
 	local id64 = ply:SteamID64()
 	local name = ply:Name()
 	local value = tonumber(ply:GetNWInt(key))
@@ -87,16 +118,22 @@ function UninitializeNetworkInt(ply, query, key)
 	if query == "new" then tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr(key) .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), " return end
 
 	for k, v in ipairs(query) do
+
 		if key == v.Key then
+
 			tempCMD = tempCMD .. "WHEN " .. SQLStr(key) .. " THEN " .. SQLStr(value) .. " "
 			return
+
 		end
+
 	end
 
 	tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr(key) .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), "
+
 end
 
 function UninitializeNetworkFloat(ply, query, key)
+
 	local id64 = ply:SteamID64()
 	local name = ply:Name()
 	local value = tonumber(ply:GetNWFloat(key))
@@ -104,45 +141,59 @@ function UninitializeNetworkFloat(ply, query, key)
 	if query == "new" then tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr(key) .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), " return end
 
 	for k, v in ipairs(query) do
+
 		if key == v.Key then
+
 			tempCMD = tempCMD .. "WHEN " .. SQLStr(key) .. " THEN " .. SQLStr(value) .. " "
 			return
+
 		end
+
 	end
 
 	tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr(key) .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), "
+
 end
 
 function UninitializeNetworkString(ply, query, key, valueOverride)
+
 	local id64 = ply:SteamID64()
 	local name = ply:Name()
     local value = ""
 
     if valueOverride == nil then
+
 	    value = tostring(ply:GetNWString(key))
-        print("value = " .. value)
+
     else
+
 	    value = tostring(valueOverride)
+
     end
 
 	if query == "new" then tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr(key) .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), " return end
 
 	for k, v in ipairs(query) do
+
 		if key == v.Key then
+
 			tempCMD = tempCMD .. "WHEN " .. SQLStr(key) .. " THEN " .. SQLStr(value) .. " "
 			return
+
 		end
+
 	end
 
 	tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr(key) .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), "
+
 end
 
 -- Yo the way this shit works is very cool, nice job pene
 function SetupPlayerData(ply)
+
 	local id64 = ply:SteamID64()
 	local query = sql.Query("SELECT Key, Value FROM EFGMPlayerData64 WHERE SteamID = " .. id64 .. ";")
 	if query == nil then query = "new" end
-    PrintTable(query)
 
     -- stats
     InitializeNetworkBool(ply, query, "FreshWipe", true) -- false if player has logged on once this wipe
@@ -173,40 +224,15 @@ function SetupPlayerData(ply)
     InitializeNetworkInt(ply, query, "BestKillStreak", 1)
     InitializeNetworkInt(ply, query, "CurrentExtractionStreak", 1)
     InitializeNetworkInt(ply, query, "BestExtractionStreak", 1)
-    
-    -- Stash Initialization
+
+    -- stash
     local stashString = InitializeNetworkString(ply, query, "Stash", "")
-
-    ply.stash = {}
-
-    print("StashString: "..stashString)
-
-    if stashString then
-
-        stashString = util.Base64Decode(stashString)
-        stashString = util.Decompress(stashString)
-
-        print("StashString: "..stashString)
-
-        if stashString then
-
-            local stashTable = util.JSONToTable(stashString)
-
-            if stashTable then
-                
-                ply.stash = stashTable
-
-            end
-
-        end
-    
-    end
-
-    PrintTable(ply.stash)
+	ply.stash = DecodeStash(ply, stashString)
 
 end
 
 function SavePlayerData(ply)
+
 	if tempNewCMD != nil or tempCMD != nil then return end -- shouldn't be possible but just to be safe
 	local id64 = ply:SteamID64()
 	local query = sql.Query("SELECT Key, Value FROM EFGMPlayerData64 WHERE SteamID = " .. id64 .. ";")
@@ -246,10 +272,8 @@ function SavePlayerData(ply)
     UninitializeNetworkInt(ply, query, "BestKillStreak")
     UninitializeNetworkInt(ply, query, "CurrentExtractionStreak")
     UninitializeNetworkInt(ply, query, "BestExtractionStreak")
-    
-    -- Stash Uninitialization
 
-    PrintTable(ply.stash)
+    -- stash
     UninitializeNetworkString(ply, query, "Stash")
 
 	tempNewCMD = string.sub(tempNewCMD, 1, -3) .. ";"
@@ -260,9 +284,7 @@ function SavePlayerData(ply)
 
 	sql.Commit()
 
-    print(tempNewCMD)
-    print(tempCMD)
-
 	tempCMD = nil
 	tempNewCMD = nil
+
 end

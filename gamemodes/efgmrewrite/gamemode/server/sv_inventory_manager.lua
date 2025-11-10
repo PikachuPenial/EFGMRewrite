@@ -16,13 +16,10 @@ hook.Add("PlayerSpawn", "InventorySetup", function(ply)
 	ply.inventory = {}
 
     ply.weaponSlots = {}
-    for k, v in pairs( WEAPONSLOTS ) do
+    for k, v in pairs(WEAPONSLOTS) do
 
         ply.weaponSlots[v.ID] = {}
-
-        for i = 1, v.COUNT, 1 do
-            ply.weaponSlots[v.ID][i] = {}
-        end
+        for i = 1, v.COUNT, 1 do ply.weaponSlots[v.ID][i] = {} end
 
     end
 
@@ -35,25 +32,24 @@ function ReinstantiateInventory(ply)
     ply.inventory = {}
 
     ply.weaponSlots = {}
-    for k, v in pairs( WEAPONSLOTS ) do
+    for k, v in pairs(WEAPONSLOTS) do
 
         ply.weaponSlots[v.ID] = {}
-
-        for i = 1, v.COUNT, 1 do
-            ply.weaponSlots[v.ID][i] = {}
-        end
+        for i = 1, v.COUNT, 1 do ply.weaponSlots[v.ID][i] = {} end
 
     end
 
     ply:SetNWFloat("InventoryWeight", 0.00)
 
 end
-concommand.Add("efgm_flush_inventory", function(ply, cmd, args) ReinstantiateInventory(ply) end)
+concommand.Add("efgm_flush_inventory", function(ply, cmd, args) ReinstantiateInventory(ply) net.Start("PlayerReinstantiateInventory", false) net.Send(ply) end)
 
 hook.Add("OnReloaded", "InventoryReload", function()
 
     for k, ply in pairs(player.GetAll()) do
+
         ReinstantiateInventory(ply)
+
     end
 
     net.Start("PlayerReinstantiateInventory", false)
@@ -62,6 +58,8 @@ hook.Add("OnReloaded", "InventoryReload", function()
 end)
 
 function AddItemToInventory(ply, name, type, data)
+
+    print("I DO NOT UNDERSTAND")
 
     local def = EFGMITEMS[name]
 
@@ -112,9 +110,7 @@ function DeleteItemFromInventory(ply, index, isEquipped)
 
     local item = ply.inventory[index]
 
-    if !isEquipped then
-        RemoveWeightFromPlayer(ply, item.name, item.data.count)
-    end
+    if !isEquipped then RemoveWeightFromPlayer(ply, item.name, item.data.count) end
 
     table.remove(ply.inventory, index)
 
@@ -294,7 +290,7 @@ net.Receive("PlayerInventoryUnEquipItem", function(len, ply)
     end
 
     local clip1 = wep:Clip1()
-    if clip1 != -1 then
+    if clip1 != -1 and clip1 != 0 then
 
         local data = {}
         data.count = wep:Clip1()

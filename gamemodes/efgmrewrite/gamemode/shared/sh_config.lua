@@ -8,9 +8,6 @@ debugShitSecWep = {"arc9_eft_glock17", "arc9_eft_pm", "arc9_eft_mp443", "arc9_ef
 debugNadeWep = {"arc9_eft_f1", "arc9_eft_m18", "arc9_eft_m18y", "arc9_eft_m67", "arc9_eft_m7290", "arc9_eft_rdg2b", "arc9_eft_rgd5", "arc9_eft_rgn", "arc9_eft_rgo", "arc9_eft_v40", "arc9_eft_vog17", "arc9_eft_vog25", "arc9_eft_zarya"}
 debugMeleeWep = {"arc9_eft_melee_taran", "arc9_eft_melee_6x5", "arc9_eft_melee_akula", "arc9_eft_melee_wycc", "arc9_eft_melee_gladius", "arc9_eft_melee_a2607", "arc9_eft_melee_a2607d", "arc9_eft_melee_camper", "arc9_eft_melee_labris", "arc9_eft_melee_crash", "arc9_eft_melee_cultist", "arc9_eft_melee_fulcrum", "arc9_eft_melee_crowbar", "arc9_eft_melee_kiba", "arc9_eft_melee_kukri", "arc9_eft_melee_m2", "arc9_eft_melee_mpl50", "arc9_eft_melee_rebel", "arc9_eft_melee_voodoo", "arc9_eft_melee_sp8", "arc9_eft_melee_taiga"}
 
--- get a copy of every attachment loaded by ARC9
-debugRandAtts = table.Copy(ARC9.Attachments_Index)
-
 -- swaps the keys with the values, so for flippedDebugPrimWep, ["arc9_eft_tx15"] would equal 2, useful for inventory slot filtering
 flippedDebugPrimWep = table.Flip(debugPrimWep)
 flippedDebugSecWep = table.Flip(debugSecWep)
@@ -86,10 +83,10 @@ if SERVER then
     -- attachments
     RunConsoleCommand("arc9_atts_nocustomize", "0") -- why would anyone do this
     RunConsoleCommand("arc9_atts_generate_entities", "1")
-    RunConsoleCommand("arc9_atts_max", "100")
+    RunConsoleCommand("arc9_atts_max", "0")
     RunConsoleCommand("arc9_atts_lock", "0")
     RunConsoleCommand("arc9_atts_loseondie", "1")
-    if GetConVar("efgm_derivesbox"):GetInt() == 1 then RunConsoleCommand("arc9_free_atts", "0") else RunConsoleCommand("arc9_free_atts", "0") end
+    RunConsoleCommand("arc9_free_atts", "0")
 
     -- caching
     RunConsoleCommand("arc9_precache_sounds_onfirsttake", "0")
