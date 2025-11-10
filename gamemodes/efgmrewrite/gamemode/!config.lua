@@ -48,7 +48,7 @@ if SERVER then
     RunConsoleCommand("arc9_eft_mult_explosive", "1")
 
     -- mechanics
-    if GetConVar("efgm_derivesbox"):GetInt() == 1 then RunConsoleCommand("arc9_infinite_ammo", "0") else RunConsoleCommand("arc9_infinite_ammo", "0") end
+    RunConsoleCommand("arc9_infinite_ammo", "0")
     RunConsoleCommand("arc9_mult_defaultammo", "0")
     RunConsoleCommand("arc9_realrecoil", "1")
     RunConsoleCommand("arc9_mod_sway", "1")

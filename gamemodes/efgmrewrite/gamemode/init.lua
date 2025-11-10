@@ -3,8 +3,8 @@ isArena = (GetConVar("efgm_arenamode"):GetInt() == 1) or false -- fixed it :D
 AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 include("shared.lua")
-
-util.AddNetworkString("PlayerReinstantiateInventory")
+AddCSLuaFile("!config.lua")
+include("!config.lua")
 
 for _, v in ipairs(file.Find("gamemodes/efgmrewrite/gamemode/shared/*.lua", "GAME", "nameasc")) do
 	AddCSLuaFile("shared/" .. v)
@@ -22,6 +22,8 @@ end
 for _, v in ipairs(file.Find("gamemodes/efgmrewrite/gamemode/intel/*.lua", "GAME", "nameasc")) do
 	AddCSLuaFile("intel/" .. v)
 end
+
+util.AddNetworkString("PlayerReinstantiateInventory")
 
 HostID = nil -- will be set if it's a p2p server (holy fucking shit i really didnt set it to nil)
 
@@ -240,7 +242,7 @@ hook.Add("PlayerCanPickupWeapon", "InventoryWeaponPickup", function(ply, wep)
 
 	if wepClass != tempEquipWeaponName and GetConVar("efgm_debug_pickupinv"):GetInt() == 0 or false then
 
-		-- AddItemToInventory(ply, wepClass, EQUIPTYPE.Weapon, data)
+		AddItemToInventory(ply, wepClass, EQUIPTYPE.Weapon, data)
 
 		timer.Simple(0, function()
 

@@ -1,5 +1,8 @@
 include("shared.lua")
 
+-- client globals
+EFGM = {}
+
 local function DeepSkinOverride(children, skin)
 	for k,v in pairs(children) do
 		v:SetSkin(skin)
@@ -25,9 +28,6 @@ if GetConVar("efgm_derivesbox"):GetInt() == 0 then
     concommand.Remove("arc9_settings_open")
 end
 
--- client globals
-EFGM = {}
-
 -- screen scale function, makes my life (penial) easier because i will most definently be doing most if not all of the user interface
 -- all interfaces and fonts are developed on a 1920x1080 monitor
 local efgm_hud_scale = GetConVar("efgm_hud_scale")
@@ -48,9 +48,21 @@ EFGM.MenuScale = function(size)
     end
 end
 
-for _, v in ipairs(file.Find("gamemodes/efgmrewrite/gamemode/shared/*.lua", "GAME", "nameasc")) do include("shared/" .. v) end
-for _, v in ipairs(file.Find("gamemodes/efgmrewrite/gamemode/client/*.lua", "GAME", "nameasc")) do include("client/" .. v) end
-for _, v in ipairs(file.Find("gamemodes/efgmrewrite/gamemode/intel/*.lua", "GAME", "nameasc")) do include("intel/" .. v) end
+include("!config.lua")
+
+for _, v in ipairs(file.Find("gamemodes/efgmrewrite/gamemode/shared/*.lua", "GAME", "nameasc")) do
+    print(_)
+    print(v)
+	include("shared/" .. v)
+end
+
+for _, v in ipairs(file.Find("gamemodes/efgmrewrite/gamemode/client/*.lua", "GAME", "nameasc")) do
+	include("client/" .. v)
+end
+
+for _, v in ipairs(file.Find("gamemodes/efgmrewrite/gamemode/intel/*.lua", "GAME", "nameasc")) do
+	include("intel/" .. v)
+end
 
 -- panel/frame blur
 -- TODO: create similar function for segments of the screen instead of blurring a specific function, would let us blur HUD elements that are not held in a panel/frame
