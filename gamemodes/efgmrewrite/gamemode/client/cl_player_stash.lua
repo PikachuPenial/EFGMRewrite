@@ -61,6 +61,8 @@ end )
 
 function StashItemFromInventory(itemIndex)
 
+    if !ply:CompareStatus(0) then return end
+
     local item = playerInventory[itemIndex]
     if item == nil then return end
 
@@ -73,7 +75,29 @@ function StashItemFromInventory(itemIndex)
 
 end
 
+function StashItemFromEquipped(equipID, equipSlot)
+
+    if !ply:CompareStatus(0) then return end
+
+    local item = playerWeaponSlots[equipID][equipSlot]
+
+    if table.IsEmpty(item) then return end
+
+    table.Empty(playerWeaponSlots[equipID][equipSlot])
+
+    net.Start("PlayerStashAddItemFromEquipped", false)
+        net.WriteUInt(equipID, 4)
+        net.WriteUInt(equipSlot, 4)
+    net.SendToServer()
+
+    ReloadSlots()
+    ReloadStash()
+
+end
+
 function ConsumeItemFromStash(itemIndex)
+
+    if !ply:CompareStatus(0) then return end
 
     net.Start("PlayerStashConsumeItem", false)
     net.WriteUInt(itemIndex, 16)

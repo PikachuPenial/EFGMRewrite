@@ -3,6 +3,7 @@ util.AddNetworkString("PlayerStashAddItem")
 util.AddNetworkString("PlayerStashUpdateItem")
 util.AddNetworkString("PlayerStashDeleteItem")
 util.AddNetworkString("PlayerStashAddItemFromInventory")
+util.AddNetworkString("PlayerStashAddItemFromEquipped")
 util.AddNetworkString("PlayerStashConsumeItem")
 util.AddNetworkString("PlayerInventoryDeleteItem")
 
@@ -161,6 +162,44 @@ net.Receive("PlayerStashAddItemFromInventory", function(len, ply)
     FlowItemToStash(ply, item.name, item.type, item.data)
 
     UpdateStashString(ply)
+
+end)
+
+net.Receive("PlayerStashAddItemFromEquipped", function(len, ply)
+
+    if !ply:CompareStatus(0) then return end
+
+    equipID = net.ReadUInt(4)
+    equipSlot = net.ReadUInt(4)
+
+    local item = table.Copy(ply.weaponSlots[equipID][equipSlot])
+
+    if table.IsEmpty(item) then return end
+
+    table.Empty(ply.weaponSlots[equipID][equipSlot])
+
+    local wep = ply:GetWeapon(item.name)
+
+    if wep != NULL and item.data.att then
+
+        local atts = table.Copy(wep.Attachments)
+        local str = GenerateAttachString(atts)
+        item.data.att = str
+
+    end
+
+    local clip1 = wep:Clip1()
+    if clip1 != -1 and clip1 != 0 then
+
+        local data = {}
+        data.count = wep:Clip1()
+        FlowItemToStash(ply, wep.Ammo, EQUIPTYPE.Ammunition, data)
+
+    end
+
+    ply:StripWeapon(item.name)
+
+    AddItemToStash(ply, item.name, item.type, item.data)
 
 end)
 

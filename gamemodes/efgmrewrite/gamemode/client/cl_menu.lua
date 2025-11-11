@@ -1481,6 +1481,34 @@ function Menu.OpenTab.Inventory(container)
 
                 end
 
+                if Menu.Player:CompareStatus(0) and table.IsEmpty(container) then
+
+                    contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
+
+                    local itemStashButton = vgui.Create("DButton", contextMenu)
+                    itemStashButton:Dock(TOP)
+                    itemStashButton:SetSize(0, EFGM.MenuScale(25))
+                    itemStashButton:SetText("STASH")
+
+                    itemStashButton.OnCursorEntered = function(s)
+
+                        surface.PlaySound("ui/element_hover.wav")
+
+                    end
+
+                    function itemStashButton:DoClick()
+
+                        surface.PlaySound("ui/element_select.wav")
+                        contextMenu:Remove()
+
+                        StashItemFromEquipped(primaryItem.SLOTID, primaryItem.SLOT)
+
+                        ReloadStash()
+
+                    end
+
+                end
+
                 local itemUnequipButton = vgui.Create("DButton", contextMenu)
                 itemUnequipButton:Dock(TOP)
                 itemUnequipButton:SetSize(0, EFGM.MenuScale(25))
@@ -1677,6 +1705,34 @@ function Menu.OpenTab.Inventory(container)
                     Menu.InspectItem(playerWeaponSlots[1][2].name)
                     surface.PlaySound("ui/element_select.wav")
                     contextMenu:KillFocus()
+
+                end
+
+                if Menu.Player:CompareStatus(0) and table.IsEmpty(container) then
+
+                    contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
+
+                    local itemStashButton = vgui.Create("DButton", contextMenu)
+                    itemStashButton:Dock(TOP)
+                    itemStashButton:SetSize(0, EFGM.MenuScale(25))
+                    itemStashButton:SetText("STASH")
+
+                    itemStashButton.OnCursorEntered = function(s)
+
+                        surface.PlaySound("ui/element_hover.wav")
+
+                    end
+
+                    function itemStashButton:DoClick()
+
+                        surface.PlaySound("ui/element_select.wav")
+                        contextMenu:Remove()
+
+                        StashItemFromEquipped(secondaryItem.SLOTID, secondaryItem.SLOT)
+
+                        ReloadStash()
+
+                    end
 
                 end
 
@@ -1880,6 +1936,34 @@ function Menu.OpenTab.Inventory(container)
 
                 end
 
+                if Menu.Player:CompareStatus(0) and table.IsEmpty(container) then
+
+                    contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
+
+                    local itemStashButton = vgui.Create("DButton", contextMenu)
+                    itemStashButton:Dock(TOP)
+                    itemStashButton:SetSize(0, EFGM.MenuScale(25))
+                    itemStashButton:SetText("STASH")
+
+                    itemStashButton.OnCursorEntered = function(s)
+
+                        surface.PlaySound("ui/element_hover.wav")
+
+                    end
+
+                    function itemStashButton:DoClick()
+
+                        surface.PlaySound("ui/element_select.wav")
+                        contextMenu:Remove()
+
+                        StashItemFromEquipped(holsterItem.SLOTID, holsterItem.SLOT)
+
+                        ReloadStash()
+
+                    end
+
+                end
+
                 local itemUnequipButton = vgui.Create("DButton", contextMenu)
                 itemUnequipButton:Dock(TOP)
                 itemUnequipButton:SetSize(0, EFGM.MenuScale(25))
@@ -2077,6 +2161,34 @@ function Menu.OpenTab.Inventory(container)
                     Menu.InspectItem(playerWeaponSlots[3][1].name)
                     surface.PlaySound("ui/element_select.wav")
                     contextMenu:KillFocus()
+
+                end
+
+                if Menu.Player:CompareStatus(0) and table.IsEmpty(container) then
+
+                    contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
+
+                    local itemStashButton = vgui.Create("DButton", contextMenu)
+                    itemStashButton:Dock(TOP)
+                    itemStashButton:SetSize(0, EFGM.MenuScale(25))
+                    itemStashButton:SetText("STASH")
+
+                    itemStashButton.OnCursorEntered = function(s)
+
+                        surface.PlaySound("ui/element_hover.wav")
+
+                    end
+
+                    function itemStashButton:DoClick()
+
+                        surface.PlaySound("ui/element_select.wav")
+                        contextMenu:Remove()
+
+                        StashItemFromEquipped(meleeItem.SLOTID, meleeItem.SLOT)
+
+                        ReloadStash()
+
+                    end
 
                 end
 
@@ -2513,6 +2625,8 @@ function Menu.OpenTab.Inventory(container)
                 if item.SLOT == WEAPONSLOTS.GRENADE.ID then item:Droppable("slot_grenade") end
 
             end
+
+            if Menu.Player:CompareStatus(0) and table.IsEmpty(container) then item:Droppable("stash") end
 
             function item:Paint(w, h)
 
@@ -3312,6 +3426,34 @@ function Menu.OpenTab.Inventory(container)
         contextMenu:AlphaTo(0, 0.1, 0, function() contextMenu:Remove() hook.Remove("Think", "CheckIfContextMenuStillFocused") end)
 
     end
+
+    stashItemsHolder:Receiver("stash", function(self, panels, dropped, _, x, y)
+
+        if !dropped then return end
+
+        if panels[1].ORIGIN == "inventory" then
+
+            surface.PlaySound("ui/element_select.wav")
+
+            StashItemFromInventory(panels[1].ID)
+
+            ReloadInventory()
+            ReloadStash()
+
+        end
+
+        if panels[1].ORIGIN == "equipped" then
+
+            surface.PlaySound("ui/element_select.wav")
+
+            StashItemFromEquipped(panels[1].SLOTID, panels[1].SLOT)
+
+            ReloadSlots()
+            ReloadStash()
+
+        end
+
+    end)
 
     local stashItems = vgui.Create("DIconLayout", stashItemsHolder)
     stashItems:Dock(FILL)
