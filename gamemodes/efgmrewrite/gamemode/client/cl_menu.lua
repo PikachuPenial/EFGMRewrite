@@ -982,7 +982,7 @@ function Menu.InspectItem(item)
     if itemDescSize >= panelWidth then panelWidth = itemDescSize end
 
     inspectPanel = vgui.Create("DFrame", Menu.MenuFrame)
-    inspectPanel:SetSize(EFGM.MenuScale(panelWidth) + EFGM.MenuScale(40), EFGM.MenuScale(400))
+    inspectPanel:SetSize(panelWidth + EFGM.MenuScale(40), EFGM.MenuScale(400))
     inspectPanel:Center()
     inspectPanel:SetAlpha(0)
     inspectPanel:SetTitle("")
@@ -1030,8 +1030,8 @@ function Menu.InspectItem(item)
         newHeight = math.Round(originalHeight * scaleFactor)
 
         -- panel width = 198, panel height = 216
-        local x = (EFGM.MenuScale(inspectPanel:GetWide()) / 2) - (newWidth / 2)
-        local y = (EFGM.MenuScale(inspectPanel:GetTall()) / 2) - (newHeight / 2)
+        local x = inspectPanel:GetWide() / 2 - (newWidth / 2)
+        local y = inspectPanel:GetTall() / 2 - (newHeight / 2)
 
         surface.DrawTexturedRect(x, y, newWidth, newHeight)
 
@@ -1377,7 +1377,7 @@ function Menu.OpenTab.Inventory(container)
 
             function primaryItem:PaintOver(w, h)
 
-                draw.SimpleTextOutlined(i.displayName, nameFont, EFGM.MenuScale(w - 3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined(i.displayName, nameFont, w - EFGM.MenuScale(3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
             end
 
@@ -1576,7 +1576,7 @@ function Menu.OpenTab.Inventory(container)
 
             function secondaryItem:PaintOver(w, h)
 
-                draw.SimpleTextOutlined(i.displayName, nameFont, EFGM.MenuScale(w - 3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined(i.displayName, nameFont, w - EFGM.MenuScale(3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
             end
 
@@ -1776,7 +1776,7 @@ function Menu.OpenTab.Inventory(container)
 
             function holsterItem:PaintOver(w, h)
 
-                draw.SimpleTextOutlined(i.displayName, nameFont, EFGM.MenuScale(w - 3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined(i.displayName, nameFont, w - EFGM.MenuScale(3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
             end
 
@@ -1976,7 +1976,7 @@ function Menu.OpenTab.Inventory(container)
 
             function meleeItem:PaintOver(w, h)
 
-                draw.SimpleTextOutlined(i.displayName, nameFont, EFGM.MenuScale(w - 3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined(i.displayName, nameFont, w - EFGM.MenuScale(3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
             end
 
@@ -2551,12 +2551,12 @@ function Menu.OpenTab.Inventory(container)
 
             function item:PaintOver(w, h)
 
-                draw.SimpleTextOutlined(i.displayName, nameFont, EFGM.MenuScale(w - 3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined(i.displayName, nameFont, w - EFGM.MenuScale(3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
                 if i.equipType == EQUIPTYPE.Ammunition then
-                    draw.SimpleTextOutlined(v.data.count, "PuristaBold18", EFGM.MenuScale(w - 3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                    draw.SimpleTextOutlined(v.data.count, "PuristaBold18", w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
                 elseif i.equipType == EQUIPTYPE.Consumable then
-                    draw.SimpleTextOutlined(v.data.durability .. "/" .. i.consumableValue, duraFont, EFGM.MenuScale(w - 3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                    draw.SimpleTextOutlined(v.data.durability .. "/" .. i.consumableValue, duraFont, w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
                 end
 
             end
@@ -2979,12 +2979,12 @@ function Menu.OpenTab.Inventory(container)
 
                 function item:PaintOver(w, h)
 
-                    draw.SimpleTextOutlined(i.displayName, nameFont, EFGM.MenuScale(w - 3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                    draw.SimpleTextOutlined(i.displayName, nameFont, w - EFGM.MenuScale(3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
                     if i.equipType == EQUIPTYPE.Ammunition then
-                        draw.SimpleTextOutlined(v.data.count, "PuristaBold18", EFGM.MenuScale(w - 3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                        draw.SimpleTextOutlined(v.data.count, "PuristaBold18", w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
                     elseif i.equipType == EQUIPTYPE.Consumable then
-                        draw.SimpleTextOutlined(v.data.durability .. "/" .. i.consumableValue, duraFont, EFGM.MenuScale(w - 3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                        draw.SimpleTextOutlined(v.data.durability .. "/" .. i.consumableValue, duraFont, w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
                     end
 
                 end
@@ -3414,12 +3414,12 @@ function Menu.OpenTab.Inventory(container)
 
             function item:PaintOver(w, h)
 
-                draw.SimpleTextOutlined(i.displayName, nameFont, EFGM.MenuScale(w - 3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined(i.displayName, nameFont, w - EFGM.MenuScale(3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
                 if i.equipType == EQUIPTYPE.Ammunition then
-                    draw.SimpleTextOutlined(v.data.count, "PuristaBold18", EFGM.MenuScale(w - 3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                    draw.SimpleTextOutlined(v.data.count, "PuristaBold18", w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
                 elseif i.equipType == EQUIPTYPE.Consumable then
-                    draw.SimpleTextOutlined(v.data.durability .. "/" .. i.consumableValue, duraFont, EFGM.MenuScale(w - 3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                    draw.SimpleTextOutlined(v.data.durability .. "/" .. i.consumableValue, duraFont, w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
                 end
 
             end
@@ -3914,12 +3914,12 @@ function Menu.OpenTab.Market()
 
             function item:PaintOver(w, h)
 
-                draw.SimpleTextOutlined(i.displayName, nameFont, EFGM.MenuScale(w - 3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined(i.displayName, nameFont, w - EFGM.MenuScale(3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
                 if i.equipType == EQUIPTYPE.Ammunition then
-                    draw.SimpleTextOutlined(v.data.count, "PuristaBold18", EFGM.MenuScale(w - 3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                    draw.SimpleTextOutlined(v.data.count, "PuristaBold18", w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
                 elseif i.equipType == EQUIPTYPE.Consumable then
-                    draw.SimpleTextOutlined(v.data.durability .. "/" .. i.consumableValue, duraFont, EFGM.MenuScale(w - 3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                    draw.SimpleTextOutlined(v.data.durability .. "/" .. i.consumableValue, duraFont, w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
                 end
 
             end
@@ -4367,8 +4367,8 @@ function Menu.OpenTab.Market()
             if k >= ((currentPage * 20) - 19) and k <= (currentPage * 20) then
 
                 local item = marketItems:Add("DButton")
-                item:SetSize(EFGM.MenuScale(198), EFGM.MenuScale(216))
                 item:SetText("")
+                item:SetSize(EFGM.MenuScale(198), EFGM.MenuScale(216))
 
                 function item:Paint(w, h)
 

@@ -103,14 +103,14 @@ function FlowItemToStash(ply, name, type, data)
 
             local newData = {}
             newData.count = stackSize
-            UpdateItemFromStash(ply, name, type, newData)
+            AddItemToStash(ply, name, type, newData)
             amount = amount - stackSize
 
         else
 
             local newData = {}
             newData.count = amount
-            UpdateItemFromStash(ply, name, type, newData)
+            AddItemToStash(ply, name, type, newData)
             break
 
         end
@@ -151,24 +151,22 @@ end
 
 net.Receive("PlayerStashAddItemFromInventory", function(len, ply)
 
+    if !ply:CompareStatus(0) then return end
+
     local itemIndex = net.ReadUInt(16)
     local item = DeleteItemFromInventory(ply, itemIndex, false)
 
-    local newItem = ITEM.Instantiate(item.name, item.type, item.data)
-    local index = table.insert(ply.stash, newItem)
+    if item == nil then return end
 
-    net.Start("PlayerStashAddItem", false)
-    net.WriteString(item.name)
-    net.WriteUInt(item.type, 4)
-    net.WriteTable(item.data)
-    net.WriteUInt(index, 16)
-    net.Send(ply)
+    FlowItemToStash(ply, item.name, item.type, item.data)
 
     UpdateStashString(ply)
 
 end)
 
 net.Receive("PlayerStashConsumeItem", function(len, ply)
+
+    if !ply:CompareStatus(0) then return end
 
     local itemIndex = net.ReadUInt(16)
     local item = ply.stash[itemIndex]
