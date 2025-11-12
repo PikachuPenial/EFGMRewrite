@@ -191,3 +191,66 @@ function LoadPresetFromCode(wep, str)
     LoadPresetFromTable(wep, tbl)
 
 end
+
+function AttTreeToList(tree, tbl)
+
+    if !istable(tree) then return {} end
+    local atts = {}
+
+    atts = {tree}
+
+    if tree.SubAttachments then
+        for _, sub in ipairs(tree.SubAttachments) do
+            table.Add(atts, AttTreeToList(sub, tbl))
+        end
+    end
+
+    return atts
+
+end
+
+function GetSubSlotList(tbl)
+
+    local atts = {}
+
+    for _, i in ipairs(tbl or {}) do
+
+        table.Add(atts, AttTreeToList(i, tbl))
+
+    end
+
+    return atts
+
+end
+
+function GetAttachmentList(tbl)
+
+    local atts = {}
+
+    for _, i in ipairs(GetSubSlotList(tbl)) do
+
+        if i.Installed then table.insert(atts, i.Installed) end
+
+    end
+
+    return atts
+
+end
+
+function GetAttachmentListFromCode(str)
+
+    local tbl = ImportPresetCode(str)
+
+    if !tbl then return false end
+
+    local cleanAttTbl = GetAttachmentList(tbl)
+    local cleanAttStr = ""
+
+    for i = 0, #cleanAttTbl do
+        if !cleanAttTbl[i] then continue end
+        cleanAttStr = cleanAttStr .. i .. ": " .. "\t" .. EFGMITEMS["arc9_att_" .. cleanAttTbl[i]].fullName .. "\n"
+    end
+
+    return cleanAttStr
+
+end

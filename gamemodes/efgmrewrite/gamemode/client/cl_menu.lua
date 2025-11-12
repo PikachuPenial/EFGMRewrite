@@ -960,7 +960,7 @@ function Menu:Open(openTo, container)
 
 end
 
-function Menu.InspectItem(item)
+function Menu.InspectItem(item, data)
 
     if IsValid(inspectPanel) then inspectPanel:Remove() end
 
@@ -972,7 +972,7 @@ function Menu.InspectItem(item)
     local itemNameSize = surface.GetTextSize(itemNameText)
 
     surface.SetFont("PuristaBold18")
-    local itemDescText = string.upper(i.displayType) .. " / " .. string.upper(i.weight) .. "KG" .. " / ₽" .. string.upper(i.value)
+    local itemDescText = string.upper(i.displayType) .. " / " .. string.upper(i.weight) .. "KG" .. " / ₽" .. string.upper(comma_value(i.value))
     local itemDescSize = surface.GetTextSize(itemDescText)
 
     local iconSizeX, iconSizeY = EFGM.MenuScale(114 * i.sizeX), EFGM.MenuScale(114 * i.sizeY)
@@ -981,18 +981,31 @@ function Menu.InspectItem(item)
     if iconSizeX >= itemNameSize then panelWidth = iconSizeX else panelWidth = itemNameSize end
     if itemDescSize >= panelWidth then panelWidth = itemDescSize end
 
+    local originalWidth, originalHeight = EFGM.MenuScale(114 * i.sizeX), EFGM.MenuScale(114 * i.sizeY)
+    local scaleFactor
+    local targetMaxDimension = math.min(panelWidth, i.sizeX * 200)
+
+    if originalWidth > originalHeight then
+
+        scaleFactor = targetMaxDimension / originalWidth
+
+    else
+
+        scaleFactor = targetMaxDimension / originalHeight
+
+    end
+
+    local newPanelWidth = math.Round(originalWidth * scaleFactor)
+    local newPanelHeight = math.Round(originalHeight * scaleFactor)
+
     inspectPanel = vgui.Create("DFrame", Menu.MenuFrame)
-    inspectPanel:SetSize(panelWidth + EFGM.MenuScale(40), EFGM.MenuScale(400))
+    inspectPanel:SetSize(panelWidth + EFGM.MenuScale(40), newPanelHeight + EFGM.MenuScale(100))
     inspectPanel:Center()
     inspectPanel:SetAlpha(0)
     inspectPanel:SetTitle("")
     inspectPanel:ShowCloseButton(false)
     inspectPanel:SetScreenLock(true)
     inspectPanel:AlphaTo(255, 0.1, 0, nil)
-
-    local originalWidth, originalHeight = EFGM.MenuScale(114 * i.sizeX), EFGM.MenuScale(114 * i.sizeY)
-    local scaleFactor
-    local targetMaxDimension = math.min(panelWidth, i.sizeX * 200)
 
     inspectPanel.Paint = function(s, w, h)
 
@@ -1016,26 +1029,234 @@ function Menu.InspectItem(item)
         surface.SetDrawColor(255, 255, 255, 255)
         surface.SetMaterial(i.icon)
 
-        if originalWidth > originalHeight then
+        -- panel width = 198, panel height = 216
+        local x = inspectPanel:GetWide() / 2 - (newPanelWidth / 2)
+        local y = inspectPanel:GetTall() / 2 - (newPanelHeight / 2)
 
-            scaleFactor = targetMaxDimension / originalWidth
+        surface.DrawTexturedRect(x, y, newPanelWidth, newPanelHeight)
 
-        else
+    end
 
-            scaleFactor = targetMaxDimension / originalHeight
+    local itemPullOutPanel = vgui.Create("DPanel", inspectPanel)
+    itemPullOutPanel:SetSize(inspectPanel:GetWide(), inspectPanel:GetTall() - EFGM.MenuScale(75))
+    itemPullOutPanel:SetPos(0, inspectPanel:GetTall() - EFGM.MenuScale(1))
+    itemPullOutPanel:SetAlpha(255)
+    itemPullOutPanel.Paint = function(s, w, h)
+
+        BlurPanel(s, EFGM.MenuScale(1))
+
+        surface.SetDrawColor(Color(20, 20, 20, 205))
+        surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+    end
+
+    surface.SetFont("PuristaBold24")
+    local infoText = "INFO"
+    local infoTextSize = surface.GetTextSize(infoText)
+
+    local itemInfoButton = vgui.Create("DButton", inspectPanel)
+    itemInfoButton:SetPos(EFGM.MenuScale(1), itemPullOutPanel:GetY() - EFGM.MenuScale(28))
+    itemInfoButton:SetSize(infoTextSize + EFGM.MenuScale(10), EFGM.MenuScale(28))
+    itemInfoButton:SetText("")
+    itemInfoButton.Paint = function(s, w, h)
+
+        s:SetY(itemPullOutPanel:GetY() - EFGM.MenuScale(28))
+
+        BlurPanel(s, EFGM.MenuScale(0))
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, infoTextSize + EFGM.MenuScale(10), h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, infoTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
+
+        draw.SimpleTextOutlined(infoText, "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    surface.SetFont("PuristaBold24")
+    local wikiText = "WIKI"
+    local wikiTextSize = surface.GetTextSize(wikiText)
+
+    local itemWikiButton = vgui.Create("DButton", inspectPanel)
+    itemWikiButton:SetPos(itemInfoButton:GetWide() + EFGM.MenuScale(1), itemPullOutPanel:GetY() - EFGM.MenuScale(28))
+    itemWikiButton:SetSize(wikiTextSize + EFGM.MenuScale(10), EFGM.MenuScale(28))
+    itemWikiButton:SetText("")
+    itemWikiButton.Paint = function(s, w, h)
+
+        s:SetY(itemPullOutPanel:GetY() - EFGM.MenuScale(28))
+
+        BlurPanel(s, EFGM.MenuScale(0))
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, wikiTextSize + EFGM.MenuScale(10), h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, wikiTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
+
+        draw.SimpleTextOutlined(wikiText, "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    if !data then
+
+        itemInfoButton:Remove()
+        itemWikiButton:SetX(EFGM.MenuScale(1))
+
+    end
+
+    local pullOutContent = vgui.Create("DPanel", itemPullOutPanel)
+    pullOutContent:Dock(FILL)
+    pullOutContent:DockPadding(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10))
+    pullOutContent:SetAlpha(0)
+    pullOutContent.Paint = function(s, w, h)
+
+        surface.SetDrawColor(MenuAlias.transparent)
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
+    itemPullOutPanel.content = pullOutContent
+
+    local tab
+
+    local function OpenPullOutInfoTab()
+
+        tab = "Info"
+
+        local infoContent = vgui.Create("DPanel", itemPullOutPanel)
+        infoContent:Dock(FILL)
+        infoContent:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
+        infoContent:SetAlpha(0)
+        infoContent.Paint = function(s, w, h)
+
+            surface.SetDrawColor(MenuAlias.transparent)
+            surface.DrawRect(0, 0, w, h)
 
         end
 
-        newWidth = math.Round(originalWidth * scaleFactor)
-        newHeight = math.Round(originalHeight * scaleFactor)
+        local infoContentText = vgui.Create("RichText", infoContent)
+        infoContentText:Dock(FILL)
+        infoContentText:SetVerticalScrollbarEnabled(true)
 
-        -- panel width = 198, panel height = 216
-        local x = inspectPanel:GetWide() / 2 - (newWidth / 2)
-        local y = inspectPanel:GetTall() / 2 - (newHeight / 2)
+        if data.count != 0 and data.count != 1 then
 
-        surface.DrawTexturedRect(x, y, newWidth, newHeight)
+            infoContentText:InsertColorChange(255, 255, 255, 255)
+            infoContentText:AppendText("COUNT: " .. data.count .. "\n")
 
-        inspectPanel:SetTall(newHeight + EFGM.MenuScale(100))
+        end
+
+        if data.att then
+
+            infoContentText:InsertColorChange(255, 255, 255, 255)
+            infoContentText:AppendText("ATTACHMENTS: \n" .. GetAttachmentListFromCode(data.att) .. "\n")
+
+        end
+
+        function infoContentText:PerformLayout()
+
+            infoContentText:SetFontInternal("PuristaBold18")
+
+        end
+
+        itemPullOutPanel.content = infoContent
+
+    end
+
+    local function OpenPullOutWikiTab()
+
+        tab = "Wiki"
+
+        local wikiContent = vgui.Create("DPanel", itemPullOutPanel)
+        wikiContent:Dock(FILL)
+        wikiContent:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
+        wikiContent:SetAlpha(0)
+        wikiContent.Paint = function(s, w, h)
+
+            surface.SetDrawColor(MenuAlias.transparent)
+            surface.DrawRect(0, 0, w, h)
+
+        end
+
+        itemPullOutPanel.content = wikiContent
+
+    end
+
+    itemInfoButton.OnCursorEntered = function(s)
+
+        surface.PlaySound("ui/element_hover.wav")
+
+    end
+
+    itemInfoButton.DoClick = function(s)
+
+        if tab == "Info" then return end
+
+        surface.PlaySound("ui/element_select.wav")
+
+        itemPullOutPanel:MoveTo(0, EFGM.MenuScale(75), 0.1, 0, 0.3)
+
+        itemPullOutPanel.content:AlphaTo(0, 0.05, 0, function()
+
+            itemPullOutPanel.content:Remove()
+            OpenPullOutInfoTab()
+            itemPullOutPanel.content:AlphaTo(255, 0.05, 0, nil)
+
+        end)
+
+    end
+
+    itemWikiButton.OnCursorEntered = function(s)
+
+        surface.PlaySound("ui/element_hover.wav")
+
+    end
+
+    itemWikiButton.DoClick = function(s)
+
+        if tab == "Wiki" then return end
+
+        surface.PlaySound("ui/element_select.wav")
+
+        itemPullOutPanel:MoveTo(0, EFGM.MenuScale(75), 0.1, 0, 0.3)
+
+        itemPullOutPanel.content:AlphaTo(0, 0.05, 0, function()
+
+            itemPullOutPanel.content:Remove()
+            OpenPullOutWikiTab()
+            itemPullOutPanel.content:AlphaTo(255, 0.05, 0, nil)
+
+        end)
+
+    end
+
+    inspectPanel.OnMousePressed = function(s)
+
+        itemPullOutPanel:MoveTo(0, inspectPanel:GetTall() - EFGM.MenuScale(1), 0.1, 0, 0.3)
+
+        tab = nil
+
+        itemPullOutPanel.content:AlphaTo(0, 0.05, 0, function() end)
+
+        local screenX, screenY = s:LocalToScreen( 0, 0 )
+
+        if ( s.m_bSizable && gui.MouseX() > ( screenX + s:GetWide() - 20 ) && gui.MouseY() > ( screenY + s:GetTall() - 20 ) ) then
+            s.Sizing = { gui.MouseX() - s:GetWide(), gui.MouseY() - s:GetTall() }
+            s:MouseCapture( true )
+            return
+        end
+
+        if ( s:GetDraggable() && gui.MouseY() < ( screenY + 24 ) ) then
+            s.Dragging = { gui.MouseX() - s.x, gui.MouseY() - s.y }
+            s:MouseCapture( true )
+            return
+        end
 
     end
 
@@ -2726,7 +2947,7 @@ function Menu.OpenTab.Inventory(container)
 
             function item:DoDoubleClick()
 
-                Menu.InspectItem(v.name)
+                Menu.InspectItem(v.name, v.data)
                 surface.PlaySound("ui/element_select.wav")
 
             end
@@ -2792,7 +3013,7 @@ function Menu.OpenTab.Inventory(container)
 
                 function itemInspectButton:DoClick()
 
-                    Menu.InspectItem(v.name)
+                    Menu.InspectItem(v.name, v.data)
                     surface.PlaySound("ui/element_select.wav")
                     contextMenu:KillFocus()
 
@@ -3154,7 +3375,7 @@ function Menu.OpenTab.Inventory(container)
 
                 function item:DoDoubleClick()
 
-                    Menu.InspectItem(v.name)
+                    Menu.InspectItem(v.name, v.data)
                     surface.PlaySound("ui/element_select.wav")
 
                 end
@@ -3220,7 +3441,7 @@ function Menu.OpenTab.Inventory(container)
 
                     function itemInspectButton:DoClick()
 
-                        Menu.InspectItem(v.name)
+                        Menu.InspectItem(v.name, v.data)
                         surface.PlaySound("ui/element_select.wav")
                         contextMenu:KillFocus()
 
@@ -3617,7 +3838,7 @@ function Menu.OpenTab.Inventory(container)
 
             function item:DoDoubleClick()
 
-                Menu.InspectItem(v.name)
+                Menu.InspectItem(v.name, v.data)
                 surface.PlaySound("ui/element_select.wav")
 
             end
@@ -3683,7 +3904,7 @@ function Menu.OpenTab.Inventory(container)
 
                 function itemInspectButton:DoClick()
 
-                    Menu.InspectItem(v.name)
+                    Menu.InspectItem(v.name, v.data)
                     surface.PlaySound("ui/element_select.wav")
                     contextMenu:KillFocus()
 
@@ -4136,7 +4357,7 @@ function Menu.OpenTab.Market()
 
             function item:DoDoubleClick()
 
-                Menu.InspectItem(v.name)
+                Menu.InspectItem(v.name, v.data)
                 surface.PlaySound("ui/element_select.wav")
 
             end
@@ -4202,7 +4423,7 @@ function Menu.OpenTab.Market()
 
                 function itemInspectButton:DoClick()
 
-                    Menu.InspectItem(v.name)
+                    Menu.InspectItem(v.name, v.data)
                     surface.PlaySound("ui/element_select.wav")
                     contextMenu:KillFocus()
 

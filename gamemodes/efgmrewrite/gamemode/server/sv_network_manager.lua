@@ -255,12 +255,12 @@ function SetupPlayerData(ply)
 
     -- stats
     InitializeNetworkBool(ply, query, "FreshWipe", true) -- false if player has logged on once this wipe
-    InitializeNetworkInt(ply, query, "Level", 0)
+    InitializeNetworkInt(ply, query, "Level", 1)
     InitializeNetworkInt(ply, query, "Experience", 0)
 	InitializeNetworkInt(ply, query, "MoneyEarned", 0) -- all money earned
 	InitializeNetworkInt(ply, query, "MoneySpent", 0) -- all money spent (money would just be MoneyEarned - MoneySpent)
 	InitializeNetworkInt(ply, query, "Time", 0) -- playtime in minutes
-    InitializeNetworkInt(ply, query, "StashValue", 1) -- value of all items in stash
+    InitializeNetworkInt(ply, query, "StashValue", 0) -- value of all items in stash
 
     -- combat
 	InitializeNetworkInt(ply, query, "Kills", 0)
@@ -278,10 +278,10 @@ function SetupPlayerData(ply)
 	InitializeNetworkInt(ply, query, "RaidsPlayed", 0) -- the amount of full raids played, counted if you join before the first minute and stay until the raid ends
 
     -- streaks
-    InitializeNetworkInt(ply, query, "CurrentKillStreak", 1)
-    InitializeNetworkInt(ply, query, "BestKillStreak", 1)
-    InitializeNetworkInt(ply, query, "CurrentExtractionStreak", 1)
-    InitializeNetworkInt(ply, query, "BestExtractionStreak", 1)
+    InitializeNetworkInt(ply, query, "CurrentKillStreak", 0)
+    InitializeNetworkInt(ply, query, "BestKillStreak", 0)
+    InitializeNetworkInt(ply, query, "CurrentExtractionStreak", 0)
+    InitializeNetworkInt(ply, query, "BestExtractionStreak", 0)
 
     -- stash
     local stashString = InitializeStashString(ply, query, "")
