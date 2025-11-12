@@ -83,7 +83,7 @@ if SERVER then
     -- attachments
     RunConsoleCommand("arc9_atts_nocustomize", "0") -- why would anyone do this
     RunConsoleCommand("arc9_atts_generate_entities", "1")
-    RunConsoleCommand("arc9_atts_max", "0")
+    RunConsoleCommand("arc9_atts_max", "100")
     RunConsoleCommand("arc9_atts_lock", "0")
     RunConsoleCommand("arc9_atts_loseondie", "1")
     RunConsoleCommand("arc9_free_atts", "0")

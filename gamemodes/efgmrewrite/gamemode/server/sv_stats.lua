@@ -40,27 +40,6 @@ concommand.Add("efgm_get_stats", function(ply, cmd, args)
     PrintTable(Stats.GetAll(ply))
 end)
 
--- hooks yippee
-hook.Add("PlayerInitialSpawn", "PlayerInitializeStats", function(ply)
-    SetupPlayerData(ply)
-end)
-
-hook.Add("PlayerDisconnected", "PlayerUninitializeStats", function(ply)
-    ply:SetNWBool("FreshWipe", false)
-
-    if !ply:CompareStatus(0) then
-        ply:SetNWInt("Quits", ply:GetNWInt("Quits", 0) + 1)
-    end
-
-	SavePlayerData(ply)
-end)
-
-hook.Add("ShutDown", "ServerUninitializeStats", function(ply)
-	for k, v in pairs(player.GetHumans()) do
-		SavePlayerData(v)
-	end
-end)
-
 hook.Add("PlayerDeath", "DeathUpdateStats", function(victim, weapon, attacker)
     -- update victim's stats (cringe lootcel)
     victim:SetNWInt("Deaths", victim:GetNWInt("Deaths") + 1)

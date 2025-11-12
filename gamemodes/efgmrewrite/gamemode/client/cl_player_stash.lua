@@ -95,6 +95,92 @@ function StashItemFromEquipped(equipID, equipSlot)
 
 end
 
+function TakeFromStashToInventory(itemIndex)
+
+    if !ply:CompareStatus(0) then return end
+
+    local item = playerStash[itemIndex]
+    if item == nil then return end
+
+    net.Start("PlayerStashTakeItemToInventory", false)
+        net.WriteUInt(itemIndex, 16)
+    net.SendToServer()
+
+    ReloadInventory()
+    ReloadStash()
+
+end
+
+function EquipItemFromStash(itemIndex, equipSlot, primaryPref)
+
+    if !ply:CompareStatus(0) then return end
+
+    local item = playerStash[itemIndex]
+    if item == nil then return end
+
+    if AmountInInventory(playerWeaponSlots[equipSlot], item.name) != 0 then return end
+
+    -- checking item equip slots
+    if equipSlot == 1 and primaryPref != nil then
+
+        if primaryPref == 1 then
+
+            playerWeaponSlots[equipSlot][1] = item
+
+            net.Start("PlayerStashEquipItem", false)
+                net.WriteUInt(itemIndex, 16)
+                net.WriteUInt(equipSlot, 4)
+                net.WriteUInt(1, 16)
+            net.SendToServer()
+
+            ReloadSlots()
+
+            return true
+
+        else
+
+            playerWeaponSlots[equipSlot][2] = item
+
+            net.Start("PlayerStashEquipItem", false)
+                net.WriteUInt(itemIndex, 16)
+                net.WriteUInt(equipSlot, 4)
+                net.WriteUInt(2, 16)
+            net.SendToServer()
+
+            ReloadSlots()
+
+            return true
+
+        end
+
+    else
+
+        for k, v in ipairs(playerWeaponSlots[equipSlot]) do
+
+            if table.IsEmpty(v) then
+
+                playerWeaponSlots[equipSlot][k] = item
+
+                net.Start("PlayerStashEquipItem", false)
+                    net.WriteUInt(itemIndex, 16)
+                    net.WriteUInt(equipSlot, 4)
+                    net.WriteUInt(k, 16)
+                net.SendToServer()
+
+                ReloadSlots()
+
+                return true
+
+            end
+
+        end
+
+    end
+
+    return false
+
+end
+
 function ConsumeItemFromStash(itemIndex)
 
     if !ply:CompareStatus(0) then return end

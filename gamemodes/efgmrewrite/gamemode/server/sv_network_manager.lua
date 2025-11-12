@@ -307,8 +307,6 @@ function SavePlayerData(ply)
 	tempNewCMD = "INSERT INTO EFGMPlayerData64 (SteamID, Key, Value, SteamName) VALUES"
 	tempCMD = "UPDATE EFGMPlayerData64 SET Value = CASE Key "
 
-	UpdateStashString(ply)
-
 	sql.Begin()
 
     -- stats
@@ -356,3 +354,33 @@ function SavePlayerData(ply)
 	tempNewCMD = nil
 
 end
+
+hook.Add("PlayerInitialSpawn", "PlayerInitializeStats", function(ply)
+
+    SetupPlayerData(ply)
+
+end)
+
+hook.Add("PlayerDisconnected", "PlayerUninitializeStats", function(ply)
+
+    ply:SetNWBool("FreshWipe", false)
+
+    if !ply:CompareStatus(0) then
+        ply:SetNWInt("Quits", ply:GetNWInt("Quits", 0) + 1)
+    end
+
+	UpdateStashString(ply)
+	SavePlayerData(ply)
+
+end)
+
+hook.Add("ShutDown", "ServerUninitializeStats", function(ply)
+
+	for k, v in pairs(player.GetHumans()) do
+
+		UpdateStashString(v)
+		SavePlayerData(v)
+
+	end
+
+end)

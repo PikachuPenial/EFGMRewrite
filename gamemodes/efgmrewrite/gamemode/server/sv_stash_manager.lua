@@ -4,6 +4,8 @@ util.AddNetworkString("PlayerStashUpdateItem")
 util.AddNetworkString("PlayerStashDeleteItem")
 util.AddNetworkString("PlayerStashAddItemFromInventory")
 util.AddNetworkString("PlayerStashAddItemFromEquipped")
+util.AddNetworkString("PlayerStashTakeItemToInventory")
+util.AddNetworkString("PlayerStashEquipItem")
 util.AddNetworkString("PlayerStashConsumeItem")
 util.AddNetworkString("PlayerInventoryDeleteItem")
 
@@ -67,6 +69,13 @@ function FlowItemToStash(ply, name, type, data)
     local stackSize = def.stackSize
 
     if data.count == 0 then return end -- dont add an item that doesnt exist lol!
+
+    if stackSize == 1 then -- items that can't stack do not need to flow
+
+        AddItemToStash(ply, name, type, data)
+        return
+
+    end
 
     local amount = tonumber(data.count)
 
@@ -169,8 +178,8 @@ net.Receive("PlayerStashAddItemFromEquipped", function(len, ply)
 
     if !ply:CompareStatus(0) then return end
 
-    equipID = net.ReadUInt(4)
-    equipSlot = net.ReadUInt(4)
+    local equipID = net.ReadUInt(4)
+    local equipSlot = net.ReadUInt(4)
 
     local item = table.Copy(ply.weaponSlots[equipID][equipSlot])
 
@@ -199,7 +208,53 @@ net.Receive("PlayerStashAddItemFromEquipped", function(len, ply)
 
     ply:StripWeapon(item.name)
 
+    RemoveWeightFromPlayer(ply, item.name, item.data.count)
+
     AddItemToStash(ply, item.name, item.type, item.data)
+
+end)
+
+net.Receive("PlayerStashTakeItemToInventory", function(len, ply)
+
+    if !ply:CompareStatus(0) then return end
+
+    local itemIndex = net.ReadUInt(16)
+    local item = DeleteItemFromStash(ply, itemIndex)
+
+    if item == nil then return end
+
+    FlowItemToInventory(ply, item.name, item.type, item.data)
+
+    UpdateStashString(ply)
+
+end)
+
+net.Receive("PlayerStashEquipItem", function(len, ply)
+
+    if !ply:CompareStatus(0) then return end
+
+    local itemIndex, equipSlot, equipSubSlot
+
+    itemIndex = net.ReadUInt(16)
+    equipSlot = net.ReadUInt(4)
+    equipSubSlot = net.ReadUInt(16)
+
+    local item = ply.stash[itemIndex]
+    if item == nil then return end
+
+    if AmountInInventory(ply.weaponSlots[equipSlot], item.name) > 0 then return end
+
+    if table.IsEmpty(ply.weaponSlots[equipSlot][equipSubSlot]) then
+
+        DeleteItemFromStash(ply, itemIndex)
+        ply.weaponSlots[equipSlot][equipSubSlot] = item
+        AddWeightToPlayer(ply, item.name, item.data.count)
+
+        equipWeaponName = item.name
+        local wpn = ply:Give(item.name)
+        LoadPresetFromCode(wpn, item.data.att)
+
+    end
 
 end)
 

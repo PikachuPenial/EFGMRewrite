@@ -127,6 +127,13 @@ function FlowItemToInventory(ply, name, type, data)
 
     if data.count == 0 then return end -- dont add an item that doesnt exist lol!
 
+    if stackSize == 1 then -- items that can't stack do not need to flow
+
+        AddItemToInventory(ply, name, type, data)
+        return
+
+    end
+
     local amount = tonumber(data.count)
 
     for k, v in ipairs(ply.inventory) do

@@ -2258,11 +2258,20 @@ function Menu.OpenTab.Inventory(container)
     secondaryWeaponHolder:Receiver("slot_primary", function(self, panels, dropped, _, x, y)
 
         if !dropped then return end
+        if !table.IsEmpty(playerWeaponSlots[1][2]) then return end
 
-        if panels[1].ORIGIN == "inventory" and table.IsEmpty(playerWeaponSlots[1][2]) then
+        if panels[1].ORIGIN == "inventory" then
 
             surface.PlaySound("ui/element_select.wav")
             EquipItemFromInventory(panels[1].ID, panels[1].SLOT, 2)
+            ReloadSlots()
+
+        end
+
+        if panels[1].ORIGIN == "stash" then
+
+            surface.PlaySound("ui/element_select.wav")
+            EquipItemFromStash(panels[1].ID, panels[1].SLOT, 2)
             ReloadSlots()
 
         end
@@ -2272,11 +2281,20 @@ function Menu.OpenTab.Inventory(container)
     primaryWeaponHolder:Receiver("slot_primary", function(self, panels, dropped, _, x, y)
 
         if !dropped then return end
+        if !table.IsEmpty(playerWeaponSlots[1][1]) then return end
 
-        if panels[1].ORIGIN == "inventory" and table.IsEmpty(playerWeaponSlots[1][1]) then
+        if panels[1].ORIGIN == "inventory" then
 
             surface.PlaySound("ui/element_select.wav")
             EquipItemFromInventory(panels[1].ID, panels[1].SLOT, 1)
+            ReloadSlots()
+
+        end
+
+        if panels[1].ORIGIN == "stash" then
+
+            surface.PlaySound("ui/element_select.wav")
+            EquipItemFromStash(panels[1].ID, panels[1].SLOT, 1)
             ReloadSlots()
 
         end
@@ -2286,11 +2304,20 @@ function Menu.OpenTab.Inventory(container)
     holsterWeaponHolder:Receiver("slot_holster", function(self, panels, dropped, _, x, y)
 
         if !dropped then return end
+        if !table.IsEmpty(playerWeaponSlots[2][1]) then return end
 
-        if panels[1].ORIGIN == "inventory" and table.IsEmpty(playerWeaponSlots[2][1]) then
+        if panels[1].ORIGIN == "inventory" then
 
             surface.PlaySound("ui/element_select.wav")
             EquipItemFromInventory(panels[1].ID, panels[1].SLOT)
+            ReloadSlots()
+
+        end
+
+        if panels[1].ORIGIN == "stash" then
+
+            surface.PlaySound("ui/element_select.wav")
+            EquipItemFromStash(panels[1].ID, panels[1].SLOT)
             ReloadSlots()
 
         end
@@ -2300,11 +2327,20 @@ function Menu.OpenTab.Inventory(container)
     meleeWeaponHolder:Receiver("slot_melee", function(self, panels, dropped, _, x, y)
 
         if !dropped then return end
+        if !table.IsEmpty(playerWeaponSlots[3][1]) then return end
 
-        if panels[1].ORIGIN == "inventory" and table.IsEmpty(playerWeaponSlots[3][1]) then
+        if panels[1].ORIGIN == "inventory" then
 
             surface.PlaySound("ui/element_select.wav")
             EquipItemFromInventory(panels[1].ID, panels[1].SLOT)
+            ReloadSlots()
+
+        end
+
+        if panels[1].ORIGIN == "stash" then
+
+            surface.PlaySound("ui/element_select.wav")
+            EquipItemFromStash(panels[1].ID, panels[1].SLOT)
             ReloadSlots()
 
         end
@@ -2547,6 +2583,13 @@ function Menu.OpenTab.Inventory(container)
 
             surface.PlaySound("ui/element_select.wav")
             UnEquipItemFromInventory(panels[1].SLOTID, panels[1].SLOT)
+
+        end
+
+        if panels[1].ORIGIN == "stash" then
+
+            surface.PlaySound("ui/element_select.wav")
+            TakeFromStashToInventory(panels[1].ID)
 
         end
 
@@ -3427,7 +3470,7 @@ function Menu.OpenTab.Inventory(container)
 
     end
 
-    stashItemsHolder:Receiver("stash", function(self, panels, dropped, _, x, y)
+    stashItemsHolder:Receiver("items", function(self, panels, dropped, _, x, y)
 
         if !dropped then return end
 
@@ -3589,7 +3632,7 @@ function Menu.OpenTab.Inventory(container)
 
                 if IsValid(contextMenu) then contextMenu:Remove() end
                 contextMenu = vgui.Create("DPanel", stashHolder)
-                contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(35))
+                contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(60))
                 contextMenu:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
                 contextMenu:SetAlpha(0)
                 contextMenu:AlphaTo(255, 0.1, 0, nil)
@@ -3646,6 +3689,27 @@ function Menu.OpenTab.Inventory(container)
 
                 end
 
+                local itemTakeButton = vgui.Create("DButton", contextMenu)
+                itemTakeButton:Dock(TOP)
+                itemTakeButton:SetSize(0, EFGM.MenuScale(25))
+                itemTakeButton:SetText("TAKE")
+
+                itemTakeButton.OnCursorEntered = function(s)
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
+                function itemTakeButton:DoClick()
+
+                    surface.PlaySound("ui/element_select.wav")
+                    contextMenu:Remove()
+                    stashItems:InvalidateLayout()
+
+                    TakeFromStashToInventory(v.id)
+
+                end
+
                 -- actions that can be performed on this specific item
                 -- default
                 local actions = {
@@ -3679,9 +3743,7 @@ function Menu.OpenTab.Inventory(container)
                         contextMenu:Remove()
                         stashItems:InvalidateLayout()
 
-                        -- EquipItemFromInventory(v.id, i.equipSlot)
-
-                        -- ReloadSlots()
+                        EquipItemFromStash(v.id, i.equipSlot)
 
                     end
 
