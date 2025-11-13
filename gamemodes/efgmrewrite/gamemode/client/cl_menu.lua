@@ -1144,17 +1144,16 @@ function Menu.InspectItem(item, data)
         local infoContentText = vgui.Create("RichText", infoContent)
         infoContentText:Dock(FILL)
         infoContentText:SetVerticalScrollbarEnabled(true)
+        infoContentText:InsertColorChange(255, 255, 255, 255)
 
         if data.count != 0 and data.count != 1 then
 
-            infoContentText:InsertColorChange(255, 255, 255, 255)
             infoContentText:AppendText("COUNT: " .. data.count .. "\n")
 
         end
 
         if data.att then
 
-            infoContentText:InsertColorChange(255, 255, 255, 255)
             infoContentText:AppendText("ATTACHMENTS: \n" .. GetAttachmentListFromCode(data.att) .. "\n")
 
         end
@@ -1181,6 +1180,129 @@ function Menu.InspectItem(item, data)
 
             surface.SetDrawColor(MenuAlias.transparent)
             surface.DrawRect(0, 0, w, h)
+
+        end
+
+        local wikiContentText = vgui.Create("RichText", wikiContent)
+        wikiContentText:Dock(FILL)
+        wikiContentText:SetVerticalScrollbarEnabled(true)
+        wikiContentText:InsertColorChange(255, 255, 255, 255)
+
+        if i.fullName and i.displayName then
+
+            wikiContentText:AppendText("NAME: " .. i.fullName .. " (" .. i.displayName .. ")" .. "\n")
+
+        end
+
+        if i.description then
+
+            wikiContentText:AppendText("DESCRIPTION: " .. i.description .. "\n")
+
+        end
+
+        if i.displayType then
+
+            wikiContentText:AppendText("TYPE: " .. i.displayType .. "\n")
+
+        end
+
+        if i.weight then
+
+            wikiContentText:AppendText("WEIGHT: " .. i.weight .. "kg" .. "\n")
+
+        end
+
+        if i.value then
+
+            wikiContentText:AppendText("EST. VALUE: ₽" .. comma_value(i.value) .. "\n")
+
+        end
+
+        if i.sizeX and i.sizeY then
+
+            wikiContentText:AppendText("SIZE: " .. i.sizeX .. "x" .. i.sizeY .. "\n")
+
+        end
+
+        if i.stackSize then
+
+            wikiContentText:AppendText("STACK SIZE: " .. i.stackSize  .. "\n")
+
+        end
+
+        if i.equipType == EQUIPTYPE.Weapon then
+
+            local wep = table.Copy(weapons.Get(item))
+            if !IsValid(wep) then return end
+
+            wikiContentText:AppendText("\n")
+
+            local caliber = ARC9:GetPhrase(wep["Trivia"]["eft_trivia_cal2"]) or nil
+            local damageMax = math.Round(wep["DamageMax"]) or nil
+            local damageMin = math.Round(wep["DamageMin"]) or nil
+            local rpm = math.Round(wep["RPM"]) or nil
+            local range = math.Round(wep["RangeMax"] * 0.0254) or nil
+            local velocity = math.Round(wep["PhysBulletMuzzleVelocity"] * 0.0254) or nil
+
+            local manufacturer = ARC9:GetPhrase(wep["Trivia"]["eft_trivia_manuf1"]) or nil
+            local country = ARC9:GetPhrase(wep["Trivia"]["eft_trivia_country4"]) or nil
+            local year = wep["Trivia"]["eft_trivia_year5"] or nil
+
+            if caliber then
+
+                wikiContentText:AppendText("Caliber: " ..  caliber .. "\n")
+
+            end
+
+            if damageMax and damageMin then
+
+                wikiContentText:AppendText("DAMAGE: " ..  damageMax .. " → " .. damageMin .. "\n")
+
+            end
+
+            if rpm then
+
+                wikiContentText:AppendText("RPM: " ..  rpm .. "\n")
+
+            end
+
+            if range then
+
+                wikiContentText:AppendText("Range: " ..  range .. "m" .. "\n")
+
+            end
+
+            if velocity then
+
+                wikiContentText:AppendText("Muzzle Velocity: " ..  velocity .. "m/s" .. "\n")
+
+            end
+
+            wikiContentText:AppendText("\n")
+
+            if manufacturer then
+
+                wikiContentText:AppendText("Manufacturer: " ..  manufacturer .. "\n")
+
+            end
+
+            if country then
+
+                wikiContentText:AppendText("Country: " ..  country .. "\n")
+
+            end
+
+            if year then
+
+                wikiContentText:AppendText("Year: " ..  year .. "\n")
+
+            end
+
+        end
+
+        function wikiContentText:PerformLayout()
+
+            wikiContentText:SetFontInternal("PuristaBold18")
 
         end
 
