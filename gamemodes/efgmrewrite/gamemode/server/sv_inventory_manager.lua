@@ -186,26 +186,31 @@ function FlowItemToInventory(ply, name, type, data)
 
 end
 
--- TODO!!! SORT BY ITEMS WITH THE LEAST AMOUNT IN THEIR DATA COUNT!!! itll be nicer to take from the lower stacks than to take 2 bullets from your perfect 60 stacks of ammo
--- for some reason this is also not working properly with stacks but i cant be bothered rn
 function DeflowItemsFromInventory(ply, name, count)
 
     local amount = count
+    local inv = table.Copy(ply.inventory)
 
-    for k, v in ipairs(ply.inventory) do
+    for k, v in ipairs(inv) do inv[k].id = k end
+
+    table.sort(inv, function(a, b) return a.data.count < b.data.count end)
+
+    for k, v in ipairs(inv) do
 
         if v.name == name and v.data.count > 0 and amount > 0 then
 
             if amount >= v.data.count then
 
                 amount = amount - v.data.count
-                DeleteItemFromInventory(ply, k, false)
+                DeleteItemFromInventory(ply, v.id, false)
+                DeflowItemsFromInventory(ply, name, amount)
+                return
 
             else
 
                 local newData = {}
-                newData.count = ply.inventory[k].data.count - amount
-                UpdateItemFromInventory(ply, k, newData)
+                newData.count = ply.inventory[v.id].data.count - amount
+                UpdateItemFromInventory(ply, v.id, newData)
                 break
 
             end
@@ -217,6 +222,13 @@ function DeflowItemsFromInventory(ply, name, count)
     return amount
 
 end
+
+function DebugDeflow(ply)
+
+    DeflowItemsFromInventory(ply, "efgm_ammo_556x45", 70)
+
+end
+concommand.Add("debugdeflow", function(ply, cmd, args) DebugDeflow(ply) end)
 
 net.Receive("PlayerInventoryDropItem", function(len, ply)
 
