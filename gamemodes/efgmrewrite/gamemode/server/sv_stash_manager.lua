@@ -78,8 +78,13 @@ function FlowItemToStash(ply, name, type, data)
     end
 
     local amount = tonumber(data.count)
+    local inv = table.Copy(ply.stash)
 
-    for k, v in ipairs(ply.stash) do
+    for k, v in ipairs(inv) do inv[k].id = k end
+
+    table.sort(inv, function(a, b) return a.data.count > b.data.count end)
+
+    for k, v in ipairs(inv) do
 
         if v.name == name and v.data.count != def.stackSize and amount > 0 then
 
@@ -89,14 +94,14 @@ function FlowItemToStash(ply, name, type, data)
 
                 local newData = {}
                 newData.count = stackSize
-                UpdateItemFromStash(ply, k, newData)
+                UpdateItemFromStash(ply, v.id, newData)
                 amount = amount - countToMax
 
             elseif amount < countToMax then
 
                 local newData = {}
-                newData.count = ply.stash[k].data.count + amount
-                UpdateItemFromStash(ply, k, newData)
+                newData.count = ply.stash[v.id].data.count + amount
+                UpdateItemFromStash(ply, v.id, newData)
                 amount = 0
                 break
 

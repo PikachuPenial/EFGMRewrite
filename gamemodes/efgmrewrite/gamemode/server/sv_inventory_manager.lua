@@ -135,8 +135,13 @@ function FlowItemToInventory(ply, name, type, data)
     end
 
     local amount = tonumber(data.count)
+    local inv = table.Copy(ply.inventory)
 
-    for k, v in ipairs(ply.inventory) do
+    for k, v in ipairs(inv) do inv[k].id = k end
+
+    table.sort(inv, function(a, b) return a.data.count > b.data.count end)
+
+    for k, v in ipairs(inv) do
 
         if v.name == name and v.data.count != def.stackSize and amount > 0 then
 
@@ -146,14 +151,14 @@ function FlowItemToInventory(ply, name, type, data)
 
                 local newData = {}
                 newData.count = stackSize
-                UpdateItemFromInventory(ply, k, newData)
+                UpdateItemFromInventory(ply, v.id, newData)
                 amount = amount - countToMax
 
             elseif amount < countToMax then
 
                 local newData = {}
-                newData.count = ply.inventory[k].data.count + amount
-                UpdateItemFromInventory(ply, k, newData)
+                newData.count = ply.inventory[v.id].data.count + amount
+                UpdateItemFromInventory(ply, v.id, newData)
                 amount = 0
                 break
 
