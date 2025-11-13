@@ -24,7 +24,7 @@ EFGMITEMS = {}
         ["icon"] = Material("items/weapons/adar15.png", "smooth"),
 
         ["sizeX"] = 5,
-        ["sizeY"] = 2
+        ["sizeY"] = 2,
     }
 
     EFGMITEMS["arc9_eft_vsk94"] = {
@@ -3254,6 +3254,7 @@ hook.Add("InitPostEntity", "AttsItemDef", function()
     for k, v in pairs(arc9atts) do
 
         EFGMITEMS["arc9_att_" .. v.ShortName] = {
+
             ["fullName"] = v.PrintName,
             ["displayName"] = v.CompactName or v.PrintName,
             ["displayType"] = v.DisplayType or "Attachment",
@@ -3283,6 +3284,7 @@ hook.Add("OnReloaded", "AttsItemDefReload", function()
     for k, v in pairs(arc9atts) do
 
         EFGMITEMS["arc9_att_" .. v.ShortName] = {
+
             ["fullName"] = v.PrintName,
             ["displayName"] = v.CompactName or v.PrintName,
             ["displayType"] = v.DisplayType or "Attachment",

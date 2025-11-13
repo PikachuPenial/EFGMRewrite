@@ -127,7 +127,7 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
         self.Primary.DefaultClip = self.ForceDefaultClip or (clip + (bottomless and 0 or 0))
 
         if self.Primary.DefaultClip == 1 then
-            self:SetClip1(0)
+            -- self:SetClip1(0)
             self.Primary.DefaultClip = 0
         end
 
@@ -224,7 +224,10 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
 
                     if (self.LastUBGLAmmo) then
                         if (self.LastUBGLAmmo != self:GetValue("UBGLAmmo") or self.LastUBGLClipSize != self:GetValue("UBGLClipSize")) then
-                            client:GiveAmmo(self:Clip2(), self.LastUBGLAmmo)
+                            local data = {}
+                            data.count = self:Clip2()
+                            FlowItemToInventory(self:GetOwner(), self.LastUBGLAmmo, EQUIPTYPE.Ammunition, data)
+                            -- client:GiveAmmo(self:Clip2(), self.LastUBGLAmmo)
                             self:SetClip2(0)
                             self:SetRequestReload(true)
                         end
@@ -235,14 +238,20 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
 
                     local capacity = self:GetCapacity(true)
                     if capacity > 0 and self:Clip2() > capacity then
-                        client:GiveAmmo(self:Clip2() - capacity, self.LastUBGLAmmo)
+                        local data = {}
+                        data.count = self:Clip2() - capacity
+                        FlowItemToInventory(self:GetOwner(), self.LastUBGLAmmo, EQUIPTYPE.Ammunition, data)
+                        -- client:GiveAmmo(self:Clip2() - capacity, self.LastUBGLAmmo)
                         self:SetClip2(capacity)
                     end
                 end
 
                 local capacity = self:GetCapacity(false)
                 if capacity > 0 and self:Clip1() > capacity then
-                    client:GiveAmmo(self:Clip1() - capacity, self.LastAmmo)
+                    local data = {}
+                    data.count = self:Clip1() - capacity
+                    FlowItemToInventory(self:GetOwner(), self.LastAmmo, EQUIPTYPE.Ammunition, data)
+                    -- client:GiveAmmo(self:Clip1() - capacity, self.LastAmmo)
                     self:SetClip1(capacity)
                 end
 
@@ -350,6 +359,7 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
             local data = {}
             data.count = self:Clip1()
             FlowItemToInventory(self:GetOwner(), self.Ammo, EQUIPTYPE.Ammunition, data)
+            -- self:GetOwner():GiveAmmo(self:Clip1(), self.Ammo, true)
         end
         self:SetClip1(0)
         self:SetLoadedRounds(0)
