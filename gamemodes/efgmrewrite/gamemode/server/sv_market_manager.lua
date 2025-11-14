@@ -3,7 +3,7 @@ util.AddNetworkString("PlayerMarketSellItem")
 
 net.Receive("PlayerMarketPurchaseItem", function(len, ply)
 
-    if !ply:CompareStatus(0) then return end
+    if !ply:CompareStatus(0) then return false end
 
     local item = net.ReadString()
     local count = net.ReadUInt(8)
@@ -11,9 +11,12 @@ net.Receive("PlayerMarketPurchaseItem", function(len, ply)
     local def = EFGMITEMS[item]
 
     local plyMoney = ply:GetNWInt("Money", 0)
+    local plyLevel = ply:GetNWInt("Level", 1)
     local cost = def.value * count
+    local lvl = (def.levelReq or 1)
 
     if plyMoney < cost then return false end
+    if plyLevel < lvl then return false end
 
     local data = {}
     data.count = count
@@ -35,17 +38,19 @@ net.Receive("PlayerMarketPurchaseItem", function(len, ply)
 
     ply:SetNWInt("Money", plyMoney - cost)
 
+    return true
+
 end)
 
 net.Receive("PlayerMarketSellItem", function(len, ply)
 
-    if !ply:CompareStatus(0) then return end
+    if !ply:CompareStatus(0) then return false end
 
     local item = net.ReadString()
     local count = net.ReadUInt(8)
     local key = net.ReadUInt(16)
 
-    if AmountInInventory(ply.stash, item) < count then return end
+    if AmountInInventory(ply.stash, item) < count then return false end
 
     local def = EFGMITEMS[item]
 
@@ -76,6 +81,7 @@ net.Receive("PlayerMarketSellItem", function(len, ply)
         UpdateStashString(ply)
 
         ply:SetNWInt("Money", plyMoney + cost)
+        return true
 
     elseif def.equipType == EQUIPTYPE.Consumable then
 
@@ -86,6 +92,7 @@ net.Receive("PlayerMarketSellItem", function(len, ply)
         UpdateStashString(ply)
 
         ply:SetNWInt("Money", plyMoney + cost)
+        return true
 
     else
 
@@ -95,6 +102,7 @@ net.Receive("PlayerMarketSellItem", function(len, ply)
         UpdateStashString(ply)
 
         ply:SetNWInt("Money", plyMoney + cost)
+        return true
 
     end
 

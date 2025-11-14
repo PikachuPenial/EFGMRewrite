@@ -1510,9 +1510,11 @@ function Menu.ConfirmPurchase(item)
     local transactionCount = 1
 
     local plyMoney = ply:GetNWInt("Money", 0)
+    local plyLevel = ply:GetNWInt("Level", 1)
 
     -- can't afford one of the item
     if plyMoney < i.value then surface.PlaySound("ui/element_deselect.wav") return end
+    if plyLevel < (i.levelReq or 1) then surface.PlaySound("ui/element_deselect.wav") return end
 
     local maxTransactionCount = math.Clamp(math.floor(plyMoney / i.value), 1, i.stackSize)
 
@@ -4894,7 +4896,8 @@ function Menu.OpenTab.Market()
             local i = EFGMITEMS[v.name]
             if i == nil then return end
 
-            stashValue = stashValue + (i.value * v.data.count)
+            stashValue = stashValue + i.value * v.data.count
+            local itemValue = math.floor(i.value * sellMultiplier) * v.data.count
 
             local item = stashItems:Add("DButton")
             item:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
@@ -4922,6 +4925,7 @@ function Menu.OpenTab.Market()
                         if att == nil then return end
 
                         stashValue = stashValue + att.value
+                        itemValue = itemValue + math.floor(att.value * sellMultiplier)
 
                     end
 
@@ -4975,6 +4979,9 @@ function Menu.OpenTab.Market()
                 elseif i.equipType == EQUIPTYPE.Consumable then
                     draw.SimpleTextOutlined(v.data.durability .. "/" .. i.consumableValue, duraFont, w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
                 end
+
+                if i.sizeX > 1 then draw.SimpleTextOutlined("₽" .. itemValue, "PuristaBold18", w / 2, h / 2, MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
+                else draw.SimpleTextOutlined("₽" .. itemValue, "PuristaBold14", w / 2, h / 2, MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor) end
 
             end
 
@@ -5664,7 +5671,7 @@ function Menu.OpenTab.Market()
                     entry.id = k2
                     entry.icon = v2.icon
                     entry.value = v2.value or 1000
-                    entry.level = v2.levelreq or 1
+                    entry.level = v2.levelReq or 1
                     if v2.equipType == EQUIPTYPE.Consumable then entry.durability = v2.durability end
                     entry.stack = v2.stackSize
                     entry.sizeX = v2.sizeX or 1

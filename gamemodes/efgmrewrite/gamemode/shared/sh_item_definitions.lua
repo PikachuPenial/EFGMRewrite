@@ -3412,7 +3412,7 @@ EFGMITEMS = {}
         ["sizeY"] = 2
     }
 
-sellMultiplier = 0.5
+sellMultiplier = 0.4
 
 -- types:
 -- 0 == any item
@@ -3504,7 +3504,9 @@ hook.Add("InitPostEntity", "AttsItemDef", function()
             ["icon"] = v.EFGMIcon or v.Icon,
 
             ["sizeX"] = v.SizeX or 1,
-            ["sizeY"] = v.SizeY or 1
+            ["sizeY"] = v.SizeY or 1,
+
+            ["levelReq"] = v.EFGMLvl or 1
 
         }
 
@@ -3534,7 +3536,9 @@ hook.Add("OnReloaded", "AttsItemDefReload", function()
             ["icon"] = v.EFGMIcon or v.Icon,
 
             ["sizeX"] = v.SizeX or 1,
-            ["sizeY"] = v.SizeY or 1
+            ["sizeY"] = v.SizeY or 1,
+
+            ["levelReq"] = v.EFGMLvl or 1
 
         }
 
