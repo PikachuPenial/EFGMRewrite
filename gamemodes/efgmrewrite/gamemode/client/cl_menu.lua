@@ -1188,6 +1188,8 @@ function Menu.InspectItem(item, data)
         wikiContentText:SetVerticalScrollbarEnabled(true)
         wikiContentText:InsertColorChange(255, 255, 255, 255)
 
+        local wep = table.Copy(weapons.Get(item))
+
         if i.fullName and i.displayName then
 
             wikiContentText:AppendText("NAME: " .. i.fullName .. " (" .. i.displayName .. ")" .. "\n")
@@ -1197,6 +1199,10 @@ function Menu.InspectItem(item, data)
         if i.description then
 
             wikiContentText:AppendText("DESCRIPTION: " .. i.description .. "\n")
+
+        elseif wep != nil and wep["Description"] then
+
+            wikiContentText:AppendText("DESCRIPTION: " .. wep["Description"] .. "\n")
 
         end
 
@@ -1230,19 +1236,25 @@ function Menu.InspectItem(item, data)
 
         end
 
-        if i.equipType == EQUIPTYPE.Weapon then
-
-            local wep = table.Copy(weapons.Get(item))
-            if !IsValid(wep) then return end
+        if i.equipType == EQUIPTYPE.Weapon and wep != nil then
 
             wikiContentText:AppendText("\n")
 
             local caliber = ARC9:GetPhrase(wep["Trivia"]["eft_trivia_cal2"]) or nil
+            local firemodes = wep["Firemodes"] or nil
             local damageMax = math.Round(wep["DamageMax"]) or nil
             local damageMin = math.Round(wep["DamageMin"]) or nil
             local rpm = math.Round(wep["RPM"]) or nil
             local range = math.Round(wep["RangeMax"] * 0.0254) or nil
             local velocity = math.Round(wep["PhysBulletMuzzleVelocity"] * 0.0254) or nil
+
+            local recoilMult = math.Round(wep["Recoil"]) or 1
+            local recoilUp = math.Round(wep["RecoilUp"] * recoilMult, 2) or nil
+            local recoilUpRand = math.Round(wep["RecoilRandomUp"] * recoilMult, 2) or nil
+            local recoilSide = math.Round(wep["RecoilSide"] * recoilMult, 2) or nil
+            local recoilSideRand = math.Round(wep["RecoilRandomSide"] * recoilMult, 2) or nil
+            local accuracy = math.Round(wep["Spread"] * 360 * 60 / 10, 2)
+            local ergo = wep["EFTErgo"] or nil
 
             local manufacturer = ARC9:GetPhrase(wep["Trivia"]["eft_trivia_manuf1"]) or nil
             local country = ARC9:GetPhrase(wep["Trivia"]["eft_trivia_country4"]) or nil
@@ -1250,7 +1262,35 @@ function Menu.InspectItem(item, data)
 
             if caliber then
 
-                wikiContentText:AppendText("Caliber: " ..  caliber .. "\n")
+                wikiContentText:AppendText("CALIBER: " ..  caliber .. "\n")
+
+            end
+
+            if firemodes then
+
+                str = ""
+
+                for k, v in pairs(firemodes) do
+                    if v.PrintName then str = str .. v.PrintName .. ", "
+
+                    else
+
+                        if v.Mode then
+
+                            if v.Mode == 0 then str = str .. "Safe" .. ", "
+                            elseif v.Mode < 0 then str = str .. "Auto" .. ", "
+                            elseif v.Mode == 1 then str = str .. "Single" .. ", "
+                            elseif v.Mode > 1 then str = str .. tostring(v.Mode) .. "-" .. "Burst" .. ", " end
+
+                        end
+
+                    end
+
+                end
+
+                str = string.sub(str, 1, string.len(str) - 2)
+
+                wikiContentText:AppendText("FIRING MODES: " ..  str .. "\n")
 
             end
 
@@ -1268,13 +1308,37 @@ function Menu.InspectItem(item, data)
 
             if range then
 
-                wikiContentText:AppendText("Range: " ..  range .. "m" .. "\n")
+                wikiContentText:AppendText("RANGE: " ..  range .. "m" .. "\n")
 
             end
 
             if velocity then
 
-                wikiContentText:AppendText("Muzzle Velocity: " ..  velocity .. "m/s" .. "\n")
+                wikiContentText:AppendText("MUZZLE VELOCITY: " ..  velocity .. "m/s" .. "\n")
+
+            end
+
+            if recoilUp and recoilUpRand then
+
+                wikiContentText:AppendText("VERTICAL RECOIL: " .. recoilUp .. " + " .. recoilUpRand .. "°" .. "\n")
+
+            end
+
+            if recoilSide and recoilSideRand then
+
+                wikiContentText:AppendText("HORIZONTAL RECOIL: " .. recoilSide .. " + " .. recoilSideRand .. "°" .. "\n")
+
+            end
+
+            if accuracy and accuracy != 0 then
+
+                wikiContentText:AppendText("ACCURACY: " .. accuracy .. " MOA" .. "\n")
+
+            end
+
+            if ergo and ergo != 0 then
+
+                wikiContentText:AppendText("ERGONOMICS: " .. ergo .. "\n")
 
             end
 
@@ -1282,19 +1346,19 @@ function Menu.InspectItem(item, data)
 
             if manufacturer then
 
-                wikiContentText:AppendText("Manufacturer: " ..  manufacturer .. "\n")
+                wikiContentText:AppendText("MANUFACTURER: " ..  manufacturer .. "\n")
 
             end
 
             if country then
 
-                wikiContentText:AppendText("Country: " ..  country .. "\n")
+                wikiContentText:AppendText("COUNTRY: " ..  country .. "\n")
 
             end
 
             if year then
 
-                wikiContentText:AppendText("Year: " ..  year .. "\n")
+                wikiContentText:AppendText("YEAR: " ..  year)
 
             end
 
