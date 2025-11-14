@@ -36,16 +36,8 @@ function ENT:Use(activator)
 
     local data = {}
     data.durability = self.Durability
-    local item = ITEM.Instantiate(entity, EQUIPTYPE.Consumable, data)
 
-    local index = table.insert(activator.inventory, item)
-
-    net.Start("PlayerInventoryAddItem", false)
-    net.WriteString(entity)
-    net.WriteUInt(EQUIPTYPE.Consumable, 4)
-    net.WriteTable(data) -- Writing a table isn't great but we ball for now
-    net.WriteUInt(index, 16)
-    net.Send(activator)
+    AddItemToInventory(activator, entity, EQUIPTYPE.Consumable, data)
 
 end
 

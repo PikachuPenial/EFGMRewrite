@@ -3412,7 +3412,7 @@ EFGMITEMS = {}
         ["sizeY"] = 2
     }
 
-sellMultiplier = 1 -- placeholder basically
+sellMultiplier = 0.5
 
 -- types:
 -- 0 == any item

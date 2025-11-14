@@ -303,3 +303,13 @@ function PurchaseItem(item, count)
     net.SendToServer()
 
 end
+
+function SellItem(item, count, key)
+
+    net.Start("PlayerMarketSellItem", false)
+    net.WriteString(item)
+    net.WriteUInt(count, 8)
+    net.WriteUInt(key, 16)
+    net.SendToServer()
+
+end

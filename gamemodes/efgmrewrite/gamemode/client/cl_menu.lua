@@ -1522,7 +1522,7 @@ function Menu.ConfirmPurchase(item)
 
     local confirmPanelHeight = EFGM.MenuScale(70)
 
-    if i.stackSize > 1 then confirmPanelHeight = EFGM.MenuScale(100) end
+    if i.stackSize > 1 and maxTransactionCount > 1 then confirmPanelHeight = EFGM.MenuScale(100) end
 
     surface.PlaySound("ui/element_select.wav")
 
@@ -1614,7 +1614,7 @@ function Menu.ConfirmPurchase(item)
 
     end
 
-    if i.stackSize > 1 then
+    if i.stackSize > 1 and maxTransactionCount > 1 then
 
         local amountSlider = vgui.Create("DNumSlider", confirmPanel)
         amountSlider:SetPos(confirmPanel:GetWide() / 2 - EFGM.MenuScale(160), EFGM.MenuScale(35))
@@ -1660,6 +1660,212 @@ function Menu.ConfirmPurchase(item)
         surface.PlaySound("ui/success.wav")
         confirmPanel:AlphaTo(0, 0.1, 0, function() confirmPanel:Remove() end)
         PurchaseItem(item, transactionCount)
+
+    end
+
+    noButton.OnCursorEntered = function(s)
+
+        surface.PlaySound("ui/element_hover.wav")
+
+    end
+
+    function noButton:DoClick()
+
+        surface.PlaySound("ui/element_deselect.wav")
+        confirmPanel:AlphaTo(0, 0.1, 0, function() confirmPanel:Remove() end)
+
+    end
+
+end
+
+function Menu.ConfirmSell(item, data, key)
+
+    if IsValid(confirmPanel) then confirmPanel:Remove() end
+
+    local i = EFGMITEMS[item]
+    if i == nil then confirmPanel:Remove() return end
+
+    local transactionCost = math.floor(i.value * sellMultiplier)
+    local transactionCount = 1
+
+    if data.att then
+
+        local atts = GetPrefixedAttachmentListFromCode(data.att)
+        if !atts then return end
+
+        for _, a in ipairs(atts) do
+
+            local att = EFGMITEMS[a]
+            if att == nil then return end
+
+            transactionCost = transactionCost + math.floor(att.value * sellMultiplier)
+
+        end
+
+    end
+
+    local maxTransactionCount = math.Clamp(data.count or 1, 1, i.stackSize)
+
+    surface.SetFont("PuristaBold24")
+    local confirmText = "Sell " .. transactionCount .. "x " .. i.fullName .. " (" .. i.displayName .. ") for ₽" .. comma_value(transactionCost) .. "?"
+    local confirmTextSize = math.max(EFGM.MenuScale(300), surface.GetTextSize(confirmText))
+
+    local confirmPanelHeight = EFGM.MenuScale(70)
+
+    if i.stackSize > 1 and maxTransactionCount > 1 then confirmPanelHeight = EFGM.MenuScale(100) end
+
+    surface.PlaySound("ui/element_select.wav")
+
+    confirmPanel = vgui.Create("DFrame", Menu.MenuFrame)
+    confirmPanel:SetSize(confirmTextSize + EFGM.MenuScale(10), confirmPanelHeight)
+    confirmPanel:Center()
+    confirmPanel:SetAlpha(0)
+    confirmPanel:SetTitle("")
+    confirmPanel:ShowCloseButton(false)
+    confirmPanel:SetScreenLock(true)
+    confirmPanel:AlphaTo(255, 0.1, 0, nil)
+    confirmPanel:RequestFocus()
+
+    confirmPanel.Paint = function(s, w, h)
+
+        confirmPanel:SetWide(confirmTextSize + EFGM.MenuScale(10))
+
+        BlurPanel(s, EFGM.MenuScale(3))
+
+        surface.SetDrawColor(Color(20, 20, 20, 205))
+        surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
+
+        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+        draw.SimpleTextOutlined(confirmText, "PuristaBold24", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    confirmPanel.Think = function()
+
+        if (input.IsMouseDown(MOUSE_LEFT) or input.IsMouseDown(MOUSE_RIGHT) or input.IsMouseDown(MOUSE_MIDDLE) or input.IsMouseDown(MOUSE_WHEEL_DOWN) or input.IsMouseDown(MOUSE_WHEEL_UP)) and !confirmPanel:IsChildHovered() and !confirmPanel:IsHovered() then confirmPanel:AlphaTo(0, 0.1, 0, function() confirmPanel:Remove() end) end
+
+    end
+
+    surface.SetFont("PuristaBold24")
+    local yesText = "YES"
+    local yesTextSize = surface.GetTextSize(yesText)
+    local yesButtonSize = yesTextSize + EFGM.MenuScale(10)
+
+    local yesButton = vgui.Create("DButton", confirmPanel)
+    yesButton:SetPos(confirmPanel:GetWide() / 2 - (yesButtonSize / 2) - EFGM.MenuScale(25), confirmPanelHeight - EFGM.MenuScale(35))
+    yesButton:SetSize(yesButtonSize, EFGM.MenuScale(28))
+    yesButton:SetText("")
+    yesButton.Paint = function(s, w, h)
+
+        yesButton:SetX(confirmPanel:GetWide() / 2 - (yesButtonSize / 2) - EFGM.MenuScale(25))
+
+        BlurPanel(s, EFGM.MenuScale(0))
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, yesTextSize + EFGM.MenuScale(10), h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, yesTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
+
+        draw.SimpleTextOutlined(yesText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    surface.SetFont("PuristaBold24")
+    local noText = "NO"
+    local noTextSize = surface.GetTextSize(noText)
+    local noButtonSize = noTextSize + EFGM.MenuScale(10)
+
+    local noButton = vgui.Create("DButton", confirmPanel)
+    noButton:SetPos(confirmPanel:GetWide() / 2 - (noButtonSize / 2) + EFGM.MenuScale(25), confirmPanelHeight - EFGM.MenuScale(35))
+    noButton:SetSize(noButtonSize, EFGM.MenuScale(28))
+    noButton:SetText("")
+    noButton.Paint = function(s, w, h)
+
+        noButton:SetX(confirmPanel:GetWide() / 2 - (noButtonSize / 2) + EFGM.MenuScale(25))
+
+        BlurPanel(s, EFGM.MenuScale(0))
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, noButtonSize + EFGM.MenuScale(10), h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, noButtonSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
+
+        draw.SimpleTextOutlined(noText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    if i.stackSize > 1 and maxTransactionCount > 1 then
+
+        local amountSlider = vgui.Create("DNumSlider", confirmPanel)
+        amountSlider:SetPos(confirmPanel:GetWide() / 2 - EFGM.MenuScale(160), EFGM.MenuScale(35))
+        amountSlider:SetSize(EFGM.MenuScale(240), EFGM.MenuScale(15))
+        amountSlider:SetMin(1)
+        amountSlider:SetMax(maxTransactionCount)
+        amountSlider:SetValue(1)
+        amountSlider:SetDefaultValue(1)
+        amountSlider:SetDecimals(0)
+
+        local num = 1
+        amountSlider.OnValueChanged = function(self, val)
+
+            if val == num then return end
+
+            num = math.Round(val)
+
+            transactionCost = math.floor(i.value * sellMultiplier) * num
+            transactionCount = num
+
+            if data.att then
+
+                local atts = GetPrefixedAttachmentListFromCode(data.att)
+                if !atts then return end
+
+                for _, a in ipairs(atts) do
+
+                    local att = EFGMITEMS[a]
+                    if att == nil then return end
+
+                    transactionCost = transactionCost + math.floor(att.value * sellMultiplier)
+
+                end
+
+            end
+
+            surface.SetFont("PuristaBold24")
+            confirmText = "Sell " .. transactionCount .. "x " .. i.fullName .. " (" .. i.displayName .. ") for ₽" .. comma_value(transactionCost) .. "?"
+            confirmTextSize = math.max(EFGM.MenuScale(300), surface.GetTextSize(confirmText))
+
+        end
+
+        amountSlider.Think = function()
+
+            -- amountSlider:SetX(confirmPanel:GetWide() / 2 - EFGM.MenuScale(160))
+
+        end
+
+    end
+
+    yesButton.OnCursorEntered = function(s)
+
+        surface.PlaySound("ui/element_hover.wav")
+
+    end
+
+    function yesButton:DoClick()
+
+        surface.PlaySound("ui/success.wav")
+        confirmPanel:AlphaTo(0, 0.1, 0, function() confirmPanel:Remove() end)
+        SellItem(item, transactionCount, key)
 
     end
 
@@ -4778,10 +4984,9 @@ function Menu.OpenTab.Market()
 
             end
 
-            function item:DoDoubleClick()
+            function item:DoClick()
 
-                Menu.InspectItem(v.name, v.data)
-                surface.PlaySound("ui/element_select.wav")
+                Menu.ConfirmSell(v.name, v.data, v.id)
 
             end
 
@@ -4795,7 +5000,7 @@ function Menu.OpenTab.Market()
 
                 if IsValid(contextMenu) then contextMenu:Remove() end
                 contextMenu = vgui.Create("DPanel", stashHolder)
-                contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(35))
+                contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(60))
                 contextMenu:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
                 contextMenu:SetAlpha(0)
                 contextMenu:AlphaTo(255, 0.1, 0, nil)
@@ -4852,10 +5057,23 @@ function Menu.OpenTab.Market()
 
                 end
 
-                -- actions that can be performed on this specific item
-                -- default
-                local actions = {
-                }
+                local itemSellButton = vgui.Create("DButton", contextMenu)
+                itemSellButton:Dock(TOP)
+                itemSellButton:SetSize(0, EFGM.MenuScale(25))
+                itemSellButton:SetText("SELL")
+
+                itemSellButton.OnCursorEntered = function(s)
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
+                function itemSellButton:DoClick()
+
+                    Menu.ConfirmSell(v.name, v.data, v.id)
+                    contextMenu:KillFocus()
+
+                end
 
                 if sideH == true then
 
@@ -5313,7 +5531,7 @@ function Menu.OpenTab.Market()
 
                     if IsValid(contextMenu) then contextMenu:Remove() end
                     contextMenu = vgui.Create("DPanel", marketItemHolder)
-                    contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(35))
+                    contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(60))
                     contextMenu:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
                     contextMenu:SetAlpha(0)
                     contextMenu:AlphaTo(255, 0.1, 0, nil)
@@ -5386,6 +5604,24 @@ function Menu.OpenTab.Market()
 
                         Menu.InspectItem(v.id)
                         surface.PlaySound("ui/element_select.wav")
+                        contextMenu:KillFocus()
+
+                    end
+
+                    local itemBuyButton = vgui.Create("DButton", contextMenu)
+                    itemBuyButton:Dock(TOP)
+                    itemBuyButton:SetSize(0, EFGM.MenuScale(25))
+                    itemBuyButton:SetText("BUY")
+
+                    itemBuyButton.OnCursorEntered = function(s)
+
+                        surface.PlaySound("ui/element_hover.wav")
+
+                    end
+
+                    function itemBuyButton:DoClick()
+
+                        Menu.ConfirmPurchase(v.id)
                         contextMenu:KillFocus()
 
                     end
