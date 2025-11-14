@@ -96,9 +96,21 @@ net.Receive("PlayerMarketSellItem", function(len, ply)
 
     else
 
+        local data = ply.stash[key].data
         local cost = math.floor(def.value * sellMultiplier) * count
 
-        DeflowItemsFromStash(ply, item, count)
+        if count == data.count then
+
+            DeleteItemFromStash(ply, key)
+
+        else
+
+            local newData = table.Copy(data)
+            newData.count = data.count - count
+            UpdateItemFromStash(ply, key, newData)
+
+        end
+
         UpdateStashString(ply)
 
         ply:SetNWInt("Money", plyMoney + cost)

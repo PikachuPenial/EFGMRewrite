@@ -1886,6 +1886,165 @@ function Menu.ConfirmSell(item, data, key)
 
 end
 
+function Menu.ConfirmSplit(item, data, key, inv)
+
+    if IsValid(confirmPanel) then confirmPanel:Remove() end
+
+    local i = EFGMITEMS[item]
+    if i == nil then confirmPanel:Remove() return end
+
+    surface.SetFont("PuristaBold24")
+    local confirmText = "Split " .. i.fullName .. " (" .. i.displayName .. ")?"
+    local confirmTextSize = math.max(EFGM.MenuScale(300), surface.GetTextSize(confirmText))
+
+    local maxSplitCount = data.count - 1
+
+    local confirmPanelHeight = EFGM.MenuScale(100)
+
+    surface.PlaySound("ui/element_select.wav")
+
+    confirmPanel = vgui.Create("DFrame", Menu.MenuFrame)
+    confirmPanel:SetSize(confirmTextSize + EFGM.MenuScale(10), confirmPanelHeight)
+    confirmPanel:Center()
+    confirmPanel:SetAlpha(0)
+    confirmPanel:SetTitle("")
+    confirmPanel:ShowCloseButton(false)
+    confirmPanel:SetScreenLock(true)
+    confirmPanel:AlphaTo(255, 0.1, 0, nil)
+    confirmPanel:RequestFocus()
+
+    confirmPanel.Paint = function(s, w, h)
+
+        confirmPanel:SetWide(confirmTextSize + EFGM.MenuScale(10))
+
+        BlurPanel(s, EFGM.MenuScale(3))
+
+        surface.SetDrawColor(Color(20, 20, 20, 205))
+        surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
+
+        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+        draw.SimpleTextOutlined(confirmText, "PuristaBold24", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    confirmPanel.Think = function()
+
+        if (input.IsMouseDown(MOUSE_LEFT) or input.IsMouseDown(MOUSE_RIGHT) or input.IsMouseDown(MOUSE_MIDDLE) or input.IsMouseDown(MOUSE_WHEEL_DOWN) or input.IsMouseDown(MOUSE_WHEEL_UP)) and !confirmPanel:IsChildHovered() and !confirmPanel:IsHovered() then confirmPanel:AlphaTo(0, 0.1, 0, function() confirmPanel:Remove() end) end
+
+    end
+
+    surface.SetFont("PuristaBold24")
+    local yesText = "YES"
+    local yesTextSize = surface.GetTextSize(yesText)
+    local yesButtonSize = yesTextSize + EFGM.MenuScale(10)
+
+    local yesButton = vgui.Create("DButton", confirmPanel)
+    yesButton:SetPos(confirmPanel:GetWide() / 2 - (yesButtonSize / 2) - EFGM.MenuScale(25), confirmPanelHeight - EFGM.MenuScale(35))
+    yesButton:SetSize(yesButtonSize, EFGM.MenuScale(28))
+    yesButton:SetText("")
+    yesButton.Paint = function(s, w, h)
+
+        yesButton:SetX(confirmPanel:GetWide() / 2 - (yesButtonSize / 2) - EFGM.MenuScale(25))
+
+        BlurPanel(s, EFGM.MenuScale(0))
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, yesTextSize + EFGM.MenuScale(10), h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, yesTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
+
+        draw.SimpleTextOutlined(yesText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    surface.SetFont("PuristaBold24")
+    local noText = "NO"
+    local noTextSize = surface.GetTextSize(noText)
+    local noButtonSize = noTextSize + EFGM.MenuScale(10)
+
+    local noButton = vgui.Create("DButton", confirmPanel)
+    noButton:SetPos(confirmPanel:GetWide() / 2 - (noButtonSize / 2) + EFGM.MenuScale(25), confirmPanelHeight - EFGM.MenuScale(35))
+    noButton:SetSize(noButtonSize, EFGM.MenuScale(28))
+    noButton:SetText("")
+    noButton.Paint = function(s, w, h)
+
+        noButton:SetX(confirmPanel:GetWide() / 2 - (noButtonSize / 2) + EFGM.MenuScale(25))
+
+        BlurPanel(s, EFGM.MenuScale(0))
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, noButtonSize + EFGM.MenuScale(10), h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, noButtonSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
+
+        draw.SimpleTextOutlined(noText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local amountSlider = vgui.Create("DNumSlider", confirmPanel)
+    amountSlider:SetPos(confirmPanel:GetWide() / 2 - EFGM.MenuScale(160), EFGM.MenuScale(35))
+    amountSlider:SetSize(EFGM.MenuScale(240), EFGM.MenuScale(15))
+    amountSlider:SetMin(1)
+    amountSlider:SetMax(maxSplitCount)
+    amountSlider:SetValue(1)
+    amountSlider:SetDefaultValue(1)
+    amountSlider:SetDecimals(0)
+
+    local num = 1
+    amountSlider.OnValueChanged = function(self, val)
+
+        if val == num then return end
+
+        num = math.Round(val)
+        splitCount = num
+
+    end
+
+    amountSlider.Think = function()
+
+        -- amountSlider:SetX(confirmPanel:GetWide() / 2 - EFGM.MenuScale(160))
+
+    end
+
+    yesButton.OnCursorEntered = function(s)
+
+        surface.PlaySound("ui/element_hover.wav")
+
+    end
+
+    function yesButton:DoClick()
+
+        surface.PlaySound("ui/element_select.wav")
+        confirmPanel:AlphaTo(0, 0.1, 0, function() confirmPanel:Remove() end)
+        SplitFromInventory(inv, item, splitCount, key)
+
+    end
+
+    noButton.OnCursorEntered = function(s)
+
+        surface.PlaySound("ui/element_hover.wav")
+
+    end
+
+    function noButton:DoClick()
+
+        surface.PlaySound("ui/element_deselect.wav")
+        confirmPanel:AlphaTo(0, 0.1, 0, function() confirmPanel:Remove() end)
+
+    end
+
+end
+
 Menu.OpenTab = {}
 
 function Menu.OpenTab.Inventory(container)
@@ -2207,6 +2366,17 @@ function Menu.OpenTab.Inventory(container)
 
             end
 
+            function primaryItem:DoClick()
+
+                if input.IsKeyDown(KEY_LSHIFT) then
+
+                    surface.PlaySound("ui/element_select.wav")
+                    UnEquipItemFromInventory(primaryItem.SLOTID, primaryItem.SLOT)
+
+                end
+
+            end
+
             function primaryItem:DoDoubleClick()
 
                 Menu.InspectItem(playerWeaponSlots[1][1].name)
@@ -2435,6 +2605,17 @@ function Menu.OpenTab.Inventory(container)
 
             end
 
+            function secondaryItem:DoClick()
+
+                if input.IsKeyDown(KEY_LSHIFT) then
+
+                    surface.PlaySound("ui/element_select.wav")
+                    UnEquipItemFromInventory(secondaryItem.SLOTID, secondaryItem.SLOT)
+
+                end
+
+            end
+
             secondaryItem.OnCursorEntered = function(s)
 
                 surface.PlaySound("ui/element_hover.wav")
@@ -2653,6 +2834,17 @@ function Menu.OpenTab.Inventory(container)
             function holsterItem:PaintOver(w, h)
 
                 draw.SimpleTextOutlined(i.displayName, nameFont, w - EFGM.MenuScale(3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            end
+
+            function holsterItem:DoClick()
+
+                if input.IsKeyDown(KEY_LSHIFT) then
+
+                    surface.PlaySound("ui/element_select.wav")
+                    UnEquipItemFromInventory(holsterItem.SLOTID, holsterItem.SLOT)
+
+                end
 
             end
 
@@ -2881,6 +3073,17 @@ function Menu.OpenTab.Inventory(container)
             function meleeItem:PaintOver(w, h)
 
                 draw.SimpleTextOutlined(i.displayName, nameFont, w - EFGM.MenuScale(3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            end
+
+            function meleeItem:DoClick()
+
+                if input.IsKeyDown(KEY_LSHIFT) then
+
+                    surface.PlaySound("ui/element_select.wav")
+                    UnEquipItemFromInventory(meleeItem.SLOTID, meleeItem.SLOT)
+
+                end
 
             end
 
@@ -3544,6 +3747,28 @@ function Menu.OpenTab.Inventory(container)
 
             end
 
+            function item:DoClick()
+
+                if input.IsKeyDown(KEY_LSHIFT) and (Menu.Player:CompareStatus(0) and table.IsEmpty(container)) then
+
+                    surface.PlaySound("ui/element_select.wav")
+                    playerItems:InvalidateLayout()
+                    StashItemFromInventory(v.id)
+                    ReloadStash()
+
+                end
+
+                if input.IsKeyDown(KEY_LALT) and (i.equipType == EQUIPTYPE.Weapon) then
+
+                    surface.PlaySound("ui/element_select.wav")
+                    playerItems:InvalidateLayout()
+                    EquipItemFromInventory(v.id, i.equipSlot)
+                    ReloadSlots()
+
+                end
+
+            end
+
             function item:DoDoubleClick()
 
                 Menu.InspectItem(v.name, v.data)
@@ -3630,7 +3855,7 @@ function Menu.OpenTab.Inventory(container)
 
                 actions.stashable = Menu.Player:CompareStatus(0) and table.IsEmpty(container)
                 actions.equipable = i.equipType == EQUIPTYPE.Weapon
-                actions.splittable = i.stackSize > 1
+                actions.splittable = i.stackSize > 1 and v.data.count > 1
                 actions.consumable = i.equipType == EQUIPTYPE.Consumable
 
                 if actions.stashable then
@@ -3734,7 +3959,7 @@ function Menu.OpenTab.Inventory(container)
 
                     function itemSplitButton:DoClick()
 
-                        surface.PlaySound("ui/element_select.wav")
+                        Menu.ConfirmSplit(v.name, v.data, v.id, "inv")
                         contextMenu:KillFocus()
                         playerItems:InvalidateLayout()
 
@@ -3866,7 +4091,7 @@ function Menu.OpenTab.Inventory(container)
         end
 
         local containerItems = vgui.Create("DIconLayout", containerItemsHolder)
-        containerItems:Dock(FILL)
+        containerItems:Dock(TOP)
         containerItems:SetSpaceY(-1)
         containerItems:SetSpaceX(-1)
 
@@ -3969,6 +4194,26 @@ function Menu.OpenTab.Inventory(container)
                 item.OnCursorEntered = function(s)
 
                     surface.PlaySound("ui/element_hover.wav")
+
+                end
+
+                function item:DoClick()
+
+                    if input.IsKeyDown(KEY_LSHIFT) then
+
+                        surface.PlaySound("ui/element_select.wav")
+
+                        table.remove(container.items, v.id)
+
+                        net.Start("PlayerInventoryLootItemFromContainer", false)
+                            net.WriteEntity(container.entity)
+                            net.WriteUInt(v.id, 16)
+                        net.SendToServer()
+
+                        ReloadContainer()
+                        ReloadInventory()
+
+                    end
 
                 end
 
@@ -4319,7 +4564,7 @@ function Menu.OpenTab.Inventory(container)
     end)
 
     local stashItems = vgui.Create("DIconLayout", stashItemsHolder)
-    stashItems:Dock(FILL)
+    stashItems:Dock(TOP)
     stashItems:SetSpaceY(-1)
     stashItems:SetSpaceX(-1)
 
@@ -4451,6 +4696,26 @@ function Menu.OpenTab.Inventory(container)
 
             end
 
+            function item:DoClick()
+
+                if input.IsKeyDown(KEY_LSHIFT) then
+
+                    surface.PlaySound("ui/element_select.wav")
+                    playerItems:InvalidateLayout()
+                    TakeFromStashToInventory(v.id)
+
+                end
+
+                if input.IsKeyDown(KEY_LALT) and (i.equipType == EQUIPTYPE.Weapon) then
+
+                    surface.PlaySound("ui/element_select.wav")
+                    stashItems:InvalidateLayout()
+                    EquipItemFromStash(v.id, i.equipSlot)
+
+                end
+
+            end
+
             function item:DoDoubleClick()
 
                 Menu.InspectItem(v.name, v.data)
@@ -4539,10 +4804,9 @@ function Menu.OpenTab.Inventory(container)
                 function itemTakeButton:DoClick()
 
                     surface.PlaySound("ui/element_select.wav")
+                    TakeFromStashToInventory(v.id)
                     contextMenu:Remove()
                     stashItems:InvalidateLayout()
-
-                    TakeFromStashToInventory(v.id)
 
                 end
 
@@ -4555,7 +4819,7 @@ function Menu.OpenTab.Inventory(container)
                 }
 
                 actions.equipable = i.equipType == EQUIPTYPE.Weapon
-                actions.splittable = i.stackSize > 1
+                actions.splittable = i.stackSize > 1 and v.data.count > 1
                 actions.consumable = i.equipType == EQUIPTYPE.Consumable
 
                 if actions.equipable then
@@ -4576,10 +4840,9 @@ function Menu.OpenTab.Inventory(container)
                     function itemEquipButton:DoClick()
 
                         surface.PlaySound("ui/element_select.wav")
+                        EquipItemFromStash(v.id, i.equipSlot)
                         contextMenu:Remove()
                         stashItems:InvalidateLayout()
-
-                        EquipItemFromStash(v.id, i.equipSlot)
 
                     end
 
@@ -4603,10 +4866,9 @@ function Menu.OpenTab.Inventory(container)
                     function itemConsumeButton:DoClick()
 
                         surface.PlaySound("ui/element_select.wav")
+                        -- ConsumeItemFromInventory(v.id)
                         contextMenu:Remove()
                         stashItems:InvalidateLayout()
-
-                        -- ConsumeItemFromInventory(v.id)
 
                     end
 
@@ -4629,8 +4891,8 @@ function Menu.OpenTab.Inventory(container)
 
                     function itemSplitButton:DoClick()
 
-                        surface.PlaySound("ui/element_select.wav")
-                        contextMenu:KillFocus()
+                        Menu.ConfirmSplit(v.name, v.data, v.id, "stash")
+                        contextMenu:Remove()
                         stashItems:InvalidateLayout()
 
                     end
@@ -4854,7 +5116,7 @@ function Menu.OpenTab.Market()
     end
 
     local stashItems = vgui.Create("DIconLayout", stashItemsHolder)
-    stashItems:Dock(FILL)
+    stashItems:Dock(TOP)
     stashItems:SetSpaceY(-1)
     stashItems:SetSpaceX(-1)
 

@@ -295,6 +295,17 @@ concommand.Add("efgm_inventory_equip", function(ply, cmd, args)
 
 end)
 
+function SplitFromInventory(inv, item, count, key)
+
+    net.Start("PlayerInventorySplit", false)
+    net.WriteString(inv)
+    net.WriteString(item)
+    net.WriteUInt(count, 8)
+    net.WriteUInt(key, 16)
+    net.SendToServer()
+
+end
+
 function PurchaseItem(item, count)
 
     net.Start("PlayerMarketPurchaseItem", false)

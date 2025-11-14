@@ -51,8 +51,6 @@ end
 include("!config.lua")
 
 for _, v in ipairs(file.Find("gamemodes/efgmrewrite/gamemode/shared/*.lua", "GAME", "nameasc")) do
-    print(_)
-    print(v)
 	include("shared/" .. v)
 end
 

@@ -10,6 +10,7 @@ util.AddNetworkString("PlayerInventoryUnEquipAll")
 util.AddNetworkString("PlayerInventoryDropEquippedItem")
 util.AddNetworkString("PlayerInventoryConsumeItem")
 util.AddNetworkString("PlayerInventoryLootItemFromContainer")
+util.AddNetworkString("PlayerInventorySplit")
 
 hook.Add("PlayerSpawn", "InventorySetup", function(ply)
 
@@ -483,6 +484,54 @@ net.Receive("PlayerInventoryLootItemFromContainer", function(len, ply)
     table.remove(container.Inventory, index)
 
     if table.IsEmpty(container.Inventory) then container:Remove() end
+
+end)
+
+net.Receive("PlayerInventorySplit", function(len, ply)
+
+    local invType = net.ReadString()
+    local item = net.ReadString()
+    local count = net.ReadUInt(8)
+    local key = net.ReadUInt(16)
+
+    if !ply:CompareStatus(0) and invType == "stash" then return false end
+
+    local def = EFGMITEMS[item]
+
+    if invType == "inv" then
+
+        local data = ply.inventory[key].data
+
+        if AmountInInventory(ply.inventory, item) < count then return false end
+
+        local newData = table.Copy(data)
+        newData.count = data.count - count
+        UpdateItemFromInventory(ply, key, newData)
+
+        local newNewData = table.Copy(data) -- fuck
+        newNewData.count = count
+        AddItemToInventory(ply, item, def.equipType, newNewData)
+
+        return true
+
+    elseif invType == "stash" then
+
+        local data = ply.stash[key].data
+
+        if AmountInInventory(ply.stash, item) < count then return false end
+
+        local newData = table.Copy(data)
+        newData.count = data.count - count
+        UpdateItemFromStash(ply, key, newData)
+
+        local newNewData = table.Copy(data) -- fuck
+        newNewData.count = count
+        AddItemToStash(ply, item, def.equipType, newNewData)
+
+        UpdateStashString(ply)
+        return true
+
+    end
 
 end)
 
