@@ -214,7 +214,6 @@ net.Receive("PlayerStashAddItemFromEquipped", function(len, ply)
 
         local data = {}
         data.count = wep:Clip1()
-        print(data.count)
         FlowItemToStash(ply, wep.Ammo, EQUIPTYPE.Ammunition, data)
 
     end

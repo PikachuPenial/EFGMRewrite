@@ -294,3 +294,12 @@ concommand.Add("efgm_inventory_equip", function(ply, cmd, args)
     end
 
 end)
+
+function PurchaseItem(item, count)
+
+    net.Start("PlayerMarketPurchaseItem", false)
+    net.WriteString(item)
+    net.WriteUInt(count, 8)
+    net.SendToServer()
+
+end

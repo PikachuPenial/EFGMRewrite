@@ -257,6 +257,7 @@ function SetupPlayerData(ply)
     InitializeNetworkBool(ply, query, "FreshWipe", true) -- false if player has logged on once this wipe
     InitializeNetworkInt(ply, query, "Level", 1)
     InitializeNetworkInt(ply, query, "Experience", 0)
+	InitializeNetworkInt(ply, query, "Money", 100000)
 	InitializeNetworkInt(ply, query, "MoneyEarned", 0) -- all money earned
 	InitializeNetworkInt(ply, query, "MoneySpent", 0) -- all money spent (money would just be MoneyEarned - MoneySpent)
 	InitializeNetworkInt(ply, query, "Time", 0) -- playtime in minutes
@@ -313,6 +314,7 @@ function SavePlayerData(ply)
     UninitializeNetworkBool(ply, query, "FreshWipe")
     UninitializeNetworkInt(ply, query, "Level")
     UninitializeNetworkInt(ply, query, "Experience")
+	UninitializeNetworkInt(ply, query, "Money")
 	UninitializeNetworkInt(ply, query, "MoneyEarned")
 	UninitializeNetworkInt(ply, query, "MoneySpent")
 	UninitializeNetworkInt(ply, query, "Time")

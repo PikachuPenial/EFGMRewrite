@@ -228,13 +228,6 @@ function DeflowItemsFromInventory(ply, name, count)
 
 end
 
-function DebugDeflow(ply)
-
-    DeflowItemsFromInventory(ply, "efgm_ammo_556x45", 70)
-
-end
-concommand.Add("debugdeflow", function(ply, cmd, args) DebugDeflow(ply) end)
-
 net.Receive("PlayerInventoryDropItem", function(len, ply)
 
     local itemIndex = net.ReadUInt(16)
