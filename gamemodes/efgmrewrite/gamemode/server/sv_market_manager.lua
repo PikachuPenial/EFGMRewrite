@@ -2,6 +2,8 @@ util.AddNetworkString("PlayerMarketPurchaseItem")
 
 net.Receive("PlayerMarketPurchaseItem", function(len, ply)
 
+    if !ply:CompareStatus(0) then return end
+
     local item = net.ReadString()
     local count = net.ReadUInt(8)
 

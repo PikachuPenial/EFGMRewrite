@@ -184,6 +184,12 @@ function Menu:Initialize(openTo, container)
     local x, y = 0, 0
     local sideH, sideV
 
+    roubleIcon.Think = function()
+
+        roubleIcon:SetX(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(66) - roublesTextSize)
+
+    end
+
     roubleIcon.OnCursorEntered = function(s)
 
         x, y = Menu.MouseX, Menu.MouseY
@@ -973,8 +979,26 @@ function Menu.InspectItem(item, data)
     local itemNameText = string.upper(i.fullName)
     local itemNameSize = surface.GetTextSize(itemNameText)
 
+    local value = i.value
+
+    if data and data.att then
+
+        local atts = GetPrefixedAttachmentListFromCode(data.att)
+        if !atts then return end
+
+        for _, a in ipairs(atts) do
+
+            local att = EFGMITEMS[a]
+            if att == nil then return end
+
+            value = value + att.value
+
+        end
+
+    end
+
     surface.SetFont("PuristaBold18")
-    local itemDescText = string.upper(i.displayType) .. " / " .. string.upper(i.weight) .. "KG" .. " / ₽" .. string.upper(comma_value(i.value))
+    local itemDescText = string.upper(i.displayType) .. " / " .. string.upper(i.weight) .. "KG" .. " / ₽" .. string.upper(comma_value(value))
     local itemDescSize = surface.GetTextSize(itemDescText)
 
     local iconSizeX, iconSizeY = EFGM.MenuScale(114 * i.sizeX), EFGM.MenuScale(114 * i.sizeY)
@@ -4146,6 +4170,22 @@ function Menu.OpenTab.Inventory(container)
                 if item.SLOT == WEAPONSLOTS.MELEE.ID then item:Droppable("slot_melee") end
                 if item.SLOT == WEAPONSLOTS.GRENADE.ID then item:Droppable("slot_grenade") end
 
+                if v.data.att then
+
+                    local atts = GetPrefixedAttachmentListFromCode(v.data.att)
+                    if !atts then return end
+
+                    for _, a in ipairs(atts) do
+
+                        local att = EFGMITEMS[a]
+                        if att == nil then return end
+
+                        stashValue = stashValue + att.value
+
+                    end
+
+                end
+
             end
 
             function item:Paint(w, h)
@@ -4664,6 +4704,22 @@ function Menu.OpenTab.Market()
                 if item.SLOT == WEAPONSLOTS.HOLSTER.ID then item:Droppable("slot_holster") end
                 if item.SLOT == WEAPONSLOTS.MELEE.ID then item:Droppable("slot_melee") end
                 if item.SLOT == WEAPONSLOTS.GRENADE.ID then item:Droppable("slot_grenade") end
+
+                if v.data.att then
+
+                    local atts = GetPrefixedAttachmentListFromCode(v.data.att)
+                    if !atts then return end
+
+                    for _, a in ipairs(atts) do
+
+                        local att = EFGMITEMS[a]
+                        if att == nil then return end
+
+                        stashValue = stashValue + att.value
+
+                    end
+
+                end
 
             end
 

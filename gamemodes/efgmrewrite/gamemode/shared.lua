@@ -248,9 +248,27 @@ function GetAttachmentListFromCode(str)
 
     for i = 0, #cleanAttTbl do
         if !cleanAttTbl[i] then continue end
-        cleanAttStr = cleanAttStr .. i .. ": " .. "\t" .. EFGMITEMS["arc9_att_" .. cleanAttTbl[i]].fullName .. "\n"
+        cleanAttStr = cleanAttStr .. i .. ": " .. "\t" .. EFGMITEMS["arc9_att_" .. cleanAttTbl[i]].fullName .. ", ₽" .. comma_value(EFGMITEMS["arc9_att_" .. cleanAttTbl[i]].value) .. "\n"
     end
 
     return cleanAttStr
+
+end
+
+function GetPrefixedAttachmentListFromCode(str)
+
+    local tbl = ImportPresetCode(str)
+
+    if !tbl then return false end
+
+    local cleanAttTbl = GetAttachmentList(tbl)
+    local prefixAttTbl = {}
+
+    for i = 0, #cleanAttTbl do
+        if !cleanAttTbl[i] then continue end
+        table.insert(prefixAttTbl, "arc9_att_" .. cleanAttTbl[i])
+    end
+
+    return prefixAttTbl
 
 end
