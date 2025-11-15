@@ -21,13 +21,15 @@ function ENT:AcceptInput(name, ply, caller, data)
 
 	if name == "CheckKey" then
         
-        // key checking code
+        if AmountInInventory(ply.inventory, self.KeyName) == 0 then
 
-        // if key matches stored key name, then
-        self:TriggerOutput( "OnHasKey", ply, data )
+            self:TriggerOutput( "OnNotHasKey", ply, data )
 
-        // if it don't
-        // self:TriggerOutput( "OnNotHasKey", ply, data )
+        else
+
+            self:TriggerOutput( "OnHasKey", ply, data )
+
+        end
 
     end
 

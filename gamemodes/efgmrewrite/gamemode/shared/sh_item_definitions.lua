@@ -3344,6 +3344,7 @@ EFGMITEMS = {}
     }
 
 -- MEDICAL
+
     EFGMITEMS["efgm_meds_ai2"] = {
         ["fullName"] = "AI-2 medkit",
         ["displayName"] = "AI-2",
@@ -3410,6 +3411,42 @@ EFGMITEMS = {}
 
         ["sizeX"] = 2,
         ["sizeY"] = 2
+    }
+
+-- KEYS
+
+    EFGMITEMS["efgm_key_workshop_office"] = {
+        ["fullName"] = "Workshop Office Key",
+        ["displayName"] = "W. Office",
+        ["displayType"] = "Key",
+        ["weight"] = 0.2,
+        ["value"] = 29000,
+        ["equipType"] = EQUIPTYPE.None,
+        ["consumableType"] = "key",
+        ["consumableValue"] = 5,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/keys/workshop_office.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["efgm_key_workshop_armory"] = {
+        ["fullName"] = "Workshop Armory Key",
+        ["displayName"] = "W. Armory",
+        ["displayType"] = "Key",
+        ["weight"] = 0.2,
+        ["value"] = 42000,
+        ["equipType"] = EQUIPTYPE.None,
+        ["consumableType"] = "key",
+        ["consumableValue"] = 5,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/keys/workshop_armory.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
     }
 
 sellMultiplier = 0.5

@@ -585,3 +585,13 @@ function GiveAttachment(ply)
 
 end
 concommand.Add("efgm_debug_giveattachment", function(ply, cmd, args) GiveAttachment(ply) end)
+
+function GiveItem(ply, name, type, count)
+
+    local data = {}
+    data.count = count
+
+    AddItemToInventory(ply, name, type, data)
+
+end
+concommand.Add("efgm_debug_giveitem", function(ply, cmd, args) GiveItem(ply, args[1], tonumber(args[2]), tonumber(args[3])) end)
