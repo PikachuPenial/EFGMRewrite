@@ -1172,7 +1172,7 @@ function Menu.InspectItem(item, data)
         infoContentText:SetVerticalScrollbarEnabled(true)
         infoContentText:InsertColorChange(255, 255, 255, 255)
 
-        if data.count != 0 and data.count != 1 then
+        if data.count != 0 and data.count != 1 and data.count != nil then
 
             infoContentText:AppendText("COUNT: " .. data.count .. "\n")
 
@@ -5752,8 +5752,10 @@ function Menu.OpenTab.Market()
                 local levelText = "LEVEL " .. v.level
                 local levelTextSize = surface.GetTextSize(levelText)
 
+                local value = v.value
+
                 surface.SetFont("PuristaBold22")
-                local itemValueText = comma_value(v.value)
+                local itemValueText = comma_value(value)
                 local itemValueTextSize = surface.GetTextSize(itemValueText)
 
                 local roubleIcon = Material("icons/rouble_icon.png")
@@ -5871,7 +5873,9 @@ function Menu.OpenTab.Market()
 
                     function itemInspectButton:DoClick()
 
-                        Menu.InspectItem(v.id)
+                        local data = {}
+                        data.att = v.defAtts
+                        Menu.InspectItem(v.id, data)
                         surface.PlaySound("ui/element_select.wav")
                         contextMenu:KillFocus()
 
@@ -5934,10 +5938,30 @@ function Menu.OpenTab.Market()
                     entry.icon = v2.icon
                     entry.value = v2.value or 1000
                     entry.level = v2.levelReq or 1
-                    if v2.equipType == EQUIPTYPE.Consumable then entry.durability = v2.durability end
+                    entry.equipType = v2.equipType
+                    if entry.equipType == EQUIPTYPE.Consumable then entry.durability = v2.durability end
                     entry.stack = v2.stackSize
                     entry.sizeX = v2.sizeX or 1
                     entry.sizeY = v2.sizeY or 1
+                    entry.defAtts = v2.defAtts
+
+                    if entry.equipType == EQUIPTYPE.Weapon and entry.defAtts then
+
+                        local atts = GetPrefixedAttachmentListFromCode(entry.defAtts)
+                        if !atts then return end
+
+                        for _, a in ipairs(atts) do
+
+                            local att = EFGMITEMS[a]
+                            if att == nil then return end
+
+                            entry.value = entry.value + att.value
+
+                        end
+
+                    end
+
+
                     table.insert(marketTbl, entry)
 
                 end

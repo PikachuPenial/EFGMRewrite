@@ -15,6 +15,23 @@ net.Receive("PlayerMarketPurchaseItem", function(len, ply)
     local cost = def.value * count
     local lvl = (def.levelReq or 1)
 
+    if def.equipType == EQUIPTYPE.Weapon and def.defAtts then
+
+        local atts = GetPrefixedAttachmentListFromCode(def.defAtts)
+        if !atts then return end
+
+        for _, a in ipairs(atts) do
+
+            local att = EFGMITEMS[a]
+            if att == nil then return end
+
+            cost = cost + att.value
+
+        end
+
+    end
+
+    print(cost)
     if plyMoney < cost then return false end
     if plyLevel < lvl then return false end
 
