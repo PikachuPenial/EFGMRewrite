@@ -174,3 +174,19 @@
     ]
 
 ]
+
+@PointClass base(Targetname) = efgm_key_checker : "Key Checker"
+[
+
+    // Key Values
+    keyName(string) : "Key Name" : "" : "Item name of a key. If the activator of this entity has this key, the entity will call the function."
+
+    // Inputs
+    input CheckKey(void) : "Checks whether player activator has the key named in the keyvalues. If they do, triggers OnHasKey output."
+
+    // Outputs
+    output OnHasKey(void) : "Fires when the activator of CheckKey has the correct key."
+
+    output OnNotHasKey(void) : "Fires when the activator of CheckKey doesn't have the key."
+
+]
