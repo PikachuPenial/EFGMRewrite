@@ -3426,7 +3426,7 @@ EFGMITEMS = {}
         ["consumableValue"] = 5,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/keys/workshop_office.png", "smooth"),
+        ["icon"] = Material("items/keys/civil.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -3443,7 +3443,58 @@ EFGMITEMS = {}
         ["consumableValue"] = 5,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/keys/workshop_armory.png", "smooth"),
+        ["icon"] = Material("items/keys/industrial.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["efgm_key_hotel_marked"] = {
+        ["fullName"] = "Hotel Marked Room Key",
+        ["displayName"] = "Hotel mrk.",
+        ["displayType"] = "Key",
+        ["weight"] = 0.2,
+        ["value"] = 676767,
+        ["equipType"] = EQUIPTYPE.None,
+        ["consumableType"] = "key",
+        ["consumableValue"] = 5,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/keys/industrial_marked.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["efgm_keycard_bunker_entrance"] = {
+        ["fullName"] = "Bunker Entrance Keycard",
+        ["displayName"] = "B. Door",
+        ["displayType"] = "Key",
+        ["weight"] = 0.2,
+        ["value"] = 420690,
+        ["equipType"] = EQUIPTYPE.None,
+        ["consumableType"] = "key",
+        ["consumableValue"] = 5,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/keys/keycard_green.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["efgm_keycard_bunker_armory"] = {
+        ["fullName"] = "Bunker Armory Access Keycard",
+        ["displayName"] = "B. Armory",
+        ["displayType"] = "Key",
+        ["weight"] = 0.2,
+        ["value"] = 420690,
+        ["equipType"] = EQUIPTYPE.None,
+        ["consumableType"] = "key",
+        ["consumableValue"] = 5,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/keys/keycard_dark_red.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
