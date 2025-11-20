@@ -6,6 +6,7 @@ concommand.Add("efgm_debug_mapreport", function(ply, cmd, args)
     mapReport.spawns = {}
     mapReport.extracts = {}
     mapReport.locations = {}
+    mapReport.keys = {}
 
     for k, v in pairs(ents.FindByClass("efgm_raid_spawn")) do
         
@@ -26,6 +27,15 @@ concommand.Add("efgm_debug_mapreport", function(ply, cmd, args)
 
     end
 
+    for k, v in pairs(ents.FindByClass("efgm_key_checker")) do
+        
+        mapReport.keys[k] = {}
+        mapReport.keys[k].name = EFGMITEMS[v.KeyName].fullName
+        local pos = v:GetPos()
+        mapReport.keys[k].pos = {x = pos.x, y = pos.y}
+
+    end
+
     for k, v in pairs(ents.FindByClass("efgm_location")) do
 
         mapReport.locations[k] = {}
@@ -33,13 +43,6 @@ concommand.Add("efgm_debug_mapreport", function(ply, cmd, args)
         mapReport.locations[k].loot = v.LootRating
         local pos = v:GetPos()
         mapReport.locations[k].pos = {x = pos.x, y = pos.y}
-        mapReport.locations[k].keys = {}
-
-        for l, b in pairs(ents.FindByName("*".. string.lower( v.Name ).."*")) do
-            
-            mapReport.locations[k].keys[l] = b.KeyName
-
-        end
         
     end
 
@@ -49,19 +52,26 @@ concommand.Add("efgm_debug_mapreport", function(ply, cmd, args)
 
 end)
 
-concommand.Add("efgm_mapreport_final", function(ply, cmd, args)
+concommand.Add("efgm_debug_mapreport_final", function(ply, cmd, args)
+
+    local factorX = tonumber( args[3] )
+    local factorY = tonumber( args[4] )
     
+    local offsetX = tonumber( args[5] )
+    local offsetY = tonumber( args[6] )
+
     local mapReport = {}
     mapReport.spawns = {}
     mapReport.extracts = {}
     mapReport.locations = {}
+    mapReport.keys = {}
 
     for k, v in pairs(ents.FindByClass("efgm_raid_spawn")) do
         
         mapReport.spawns[k] = {}
         mapReport.spawns[k].group = v.SpawnGroup
         local pos = v:GetPos()
-        mapReport.spawns[k].pos = {x = (pos.x * args[3]) + args[5], y = (pos.y * args[4]) + args[6]}
+        mapReport.spawns[k].pos = {x = (pos.x * factorX) + offsetX, y = (pos.y * factorY) + offsetY}
 
     end
 
@@ -71,7 +81,16 @@ concommand.Add("efgm_mapreport_final", function(ply, cmd, args)
         mapReport.extracts[k].group = v.ExtractGroup
         mapReport.extracts[k].name = v.ExtractName
         local pos = v:GetPos()
-        mapReport.extracts[k].pos = {x = (pos.x * args[3]) + args[5], y = (pos.y * args[4]) + args[6]}
+        mapReport.extracts[k].pos = {x = (pos.x * factorX) + offsetX, y = (pos.y * factorY) + offsetY}
+
+    end
+
+    for k, v in pairs(ents.FindByClass("efgm_key_checker")) do
+        
+        mapReport.keys[k] = {}
+        mapReport.keys[k].name = EFGMITEMS[v.KeyName].fullName
+        local pos = v:GetPos()
+        mapReport.keys[k].pos = {x = (pos.x * factorX) + offsetX, y = (pos.y * factorY) + offsetY}
 
     end
 
@@ -81,14 +100,7 @@ concommand.Add("efgm_mapreport_final", function(ply, cmd, args)
         mapReport.locations[k].name = v.DisplayName
         mapReport.locations[k].loot = v.LootRating
         local pos = v:GetPos()
-        mapReport.locations[k].pos = {x = (pos.x * args[3]) + args[5], y = (pos.y * args[4]) + args[6]}
-        mapReport.locations[k].keys = {}
-
-        for l, b in pairs(ents.FindByName("*".. string.lower( v.Name ).."*")) do
-            
-            mapReport.locations[k].keys[l] = b.KeyName
-
-        end
+        mapReport.locations[k].pos = {x = (pos.x * factorX) + offsetX, y = (pos.y * factorY) + offsetY}
         
     end
 
