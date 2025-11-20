@@ -190,3 +190,13 @@
     output OnNotHasKey(void) : "Fires when the activator of CheckKey doesn't have the key."
 
 ]
+
+@PointClass base(Targetname) = efgm_location : "Location / POI"
+[
+
+    // Key Values
+    lootRating(integer) : "Loot Rating" : 1 : "General rating of the loot in the building. Goes from 1 to 5, with 1 being the least loot, and 5 being fucking loaded."
+
+    displayName(string) : "Display Name" : "" : "Display name of the location. Will go on the map, one of these days"
+
+]

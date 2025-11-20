@@ -3466,6 +3466,23 @@ EFGMITEMS = {}
         ["sizeY"] = 1
     }
 
+    EFGMITEMS["efgm_key_bigred_meeting"] = {
+        ["fullName"] = "Big Red Meeting Room Key",
+        ["displayName"] = "Br. Meeting",
+        ["displayType"] = "Key",
+        ["weight"] = 0.2,
+        ["value"] = 42000,
+        ["equipType"] = EQUIPTYPE.None,
+        ["consumableType"] = "key",
+        ["consumableValue"] = 5,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/keys/dorm.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
     EFGMITEMS["efgm_keycard_bunker_entrance"] = {
         ["fullName"] = "Bunker Entrance Keycard",
         ["displayName"] = "B. Door",
