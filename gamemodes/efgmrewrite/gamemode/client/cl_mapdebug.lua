@@ -234,6 +234,7 @@ concommand.Add("efgm_debug_drawalignedmap", function(ply, cmd, args)
     mapNameEntry:SetPlaceholderText("Map Name Here")
 
     local mapPanel = vgui.Create("DPanel", mapFrame)
+    -- Don't set it to fill, it fucks up the icon placement for some fucking reason
     mapPanel:SetSize(mapSizeX, mapSizeY)
     mapPanel:Dock(TOP)
 
@@ -242,8 +243,13 @@ concommand.Add("efgm_debug_drawalignedmap", function(ply, cmd, args)
 
     function mapNameEntry:OnEnter()
 
-        mapInfo = util.JSONToTable( file.Read(mapNameEntry:GetValue().."_mapreport_final.json", "DATA") )
         mapName = mapNameEntry:GetValue()
+
+        if file.Read(mapNameEntry:GetValue().."_mapreport_final.json", "DATA") != nil then
+            mapInfo = util.JSONToTable( file.Read(mapNameEntry:GetValue().."_mapreport_final.json", "DATA"))
+        else
+            mapInfo = MAPINFO[mapName]
+        end
 
     end
 
@@ -261,7 +267,14 @@ concommand.Add("efgm_debug_drawalignedmap", function(ply, cmd, args)
             local posX = v.pos.x * mapSizeX
             local posY = v.pos.y * mapSizeY
             surface.DrawCircle(posX, posY, (5 * mapSizeX) / 720 )
-            draw.DrawText( "PMC Spawn", "DermaDefault", posX, posY - 20, Color(52, 124, 218, 240), TEXT_ALIGN_CENTER )
+
+            local text = "PMC Spawn"
+
+            if v.group != "" and v.group != nil then
+                text = "PMC Spawn (".. string.NiceName( v.group ) ..")"
+            end
+
+            draw.DrawText( text, "DermaDefault", posX, posY - 20, Color(52, 124, 218, 240), TEXT_ALIGN_CENTER )
 
         end
 
@@ -271,7 +284,14 @@ concommand.Add("efgm_debug_drawalignedmap", function(ply, cmd, args)
             local posX = v.pos.x * mapSizeX
             local posY = v.pos.y * mapSizeY
             surface.DrawCircle(posX, posY, (10 * mapSizeX) / 720 )
-            draw.DrawText( v.name, "DermaDefault", posX, posY - 22, Color(19, 196, 34, 240), TEXT_ALIGN_CENTER )
+
+            local text = v.name
+
+            if v.group != "" and v.group != nil then
+                text = v.name.." (".. string.NiceName( v.group ) ..")"
+            end
+
+            draw.DrawText( text, "DermaDefault", posX, posY - 22, Color(19, 196, 34, 240), TEXT_ALIGN_CENTER )
 
         end
 
@@ -281,7 +301,8 @@ concommand.Add("efgm_debug_drawalignedmap", function(ply, cmd, args)
             local posX = v.pos.x * mapSizeX
             local posY = v.pos.y * mapSizeY
             surface.DrawCircle(posX, posY, (25 * mapSizeX) / 720  )
-            draw.DrawText( v.name, "DermaDefault", posX, posY - 32, Color(202, 20, 20, 240), TEXT_ALIGN_CENTER )
+            draw.DrawText( v.name, "DermaDefault", posX, posY - 8, Color(202, 20, 20, 240), TEXT_ALIGN_CENTER )
+            draw.DrawText( "Loot:" .. v.loot .. "/5", "DermaDefault", posX, posY + 8, Color(202, 20, 20, 240), TEXT_ALIGN_CENTER )
 
         end
 
@@ -291,7 +312,7 @@ concommand.Add("efgm_debug_drawalignedmap", function(ply, cmd, args)
             local posX = v.pos.x * mapSizeX
             local posY = v.pos.y * mapSizeY
             surface.DrawCircle(posX, posY, (3 * mapSizeX) / 720  )
-            draw.DrawText( v.name, "DermDefaultaDefault", posX, posY - 32, Color(252, 152, 2, 240), TEXT_ALIGN_CENTER )
+            draw.DrawText( v.name, "DermaDefault", posX, posY - 32, Color(252, 152, 2, 240), TEXT_ALIGN_CENTER )
 
         end
         
