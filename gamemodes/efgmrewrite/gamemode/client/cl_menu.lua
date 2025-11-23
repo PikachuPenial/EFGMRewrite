@@ -6564,7 +6564,7 @@ function Menu.OpenTab.Match()
 
             local text = "Spawn"
 
-            draw.DrawText( text, "PuristaBold16", posX, posY - 20 * (self.Zoom * 1.8), Color(52, 124, 218, 240), TEXT_ALIGN_CENTER )
+            draw.DrawText( text, "PuristaBold16", posX, posY - 20 * (self.Zoom * 1.6), Color(52, 124, 218, 240), TEXT_ALIGN_CENTER )
 
         end
 

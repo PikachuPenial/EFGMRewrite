@@ -237,21 +237,36 @@ net.Receive("PlayerInventoryDropItem", function(len, ply)
 
     if table.IsEmpty(item) then return end
 
-    local wep = ents.Create(item.name)
+    local entity = ents.Create(item.name)
 
-    if wep == NULL then table.remove(ply.inventory, itemIndex) RemoveWeightFromPlayer(ply, item.name, item.data.count) return end
+    -- creating a custom entity if the item isn't an entity to begin with
+    if entity == NULL then
 
-    if data.att then
+        entity = ents.Create("efgm_dropped_item")
+        entity:SetItem(item.name, item.type, item.data)
 
-        LoadPresetFromCode(wep, data.att)
+        entity:SetPos(ply:GetShootPos() + ply:GetForward() * 128)
+        entity:Spawn()
+        entity:PhysWake()
+
+        table.remove(ply.inventory, itemIndex)
+        RemoveWeightFromPlayer(ply, item.name, item.data.count)
+
+        return
 
     end
 
-    wep:SetPos(ply:GetShootPos() + ply:GetForward() * 128)
-    wep:Spawn()
-    wep:PhysWake()
+    if data.att then
 
-    if type(wep.GetData) == "function" then wep:GetData(data) end
+        LoadPresetFromCode(entity, data.att)
+
+    end
+
+    entity:SetPos(ply:GetShootPos() + ply:GetForward() * 128)
+    entity:Spawn()
+    entity:PhysWake()
+
+    if type(entity.GetData) == "function" then entity:GetData(data) end
 
     table.remove(ply.inventory, itemIndex)
     RemoveWeightFromPlayer(ply, item.name, item.data.count)

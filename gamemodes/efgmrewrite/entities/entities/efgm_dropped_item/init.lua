@@ -3,7 +3,9 @@ AddCSLuaFile("shared.lua")
 
 include("shared.lua")
 
-ENT.Durability = 100
+ENT.ItemName = ""
+ENT.ItemType = ""
+ENT.ItemData = {}
 
 function ENT:Initialize()
 
@@ -18,26 +20,28 @@ function ENT:Initialize()
 	local phys = self:GetPhysicsObject()
 
 	if (IsValid(phys)) then
+
 		phys:Wake()
+
 	end
 
 	self:SetHealth(self.BaseHealth)
 
 end
 
-function ENT:SetDurability(value) self.Durability = value end
+function ENT:SetItem(name, type, data)
 
-function ENT:GetData(data) self:SetDurability(data.durability) end
+	self.ItemName = name
+	self.ItemType = type
+	self.ItemData = data
+
+end
+
 
 function ENT:Use(activator)
 
-    local entity = self:GetClass()
-    self:Remove()
-
-    local data = {}
-    data.durability = self.Durability
-
-    AddItemToInventory(activator, entity, EQUIPTYPE.Consumable, data)
+	self:Remove()
+    FlowItemToInventory(activator, self.ItemName, self.ItemType, self.ItemData)
 
 end
 
