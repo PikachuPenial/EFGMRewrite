@@ -448,13 +448,6 @@ function Menu:Initialize(openTo, container)
 
     function matchIcon:DoClick()
 
-        if !Menu.Player:CompareStatus(0) then
-
-            surface.PlaySound("common/wpn_denyselect.wav")
-            return
-
-        end
-
         if Menu.ActiveTab == "Match" then return end
 
         surface.PlaySound("ui/element_select.wav")
@@ -469,8 +462,13 @@ function Menu:Initialize(openTo, container)
 
         end)
 
-        net.Start("AddPlayerSquadRF")
-        net.SendToServer()
+        if Menu.Player:CompareStatus(0) then
+
+            net.Start("AddPlayerSquadRF")
+            net.SendToServer()
+
+        end
+
     end
 
     local inventoryTab = vgui.Create("DPanel", self.MenuFrame.TabParentPanel)
@@ -585,6 +583,13 @@ function Menu:Initialize(openTo, container)
     end
 
     function marketIcon:DoClick()
+
+        if !Menu.Player:CompareStatus(0) then
+
+            surface.PlaySound("common/wpn_denyselect.wav")
+            return
+
+        end
 
         if Menu.ActiveTab == "Market" then return end
 
@@ -2360,12 +2365,6 @@ function Menu.OpenTab.Inventory(container)
 
             end
 
-            primaryItem.OnCursorEntered = function(s)
-
-                surface.PlaySound("ui/element_hover.wav")
-
-            end
-
             function primaryItem:DoClick()
 
                 if input.IsKeyDown(KEY_LSHIFT) then
@@ -2616,12 +2615,6 @@ function Menu.OpenTab.Inventory(container)
 
             end
 
-            secondaryItem.OnCursorEntered = function(s)
-
-                surface.PlaySound("ui/element_hover.wav")
-
-            end
-
             function secondaryItem:DoRightClick()
 
                 local x, y = equipmentHolder:LocalCursorPos()
@@ -2855,12 +2848,6 @@ function Menu.OpenTab.Inventory(container)
 
             end
 
-            holsterItem.OnCursorEntered = function(s)
-
-                surface.PlaySound("ui/element_hover.wav")
-
-            end
-
             function holsterItem:DoRightClick()
 
                 local x, y = equipmentHolder:LocalCursorPos()
@@ -3091,12 +3078,6 @@ function Menu.OpenTab.Inventory(container)
 
                 Menu.InspectItem(playerWeaponSlots[3][1].name)
                 surface.PlaySound("ui/element_select.wav")
-
-            end
-
-            meleeItem.OnCursorEntered = function(s)
-
-                surface.PlaySound("ui/element_hover.wav")
 
             end
 
@@ -3741,12 +3722,6 @@ function Menu.OpenTab.Inventory(container)
 
             end
 
-            item.OnCursorEntered = function(s)
-
-                surface.PlaySound("ui/element_hover.wav")
-
-            end
-
             function item:DoClick()
 
                 if input.IsKeyDown(KEY_LSHIFT) and (Menu.Player:CompareStatus(0) and table.IsEmpty(container)) then
@@ -4188,12 +4163,6 @@ function Menu.OpenTab.Inventory(container)
                     elseif i.equipType == EQUIPTYPE.Consumable then
                         draw.SimpleTextOutlined(v.data.durability .. "/" .. i.consumableValue, duraFont, w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
                     end
-
-                end
-
-                item.OnCursorEntered = function(s)
-
-                    surface.PlaySound("ui/element_hover.wav")
 
                 end
 
@@ -4687,12 +4656,6 @@ function Menu.OpenTab.Inventory(container)
                 elseif i.equipType == EQUIPTYPE.Consumable then
                     draw.SimpleTextOutlined(v.data.durability .. "/" .. i.consumableValue, duraFont, w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
                 end
-
-            end
-
-            item.OnCursorEntered = function(s)
-
-                surface.PlaySound("ui/element_hover.wav")
 
             end
 
@@ -5247,12 +5210,6 @@ function Menu.OpenTab.Market()
 
             end
 
-            item.OnCursorEntered = function(s)
-
-                surface.PlaySound("ui/element_hover.wav")
-
-            end
-
             function item:DoClick()
 
                 Menu.ConfirmSell(v.name, v.data, v.id)
@@ -5780,12 +5737,6 @@ function Menu.OpenTab.Market()
 
                 end
 
-                item.OnCursorEntered = function(s)
-
-                    surface.PlaySound("ui/element_hover.wav")
-
-                end
-
                 function item:DoClick()
 
                     Menu.ConfirmPurchase(v.id)
@@ -6109,12 +6060,6 @@ function Menu.OpenTab.Market()
 
             local entry = category:Add(string.upper(k2))
 
-            function entry:OnCursorEntered()
-
-                surface.PlaySound("ui/element_hover.wav")
-
-            end
-
             function entry:DoClick()
 
                 surface.PlaySound("ui/element_select.wav")
@@ -6246,12 +6191,6 @@ function Menu.OpenTab.Intel()
 
             local entry = category:Add(string.upper(v2.Name))
 
-            function entry:OnCursorEntered()
-
-                surface.PlaySound("ui/element_hover.wav")
-
-            end
-
             function entry:DoClick()
 
                 surface.PlaySound("ui/element_select.wav")
@@ -6328,660 +6267,59 @@ function Menu.OpenTab.Match()
 
     end
 
-    local pmcTitle = vgui.Create("DPanel", pmcPanel)
-    pmcTitle:Dock(TOP)
-    pmcTitle:SetSize(0, EFGM.MenuScale(32))
-    function pmcTitle:Paint(w, h)
+    if Menu.Player:CompareStatus(0) then
 
-        surface.SetDrawColor(MenuAlias.transparent)
-        surface.DrawRect(0, 0, w, h)
+        local pmcTitle = vgui.Create("DPanel", pmcPanel)
+        pmcTitle:Dock(TOP)
+        pmcTitle:SetSize(0, EFGM.MenuScale(32))
+        function pmcTitle:Paint(w, h)
 
-        draw.SimpleTextOutlined("OPERATORS", "PuristaBold32", w / 2, 0, MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-    end
-
-    local pmcPanelBar = pmcPanel:GetVBar()
-    pmcPanelBar:SetHideButtons(true)
-    pmcPanelBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
-    function pmcPanelBar:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
-    end
-    function pmcPanelBar.btnGrip:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
-    end
-
-    pmcList = vgui.Create("DListLayout", pmcPanel)
-    pmcList:Dock(TOP)
-    pmcList:SetSize(EFGM.MenuScale(320), 0)
-
-    local onlinePlayers = player.GetAll()
-
-    for k, v in pairs(onlinePlayers) do
-        local name = v:GetName()
-        local ping = v:Ping()
-        local kills = v:Frags()
-        local deaths = v:Deaths()
-
-        local pmcEntry = vgui.Create("DPanel", pmcList)
-        pmcEntry:SetSize(pmcList:GetWide(), EFGM.MenuScale(50))
-        pmcEntry:SetPos(0, 0)
-        pmcEntry.Paint = function(w, h)
-            if !IsValid(v) then return end
-            draw.SimpleTextOutlined(name .. "         " .. ping  .. "ms", "Purista18", EFGM.MenuScale(50), EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-            draw.SimpleTextOutlined(kills, "Purista18", EFGM.MenuScale(50), EFGM.MenuScale(25), Color(0, 255, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-            draw.SimpleTextOutlined(deaths, "Purista18", EFGM.MenuScale(85), EFGM.MenuScale(25), Color(255, 0, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-        end
-
-        local pmcPFP = vgui.Create("AvatarImage", pmcEntry)
-        pmcPFP:SetPos(EFGM.MenuScale(5), EFGM.MenuScale(5))
-        pmcPFP:SetSize(EFGM.MenuScale(40), EFGM.MenuScale(40))
-        pmcPFP:SetPlayer(v, 184)
-
-        pmcPFP.OnMousePressed = function()
-            local dropdown = DermaMenu()
-
-            local profile = dropdown:AddOption("Open Steam Profile", function() gui.OpenURL("http://steamcommunity.com/profiles/" .. v:SteamID64()) end)
-            profile:SetIcon("icon16/page_find.png")
-
-            dropdown:AddSpacer()
-
-            local copy = dropdown:AddSubMenu("Copy...")
-            copy:AddOption("Copy Name", function() SetClipboardText(v:GetName()) end):SetIcon("icon16/cut.png")
-            copy:AddOption("Copy SteamID64", function() SetClipboardText(v:SteamID64()) end):SetIcon("icon16/cut.png")
-
-            if v != Menu.Player then
-
-                local mute = dropdown:AddOption("Mute Player", function(self)
-
-                    if v:IsMuted() then
-
-                        v:SetMuted(false)
-
-                    else
-
-                        v:SetMuted(true)
-
-                    end
-
-                end)
-
-                if v:IsMuted() then
-
-                    mute:SetIcon("icon16/sound.png")
-                    mute:SetText("Unmute Player")
-                else
-
-                    mute:SetIcon("icon16/sound_mute.png")
-                    mute:SetText("Mute Player")
-
-                end
-
-            end
-
-            dropdown:Open()
-
-        end
-    end
-
-    local squad = Menu.Player:GetNW2String("PlayerInSquad", nil)
-
-    local squadPanel = vgui.Create("DPanel", contents)
-    squadPanel:Dock(LEFT)
-    squadPanel:SetSize(EFGM.MenuScale(320), 0)
-    squadPanel.Paint = function(s, w, h)
-
-        surface.SetDrawColor(MenuAlias.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
-
-    local CreateSquadPlayerLimit
-    local CreateSquadColor = {RED = 255, GREEN = 255, BLUE = 255}
-
-    local createSquadTitle = vgui.Create("DPanel", squadPanel)
-    createSquadTitle:Dock(TOP)
-    createSquadTitle:SetSize(0, EFGM.MenuScale(32))
-    function createSquadTitle:Paint(w, h)
-
-        surface.SetDrawColor(MenuAlias.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-        draw.SimpleTextOutlined("CREATE SQUAD", "PuristaBold32", w / 2, 0, MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-    end
-
-    squadNamePanel = vgui.Create("DPanel", squadPanel)
-    squadNamePanel:Dock(TOP)
-    squadNamePanel:SetSize(0, EFGM.MenuScale(55))
-    squadNamePanel.Paint = function(s, w, h)
-
-        surface.SetDrawColor(MenuAlias.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-        draw.SimpleTextOutlined("Squad Name", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-    end
-
-    squadNameBG = vgui.Create("DPanel", squadNamePanel)
-    squadNameBG:SetPos(EFGM.MenuScale(85), EFGM.MenuScale(30))
-    squadNameBG:SetSize(EFGM.MenuScale(150), EFGM.MenuScale(20))
-    squadNameBG:SetBackgroundColor(MenuAlias.transparent)
-
-    local squadName = vgui.Create("DTextEntry", squadNameBG)
-    squadName:Dock(FILL)
-    squadName:SetPlaceholderText(" ")
-    squadName:SetUpdateOnType(true)
-    squadName:SetTextColor(MenuAlias.whiteColor)
-    squadName:SetCursorColor(MenuAlias.whiteColor)
-
-    squadName.OnValueChange = function(self, value)
-
-        CreateSquadName = self:GetValue()
-
-    end
-
-    squadPasswordPanel = vgui.Create("DPanel", squadPanel)
-    squadPasswordPanel:Dock(TOP)
-    squadPasswordPanel:SetSize(0, EFGM.MenuScale(55))
-    squadPasswordPanel.Paint = function(s, w, h)
-
-        surface.SetDrawColor(MenuAlias.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-        draw.SimpleTextOutlined("Squad Password (optional)", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-    end
-
-    squadPasswordBG = vgui.Create("DPanel", squadPasswordPanel)
-    squadPasswordBG:SetPos(EFGM.MenuScale(85), EFGM.MenuScale(30))
-    squadPasswordBG:SetSize(EFGM.MenuScale(150), EFGM.MenuScale(20))
-    squadPasswordBG:SetBackgroundColor(MenuAlias.transparent)
-
-    local squadPassword = vgui.Create("DTextEntry", squadPasswordBG)
-    squadPassword:Dock(FILL)
-    squadPassword:SetPlaceholderText(" ")
-    squadPassword:SetUpdateOnType(true)
-    squadPassword:SetTextColor(MenuAlias.whiteColor)
-    squadPassword:SetCursorColor(MenuAlias.whiteColor)
-
-    squadPassword.OnValueChange = function(self, value)
-
-        CreateSquadPassword = self:GetValue()
-
-    end
-
-    local squadMemberLimitPanel = vgui.Create("DPanel", squadPanel)
-    squadMemberLimitPanel:Dock(TOP)
-    squadMemberLimitPanel:SetSize(0, EFGM.MenuScale(55))
-    function squadMemberLimitPanel:Paint(w, h)
-
-        draw.SimpleTextOutlined("Squad Member Limit (1 to 4)", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-    end
-
-    local squadMemberLimit = vgui.Create("DNumberWang", squadMemberLimitPanel)
-    squadMemberLimit:SetPos(EFGM.MenuScale(135), EFGM.MenuScale(30))
-    squadMemberLimit:SetSize(EFGM.MenuScale(50), EFGM.MenuScale(20))
-    squadMemberLimit:SetMin(1)
-    squadMemberLimit:SetMax(4)
-
-    squadMemberLimit.OnValueChanged = function(self)
-
-        val = math.Clamp(self:GetValue(), self:GetMin(), self:GetMax())
-        CreateSquadPlayerLimit = val
-
-    end
-    squadMemberLimit:SetValue(4) -- have to put this down here or else it won't work thanks glua
-
-    local squadColorPanel = vgui.Create("DPanel", squadPanel)
-    squadColorPanel:Dock(TOP)
-    squadColorPanel:SetSize(0, EFGM.MenuScale(110 + 20))
-    function squadColorPanel:Paint(w, h)
-
-        draw.SimpleTextOutlined("Squad Color", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-        surface.SetDrawColor(Color(CreateSquadColor.RED, CreateSquadColor.GREEN, CreateSquadColor.BLUE, 255))
-        surface.DrawRect(EFGM.MenuScale(85), EFGM.MenuScale(55), EFGM.MenuScale(145), EFGM.MenuScale(5))
-
-    end
-
-    local squadColorR = vgui.Create("DNumberWang", squadColorPanel)
-    squadColorR:SetPos(EFGM.MenuScale(85), EFGM.MenuScale(30))
-    squadColorR:SetSize(EFGM.MenuScale(45), EFGM.MenuScale(20))
-    squadColorR:SetMin(0)
-    squadColorR:SetMax(255)
-
-    squadColorR.OnValueChanged = function(self)
-
-        val = math.Clamp(self:GetValue(), self:GetMin(), self:GetMax())
-        CreateSquadColor.RED = val
-
-    end
-    squadColorR:SetValue(255) -- refer to the DNumberWang above
-
-    local squadColorG = vgui.Create("DNumberWang", squadColorPanel)
-    squadColorG:SetPos(EFGM.MenuScale(135), EFGM.MenuScale(30))
-    squadColorG:SetSize(EFGM.MenuScale(45), EFGM.MenuScale(20))
-    squadColorG:SetMin(0)
-    squadColorG:SetMax(255)
-
-    squadColorG.OnValueChanged = function(self)
-
-        val = math.Clamp(self:GetValue(), self:GetMin(), self:GetMax())
-        CreateSquadColor.GREEN = val
-
-    end
-    squadColorG:SetValue(255) -- this is quite annoying
-
-    local squadColorB = vgui.Create("DNumberWang", squadColorPanel)
-    squadColorB:SetPos(EFGM.MenuScale(185), EFGM.MenuScale(30))
-    squadColorB:SetSize(EFGM.MenuScale(45), EFGM.MenuScale(20))
-    squadColorB:SetMin(0)
-    squadColorB:SetMax(255)
-
-    squadColorB.OnValueChanged = function(self)
-
-        val = math.Clamp(self:GetValue(), self:GetMin(), self:GetMax())
-        CreateSquadColor.BLUE = val
-
-    end
-    squadColorB:SetValue(255) -- so, how has your day been?
-
-    local squadCreateButton = vgui.Create("DButton", squadColorPanel)
-    squadCreateButton:SetPos(EFGM.MenuScale(85), EFGM.MenuScale(75))
-    squadCreateButton:SetSize(EFGM.MenuScale(150), EFGM.MenuScale(20))
-    squadCreateButton:SetText("CREATE SQUAD")
-
-    squadCreateButton.OnCursorEntered = function(s)
-
-        surface.PlaySound("ui/element_hover.wav")
-
-    end
-
-    function squadCreateButton:DoClick()
-
-        surface.PlaySound("ui/element_select.wav")
-
-        RunConsoleCommand("efgm_squad_create", squadName:GetValue(), squadPassword:GetValue(), CreateSquadPlayerLimit, CreateSquadColor.RED, CreateSquadColor.GREEN, CreateSquadColor.BLUE)
-
-    end
-
-    local joinSquadTitle = vgui.Create("DPanel", squadPanel)
-    joinSquadTitle:Dock(TOP)
-    joinSquadTitle:SetSize(0, EFGM.MenuScale(32 + 10))
-    function joinSquadTitle:Paint(w, h)
-
-        surface.SetDrawColor(MenuAlias.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-        draw.SimpleTextOutlined("JOIN SQUAD", "PuristaBold32", w / 2, 0, MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-    end
-
-    local availableSquadsPanel = vgui.Create("DScrollPanel", squadPanel)
-    availableSquadsPanel:Dock(TOP)
-    availableSquadsPanel:SetSize(0, EFGM.MenuScale(330))
-    availableSquadsPanel.Paint = function(s, w, h)
-
-        surface.SetDrawColor(MenuAlias.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
-
-    local availableSquadsPanelBar = availableSquadsPanel:GetVBar()
-    availableSquadsPanelBar:SetHideButtons(true)
-    availableSquadsPanelBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
-    function availableSquadsPanelBar:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
-    end
-    function availableSquadsPanelBar.btnGrip:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
-    end
-
-    local availableSquadsList = vgui.Create("DListLayout", availableSquadsPanel)
-    availableSquadsList:Dock(TOP)
-    availableSquadsList:SetSize(EFGM.MenuScale(300), EFGM.MenuScale(330))
-
-    function GenerateJoinableSquads(array)
-
-        for k, v in SortedPairs(array) do
-
-            local name = k
-            local color = v.COLOR
-            local owner = v.OWNER
-            local status
-            local password = v.PASSWORD
-            local limit = v.LIMIT
-            local members = v.MEMBERS
-            local memberCount = table.Count(members)
-            local open = limit != memberCount
-            local protected = string.len(password) != 0
-
-            if !protected then status = "PUBLIC" else status = "PRIVATE" end
-
-            local squadEntry = vgui.Create("DButton", availableSquadsList)
-            squadEntry:SetText("")
-            squadEntry:SetSize(0, EFGM.MenuScale(55))
-            squadEntry.Paint = function(s, w, h)
-
-                if open then
-                    surface.SetDrawColor(Color(0, 0, 0, 100))
-                else
-                    surface.SetDrawColor(Color(50, 0, 0, 100))
-                end
-                surface.DrawRect(0, 0, w, h)
-
-                draw.SimpleTextOutlined(name, "PuristaBold24", w / 2, EFGM.MenuScale(5), Color(color.RED, color.GREEN, color.BLUE), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-                draw.SimpleTextOutlined(table.Count(members) .. " / " .. limit .. "   |   " .. status, "PuristaBold18", w / 2, EFGM.MenuScale(30), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-            end
-
-            squadEntry.DoClick = function(s, w, h)
-
-                if open and !protected then
-
-                    surface.PlaySound("ui/element_select.wav")
-
-                    RunConsoleCommand("efgm_squad_join", name, password)
-
-                end
-
-            end
-
-            local x, y = 0, 0
-            local sideH, sideV
-
-            squadEntry.OnCursorEntered = function(s)
-
-                x, y = Menu.MouseX, Menu.MouseY
-                surface.PlaySound("ui/element_hover.wav")
-
-                if x <= (ScrW() / 2) then sideH = true else sideH = false end
-                if y <= (ScrH() / 2) then sideV = true else sideV = false end
-
-                local function UpdatePopOutPos()
-
-                    if sideH == true then
-
-                        squadPopOut:SetX(math.Clamp(x + EFGM.MenuScale(15), EFGM.MenuScale(10), ScrW() - squadPopOut:GetWide() - EFGM.MenuScale(10)))
-
-                    else
-
-                        squadPopOut:SetX(math.Clamp(x - squadPopOut:GetWide() - EFGM.MenuScale(15), EFGM.MenuScale(10), ScrW() - squadPopOut:GetWide() - EFGM.MenuScale(10)))
-
-                    end
-
-                    if sideV == true then
-
-                        squadPopOut:SetY(math.Clamp(y + EFGM.MenuScale(15), EFGM.MenuScale(60), ScrH() - squadPopOut:GetTall() - EFGM.MenuScale(20)))
-
-                    else
-
-                        squadPopOut:SetY(math.Clamp(y - squadPopOut:GetTall() + EFGM.MenuScale(15), EFGM.MenuScale(60), ScrH() - squadPopOut:GetTall() - EFGM.MenuScale(20)))
-
-                    end
-
-                end
-
-                if IsValid(squadPopOut) then squadPopOut:Remove() end
-                squadPopOut = vgui.Create("DPanel", Menu.MenuFrame)
-                squadPopOut:SetSize(EFGM.MenuScale(200), EFGM.MenuScale(60) + (memberCount * EFGM.MenuScale(19)))
-                UpdatePopOutPos()
-                squadPopOut:SetAlpha(0)
-                squadPopOut:AlphaTo(255, 0.1, 0, nil)
-                squadPopOut:SetMouseInputEnabled(false)
-
-                -- panel needs to be slightly taller for password entry
-                if protected and open and squad == "nil" then
-
-                    squadPopOut:SetSize(EFGM.MenuScale(200), EFGM.MenuScale(90) + (memberCount * EFGM.MenuScale(19)))
-
-                end
-
-                -- panel needs to be slightly shorter if the player is already in a squad
-                if squad != "nil" then
-
-                    squadPopOut:SetSize(EFGM.MenuScale(200), EFGM.MenuScale(40) + (memberCount * EFGM.MenuScale(19)))
-
-                end
-
-                squadPopOut.Paint = function(s, w, h)
-
-                    if !IsValid(s) then return end
-
-                    BlurPanel(s, EFGM.MenuScale(3))
-
-                    -- panel position follows mouse position
-                    x, y = Menu.MouseX, Menu.MouseY
-
-                    UpdatePopOutPos()
-
-                    surface.SetDrawColor(Color(0, 0, 0, 205))
-                    surface.DrawRect(0, 0, w, h)
-
-                    surface.SetDrawColor(Color(color.RED, color.GREEN, color.BLUE, 45))
-                    surface.DrawRect(0, 0, w, h)
-
-                    surface.SetDrawColor(Color(color.RED, color.GREEN, color.BLUE, 255))
-                    surface.DrawRect(0, 0, w, EFGM.MenuScale(5))
-
-                    surface.SetDrawColor(Color(255, 255, 255, 155))
-                    surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-                    surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
-                    surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-                    surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
-
-                    draw.SimpleTextOutlined("MEMBERS", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-                    -- draw name for each member
-                    for k, v in SortedPairs(members) do
-
-                        if v == owner then
-
-                            draw.SimpleTextOutlined(v:GetName() .. "*", "PuristaBold18", EFGM.MenuScale(27), (k * EFGM.MenuScale(20)) + EFGM.MenuScale(10), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-                        else
-
-                            draw.SimpleTextOutlined(v:GetName(), "PuristaBold18", EFGM.MenuScale(27), (k * EFGM.MenuScale(20)) + EFGM.MenuScale(10), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-                        end
-
-                    end
-
-                    -- don't show join text if client is already in a squad
-                    if squad != "nil" then return end
-
-                    if !open then
-
-                        draw.SimpleTextOutlined("SQUAD FULL!", "PuristaBold18", EFGM.MenuScale(5), h - EFGM.MenuScale(23), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(255, 0, 0, 255))
-                        return
-
-                    end
-
-                    if !protected then
-
-                        draw.SimpleTextOutlined("CLICK TO JOIN!", "PuristaBold18", EFGM.MenuScale(5), h - EFGM.MenuScale(23), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-                    else
-
-                        draw.SimpleTextOutlined("ENTER PASSWORD TO JOIN!", "PuristaBold18", EFGM.MenuScale(5), h - EFGM.MenuScale(23), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-                    end
-
-                end
-
-                -- draw profile picture for each member
-                for k, v in SortedPairs(members) do
-
-                    local memberPFP = vgui.Create("AvatarImage", squadPopOut)
-                    memberPFP:SetPos(EFGM.MenuScale(5), (k * EFGM.MenuScale(20)) + EFGM.MenuScale(12))
-                    memberPFP:SetSize(EFGM.MenuScale(18), EFGM.MenuScale(18))
-                    memberPFP:SetPlayer(v, 184)
-
-                end
-
-                -- create password entry if squad is password protected and not full
-                if protected and open and squad == "nil" then
-
-                    squadPasswordEntryBG = vgui.Create("DPanel", squadPopOut)
-                    squadPasswordEntryBG:SetPos(EFGM.MenuScale(5), squadPopOut:GetTall() - EFGM.MenuScale(43))
-                    squadPasswordEntryBG:SetSize(EFGM.MenuScale(181), EFGM.MenuScale(20))
-                    squadPasswordEntryBG:SetBackgroundColor(Color(25, 25, 25, 155))
-
-                    local squadPasswordEntry = vgui.Create("DTextEntry", squadPasswordEntryBG)
-                    squadPasswordEntry:Dock(FILL)
-                    squadPasswordEntry:SetPlaceholderText(" ")
-                    squadPasswordEntry:SetPaintBackground(false)
-                    squadPasswordEntry:SetTextColor(MenuAlias.whiteColor)
-                    squadPasswordEntry:SetCursorColor(MenuAlias.whiteColor)
-                    squadPasswordEntry:RequestFocus()
-
-                    squadPasswordEntry.Think = function(self) squadPasswordEntry:RequestFocus() end
-
-                    squadPasswordEntry.OnEnter = function(self)
-
-                        RunConsoleCommand("efgm_squad_join", name, self:GetValue())
-
-                    end
-
-                end
-
-            end
-
-            squadEntry.OnCursorExited = function(s)
-
-                if IsValid(squadPopOut) then
-
-                    squadPopOut:AlphaTo(0, 0.1, 0, function() squadPopOut:Remove() end)
-
-                end
-
-            end
-
-        end
-
-    end
-
-    local currentSquadPanel = vgui.Create("DPanel", contents)
-    currentSquadPanel:Dock(LEFT)
-    currentSquadPanel:SetSize(EFGM.MenuScale(320), 0)
-    currentSquadPanel.Paint = function(s, w, h)
-
-        surface.SetDrawColor(MenuAlias.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
-
-    local function RenderCurrentSquad(array)
-
-        if squad == "nil" then return end
-
-        local name = squad
-        local color = array[squad].COLOR
-        local owner = array[squad].OWNER
-        local status
-        local password = array[squad].PASSWORD
-        local limit = array[squad].LIMIT
-        local members = array[squad].MEMBERS
-        local memberCount = table.Count(array[squad].MEMBERS)
-        local protected = string.len(password) != 0
-
-        if !protected then status = "PUBLIC" else status = "PRIVATE" end
-
-        local currentSquadName = vgui.Create("DPanel", currentSquadPanel)
-        currentSquadName:Dock(TOP)
-        currentSquadName:SetSize(0, EFGM.MenuScale(60))
-        function currentSquadName:Paint(w, h)
-
-            surface.SetDrawColor(Color(0, 0, 0, 155))
+            surface.SetDrawColor(MenuAlias.transparent)
             surface.DrawRect(0, 0, w, h)
 
-            surface.SetDrawColor(Color(color.RED, color.GREEN, color.BLUE, 45))
-            surface.DrawRect(0, 0, w, h)
-
-            surface.SetDrawColor(Color(color.RED, color.GREEN, color.BLUE, 255))
-            surface.DrawRect(0, 0, w, EFGM.MenuScale(5))
-
-            surface.SetDrawColor(Color(255, 255, 255, 155))
-            surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-            surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
-
-            draw.SimpleTextOutlined(squad, "PuristaBold32", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-            draw.SimpleTextOutlined(status, "PuristaBold18", w / 2, EFGM.MenuScale(37), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            draw.SimpleTextOutlined("OPERATORS", "PuristaBold32", w / 2, 0, MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
         end
 
-        -- allows squad owners to copy the squad password if the squad is private
-        if status == "PRIVATE" and Menu.Player == owner then
-
-            currentSquadName:SetSize(0, EFGM.MenuScale(77))
-
-            local currentSquadPasswordButton = vgui.Create("DButton", currentSquadName)
-            currentSquadPasswordButton:SetPos(EFGM.MenuScale(100), EFGM.MenuScale(57))
-            currentSquadPasswordButton:SetSize(EFGM.MenuScale(120), EFGM.MenuScale(18))
-            currentSquadPasswordButton:SetText("")
-            currentSquadPasswordButton.Paint = function(s, w, h)
-
-                surface.SetDrawColor(Color(25, 25, 25, 155))
-                surface.DrawRect(0, 0, w, h)
-
-                draw.SimpleTextOutlined("Copy Password", "PuristaBold18", w / 2, EFGM.MenuScale(-2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-            end
-
-            function currentSquadPasswordButton:OnCursorEntered()
-
-                surface.PlaySound("ui/element_hover.wav")
-
-            end
-
-            function currentSquadPasswordButton:DoClick()
-
-                surface.PlaySound("ui/element_select.wav")
-
-                SetClipboardText(password)
-
-            end
-
+        local pmcPanelBar = pmcPanel:GetVBar()
+        pmcPanelBar:SetHideButtons(true)
+        pmcPanelBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+        function pmcPanelBar:Paint(w, h)
+            draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
+        end
+        function pmcPanelBar.btnGrip:Paint(w, h)
+            draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
         end
 
-        local currentSquadMembers = vgui.Create("DPanel", currentSquadPanel)
-        currentSquadMembers:Dock(TOP)
-        currentSquadMembers:SetSize(0, EFGM.MenuScale(30) + (memberCount * EFGM.MenuScale(35)))
-        function currentSquadMembers:Paint(w, h)
+        pmcList = vgui.Create("DListLayout", pmcPanel)
+        pmcList:Dock(TOP)
+        pmcList:SetSize(EFGM.MenuScale(320), 0)
 
-            surface.SetDrawColor(Color(color.RED, color.GREEN, color.BLUE, 10))
-            surface.DrawRect(0, 0, w, h)
+        local onlinePlayers = player.GetAll()
 
-            surface.SetDrawColor(Color(255, 255, 255, 155))
-            surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+        for k, v in pairs(onlinePlayers) do
 
-            draw.SimpleTextOutlined("MEMBERS", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(0), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            local name = v:GetName()
+            local ping = v:Ping()
+            local kills = v:Frags()
+            local deaths = v:Deaths()
 
-            for k, v in SortedPairs(members) do
-
-                if v == owner then
-
-                    draw.SimpleTextOutlined(v:GetName() .. "*", "PuristaBold24", EFGM.MenuScale(40), (k * EFGM.MenuScale(35)) - EFGM.MenuScale(3), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-                else
-
-                    draw.SimpleTextOutlined(v:GetName(), "PuristaBold24", EFGM.MenuScale(40), (k * EFGM.MenuScale(35)) - EFGM.MenuScale(3), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-                end
-
+            local pmcEntry = vgui.Create("DPanel", pmcList)
+            pmcEntry:SetSize(pmcList:GetWide(), EFGM.MenuScale(50))
+            pmcEntry:SetPos(0, 0)
+            pmcEntry.Paint = function(w, h)
+                if !IsValid(v) then return end
+                draw.SimpleTextOutlined(name .. "         " .. ping  .. "ms", "Purista18", EFGM.MenuScale(50), EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined(kills, "Purista18", EFGM.MenuScale(50), EFGM.MenuScale(25), Color(0, 255, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined(deaths, "Purista18", EFGM.MenuScale(85), EFGM.MenuScale(25), Color(255, 0, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
             end
 
-        end
+            local pmcPFP = vgui.Create("AvatarImage", pmcEntry)
+            pmcPFP:SetPos(EFGM.MenuScale(5), EFGM.MenuScale(5))
+            pmcPFP:SetSize(EFGM.MenuScale(40), EFGM.MenuScale(40))
+            pmcPFP:SetPlayer(v, 184)
 
-        -- draw profile pictures and create kick/transfer buttons for each member
-        for k, v in SortedPairs(members) do
-
-            local memberPFP = vgui.Create("AvatarImage", currentSquadMembers)
-            memberPFP:SetPos(EFGM.MenuScale(5), (k * EFGM.MenuScale(35)) - EFGM.MenuScale(5))
-            memberPFP:SetSize(EFGM.MenuScale(30), EFGM.MenuScale(30))
-            memberPFP:SetPlayer(v, 184)
-
-            memberPFP.OnMousePressed = function()
+            pmcPFP.OnMousePressed = function()
                 local dropdown = DermaMenu()
 
                 local profile = dropdown:AddOption("Open Steam Profile", function() gui.OpenURL("http://steamcommunity.com/profiles/" .. v:SteamID64()) end)
@@ -7023,256 +6361,6 @@ function Menu.OpenTab.Match()
                 end
 
                 dropdown:Open()
-            end
-
-            if Menu.Player == owner and Menu.Player != v then
-
-                local transferToMember = vgui.Create("DImageButton", currentSquadMembers)
-                transferToMember:SetPos(EFGM.MenuScale(262), (k * EFGM.MenuScale(35)) - EFGM.MenuScale(2))
-                transferToMember:SetSize(EFGM.MenuScale(24), EFGM.MenuScale(24))
-                transferToMember:SetImage("icons/squad_transfer_icon.png")
-                transferToMember:SetDepressImage(false)
-
-                local x, y = 0, 0
-                local sideH, sideV
-
-                transferToMember.OnCursorEntered = function(s)
-
-                    x, y = Menu.MouseX, Menu.MouseY
-                    surface.PlaySound("ui/element_hover.wav")
-
-                    if x <= (ScrW() / 2) then sideH = true else sideH = false end
-                    if y <= (ScrH() / 2) then sideV = true else sideV = false end
-
-                    surface.SetFont("Purista18")
-                    local text = "Transfer ownership to " .. v:GetName()
-                    local textSize = surface.GetTextSize(text)
-
-                    local function UpdatePopOutPos()
-
-                        if sideH == true then
-
-                            transferPopOut:SetX(math.Clamp(x + EFGM.MenuScale(15), EFGM.MenuScale(10), ScrW() - transferPopOut:GetWide() - EFGM.MenuScale(10)))
-
-                        else
-
-                            transferPopOut:SetX(math.Clamp(x - transferPopOut:GetWide() - EFGM.MenuScale(15), EFGM.MenuScale(10), ScrW() - transferPopOut:GetWide() - EFGM.MenuScale(10)))
-
-                        end
-
-                        if sideV == true then
-
-                            transferPopOut:SetY(math.Clamp(y + EFGM.MenuScale(15), EFGM.MenuScale(60), ScrH() - transferPopOut:GetTall() - EFGM.MenuScale(20)))
-
-                        else
-
-                            transferPopOut:SetY(math.Clamp(y - transferPopOut:GetTall() + EFGM.MenuScale(15), EFGM.MenuScale(60), ScrH() - transferPopOut:GetTall() - EFGM.MenuScale(20)))
-
-                        end
-
-                    end
-
-                    if IsValid(transferPopOut) then transferPopOut:Remove() end
-                    transferPopOut = vgui.Create("DPanel", Menu.MenuFrame)
-                    transferPopOut:SetSize(EFGM.MenuScale(10) + textSize, EFGM.MenuScale(24))
-                    UpdatePopOutPos()
-                    transferPopOut:AlphaTo(255, 0.1, 0, nil)
-                    transferPopOut:SetMouseInputEnabled(false)
-
-                    transferPopOut.Paint = function(s, w, h)
-
-                        if !IsValid(s) then return end
-
-                        BlurPanel(s, EFGM.MenuScale(3))
-
-                        -- panel position follows mouse position
-                        x, y = Menu.MouseX, Menu.MouseY
-
-                        UpdatePopOutPos()
-
-                        surface.SetDrawColor(Color(25, 25, 25, 155))
-                        surface.DrawRect(0, 0, w, h)
-
-                        surface.SetDrawColor(Color(255, 255, 255, 155))
-                        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-                        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
-                        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-                        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
-
-                        draw.SimpleTextOutlined(text, "Purista18", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-                    end
-
-                end
-
-                transferToMember.OnCursorExited = function(s)
-
-                    if IsValid(transferPopOut) then
-
-                        transferPopOut:AlphaTo(0, 0.1, 0, function() transferPopOut:Remove() end)
-
-                    end
-
-                end
-
-                function transferToMember:DoClick()
-
-                    surface.PlaySound("ui/element_select.wav")
-
-                    RunConsoleCommand("efgm_squad_transfer", v:GetName())
-
-                end
-
-                local kickMember = vgui.Create("DImageButton", currentSquadMembers)
-                kickMember:SetPos(EFGM.MenuScale(291), (k * EFGM.MenuScale(35)) - EFGM.MenuScale(2))
-                kickMember:SetSize(EFGM.MenuScale(24), EFGM.MenuScale(24))
-                kickMember:SetImage("icons/squad_kick_icon.png")
-                kickMember:SetDepressImage(false)
-
-                kickMember.OnCursorEntered = function(s)
-
-                    x, y = Menu.MouseX, Menu.MouseY
-                    surface.PlaySound("ui/element_hover.wav")
-
-                    if x <= (ScrW() / 2) then sideH = true else sideH = false end
-                    if y <= (ScrH() / 2) then sideV = true else sideV = false end
-
-                    surface.SetFont("Purista18")
-                    local text = "Kick " .. v:GetName()
-                    local textSize = surface.GetTextSize(text)
-
-                    local function UpdatePopOutPos()
-
-                        if sideH == true then
-
-                            kickPopOut:SetX(math.Clamp(x + EFGM.MenuScale(15), EFGM.MenuScale(10), ScrW() - kickPopOut:GetWide() - EFGM.MenuScale(10)))
-
-                        else
-
-                            kickPopOut:SetX(math.Clamp(x - kickPopOut:GetWide() - EFGM.MenuScale(15), EFGM.MenuScale(10), ScrW() - kickPopOut:GetWide() - EFGM.MenuScale(10)))
-
-                        end
-
-                        if sideV == true then
-
-                            kickPopOut:SetY(math.Clamp(y + EFGM.MenuScale(15), EFGM.MenuScale(60), ScrH() - kickPopOut:GetTall() - EFGM.MenuScale(20)))
-
-                        else
-
-                            kickPopOut:SetY(math.Clamp(y - kickPopOut:GetTall() + EFGM.MenuScale(15), EFGM.MenuScale(60), ScrH() - kickPopOut:GetTall() - EFGM.MenuScale(20)))
-
-                        end
-
-                    end
-
-                    if IsValid(kickPopOut) then kickPopOut:Remove() end
-                    kickPopOut = vgui.Create("DPanel", Menu.MenuFrame)
-                    kickPopOut:SetSize(EFGM.MenuScale(10) + textSize, EFGM.MenuScale(24))
-                    UpdatePopOutPos()
-                    kickPopOut:AlphaTo(255, 0.1, 0, nil)
-                    kickPopOut:SetMouseInputEnabled(false)
-
-                    kickPopOut.Paint = function(s, w, h)
-
-                        if !IsValid(s) then return end
-
-                        BlurPanel(s, EFGM.MenuScale(3))
-
-                        -- panel position follows mouse position
-                        x, y = Menu.MouseX, Menu.MouseY
-
-                        UpdatePopOutPos()
-
-                        surface.SetDrawColor(Color(25, 25, 25, 155))
-                        surface.DrawRect(0, 0, w, h)
-
-                        surface.SetDrawColor(Color(255, 255, 255, 155))
-                        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-                        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
-                        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-                        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
-
-                        draw.SimpleTextOutlined(text, "Purista18", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-                    end
-
-                end
-
-                kickMember.OnCursorExited = function(s)
-
-                    if IsValid(kickPopOut) then
-
-                        kickPopOut:AlphaTo(0, 0.1, 0, function() kickPopOut:Remove() end)
-
-                    end
-
-                end
-
-                function kickMember:DoClick()
-
-                    surface.PlaySound("ui/element_select.wav")
-
-                    RunConsoleCommand("efgm_squad_kick", v:GetName())
-
-                end
-
-            end
-
-        end
-
-        local currentSquadLeavePanel = vgui.Create("DPanel", currentSquadPanel)
-        currentSquadLeavePanel:Dock(TOP)
-        currentSquadLeavePanel:SetSize(0, EFGM.MenuScale(35))
-        function currentSquadLeavePanel:Paint(w, h)
-
-            surface.SetDrawColor(Color(color.RED, color.GREEN, color.BLUE, 10))
-            surface.DrawRect(0, 0, w, h)
-
-            surface.SetDrawColor(Color(255, 255, 255, 155))
-            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
-            surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
-
-        end
-
-        local currentSquadLeaveButton = vgui.Create("DButton", currentSquadLeavePanel)
-        currentSquadLeaveButton:SetPos(EFGM.MenuScale(85), EFGM.MenuScale(5))
-        currentSquadLeaveButton:SetSize(EFGM.MenuScale(150), EFGM.MenuScale(25))
-        currentSquadLeaveButton:SetText("")
-        currentSquadLeaveButton.Paint = function(s, w, h)
-
-            surface.SetDrawColor(Color(25, 25, 25, 155))
-            surface.DrawRect(0, 0, w, h)
-
-            if owner != Menu.Player then
-
-                draw.SimpleTextOutlined("Leave Squad", "PuristaBold24", w / 2, EFGM.MenuScale(-2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-            else
-
-                draw.SimpleTextOutlined("Disband Squad", "PuristaBold24", w / 2, EFGM.MenuScale(-2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-            end
-
-        end
-
-        function currentSquadLeaveButton:OnCursorEntered()
-
-            surface.PlaySound("ui/element_hover.wav")
-
-        end
-
-        function currentSquadLeaveButton:DoClick()
-
-            surface.PlaySound("ui/element_deselect.wav")
-
-            if owner != Menu.Player then
-
-                RunConsoleCommand("efgm_squad_leave")
-
-            else
-
-                RunConsoleCommand("efgm_squad_disband")
 
             end
 
@@ -7280,35 +6368,1117 @@ function Menu.OpenTab.Match()
 
     end
 
-    net.Receive("SendSquadData", function(len, ply)
+    local mapPanel = vgui.Create("DPanel", contents)
+    mapPanel:Dock(LEFT)
+    mapPanel:SetSize(EFGM.MenuScale(1230), 0)
+    mapPanel.Paint = function(s, w, h)
 
-        squad = Menu.Player:GetNW2String("PlayerInSquad", nil)
+        surface.SetDrawColor(MenuAlias.transparent)
+        surface.DrawRect(0, 0, w, h)
 
-        availableSquadsList:Clear()
-        currentSquadPanel:Clear()
+    end
 
-        if squad == "nil" then
+    local mapTitle = vgui.Create("DPanel", mapPanel)
+    mapTitle:Dock(TOP)
+    mapTitle:SetSize(0, EFGM.MenuScale(40))
+    function mapTitle:Paint(w, h)
 
-            -- enable squad create button if client is not/no longer in a squad
-            squadCreateButton:Show()
+        surface.SetDrawColor(MenuAlias.transparent)
+        surface.DrawRect(0, 0, w, h)
+
+        draw.SimpleTextOutlined("MAP", "PuristaBold32", w / 2, 0, MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local mapName = game.GetMap()
+    local mapInfo = MAPINFO[mapName]
+    local mapSizeX = EFGM.MenuScale(1230)
+    local mapSizeY = EFGM.MenuScale(1230)
+
+    local mapHolder = vgui.Create("DPanel", mapPanel)
+    mapHolder:Dock(TOP)
+    mapHolder:SetSize(EFGM.MenuScale(1230), EFGM.MenuScale(920))
+    function mapHolder:Paint(w, h)
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
+    function mapHolder:PaintOver(w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+    end
+
+    local map = vgui.Create("DPanel", mapHolder)
+    map:SetSize(mapHolder:GetWide(), mapHolder:GetWide())
+    map:SetMouseInputEnabled(true)
+    map:SetCursor("hand")
+    map.Dragging = false
+    map.Zoom = 1.0
+    map.DragPos = {x = 0, y = 0}
+    map.PanOffset = {x = 0, y = 0}
+
+    function map:ClampPanOffset()
+
+        local panelW, panelH = mapHolder:GetSize()
+        local zoom = self.Zoom
+        local pan = self.PanOffset
+
+        local contentScreenW = mapSizeX * zoom
+        local contentScreenH = mapSizeY * zoom
+
+        local minPanX, maxPanX
+        local minPanY, maxPanY
+
+        if contentScreenW > panelW then
+
+            minPanX = panelW - contentScreenW
+            maxPanX = 0
 
         else
 
-            -- disable squad create button if client is a member of a squad
-            squadCreateButton:Hide()
+            minPanX = (panelW - contentScreenW) / 2
+            maxPanX = minPanX
 
         end
 
-        if IsValid(squadPopOut) then squadPopOut:Remove() end
+        if contentScreenH > panelH then
 
-        squadArray = table.Copy(net.ReadTable())
-        GenerateJoinableSquads(squadArray)
-        RenderCurrentSquad(squadArray)
+            minPanY = panelH - contentScreenH
+            maxPanY = 0
 
-    end )
+        else
 
-    net.Start("GrabSquadData")
-    net.SendToServer()
+            minPanY = (panelH - contentScreenH) / 2
+            maxPanY = minPanY
+
+        end
+
+        self.PanOffset.x = math.Clamp(pan.x, minPanX, maxPanX)
+        self.PanOffset.y = math.Clamp(pan.y, minPanY, maxPanY)
+
+    end
+
+    -- most of this was vibe coded, and im genuinely scared how well it works
+    function map:OnMouseWheeled(delta)
+
+        local oldZoom = self.Zoom
+        local zoomSpeed = 0.1
+        self.Zoom = math.Clamp(self.Zoom + delta * zoomSpeed, 1, 2.5)
+
+        local newZoom = self.Zoom
+
+        if newZoom == oldZoom then return true end
+
+        local mouseX, mouseY = self:CursorPos()
+
+        self.PanOffset.x = mouseX - ((mouseX - self.PanOffset.x) / oldZoom) * newZoom
+        self.PanOffset.y = mouseY - ((mouseY - self.PanOffset.y) / oldZoom) * newZoom
+
+        self:ClampPanOffset()
+
+    end
+
+    function map:OnMousePressed(mousecode)
+
+        if mousecode == MOUSE_LEFT then
+
+            self.Dragging = true
+            self.DragPos.x, self.DragPos.y = gui.MousePos()
+            self:MouseCapture(true)
+
+        end
+
+    end
+
+    function map:OnMouseReleased(mousecode)
+
+        if mousecode == MOUSE_LEFT then
+
+            self.Dragging = false
+            self:MouseCapture(false)
+
+        end
+
+    end
+
+    function map:Think()
+
+        if self.Dragging then
+
+            local mx, my = gui.MousePos()
+            local dx = mx - self.DragPos.x
+            local dy = my - self.DragPos.y
+
+            self.PanOffset.x = self.PanOffset.x + dx / self.Zoom
+            self.PanOffset.y = self.PanOffset.y + dy / self.Zoom
+
+            self:ClampPanOffset()
+
+            self.DragPos.x, self.DragPos.y = mx, my
+
+        end
+
+    end
+
+    function map:Paint(w, h)
+
+        if mapInfo == nil then return end
+
+        surface.SetDrawColor(255, 255, 255, 255)
+        surface.SetMaterial(Material("maps/"..mapName..".png", "smooth"))
+        surface.DrawTexturedRect(0 + self.PanOffset.x, 0 + self.PanOffset.y, w * self.Zoom, h * self.Zoom)
+
+        surface.SetDrawColor(52, 124, 218, 240)
+        for k, v in pairs(mapInfo.spawns) do
+
+            local posX = (v.pos.x * mapSizeX * self.Zoom) + self.PanOffset.x
+            local posY = (v.pos.y * mapSizeY * self.Zoom) + self.PanOffset.y
+
+            surface.DrawCircle(posX, posY, (5 * mapSizeX * self.Zoom) / 720 )
+
+            local text = "Spawn"
+
+            draw.DrawText( text, "PuristaBold16", posX, posY - 20, Color(52, 124, 218, 240), TEXT_ALIGN_CENTER )
+
+        end
+
+        surface.SetDrawColor(19, 196, 34, 240)
+        for k, v in pairs(mapInfo.extracts) do
+
+            local posX = (v.pos.x * mapSizeX * self.Zoom) + self.PanOffset.x
+            local posY = (v.pos.y * mapSizeY * self.Zoom) + self.PanOffset.y
+
+            surface.DrawCircle(posX, posY, (10 * mapSizeX * self.Zoom) / 720 )
+
+            local text = v.name
+
+            draw.DrawText( text, "PuristaBold16", posX, posY - 22, Color(19, 196, 34, 240), TEXT_ALIGN_CENTER )
+
+        end
+
+        surface.SetDrawColor(202, 20, 20, 240)
+        for k, v in pairs(mapInfo.locations) do
+
+            local posX = (v.pos.x * mapSizeX * self.Zoom) + self.PanOffset.x
+            local posY = (v.pos.y * mapSizeY * self.Zoom) + self.PanOffset.y
+
+            surface.DrawCircle(posX, posY, (25 * mapSizeX * self.Zoom) / 720  )
+            draw.DrawText( v.name, "PuristaBold16", posX, posY - 8, Color(202, 20, 20, 240), TEXT_ALIGN_CENTER )
+            draw.DrawText( "Loot:" .. v.loot .. "/5", "PuristaBold16", posX, posY + 8, Color(202, 20, 20, 240), TEXT_ALIGN_CENTER )
+
+        end
+
+        surface.SetDrawColor(252, 152, 2, 240)
+        for k, v in pairs(mapInfo.keys) do
+
+            local posX = (v.pos.x * mapSizeX * self.Zoom) + self.PanOffset.x
+            local posY = (v.pos.y * mapSizeY * self.Zoom) + self.PanOffset.y
+
+            surface.DrawCircle(posX, posY, (3 * mapSizeX * self.Zoom) / 720  )
+            draw.DrawText( v.name, "PuristaBold16", posX, posY - 32, Color(252, 152, 2, 240), TEXT_ALIGN_CENTER )
+
+        end
+
+    end
+
+    if Menu.Player:CompareStatus(0) then
+
+        local squad = Menu.Player:GetNW2String("PlayerInSquad", nil)
+
+        local squadPanel = vgui.Create("DPanel", contents)
+        squadPanel:Dock(LEFT)
+        squadPanel:SetSize(EFGM.MenuScale(320), 0)
+        squadPanel.Paint = function(s, w, h)
+
+            surface.SetDrawColor(MenuAlias.transparent)
+            surface.DrawRect(0, 0, w, h)
+
+        end
+
+        local CreateSquadPlayerLimit
+        local CreateSquadColor = {RED = 255, GREEN = 255, BLUE = 255}
+
+        local createSquadTitle = vgui.Create("DPanel", squadPanel)
+        createSquadTitle:Dock(TOP)
+        createSquadTitle:SetSize(0, EFGM.MenuScale(32))
+        function createSquadTitle:Paint(w, h)
+
+            surface.SetDrawColor(MenuAlias.transparent)
+            surface.DrawRect(0, 0, w, h)
+
+            draw.SimpleTextOutlined("CREATE SQUAD", "PuristaBold32", w / 2, 0, MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        end
+
+        squadNamePanel = vgui.Create("DPanel", squadPanel)
+        squadNamePanel:Dock(TOP)
+        squadNamePanel:SetSize(0, EFGM.MenuScale(55))
+        squadNamePanel.Paint = function(s, w, h)
+
+            surface.SetDrawColor(MenuAlias.transparent)
+            surface.DrawRect(0, 0, w, h)
+
+            draw.SimpleTextOutlined("Squad Name", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        end
+
+        squadNameBG = vgui.Create("DPanel", squadNamePanel)
+        squadNameBG:SetPos(EFGM.MenuScale(85), EFGM.MenuScale(30))
+        squadNameBG:SetSize(EFGM.MenuScale(150), EFGM.MenuScale(20))
+        squadNameBG:SetBackgroundColor(MenuAlias.transparent)
+
+        local squadName = vgui.Create("DTextEntry", squadNameBG)
+        squadName:Dock(FILL)
+        squadName:SetPlaceholderText(" ")
+        squadName:SetUpdateOnType(true)
+        squadName:SetTextColor(MenuAlias.whiteColor)
+        squadName:SetCursorColor(MenuAlias.whiteColor)
+
+        squadName.OnValueChange = function(self, value)
+
+            CreateSquadName = self:GetValue()
+
+        end
+
+        squadPasswordPanel = vgui.Create("DPanel", squadPanel)
+        squadPasswordPanel:Dock(TOP)
+        squadPasswordPanel:SetSize(0, EFGM.MenuScale(55))
+        squadPasswordPanel.Paint = function(s, w, h)
+
+            surface.SetDrawColor(MenuAlias.transparent)
+            surface.DrawRect(0, 0, w, h)
+
+            draw.SimpleTextOutlined("Squad Password (optional)", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        end
+
+        squadPasswordBG = vgui.Create("DPanel", squadPasswordPanel)
+        squadPasswordBG:SetPos(EFGM.MenuScale(85), EFGM.MenuScale(30))
+        squadPasswordBG:SetSize(EFGM.MenuScale(150), EFGM.MenuScale(20))
+        squadPasswordBG:SetBackgroundColor(MenuAlias.transparent)
+
+        local squadPassword = vgui.Create("DTextEntry", squadPasswordBG)
+        squadPassword:Dock(FILL)
+        squadPassword:SetPlaceholderText(" ")
+        squadPassword:SetUpdateOnType(true)
+        squadPassword:SetTextColor(MenuAlias.whiteColor)
+        squadPassword:SetCursorColor(MenuAlias.whiteColor)
+
+        squadPassword.OnValueChange = function(self, value)
+
+            CreateSquadPassword = self:GetValue()
+
+        end
+
+        local squadMemberLimitPanel = vgui.Create("DPanel", squadPanel)
+        squadMemberLimitPanel:Dock(TOP)
+        squadMemberLimitPanel:SetSize(0, EFGM.MenuScale(55))
+        function squadMemberLimitPanel:Paint(w, h)
+
+            draw.SimpleTextOutlined("Squad Member Limit (1 to 4)", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        end
+
+        local squadMemberLimit = vgui.Create("DNumberWang", squadMemberLimitPanel)
+        squadMemberLimit:SetPos(EFGM.MenuScale(135), EFGM.MenuScale(30))
+        squadMemberLimit:SetSize(EFGM.MenuScale(50), EFGM.MenuScale(20))
+        squadMemberLimit:SetMin(1)
+        squadMemberLimit:SetMax(4)
+
+        squadMemberLimit.OnValueChanged = function(self)
+
+            val = math.Clamp(self:GetValue(), self:GetMin(), self:GetMax())
+            CreateSquadPlayerLimit = val
+
+        end
+        squadMemberLimit:SetValue(4) -- have to put this down here or else it won't work thanks glua
+
+        local squadColorPanel = vgui.Create("DPanel", squadPanel)
+        squadColorPanel:Dock(TOP)
+        squadColorPanel:SetSize(0, EFGM.MenuScale(110 + 20))
+        function squadColorPanel:Paint(w, h)
+
+            draw.SimpleTextOutlined("Squad Color", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            surface.SetDrawColor(Color(CreateSquadColor.RED, CreateSquadColor.GREEN, CreateSquadColor.BLUE, 255))
+            surface.DrawRect(EFGM.MenuScale(85), EFGM.MenuScale(55), EFGM.MenuScale(145), EFGM.MenuScale(5))
+
+        end
+
+        local squadColorR = vgui.Create("DNumberWang", squadColorPanel)
+        squadColorR:SetPos(EFGM.MenuScale(85), EFGM.MenuScale(30))
+        squadColorR:SetSize(EFGM.MenuScale(45), EFGM.MenuScale(20))
+        squadColorR:SetMin(0)
+        squadColorR:SetMax(255)
+
+        squadColorR.OnValueChanged = function(self)
+
+            val = math.Clamp(self:GetValue(), self:GetMin(), self:GetMax())
+            CreateSquadColor.RED = val
+
+        end
+        squadColorR:SetValue(255) -- refer to the DNumberWang above
+
+        local squadColorG = vgui.Create("DNumberWang", squadColorPanel)
+        squadColorG:SetPos(EFGM.MenuScale(135), EFGM.MenuScale(30))
+        squadColorG:SetSize(EFGM.MenuScale(45), EFGM.MenuScale(20))
+        squadColorG:SetMin(0)
+        squadColorG:SetMax(255)
+
+        squadColorG.OnValueChanged = function(self)
+
+            val = math.Clamp(self:GetValue(), self:GetMin(), self:GetMax())
+            CreateSquadColor.GREEN = val
+
+        end
+        squadColorG:SetValue(255) -- this is quite annoying
+
+        local squadColorB = vgui.Create("DNumberWang", squadColorPanel)
+        squadColorB:SetPos(EFGM.MenuScale(185), EFGM.MenuScale(30))
+        squadColorB:SetSize(EFGM.MenuScale(45), EFGM.MenuScale(20))
+        squadColorB:SetMin(0)
+        squadColorB:SetMax(255)
+
+        squadColorB.OnValueChanged = function(self)
+
+            val = math.Clamp(self:GetValue(), self:GetMin(), self:GetMax())
+            CreateSquadColor.BLUE = val
+
+        end
+        squadColorB:SetValue(255) -- so, how has your day been?
+
+        local squadCreateButton = vgui.Create("DButton", squadColorPanel)
+        squadCreateButton:SetPos(EFGM.MenuScale(85), EFGM.MenuScale(75))
+        squadCreateButton:SetSize(EFGM.MenuScale(150), EFGM.MenuScale(20))
+        squadCreateButton:SetText("CREATE SQUAD")
+
+        squadCreateButton.OnCursorEntered = function(s)
+
+            surface.PlaySound("ui/element_hover.wav")
+
+        end
+
+        function squadCreateButton:DoClick()
+
+            surface.PlaySound("ui/element_select.wav")
+
+            RunConsoleCommand("efgm_squad_create", squadName:GetValue(), squadPassword:GetValue(), CreateSquadPlayerLimit, CreateSquadColor.RED, CreateSquadColor.GREEN, CreateSquadColor.BLUE)
+
+        end
+
+        local joinSquadTitle = vgui.Create("DPanel", squadPanel)
+        joinSquadTitle:Dock(TOP)
+        joinSquadTitle:SetSize(0, EFGM.MenuScale(32 + 10))
+        function joinSquadTitle:Paint(w, h)
+
+            surface.SetDrawColor(MenuAlias.transparent)
+            surface.DrawRect(0, 0, w, h)
+
+            draw.SimpleTextOutlined("JOIN SQUAD", "PuristaBold32", w / 2, 0, MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        end
+
+        local availableSquadsPanel = vgui.Create("DScrollPanel", squadPanel)
+        availableSquadsPanel:Dock(TOP)
+        availableSquadsPanel:SetSize(0, EFGM.MenuScale(220))
+        availableSquadsPanel.Paint = function(s, w, h)
+
+            surface.SetDrawColor(MenuAlias.transparent)
+            surface.DrawRect(0, 0, w, h)
+
+        end
+
+        local availableSquadsPanelBar = availableSquadsPanel:GetVBar()
+        availableSquadsPanelBar:SetHideButtons(true)
+        availableSquadsPanelBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+        function availableSquadsPanelBar:Paint(w, h)
+            draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
+        end
+        function availableSquadsPanelBar.btnGrip:Paint(w, h)
+            draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
+        end
+
+        local availableSquadsList = vgui.Create("DListLayout", availableSquadsPanel)
+        availableSquadsList:Dock(TOP)
+        availableSquadsList:SetSize(EFGM.MenuScale(300), EFGM.MenuScale(330))
+
+        function GenerateJoinableSquads(array)
+
+            for k, v in SortedPairs(array) do
+
+                local name = k
+                local color = v.COLOR
+                local owner = v.OWNER
+                local status
+                local password = v.PASSWORD
+                local limit = v.LIMIT
+                local members = v.MEMBERS
+                local memberCount = table.Count(members)
+                local open = limit != memberCount
+                local protected = string.len(password) != 0
+
+                if !protected then status = "PUBLIC" else status = "PRIVATE" end
+
+                local squadEntry = vgui.Create("DButton", availableSquadsList)
+                squadEntry:SetText("")
+                squadEntry:SetSize(0, EFGM.MenuScale(55))
+                squadEntry.Paint = function(s, w, h)
+
+                    if open then
+                        surface.SetDrawColor(Color(0, 0, 0, 100))
+                    else
+                        surface.SetDrawColor(Color(50, 0, 0, 100))
+                    end
+                    surface.DrawRect(0, 0, w, h)
+
+                    draw.SimpleTextOutlined(name, "PuristaBold24", w / 2, EFGM.MenuScale(5), Color(color.RED, color.GREEN, color.BLUE), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                    draw.SimpleTextOutlined(table.Count(members) .. " / " .. limit .. "   |   " .. status, "PuristaBold18", w / 2, EFGM.MenuScale(30), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                end
+
+                squadEntry.DoClick = function(s, w, h)
+
+                    if open and !protected then
+
+                        surface.PlaySound("ui/element_select.wav")
+
+                        RunConsoleCommand("efgm_squad_join", name, password)
+
+                    end
+
+                end
+
+                local x, y = 0, 0
+                local sideH, sideV
+
+                squadEntry.OnCursorEntered = function(s)
+
+                    x, y = Menu.MouseX, Menu.MouseY
+                    surface.PlaySound("ui/element_hover.wav")
+
+                    if x <= (ScrW() / 2) then sideH = true else sideH = false end
+                    if y <= (ScrH() / 2) then sideV = true else sideV = false end
+
+                    local function UpdatePopOutPos()
+
+                        if sideH == true then
+
+                            squadPopOut:SetX(math.Clamp(x + EFGM.MenuScale(15), EFGM.MenuScale(10), ScrW() - squadPopOut:GetWide() - EFGM.MenuScale(10)))
+
+                        else
+
+                            squadPopOut:SetX(math.Clamp(x - squadPopOut:GetWide() - EFGM.MenuScale(15), EFGM.MenuScale(10), ScrW() - squadPopOut:GetWide() - EFGM.MenuScale(10)))
+
+                        end
+
+                        if sideV == true then
+
+                            squadPopOut:SetY(math.Clamp(y + EFGM.MenuScale(15), EFGM.MenuScale(60), ScrH() - squadPopOut:GetTall() - EFGM.MenuScale(20)))
+
+                        else
+
+                            squadPopOut:SetY(math.Clamp(y - squadPopOut:GetTall() + EFGM.MenuScale(15), EFGM.MenuScale(60), ScrH() - squadPopOut:GetTall() - EFGM.MenuScale(20)))
+
+                        end
+
+                    end
+
+                    if IsValid(squadPopOut) then squadPopOut:Remove() end
+                    squadPopOut = vgui.Create("DPanel", Menu.MenuFrame)
+                    squadPopOut:SetSize(EFGM.MenuScale(200), EFGM.MenuScale(60) + (memberCount * EFGM.MenuScale(19)))
+                    UpdatePopOutPos()
+                    squadPopOut:SetAlpha(0)
+                    squadPopOut:AlphaTo(255, 0.1, 0, nil)
+                    squadPopOut:SetMouseInputEnabled(false)
+
+                    -- panel needs to be slightly taller for password entry
+                    if protected and open and squad == "nil" then
+
+                        squadPopOut:SetSize(EFGM.MenuScale(200), EFGM.MenuScale(90) + (memberCount * EFGM.MenuScale(19)))
+
+                    end
+
+                    -- panel needs to be slightly shorter if the player is already in a squad
+                    if squad != "nil" then
+
+                        squadPopOut:SetSize(EFGM.MenuScale(200), EFGM.MenuScale(40) + (memberCount * EFGM.MenuScale(19)))
+
+                    end
+
+                    squadPopOut.Paint = function(s, w, h)
+
+                        if !IsValid(s) then return end
+
+                        BlurPanel(s, EFGM.MenuScale(3))
+
+                        -- panel position follows mouse position
+                        x, y = Menu.MouseX, Menu.MouseY
+
+                        UpdatePopOutPos()
+
+                        surface.SetDrawColor(Color(0, 0, 0, 205))
+                        surface.DrawRect(0, 0, w, h)
+
+                        surface.SetDrawColor(Color(color.RED, color.GREEN, color.BLUE, 45))
+                        surface.DrawRect(0, 0, w, h)
+
+                        surface.SetDrawColor(Color(color.RED, color.GREEN, color.BLUE, 255))
+                        surface.DrawRect(0, 0, w, EFGM.MenuScale(5))
+
+                        surface.SetDrawColor(Color(255, 255, 255, 155))
+                        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+                        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+                        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                        draw.SimpleTextOutlined("MEMBERS", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                        -- draw name for each member
+                        for k, v in SortedPairs(members) do
+
+                            if v == owner then
+
+                                draw.SimpleTextOutlined(v:GetName() .. "*", "PuristaBold18", EFGM.MenuScale(27), (k * EFGM.MenuScale(20)) + EFGM.MenuScale(10), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                            else
+
+                                draw.SimpleTextOutlined(v:GetName(), "PuristaBold18", EFGM.MenuScale(27), (k * EFGM.MenuScale(20)) + EFGM.MenuScale(10), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                            end
+
+                        end
+
+                        -- don't show join text if client is already in a squad
+                        if squad != "nil" then return end
+
+                        if !open then
+
+                            draw.SimpleTextOutlined("SQUAD FULL!", "PuristaBold18", EFGM.MenuScale(5), h - EFGM.MenuScale(23), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(255, 0, 0, 255))
+                            return
+
+                        end
+
+                        if !protected then
+
+                            draw.SimpleTextOutlined("CLICK TO JOIN!", "PuristaBold18", EFGM.MenuScale(5), h - EFGM.MenuScale(23), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                        else
+
+                            draw.SimpleTextOutlined("ENTER PASSWORD TO JOIN!", "PuristaBold18", EFGM.MenuScale(5), h - EFGM.MenuScale(23), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                        end
+
+                    end
+
+                    -- draw profile picture for each member
+                    for k, v in SortedPairs(members) do
+
+                        local memberPFP = vgui.Create("AvatarImage", squadPopOut)
+                        memberPFP:SetPos(EFGM.MenuScale(5), (k * EFGM.MenuScale(20)) + EFGM.MenuScale(12))
+                        memberPFP:SetSize(EFGM.MenuScale(18), EFGM.MenuScale(18))
+                        memberPFP:SetPlayer(v, 184)
+
+                    end
+
+                    -- create password entry if squad is password protected and not full
+                    if protected and open and squad == "nil" then
+
+                        squadPasswordEntryBG = vgui.Create("DPanel", squadPopOut)
+                        squadPasswordEntryBG:SetPos(EFGM.MenuScale(5), squadPopOut:GetTall() - EFGM.MenuScale(43))
+                        squadPasswordEntryBG:SetSize(EFGM.MenuScale(181), EFGM.MenuScale(20))
+                        squadPasswordEntryBG:SetBackgroundColor(Color(25, 25, 25, 155))
+
+                        local squadPasswordEntry = vgui.Create("DTextEntry", squadPasswordEntryBG)
+                        squadPasswordEntry:Dock(FILL)
+                        squadPasswordEntry:SetPlaceholderText(" ")
+                        squadPasswordEntry:SetPaintBackground(false)
+                        squadPasswordEntry:SetTextColor(MenuAlias.whiteColor)
+                        squadPasswordEntry:SetCursorColor(MenuAlias.whiteColor)
+                        squadPasswordEntry:RequestFocus()
+
+                        squadPasswordEntry.Think = function(self) squadPasswordEntry:RequestFocus() end
+
+                        squadPasswordEntry.OnEnter = function(self)
+
+                            RunConsoleCommand("efgm_squad_join", name, self:GetValue())
+
+                        end
+
+                    end
+
+                end
+
+                squadEntry.OnCursorExited = function(s)
+
+                    if IsValid(squadPopOut) then
+
+                        squadPopOut:AlphaTo(0, 0.1, 0, function() squadPopOut:Remove() end)
+
+                    end
+
+                end
+
+            end
+
+        end
+
+        local currentSquadPanel = vgui.Create("DPanel", squadPanel)
+        currentSquadPanel:Dock(TOP)
+        currentSquadPanel:SetSize(EFGM.MenuScale(320), EFGM.MenuScale(320))
+        currentSquadPanel:DockMargin(0, EFGM.MenuScale(50), 0, 0)
+        currentSquadPanel.Paint = function(s, w, h)
+
+            surface.SetDrawColor(MenuAlias.transparent)
+            surface.DrawRect(0, 0, w, h)
+
+        end
+
+        local function RenderCurrentSquad(array)
+
+            if squad == "nil" then return end
+
+            local name = squad
+            local color = array[squad].COLOR
+            local owner = array[squad].OWNER
+            local status
+            local password = array[squad].PASSWORD
+            local limit = array[squad].LIMIT
+            local members = array[squad].MEMBERS
+            local memberCount = table.Count(array[squad].MEMBERS)
+            local protected = string.len(password) != 0
+
+            if !protected then status = "PUBLIC" else status = "PRIVATE" end
+
+            local currentSquadName = vgui.Create("DPanel", currentSquadPanel)
+            currentSquadName:Dock(TOP)
+            currentSquadName:SetSize(0, EFGM.MenuScale(60))
+            function currentSquadName:Paint(w, h)
+
+                surface.SetDrawColor(Color(0, 0, 0, 155))
+                surface.DrawRect(0, 0, w, h)
+
+                surface.SetDrawColor(Color(color.RED, color.GREEN, color.BLUE, 45))
+                surface.DrawRect(0, 0, w, h)
+
+                surface.SetDrawColor(Color(color.RED, color.GREEN, color.BLUE, 255))
+                surface.DrawRect(0, 0, w, EFGM.MenuScale(5))
+
+                surface.SetDrawColor(Color(255, 255, 255, 155))
+                surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+                surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+                surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                draw.SimpleTextOutlined(squad, "PuristaBold32", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined(status, "PuristaBold18", w / 2, EFGM.MenuScale(37), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            end
+
+            -- allows squad owners to copy the squad password if the squad is private
+            if status == "PRIVATE" and Menu.Player == owner then
+
+                currentSquadName:SetSize(0, EFGM.MenuScale(77))
+
+                local currentSquadPasswordButton = vgui.Create("DButton", currentSquadName)
+                currentSquadPasswordButton:SetPos(EFGM.MenuScale(100), EFGM.MenuScale(57))
+                currentSquadPasswordButton:SetSize(EFGM.MenuScale(120), EFGM.MenuScale(18))
+                currentSquadPasswordButton:SetText("")
+                currentSquadPasswordButton.Paint = function(s, w, h)
+
+                    surface.SetDrawColor(Color(25, 25, 25, 155))
+                    surface.DrawRect(0, 0, w, h)
+
+                    draw.SimpleTextOutlined("Copy Password", "PuristaBold18", w / 2, EFGM.MenuScale(-2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                end
+
+                function currentSquadPasswordButton:OnCursorEntered()
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
+                function currentSquadPasswordButton:DoClick()
+
+                    surface.PlaySound("ui/element_select.wav")
+
+                    SetClipboardText(password)
+
+                end
+
+            end
+
+            local currentSquadMembers = vgui.Create("DPanel", currentSquadPanel)
+            currentSquadMembers:Dock(TOP)
+            currentSquadMembers:SetSize(0, EFGM.MenuScale(30) + (memberCount * EFGM.MenuScale(35)))
+            function currentSquadMembers:Paint(w, h)
+
+                surface.SetDrawColor(Color(color.RED, color.GREEN, color.BLUE, 10))
+                surface.DrawRect(0, 0, w, h)
+
+                surface.SetDrawColor(Color(255, 255, 255, 155))
+                surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+                surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                draw.SimpleTextOutlined("MEMBERS", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(0), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                for k, v in SortedPairs(members) do
+
+                    if v == owner then
+
+                        draw.SimpleTextOutlined(v:GetName() .. "*", "PuristaBold24", EFGM.MenuScale(40), (k * EFGM.MenuScale(35)) - EFGM.MenuScale(3), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                    else
+
+                        draw.SimpleTextOutlined(v:GetName(), "PuristaBold24", EFGM.MenuScale(40), (k * EFGM.MenuScale(35)) - EFGM.MenuScale(3), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                    end
+
+                end
+
+            end
+
+            -- draw profile pictures and create kick/transfer buttons for each member
+            for k, v in SortedPairs(members) do
+
+                local memberPFP = vgui.Create("AvatarImage", currentSquadMembers)
+                memberPFP:SetPos(EFGM.MenuScale(5), (k * EFGM.MenuScale(35)) - EFGM.MenuScale(5))
+                memberPFP:SetSize(EFGM.MenuScale(30), EFGM.MenuScale(30))
+                memberPFP:SetPlayer(v, 184)
+
+                memberPFP.OnMousePressed = function()
+                    local dropdown = DermaMenu()
+
+                    local profile = dropdown:AddOption("Open Steam Profile", function() gui.OpenURL("http://steamcommunity.com/profiles/" .. v:SteamID64()) end)
+                    profile:SetIcon("icon16/page_find.png")
+
+                    dropdown:AddSpacer()
+
+                    local copy = dropdown:AddSubMenu("Copy...")
+                    copy:AddOption("Copy Name", function() SetClipboardText(v:GetName()) end):SetIcon("icon16/cut.png")
+                    copy:AddOption("Copy SteamID64", function() SetClipboardText(v:SteamID64()) end):SetIcon("icon16/cut.png")
+
+                    if v != Menu.Player then
+
+                        local mute = dropdown:AddOption("Mute Player", function(self)
+
+                            if v:IsMuted() then
+
+                                v:SetMuted(false)
+
+                            else
+
+                                v:SetMuted(true)
+
+                            end
+
+                        end)
+
+                        if v:IsMuted() then
+
+                            mute:SetIcon("icon16/sound.png")
+                            mute:SetText("Unmute Player")
+                        else
+
+                            mute:SetIcon("icon16/sound_mute.png")
+                            mute:SetText("Mute Player")
+
+                        end
+
+                    end
+
+                    dropdown:Open()
+                end
+
+                if Menu.Player == owner and Menu.Player != v then
+
+                    local transferToMember = vgui.Create("DImageButton", currentSquadMembers)
+                    transferToMember:SetPos(EFGM.MenuScale(262), (k * EFGM.MenuScale(35)) - EFGM.MenuScale(2))
+                    transferToMember:SetSize(EFGM.MenuScale(24), EFGM.MenuScale(24))
+                    transferToMember:SetImage("icons/squad_transfer_icon.png")
+                    transferToMember:SetDepressImage(false)
+
+                    local x, y = 0, 0
+                    local sideH, sideV
+
+                    transferToMember.OnCursorEntered = function(s)
+
+                        x, y = Menu.MouseX, Menu.MouseY
+                        surface.PlaySound("ui/element_hover.wav")
+
+                        if x <= (ScrW() / 2) then sideH = true else sideH = false end
+                        if y <= (ScrH() / 2) then sideV = true else sideV = false end
+
+                        surface.SetFont("Purista18")
+                        local text = "Transfer ownership to " .. v:GetName()
+                        local textSize = surface.GetTextSize(text)
+
+                        local function UpdatePopOutPos()
+
+                            if sideH == true then
+
+                                transferPopOut:SetX(math.Clamp(x + EFGM.MenuScale(15), EFGM.MenuScale(10), ScrW() - transferPopOut:GetWide() - EFGM.MenuScale(10)))
+
+                            else
+
+                                transferPopOut:SetX(math.Clamp(x - transferPopOut:GetWide() - EFGM.MenuScale(15), EFGM.MenuScale(10), ScrW() - transferPopOut:GetWide() - EFGM.MenuScale(10)))
+
+                            end
+
+                            if sideV == true then
+
+                                transferPopOut:SetY(math.Clamp(y + EFGM.MenuScale(15), EFGM.MenuScale(60), ScrH() - transferPopOut:GetTall() - EFGM.MenuScale(20)))
+
+                            else
+
+                                transferPopOut:SetY(math.Clamp(y - transferPopOut:GetTall() + EFGM.MenuScale(15), EFGM.MenuScale(60), ScrH() - transferPopOut:GetTall() - EFGM.MenuScale(20)))
+
+                            end
+
+                        end
+
+                        if IsValid(transferPopOut) then transferPopOut:Remove() end
+                        transferPopOut = vgui.Create("DPanel", Menu.MenuFrame)
+                        transferPopOut:SetSize(EFGM.MenuScale(10) + textSize, EFGM.MenuScale(24))
+                        UpdatePopOutPos()
+                        transferPopOut:AlphaTo(255, 0.1, 0, nil)
+                        transferPopOut:SetMouseInputEnabled(false)
+
+                        transferPopOut.Paint = function(s, w, h)
+
+                            if !IsValid(s) then return end
+
+                            BlurPanel(s, EFGM.MenuScale(3))
+
+                            -- panel position follows mouse position
+                            x, y = Menu.MouseX, Menu.MouseY
+
+                            UpdatePopOutPos()
+
+                            surface.SetDrawColor(Color(25, 25, 25, 155))
+                            surface.DrawRect(0, 0, w, h)
+
+                            surface.SetDrawColor(Color(255, 255, 255, 155))
+                            surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+                            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                            surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+                            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                            draw.SimpleTextOutlined(text, "Purista18", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                        end
+
+                    end
+
+                    transferToMember.OnCursorExited = function(s)
+
+                        if IsValid(transferPopOut) then
+
+                            transferPopOut:AlphaTo(0, 0.1, 0, function() transferPopOut:Remove() end)
+
+                        end
+
+                    end
+
+                    function transferToMember:DoClick()
+
+                        surface.PlaySound("ui/element_select.wav")
+
+                        RunConsoleCommand("efgm_squad_transfer", v:GetName())
+
+                    end
+
+                    local kickMember = vgui.Create("DImageButton", currentSquadMembers)
+                    kickMember:SetPos(EFGM.MenuScale(291), (k * EFGM.MenuScale(35)) - EFGM.MenuScale(2))
+                    kickMember:SetSize(EFGM.MenuScale(24), EFGM.MenuScale(24))
+                    kickMember:SetImage("icons/squad_kick_icon.png")
+                    kickMember:SetDepressImage(false)
+
+                    kickMember.OnCursorEntered = function(s)
+
+                        x, y = Menu.MouseX, Menu.MouseY
+                        surface.PlaySound("ui/element_hover.wav")
+
+                        if x <= (ScrW() / 2) then sideH = true else sideH = false end
+                        if y <= (ScrH() / 2) then sideV = true else sideV = false end
+
+                        surface.SetFont("Purista18")
+                        local text = "Kick " .. v:GetName()
+                        local textSize = surface.GetTextSize(text)
+
+                        local function UpdatePopOutPos()
+
+                            if sideH == true then
+
+                                kickPopOut:SetX(math.Clamp(x + EFGM.MenuScale(15), EFGM.MenuScale(10), ScrW() - kickPopOut:GetWide() - EFGM.MenuScale(10)))
+
+                            else
+
+                                kickPopOut:SetX(math.Clamp(x - kickPopOut:GetWide() - EFGM.MenuScale(15), EFGM.MenuScale(10), ScrW() - kickPopOut:GetWide() - EFGM.MenuScale(10)))
+
+                            end
+
+                            if sideV == true then
+
+                                kickPopOut:SetY(math.Clamp(y + EFGM.MenuScale(15), EFGM.MenuScale(60), ScrH() - kickPopOut:GetTall() - EFGM.MenuScale(20)))
+
+                            else
+
+                                kickPopOut:SetY(math.Clamp(y - kickPopOut:GetTall() + EFGM.MenuScale(15), EFGM.MenuScale(60), ScrH() - kickPopOut:GetTall() - EFGM.MenuScale(20)))
+
+                            end
+
+                        end
+
+                        if IsValid(kickPopOut) then kickPopOut:Remove() end
+                        kickPopOut = vgui.Create("DPanel", Menu.MenuFrame)
+                        kickPopOut:SetSize(EFGM.MenuScale(10) + textSize, EFGM.MenuScale(24))
+                        UpdatePopOutPos()
+                        kickPopOut:AlphaTo(255, 0.1, 0, nil)
+                        kickPopOut:SetMouseInputEnabled(false)
+
+                        kickPopOut.Paint = function(s, w, h)
+
+                            if !IsValid(s) then return end
+
+                            BlurPanel(s, EFGM.MenuScale(3))
+
+                            -- panel position follows mouse position
+                            x, y = Menu.MouseX, Menu.MouseY
+
+                            UpdatePopOutPos()
+
+                            surface.SetDrawColor(Color(25, 25, 25, 155))
+                            surface.DrawRect(0, 0, w, h)
+
+                            surface.SetDrawColor(Color(255, 255, 255, 155))
+                            surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+                            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                            surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+                            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                            draw.SimpleTextOutlined(text, "Purista18", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                        end
+
+                    end
+
+                    kickMember.OnCursorExited = function(s)
+
+                        if IsValid(kickPopOut) then
+
+                            kickPopOut:AlphaTo(0, 0.1, 0, function() kickPopOut:Remove() end)
+
+                        end
+
+                    end
+
+                    function kickMember:DoClick()
+
+                        surface.PlaySound("ui/element_select.wav")
+
+                        RunConsoleCommand("efgm_squad_kick", v:GetName())
+
+                    end
+
+                end
+
+            end
+
+            local currentSquadLeavePanel = vgui.Create("DPanel", currentSquadPanel)
+            currentSquadLeavePanel:Dock(TOP)
+            currentSquadLeavePanel:SetSize(0, EFGM.MenuScale(35))
+            function currentSquadLeavePanel:Paint(w, h)
+
+                surface.SetDrawColor(Color(color.RED, color.GREEN, color.BLUE, 10))
+                surface.DrawRect(0, 0, w, h)
+
+                surface.SetDrawColor(Color(255, 255, 255, 155))
+                surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+                surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+            end
+
+            local currentSquadLeaveButton = vgui.Create("DButton", currentSquadLeavePanel)
+            currentSquadLeaveButton:SetPos(EFGM.MenuScale(85), EFGM.MenuScale(5))
+            currentSquadLeaveButton:SetSize(EFGM.MenuScale(150), EFGM.MenuScale(25))
+            currentSquadLeaveButton:SetText("")
+            currentSquadLeaveButton.Paint = function(s, w, h)
+
+                surface.SetDrawColor(Color(25, 25, 25, 155))
+                surface.DrawRect(0, 0, w, h)
+
+                if owner != Menu.Player then
+
+                    draw.SimpleTextOutlined("Leave Squad", "PuristaBold24", w / 2, EFGM.MenuScale(-2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                else
+
+                    draw.SimpleTextOutlined("Disband Squad", "PuristaBold24", w / 2, EFGM.MenuScale(-2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                end
+
+            end
+
+            function currentSquadLeaveButton:OnCursorEntered()
+
+                surface.PlaySound("ui/element_hover.wav")
+
+            end
+
+            function currentSquadLeaveButton:DoClick()
+
+                surface.PlaySound("ui/element_deselect.wav")
+
+                if owner != Menu.Player then
+
+                    RunConsoleCommand("efgm_squad_leave")
+
+                else
+
+                    RunConsoleCommand("efgm_squad_disband")
+
+                end
+
+            end
+
+        end
+
+        net.Receive("SendSquadData", function(len, ply)
+
+            squad = Menu.Player:GetNW2String("PlayerInSquad", nil)
+
+            availableSquadsList:Clear()
+            currentSquadPanel:Clear()
+
+            if squad == "nil" then
+
+                -- enable squad create button if client is not/no longer in a squad
+                squadCreateButton:Show()
+
+            else
+
+                -- disable squad create button if client is a member of a squad
+                squadCreateButton:Hide()
+
+            end
+
+            if IsValid(squadPopOut) then squadPopOut:Remove() end
+
+            squadArray = table.Copy(net.ReadTable())
+            GenerateJoinableSquads(squadArray)
+            RenderCurrentSquad(squadArray)
+
+        end )
+
+        net.Start("GrabSquadData")
+        net.SendToServer()
+
+    end
 
 end
 
