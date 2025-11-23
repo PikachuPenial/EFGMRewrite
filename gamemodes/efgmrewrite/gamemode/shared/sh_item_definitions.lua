@@ -3517,6 +3517,840 @@ EFGMITEMS = {}
         ["sizeY"] = 1
     }
 
+-- BARTER
+    EFGMITEMS["efgm_barter_fireklean"] = {
+        ["fullName"] = "#FireKlean gun lube",
+        ["displayName"] = "#FireKlean",
+        ["displayType"] = "Flammables",
+        ["weight"] = 0.2,
+        ["value"] = 22000,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/fireklean.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_aabattery"] = {
+        ["fullName"] = "AA Battery",
+        ["displayName"] = "AA batt.",
+        ["displayType"] = "Energy",
+        ["weight"] = 0.05,
+        ["value"] = 1900,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/aabattery.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_mcc"] = {
+        ["fullName"] = "Advanced Current Converter",
+        ["displayName"] = "MCC",
+        ["displayType"] = "Electronics",
+        ["weight"] = 5,
+        ["value"] = 189000,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/mcc.png", "smooth"),
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 2,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_alkaline"] = {
+        ["fullName"] = "Alkaline Cleaner",
+        ["displayName"] = "Alkali",
+        ["displayType"] = "Household",
+        ["weight"] = 1,
+        ["value"] = 5100,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/alkali.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 2,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_thermometer"] = {
+        ["fullName"] = "Analog Thermometer",
+        ["displayName"] = "Therm.",
+        ["displayType"] = "Building",
+        ["weight"] = 0.3,
+        ["value"] = 28500,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/thermometer.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 2,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_teapot"] = {
+        ["fullName"] = "Antique Teapot",
+        ["displayName"] = "Teapot",
+        ["displayType"] = "Valuables",
+        ["weight"] = 1.1,
+        ["value"] = 29200,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/teapot.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 2,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_vase"] = {
+        ["fullName"] = "Antique Vase",
+        ["displayName"] = "Vase",
+        ["displayType"] = "Valuables",
+        ["weight"] = 2,
+        ["value"] = 40000,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/vase.png", "smooth"),
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 2,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_apollo"] = {
+        ["fullName"] = "Apollo Soyuz Cigarettes",
+        ["displayName"] = "Apollo",
+        ["displayType"] = "Others",
+        ["weight"] = 0.05,
+        ["value"] = 1575,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/apollo.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_aquapeps"] = {
+        ["fullName"] = "Aquapeps Water Purification Tablets",
+        ["displayName"] = "Aquapeps",
+        ["displayType"] = "Medicine",
+        ["weight"] = 1.1,
+        ["value"] = 14050,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/aquapeps.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_aramid"] = {
+        ["fullName"] = "Aramid Fiber Fabric",
+        ["displayName"] = "Aramid",
+        ["displayType"] = "Others",
+        ["weight"] = 0.15,
+        ["value"] = 5600,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/aramid.png", "smooth"),
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_awl"] = {
+        ["fullName"] = "Awl",
+        ["displayName"] = "Awl",
+        ["displayType"] = "Tools",
+        ["weight"] = 0.1,
+        ["value"] = 9400,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/awl.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_axel"] = {
+        ["fullName"] = "Axel Parrot Figurine",
+        ["displayName"] = "Axel",
+        ["displayType"] = "Valuables",
+        ["weight"] = 0.35,
+        ["value"] = 26500,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/axel.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 2,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_bearbuddy"] = {
+        ["fullName"] = "BEAR Buddy Plush Toy",
+        ["displayName"] = "BEAR Buddy",
+        ["displayType"] = "Others",
+        ["weight"] = 0.35,
+        ["value"] = 52050,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/bearbuddy.png", "smooth"),
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 2,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_bearfigurine"] = {
+        ["fullName"] = "BEAR Operative Figurine",
+        ["displayName"] = "BEAR",
+        ["displayType"] = "Valuables",
+        ["weight"] = 0.2,
+        ["value"] = 38900,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/bearfigurine.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 2,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_bakeezy"] = {
+        ["fullName"] = "BakeEzy Cook Book",
+        ["displayName"] = "BakeEzy",
+        ["displayType"] = "Information",
+        ["weight"] = 0.25,
+        ["value"] = 17400,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/bakeezy.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 2,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_book"] = {
+        ["fullName"] = "Battered Antique Book",
+        ["displayName"] = "Book",
+        ["displayType"] = "Valuables",
+        ["weight"] = 0.4,
+        ["value"] = 30885,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/book.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 2,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_bolts"] = {
+        ["fullName"] = "Bolts",
+        ["displayName"] = "Bolts",
+        ["displayType"] = "Building",
+        ["weight"] = 0.4,
+        ["value"] = 6950,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/bolts.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_vitamins"] = {
+        ["fullName"] = "Bottle Of OLOLO Multivitamins",
+        ["displayName"] = "Vitamins",
+        ["displayType"] = "Medicine",
+        ["weight"] = 0.2,
+        ["value"] = 8500,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/vitamins.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_h2o2"] = {
+        ["fullName"] = "Bottle Of Hydrogen Peroxide",
+        ["displayName"] = "H2O2",
+        ["displayType"] = "Medicine",
+        ["weight"] = 0.1,
+        ["value"] = 5995,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/h2o2.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_nacl"] = {
+        ["fullName"] = "Bottle Of Saline Solution",
+        ["displayName"] = "NaCl",
+        ["displayType"] = "Medicine",
+        ["weight"] = 0.3,
+        ["value"] = 5360,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/nacl.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_brokengpx"] = {
+        ["fullName"] = "Broken GPhone X Smartphone",
+        ["displayName"] = "GPX",
+        ["displayType"] = "Electronics",
+        ["weight"] = 0.3,
+        ["value"] = 14600,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/brokengpx.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_brokengphone"] = {
+        ["fullName"] = "Broken GPhone Smartphone",
+        ["displayName"] = "GPhone",
+        ["displayType"] = "Electronics",
+        ["weight"] = 0.3,
+        ["value"] = 10040,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/brokengphone.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_brokenlcd"] = {
+        ["fullName"] = "Broken LCD",
+        ["displayName"] = "BrokenLCD",
+        ["displayType"] = "Electronics",
+        ["weight"] = 0.05,
+        ["value"] = 7000,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/brokenlcd.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 2,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_lion"] = {
+        ["fullName"] = "Bronze Lion Figurine",
+        ["displayName"] = "Lion",
+        ["displayType"] = "Valuables",
+        ["weight"] = 7.2,
+        ["value"] = 142010,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/lion.png", "smooth"),
+
+        ["sizeX"] = 3,
+        ["sizeY"] = 2,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_bulbex"] = {
+        ["fullName"] = "Bulbex Cable Cutter",
+        ["displayName"] = "Bulbex",
+        ["displayType"] = "Tools",
+        ["weight"] = 0.55,
+        ["value"] = 52500,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/bulbex.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 2,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_wires"] = {
+        ["fullName"] = "Bundle Of Wires",
+        ["displayName"] = "Wires",
+        ["displayType"] = "Electronics",
+        ["weight"] = 0.25,
+        ["value"] = 4995,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/wires.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_cpufan"] = {
+        ["fullName"] = "CPU Fan",
+        ["displayName"] = "CPU Fan",
+        ["displayType"] = "Electronics",
+        ["weight"] = 0.1,
+        ["value"] = 3100,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/cpufan.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_drlupos"] = {
+        ["fullName"] = "Can Of Dr. Lupo's Coffee Beans",
+        ["displayName"] = "DrLupo's",
+        ["displayType"] = "Others",
+        ["weight"] = 0.5,
+        ["value"] = 16600,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/drlupos.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_majaica"] = {
+        ["fullName"] = "Can Of Majaica Coffee Beans",
+        ["displayName"] = "Majaica",
+        ["displayType"] = "Others",
+        ["weight"] = 0.35,
+        ["value"] = 9435,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/majaica.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_ratcola"] = {
+        ["fullName"] = "Can Of RatCola Soda",
+        ["displayName"] = "RatCola",
+        ["displayType"] = "Medicine",
+        ["weight"] = 0.35,
+        ["value"] = 16000,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/ratcola.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_thermite"] = {
+        ["fullName"] = "Can Of Thermite",
+        ["displayName"] = "Thermite",
+        ["displayType"] = "Flammables",
+        ["weight"] = 0.65,
+        ["value"] = 19900,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/thermite.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_salt"] = {
+        ["fullName"] = "Can Of White Salt",
+        ["displayName"] = "Salt",
+        ["displayType"] = "Household",
+        ["weight"] = 0.25,
+        ["value"] = 5040,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/salt.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_superwater"] = {
+        ["fullName"] = "Canister With Purified Water",
+        ["displayName"] = "Superwater",
+        ["displayType"] = "Medicine",
+        ["weight"] = 3.3,
+        ["value"] = 40000,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/superwater.png", "smooth"),
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 2,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_caps"] = {
+        ["fullName"] = "Capacitors",
+        ["displayName"] = "Caps",
+        ["displayType"] = "Electronics",
+        ["weight"] = 0.1,
+        ["value"] = 2450,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/caps.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_carbattery"] = {
+        ["fullName"] = "Car Battery",
+        ["displayName"] = "Car Battery",
+        ["displayType"] = "Energy",
+        ["weight"] = 12,
+        ["value"] = 98000,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/carbattery.png", "smooth"),
+
+        ["sizeX"] = 3,
+        ["sizeY"] = 2,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_cat"] = {
+        ["fullName"] = "Cat Figurine",
+        ["displayName"] = "Cat",
+        ["displayType"] = "Valuables",
+        ["weight"] = 3.1,
+        ["value"] = 39200,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/cat.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 3,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_prokill"] = {
+        ["fullName"] = "Chain With Prokill Medallion",
+        ["displayName"] = "Prokill",
+        ["displayType"] = "Valuables",
+        ["weight"] = 0.1,
+        ["value"] = 53550,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/prokill.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_chainlet"] = {
+        ["fullName"] = "Chainlet",
+        ["displayName"] = "Chainlet",
+        ["displayType"] = "Valuables",
+        ["weight"] = 0.1,
+        ["value"] = 5000,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/chainlet.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_ornament"] = {
+        ["fullName"] = "Christmas Tree Ornament",
+        ["displayName"] = "Ornament",
+        ["displayType"] = "Valuables",
+        ["weight"] = 0.05,
+        ["value"] = 9450,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/ornament.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_matches"] = {
+        ["fullName"] = "Classic Matches",
+        ["displayName"] = "Matches",
+        ["displayType"] = "Flammables",
+        ["weight"] = 0.05,
+        ["value"] = 1370,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/matches.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_clin"] = {
+        ["fullName"] = "Clin Window Cleaner",
+        ["displayName"] = "Clin",
+        ["displayType"] = "Household",
+        ["weight"] = 0.5,
+        ["value"] = 4480,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/clin.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 2,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_mtape"] = {
+        ["fullName"] = "Construction Measuring Tape",
+        ["displayName"] = "MTape",
+        ["displayType"] = "Tools",
+        ["weight"] = 0.15,
+        ["value"] = 2320,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/mtape.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_cordura"] = {
+        ["fullName"] = "Cordura Polyamide Fabric",
+        ["displayName"] = "Cordura",
+        ["displayType"] = "Others",
+        ["weight"] = 0.1,
+        ["value"] = 8330,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/cordura.png", "smooth"),
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_hose"] = {
+        ["fullName"] = "Corrugated Hose",
+        ["displayName"] = "Hose",
+        ["displayType"] = "Building",
+        ["weight"] = 0.6,
+        ["value"] = 70000,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/hose.png", "smooth"),
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_crickent"] = {
+        ["fullName"] = "Crickent Lighter",
+        ["displayName"] = "Crickent",
+        ["displayType"] = "Flammables",
+        ["weight"] = 0.05,
+        ["value"] = 800,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/crickent.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_cultistfigurine"] = {
+        ["fullName"] = "Cultist Figurine",
+        ["displayName"] = "Cultist",
+        ["displayType"] = "Valuables",
+        ["weight"] = 0.2,
+        ["value"] = 63000,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/cultistfigurine.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 2,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_cyclon"] = {
+        ["fullName"] = "Cyclon Rechargeable Battery",
+        ["displayName"] = "Cyclon",
+        ["displayType"] = "Energy",
+        ["weight"] = 1.7,
+        ["value"] = 53500,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/cyclon.png", "smooth"),
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_dbattery"] = {
+        ["fullName"] = "D Size Battery",
+        ["displayName"] = "D batt.",
+        ["displayType"] = "Energy",
+        ["weight"] = 0.05,
+        ["value"] = 1390,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/dbattery.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_barter_dvd"] = {
+        ["fullName"] = "DVD Drive",
+        ["displayName"] = "DVD",
+        ["displayType"] = "Electronics",
+        ["weight"] = 0.6,
+        ["value"] = 5225,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/barter/dvd.png", "smooth"),
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
+    }
+
 sellMultiplier = 0.5
 
 -- types:
