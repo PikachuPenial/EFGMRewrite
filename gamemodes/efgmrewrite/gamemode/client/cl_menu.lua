@@ -6560,11 +6560,14 @@ function Menu.OpenTab.Match()
             local posX = (v.pos.x * mapSizeX * self.Zoom) + self.PanOffset.x
             local posY = (v.pos.y * mapSizeY * self.Zoom) + self.PanOffset.y
 
-            surface.DrawCircle(posX, posY, (5 * mapSizeX * self.Zoom) / 720 )
+            -- surface.DrawCircle(posX, posY, (5 * mapSizeX * self.Zoom) / 720 )
+            surface.SetDrawColor(255, 255, 255, 240)
+            surface.SetMaterial(Material("icons/map/pmc_spawn.png", "mips"))
+            surface.DrawTexturedRect(posX - 16, posY - 16, 32, 32)
 
-            local text = "Spawn"
+            -- local text = "Spawn"
 
-            draw.DrawText( text, "PuristaBold16", posX, posY - 20 * (self.Zoom * 1.6), Color(52, 124, 218, 240), TEXT_ALIGN_CENTER )
+            -- draw.DrawText( text, "PuristaBold16", posX, posY - 20 * (self.Zoom * 1.6), Color(52, 124, 218, 240), TEXT_ALIGN_CENTER )
 
         end
 
@@ -6574,11 +6577,13 @@ function Menu.OpenTab.Match()
             local posX = (v.pos.x * mapSizeX * self.Zoom) + self.PanOffset.x
             local posY = (v.pos.y * mapSizeY * self.Zoom) + self.PanOffset.y
 
-            surface.DrawCircle(posX, posY, (10 * mapSizeX * self.Zoom) / 720 )
+            surface.SetDrawColor(255, 255, 255, 240)
+            surface.SetMaterial(Material("icons/map/extract_full.png", "mips"))
+            surface.DrawTexturedRect(posX - 16, posY - 16, 32, 32)
 
             local text = v.name
-
-            draw.DrawText( text, "PuristaBold16", posX, posY - 22 * (self.Zoom * 2.2), Color(19, 196, 34, 240), TEXT_ALIGN_CENTER )
+            --  * (self.Zoom * 2.2)
+            draw.DrawText( text, "PuristaBold16", posX, posY - 36, Color(19, 196, 34, 240), TEXT_ALIGN_CENTER )
 
         end
 
@@ -6588,9 +6593,12 @@ function Menu.OpenTab.Match()
             local posX = (v.pos.x * mapSizeX * self.Zoom) + self.PanOffset.x
             local posY = (v.pos.y * mapSizeY * self.Zoom) + self.PanOffset.y
 
-            surface.DrawCircle(posX, posY, (25 * mapSizeX * self.Zoom) / 720  )
-            draw.DrawText( v.name, "PuristaBold16", posX, posY - 8, Color(202, 20, 20, 240), TEXT_ALIGN_CENTER )
-            draw.DrawText( "Loot:" .. v.loot .. "/5", "PuristaBold16", posX, posY + 8, Color(202, 20, 20, 240), TEXT_ALIGN_CENTER )
+            surface.SetDrawColor(255, 255, 255, 240)
+            surface.SetMaterial(Material("icons/map/location_alt.png", "mips"))
+            surface.DrawTexturedRect(posX - 32, posY - 32, 64, 64)
+
+            draw.DrawText( v.name, "PuristaBold16", posX, posY - 48, Color(202, 20, 20, 240), TEXT_ALIGN_CENTER )
+            draw.DrawText( "Loot:" .. v.loot .. "/5", "PuristaBold16", posX, posY + 32, Color(202, 20, 20, 240), TEXT_ALIGN_CENTER )
 
         end
 
@@ -6600,8 +6608,12 @@ function Menu.OpenTab.Match()
             local posX = (v.pos.x * mapSizeX * self.Zoom) + self.PanOffset.x
             local posY = (v.pos.y * mapSizeY * self.Zoom) + self.PanOffset.y
 
-            surface.DrawCircle(posX, posY, (3 * mapSizeX * self.Zoom) / 720  )
-            draw.DrawText( v.name, "PuristaBold16", posX, posY - 32 * (self.Zoom * 2.4), Color(252, 152, 2, 240), TEXT_ALIGN_CENTER )
+            surface.SetDrawColor(255, 255, 255, 240)
+            surface.SetMaterial(Material("icons/map/key.png", "mips"))
+            surface.DrawTexturedRect(posX - 16, posY - 16, 32, 32)
+            
+            --  * (self.Zoom * 2.4)
+            draw.DrawText( v.name, "PuristaBold16", posX, posY - 36, Color(252, 152, 2, 240), TEXT_ALIGN_CENTER )
 
         end
 
