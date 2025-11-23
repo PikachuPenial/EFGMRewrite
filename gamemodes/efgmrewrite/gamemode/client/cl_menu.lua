@@ -6390,9 +6390,9 @@ function Menu.OpenTab.Match()
 
     end
 
-    local mapName = game.GetMap()
-    local mapInfo = MAPINFO[mapName]
-    local mapOverhead = Material("maps/" .. mapName .. ".png", "smooth")
+    local mapRawName = game.GetMap()
+    local mapInfo = MAPINFO[mapRawName]
+    local mapOverhead = Material("maps/" .. mapRawName .. ".png", "smooth")
 
     local mapSizeX = EFGM.MenuScale(1210)
     local mapSizeY = EFGM.MenuScale(1210)
@@ -6416,7 +6416,7 @@ function Menu.OpenTab.Match()
 
     function mapHolder:PaintOver(w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.SetDrawColor(Color(255, 255, 255, 255))
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
         surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -6435,7 +6435,7 @@ function Menu.OpenTab.Match()
     local map = vgui.Create("DPanel", mapHolder)
     map:SetSize(mapSizeX, mapSizeY)
     map:SetMouseInputEnabled(true)
-    map:SetCursor("hand")
+    map:SetCursor("crosshair")
     map.Dragging = false
     map.Zoom = minZoom
     map.DragPos = {x = 0, y = 0}
@@ -6564,7 +6564,7 @@ function Menu.OpenTab.Match()
 
             local text = "Spawn"
 
-            draw.DrawText( text, "PuristaBold16", posX, posY - 20, Color(52, 124, 218, 240), TEXT_ALIGN_CENTER )
+            draw.DrawText( text, "PuristaBold16", posX, posY - 20 * (self.Zoom * 1.8), Color(52, 124, 218, 240), TEXT_ALIGN_CENTER )
 
         end
 
@@ -6578,7 +6578,7 @@ function Menu.OpenTab.Match()
 
             local text = v.name
 
-            draw.DrawText( text, "PuristaBold16", posX, posY - 22, Color(19, 196, 34, 240), TEXT_ALIGN_CENTER )
+            draw.DrawText( text, "PuristaBold16", posX, posY - 22 * (self.Zoom * 2.2), Color(19, 196, 34, 240), TEXT_ALIGN_CENTER )
 
         end
 
@@ -6601,9 +6601,40 @@ function Menu.OpenTab.Match()
             local posY = (v.pos.y * mapSizeY * self.Zoom) + self.PanOffset.y
 
             surface.DrawCircle(posX, posY, (3 * mapSizeX * self.Zoom) / 720  )
-            draw.DrawText( v.name, "PuristaBold16", posX, posY - 32, Color(252, 152, 2, 240), TEXT_ALIGN_CENTER )
+            draw.DrawText( v.name, "PuristaBold16", posX, posY - 32 * (self.Zoom * 2.4), Color(252, 152, 2, 240), TEXT_ALIGN_CENTER )
 
         end
+
+    end
+
+    local mapName = MAPNAMES[mapRawName]
+    surface.SetFont("PuristaBold50")
+    local mapNameText = string.upper(mapName)
+    local mapNameTextSize = surface.GetTextSize(mapNameText)
+
+    local mapLegend = vgui.Create("DPanel", mapHolder)
+    mapLegend:SetPos(mapHolder:GetWide() - math.max(mapNameTextSize + EFGM.MenuScale(30), EFGM.MenuScale(110)), EFGM.MenuScale(10))
+    mapLegend:SetSize(math.max(mapNameTextSize + EFGM.MenuScale(20), EFGM.MenuScale(100)), EFGM.MenuScale(145))
+    mapLegend.Paint = function(s, w, h)
+
+        BlurPanel(s, EFGM.MenuScale(4))
+
+        surface.SetDrawColor(Color(20, 20, 20, 155))
+        surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+        draw.SimpleTextOutlined(mapNameText, "PuristaBold50", w / 2, 0, MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        draw.SimpleTextOutlined("LEGEND", "PuristaBold24", w - EFGM.MenuScale(10), EFGM.MenuScale(50), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined("SPAWNS ■", "PuristaBold18", w - EFGM.MenuScale(10), EFGM.MenuScale(75), Color(52, 124, 218, 240), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined("EXTRACTS ■", "PuristaBold18", w - EFGM.MenuScale(10), EFGM.MenuScale(90), Color(19, 196, 34, 240), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined("POIs ■", "PuristaBold18", w - EFGM.MenuScale(10), EFGM.MenuScale(105), Color(202, 20, 20, 240), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined("KEYS ■", "PuristaBold18", w - EFGM.MenuScale(10), EFGM.MenuScale(120), Color(252, 152, 2, 240), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
     end
 
