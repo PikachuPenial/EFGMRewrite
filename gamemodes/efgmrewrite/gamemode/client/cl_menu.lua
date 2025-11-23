@@ -6392,12 +6392,21 @@ function Menu.OpenTab.Match()
 
     local mapName = game.GetMap()
     local mapInfo = MAPINFO[mapName]
-    local mapSizeX = EFGM.MenuScale(1230)
-    local mapSizeY = EFGM.MenuScale(1230)
+    local mapOverhead = Material("maps/" .. mapName .. ".png", "smooth")
+
+    local mapSizeX = EFGM.MenuScale(1210)
+    local mapSizeY = EFGM.MenuScale(1210)
+
+    if mapOverhead then
+
+        mapSizeX = EFGM.MenuScale(mapOverhead:Width())
+        mapSizeY = EFGM.MenuScale(mapOverhead:Height())
+
+    end
 
     local mapHolder = vgui.Create("DPanel", mapPanel)
-    mapHolder:Dock(TOP)
-    mapHolder:SetSize(EFGM.MenuScale(1230), EFGM.MenuScale(920))
+    mapHolder:SetPos(EFGM.MenuScale(10), EFGM.MenuScale(40))
+    mapHolder:SetSize(EFGM.MenuScale(1210), EFGM.MenuScale(920))
     function mapHolder:Paint(w, h)
 
         surface.SetDrawColor(Color(80, 80, 80, 10))
@@ -6415,12 +6424,20 @@ function Menu.OpenTab.Match()
 
     end
 
+    local maxZoom = 2.5
+    local minZoom = 1
+
+    local xDiff = EFGM.MenuScale(1210) / mapSizeX
+    local yDiff = EFGM.MenuScale(1210) / mapSizeY
+
+    minZoom = math.max(xDiff, yDiff)
+
     local map = vgui.Create("DPanel", mapHolder)
-    map:SetSize(mapHolder:GetWide(), mapHolder:GetWide())
+    map:SetSize(mapSizeX, mapSizeY)
     map:SetMouseInputEnabled(true)
     map:SetCursor("hand")
     map.Dragging = false
-    map.Zoom = 1.0
+    map.Zoom = minZoom
     map.DragPos = {x = 0, y = 0}
     map.PanOffset = {x = 0, y = 0}
 
@@ -6465,12 +6482,14 @@ function Menu.OpenTab.Match()
 
     end
 
+    map:ClampPanOffset()
+
     -- most of this was vibe coded, and im genuinely scared how well it works
     function map:OnMouseWheeled(delta)
 
         local oldZoom = self.Zoom
         local zoomSpeed = 0.1
-        self.Zoom = math.Clamp(self.Zoom + delta * zoomSpeed, 1, 2.5)
+        self.Zoom = math.Clamp(self.Zoom + delta * zoomSpeed, minZoom, maxZoom)
 
         local newZoom = self.Zoom
 
@@ -6532,7 +6551,7 @@ function Menu.OpenTab.Match()
         if mapInfo == nil then return end
 
         surface.SetDrawColor(255, 255, 255, 255)
-        surface.SetMaterial(Material("maps/"..mapName..".png", "smooth"))
+        surface.SetMaterial(mapOverhead)
         surface.DrawTexturedRect(0 + self.PanOffset.x, 0 + self.PanOffset.y, w * self.Zoom, h * self.Zoom)
 
         surface.SetDrawColor(52, 124, 218, 240)
