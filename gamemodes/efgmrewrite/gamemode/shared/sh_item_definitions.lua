@@ -3450,7 +3450,7 @@ EFGMITEMS = {}
     EFGMITEMS["efgm_key_workshop_office"] = {
         ["fullName"] = "Workshop Office Key",
         ["displayName"] = "W. Office",
-        ["displayType"] = "Key",
+        ["displayType"] = "Concrete Key",
         ["weight"] = 0.2,
         ["value"] = 29000,
         ["equipType"] = EQUIPTYPE.None,
@@ -3468,7 +3468,7 @@ EFGMITEMS = {}
     EFGMITEMS["efgm_key_workshop_armory"] = {
         ["fullName"] = "Workshop Armory Key",
         ["displayName"] = "W. Armory",
-        ["displayType"] = "Key",
+        ["displayType"] = "Concrete Key",
         ["weight"] = 0.2,
         ["value"] = 42000,
         ["equipType"] = EQUIPTYPE.None,
@@ -3486,7 +3486,7 @@ EFGMITEMS = {}
     EFGMITEMS["efgm_key_hotel_marked"] = {
         ["fullName"] = "Hotel Marked Room Key",
         ["displayName"] = "Hotel mrk.",
-        ["displayType"] = "Key",
+        ["displayType"] = "Concrete Key",
         ["weight"] = 0.2,
         ["value"] = 676767,
         ["equipType"] = EQUIPTYPE.None,
@@ -3504,7 +3504,7 @@ EFGMITEMS = {}
     EFGMITEMS["efgm_key_bigred_meeting"] = {
         ["fullName"] = "Big Red Meeting Room Key",
         ["displayName"] = "Br. Meeting",
-        ["displayType"] = "Key",
+        ["displayType"] = "Concrete Key",
         ["weight"] = 0.2,
         ["value"] = 42000,
         ["equipType"] = EQUIPTYPE.None,
@@ -3522,7 +3522,7 @@ EFGMITEMS = {}
     EFGMITEMS["efgm_keycard_bunker_entrance"] = {
         ["fullName"] = "Bunker Entrance Keycard",
         ["displayName"] = "B. Door",
-        ["displayType"] = "Key",
+        ["displayType"] = "Concrete Key",
         ["weight"] = 0.2,
         ["value"] = 420690,
         ["equipType"] = EQUIPTYPE.None,
@@ -3540,7 +3540,7 @@ EFGMITEMS = {}
     EFGMITEMS["efgm_keycard_bunker_armory"] = {
         ["fullName"] = "Bunker Armory Access Keycard",
         ["displayName"] = "B. Armory",
-        ["displayType"] = "Key",
+        ["displayType"] = "Concrete Key",
         ["weight"] = 0.2,
         ["value"] = 420690,
         ["equipType"] = EQUIPTYPE.None,
@@ -7240,7 +7240,7 @@ function GenerateLootTables()
 
         end
 
-        if v.displayType == "Building" or v.displayType == "Electronic" or v.displayType == "Energy" or v.displayType == "Flammable" or v.displayType == "Household" or v.displayType == "Information" or v.displayType == "Medicine" or v.displayType == "Other" or v.displayType == "Tool" or v.displayType == "Valuable" then
+        if v.displayType == "Building" or v.displayType == "Electronic" or v.displayType == "Energy" or v.displayType == "Flammable" or v.displayType == "Household" or v.displayType == "Information" or v.displayType == "Medicine" or v.displayType == "Other" or v.displayType == "Tool" or v.displayType == "Valuable" or v.displayType == "Belmont Key" or v.displayType == "Concrete Key" or v.displayType == "Customs Key" or v.displayType == "Factory Key" then
 
             LOOT[4][k] = v
 

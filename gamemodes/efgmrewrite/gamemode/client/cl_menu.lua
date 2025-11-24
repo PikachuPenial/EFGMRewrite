@@ -1135,7 +1135,7 @@ function Menu.InspectItem(item, data)
 
     end
 
-    if !data then
+    if !data or table.IsEmpty(data) then
 
         itemInfoButton:Remove()
         itemWikiButton:SetX(EFGM.MenuScale(1))
@@ -5525,7 +5525,7 @@ function Menu.OpenTab.Market()
     MarketCat.ALLITEMS = {
 
         name = "All Items",
-        items = {"Assault Carbine", "Assault Rifle", "Light Machine Gun", "Pistol", "Shotgun", "Sniper Rifle", "Marksman Rifle", "Submachine Gun", "Launcher", "Melee", "Grenade", "Special", "Ammunition", "Accessory", "Barrel", "Cover", "Foregrip", "Gas Block", "Handguard", "Magazine", "Mount", "Muzzle", "Optic", "Pistol Grip", "Receiver", "Sight", "Stock", "Tactical", "Medical", "Physical Key", "Mechanical Key", "Barter", "Building", "Electronic", "Energy", "Flammable", "Household", "Information", "Medicine", "Other", "Tool", "Valuable"},
+        items = {"Assault Carbine", "Assault Rifle", "Light Machine Gun", "Pistol", "Shotgun", "Sniper Rifle", "Marksman Rifle", "Submachine Gun", "Launcher", "Melee", "Grenade", "Special", "Ammunition", "Accessory", "Barrel", "Cover", "Foregrip", "Gas Block", "Handguard", "Magazine", "Mount", "Muzzle", "Optic", "Pistol Grip", "Receiver", "Sight", "Stock", "Tactical", "Medical", "Belmont Key", "Concrete Key", "Customs Key", "Factory Key", "Barter", "Building", "Electronic", "Energy", "Flammable", "Household", "Information", "Medicine", "Other", "Tool", "Valuable"},
 
         children = {}
 
@@ -5603,12 +5603,14 @@ function Menu.OpenTab.Market()
     MarketCat.KEYS = {
 
         name = "Keys",
-        items = {"Physical Key", "Mechanical Key"},
+        items = {"Belmont Key", "Concrete Key", "Customs Key", "Factory Key"},
 
         children = {
 
-            ["Physical"] = "Physical Key",
-            ["Mechanical"] = "Mechanical Key"
+            ["Belmont"] = "Belmont Key",
+            ["Concrete"] = "Concrete Key",
+            ["Customs"] = "Customs Key",
+            ["Factory"] = "Factory Key",
 
         }
 
@@ -5729,29 +5731,38 @@ function Menu.OpenTab.Market()
                 local itemValueTextSize = surface.GetTextSize(itemValueText)
 
                 local roubleIcon = Material("icons/rouble_icon.png")
+                local lockIcon = Material("icons/lock_icon.png")
 
                 function item:PaintOver(w, h)
 
                     surface.SetDrawColor(Color(5, 5, 5, 100))
                     surface.DrawRect(EFGM.MenuScale(1), h - EFGM.MenuScale(31), w - EFGM.MenuScale(2), EFGM.MenuScale(30))
 
-                    surface.SetDrawColor(Color(80, 80, 80, 50))
-                    surface.DrawRect(EFGM.MenuScale(1), h - EFGM.MenuScale(46), countTextSize + EFGM.MenuScale(10), EFGM.MenuScale(15))
-                    surface.DrawRect(EFGM.MenuScale(1), EFGM.MenuScale(17), levelTextSize + EFGM.MenuScale(8), EFGM.MenuScale(15))
+                    if v.canPurchase then
+
+                        surface.SetDrawColor(Color(80, 80, 80, 50))
+                        surface.DrawRect(EFGM.MenuScale(1), h - EFGM.MenuScale(46), countTextSize + EFGM.MenuScale(10), EFGM.MenuScale(15))
+                        surface.DrawRect(EFGM.MenuScale(1), EFGM.MenuScale(17), levelTextSize + EFGM.MenuScale(8), EFGM.MenuScale(15))
+
+                        draw.SimpleTextOutlined(countText, "PuristaBold18", EFGM.MenuScale(5), h - EFGM.MenuScale(31), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                        draw.SimpleTextOutlined(levelText, "PuristaBold18", EFGM.MenuScale(5), EFGM.MenuScale(14), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                    end
 
                     draw.SimpleTextOutlined(v.name, "PuristaBold18", EFGM.MenuScale(5), EFGM.MenuScale(0), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-                    draw.SimpleTextOutlined(countText, "PuristaBold18", EFGM.MenuScale(5), h - EFGM.MenuScale(31), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
-                    draw.SimpleTextOutlined(levelText, "PuristaBold18", EFGM.MenuScale(5), EFGM.MenuScale(14), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
                     draw.SimpleTextOutlined(itemValueText, "PuristaBold22", (w / 2) + EFGM.MenuScale(12), h - EFGM.MenuScale(18), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
 
                     surface.SetDrawColor(255, 255, 255, 255)
-                    surface.SetMaterial(roubleIcon)
+
+                    if v.canPurchase then surface.SetMaterial(roubleIcon) else surface.SetMaterial(lockIcon) end
+
                     surface.DrawTexturedRect((w / 2) - EFGM.MenuScale(12) - (itemValueTextSize / 2), h - EFGM.MenuScale(27), EFGM.MenuScale(20), EFGM.MenuScale(20))
 
                 end
 
                 function item:DoClick()
 
+                    if !v.canPurchase then return end
                     Menu.ConfirmPurchase(v.id)
 
                 end
@@ -5766,31 +5777,11 @@ function Menu.OpenTab.Market()
 
                     if IsValid(contextMenu) then contextMenu:Remove() end
                     contextMenu = vgui.Create("DPanel", marketItemHolder)
-                    contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(60))
+                    contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(35))
                     contextMenu:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
                     contextMenu:SetAlpha(0)
                     contextMenu:AlphaTo(255, 0.1, 0, nil)
                     contextMenu:RequestFocus()
-
-                    if sideH == true then
-
-                        contextMenu:SetX(math.Clamp(x + EFGM.MenuScale(5), EFGM.MenuScale(5), marketItemHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
-
-                    else
-
-                        contextMenu:SetX(math.Clamp(x - contextMenu:GetWide() - EFGM.MenuScale(5), EFGM.MenuScale(5), marketItemHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
-
-                    end
-
-                    if sideV == true then
-
-                        contextMenu:SetY(math.Clamp(y + EFGM.MenuScale(5), EFGM.MenuScale(5), marketItemHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
-
-                    else
-
-                        contextMenu:SetY(math.Clamp(y - contextMenu:GetTall() + EFGM.MenuScale(5), EFGM.MenuScale(5), marketItemHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
-
-                    end
 
                     contextMenu.Paint = function(s, w, h)
 
@@ -5845,21 +5836,47 @@ function Menu.OpenTab.Market()
 
                     end
 
-                    local itemBuyButton = vgui.Create("DButton", contextMenu)
-                    itemBuyButton:Dock(TOP)
-                    itemBuyButton:SetSize(0, EFGM.MenuScale(25))
-                    itemBuyButton:SetText("BUY")
+                    if v.canPurchase then
 
-                    itemBuyButton.OnCursorEntered = function(s)
+                        contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
 
-                        surface.PlaySound("ui/element_hover.wav")
+                        local itemBuyButton = vgui.Create("DButton", contextMenu)
+                        itemBuyButton:Dock(TOP)
+                        itemBuyButton:SetSize(0, EFGM.MenuScale(25))
+                        itemBuyButton:SetText("BUY")
+
+                        itemBuyButton.OnCursorEntered = function(s)
+
+                            surface.PlaySound("ui/element_hover.wav")
+
+                        end
+
+                        function itemBuyButton:DoClick()
+
+                            Menu.ConfirmPurchase(v.id)
+                            contextMenu:KillFocus()
+
+                        end
 
                     end
 
-                    function itemBuyButton:DoClick()
+                    if sideH == true then
 
-                        Menu.ConfirmPurchase(v.id)
-                        contextMenu:KillFocus()
+                        contextMenu:SetX(math.Clamp(x + EFGM.MenuScale(5), EFGM.MenuScale(5), marketItemHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+                    else
+
+                        contextMenu:SetX(math.Clamp(x - contextMenu:GetWide(), EFGM.MenuScale(5), marketItemHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+                    end
+
+                    if sideV == true then
+
+                        contextMenu:SetY(math.Clamp(y + EFGM.MenuScale(5), EFGM.MenuScale(5), marketItemHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
+
+                    else
+
+                        contextMenu:SetY(math.Clamp(y - contextMenu:GetTall() + EFGM.MenuScale(5), EFGM.MenuScale(5), marketItemHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
 
                     end
 
@@ -5892,9 +5909,8 @@ function Menu.OpenTab.Market()
 
                     numOfItems = numOfItems + 1
 
-                    local canPurchase = v2.purchasable or true
-
-                    if !canPurchase then return end
+                    local purchasable
+                    if v2.canPurchase or v2.canPurchase == nil then purchasable = true else purchasable = false end
 
                     local entry = {}
                     entry.name = v2.displayName
@@ -5908,6 +5924,7 @@ function Menu.OpenTab.Market()
                     entry.sizeX = v2.sizeX or 1
                     entry.sizeY = v2.sizeY or 1
                     entry.defAtts = v2.defAtts
+                    entry.canPurchase = purchasable
 
                     if entry.equipType == EQUIPTYPE.Weapon and entry.defAtts then
 

@@ -10,6 +10,8 @@ net.Receive("PlayerMarketPurchaseItem", function(len, ply)
 
     local def = EFGMITEMS[item]
 
+    if def.canPurchase == false then return end
+
     local plyMoney = ply:GetNWInt("Money", 0)
     local plyLevel = ply:GetNWInt("Level", 1)
     local cost = def.value * count
