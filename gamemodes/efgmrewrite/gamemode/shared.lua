@@ -14,6 +14,7 @@ if CLIENT then
     CreateClientConVar("efgm_hud_scale", 1, false, true, "Adjust the scale for all user interface items", 0.5, 2)
     CreateClientConVar("efgm_hud_compass_always", 0, false, true, "Adjust the behaviour of displaying the compass", 0, 1)
     CreateClientConVar("efgm_menu_parallax", 1, false, true, "Adjust the main menu parallax/jiggle when moving your cursor", 0, 1)
+    CreateClientConVar("efgm_menu_scalingmethod", 0, false, true, "Adjust the method at which the menu positions itself after scaling", 0, 1)
     CreateClientConVar("efgm_visuals_highqualimpactfx", 1, false, true, "Adjust the quality of the bullets impact effects", 0, 1)
     CreateClientConVar("efgm_visuals_headbob", 1, true, true, "Adjust the bobbing motion of the players view while moving", 0, 1)
     CreateClientConVar("efgm_visuals_lensflare", 1, false, true, "Adjust the lens flare when looking near or directly at the sun", 0, 1)

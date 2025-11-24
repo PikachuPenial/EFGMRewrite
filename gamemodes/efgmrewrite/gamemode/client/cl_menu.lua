@@ -297,14 +297,30 @@ function Menu:Initialize(openTo, container)
             Menu.ParallaxX = math.Clamp(((Menu.MouseX / math.Round(EFGM.MenuScale(1920), 1)) - 0.5) * EFGM.MenuScale(20), -10, 10)
             Menu.ParallaxY = math.Clamp(((Menu.MouseY / math.Round(EFGM.MenuScale(1080), 1)) - 0.5) * EFGM.MenuScale(20), -10, 10)
 
-            lowerPanel:SetPos(ScrW() / 2 - (EFGM.MenuScale(1880) / 2) + Menu.ParallaxX, 1060 / 2 - (920 / 2) + Menu.ParallaxY)
+            if GetConVar("efgm_menu_scalingmethod"):GetInt() == 0 then
+
+                lowerPanel:SetPos(ScrW() / 2 - (EFGM.MenuScale(1880) / 2) + Menu.ParallaxX, 1060 / 2 - (920 / 2) + Menu.ParallaxY)
+
+            else
+
+                lowerPanel:SetPos(ScrW() / 2 - (EFGM.MenuScale(1880) / 2) + Menu.ParallaxX, EFGM.MenuScale(1060) / 2 - (920 / 2) + Menu.ParallaxY)
+
+            end
 
         else
 
             Menu.ParallaxX = 0
             Menu.ParallaxY = 0
 
-            lowerPanel:SetPos(ScrW() / 2 - (EFGM.MenuScale(1880) / 2), 1060 / 2 - (920 / 2))
+            if GetConVar("efgm_menu_scalingmethod"):GetInt() == 0 then
+
+                lowerPanel:SetPos(ScrW() / 2 - (EFGM.MenuScale(1880) / 2), 1060 / 2 - (920 / 2))
+
+            else
+
+                lowerPanel:SetPos(ScrW() / 2 - (EFGM.MenuScale(1880) / 2), EFGM.MenuScale(1060) / 2 - (920 / 2))
+
+            end
 
         end
 
@@ -4121,7 +4137,7 @@ function Menu.OpenTab.Inventory(container)
 
                 function item:Paint(w, h)
 
-                    surface.SetDrawColor(Color(5, 5, 5, 20))
+                    surface.SetDrawColor(i.iconColor or Color(5, 5, 5, 20))
                     surface.DrawRect(0, 0, w, h)
 
                     surface.SetDrawColor(Color(255, 255, 255, 2))
@@ -8542,6 +8558,32 @@ function Menu.OpenTab.Settings()
     menuParallax:SetPos(EFGM.MenuScale(152), EFGM.MenuScale(30))
     menuParallax:SetConVar("efgm_menu_parallax")
     menuParallax:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+
+    local menuScalingMethodPanel = vgui.Create("DPanel", interface)
+    menuScalingMethodPanel:Dock(TOP)
+    menuScalingMethodPanel:SetSize(0, EFGM.MenuScale(55))
+    function menuScalingMethodPanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Menu Scaling Method", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local menuScalingMethod = vgui.Create("DComboBox", menuScalingMethodPanel)
+    menuScalingMethod:SetPos(EFGM.MenuScale(100), EFGM.MenuScale(30))
+    menuScalingMethod:SetSize(EFGM.MenuScale(120), EFGM.MenuScale(20))
+
+    if GetConVar("efgm_menu_scalingmethod"):GetInt() == 0 then
+        menuScalingMethod:SetValue("Dock")
+    elseif GetConVar("efgm_menu_scalingmethod"):GetInt() == 1 then
+        menuScalingMethod:SetValue("Center")
+    end
+
+    menuScalingMethod:AddChoice("Dock")
+    menuScalingMethod:AddChoice("Center")
+    menuScalingMethod:SetSortItems(false)
+    menuScalingMethod.OnSelect = function(self, value)
+        RunConsoleCommand("efgm_menu_scalingmethod", value - 1)
+    end
 
     -- visuals
 
