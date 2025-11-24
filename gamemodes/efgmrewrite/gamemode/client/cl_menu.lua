@@ -2336,7 +2336,7 @@ function Menu.OpenTab.Inventory(container)
 
             function primaryItem:Paint(w, h)
 
-                surface.SetDrawColor(Color(5, 5, 5, 20))
+                surface.SetDrawColor(i.iconColor or Color(5, 5, 5, 20))
                 surface.DrawRect(0, 0, w, h)
 
                 surface.SetDrawColor(Color(255, 255, 255, 2))
@@ -2568,7 +2568,7 @@ function Menu.OpenTab.Inventory(container)
 
             function secondaryItem:Paint(w, h)
 
-                surface.SetDrawColor(Color(5, 5, 5, 20))
+                surface.SetDrawColor(i.iconColor or Color(5, 5, 5, 20))
                 surface.DrawRect(0, 0, w, h)
 
                 surface.SetDrawColor(Color(255, 255, 255, 2))
@@ -2801,7 +2801,7 @@ function Menu.OpenTab.Inventory(container)
 
             function holsterItem:Paint(w, h)
 
-                surface.SetDrawColor(Color(5, 5, 5, 20))
+                surface.SetDrawColor(i.iconColor or Color(5, 5, 5, 20))
                 surface.DrawRect(0, 0, w, h)
 
                 surface.SetDrawColor(Color(255, 255, 255, 2))
@@ -3034,7 +3034,7 @@ function Menu.OpenTab.Inventory(container)
 
             function meleeItem:Paint(w, h)
 
-                surface.SetDrawColor(Color(5, 5, 5, 20))
+                surface.SetDrawColor(i.iconColor or Color(5, 5, 5, 20))
                 surface.DrawRect(0, 0, w, h)
 
                 surface.SetDrawColor(Color(255, 255, 255, 2))
@@ -3677,7 +3677,7 @@ function Menu.OpenTab.Inventory(container)
 
             function item:Paint(w, h)
 
-                surface.SetDrawColor(Color(5, 5, 5, 20))
+                surface.SetDrawColor(i.iconColor or Color(5, 5, 5, 20))
                 surface.DrawRect(0, 0, w, h)
 
                 surface.SetDrawColor(Color(255, 255, 255, 2))
@@ -4612,7 +4612,7 @@ function Menu.OpenTab.Inventory(container)
 
             function item:Paint(w, h)
 
-                surface.SetDrawColor(Color(5, 5, 5, 20))
+                surface.SetDrawColor(i.iconColor or Color(5, 5, 5, 20))
                 surface.DrawRect(0, 0, w, h)
 
                 surface.SetDrawColor(Color(255, 255, 255, 2))
@@ -5160,7 +5160,7 @@ function Menu.OpenTab.Market()
 
             function item:Paint(w, h)
 
-                surface.SetDrawColor(Color(5, 5, 5, 20))
+                surface.SetDrawColor(i.iconColor or Color(5, 5, 5, 20))
                 surface.DrawRect(0, 0, w, h)
 
                 surface.SetDrawColor(Color(255, 255, 255, 2))
@@ -5525,7 +5525,7 @@ function Menu.OpenTab.Market()
     MarketCat.ALLITEMS = {
 
         name = "All Items",
-        items = {"Assault Carbine", "Assault Rifle", "Light Machine Gun", "Pistol", "Shotgun", "Sniper Rifle", "Marksman Rifle", "Submachine Gun", "Launcher", "Melee", "Grenade", "Special", "Ammunition", "Accessory", "Barrel", "Cover", "Foregrip", "Gas Block", "Handguard", "Magazine", "Mount", "Muzzle", "Optic", "Pistol Grip", "Receiver", "Sight", "Stock", "Tactical", "Medical", "Physical Key", "Mechanical Key", "Barter"},
+        items = {"Assault Carbine", "Assault Rifle", "Light Machine Gun", "Pistol", "Shotgun", "Sniper Rifle", "Marksman Rifle", "Submachine Gun", "Launcher", "Melee", "Grenade", "Special", "Ammunition", "Accessory", "Barrel", "Cover", "Foregrip", "Gas Block", "Handguard", "Magazine", "Mount", "Muzzle", "Optic", "Pistol Grip", "Receiver", "Sight", "Stock", "Tactical", "Medical", "Physical Key", "Mechanical Key", "Barter", "Building", "Electronic", "Energy", "Flammable", "Household", "Information", "Medicine", "Other", "Tool", "Valuable"},
 
         children = {}
 
@@ -5608,7 +5608,7 @@ function Menu.OpenTab.Market()
         children = {
 
             ["Physical"] = "Physical Key",
-            ["Mechanical"] = "Mechanical Key",
+            ["Mechanical"] = "Mechanical Key"
 
         }
 
@@ -5617,9 +5617,22 @@ function Menu.OpenTab.Market()
     MarketCat.BARTER = {
 
         name = "Barter",
-        items = {"Barter"},
+        items = {"Barter", "Building", "Electronic", "Energy", "Flammable", "Household", "Information", "Medicine", "Other", "Tool", "Valuable"},
 
-        children = {}
+        children = {
+
+            ["Building"] = "Building",
+            ["Electronics"] = "Electronic",
+            ["Energy"] = "Energy",
+            ["Flammables"] = "Flammable",
+            ["Household"] = "Household",
+            ["Information"] = "Information",
+            ["Medicine"] = "Medicine",
+            ["Others"] = "Other",
+            ["Tools"] = "Tool",
+            ["Valuables"] = "Valuable"
+
+        }
 
     }
 
