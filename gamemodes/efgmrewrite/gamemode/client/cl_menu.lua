@@ -6462,6 +6462,8 @@ function Menu.OpenTab.Match()
 
     minZoom = math.max(xDiff, yDiff)
 
+    if yDiff > xDiff and mapSizeX > mapSizeY then minZoom = math.min(xDiff, yDiff) end
+
     local map = vgui.Create("DPanel", mapHolder)
     map:SetSize(mapSizeX, mapSizeY)
     map:SetMouseInputEnabled(true)
