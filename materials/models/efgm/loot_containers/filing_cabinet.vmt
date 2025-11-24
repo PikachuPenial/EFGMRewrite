@@ -1,0 +1,7 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/efgm/loot_containers/filing_cabinet"
+	"$normalmap" "models/efgm/loot_containers/filing_cabinet_normal"
+	"$surfaceprop" "Metal"
+	"$model" 1
+}
