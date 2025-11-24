@@ -418,6 +418,8 @@ function SetupPlayerData(ply)
 
 	end
 
+	CalculateInventoryWeight(ply)
+
     net.Start("PlayerNetworkStash", false)
     net.WriteString(stashString)
     net.Send(ply)
@@ -528,6 +530,15 @@ hook.Add("ShutDown", "ServerUninitializeStats", function(ply)
 	for k, v in pairs(player.GetHumans()) do
 
 		v:SetNWBool("FreshWipe", false)
+
+		if !v:CompareStatus(0) then
+
+			v:SetNWInt("Quits", v:GetNWInt("Quits", 0) + 1)
+
+			-- wipe inventory if leaving WHILE in a raid
+			ReinstantiateInventory(v)
+
+		end
 
 		UpdateStashString(v)
 		UpdateInventoryString(v)

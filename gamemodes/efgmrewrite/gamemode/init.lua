@@ -88,21 +88,25 @@ end)
 
 function GM:PlayerDeath(victim, inflictor, attacker)
 
-	UnequipAll(victim) -- unload all equipped items into inventory, helps clean this all up
+	if !victim:CompareStatus(0) then
 
-	if !table.IsEmpty(victim.inventory) then
+		UnequipAll(victim) -- unload all equipped items into inventory, helps clean this all up
 
-		local backpack = ents.Create("efgm_backpack")
-		backpack:SetPos(victim:GetPos() + Vector(0, 0, 64))
-		backpack:Spawn()
-		backpack:Activate()
-		backpack:SetBagData(victim.inventory, victim:GetName() .. "'S CORPSE")
+		if !table.IsEmpty(victim.inventory) then
+
+			local backpack = ents.Create("efgm_backpack")
+			backpack:SetPos(victim:GetPos() + Vector(0, 0, 64))
+			backpack:Spawn()
+			backpack:Activate()
+			backpack:SetBagData(victim.inventory, victim:GetName() .. "'S CORPSE")
+
+		end
+
+		ReinstantiateInventory(victim)
+		net.Start("PlayerReinstantiateInventory", false)
+		net.Send(victim)
 
 	end
-
-	ReinstantiateInventory(victim)
-	net.Start("PlayerReinstantiateInventory", false)
-    net.Send(victim)
 
 	-- death sound
 	victim:EmitSound(Sound("deathsounds/death" .. math.random(1, 116) .. ".wav"), math.random(65, 80)) -- holy shit thats a few

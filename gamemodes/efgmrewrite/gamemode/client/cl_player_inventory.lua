@@ -117,10 +117,12 @@ end )
 
 net.Receive("PlayerInventoryUnEquipAll", function(len, ply)
 
+    local equMelee = table.Copy(playerWeaponSlots[WEAPONSLOTS.MELEE.ID])
+
     playerWeaponSlots = {}
     for k, v in pairs(WEAPONSLOTS) do
 
-        if v.ID == WEAPONSLOTS.MELEE.ID then return end
+        if v.ID == WEAPONSLOTS.MELEE.ID then continue end
 
         playerWeaponSlots[v.ID] = {}
 
@@ -131,6 +133,8 @@ net.Receive("PlayerInventoryUnEquipAll", function(len, ply)
         end
 
     end
+
+    if equMelee != nil then playerWeaponSlots[WEAPONSLOTS.MELEE.ID] = equMelee end
 
 end )
 

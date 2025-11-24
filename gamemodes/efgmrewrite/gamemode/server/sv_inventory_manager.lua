@@ -30,7 +30,7 @@ function ReinstantiateInventory(ply)
 
     if equMelee != nil then ply.weaponSlots[WEAPONSLOTS.MELEE.ID] = equMelee end
 
-    ply:SetNWFloat("InventoryWeight", 0.00)
+    CalculateInventoryWeight(ply)
 
 end
 
@@ -335,7 +335,7 @@ function UnequipAll(ply)
 
     for i = 1, 5 do
 
-        if i == WEAPONSLOTS.MELEE.ID then return end
+        if i == WEAPONSLOTS.MELEE.ID then continue end
 
         for k, v in pairs(ply.weaponSlots[i]) do
 
@@ -358,7 +358,7 @@ function UnequipAll(ply)
                 end
 
                 local clip1 = wep:Clip1()
-                if clip1 != -1 then
+                if clip1 != -1 and clip1 != 0 then
 
                     local data = {}
                     data.count = wep:Clip1()
@@ -596,6 +596,66 @@ function RemoveWeightFromPlayer(ply, item, count)
 
 end
 
+function CalculateInventoryWeight(ply)
+
+    local newWeight = 0
+
+    for k, v in pairs(ply.inventory) do
+
+        local def = EFGMITEMS[v.name]
+        local count = v.data.count or 1
+
+        newWeight = math.Round(def.weight * count, 2) + newWeight
+
+    end
+
+    for i = 1, 5 do
+
+        for k, v in pairs(ply.weaponSlots[i]) do
+
+            if !table.IsEmpty(v) then
+
+                local def = EFGMITEMS[v.name]
+                local count = v.data.count or 1
+
+                newWeight = math.Round(def.weight * count, 2) + newWeight
+
+            end
+
+        end
+
+    end
+
+    ply:SetNWFloat("InventoryWeight", newWeight)
+    return newWeight
+
+end
+
+hook.Add("PlayerSpawn", "GiveEquippedItemsOnSpawn", function(ply)
+
+    ply.SpawnTimerVManip = CurTime() + 1 -- fuck off
+
+    for i = 1, 5 do
+
+        for k, v in pairs(ply.weaponSlots[i]) do
+
+            if !table.IsEmpty(v) then
+
+                local item = table.Copy(v)
+                if item == nil then return end
+
+                equipWeaponName = item.name
+                local wpn = ply:Give(item.name)
+                LoadPresetFromCode(wpn, item.data.att)
+
+            end
+
+        end
+
+    end
+
+end)
+
 function GiveAmmo(ply, count)
 
     local ammo = "efgm_ammo_556x45"
@@ -626,3 +686,17 @@ function GiveItem(ply, name, type, count)
 
 end
 concommand.Add("efgm_debug_giveitem", function(ply, cmd, args) GiveItem(ply, args[1], tonumber(args[2]), tonumber(args[3])) end)
+
+function WipeInventory(ply)
+
+    ply.invStr = ""
+    ply.inventory = {}
+
+    net.Start("PlayerNetworkInventory", false)
+    net.WriteString("")
+    net.Send(ply)
+
+    ply:SetNWFloat("InventoryWeight", 0.00)
+
+end
+concommand.Add("efgm_debug_wipeinventory", function(ply, cmd, args) WipeInventory(ply) end)
