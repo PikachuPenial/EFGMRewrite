@@ -6653,7 +6653,7 @@ function Menu.OpenTab.Match()
 
     local mapName = MAPNAMES[mapRawName]
     surface.SetFont("PuristaBold50")
-    local mapNameText = string.upper(mapName)
+    local mapNameText = string.upper(mapName or "")
     local mapNameTextSize = surface.GetTextSize(mapNameText)
 
     local mapLegend = vgui.Create("DPanel", mapHolder)

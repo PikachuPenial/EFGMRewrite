@@ -107,6 +107,46 @@ function InitializeStashString(ply, query, value)
 
 end
 
+function InitializeInventoryString(ply, query, value)
+
+	if query == "new" then ply.invStr = tostring(value) return tostring(value) end
+
+	for k, v in ipairs(query) do
+
+		if v.Key == "Inventory" then
+
+			ply.invStr = tostring(v.Value)
+			return tostring(v.Value)
+
+		end
+
+	end
+
+	ply.invStr = tostring(value)
+    return tostring(value)
+
+end
+
+function InitializeEquippedString(ply, query, value)
+
+	if query == "new" then ply.equStr = tostring(value) return tostring(value) end
+
+	for k, v in ipairs(query) do
+
+		if v.Key == "Equipped" then
+
+			ply.equStr = tostring(v.Value)
+			return tostring(v.Value)
+
+		end
+
+	end
+
+	ply.equStr = tostring(value)
+    return tostring(value)
+
+end
+
 function UninitializeNetworkBool(ply, query, key)
 
 	local id64 = ply:SteamID64()
@@ -243,8 +283,75 @@ function UninitializeStashString(ply, query, valueOverride)
 
 end
 
-util.AddNetworkString("PlayerNetworkInventory")
+function UninitializeInventoryString(ply, query, valueOverride)
+
+	local id64 = ply:SteamID64()
+	local name = ply:Name()
+    local value = ""
+
+    if valueOverride == nil then
+
+	    value = tostring(ply.invStr)
+
+    else
+
+	    value = tostring(valueOverride)
+
+    end
+
+	if query == "new" then tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr("Inventory") .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), " return end
+
+	for k, v in ipairs(query) do
+
+		if v.Key == "Inventory" then
+
+			tempCMD = tempCMD .. "WHEN " .. SQLStr("Inventory") .. " THEN " .. SQLStr(value) .. " "
+			return
+
+		end
+
+	end
+
+	tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr("Inventory") .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), "
+
+end
+
+function UninitializeEquippedString(ply, query, valueOverride)
+
+	local id64 = ply:SteamID64()
+	local name = ply:Name()
+    local value = ""
+
+    if valueOverride == nil then
+
+	    value = tostring(ply.equStr)
+
+    else
+
+	    value = tostring(valueOverride)
+
+    end
+
+	if query == "new" then tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr("Equipped") .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), " return end
+
+	for k, v in ipairs(query) do
+
+		if v.Key == "Equipped" then
+
+			tempCMD = tempCMD .. "WHEN " .. SQLStr("Equipped") .. " THEN " .. SQLStr(value) .. " "
+			return
+
+		end
+
+	end
+
+	tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr("Equipped") .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), "
+
+end
+
 util.AddNetworkString("PlayerNetworkStash")
+util.AddNetworkString("PlayerNetworkInventory")
+util.AddNetworkString("PlayerNetworkEquipped")
 
 -- Yo the way this shit works is very cool, nice job pene
 function SetupPlayerData(ply)
@@ -284,16 +391,43 @@ function SetupPlayerData(ply)
     InitializeNetworkInt(ply, query, "CurrentExtractionStreak", 0)
     InitializeNetworkInt(ply, query, "BestExtractionStreak", 0)
 
+	-- item related
+	InitializeNetworkFloat(ply, query, "InventoryWeight", 0)
+
     -- stash
     local stashString = InitializeStashString(ply, query, "")
 	ply.stash = DecodeStash(ply, stashString)
 	if ply.stash == nil then ply.stash = {} end
 
-	net.Start("PlayerNetworkInventory", false)
-    net.Send(ply)
+	-- inventory
+	local inventoryString = InitializeInventoryString(ply, query, "")
+	ply.inventory = DecodeStash(ply, inventoryString) -- yes this works ignore function name
+	if ply.inventory == nil then ply.inventory = {} end
+
+	local equippedString = InitializeEquippedString(ply, query, "")
+	ply.weaponSlots = DecodeStash(ply, equippedString)
+	if ply.weaponSlots == nil then
+
+		ply.weaponSlots = {}
+		for k, v in pairs(WEAPONSLOTS) do
+
+			ply.weaponSlots[v.ID] = {}
+			for i = 1, v.COUNT, 1 do ply.weaponSlots[v.ID][i] = {} end
+
+		end
+
+	end
 
     net.Start("PlayerNetworkStash", false)
     net.WriteString(stashString)
+    net.Send(ply)
+
+	net.Start("PlayerNetworkInventory", false)
+	net.WriteString(inventoryString)
+    net.Send(ply)
+
+	net.Start("PlayerNetworkEquipped", false)
+	net.WriteString(equippedString)
     net.Send(ply)
 
 end
@@ -341,8 +475,12 @@ function SavePlayerData(ply)
     UninitializeNetworkInt(ply, query, "CurrentExtractionStreak")
     UninitializeNetworkInt(ply, query, "BestExtractionStreak")
 
-    -- stash
+    -- stash/inventory
+	UninitializeNetworkFloat(ply, query, "InventoryWeight")
+
     UninitializeStashString(ply, query)
+	UninitializeInventoryString(ply, query)
+	UninitializeEquippedString(ply, query)
 
 	tempNewCMD = string.sub(tempNewCMD, 1, -3) .. ";"
 	tempCMD = tempCMD .. "ELSE Value END WHERE SteamID = " .. id64 .. ";"
@@ -368,19 +506,33 @@ hook.Add("PlayerDisconnected", "PlayerUninitializeStats", function(ply)
     ply:SetNWBool("FreshWipe", false)
 
     if !ply:CompareStatus(0) then
+
         ply:SetNWInt("Quits", ply:GetNWInt("Quits", 0) + 1)
+
+		-- wipe inventory if leaving WHILE in a raid
+		ReinstantiateInventory(ply)
+
     end
 
 	UpdateStashString(ply)
+	UpdateInventoryString(ply)
+	UpdateEquippedString(ply)
+
 	SavePlayerData(ply)
 
 end)
 
 hook.Add("ShutDown", "ServerUninitializeStats", function(ply)
 
+	-- will not wipe inventory for those in raid, because this shouldn't be happening unless a server crashes
 	for k, v in pairs(player.GetHumans()) do
 
+		v:SetNWBool("FreshWipe", false)
+
 		UpdateStashString(v)
+		UpdateInventoryString(v)
+		UpdateEquippedString(v)
+
 		SavePlayerData(v)
 
 	end

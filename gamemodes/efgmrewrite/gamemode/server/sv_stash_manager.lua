@@ -221,6 +221,7 @@ net.Receive("PlayerStashAddItemFromEquipped", function(len, ply)
     ply:StripWeapon(item.name)
 
     RemoveWeightFromPlayer(ply, item.name, item.data.count)
+    UpdateEquippedString(ply)
 
     AddItemToStash(ply, item.name, item.type, item.data)
 
@@ -267,6 +268,8 @@ net.Receive("PlayerStashEquipItem", function(len, ply)
         LoadPresetFromCode(wpn, item.data.att)
 
     end
+
+    UpdateEquippedString(ply)
 
 end)
 

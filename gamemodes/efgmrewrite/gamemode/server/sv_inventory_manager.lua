@@ -12,51 +12,27 @@ util.AddNetworkString("PlayerInventoryConsumeItem")
 util.AddNetworkString("PlayerInventoryLootItemFromContainer")
 util.AddNetworkString("PlayerInventorySplit")
 
-hook.Add("PlayerSpawn", "InventorySetup", function(ply)
-
-	ply.inventory = {}
-
-    ply.weaponSlots = {}
-    for k, v in pairs(WEAPONSLOTS) do
-
-        ply.weaponSlots[v.ID] = {}
-        for i = 1, v.COUNT, 1 do ply.weaponSlots[v.ID][i] = {} end
-
-    end
-
-    ply:SetNWFloat("InventoryWeight", 0.00)
-
-end)
-
 function ReinstantiateInventory(ply)
 
     ply.inventory = {}
+    ply.invStr = ""
+
+    local equMelee = table.Copy(ply.weaponSlots[WEAPONSLOTS.MELEE.ID])
 
     ply.weaponSlots = {}
+    ply.equStr = ""
     for k, v in pairs(WEAPONSLOTS) do
 
         ply.weaponSlots[v.ID] = {}
         for i = 1, v.COUNT, 1 do ply.weaponSlots[v.ID][i] = {} end
 
     end
+
+    if equMelee != nil then ply.weaponSlots[WEAPONSLOTS.MELEE.ID] = equMelee end
 
     ply:SetNWFloat("InventoryWeight", 0.00)
 
 end
-concommand.Add("efgm_flush_inventory", function(ply, cmd, args) ReinstantiateInventory(ply) net.Start("PlayerReinstantiateInventory", false) net.Send(ply) end)
-
-hook.Add("OnReloaded", "InventoryReload", function()
-
-    for k, ply in pairs(player.GetAll()) do
-
-        ReinstantiateInventory(ply)
-
-    end
-
-    net.Start("PlayerReinstantiateInventory", false)
-    net.Broadcast()
-
-end)
 
 function AddItemToInventory(ply, name, type, data)
 
@@ -76,6 +52,7 @@ function AddItemToInventory(ply, name, type, data)
     net.Send(ply)
 
     AddWeightToPlayer(ply, name, data.count)
+    UpdateInventoryString(ply)
 
 end
 
@@ -101,6 +78,8 @@ function UpdateItemFromInventory(ply, index, data)
     net.WriteUInt(index, 16)
     net.Send(ply)
 
+    UpdateInventoryString(ply)
+
     return item
 
 end
@@ -116,6 +95,8 @@ function DeleteItemFromInventory(ply, index, isEquipped)
     net.Start("PlayerInventoryDeleteItem", false)
     net.WriteUInt(index, 16)
     net.Send(ply)
+
+    UpdateInventoryString(ply)
 
     return item
 
@@ -251,6 +232,7 @@ net.Receive("PlayerInventoryDropItem", function(len, ply)
 
         table.remove(ply.inventory, itemIndex)
         RemoveWeightFromPlayer(ply, item.name, item.data.count)
+        UpdateInventoryString(ply)
 
         return
 
@@ -270,6 +252,7 @@ net.Receive("PlayerInventoryDropItem", function(len, ply)
 
     table.remove(ply.inventory, itemIndex)
     RemoveWeightFromPlayer(ply, item.name, item.data.count)
+    UpdateInventoryString(ply)
 
 end)
 
@@ -296,6 +279,8 @@ net.Receive("PlayerInventoryEquipItem", function(len, ply)
         LoadPresetFromCode(wpn, item.data.att)
 
     end
+
+    UpdateEquippedString(ply)
 
 end)
 
@@ -341,11 +326,16 @@ net.Receive("PlayerInventoryUnEquipItem", function(len, ply)
     net.WriteUInt(index, 16)
     net.Send(ply)
 
+    UpdateInventoryString(ply)
+    UpdateEquippedString(ply)
+
 end)
 
 function UnequipAll(ply)
 
     for i = 1, 5 do
+
+        if i == WEAPONSLOTS.MELEE.ID then return end
 
         for k, v in pairs(ply.weaponSlots[i]) do
 
@@ -395,6 +385,9 @@ function UnequipAll(ply)
 
     end
 
+    UpdateInventoryString(ply)
+    UpdateEquippedString(ply)
+
 end
 
 net.Receive("PlayerInventoryDropEquippedItem", function(len, ply)
@@ -435,6 +428,7 @@ net.Receive("PlayerInventoryDropEquippedItem", function(len, ply)
     if type(newWep.GetData) == "function" then newWep:GetData(item.data) end
 
     RemoveWeightFromPlayer(ply, item.name, item.data.count)
+    UpdateEquippedString(ply)
 
 end)
 
@@ -477,6 +471,8 @@ net.Receive("PlayerInventoryConsumeItem", function(len, ply)
 
     end
 
+    UpdateInventoryString(ply)
+
 end)
 
 net.Receive("PlayerInventoryLootItemFromContainer", function(len, ply)
@@ -495,6 +491,7 @@ net.Receive("PlayerInventoryLootItemFromContainer", function(len, ply)
     net.Send(ply)
 
     AddWeightToPlayer(ply, newItem.name, newItem.data.count)
+    UpdateInventoryString(ply)
 
     table.remove(container.Inventory, index)
 
@@ -527,6 +524,7 @@ net.Receive("PlayerInventorySplit", function(len, ply)
         newNewData.count = count
         AddItemToInventory(ply, item, def.equipType, newNewData)
 
+        UpdateInventoryString(ply)
         return true
 
     elseif invType == "stash" then
@@ -549,6 +547,24 @@ net.Receive("PlayerInventorySplit", function(len, ply)
     end
 
 end)
+
+function UpdateInventoryString(ply)
+
+    local inventoryStr = util.TableToJSON(ply.inventory)
+    inventoryStr = util.Compress(inventoryStr)
+    inventoryStr = util.Base64Encode(inventoryStr, true)
+    ply.invStr = inventoryStr
+
+end
+
+function UpdateEquippedString(ply)
+
+    local equippedStr = util.TableToJSON(ply.weaponSlots)
+    equippedStr = util.Compress(equippedStr)
+    equippedStr = util.Base64Encode(equippedStr, true)
+    ply.equStr = equippedStr
+
+end
 
 function AddWeightToPlayer(ply, item, count)
 

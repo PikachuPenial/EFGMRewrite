@@ -1,40 +1,81 @@
 
 net.Receive("PlayerNetworkInventory", function(len, ply)
 
-    -- will eventually allow for inventory saving, but for now just instantiate it here
-    ReinstantiateInventory()
+    local inventoryStr = net.ReadString()
+
+    inventoryStr = util.Base64Decode(inventoryStr)
+    inventoryStr = util.Decompress(inventoryStr)
+
+    if !inventoryStr then return end
+
+    local inventoryTbl = util.JSONToTable(inventoryStr)
+
+    playerInventory = inventoryTbl
+    if playerInventory == nil then playerInventory = {} end
 
 end )
 
--- for dev. purposes, dont need to start new map to give yourself items after a reload
+net.Receive("PlayerNetworkEquipped", function(len, ply)
+
+    local equippedStr = net.ReadString()
+
+    equippedStr = util.Base64Decode(equippedStr)
+    equippedStr = util.Decompress(equippedStr)
+
+    if !equippedStr then return end
+
+    local equippedTbl = util.JSONToTable(equippedStr)
+
+    playerWeaponSlots = equippedTbl
+    if playerWeaponSlots == nil then
+
+        playerWeaponSlots = {}
+        for k, v in pairs(WEAPONSLOTS) do
+
+            playerWeaponSlots[v.ID] = {}
+
+            for i = 1, v.COUNT, 1 do
+
+                playerWeaponSlots[v.ID][i] = {}
+
+            end
+
+        end
+
+    end
+
+    playerEquippedSlot = 0
+    playerEquippedSubSlot = 0
+
+end )
+
 function ReinstantiateInventory()
 
     playerInventory = {}
 
+    local equMelee = table.Copy(playerWeaponSlots[WEAPONSLOTS.MELEE.ID])
+
     playerWeaponSlots = {}
     for k, v in pairs(WEAPONSLOTS) do
 
-    playerWeaponSlots[v.ID] = {}
+        playerWeaponSlots[v.ID] = {}
 
-    for i = 1, v.COUNT, 1 do
-        playerWeaponSlots[v.ID][i] = {}
+        for i = 1, v.COUNT, 1 do
+
+            playerWeaponSlots[v.ID][i] = {}
+
+        end
+
     end
 
+    if equMelee != nil then playerWeaponSlots[WEAPONSLOTS.MELEE.ID] = equMelee end
+
+    playerEquippedSlot = 0
+    playerEquippedSubSlot = 0
+
 end
 
-playerEquippedSlot = 0
-playerEquippedSubSlot = 0
-
-end
-
-hook.Add("OnReloaded", "InventoryReload", function() ReinstantiateInventory() RunConsoleCommand("efgm_flush_inventory") end)
 net.Receive("PlayerReinstantiateInventory", function(len, ply) ReinstantiateInventory() end)
-
-net.Receive("PlayerInventoryReload", function(len, ply)
-
-    ReloadInventory()
-
-end )
 
 net.Receive("PlayerInventoryAddItem", function(len, ply)
 
@@ -78,6 +119,8 @@ net.Receive("PlayerInventoryUnEquipAll", function(len, ply)
 
     playerWeaponSlots = {}
     for k, v in pairs(WEAPONSLOTS) do
+
+        if v.ID == WEAPONSLOTS.MELEE.ID then return end
 
         playerWeaponSlots[v.ID] = {}
 
