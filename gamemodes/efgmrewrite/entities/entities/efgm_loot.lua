@@ -26,13 +26,6 @@ end
 
 function ENT:Initialize()
 
-    if self.LootType == 4 then -- barter items do not exist yet
-
-        self.HasValidType = false
-        return
-
-    end
-
     if self.LootType == 0 then self.ContainerName = "ASSORTED BOX"
     elseif self.LootType == 1 then self.ContainerName = "MILITARY BOX"
     elseif self.LootType == 2 then self.ContainerName = "AMMUNITION BOX"
