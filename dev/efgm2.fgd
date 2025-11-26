@@ -28,6 +28,14 @@
 
 ]
 
+@PointClass base(Targetname) = efgm_firingrange_interface : "Firing Range Interface"
+[
+
+    //Inputs
+    input SetPlayerInRange(bool) : "Tells the firing range system to mark as in the range."
+
+]
+
 @PointClass base(Targetname) = efgm_event_interface : "Event System Interface"
 [
 
