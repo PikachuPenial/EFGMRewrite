@@ -261,15 +261,3 @@ hook.Add("PlayerCanPickupWeapon", "InventoryWeaponPickup", function(ply, wep)
 	return wepClass == tempEquipWeaponName
 
 end)
-
-function DebugGetAttString(ply)
-
-	wep = ply:GetActiveWeapon()
-
-	local atts = table.Copy(wep.Attachments)
-	local str = GenerateAttachString(atts)
-
-	print(str)
-
-end
-concommand.Add("makeatts", function(ply, cmd, args) DebugGetAttString(ply) end)

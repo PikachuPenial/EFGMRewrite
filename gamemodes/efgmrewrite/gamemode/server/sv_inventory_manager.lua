@@ -7,6 +7,7 @@ util.AddNetworkString("PlayerInventoryDropItem")
 util.AddNetworkString("PlayerInventoryEquipItem")
 util.AddNetworkString("PlayerInventoryUnEquipItem")
 util.AddNetworkString("PlayerInventoryUnEquipAll")
+util.AddNetworkString("PlayerInventoryUpdateEquipped")
 util.AddNetworkString("PlayerInventoryDropEquippedItem")
 util.AddNetworkString("PlayerInventoryConsumeItem")
 util.AddNetworkString("PlayerInventoryLootItemFromContainer")
@@ -387,6 +388,38 @@ function UnequipAll(ply)
 
     UpdateInventoryString(ply)
     UpdateEquippedString(ply)
+
+end
+
+function MatchWithEquippedAndUpdate(ply, itemName, attsTbl)
+
+    for i = 1, 5 do
+
+        for k, v in pairs(ply.weaponSlots[i]) do
+
+            if !table.IsEmpty(v) then
+
+                if v.name == itemName and v.data.att then
+
+                    local atts = table.Copy(attsTbl)
+                    local str = GenerateAttachString(atts)
+                    v.data.att = str
+
+                    net.Start("PlayerInventoryUpdateEquipped", false)
+                    net.WriteTable(v.data)
+                    net.WriteUInt(i, 16)
+                    net.WriteUInt(k, 16)
+                    net.Send(ply)
+
+                    return
+
+                end
+
+            end
+
+        end
+
+    end
 
 end
 

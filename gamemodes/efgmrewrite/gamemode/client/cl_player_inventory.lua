@@ -138,6 +138,19 @@ net.Receive("PlayerInventoryUnEquipAll", function(len, ply)
 
 end )
 
+net.Receive("PlayerInventoryUpdateEquipped", function(len, ply)
+
+    local newData, index, key
+
+    newData = net.ReadTable()
+    index = net.ReadUInt(16)
+    key = net.ReadUInt(16)
+
+    playerWeaponSlots[index][key].data = newData
+    ReloadSlots()
+
+end )
+
 function DropItemFromInventory(itemIndex, data)
 
     net.Start("PlayerInventoryDropItem", false)

@@ -2480,7 +2480,7 @@ function Menu.OpenTab.Inventory(container)
 
                 function itemInspectButton:DoClick()
 
-                    Menu.InspectItem(playerWeaponSlots[1][1].name)
+                    Menu.InspectItem(playerWeaponSlots[1][1].name, playerWeaponSlots[1][1].data)
                     surface.PlaySound("ui/element_select.wav")
                     contextMenu:KillFocus()
 
@@ -2712,7 +2712,7 @@ function Menu.OpenTab.Inventory(container)
 
                 function itemInspectButton:DoClick()
 
-                    Menu.InspectItem(playerWeaponSlots[1][2].name)
+                    Menu.InspectItem(playerWeaponSlots[1][2].name, playerWeaponSlots[1][2].data)
                     surface.PlaySound("ui/element_select.wav")
                     contextMenu:KillFocus()
 
@@ -2945,7 +2945,7 @@ function Menu.OpenTab.Inventory(container)
 
                 function itemInspectButton:DoClick()
 
-                    Menu.InspectItem(playerWeaponSlots[2][1].name)
+                    Menu.InspectItem(playerWeaponSlots[2][1].name, playerWeaponSlots[2][1].data)
                     surface.PlaySound("ui/element_select.wav")
                     contextMenu:KillFocus()
 
@@ -3178,7 +3178,7 @@ function Menu.OpenTab.Inventory(container)
 
                 function itemInspectButton:DoClick()
 
-                    Menu.InspectItem(playerWeaponSlots[3][1].name)
+                    Menu.InspectItem(playerWeaponSlots[3][1].name, playerWeaponSlots[3][1].data)
                     surface.PlaySound("ui/element_select.wav")
                     contextMenu:KillFocus()
 

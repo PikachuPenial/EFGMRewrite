@@ -258,6 +258,9 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
                 if self:GetProcessedValue("BottomlessClip", true) then
                     self:RestoreClip()
                 end
+
+                MatchWithEquippedAndUpdate(self:GetOwner(), self.ClassName, self.Attachments)
+
             end
         end
 
