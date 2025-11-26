@@ -282,7 +282,7 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
     function SWEP:Ammo1()
         if !IsValid(self:GetOwner()) then return math.huge end
 
-        if self:GetInfiniteAmmo() then
+        if self:GetInfiniteAmmo() or self:GetOwner():GetNWBool("InRange", false) == true then
             return math.huge
         end
 
@@ -324,7 +324,7 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
 
             reserve = reserve - self:Clip2()
 
-            if !inf and IsValid(self:GetOwner()) then
+            if !inf and self:GetOwner():GetNWBool("InRange", false) == false and IsValid(self:GetOwner()) then
                 DeflowItemsFromInventory(self:GetOwner(), self.Secondary.Ammo, efgmdeduct)
                 -- self:GetOwner():SetAmmo(reserve, self.Secondary.Ammo)
             end
@@ -338,7 +338,7 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
 
             reserve = reserve - self:Clip1()
 
-            if !inf and IsValid(self:GetOwner()) then
+            if !inf and self:GetOwner():GetNWBool("InRange", false) == false and IsValid(self:GetOwner()) then
                 DeflowItemsFromInventory(self:GetOwner(), self.Primary.Ammo, efgmdeduct)
                 -- self:GetOwner():SetAmmo(reserve, self.Primary.Ammo)
             end
@@ -356,10 +356,12 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
 
     function SWEP:Unload()
         if SERVER then
-            local data = {}
-            data.count = self:Clip1()
-            FlowItemToInventory(self:GetOwner(), self.Ammo, EQUIPTYPE.Ammunition, data)
-            -- self:GetOwner():GiveAmmo(self:Clip1(), self.Ammo, true)
+            if self:GetOwner():GetNWBool("InRange", false) == false then
+                local data = {}
+                data.count = self:Clip1()
+                FlowItemToInventory(self:GetOwner(), self.Ammo, EQUIPTYPE.Ammunition, data)
+                -- self:GetOwner():GiveAmmo(self:Clip1(), self.Ammo, true)
+            end
         end
         self:SetClip1(0)
         self:SetLoadedRounds(0)

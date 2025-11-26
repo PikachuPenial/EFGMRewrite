@@ -306,7 +306,7 @@ net.Receive("PlayerInventoryUnEquipItem", function(len, ply)
     end
 
     local clip1 = wep:Clip1()
-    if clip1 != -1 and clip1 != 0 then
+    if clip1 != -1 and clip1 != 0 and ply:GetNWBool("InRange", false) == false then
 
         local data = {}
         data.count = wep:Clip1()
@@ -358,7 +358,7 @@ function UnequipAll(ply)
                 end
 
                 local clip1 = wep:Clip1()
-                if clip1 != -1 and clip1 != 0 then
+                if clip1 != -1 and clip1 != 0 and ply:GetNWBool("InRange", false) == false then
 
                     local data = {}
                     data.count = wep:Clip1()
