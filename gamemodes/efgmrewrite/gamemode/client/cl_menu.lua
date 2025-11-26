@@ -2352,14 +2352,14 @@ function Menu.OpenTab.Inventory(container)
 
             function primaryItem:Paint(w, h)
 
-                surface.SetDrawColor(i.iconColor or Color(5, 5, 5, 20))
-                surface.DrawRect(0, 0, w, h)
-
                 surface.SetDrawColor(Color(255, 255, 255, 2))
                 surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
                 surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
                 surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                surface.SetDrawColor(i.iconColor or Color(5, 5, 5, 20))
+                surface.DrawRect(0, 0, w, h)
 
                 surface.SetDrawColor(255, 255, 255, 255)
                 surface.SetMaterial(i.icon)
@@ -2584,14 +2584,14 @@ function Menu.OpenTab.Inventory(container)
 
             function secondaryItem:Paint(w, h)
 
-                surface.SetDrawColor(i.iconColor or Color(5, 5, 5, 20))
-                surface.DrawRect(0, 0, w, h)
-
                 surface.SetDrawColor(Color(255, 255, 255, 2))
                 surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
                 surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
                 surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                surface.SetDrawColor(i.iconColor or Color(5, 5, 5, 20))
+                surface.DrawRect(0, 0, w, h)
 
                 surface.SetDrawColor(255, 255, 255, 255)
                 surface.SetMaterial(i.icon)
@@ -2817,14 +2817,14 @@ function Menu.OpenTab.Inventory(container)
 
             function holsterItem:Paint(w, h)
 
-                surface.SetDrawColor(i.iconColor or Color(5, 5, 5, 20))
-                surface.DrawRect(0, 0, w, h)
-
                 surface.SetDrawColor(Color(255, 255, 255, 2))
                 surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
                 surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
                 surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                surface.SetDrawColor(i.iconColor or Color(5, 5, 5, 20))
+                surface.DrawRect(0, 0, w, h)
 
                 surface.SetDrawColor(255, 255, 255, 255)
                 surface.SetMaterial(i.icon)
@@ -3050,14 +3050,14 @@ function Menu.OpenTab.Inventory(container)
 
             function meleeItem:Paint(w, h)
 
-                surface.SetDrawColor(i.iconColor or Color(5, 5, 5, 20))
-                surface.DrawRect(0, 0, w, h)
-
                 surface.SetDrawColor(Color(255, 255, 255, 2))
                 surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
                 surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
                 surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                surface.SetDrawColor(i.iconColor or Color(5, 5, 5, 20))
+                surface.DrawRect(0, 0, w, h)
 
                 surface.SetDrawColor(255, 255, 255, 255)
                 surface.SetMaterial(i.icon)
@@ -3632,8 +3632,8 @@ function Menu.OpenTab.Inventory(container)
 
     local playerItems = vgui.Create("DIconLayout", playerItemsHolder)
     playerItems:Dock(TOP)
-    playerItems:SetSpaceY(-1)
-    playerItems:SetSpaceX(-1)
+    playerItems:SetSpaceY(0)
+    playerItems:SetSpaceX(0)
 
     local playerItemsBar = playerItemsHolder:GetVBar()
     playerItemsBar:SetHideButtons(true)
@@ -3693,14 +3693,14 @@ function Menu.OpenTab.Inventory(container)
 
             function item:Paint(w, h)
 
-                surface.SetDrawColor(i.iconColor or Color(5, 5, 5, 20))
-                surface.DrawRect(0, 0, w, h)
-
                 surface.SetDrawColor(Color(255, 255, 255, 2))
                 surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
                 surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
                 surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                surface.SetDrawColor(i.iconColor or Color(5, 5, 5, 20))
+                surface.DrawRect(0, 0, w, h)
 
                 surface.SetDrawColor(255, 255, 255, 255)
                 surface.SetMaterial(i.icon)
@@ -4083,8 +4083,8 @@ function Menu.OpenTab.Inventory(container)
 
         local containerItems = vgui.Create("DIconLayout", containerItemsHolder)
         containerItems:Dock(TOP)
-        containerItems:SetSpaceY(-1)
-        containerItems:SetSpaceX(-1)
+        containerItems:SetSpaceY(0)
+        containerItems:SetSpaceX(0)
 
         local containerItemsBar = containerItemsHolder:GetVBar()
         containerItemsBar:SetHideButtons(true)
@@ -4137,14 +4137,14 @@ function Menu.OpenTab.Inventory(container)
 
                 function item:Paint(w, h)
 
-                    surface.SetDrawColor(i.iconColor or Color(5, 5, 5, 20))
-                    surface.DrawRect(0, 0, w, h)
-
                     surface.SetDrawColor(Color(255, 255, 255, 2))
                     surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
                     surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
                     surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
                     surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                    surface.SetDrawColor(i.iconColor or Color(5, 5, 5, 20))
+                    surface.DrawRect(0, 0, w, h)
 
                     surface.SetDrawColor(255, 255, 255, 255)
                     surface.SetMaterial(i.icon)
@@ -4550,8 +4550,8 @@ function Menu.OpenTab.Inventory(container)
 
     local stashItems = vgui.Create("DIconLayout", stashItemsHolder)
     stashItems:Dock(TOP)
-    stashItems:SetSpaceY(-1)
-    stashItems:SetSpaceX(-1)
+    stashItems:SetSpaceY(0)
+    stashItems:SetSpaceX(0)
 
     local stashItemsBar = stashItemsHolder:GetVBar()
     stashItemsBar:SetHideButtons(true)
@@ -4628,14 +4628,14 @@ function Menu.OpenTab.Inventory(container)
 
             function item:Paint(w, h)
 
-                surface.SetDrawColor(i.iconColor or Color(5, 5, 5, 20))
-                surface.DrawRect(0, 0, w, h)
-
                 surface.SetDrawColor(Color(255, 255, 255, 2))
                 surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
                 surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
                 surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                surface.SetDrawColor(i.iconColor or Color(5, 5, 5, 20))
+                surface.DrawRect(0, 0, w, h)
 
                 surface.SetDrawColor(255, 255, 255, 255)
                 surface.SetMaterial(i.icon)
@@ -5096,8 +5096,8 @@ function Menu.OpenTab.Market()
 
     local stashItems = vgui.Create("DIconLayout", stashItemsHolder)
     stashItems:Dock(TOP)
-    stashItems:SetSpaceY(-1)
-    stashItems:SetSpaceX(-1)
+    stashItems:SetSpaceY(0)
+    stashItems:SetSpaceX(0)
 
     local stashItemsBar = stashItemsHolder:GetVBar()
     stashItemsBar:SetHideButtons(true)
@@ -5176,14 +5176,14 @@ function Menu.OpenTab.Market()
 
             function item:Paint(w, h)
 
-                surface.SetDrawColor(i.iconColor or Color(5, 5, 5, 20))
-                surface.DrawRect(0, 0, w, h)
-
                 surface.SetDrawColor(Color(255, 255, 255, 2))
                 surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
                 surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
                 surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                surface.SetDrawColor(i.iconColor or Color(5, 5, 5, 20))
+                surface.DrawRect(0, 0, w, h)
 
                 surface.SetDrawColor(255, 255, 255, 255)
                 surface.SetMaterial(i.icon)
@@ -5519,6 +5519,19 @@ function Menu.OpenTab.Market()
 
     end
 
+    local showBasedOnLevel = "all"
+    local marketShowUnlockButton = vgui.Create("DButton", marketCategoryHolder)
+    marketShowUnlockButton:Dock(TOP)
+    marketShowUnlockButton:SetSize(0, EFGM.MenuScale(20))
+    marketShowUnlockButton:DockMargin(0, 0, 0, EFGM.MenuScale(5))
+    marketShowUnlockButton:SetText("SHOW EVERYTHING")
+
+    marketShowUnlockButton.OnCursorEntered = function(s)
+
+        surface.PlaySound("ui/element_hover.wav")
+
+    end
+
     local marketCategoryEntryList = vgui.Create("DCategoryList", marketCategoryHolder)
     marketCategoryEntryList:Dock(FILL)
     marketCategoryEntryList:SetBackgroundColor(Color(0, 0, 0, 0))
@@ -5747,7 +5760,10 @@ function Menu.OpenTab.Market()
                 local itemValueTextSize = surface.GetTextSize(itemValueText)
 
                 local roubleIcon = Material("icons/rouble_icon.png")
+                local sellIcon = Material("icons/sell_icon.png")
                 local lockIcon = Material("icons/lock_icon.png")
+
+                local plyLevel = ply:GetNWInt("Level", 1)
 
                 function item:PaintOver(w, h)
 
@@ -5770,7 +5786,11 @@ function Menu.OpenTab.Market()
 
                     surface.SetDrawColor(255, 255, 255, 255)
 
-                    if v.canPurchase then surface.SetMaterial(roubleIcon) else surface.SetMaterial(lockIcon) end
+                    if !v.canPurchase then surface.SetMaterial(sellIcon) else
+
+                        if plyLevel < v.level then surface.SetMaterial(lockIcon) else surface.SetMaterial(roubleIcon) end
+
+                    end
 
                     surface.DrawTexturedRect((w / 2) - EFGM.MenuScale(12) - (itemValueTextSize / 2), h - EFGM.MenuScale(27), EFGM.MenuScale(20), EFGM.MenuScale(20))
 
@@ -5852,7 +5872,7 @@ function Menu.OpenTab.Market()
 
                     end
 
-                    if v.canPurchase then
+                    if v.canPurchase and plyLevel >= v.level then
 
                         contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
 
@@ -5909,6 +5929,8 @@ function Menu.OpenTab.Market()
 
         if items == nil then items = curItems end
 
+        local plyLevel = ply:GetNWInt("Level", 1)
+
         marketTbl = {}
         local numOfItems = 0
         currentPage = 1
@@ -5920,6 +5942,8 @@ function Menu.OpenTab.Market()
             for k2, v2 in pairs(EFGMITEMS) do
 
                 if marketSearchText != "" and !(string.find((v2.fullName and v2.fullName or v2.displayName):lower(), marketSearchText) or string.find((k2):lower(), marketSearchText)) then continue end
+                if showBasedOnLevel == "unlocked" and plyLevel < (v2.levelReq or 1) then continue end
+                if showBasedOnLevel == "unlocked" and !(v2.canPurchase or v2.canPurchase == nil) then continue end
 
                 if v2.displayType == v1 then
 
@@ -6063,6 +6087,26 @@ function Menu.OpenTab.Market()
 
             sortWith = "ascending"
             marketSortWithButton:SetText("ASCENDING ORDER")
+
+        end
+
+        UpdateMarketList()
+
+    end
+
+    function marketShowUnlockButton:DoClick()
+
+        surface.PlaySound("ui/element_select.wav")
+
+        if showBasedOnLevel == "all" then
+
+            showBasedOnLevel = "unlocked"
+            marketShowUnlockButton:SetText("SHOW UNLOCKED")
+
+        else
+
+            showBasedOnLevel = "all"
+            marketShowUnlockButton:SetText("SHOW EVERYTHING")
 
         end
 
