@@ -26,6 +26,9 @@ end
 
 function ENT:Initialize()
 
+    -- failsafe for unsupported loot types
+    if self.LootType < 0 or self.LootType > 5 then self.LootType = 0 end
+
     if self.LootType == 0 then self.ContainerName = "ASSORTED BOX"
     elseif self.LootType == 1 then self.ContainerName = "MILITARY BOX"
     elseif self.LootType == 2 then self.ContainerName = "AMMUNITION BOX"
