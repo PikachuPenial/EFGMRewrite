@@ -10,7 +10,8 @@ ENT.Name = ""
 
 function ENT:Initialize()
 
-	self:SetModel(self.Model)
+    -- temporary
+	self:SetModel("models/efgm/loot_containers/safe.mdl")
 	self:PhysicsInit(SOLID_VPHYSICS)
 	self:SetMoveType(MOVETYPE_VPHYSICS)
 	self:SetSolid(SOLID_VPHYSICS)
