@@ -3752,6 +3752,83 @@ EFGMITEMS = {}
         ["sizeY"] = 1
     }
 
+    EFGMITEMS["efgm_keycard_storage_entrance"] = {
+        ["fullName"] = "Storage Building Access Keycard",
+        ["displayName"] = "Storage",
+        ["displayType"] = "Concrete Key",
+        ["weight"] = 0.2,
+        ["value"] = 60000,
+        ["levelReq"] = 1,
+        ["equipType"] = EQUIPTYPE.None,
+        ["consumableType"] = "key",
+        ["consumableValue"] = 5,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/keys/keycard_pink.png", "smooth"),
+        ["iconColor"] = Color(31, 38, 26, 155),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+
+    EFGMITEMS["efgm_key_breakroom"] = {
+        ["fullName"] = "Parking Garage Break Room Key",
+        ["displayName"] = "Break R.",
+        ["displayType"] = "Belmont Key",
+        ["weight"] = 0.2,
+        ["value"] = 40000,
+        ["levelReq"] = 1,
+        ["equipType"] = EQUIPTYPE.None,
+        ["consumableType"] = "key",
+        ["consumableValue"] = 5,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/keys/industrial.png", "smooth"),
+        ["iconColor"] = Color(31, 38, 26, 155),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["efgm_key_kitchen"] = {
+        ["fullName"] = "Kitchen Key",
+        ["displayName"] = "Kitchen",
+        ["displayType"] = "Belmont Key",
+        ["weight"] = 0.2,
+        ["value"] = 70000,
+        ["levelReq"] = 1,
+        ["equipType"] = EQUIPTYPE.None,
+        ["consumableType"] = "key",
+        ["consumableValue"] = 5,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/keys/civil_belmont.png", "smooth"),
+        ["iconColor"] = Color(31, 38, 26, 155),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["efgm_key_fencedoff"] = {
+        ["fullName"] = "Fenced Off Area Key",
+        ["displayName"] = "Fenced A.",
+        ["displayType"] = "Belmont Key",
+        ["weight"] = 0.2,
+        ["value"] = 30000,
+        ["levelReq"] = 1,
+        ["equipType"] = EQUIPTYPE.None,
+        ["consumableType"] = "key",
+        ["consumableValue"] = 5,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/keys/civil_belmont.png", "smooth"),
+        ["iconColor"] = Color(31, 38, 26, 155),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
 -- BARTER
     EFGMITEMS["efgm_barter_fireklean"] = {
         ["fullName"] = "#FireKlean gun lube",

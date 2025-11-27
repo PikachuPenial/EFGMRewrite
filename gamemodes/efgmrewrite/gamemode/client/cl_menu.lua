@@ -6577,6 +6577,7 @@ function Menu.OpenTab.Match()
     map:ClampPanOffset()
 
     -- most of this was vibe coded, and im genuinely scared how well it works
+    -- lmao bro vibe codes
     function map:OnMouseWheeled(delta)
 
         local oldZoom = self.Zoom
@@ -6654,7 +6655,7 @@ function Menu.OpenTab.Match()
 
             -- surface.DrawCircle(posX, posY, (5 * mapSizeX * self.Zoom) / 720 )
             surface.SetDrawColor(255, 255, 255, 240)
-            surface.SetMaterial(Material("icons/map/pmc_spawn.png", "mips"))
+            surface.SetMaterial(Material("icons/map/pmc_spawn_alt.png", "mips"))
             surface.DrawTexturedRect(posX - 16, posY - 16, 32, 32)
 
             -- local text = "Spawn"
