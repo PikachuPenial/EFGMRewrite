@@ -129,7 +129,7 @@ if SERVER then
                 end
             end
 
-            RunConsoleCommand("changelevel", mapTable[math.random(#mapTable)]) -- will eventually carry over everybody's weapons and ammo and shit
+            RunConsoleCommand("changelevel", mapTable[math.random(#mapTable)])
         end
 
         function RAID:SubmitVote(ply, vote)

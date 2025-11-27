@@ -28,16 +28,5 @@
 			"default"	"0"
 			"singleplayer"	"true"
 		}
-
-		2
-		{
-			"name"		"efgm_debug_pickupinv"
-			"text"		"Unrestrict Weapon Pickups"
-			"help"		"Description here ig"
-			"type"		"CheckBox"
-			"default"	"0"
-			"singleplayer"	"true"
-		}
-
 	}
 }

@@ -17,7 +17,7 @@ flippedDebugMeleeWep = table.Flip(debugMeleeWep)
 -- server convars
 if SERVER then
     -- modifiers
-    local modif = "\\nRecoilKickMult\\t0.75\\nVisualRecoilPunchMult\\t1.5\\nVisualRecoilRollMult\\t1.5\\nVisualRecoilSideMult\\t1\\nVisualRecoilUpMult\\t1\\nVisualRecoilMult\\t3\\nRecoilRandomSideMult\\t1\\nSwayMultMidAir\\t3.33\\nRecoilAutoControlMultShooting\\t0.05\\nRecoilUpMult\\t0.5\\nRecoilAutoControlMult\\t0.66\\nFreeAimRadiusMult\\t1.33\\nSpreadMultSights\\t0.5\\nSwayMultMove\\t1.5 "
+    local modif = "\\nRecoilKickMult\\t0.75\\nVisualRecoilPunchMult\\t1.5\\nVisualRecoilRollMult\\t1.5\\nVisualRecoilSideMult\\t1\\nVisualRecoilUpMult\\t1\\nVisualRecoilMult\\t3\\nRecoilRandomSideMult\\t1.5\\nSwayMultMidAir\\t3.33\\nRecoilAutoControlMultShooting\\t0.05\\nRecoilUpMult\\t0.5\\nRecoilAutoControlMult\\t0.66\\nFreeAimRadiusMult\\t1.33\\nSpreadMultSights\\t0.5\\nSwayMultMove\\t1.5\\nVisualRecoilPunchMultSights\\t3 "
     RunConsoleCommand("arc9_modifiers", modif)
     RunConsoleCommand("arc9_mod_adstime", "0.75")
     RunConsoleCommand("arc9_mod_bodydamagecancel", "1")
@@ -82,7 +82,7 @@ if SERVER then
 
     -- attachments
     RunConsoleCommand("arc9_atts_nocustomize", "0") -- why would anyone do this
-    RunConsoleCommand("arc9_atts_generate_entities", "1")
+    RunConsoleCommand("arc9_atts_generate_entities", "0")
     RunConsoleCommand("arc9_atts_max", "100")
     RunConsoleCommand("arc9_atts_lock", "0")
     RunConsoleCommand("arc9_atts_loseondie", "1")

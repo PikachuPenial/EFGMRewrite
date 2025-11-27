@@ -5,9 +5,9 @@ GM.Website = "https://github.com/PikachuPenial/EFGMRewrite"
 
 if !ConVarExists("efgm_derivesbox") then CreateConVar("efgm_derivesbox", "0", FCVAR_REPLICATED + FCVAR_NOTIFY, "Hooks the sandbox gamemode into EFGM, allowing for things like the spawn menu to be accessed. Used for development purposes", 0, 1) end
 if !ConVarExists("efgm_arenamode") then CreateConVar("efgm_arenamode", "0", FCVAR_REPLICATED + FCVAR_NOTIFY, "Enables features such as infinite ammo, spawning with loadouts, etc. Keep disabled for the classic EFGM experience", 0, 1) end
-if !ConVarExists("efgm_debug_pickupinv") then CreateConVar("efgm_debug_pickupinv", "1", FCVAR_REPLICATED + FCVAR_NOTIFY, "", 0, 1) end
 
 if CLIENT then
+
     CreateClientConVar("efgm_music", 1, false, true, "Enable/disable the music", 0, 1)
     CreateClientConVar("efgm_musicvolume", 1, false, true, "Increase or lower the volume of the music", 0, 2)
     CreateClientConVar("efgm_hud_enable", 1, false, true, "Adjust the visibility of the user interface", 0, 1)
@@ -22,6 +22,7 @@ if CLIENT then
     CreateClientConVar("efgm_controls_togglelean", 1, true, true, "Adjust if player leans are hold or toggle", 0, 1)
     CreateClientConVar("efgm_faction_preference", 0, true, true, "Determines the faction that your playermodel is based on (0 = None, 1 = USEC, 2 = BEAR)", 0, 2)
     CreateClientConVar("efgm_privacy_invites", 2, true, true, "Determines who you receive invites from (2 = Everyone, 1 = Steam Friends, 0 = Nobody)", 0, 2)
+
 end
 
 include("!config.lua")
@@ -30,30 +31,42 @@ if GetConVar("efgm_derivesbox"):GetInt() == 1 then DeriveGamemode("sandbox") end
 
 -- include derma skin
 if SERVER then
+
     AddCSLuaFile("skins/efgm.lua")
+
 elseif CLIENT then
+
     include("skins/efgm.lua")
     hook.Add("ForceDermaSkin", "EFGMDermaSkin", function()
+
         return "Escape From Garry's Mod Derma Skin"
+
     end)
+
 end
 
 -- misc. functions
 function table.removeKey(tbl, key)
+
     local element = tbl[key]
     tbl[key] = nil
     return element
+
 end
 
 function comma_value(amount)
+
     local formatted = tostring(amount)
+
     while true do
         formatted, k = string.gsub(formatted, "^(-?%d+)(%d%d%d)", "%1,%2")
         if (k == 0) then
             break
         end
     end
+
     return formatted
+
 end
 
 -- necessary functions to sync attachments cleanly between inventories
