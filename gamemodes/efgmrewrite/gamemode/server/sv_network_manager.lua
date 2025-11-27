@@ -391,13 +391,15 @@ function SetupPlayerData(ply)
     InitializeNetworkInt(ply, query, "CurrentExtractionStreak", 0)
     InitializeNetworkInt(ply, query, "BestExtractionStreak", 0)
 
-	-- item related
+	-- stash/inventory
 	InitializeNetworkFloat(ply, query, "InventoryWeight", 0)
+	InitializeNetworkInt(ply, query, "StashMax", 150)
 
     -- stash
     local stashString = InitializeStashString(ply, query, "")
 	ply.stash = DecodeStash(ply, stashString)
 	if ply.stash == nil then ply.stash = {} end
+	ply:SetNWInt("StashCount", #ply.stash)
 
 	-- inventory
 	local inventoryString = InitializeInventoryString(ply, query, "")
@@ -479,6 +481,7 @@ function SavePlayerData(ply)
 
     -- stash/inventory
 	UninitializeNetworkFloat(ply, query, "InventoryWeight")
+	UninitializeNetworkInt(ply, query, "StashMax")
 
     UninitializeStashString(ply, query)
 	UninitializeInventoryString(ply, query)

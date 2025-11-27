@@ -156,20 +156,29 @@ function Menu:Initialize(openTo, container)
     tabParentPanel:SetPos(EFGM.MenuScale(10), EFGM.MenuScale(10))
     tabParentPanel:SetSize(ScrW(), EFGM.MenuScale(41))
 
-    local roubles = comma_value(ply:GetNWInt("Money", 0))
     surface.SetFont("PuristaBold32")
+
+    local roubles = comma_value(ply:GetNWInt("Money", 0))
     local roublesTextSize = surface.GetTextSize(roubles)
+
+    local level = ply:GetNWInt("Level", 1)
+    local levelTextSize = surface.GetTextSize(level)
 
     function tabParentPanel:Paint(w, h)
 
-        roubles = comma_value(ply:GetNWInt("Money", 0))
         surface.SetFont("PuristaBold32")
+
+        roubles = comma_value(ply:GetNWInt("Money", 0))
         roublesTextSize = surface.GetTextSize(roubles)
+
+        level = ply:GetNWInt("Level", 1)
+        levelTextSize = surface.GetTextSize(level)
 
         surface.SetDrawColor(MenuAlias.transparent)
         surface.DrawRect(0, 0, w, h)
 
         draw.SimpleTextOutlined(roubles, "PuristaBold32", w - EFGM.MenuScale(26), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined(level, "PuristaBold32", w - roublesTextSize - EFGM.MenuScale(86), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
     end
 
@@ -181,12 +190,24 @@ function Menu:Initialize(openTo, container)
     roubleIcon:SetImage("icons/rouble_icon.png")
     roubleIcon:SetDepressImage(false)
 
+    local levelIcon = vgui.Create("DImageButton", self.MenuFrame.TabParentPanel)
+    levelIcon:SetPos(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(127) - roublesTextSize - levelTextSize, EFGM.MenuScale(2))
+    levelIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
+    levelIcon:SetImage("icons/level_icon.png")
+    levelIcon:SetDepressImage(false)
+
     local x, y = 0, 0
     local sideH, sideV
 
     roubleIcon.Think = function()
 
         roubleIcon:SetX(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(66) - roublesTextSize)
+
+    end
+
+    levelIcon.Think = function()
+
+        levelIcon:SetX(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(127) - roublesTextSize - levelTextSize)
 
     end
 
@@ -267,6 +288,88 @@ function Menu:Initialize(openTo, container)
         if IsValid(roublePopOut) then
 
             roublePopOut:AlphaTo(0, 0.1, 0, function() roublePopOut:Remove() end)
+
+        end
+
+    end
+
+    levelIcon.OnCursorEntered = function(s)
+
+        x, y = Menu.MouseX, Menu.MouseY
+        surface.PlaySound("ui/element_hover.wav")
+
+        if x <= (ScrW() / 2) then sideH = true else sideH = false end
+        if y <= (ScrH() / 2) then sideV = true else sideV = false end
+
+        local function UpdatePopOutPos()
+
+            if sideH == true then
+
+                levelPopOut:SetX(math.Clamp(x + EFGM.MenuScale(15), EFGM.MenuScale(10), ScrW() - levelPopOut:GetWide() - EFGM.MenuScale(10)))
+
+            else
+
+                levelPopOut:SetX(math.Clamp(x - levelPopOut:GetWide() - EFGM.MenuScale(15), EFGM.MenuScale(10), ScrW() - levelPopOut:GetWide() - EFGM.MenuScale(10)))
+
+            end
+
+            if sideV == true then
+
+                levelPopOut:SetY(math.Clamp(y + EFGM.MenuScale(15), EFGM.MenuScale(60), ScrH() - levelPopOut:GetTall() - EFGM.MenuScale(20)))
+
+            else
+
+                levelPopOut:SetY(math.Clamp(y - levelPopOut:GetTall() + EFGM.MenuScale(15), EFGM.MenuScale(60), ScrH() - levelPopOut:GetTall() - EFGM.MenuScale(20)))
+
+            end
+
+        end
+
+        if IsValid(levelPopOut) then levelPopOut:Remove() end
+        levelPopOut = vgui.Create("DPanel", Menu.MenuFrame)
+        levelPopOut:SetSize(EFGM.MenuScale(515), EFGM.MenuScale(50))
+        UpdatePopOutPos()
+        levelPopOut:AlphaTo(255, 0.1, 0, nil)
+        levelPopOut:SetMouseInputEnabled(false)
+
+        levelPopOut.Paint = function(s, w, h)
+
+            if !IsValid(s) then return end
+
+            BlurPanel(s, EFGM.MenuScale(3))
+
+            -- panel position follows mouse position
+            x, y = Menu.MouseX, Menu.MouseY
+
+            UpdatePopOutPos()
+
+            surface.SetDrawColor(Color(0, 0, 0, 205))
+            surface.DrawRect(0, 0, w, h)
+
+            surface.SetDrawColor(Color(100, 100, 50, 45))
+            surface.DrawRect(0, 0, w, h)
+
+            surface.SetDrawColor(Color(100, 100, 50))
+            surface.DrawRect(0, 0, w, EFGM.MenuScale(5))
+
+            surface.SetDrawColor(Color(255, 255, 255, 155))
+            surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+            surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+            draw.SimpleTextOutlined("LEVEL", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            draw.SimpleTextOutlined("Your characters level, what seperates you from better services and reputation.", "Purista18", EFGM.MenuScale(5), EFGM.MenuScale(25), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        end
+
+    end
+
+    levelIcon.OnCursorExited = function(s)
+
+        if IsValid(levelPopOut) then
+
+            levelPopOut:AlphaTo(0, 0.1, 0, function() levelPopOut:Remove() end)
 
         end
 
@@ -4367,7 +4470,6 @@ function Menu.OpenTab.Inventory(container)
 
     end
 
-    local currentStashUsed = 0
     local maxStash = 150
     local stashText = vgui.Create("DPanel", stashPanel)
     stashText:Dock(TOP)
@@ -4378,7 +4480,7 @@ function Menu.OpenTab.Inventory(container)
         surface.DrawRect(0, 0, w, h)
 
         draw.SimpleTextOutlined("STASH", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-        draw.SimpleTextOutlined(currentStashUsed .. "/" .. maxStash, "PuristaBold18", EFGM.MenuScale(95), EFGM.MenuScale(13), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined(ply:GetNWInt("StashCount", 0) .. "/" .. maxStash, "PuristaBold18", EFGM.MenuScale(95), EFGM.MenuScale(13), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
     end
 
@@ -4941,7 +5043,6 @@ function Menu.OpenTab.Market()
 
     end
 
-    local currentStashUsed = 0
     local maxStash = 150
     local stashText = vgui.Create("DPanel", stashPanel)
     stashText:Dock(TOP)
@@ -4952,7 +5053,7 @@ function Menu.OpenTab.Market()
         surface.DrawRect(0, 0, w, h)
 
         draw.SimpleTextOutlined("STASH", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-        draw.SimpleTextOutlined(currentStashUsed .. "/" .. maxStash, "PuristaBold18", EFGM.MenuScale(95), EFGM.MenuScale(13), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined(ply:GetNWInt("StashCount", 0) .. "/" .. maxStash, "PuristaBold18", EFGM.MenuScale(95), EFGM.MenuScale(13), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
     end
 

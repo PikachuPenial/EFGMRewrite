@@ -27,6 +27,7 @@ function AddItemToStash(ply, name, type, data)
     net.Send(ply)
 
     UpdateStashString(ply)
+    ply:SetNWInt("StashCount", #ply.stash)
 
 end
 
@@ -42,6 +43,7 @@ function UpdateItemFromStash(ply, index, data)
     net.Send(ply)
 
     UpdateStashString(ply)
+    ply:SetNWInt("StashCount", #ply.stash)
 
     return item
 
@@ -58,6 +60,7 @@ function DeleteItemFromStash(ply, index)
     net.Send(ply)
 
     UpdateStashString(ply)
+    ply:SetNWInt("StashCount", #ply.stash)
 
     return item
 
@@ -174,6 +177,7 @@ end
 net.Receive("PlayerStashAddItemFromInventory", function(len, ply)
 
     if !ply:CompareStatus(0) then return end
+    if ply:GetNWInt("StashCount", 0) >= ply:GetNWInt("StashMax", 150) then return end
 
     local itemIndex = net.ReadUInt(16)
     local item = DeleteItemFromInventory(ply, itemIndex, false)
@@ -183,12 +187,14 @@ net.Receive("PlayerStashAddItemFromInventory", function(len, ply)
     FlowItemToStash(ply, item.name, item.type, item.data)
 
     UpdateStashString(ply)
+    ply:SetNWInt("StashCount", #ply.stash)
 
 end)
 
 net.Receive("PlayerStashAddItemFromEquipped", function(len, ply)
 
     if !ply:CompareStatus(0) then return end
+    if ply:GetNWInt("StashCount", 0) >= ply:GetNWInt("StashMax", 150) then return end
 
     local equipID = net.ReadUInt(4)
     local equipSlot = net.ReadUInt(4)
@@ -214,7 +220,7 @@ net.Receive("PlayerStashAddItemFromEquipped", function(len, ply)
 
         local data = {}
         data.count = wep:Clip1()
-        FlowItemToStash(ply, wep.Ammo, EQUIPTYPE.Ammunition, data)
+        FlowItemToInventory(ply, wep.Ammo, EQUIPTYPE.Ammunition, data)
 
     end
 
@@ -239,6 +245,7 @@ net.Receive("PlayerStashTakeItemToInventory", function(len, ply)
     FlowItemToInventory(ply, item.name, item.type, item.data)
 
     UpdateStashString(ply)
+    ply:SetNWInt("StashCount", #ply.stash)
 
 end)
 
@@ -315,6 +322,7 @@ net.Receive("PlayerStashConsumeItem", function(len, ply)
     end
 
     UpdateStashString(ply)
+    ply:SetNWInt("StashCount", #ply.stash)
 
 end)
 

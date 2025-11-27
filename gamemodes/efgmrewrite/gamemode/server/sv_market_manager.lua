@@ -4,6 +4,7 @@ util.AddNetworkString("PlayerMarketSellItem")
 net.Receive("PlayerMarketPurchaseItem", function(len, ply)
 
     if !ply:CompareStatus(0) then return false end
+    if ply:GetNWInt("StashCount", 0) >= ply:GetNWInt("StashMax", 150) then return false end
 
     local item = net.ReadString()
     local count = net.ReadUInt(8)
