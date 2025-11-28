@@ -1,4 +1,5 @@
 util.AddNetworkString("PlayerMarketPurchaseItem")
+util.AddNetworkString("PlayerMarketPurchaseItemToInventory")
 util.AddNetworkString("PlayerMarketSellItem")
 
 net.Receive("PlayerMarketPurchaseItem", function(len, ply)
@@ -53,6 +54,65 @@ net.Receive("PlayerMarketPurchaseItem", function(len, ply)
     end
 
     FlowItemToStash(ply, item, def.equipType, data)
+    UpdateStashString(ply)
+
+    ply:SetNWInt("Money", plyMoney - cost)
+
+    return true
+
+end)
+
+net.Receive("PlayerMarketPurchaseItemToInventory", function(len, ply)
+
+    if !ply:CompareStatus(0) then return false end
+
+    local item = net.ReadString()
+    local count = net.ReadUInt(8)
+
+    local def = EFGMITEMS[item]
+
+    if def.canPurchase == false then return end
+
+    local plyMoney = ply:GetNWInt("Money", 0)
+    local plyLevel = ply:GetNWInt("Level", 1)
+    local cost = def.value * count
+    local lvl = (def.levelReq or 1)
+
+    if def.equipType == EQUIPTYPE.Weapon and def.defAtts then
+
+        local atts = GetPrefixedAttachmentListFromCode(def.defAtts)
+        if !atts then return end
+
+        for _, a in ipairs(atts) do
+
+            local att = EFGMITEMS[a]
+            if att == nil then return end
+
+            cost = cost + att.value
+
+        end
+
+    end
+
+    if plyMoney < cost then return false end
+    if plyLevel < lvl then return false end
+
+    local data = {}
+    data.count = count
+
+    if def.equipType == EQUIPTYPE.Weapon and def.defAtts then
+
+        data.att = def.defAtts
+
+    end
+
+    if def.equipType == EQUIPTYPE.Consumable and def.consumableValue then
+
+        data.durability = def.consumableValue
+
+    end
+
+    FlowItemToInventory(ply, item, def.equipType, data)
     UpdateStashString(ply)
 
     ply:SetNWInt("Money", plyMoney - cost)

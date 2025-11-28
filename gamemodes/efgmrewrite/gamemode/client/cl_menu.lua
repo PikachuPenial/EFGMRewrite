@@ -1591,7 +1591,7 @@ function Menu.InspectItem(item, data)
 
 end
 
-function Menu.ConfirmPurchase(item)
+function Menu.ConfirmPurchase(item, sendTo)
 
     if IsValid(confirmPanel) then confirmPanel:Remove() end
 
@@ -1753,7 +1753,20 @@ function Menu.ConfirmPurchase(item)
 
         surface.PlaySound("ui/success.wav")
         confirmPanel:AlphaTo(0, 0.1, 0, function() confirmPanel:Remove() end)
-        PurchaseItem(item, transactionCount)
+
+        if sendTo == "stash" then PurchaseItem(item, transactionCount) elseif sendTo == "inv" then 
+            
+            PurchaseItemToInv(item, transactionCount)
+
+            Menu.MenuFrame.Closing = true
+            Menu.MenuFrame:SetKeyboardInputEnabled(false)
+            Menu.MenuFrame:SetMouseInputEnabled(false)
+
+            Menu.MenuFrame:AlphaTo(0, 0.1, 0, function()
+                Menu.MenuFrame:Close()
+            end)
+
+        end
 
     end
 
@@ -1767,6 +1780,18 @@ function Menu.ConfirmPurchase(item)
 
         surface.PlaySound("ui/element_deselect.wav")
         confirmPanel:AlphaTo(0, 0.1, 0, function() confirmPanel:Remove() end)
+
+        if sendTo == "inv" then
+
+            Menu.MenuFrame.Closing = true
+            Menu.MenuFrame:SetKeyboardInputEnabled(false)
+            Menu.MenuFrame:SetMouseInputEnabled(false)
+
+            Menu.MenuFrame:AlphaTo(0, 0.1, 0, function()
+                Menu.MenuFrame:Close()
+            end)
+
+        end
 
     end
 
@@ -5868,7 +5893,7 @@ function Menu.OpenTab.Market()
                 function item:DoClick()
 
                     if !v.canPurchase then return end
-                    Menu.ConfirmPurchase(v.id)
+                    Menu.ConfirmPurchase(v.id, "stash")
 
                 end
 
@@ -5958,7 +5983,7 @@ function Menu.OpenTab.Market()
 
                         function itemBuyButton:DoClick()
 
-                            Menu.ConfirmPurchase(v.id)
+                            Menu.ConfirmPurchase(v.id, "stash")
                             contextMenu:KillFocus()
 
                         end

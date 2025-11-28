@@ -375,6 +375,15 @@ function PurchaseItem(item, count)
 
 end
 
+function PurchaseItemToInv(item, count)
+
+    net.Start("PlayerMarketPurchaseItemToInventory", false)
+    net.WriteString(item)
+    net.WriteUInt(count, 8)
+    net.SendToServer()
+
+end
+
 function SellItem(item, count, key)
 
     net.Start("PlayerMarketSellItem", false)
