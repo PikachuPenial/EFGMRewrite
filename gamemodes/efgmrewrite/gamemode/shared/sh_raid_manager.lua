@@ -69,7 +69,7 @@ if SERVER then
                 net.WriteTable(self.MapPool)
             net.Broadcast()
 
-            for k, v in pairs(player.GetHumans()) do
+            for k, v in ipairs(player.GetHumans()) do
                 if not v:CompareStatus(0) then v:Kill() end
             end
         end
@@ -190,26 +190,6 @@ if SERVER then
         end
     --}
 
-    --{ CONSOLE COMMANDS
-        concommand.Add("efgm_startraid", function() RAID:StartRaid() end)
-        concommand.Add("efgm_endraid", function() RAID:EndRaid() end)
-
-        concommand.Add("efgm_setplayerstatus", function(ply, cmd, args)
-            if args[1] == nil then return end
-
-            local status = tonumber(args[1])
-            ply:SetRaidStatus(status)
-        end)
-
-        concommand.Add("efgm_getplayerstatus", function(ply)
-            print("Status: " .. ply:GetNWInt("PlayerRaidStatus", 0) .. ", Group: " .. ply:GetNWString( "PlayerSpawnGroup", ""))
-        end)
-
-        concommand.Add("efgm_getraidstatus", function()
-            print("Raid Status: " .. GetGlobalInt("RaidStatus") .. ", Raid Time Left: " .. GetGlobalInt("RaidTimeLeft"))
-        end)
-    --}
-
     --{ HOOKS
         hook.Add("PlayerExtraction", "RaidExtract", function(ply, extractTime, isExtractGuranteed)
             lobbySpawns = ents.FindByClass("efgm_lobby_spawn") or {} -- gets a table of all the lobby spawns
@@ -243,6 +223,10 @@ if SERVER then
                 ply:SetNWBool("RaidReady", false)
 
                 ply:Freeze(false)
+
+                ply:SetNWInt("ExperienceBonus", ply:GetNWInt("ExperienceBonus") + 200)
+
+                ApplyPlayerExperience(ply, 1)
             end)
         end)
 

@@ -36,9 +36,6 @@ function Stats.GetAll(ply)
 
     return tbl
 end
-concommand.Add("efgm_get_stats", function(ply, cmd, args)
-    PrintTable(Stats.GetAll(ply))
-end)
 
 hook.Add("PlayerDeath", "DeathUpdateStats", function(victim, weapon, attacker)
     -- update victim's stats (cringe lootcel)

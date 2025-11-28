@@ -395,6 +395,12 @@ function SetupPlayerData(ply)
 	InitializeNetworkFloat(ply, query, "InventoryWeight", 0)
 	InitializeNetworkInt(ply, query, "StashMax", 150)
 
+	for k, v in ipairs(levelArray) do
+
+		if ply:GetNWInt("Level") == k and v != "max" then ply:SetNWInt("ExperienceToNextLevel", v) end
+
+	end
+
     -- stash
     local stashString = InitializeStashString(ply, query, "")
 	ply.stash = DecodeStash(ply, stashString)
@@ -529,7 +535,7 @@ end)
 
 hook.Add("ShutDown", "ServerUninitializeStats", function(ply)
 
-	for k, v in pairs(player.GetHumans()) do
+	for k, v in ipairs(player.GetHumans()) do
 
 		v:SetNWBool("FreshWipe", false)
 

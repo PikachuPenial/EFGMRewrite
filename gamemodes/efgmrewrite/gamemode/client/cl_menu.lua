@@ -158,20 +158,20 @@ function Menu:Initialize(openTo, container)
 
     surface.SetFont("PuristaBold32")
 
-    local roubles = comma_value(ply:GetNWInt("Money", 0))
+    local roubles = comma_value(Menu.Player:GetNWInt("Money", 0))
     local roublesTextSize = surface.GetTextSize(roubles)
 
-    local level = ply:GetNWInt("Level", 1)
+    local level = Menu.Player:GetNWInt("Level", 1)
     local levelTextSize = surface.GetTextSize(level)
 
     function tabParentPanel:Paint(w, h)
 
         surface.SetFont("PuristaBold32")
 
-        roubles = comma_value(ply:GetNWInt("Money", 0))
+        roubles = comma_value(Menu.Player:GetNWInt("Money", 0))
         roublesTextSize = surface.GetTextSize(roubles)
 
-        level = ply:GetNWInt("Level", 1)
+        level = Menu.Player:GetNWInt("Level", 1)
         levelTextSize = surface.GetTextSize(level)
 
         surface.SetDrawColor(MenuAlias.transparent)
@@ -327,7 +327,7 @@ function Menu:Initialize(openTo, container)
 
         if IsValid(levelPopOut) then levelPopOut:Remove() end
         levelPopOut = vgui.Create("DPanel", Menu.MenuFrame)
-        levelPopOut:SetSize(EFGM.MenuScale(515), EFGM.MenuScale(50))
+        levelPopOut:SetSize(EFGM.MenuScale(515), EFGM.MenuScale(90))
         UpdatePopOutPos()
         levelPopOut:AlphaTo(255, 0.1, 0, nil)
         levelPopOut:SetMouseInputEnabled(false)
@@ -360,6 +360,23 @@ function Menu:Initialize(openTo, container)
 
             draw.SimpleTextOutlined("LEVEL", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
             draw.SimpleTextOutlined("Your characters level, what seperates you from better services and reputation.", "Purista18", EFGM.MenuScale(5), EFGM.MenuScale(25), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            draw.SimpleTextOutlined(level, "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(50), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            draw.SimpleTextOutlined(level + 1, "PuristaBold24", w - EFGM.MenuScale(5), EFGM.MenuScale(50), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            draw.SimpleTextOutlined(Menu.Player:GetNWInt("Experience", 0) .. "/" .. Menu.Player:GetNWInt("ExperienceToNextLevel", 500), "PuristaBold16", EFGM.MenuScale(30), EFGM.MenuScale(57), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            surface.SetDrawColor(Color(255, 255, 255, 155))
+            surface.DrawRect(EFGM.MenuScale(5), EFGM.MenuScale(75), EFGM.MenuScale(505), EFGM.MenuScale(1))
+            surface.DrawRect(EFGM.MenuScale(5), EFGM.MenuScale(84), EFGM.MenuScale(505), EFGM.MenuScale(1))
+            surface.DrawRect(EFGM.MenuScale(5), EFGM.MenuScale(75), EFGM.MenuScale(1), EFGM.MenuScale(10))
+            surface.DrawRect(EFGM.MenuScale(509), EFGM.MenuScale(75), EFGM.MenuScale(1), EFGM.MenuScale(10))
+
+            surface.SetDrawColor(30, 30, 30, 125)
+            surface.DrawRect(EFGM.MenuScale(5), EFGM.MenuScale(75), EFGM.MenuScale(505), EFGM.MenuScale(10))
+
+            surface.SetDrawColor(255, 255, 255, 175)
+            surface.DrawRect(EFGM.MenuScale(5), EFGM.MenuScale(75), (Menu.Player:GetNWInt("Experience", 0) / Menu.Player:GetNWInt("ExperienceToNextLevel", 500)) * EFGM.MenuScale(505), EFGM.MenuScale(10))
 
         end
 
@@ -1633,8 +1650,8 @@ function Menu.ConfirmPurchase(item)
     local transactionCost = i.value
     local transactionCount = 1
 
-    local plyMoney = ply:GetNWInt("Money", 0)
-    local plyLevel = ply:GetNWInt("Level", 1)
+    local plyMoney = Menu.Player:GetNWInt("Money", 0)
+    local plyLevel = Menu.Player:GetNWInt("Level", 1)
 
     -- can't afford one of the item
     if plyMoney < i.value then surface.PlaySound("ui/element_deselect.wav") return end
@@ -3553,14 +3570,14 @@ function Menu.OpenTab.Inventory(container)
     itemsText:Dock(TOP)
     itemsText:SetSize(0, EFGM.MenuScale(28))
     surface.SetFont("PuristaBold24")
-    local usedWeight = string.format("%04.2f", ply:GetNWFloat("InventoryWeight", 0.00))
+    local usedWeight = string.format("%04.2f", Menu.Player:GetNWFloat("InventoryWeight", 0.00))
     local maxWeight = 70
     local weightText = usedWeight .. " / " .. maxWeight .. "KG"
     local weightTextSize = surface.GetTextSize(weightText)
     itemsText.Paint = function(s, w, h)
 
         surface.SetFont("PuristaBold24")
-        usedWeight = string.format("%04.2f", ply:GetNWFloat("InventoryWeight", 0.00))
+        usedWeight = string.format("%04.2f", Menu.Player:GetNWFloat("InventoryWeight", 0.00))
         maxWeight = 70
         weightText = usedWeight .. " / " .. maxWeight .. "KG"
         weightTextSize = surface.GetTextSize(weightText)
@@ -4480,7 +4497,7 @@ function Menu.OpenTab.Inventory(container)
         surface.DrawRect(0, 0, w, h)
 
         draw.SimpleTextOutlined("STASH", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-        draw.SimpleTextOutlined(ply:GetNWInt("StashCount", 0) .. "/" .. maxStash, "PuristaBold18", EFGM.MenuScale(95), EFGM.MenuScale(13), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined(Menu.Player:GetNWInt("StashCount", 0) .. "/" .. maxStash, "PuristaBold18", EFGM.MenuScale(95), EFGM.MenuScale(13), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
     end
 
@@ -5053,7 +5070,7 @@ function Menu.OpenTab.Market()
         surface.DrawRect(0, 0, w, h)
 
         draw.SimpleTextOutlined("STASH", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-        draw.SimpleTextOutlined(ply:GetNWInt("StashCount", 0) .. "/" .. maxStash, "PuristaBold18", EFGM.MenuScale(95), EFGM.MenuScale(13), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined(Menu.Player:GetNWInt("StashCount", 0) .. "/" .. maxStash, "PuristaBold18", EFGM.MenuScale(95), EFGM.MenuScale(13), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
     end
 
@@ -5864,7 +5881,7 @@ function Menu.OpenTab.Market()
                 local sellIcon = Material("icons/sell_icon.png")
                 local lockIcon = Material("icons/lock_icon.png")
 
-                local plyLevel = ply:GetNWInt("Level", 1)
+                local plyLevel = Menu.Player:GetNWInt("Level", 1)
 
                 function item:PaintOver(w, h)
 
@@ -6030,7 +6047,7 @@ function Menu.OpenTab.Market()
 
         if items == nil then items = curItems end
 
-        local plyLevel = ply:GetNWInt("Level", 1)
+        local plyLevel = Menu.Player:GetNWInt("Level", 1)
 
         marketTbl = {}
         local numOfItems = 0

@@ -14,6 +14,17 @@ flippedDebugSecWep = table.Flip(debugSecWep)
 flippedDebugNadeWep = table.Flip(debugNadeWep)
 flippedDebugMeleeWep = table.Flip(debugMeleeWep)
 
+levelArray = {}
+levelArray[1] = 350
+
+for i = 2, 47 do
+
+    levelArray[i] = math.Round((i * 350) * (1 + (i * 0.061)), 0)
+
+end
+
+levelArray[48] = "max"
+
 -- server convars
 if SERVER then
     -- modifiers

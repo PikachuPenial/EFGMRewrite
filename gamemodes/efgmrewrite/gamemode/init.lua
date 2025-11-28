@@ -134,6 +134,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	if !IsValid(attacker) or victim == attacker or !attacker:IsPlayer() then
 
 		victim:PrintMessage(HUD_PRINTCENTER, "You commited suicide")
+		ApplyPlayerExperience(victim, 0.5)
 		return
 
 	end
@@ -157,7 +158,21 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	-- death information
 	victim:PrintMessage(HUD_PRINTCENTER, attacker:GetName() .. " [" .. attacker:Health() .. " HP] killed you with " .. weaponCal .. " from " .. distance .. "m away")
 
+	attacker:SetNWInt("ExperienceCombat", attacket:GetNWInt("ExperienceCombat") + 300)
+
+	ApplyPlayerExperience(victim, 0.5)
+
 end
+
+hook.Add("RaidTimerTick", "RaidTimeExperience", function(ply)
+
+	for k, v in ipairs(player.GetHumans()) do
+
+		if !v:CompareStatus(0) then v:SetNWFloat("ExperienceTime", v:GetNWFloat("ExperienceTime") + 0.5) end
+
+	end
+
+end)
 
 hook.Add("PostPlayerDeath", "PlayerRemoveRaid", function(ply)
 
@@ -283,6 +298,43 @@ hook.Add("Think", "HealthRegen", Regeneration)
 		-- end
 	-- end
 -- end)
+
+function ApplyPlayerExperience(ply, mult)
+
+	local exp = 0
+
+	exp = exp + math.Round(ply:GetNWFloat("ExperienceTime", 0) * mult, 0)
+	exp = exp + math.Round(ply:GetNWInt("ExperienceCombat", 0) * mult, 0)
+	exp = exp + math.Round(ply:GetNWInt("ExperienceExploration", 0) * mult, 0)
+	exp = exp + math.Round(ply:GetNWInt("ExperienceLooting", 0) * mult, 0)
+	exp = exp + math.Round(ply:GetNWInt("ExperienceBonus", 0) * mult, 0)
+
+	ply:SetNWInt("Experience", ply:GetNWInt("Experience", 0) + exp)
+
+	local curExp = ply:GetNWInt("Experience")
+	local curLvl = ply:GetNWInt("Level")
+
+	while (curExp >= ply:GetNWInt("ExperienceToNextLevel")) do
+
+		curExp = curExp - ply:GetNWInt("ExperienceToNextLevel")
+		ply:SetNWInt("Level", curLvl + 1)
+		ply:SetNWInt("Experience", curExp)
+
+		for k, v in ipairs(levelArray) do
+
+			if (curLvl + 1) == k then ply:SetNWInt("ExperienceToNextLevel", v) end
+
+		end
+
+	end
+
+	ply:SetNWFloat("ExperienceTime", 0)
+	ply:SetNWInt("ExperienceCombat", 0)
+	ply:SetNWInt("ExperienceExploration", 0)
+	ply:SetNWInt("ExperienceLooting", 0)
+	ply:SetNWInt("ExperienceBonus", 0)
+
+end
 
 equipWeaponName = ""
 
