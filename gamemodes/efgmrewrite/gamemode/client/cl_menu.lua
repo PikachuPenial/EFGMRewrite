@@ -131,6 +131,8 @@ function Menu:Initialize(openTo, container)
         draw.SimpleTextOutlined(roubles, "PuristaBold32", w - EFGM.MenuScale(26), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
         draw.SimpleTextOutlined(level, "PuristaBold32", w - roublesTextSize - EFGM.MenuScale(86), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
+        draw.DrawText("EFGM", "PuristaBold32", w / 2, EFGM.MenuScale(2), Color(255, 255, 255, 1), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+
     end
 
     self.MenuFrame.TabParentPanel = tabParentPanel
@@ -2471,9 +2473,40 @@ function Menu.OpenTab.Inventory(container)
             if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18"
             else nameFont = "PuristaBold14" end
 
+            local wep = ply:GetWeapon(playerWeaponSlots[1][1].name)
+            local clip
+            local mag = ""
+
+            clip = wep:Clip1()
+            local clipMax = wep:GetMaxClip1()
+
+            if clip >= clipMax * 0.9 then mag = "Full"
+            elseif clip >= clipMax * 0.8 then mag = "Nearly full"
+            elseif clip >= clipMax * 0.4 then mag = "About half"
+            elseif clip >= clipMax * 0.2 then mag = "Less than half"
+            elseif clip >= clipMax * 0.01 then mag = "Almost empty"
+            else mag = "Empty" end
+
+            if clip == -1 then mag = "∞" end
+
+            local magFont = "PuristaBold18"
+            if i.sizeX <= 2 then magFont = "PuristaBold14" end
+
             function primaryItem:PaintOver(w, h)
 
                 draw.SimpleTextOutlined(i.displayName, nameFont, w - EFGM.MenuScale(3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                if i.caliber then
+
+                    draw.SimpleTextOutlined(i.caliber, "PuristaBold18", EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+
+                end
+
+                if mag != "" then
+
+                    draw.SimpleTextOutlined(string.upper(mag), magFont, w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+
+                end
 
             end
 
@@ -2703,9 +2736,40 @@ function Menu.OpenTab.Inventory(container)
             if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18"
             else nameFont = "PuristaBold14" end
 
+            local wep = ply:GetWeapon(playerWeaponSlots[1][2].name)
+            local clip
+            local mag = ""
+
+            clip = wep:Clip1()
+            local clipMax = wep:GetMaxClip1()
+
+            if clip >= clipMax * 0.9 then mag = "Full"
+            elseif clip >= clipMax * 0.8 then mag = "Nearly full"
+            elseif clip >= clipMax * 0.4 then mag = "About half"
+            elseif clip >= clipMax * 0.2 then mag = "Less than half"
+            elseif clip >= clipMax * 0.01 then mag = "Almost empty"
+            else mag = "Empty" end
+
+            if clip == -1 then mag = "∞" end
+
+            local magFont = "PuristaBold18"
+            if i.sizeX <= 2 then magFont = "PuristaBold14" end
+
             function secondaryItem:PaintOver(w, h)
 
                 draw.SimpleTextOutlined(i.displayName, nameFont, w - EFGM.MenuScale(3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                if i.caliber then
+
+                    draw.SimpleTextOutlined(i.caliber, "PuristaBold18", EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+
+                end
+
+                if mag != "" then
+
+                    draw.SimpleTextOutlined(string.upper(mag), magFont, w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+
+                end
 
             end
 
@@ -2936,9 +3000,40 @@ function Menu.OpenTab.Inventory(container)
             if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18"
             else nameFont = "PuristaBold14" end
 
+            local wep = ply:GetWeapon(playerWeaponSlots[2][1].name)
+            local clip
+            local mag = ""
+
+            clip = wep:Clip1()
+            local clipMax = wep:GetMaxClip1()
+
+            if clip >= clipMax * 0.9 then mag = "Full"
+            elseif clip >= clipMax * 0.8 then mag = "Nearly full"
+            elseif clip >= clipMax * 0.4 then mag = "About half"
+            elseif clip >= clipMax * 0.2 then mag = "Less than half"
+            elseif clip >= clipMax * 0.01 then mag = "Almost empty"
+            else mag = "Empty" end
+
+            if clip == -1 then mag = "∞" end
+
+            local magFont = "PuristaBold18"
+            if i.sizeX <= 2 then magFont = "PuristaBold14" end
+
             function holsterItem:PaintOver(w, h)
 
                 draw.SimpleTextOutlined(i.displayName, nameFont, w - EFGM.MenuScale(3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                if i.caliber then
+
+                    draw.SimpleTextOutlined(i.caliber, "PuristaBold18", EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+
+                end
+
+                if mag != "" then
+
+                    draw.SimpleTextOutlined(string.upper(mag), magFont, w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+
+                end
 
             end
 
@@ -3172,6 +3267,12 @@ function Menu.OpenTab.Inventory(container)
             function meleeItem:PaintOver(w, h)
 
                 draw.SimpleTextOutlined(i.displayName, nameFont, w - EFGM.MenuScale(3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                if i.caliber then
+
+                    draw.SimpleTextOutlined(i.caliber, "PuristaBold18", EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+
+                end
 
             end
 
@@ -3832,6 +3933,12 @@ function Menu.OpenTab.Inventory(container)
                     draw.SimpleTextOutlined(v.data.durability .. "/" .. i.consumableValue, duraFont, w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
                 end
 
+                if i.caliber then
+
+                    draw.SimpleTextOutlined(i.caliber, "PuristaBold18", EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+
+                end
+
             end
 
             function item:DoClick()
@@ -4274,6 +4381,12 @@ function Menu.OpenTab.Inventory(container)
                         draw.SimpleTextOutlined(v.data.count, "PuristaBold18", w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
                     elseif i.equipType == EQUIPTYPE.Consumable then
                         draw.SimpleTextOutlined(v.data.durability .. "/" .. i.consumableValue, duraFont, w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                    end
+
+                    if i.caliber then
+
+                        draw.SimpleTextOutlined(i.caliber, "PuristaBold18", EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+
                     end
 
                 end
@@ -4766,6 +4879,12 @@ function Menu.OpenTab.Inventory(container)
                     draw.SimpleTextOutlined(v.data.count, "PuristaBold18", w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
                 elseif i.equipType == EQUIPTYPE.Consumable then
                     draw.SimpleTextOutlined(v.data.durability .. "/" .. i.consumableValue, duraFont, w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                end
+
+                if i.caliber then
+
+                    draw.SimpleTextOutlined(i.caliber, "PuristaBold18", EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+
                 end
 
             end
@@ -5313,6 +5432,12 @@ function Menu.OpenTab.Market()
                     draw.SimpleTextOutlined(v.data.count, "PuristaBold18", w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
                 elseif i.equipType == EQUIPTYPE.Consumable then
                     draw.SimpleTextOutlined(v.data.durability .. "/" .. i.consumableValue, duraFont, w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                end
+
+                if i.caliber then
+
+                    draw.SimpleTextOutlined(i.caliber, "PuristaBold18", EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+
                 end
 
                 if i.sizeX > 1 then draw.SimpleTextOutlined("₽" .. itemValue, "PuristaBold18", w / 2, h / 2, MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)

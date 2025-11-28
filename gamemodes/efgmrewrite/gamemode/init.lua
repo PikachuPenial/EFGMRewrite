@@ -106,6 +106,15 @@ hook.Add("PlayerInitialSpawn", "InitFirstSpawn", function(ply)
 
 end)
 
+concommand.Add("efgm_debug_printweapon", function(ply, cmd, args)
+
+	local wep = ply:GetActiveWeapon()
+	local atts = table.Copy(wep.Attachments)
+	local str = GenerateAttachString(atts)
+	print(str)
+
+end)
+
 util.AddNetworkString("CreateDeathInformation")
 function GM:PlayerDeath(victim, inflictor, attacker)
 
