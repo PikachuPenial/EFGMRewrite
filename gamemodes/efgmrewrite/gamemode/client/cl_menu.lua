@@ -2402,6 +2402,8 @@ function Menu.OpenTab.Inventory(container)
 
     function ReloadSlots()
 
+        if !IsValid(primaryItem) then return end
+
         if !table.IsEmpty(playerWeaponSlots[1][1]) then
 
             -- PRIMARY
@@ -3719,6 +3721,8 @@ function Menu.OpenTab.Inventory(container)
     local plyItems = {}
 
     function ReloadInventory()
+
+        if !IsValid(playerItems) then return end
 
         playerItems:Clear()
         plyItems = {}
@@ -5181,6 +5185,8 @@ function Menu.OpenTab.Market()
     local plyStashItems = {}
 
     function ReloadStash()
+
+        if !IsValid(stashItems) then return end
 
         stashValue = 0
         stashItems:Clear()
