@@ -158,6 +158,8 @@
         4 : "Medical Box"
         5 : "Barter Box"
         6 : "Attachment Box"
+        7 : "Safe"
+        8 : "Filing Cabinet"
 
         // OLD
     //  0 : "Any"

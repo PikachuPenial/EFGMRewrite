@@ -7473,60 +7473,82 @@ EFGMITEMS = {}
 sellMultiplier = 0.5
 
 -- types:
--- 0 == any item
--- 1 == military box (weapons, attachments, ammunition)
--- 2 == ammunition box (ammunition, grenades)
--- 3 == medical box (medical items)
--- 4 == barter box (assorted barter items & keys)
--- 5 == attachment box (attachments)
+-- 1 == any item
+-- 2 == military box (weapons, attachments, ammunition)
+-- 3 == ammunition box (ammunition, grenades)
+-- 4 == medical box (medical items)
+-- 5 == barter box (assorted barter items & keys)
+-- 6 == attachment box (attachments)
+-- 7 == safe (valuable barter items)
+-- 8 == filing cabinet (some 1x1 barter items, and keys)
 
 -- format: array[type][items]
 
 function GenerateLootTables()
 
     LOOT = {}
-    LOOT[0] = {}
     LOOT[1] = {}
     LOOT[2] = {}
     LOOT[3] = {}
     LOOT[4] = {}
     LOOT[5] = {}
+    LOOT[6] = {}
+    LOOT[7] = {}
+    LOOT[8] = {}
 
     for k, v in pairs(EFGMITEMS) do
 
+        -- generic loot pools
+
         if v.displayType != "Attachment" and v.displayType != "Accessory" and v.displayType != "Barrel" and v.displayType != "Cover" and v.displayType != "Gas Block" and v.displayType != "Handguard" and v.displayType != "Magazine" and v.displayType != "Mount" and v.displayType != "Pistol Grip" and v.displayType != "Receiver" and v.displayType != "Sight" and v.displayType != "Stock" then
-
-            LOOT[0][k] = v
-
-        end
-
-        if v.displayType == "Assault Carbine" or v.displayType == "Assault Rifle" or v.displayType == "Light Machine Gun" or v.displayType == "Pistol" or v.displayType == "Shotgun" or v.displayType == "Sniper Rifle" or v.displayType == "Marksman Rifle" or v.displayType == "Submachine Gun" or v.displayType == "Launcher" or v.displayType == "Melee" or v.displayType == "Grenade" or v.displayType == "Special" or v.displayType == "Ammunition" or v.displayType == "Foregrip" or v.displayType == "Muzzle" or v.displayType == "Optic" or v.displayType == "Tactical" then
 
             LOOT[1][k] = v
 
         end
 
-        if v.displayType == "Ammunition" or v.displayType == "Grenade" then
+        if v.displayType == "Assault Carbine" or v.displayType == "Assault Rifle" or v.displayType == "Light Machine Gun" or v.displayType == "Pistol" or v.displayType == "Shotgun" or v.displayType == "Sniper Rifle" or v.displayType == "Marksman Rifle" or v.displayType == "Submachine Gun" or v.displayType == "Launcher" or v.displayType == "Melee" or v.displayType == "Grenade" or v.displayType == "Special" or v.displayType == "Ammunition" or v.displayType == "Foregrip" or v.displayType == "Muzzle" or v.displayType == "Optic" or v.displayType == "Tactical" then
 
             LOOT[2][k] = v
 
         end
 
-        if v.displayType == "Medical" then
+        if v.displayType == "Ammunition" or v.displayType == "Grenade" then
 
             LOOT[3][k] = v
 
         end
 
-        if v.displayType == "Building" or v.displayType == "Electronic" or v.displayType == "Energy" or v.displayType == "Flammable" or v.displayType == "Household" or v.displayType == "Information" or v.displayType == "Medicine" or v.displayType == "Other" or v.displayType == "Tool" or v.displayType == "Valuable" or v.displayType == "Belmont Key" or v.displayType == "Concrete Key" or v.displayType == "Customs Key" or v.displayType == "Factory Key" then
+        if v.displayType == "Medical" then
 
             LOOT[4][k] = v
 
         end
 
-        if v.displayType == "Accessory" or v.displayType == "Barrel" or v.displayType == "Cover" or v.displayType == "Foregrip" or v.displayType == "Gas Block" or v.displayType == "Handguard" or v.displayType == "Magazine" or v.displayType == "Mount" or v.displayType == "Muzzle" or v.displayType == "Optic" or v.displayType == "Pistol Grip" or v.displayType == "Receiver" or v.displayType == "Sight" or v.displayType == "Stock" or v.displayType == "Tactical" then
+        if v.displayType == "Building" or v.displayType == "Electronic" or v.displayType == "Energy" or v.displayType == "Flammable" or v.displayType == "Household" or v.displayType == "Information" or v.displayType == "Medicine" or v.displayType == "Other" or v.displayType == "Tool" or v.displayType == "Valuable" or v.displayType == "Belmont Key" or v.displayType == "Concrete Key" or v.displayType == "Customs Key" or v.displayType == "Factory Key" then
 
             LOOT[5][k] = v
+
+        end
+
+        if v.displayType == "Accessory" or v.displayType == "Barrel" or v.displayType == "Cover" or v.displayType == "Foregrip" or v.displayType == "Gas Block" or v.displayType == "Handguard" or v.displayType == "Magazine" or v.displayType == "Mount" or v.displayType == "Muzzle" or v.displayType == "Optic" or v.displayType == "Pistol Grip" or v.displayType == "Receiver" or v.displayType == "Sight" or v.displayType == "Stock" or v.displayType == "Tactical" then
+
+            LOOT[6][k] = v
+
+        end
+
+        -- specific loot pools
+
+        -- safe loot pool
+        if (v.displayType == "Building" or v.displayType == "Electronic" or v.displayType == "Energy" or v.displayType == "Flammable" or v.displayType == "Household" or v.displayType == "Information" or v.displayType == "Medicine" or v.displayType == "Other" or v.displayType == "Tool" or v.displayType == "Valuable") and v.value >= 12000 then
+
+            LOOT[7][k] = v
+
+        end
+
+        -- filing cabinet loot pool
+        if ((v.displayType == "Electronic" or v.displayType == "Energy" or v.displayType == "Information" or v.displayType == "Other" or v.displayType == "Valuable" or v.displayType == "Belmont Key" or v.displayType == "Concrete Key" or v.displayType == "Customs Key" or v.displayType == "Factory Key") and v.sizeX == 1 and v.sizeY == 1) then
+
+            LOOT[8][k] = v
 
         end
 

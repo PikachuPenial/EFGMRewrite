@@ -27,14 +27,16 @@ end
 function ENT:Initialize()
 
     -- failsafe for unsupported loot types
-    if self.LootType < 0 or self.LootType > 5 then self.LootType = 0 end
+    if self.LootType < 1 or self.LootType > 8 then self.LootType = 1 end
 
-    if self.LootType == 0 then self.ContainerName = "ASSORTED BOX"
-    elseif self.LootType == 1 then self.ContainerName = "MILITARY BOX"
-    elseif self.LootType == 2 then self.ContainerName = "AMMUNITION BOX"
-    elseif self.LootType == 3 then self.ContainerName = "MEDICAL BOX"
-    elseif self.LootType == 4 then self.ContainerName = "BARTER BOX"
-    elseif self.LootType == 5 then self.ContainerName = "ATTACHMENT BOX" end
+    if self.LootType == 1 then self.ContainerName = "ASSORTED BOX"
+    elseif self.LootType == 2 then self.ContainerName = "MILITARY BOX"
+    elseif self.LootType == 3 then self.ContainerName = "AMMUNITION BOX"
+    elseif self.LootType == 4 then self.ContainerName = "MEDICAL BOX"
+    elseif self.LootType == 5 then self.ContainerName = "BARTER BOX"
+    elseif self.LootType == 6 then self.ContainerName = "ATTACHMENT BOX"
+    elseif self.LootType == 7 then self.ContainerName = "SAFE" 
+    elseif self.LootType == 8 then self.ContainerName = "FILING CABINET" end
 
 	local flags = tonumber(self:GetSpawnFlags())
 
@@ -44,7 +46,8 @@ end
 
 function ENT:SelectItems()
 
-    if self.SpawnChance > math.random(0, 100) then return nil end
+    if self.SpawnChance < math.random(0, 100) then return nil end
+    if table.IsEmpty(LOOT[self.LootType]) then print("loot table " .. self.LootType .. " is empty you fucking idiot") return nil end
 
     local containerLoot = {}
     local chance = 100
@@ -69,8 +72,6 @@ function ENT:SelectItems()
 
     end
 
-    if table.IsEmpty(LOOT[self.LootType]) then print("loot table " .. self.LootType .. " is empty you fucking idiot") return nil end
-
     return containerLoot
 
 end
@@ -80,7 +81,11 @@ function ENT:SpawnContainer(tbl)
     if tbl == nil or table.IsEmpty(tbl) then return end
     self.ContainerLoot = tbl
 
-    local container = ents.Create("efgm_container")
+    local containerType = "efgm_container"
+    if self.LootType == 7 then containerType = "efgm_safe" end
+    if self.LootType == 8 then containerType = "efgm_filing_cabinet" end
+
+    local container = ents.Create(containerType)
 	container:SetPos(self:GetPos())
     container:SetAngles(self:GetAngles())
 	container:Spawn()
