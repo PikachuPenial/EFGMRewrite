@@ -594,7 +594,10 @@ end)
 
 function ConsumeGrenade(ply)
 
+    local nadeName = ply.weaponSlots[4][1].name
     table.Empty(ply.weaponSlots[4][1])
+
+    timer.Simple(2, function() ply:StripWeapon(nadeName) end)
 
     net.Start("PlayerInventoryConsumeGrenade", false)
     net.Send(ply)
