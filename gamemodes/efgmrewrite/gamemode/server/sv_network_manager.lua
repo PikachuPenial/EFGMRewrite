@@ -364,7 +364,7 @@ function SetupPlayerData(ply)
     InitializeNetworkBool(ply, query, "FreshWipe", true) -- false if player has logged on once this wipe
     InitializeNetworkInt(ply, query, "Level", 1)
     InitializeNetworkInt(ply, query, "Experience", 0)
-	InitializeNetworkInt(ply, query, "Money", 100000)
+	InitializeNetworkInt(ply, query, "Money", 100000000)
 	InitializeNetworkInt(ply, query, "MoneyEarned", 0) -- all money earned
 	InitializeNetworkInt(ply, query, "MoneySpent", 0) -- all money spent (money would just be MoneyEarned - MoneySpent)
 	InitializeNetworkInt(ply, query, "Time", 0) -- playtime in minutes
@@ -402,17 +402,17 @@ function SetupPlayerData(ply)
 	end
 
     -- stash
-    local stashString = InitializeStashString(ply, query, "")
+    local stashString = InitializeStashString(ply, query, "XQAAAQD9EAAAAAAAAAAtnsBHRAlDnI+0YKoytE2yTNKO521sKGQuGNJPYpMWvBCnQ/h3Lcka+bVKJDfhDb2tn/Ggb+eNIqA+lldFfh5j+xEUo43j77yROnvLPm/qzBhal3NSosKSsf2tVnFBM7vxqT0fxBnQiO83hv38gFBHxSqM56ONgnVWjub9OMPNaz7BE7h7CQvLOLtyyjLEEHBL/uQOkvaWStfLJP40NHU6hJDlHL+2X69FHYOQ5wFDkgfgJIeTzveRNs0SICR34TixyGykniPe6DxM4F8Cq/jXpr+tJ0FnHZ3xuHJf7xH4YRo14ivFObewHJVR3JScJLniGU1w3yX7sUx9R2S1nxa7Qjy1DHpNmYyXuwsVkMpn/ZCCFivvBtezcfGsyIOWdyA6WU6C0goIw1vOP0jE+2vTKIPnkVjT0GBtRGgnrsbjRSLfN314E1xZPLSPiL/3RL0YT44uPXNkNdmFpSim3xAMwfyYtTUq7ENtpnl9/zbrdH2lKWlCVqJw+Z6TKEeFUkzdTmY7Q5Xp9Qj1rMXBBmvhTRcDWlzA5nTzEP9ftnAUrHQ1tLhZPzma8hmuGIxKHuuTc7JUon+S6CDUTWGPiRepU7iLs9cRKXaD3bhlHDw/kMYFD6D6ahqGRy+ArleWWVp7qZsKZV+hxAGkddi5iQeBE8VE8PZnWlW+DuLHemimUzpoPyVT/8rWHvtDqyJQmLK4I3vdkVz9CDC8PcVOgZwyNQuxMAU8N/+3F5afkC0O9oxg0nfyPUyjIID3iniShYTdjLUFDSZUjdpiwIyoO60CvqRhElBcbuNznibdYHWdKLUidWmmUEgKjFF9oYc2SIQGrF0BFRNzC1S853hG8lOHqNcC4ypotJi1Y+aJNuyvTCAT2UAAMas9jwbXJzwx6+osgEITzjiCEOnM+d7Kk/6++YL9wnHsjMoEXZpy+gjuVoUsC1dokeYaCCoLovt9gAtK4C87qaF3XhkwCoJHmBiPk72xqROH9yJolPAab7lXAmfK64L1Q4KMPcrSnK1QrmmFJ0On4h90q99T/k5rNM15TAIhwEouBOAinHSpqCP1VQVp77e6BwY+igjFnSK7D1oQOhT+jjCdl8rIZpg8r9KkkGuCrq607WxRjE+C1uZlgO+nmX8LQZaOVaOcOfob5AYVHCGGXTKhdy+FwZcQQbRt/be8UWrhlAbghqflbujxhKqhncsN2Rqxdpo7KipC672d9vn5Fd9p1rs8AfD8oZhqhgn8XDZy1NKHs9cKO57BiI/lcqoUSaUQ14g3PdEgYsPkhHaX5mlcnumiMj/QbZsXoEVtiNTgBvntCmhdq2U2zojDSIPX4/lbig2wXpMod3ntP3ng0ecVqCFaBoDuXA==")
 	ply.stash = DecodeStash(ply, stashString)
 	if ply.stash == nil then ply.stash = {} end
 	ply:SetNWInt("StashCount", #ply.stash)
 
 	-- inventory
-	local inventoryString = InitializeInventoryString(ply, query, "")
+	local inventoryString = InitializeInventoryString(ply, query, "XQAAAQA6AgAAAAAAAAAtnsBHRAlDnI+0YtKitE2yTNKO569j8mi1Ev2kuUsTXOBzHtWWjqOooI4IN3QW9F9yK4rAvAbQW9Pj2AaRXJuIi0hb24+3zAcaiIU/m/jsfCBCMDHmT6kvKWdNMcQjhdfLcVCJBNFqsC2ew/yCAA==")
 	ply.inventory = DecodeStash(ply, inventoryString) -- yes this works ignore function name
 	if ply.inventory == nil then ply.inventory = {} end
 
-	local equippedString = InitializeEquippedString(ply, query, "")
+	local equippedString = InitializeEquippedString(ply, query, "XQAAAQD5AwAAAAAAAAAt4ehEdDypZhc/rwkz9T5cWFAkvV80LpgNDXdx7ZcvkQ48bkdcTutVcWuPD0bqkTF+KkwCN8nqsm1zvwXl/kQisCj8IJUkgeglLVQV8bNl6qnBAVU8ruTCWtetVqm/AD3l73wmh7lmusqMPoOiQ/oduDT7MYdUZJptKYfeTze26uzQzMhqHS3hMj6Ud7Uf7lxjGQUavA1uCPWxU9EGEiqTpLuo8g4B3CUHZ8IUWDYG6MFb5+adM3GFESABCq5FpkiTkeNgi1kYt/LyasBDxUTI3P3wKs+WRja0y/WryNajLrNj3kQR0K7CAlfUm40B2Mpri37eYp0XJJaRTSOVQsEK4cmMaCKWoUdQO05QsCpHHCVwbed/UBcc4gvw+0AEVmGea40wI6GWL1rlv9rMjLCdWxtvfygcQJw7Lrpa4NHOKo0xNrpm1FYD4moD+0ahVa6SsFxlzxJzTgxcQ8mbyzcewLKHnN2aBFsEkkV+yPMdvcQQeSg8TkhfA9vaTNH0ZjjLMGPN570+IPQOLRjior5Ua+wq7T7iDcoR9zoiDBTQ3TM/AFmEpOuvFXJfwXZ90VQL++vmi31iFbjVa+yR2+fUoP1os3ZLhuoTLaHjjOhrPTItQVdH5rSVvRtsJC47t9v+aCNurrU8sTuQlDXuJvox64GumkT9zuJhPyUK9Ip6uS8vrPobxvehnpEyHyon/PEojOd62fbB2i+4dLpAslnljCu9NFCuJ0oDGa5G06I9g/nmK9KBdsZtvu0ibBtieLfytbSQ2DqzXpRpz7qWl9C+4Z6nhZjUmrQi1+lM/AiiSL6IbyOSi64zUp7yqVnNi5/BBbRp7W7GWRF8AqWdknvDJEs9eHq6efqDA63n5WsZ5Tpv+8zzO41BET1x27F9E2HuZ1kgaxObXCDy26AbWEPm79/qVmaZTqtkHGXp/wWWywX2fu1MWT0L6E58")
 	ply.weaponSlots = DecodeStash(ply, equippedString)
 	if ply.weaponSlots == nil then
 

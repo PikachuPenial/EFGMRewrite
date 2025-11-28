@@ -34,7 +34,6 @@ net.Receive("PlayerMarketPurchaseItem", function(len, ply)
 
     end
 
-    print(cost)
     if plyMoney < cost then return false end
     if plyLevel < lvl then return false end
 

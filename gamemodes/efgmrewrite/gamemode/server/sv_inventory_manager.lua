@@ -736,4 +736,20 @@ if GetConVar("efgm_derivesbox"):GetInt() == 1 then
     end
     concommand.Add("efgm_debug_wipeinventory", function(ply, cmd, args) WipeInventory(ply) end)
 
+    function PrintInventoryString(ply)
+
+        UpdateInventoryString(ply)
+        print(ply.invStr)
+
+    end
+    concommand.Add("efgm_debug_printinventorystring", function(ply, cmd, args) PrintInventoryString(ply) end)
+
+    function PrintEquippedString(ply)
+
+        UpdateEquippedString(ply)
+        print(ply.equStr)
+
+    end
+    concommand.Add("efgm_debug_printequippedstring", function(ply, cmd, args) PrintEquippedString(ply) end)
+
 end

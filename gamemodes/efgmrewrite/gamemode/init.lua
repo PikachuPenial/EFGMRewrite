@@ -95,6 +95,7 @@ function GM:PlayerSpawn(ply)
 	ply:SetCrouched(false)
 	ply:SetEnteringCrouch(false)
 	ply:SetExitingCrouch(false)
+	ply:SetNW2Bool("DoStep", false)
 
 end
 

@@ -363,4 +363,12 @@ if GetConVar("efgm_derivesbox"):GetInt() == 1 then
 
     concommand.Add("efgm_debug_wipestash", function(ply, cmd, args) WipeStash(ply) end)
 
+    function PrintStashString(ply)
+
+        UpdateStashString(ply)
+        print(ply.stashStr)
+
+    end
+    concommand.Add("efgm_debug_printstashstring", function(ply, cmd, args) PrintStashString(ply) end)
+
 end
