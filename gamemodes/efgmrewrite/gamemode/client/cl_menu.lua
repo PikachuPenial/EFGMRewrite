@@ -2490,7 +2490,7 @@ function Menu.OpenTab.Inventory(container)
 
             function primaryItem:DoDoubleClick()
 
-                Menu.InspectItem(playerWeaponSlots[1][1].name)
+                Menu.InspectItem(playerWeaponSlots[1][1].name, playerWeaponSlots[1][1].data)
                 surface.PlaySound("ui/element_select.wav")
 
             end
@@ -2711,7 +2711,7 @@ function Menu.OpenTab.Inventory(container)
 
             function secondaryItem:DoDoubleClick()
 
-                Menu.InspectItem(playerWeaponSlots[1][2].name)
+                Menu.InspectItem(playerWeaponSlots[1][2].name, playerWeaponSlots[1][2].data)
                 surface.PlaySound("ui/element_select.wav")
 
             end
@@ -2955,7 +2955,7 @@ function Menu.OpenTab.Inventory(container)
 
             function holsterItem:DoDoubleClick()
 
-                Menu.InspectItem(playerWeaponSlots[2][1].name)
+                Menu.InspectItem(playerWeaponSlots[2][1].name, playerWeaponSlots[2][1].data)
                 surface.PlaySound("ui/element_select.wav")
 
             end
@@ -3188,7 +3188,7 @@ function Menu.OpenTab.Inventory(container)
 
             function meleeItem:DoDoubleClick()
 
-                Menu.InspectItem(playerWeaponSlots[3][1].name)
+                Menu.InspectItem(playerWeaponSlots[3][1].name, playerWeaponSlots[3][1].data)
                 surface.PlaySound("ui/element_select.wav")
 
             end
@@ -6109,6 +6109,18 @@ function Menu.OpenTab.Market()
 
             end
 
+        elseif sortBy == "level" then
+
+            if sortWith == "ascending" then
+
+                table.SortByMember(marketTbl, "level", true)
+
+            else
+
+                table.SortByMember(marketTbl, "level", false)
+
+            end
+
         end
 
         totalPages = math.ceil(numOfItems / 20)
@@ -6157,7 +6169,12 @@ function Menu.OpenTab.Market()
             sortBy = "value"
             marketSortByButton:SetText("SORT BY VALUE")
 
-        else
+        elseif sortBy == "value" then
+
+            sortBy = "level"
+            marketSortByButton:SetText("SORT BY LEVEL")
+
+        elseif sortBy == "level" then
 
             sortBy = "name"
             marketSortByButton:SetText("SORT BY NAME")

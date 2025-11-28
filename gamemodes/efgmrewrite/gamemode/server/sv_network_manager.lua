@@ -393,7 +393,7 @@ function SetupPlayerData(ply)
 
 	-- stash/inventory
 	InitializeNetworkFloat(ply, query, "InventoryWeight", 0)
-	InitializeNetworkInt(ply, query, "StashMax", 150)
+	InitializeNetworkInt(ply, query, "StashMax", 4500)
 
 	for k, v in ipairs(levelArray) do
 
