@@ -215,12 +215,17 @@ net.Receive("PlayerStashAddItemFromEquipped", function(len, ply)
 
     end
 
-    local clip1 = wep:Clip1()
-    if clip1 != -1 and clip1 != 0 then
+    local def = EFGMITEMS[item.name]
+    if def.displayType != "Grenade" then
 
-        local data = {}
-        data.count = wep:Clip1()
-        FlowItemToInventory(ply, wep.Ammo, EQUIPTYPE.Ammunition, data)
+        local clip1 = wep:Clip1()
+        if clip1 != -1 and clip1 != 0 then
+
+            local data = {}
+            data.count = wep:Clip1()
+            FlowItemToInventory(ply, wep.Ammo, EQUIPTYPE.Ammunition, data)
+
+        end
 
     end
 

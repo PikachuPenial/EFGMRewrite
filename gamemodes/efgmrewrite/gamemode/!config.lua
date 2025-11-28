@@ -73,6 +73,7 @@ if SERVER then
     RunConsoleCommand("sv_vmanip_pickups", "1")
     RunConsoleCommand("arc9_eft_nontpik_mode", "1")
     RunConsoleCommand("arc9_eft_singleuse_behaviour", "1")
+    RunConsoleCommand("arc9_equipment_generate_ammo", "0")
 
     -- physics
     RunConsoleCommand("arc9_bullet_physics", "1")

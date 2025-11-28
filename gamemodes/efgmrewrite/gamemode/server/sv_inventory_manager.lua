@@ -12,6 +12,7 @@ util.AddNetworkString("PlayerInventoryDropEquippedItem")
 util.AddNetworkString("PlayerInventoryConsumeItem")
 util.AddNetworkString("PlayerInventoryLootItemFromContainer")
 util.AddNetworkString("PlayerInventorySplit")
+util.AddNetworkString("PlayerInventoryConsumeGrenade")
 
 function ReinstantiateInventory(ply)
 
@@ -306,12 +307,17 @@ net.Receive("PlayerInventoryUnEquipItem", function(len, ply)
 
     end
 
-    local clip1 = wep:Clip1()
-    if clip1 != -1 and clip1 != 0 and ply:GetNWBool("InRange", false) == false then
+    local def = EFGMITEMS[item.name]
+    if def.displayType != "Grenade" then
 
-        local data = {}
-        data.count = wep:Clip1()
-        FlowItemToInventory(ply, wep.Ammo, EQUIPTYPE.Ammunition, data)
+        local clip1 = wep:Clip1()
+        if clip1 != -1 and clip1 != 0 and ply:GetNWBool("InRange", false) == false then
+
+            local data = {}
+            data.count = wep:Clip1()
+            FlowItemToInventory(ply, wep.Ammo, EQUIPTYPE.Ammunition, data)
+
+        end
 
     end
 
@@ -358,12 +364,17 @@ function UnequipAll(ply)
 
                 end
 
-                local clip1 = wep:Clip1()
-                if clip1 != -1 and clip1 != 0 and ply:GetNWBool("InRange", false) == false then
+                local def = EFGMITEMS[item.name]
+                if def.displayType != "Grenade" then
 
-                    local data = {}
-                    data.count = wep:Clip1()
-                    FlowItemToInventory(ply, wep.Ammo, EQUIPTYPE.Ammunition, data)
+                    local clip1 = wep:Clip1()
+                    if clip1 != -1 and clip1 != 0 and ply:GetNWBool("InRange", false) == false then
+
+                        local data = {}
+                        data.count = wep:Clip1()
+                        FlowItemToInventory(ply, wep.Ammo, EQUIPTYPE.Ammunition, data)
+
+                    end
 
                 end
 
@@ -580,6 +591,17 @@ net.Receive("PlayerInventorySplit", function(len, ply)
     end
 
 end)
+
+function ConsumeGrenade(ply)
+
+    table.Empty(ply.weaponSlots[4][1])
+
+    net.Start("PlayerInventoryConsumeGrenade", false)
+    net.Send(ply)
+
+    UpdateEquippedString(ply)
+
+end
 
 function UpdateInventoryString(ply)
 

@@ -2427,6 +2427,47 @@ function Menu.OpenTab.Inventory(container)
     meleeWeaponIcon:SetImage("icons/inventory_melee_icon.png")
     meleeWeaponIcon:SetImageColor(Color(255, 255, 255, 10))
 
+    -- nade slot
+    local nadeWeaponHolder = vgui.Create("DPanel", equipmentHolder)
+    nadeWeaponHolder:SetSize(EFGM.MenuScale(57), EFGM.MenuScale(57))
+    nadeWeaponHolder:SetPos(equipmentHolder:GetWide() - nadeWeaponHolder:GetWide(), meleeWeaponHolder:GetY() - nadeWeaponHolder:GetTall() - EFGM.MenuScale(40))
+
+    function nadeWeaponHolder:Paint(w, h)
+
+        BlurPanel(nadeWeaponHolder, EFGM.MenuScale(3))
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+    end
+
+    local nadeWeaponText = vgui.Create("DPanel", equipmentHolder)
+    nadeWeaponText:SetSize(EFGM.MenuScale(57), EFGM.MenuScale(30))
+    nadeWeaponText:SetPos(equipmentHolder:GetWide() - nadeWeaponText:GetWide(), nadeWeaponHolder:GetY() - EFGM.MenuScale(30))
+    nadeWeaponText.Paint = function(s, w, h)
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, EFGM.MenuScale(220), EFGM.MenuScale(2))
+
+        draw.SimpleTextOutlined("NADE", "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local nadeWeaponIcon = vgui.Create("DImage", nadeWeaponHolder)
+    nadeWeaponIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(0))
+    nadeWeaponIcon:SetSize(EFGM.MenuScale(57), EFGM.MenuScale(57))
+    nadeWeaponIcon:SetImage("icons/inventory_nade_icon.png")
+    nadeWeaponIcon:SetImageColor(Color(255, 255, 255, 10))
+
     function ReloadSlots()
 
         if !table.IsEmpty(playerWeaponSlots[1][1]) then
@@ -3459,6 +3500,245 @@ function Menu.OpenTab.Inventory(container)
 
         end
 
+        if !table.IsEmpty(playerWeaponSlots[4][1]) then
+
+            -- NADE
+
+            local i = EFGMITEMS[playerWeaponSlots[4][1].name]
+
+            if IsValid(nadeItem) then nadeItem:Remove() end
+            nadeItem = vgui.Create("DButton", nadeWeaponHolder)
+            nadeItem:Dock(FILL)
+            nadeItem:SetText("")
+            nadeItem:Droppable("items")
+            nadeItem:Droppable("slot_grenade")
+            nadeItem.SLOTID = 4
+            nadeItem.SLOT = 1
+            nadeItem.ORIGIN = "equipped"
+
+            nadeWeaponHolder:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
+            nadeWeaponIcon:Hide()
+
+            function nadeItem:Paint(w, h)
+
+                surface.SetDrawColor(Color(255, 255, 255, 2))
+                surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+                surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+                surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                surface.SetDrawColor(i.iconColor or Color(5, 5, 5, 20))
+                surface.DrawRect(0, 0, w, h)
+
+                surface.SetDrawColor(255, 255, 255, 255)
+                surface.SetMaterial(i.icon)
+                surface.DrawTexturedRect(0, 0, w, h)
+
+            end
+
+            surface.SetFont("Purista18")
+
+            local nameSize = surface.GetTextSize(i.displayName)
+            local nameFont
+
+            if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18"
+            else nameFont = "PuristaBold14" end
+
+            function nadeItem:PaintOver(w, h)
+
+                draw.SimpleTextOutlined(i.displayName, nameFont, w - EFGM.MenuScale(3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                if i.caliber then
+
+                    draw.SimpleTextOutlined(i.caliber, "PuristaBold18", EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+
+                end
+
+            end
+
+            function nadeItem:DoClick()
+
+                if input.IsKeyDown(KEY_LSHIFT) then
+
+                    surface.PlaySound("ui/element_select.wav")
+                    UnEquipItemFromInventory(nadeItem.SLOTID, nadeItem.SLOT)
+
+                end
+
+            end
+
+            function nadeItem:DoDoubleClick()
+
+                Menu.InspectItem(playerWeaponSlots[4][1].name, playerWeaponSlots[4][1].data)
+                surface.PlaySound("ui/element_select.wav")
+
+            end
+
+            function nadeItem:DoRightClick()
+
+                local x, y = equipmentHolder:LocalCursorPos()
+                surface.PlaySound("ui/element_hover.wav")
+
+                if x <= (equipmentHolder:GetWide() / 2) then sideH = true else sideH = false end
+                if y <= (equipmentHolder:GetTall() / 2) then sideV = true else sideV = false end
+
+                if IsValid(contextMenu) then contextMenu:Remove() end
+                contextMenu = vgui.Create("DPanel", equipmentHolder)
+                contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(85))
+                contextMenu:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
+                contextMenu:SetAlpha(0)
+                contextMenu:AlphaTo(255, 0.1, 0, nil)
+                contextMenu:RequestFocus()
+
+                if sideH == true then
+
+                    contextMenu:SetX(math.Clamp(x + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+                else
+
+                    contextMenu:SetX(math.Clamp(x - contextMenu:GetWide() - EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+                end
+
+                if sideV == true then
+
+                    contextMenu:SetY(math.Clamp(y + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
+
+                else
+
+                    contextMenu:SetY(math.Clamp(y - contextMenu:GetTall() + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
+
+                end
+
+                contextMenu.Paint = function(s, w, h)
+
+                    if !IsValid(s) then return end
+
+                    BlurPanel(s, EFGM.MenuScale(5))
+
+                    surface.SetDrawColor(Color(5, 5, 5, 50))
+                    surface.DrawRect(0, 0, w, h)
+
+                    surface.SetDrawColor(Color(255, 255, 255, 30))
+                    surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+                    surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                    surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+                    surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                    contextMenu:SizeToChildren(true, true)
+
+                end
+
+                hook.Add("Think", "CheckIfContextMenuStillFocused", function()
+
+                    if !IsValid(contextMenu) then hook.Remove("Think", "CheckIfContextMenuStillFocused") return end
+                    if (input.IsMouseDown(MOUSE_LEFT) or input.IsMouseDown(MOUSE_RIGHT) or input.IsMouseDown(MOUSE_MIDDLE) or input.IsMouseDown(MOUSE_WHEEL_DOWN) or input.IsMouseDown(MOUSE_WHEEL_UP)) and !contextMenu:IsChildHovered() then contextMenu:KillFocus() hook.Remove("Think", "CheckIfContextMenuStillFocused") end
+
+                end)
+
+                function contextMenu:OnFocusChanged(focus)
+
+                    if !focus then contextMenu:AlphaTo(0, 0.1, 0, function() contextMenu:Remove() hook.Remove("Think", "CheckIfContextMenuStillFocused") end) end
+
+                end
+
+                local itemInspectButton = vgui.Create("DButton", contextMenu)
+                itemInspectButton:Dock(TOP)
+                itemInspectButton:SetSize(0, EFGM.MenuScale(25))
+                itemInspectButton:SetText("INSPECT")
+
+                itemInspectButton.OnCursorEntered = function(s)
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
+                function itemInspectButton:DoClick()
+
+                    Menu.InspectItem(playerWeaponSlots[4][1].name, playerWeaponSlots[4][1].data)
+                    surface.PlaySound("ui/element_select.wav")
+                    contextMenu:KillFocus()
+
+                end
+
+                if Menu.Player:CompareStatus(0) and table.IsEmpty(container) then
+
+                    contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
+
+                    local itemStashButton = vgui.Create("DButton", contextMenu)
+                    itemStashButton:Dock(TOP)
+                    itemStashButton:SetSize(0, EFGM.MenuScale(25))
+                    itemStashButton:SetText("STASH")
+
+                    itemStashButton.OnCursorEntered = function(s)
+
+                        surface.PlaySound("ui/element_hover.wav")
+
+                    end
+
+                    function itemStashButton:DoClick()
+
+                        surface.PlaySound("ui/element_select.wav")
+                        contextMenu:Remove()
+
+                        StashItemFromEquipped(nadeItem.SLOTID, nadeItem.SLOT)
+
+                        ReloadStash()
+
+                    end
+
+                end
+
+                local itemUnequipButton = vgui.Create("DButton", contextMenu)
+                itemUnequipButton:Dock(TOP)
+                itemUnequipButton:SetSize(0, EFGM.MenuScale(25))
+                itemUnequipButton:SetText("UNEQUIP")
+
+                itemUnequipButton.OnCursorEntered = function(s)
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
+                function itemUnequipButton:DoClick()
+
+                    UnEquipItemFromInventory(nadeItem.SLOTID, nadeItem.SLOT)
+
+                    surface.PlaySound("ui/element_select.wav")
+                    contextMenu:KillFocus()
+
+                end
+
+                local itemDropButton = vgui.Create("DButton", contextMenu)
+                itemDropButton:Dock(TOP)
+                itemDropButton:SetSize(0, EFGM.MenuScale(25))
+                itemDropButton:SetText("DROP")
+
+                itemDropButton.OnCursorEntered = function(s)
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
+                function itemDropButton:DoClick()
+
+                    DropEquippedItem(nadeItem.SLOTID, nadeItem.SLOT)
+
+                    surface.PlaySound("ui/element_select.wav")
+                    contextMenu:KillFocus()
+
+                end
+
+            end
+
+        else
+
+            nadeWeaponIcon:Show()
+            nadeWeaponHolder:SetSize(EFGM.MenuScale(57), EFGM.MenuScale(57))
+            if IsValid(nadeItem) then nadeItem:Remove() end
+
+        end
+
         secondaryWeaponHolder:SetPos(equipmentHolder:GetWide() - secondaryWeaponHolder:GetWide(), equipmentHolder:GetTall() - secondaryWeaponHolder:GetTall())
         secondaryWeaponText:SetPos(equipmentHolder:GetWide() - secondaryWeaponText:GetWide(), secondaryWeaponHolder:GetY() - EFGM.MenuScale(30))
         primaryWeaponHolder:SetPos(equipmentHolder:GetWide() - primaryWeaponHolder:GetWide(), secondaryWeaponHolder:GetY() - primaryWeaponHolder:GetTall() - EFGM.MenuScale(40))
@@ -3467,6 +3747,8 @@ function Menu.OpenTab.Inventory(container)
         holsterWeaponText:SetPos(equipmentHolder:GetWide() - holsterWeaponText:GetWide(), holsterWeaponHolder:GetY() - EFGM.MenuScale(30))
         meleeWeaponHolder:SetPos(equipmentHolder:GetWide() - meleeWeaponHolder:GetWide(), holsterWeaponHolder:GetY() - meleeWeaponHolder:GetTall() - EFGM.MenuScale(40))
         meleeWeaponText:SetPos(equipmentHolder:GetWide() - meleeWeaponText:GetWide(), meleeWeaponHolder:GetY() - EFGM.MenuScale(30))
+        nadeWeaponHolder:SetPos(equipmentHolder:GetWide() - nadeWeaponHolder:GetWide(), meleeWeaponHolder:GetY() - nadeWeaponHolder:GetTall() - EFGM.MenuScale(40))
+        nadeWeaponText:SetPos(equipmentHolder:GetWide() - nadeWeaponText:GetWide(), nadeWeaponHolder:GetY() - EFGM.MenuScale(30))
 
     end
 
@@ -3545,6 +3827,29 @@ function Menu.OpenTab.Inventory(container)
 
         if !dropped then return end
         if !table.IsEmpty(playerWeaponSlots[3][1]) then return end
+
+        if panels[1].ORIGIN == "inventory" then
+
+            surface.PlaySound("ui/element_select.wav")
+            EquipItemFromInventory(panels[1].ID, panels[1].SLOT)
+            ReloadSlots()
+
+        end
+
+        if panels[1].ORIGIN == "stash" then
+
+            surface.PlaySound("ui/element_select.wav")
+            EquipItemFromStash(panels[1].ID, panels[1].SLOT)
+            ReloadSlots()
+
+        end
+
+    end)
+
+    nadeWeaponHolder:Receiver("slot_grenade", function(self, panels, dropped, _, x, y)
+
+        if !dropped then return end
+        if !table.IsEmpty(playerWeaponSlots[4][1]) then return end
 
         if panels[1].ORIGIN == "inventory" then
 

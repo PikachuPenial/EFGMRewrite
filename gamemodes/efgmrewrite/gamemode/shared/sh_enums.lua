@@ -38,7 +38,7 @@ WEAPONSLOTS = {
     PRIMARY = { ID = 1, COUNT = 2},
     HOLSTER = { ID = 2, COUNT = 1},
     MELEE = { ID = 3, COUNT = 1},
-    GRENADE = { ID = 4, COUNT = 2},
+    GRENADE = { ID = 4, COUNT = 1},
     UTILITY = { ID = 5, COUNT = 3}
 }
 

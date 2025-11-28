@@ -285,6 +285,13 @@ function ConsumeItemFromInventory(itemIndex)
 
 end
 
+net.Receive("PlayerInventoryConsumeGrenade", function(len, ply)
+
+    table.Empty(playerWeaponSlots[4][1])
+    ReloadSlots()
+
+end )
+
 concommand.Add("efgm_inventory_equip", function(ply, cmd, args)
 
     -- if subslot is specified it tries to equip that specific slot, and if not it cycles through all subslots for that slot type (eg, for grenades or utility)
