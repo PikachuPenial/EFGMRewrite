@@ -33,8 +33,12 @@ function AmountInInventory(inventory, itemName)
 
 end
 
-concommand.Add("efgm_debug_getinventory", function(ply, cmd, args)
+if GetConVar("efgm_derivesbox"):GetInt() == 1 then
 
-    PrintTable(ply.inventory)
+    concommand.Add("efgm_debug_getinventory", function(ply, cmd, args)
 
-end)
+        PrintTable(ply.inventory)
+
+    end)
+
+end

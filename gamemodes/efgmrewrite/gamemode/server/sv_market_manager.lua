@@ -140,4 +140,8 @@ net.Receive("PlayerMarketSellItem", function(len, ply)
 
 end)
 
-concommand.Add("efgm_debug_setmoney", function(ply, cmd, args) ply:SetNWInt("Money", tonumber(args[1]) or 0) end)
+if GetConVar("efgm_derivesbox"):GetInt() == 1 then
+
+    concommand.Add("efgm_debug_setmoney", function(ply, cmd, args) ply:SetNWInt("Money", tonumber(args[1]) or 0) end)
+
+end

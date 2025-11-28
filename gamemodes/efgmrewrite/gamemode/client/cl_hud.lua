@@ -50,6 +50,43 @@ local function RenderPlayerWeapon(ply)
     draw.DrawText(name, "BenderWeaponName", ScrW() - EFGM.ScreenScale(20), ScrH() - EFGM.ScreenScale(40), Color(214, 214, 214), TEXT_ALIGN_RIGHT)
 end
 
+-- assorted overlays
+
+local blurAmount = 0
+local maxBlur = 4
+local blurSpeed = 2
+local vignetteMaxAlpha = 255
+local function RenderOverlays(ply)
+
+    if ply:Health() <= 0 then
+
+        blurAmount = math.min(blurAmount + blurSpeed * FrameTime(), maxBlur)
+
+    else
+
+        blurAmount = math.max(blurAmount - (blurSpeed * 6) * FrameTime(), 0)
+
+    end
+
+    if blurAmount > 0 then
+
+        surface.SetDrawColor(255, 255, 255, 255)
+        surface.SetMaterial(Material("pp/blurscreen"))
+
+        for i = 1, 3 do
+            Material("pp/blurscreen"):SetInt("$blur", blurAmount * (i * 1))
+            render.UpdateScreenEffectTexture()
+            surface.DrawTexturedRect(0, 0, ScrW(), ScrH())
+        end
+
+        local vignetteAmount = math.Clamp((blurAmount / maxBlur) * vignetteMaxAlpha, 0, vignetteMaxAlpha)
+        surface.SetDrawColor(0, 0, 0, vignetteAmount)
+        surface.DrawRect(0, 0, ScrW(), ScrH())
+
+    end
+
+end
+
 -- players current stance and health
 local playerStance = 0
 local healthMat = Material("stances/sprint_panel.png", "tarkovMaterial")
@@ -269,12 +306,13 @@ end
 
 local function DrawHUD()
     ply = LocalPlayer()
-    if not ply:Alive() then return end
+    if not ply:Alive() then RenderOverlays(ply) return end
     if not enabled then return end
 
     RenderRaidTime(ply)
     RenderPlayerWeapon(ply)
     RenderPlayerStance(ply)
+    RenderOverlays(ply)
 end
 hook.Add("HUDPaint", "DrawHUD", DrawHUD)
 
@@ -345,6 +383,691 @@ net.Receive("SendExtractionStatus", function()
     end
 end)
 
+net.Receive("CreateDeathInformation", function()
+
+    local ply = LocalPlayer()
+
+    local xpMult = net.ReadFloat()
+
+    local timeInRaid = net.ReadInt(16)
+
+    local xpTime = net.ReadInt(16)
+    local xpCombat = net.ReadInt(16)
+    local xpExploration = net.ReadInt(16)
+    local xpLooting = net.ReadInt(16)
+    local xpBonus = net.ReadInt(16)
+
+    local killedBy = net.ReadEntity()
+    local killedByWeapon = net.ReadString()
+    local killedFrom = net.ReadInt(16)
+
+    local minutes = math.floor(timeInRaid / 60)
+    local seconds = timeInRaid % 60
+
+    local totalXPRaw = xpTime + xpCombat + xpExploration + xpLooting + xpBonus
+    local totalXPReal = math.Round(totalXPRaw * xpMult, 0)
+
+    timer.Simple(respawnTime, function()
+
+        if IsValid(DeathPopup) then return end
+
+        DeathPopup = vgui.Create("DPanel")
+        DeathPopup:SetSize(ScrW(), ScrH())
+        DeathPopup:SetPos(0, 0)
+        DeathPopup:SetAlpha(0)
+        DeathPopup:MakePopup()
+        DeathPopup:SetMouseInputEnabled(true)
+        DeathPopup:SetKeyboardInputEnabled(true)
+
+        DeathPopup.Paint = function(self, w, h)
+
+            BlurPanel(DeathPopup, EFGM.MenuScale(5))
+
+            draw.SimpleTextOutlined("KILLED IN ACTION", "PuristaBold64", w / 2, EFGM.MenuScale(35), Color(255, 0, 0, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.whiteColor)
+            draw.SimpleTextOutlined(string.format("%02d:%02d", minutes, seconds) .. " TIME IN RAID", "PuristaBold22", w / 2, EFGM.MenuScale(90), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            DeathPopup.MouseX, DeathPopup.MouseY = DeathPopup:LocalCursorPos()
+
+            if GetConVar("efgm_menu_parallax"):GetInt() == 1 then
+
+                DeathPopup.ParallaxX = math.Clamp(((DeathPopup.MouseX / math.Round(EFGM.MenuScale(1920), 1)) - 0.5) * EFGM.MenuScale(20), -10, 10)
+                DeathPopup.ParallaxY = math.Clamp(((DeathPopup.MouseY / math.Round(EFGM.MenuScale(1080), 1)) - 0.5) * EFGM.MenuScale(20), -10, 10)
+
+                DeathPopup:SetPos(0 + DeathPopup.ParallaxX, 0 + DeathPopup.ParallaxY)
+
+            else
+
+                DeathPopup.ParallaxX = 0
+                DeathPopup.ParallaxY = 0
+
+                DeathPopup:SetPos(0, 0)
+
+            end
+
+        end
+
+        DeathPopup:AlphaTo(255, 0.2, 0, nil)
+        surface.PlaySound("taskfailed.wav")
+
+        local respawnButton = vgui.Create("DButton", DeathPopup)
+        respawnButton:SetSize(EFGM.MenuScale(1020), EFGM.MenuScale(50))
+        respawnButton:SetPos(ScrW() / 2 - EFGM.MenuScale(510), DeathPopup:GetTall() - EFGM.MenuScale(100))
+        respawnButton:SetText("")
+        respawnButton.Paint = function(s, w, h)
+
+            surface.SetDrawColor(Color(80, 80, 80, 10))
+            surface.DrawRect(0, 0, w, h)
+
+            surface.SetDrawColor(Color(255, 255, 255, 155))
+            surface.DrawRect(0, 0, EFGM.MenuScale(1020), EFGM.MenuScale(2))
+
+            draw.SimpleTextOutlined("RETURN TO HIDEOUT", "PuristaBold32", w / 2, EFGM.MenuScale(7), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        end
+
+        function respawnButton:DoClick()
+
+            net.Start("PlayerRequestRespawn", false)
+            net.SendToServer()
+
+            surface.PlaySound("ui/element_select.wav")
+            DeathPopup:AlphaTo(0, 0.1, 0, function() DeathPopup:Remove() end)
+
+        end
+
+        RewardsPanel = vgui.Create("DPanel", DeathPopup)
+        RewardsPanel:SetSize(EFGM.MenuScale(500), EFGM.MenuScale(800))
+        RewardsPanel:SetPos(DeathPopup:GetWide() / 2 - EFGM.MenuScale(510), EFGM.MenuScale(140))
+
+        RewardsPanel.Paint = function(self, w, h)
+
+            BlurPanel(RewardsPanel, EFGM.MenuScale(3))
+
+            surface.SetDrawColor(Color(80, 80, 80, 10))
+            surface.DrawRect(0, 0, w, h)
+
+            surface.SetDrawColor(Color(255, 255, 255, 25))
+            surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+            surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+        end
+
+        StatsPanel = vgui.Create("DPanel", RewardsPanel)
+        StatsPanel:SetSize(0, EFGM.MenuScale(500))
+        StatsPanel:Dock(TOP)
+        StatsPanel:DockMargin(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
+
+        StatsPanel.Paint = function(self, w, h)
+
+            surface.SetDrawColor(Color(80, 80, 80, 10))
+            surface.DrawRect(0, 0, w, h)
+
+            surface.SetDrawColor(Color(255, 255, 255, 155))
+            surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
+
+            surface.SetDrawColor(Color(255, 255, 255, 10))
+            surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+            surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+        end
+
+        local StatsText = vgui.Create("DPanel", StatsPanel)
+        StatsText:Dock(TOP)
+        StatsText:SetSize(0, EFGM.MenuScale(36))
+        function StatsText:Paint(w, h)
+
+            surface.SetDrawColor(Color(155, 155, 155, 10))
+            surface.DrawRect(0, 0, w, h)
+
+            draw.SimpleTextOutlined("STATS", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        end
+
+        LevelingPanel = vgui.Create("DPanel", RewardsPanel)
+        LevelingPanel:SetSize(0, EFGM.MenuScale(285))
+        LevelingPanel:Dock(TOP)
+        LevelingPanel:DockMargin(EFGM.MenuScale(5), 0, EFGM.MenuScale(5), EFGM.MenuScale(5))
+
+        LevelingPanel.Paint = function(self, w, h)
+
+            surface.SetDrawColor(Color(80, 80, 80, 10))
+            surface.DrawRect(0, 0, w, h)
+
+            surface.SetDrawColor(Color(255, 255, 255, 155))
+            surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
+
+            surface.SetDrawColor(Color(255, 255, 255, 10))
+            surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+            surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+        end
+
+        local LevelingText = vgui.Create("DPanel", LevelingPanel)
+        LevelingText:Dock(TOP)
+        LevelingText:SetSize(0, EFGM.MenuScale(36))
+        function LevelingText:Paint(w, h)
+
+            surface.SetDrawColor(Color(155, 155, 155, 10))
+            surface.DrawRect(0, 0, w, h)
+
+            draw.SimpleTextOutlined("LEVELING", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        end
+
+        local LevelingHolder = vgui.Create("DPanel", LevelingPanel)
+        LevelingHolder:Dock(FILL)
+        LevelingHolder:DockMargin(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
+        LevelingHolder:SetSize(0, 0)
+        LevelingHolder.Paint = function(s, w, h)
+
+            surface.SetDrawColor(Color(0, 0, 0, 0))
+            surface.DrawRect(0, 0, w, h)
+
+            draw.SimpleTextOutlined("TIME: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(0), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            draw.SimpleTextOutlined(xpTime .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(0), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            draw.SimpleTextOutlined("COMBAT: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(22), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            draw.SimpleTextOutlined(xpCombat .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(22), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            draw.SimpleTextOutlined("EXPLORATION: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(44), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            draw.SimpleTextOutlined(xpExploration .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(44), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            draw.SimpleTextOutlined("LOOTING: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(66), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            draw.SimpleTextOutlined(xpLooting .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(66), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            draw.SimpleTextOutlined("BONUS: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(88), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            draw.SimpleTextOutlined(xpBonus .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(88), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            draw.SimpleTextOutlined("TOTAL: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(120), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            draw.SimpleTextOutlined(totalXPRaw .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(120), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            draw.SimpleTextOutlined("MULTIPLIER: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(142), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            draw.SimpleTextOutlined(xpMult .. "x", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(142), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            draw.SimpleTextOutlined("FINAL XP: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(174), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            draw.SimpleTextOutlined(totalXPReal .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(174), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            draw.SimpleTextOutlined(ply:GetNWInt("Level", 1), "PuristaBold24", EFGM.MenuScale(5), h - EFGM.MenuScale(40), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            draw.SimpleTextOutlined(ply:GetNWInt("Level", 1) + 1, "PuristaBold24", w - EFGM.MenuScale(5), h - EFGM.MenuScale(40), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            draw.SimpleTextOutlined(ply:GetNWInt("Experience", 0) .. "/" .. ply:GetNWInt("ExperienceToNextLevel", 500), "PuristaBold16", EFGM.MenuScale(30), h - EFGM.MenuScale(33), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ATELIGN_TOP, 1, MenuAlias.blackColor)
+
+            surface.SetDrawColor(30, 30, 30, 125)
+            surface.DrawRect(EFGM.MenuScale(5), h - EFGM.MenuScale(15), EFGM.MenuScale(470), EFGM.MenuScale(10))
+
+            surface.SetDrawColor(255, 255, 255, 175)
+            surface.DrawRect(EFGM.MenuScale(5), h - EFGM.MenuScale(15), (ply:GetNWInt("Experience", 0) / ply:GetNWInt("ExperienceToNextLevel", 500)) * EFGM.MenuScale(470), EFGM.MenuScale(10))
+
+        end
+
+        if ply == killedBy then
+
+            RewardsPanel:SetX(DeathPopup:GetWide() / 2 - EFGM.MenuScale(255))
+            return
+
+        end
+
+        AttackerPanel = vgui.Create("DPanel", DeathPopup)
+        AttackerPanel:SetSize(EFGM.MenuScale(500), EFGM.MenuScale(800))
+        AttackerPanel:SetPos(DeathPopup:GetWide() / 2 + EFGM.MenuScale(10), EFGM.MenuScale(140))
+        AttackerPanel:DockMargin(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
+
+        AttackerPanel.Paint = function(self, w, h)
+
+            BlurPanel(AttackerPanel, EFGM.MenuScale(3))
+
+            surface.SetDrawColor(Color(80, 80, 80, 10))
+            surface.DrawRect(0, 0, w, h)
+
+            surface.SetDrawColor(Color(255, 255, 255, 25))
+            surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+            surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+        end
+
+        KillerPanel = vgui.Create("DPanel", AttackerPanel)
+        KillerPanel:SetSize(0, 0)
+        KillerPanel:Dock(FILL)
+        KillerPanel:DockMargin(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
+
+        KillerPanel.Paint = function(self, w, h)
+
+            surface.SetDrawColor(Color(80, 80, 80, 10))
+            surface.DrawRect(0, 0, w, h)
+
+            surface.SetDrawColor(Color(255, 255, 255, 155))
+            surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
+
+            surface.SetDrawColor(Color(255, 255, 255, 10))
+            surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+            surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+        end
+
+        local KillerText = vgui.Create("DPanel", KillerPanel)
+        KillerText:Dock(TOP)
+        KillerText:SetSize(0, EFGM.MenuScale(36))
+        function KillerText:Paint(w, h)
+
+            surface.SetDrawColor(Color(155, 155, 155, 10))
+            surface.DrawRect(0, 0, w, h)
+
+            draw.SimpleTextOutlined("KILLED BY", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        end
+
+        local KillerHolder = vgui.Create("DPanel", KillerPanel)
+        KillerHolder:Dock(FILL)
+        KillerHolder:DockMargin(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
+        KillerHolder:SetSize(0, 0)
+        KillerHolder.Paint = function(s, w, h)
+
+            surface.SetDrawColor(Color(0, 0, 0, 0))
+            surface.DrawRect(0, 0, w, h)
+
+            draw.SimpleTextOutlined(killedBy:GetName(), "PuristaBold24", EFGM.MenuScale(90), EFGM.MenuScale(0), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            draw.SimpleTextOutlined("from " .. killedFrom .. "m away", "PuristaBold16", EFGM.MenuScale(90), EFGM.MenuScale(18), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        end
+
+        local killerPFP = vgui.Create("AvatarImage", KillerHolder)
+        killerPFP:SetPos(EFGM.MenuScale(5), EFGM.MenuScale(5))
+        killerPFP:SetSize(EFGM.MenuScale(80), EFGM.MenuScale(80))
+        killerPFP:SetPlayer(killedBy, 184)
+
+        killerPFP.OnMousePressed = function()
+
+            local dropdown = DermaMenu()
+
+            local profile = dropdown:AddOption("Open Steam Profile", function() gui.OpenURL("http://steamcommunity.com/profiles/" .. killedBy:SteamID64()) end)
+            profile:SetIcon("icon16/page_find.png")
+
+            dropdown:AddSpacer()
+
+            local copy = dropdown:AddSubMenu("Copy...")
+            copy:AddOption("Copy Name", function() SetClipboardText(killedBy:GetName()) end):SetIcon("icon16/cut.png")
+            copy:AddOption("Copy SteamID64", function() SetClipboardText(killedBy:SteamID64()) end):SetIcon("icon16/cut.png")
+
+            if killedBy != ply then
+
+                local mute = dropdown:AddOption("Mute Player", function(self)
+
+                    if killedBy:IsMuted() then
+
+                        killedBy:SetMuted(false)
+
+                    else
+
+                        killedBy:SetMuted(true)
+
+                    end
+
+                end)
+
+                if killedBy:IsMuted() then
+
+                    mute:SetIcon("icon16/sound.png")
+                    mute:SetText("Unmute Player")
+                else
+
+                    mute:SetIcon("icon16/sound_mute.png")
+                    mute:SetText("Mute Player")
+
+                end
+
+            end
+
+            dropdown:Open()
+
+        end
+
+        local playerModel = vgui.Create("DModelPanel", KillerHolder)
+        playerModel:SetAlpha(0)
+        playerModel:Dock(FILL)
+        playerModel:SetMouseInputEnabled(false)
+        playerModel:SetFOV(26)
+        playerModel:SetCamPos(Vector(10, 0, 0))
+        playerModel:SetLookAt(Vector(-100, 0, -24))
+        playerModel:SetDirectionalLight(BOX_RIGHT, Color(255, 160, 80, 255))
+        playerModel:SetDirectionalLight(BOX_LEFT, Color(80, 160, 255, 255))
+        playerModel:SetAnimated(true)
+        playerModel:SetModel(killedBy:GetModel())
+        playerModel:AlphaTo(255, 0.1, 0, nil)
+
+        local groups = GetEntityGroups(killedBy, override)
+
+        if groups then
+
+            if groups.Bodygroups then
+
+                for k, v in pairs(groups.Bodygroups) do
+
+                    playerModel.Entity:SetBodygroup(k, v)
+
+                end
+
+            end
+
+            if groups.Skin then
+
+                playerModel.Entity:SetSkin(groups.Skin)
+
+            end
+
+        end
+
+        playerModel.Entity:SetPos(Vector(-108, -1, -63))
+        playerModel.Entity:SetAngles(Angle(0, 20, 0))
+
+        function playerModel:LayoutEntity(Entity)
+
+            if !IsValid(Entity) then return end
+            playerModel:RunAnimation()
+
+        end
+
+        if killedByWeapon != nil and killedByWeapon != "" then
+
+            local def = EFGMITEMS[killedByWeapon]
+            if table.IsEmpty(def) then return end
+
+            local KilledWithButton = vgui.Create("DButton", KillerPanel)
+            KilledWithButton:SetPos(EFGM.MenuScale(5), EFGM.MenuScale(569))
+            KilledWithButton:SetSize(EFGM.MenuScale(198), EFGM.MenuScale(216))
+            KilledWithButton:SetText("")
+            function KilledWithButton:Paint(w, h)
+
+                BlurPanel(KilledWithButton, EFGM.MenuScale(3))
+
+                surface.SetDrawColor(Color(5, 5, 5, 20))
+                surface.DrawRect(0, 0, w, h)
+
+                surface.SetDrawColor(Color(255, 255, 255, 2))
+                surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+                surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+                surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                surface.SetDrawColor(255, 255, 255, 255)
+                surface.SetMaterial(def.icon)
+
+                local originalWidth, originalHeight = EFGM.MenuScale(57 * def.sizeX), EFGM.MenuScale(57 * def.sizeY)
+                local scaleFactor
+                local targetMaxDimension = EFGM.MenuScale(158)
+
+                if originalWidth > originalHeight then
+
+                    scaleFactor = targetMaxDimension / originalWidth
+
+                else
+
+                    scaleFactor = targetMaxDimension / originalHeight
+
+                end
+
+                newWidth = math.Round(originalWidth * scaleFactor)
+                newHeight = math.Round(originalHeight * scaleFactor)
+
+                local x = (EFGM.MenuScale(198) / 2) - (newWidth / 2)
+                local y = (EFGM.MenuScale(216) / 2) - (newHeight / 2)
+
+                surface.DrawTexturedRect(x, y - EFGM.MenuScale(20), newWidth, newHeight)
+
+            end
+
+            function KilledWithButton:PaintOver(w, h)
+
+                surface.SetDrawColor(Color(5, 5, 5, 100))
+                surface.DrawRect(EFGM.MenuScale(1), h - EFGM.MenuScale(31), w - EFGM.MenuScale(2), EFGM.MenuScale(30))
+
+                draw.SimpleTextOutlined(def.displayName, "PuristaBold22", w / 2, h - EFGM.MenuScale(18), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
+
+            end
+
+            function KilledWithButton:DoClick()
+
+                local data = {}
+                data.att = def.defAtts
+                HUDInspectItem(killedByWeapon, data, DeathPopup)
+                surface.PlaySound("ui/element_select.wav")
+
+            end
+
+        end
+
+    end)
+
+end)
+
+net.Receive("CreateExtractionInformation", function()
+
+    local ply = LocalPlayer()
+
+    local xpMult = net.ReadFloat()
+
+    local timeInRaid = net.ReadInt(16)
+
+    local xpTime = net.ReadInt(16)
+    local xpCombat = net.ReadInt(16)
+    local xpExploration = net.ReadInt(16)
+    local xpLooting = net.ReadInt(16)
+    local xpBonus = net.ReadInt(16)
+
+    local minutes = math.floor(timeInRaid / 60)
+    local seconds = timeInRaid % 60
+
+    local totalXPRaw = xpTime + xpCombat + xpExploration + xpLooting + xpBonus
+    local totalXPReal = math.Round(totalXPRaw * xpMult, 0)
+
+    if IsValid(ExtractionPopup) then return end
+
+    ExtractionPopup = vgui.Create("DPanel")
+    ExtractionPopup:SetSize(ScrW(), ScrH())
+    ExtractionPopup:SetPos(0, 0)
+    ExtractionPopup:SetAlpha(0)
+    ExtractionPopup:MakePopup()
+    ExtractionPopup:SetMouseInputEnabled(true)
+    ExtractionPopup:SetKeyboardInputEnabled(true)
+
+    ExtractionPopup.Paint = function(self, w, h)
+
+        BlurPanel(ExtractionPopup, EFGM.MenuScale(5))
+
+        surface.SetDrawColor(Color(10, 10, 10, 155))
+        surface.DrawRect(0, 0, w, h)
+
+        draw.SimpleTextOutlined("EXTRACTED", "PuristaBold64", w / 2, EFGM.MenuScale(35), Color(0, 255, 0, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.whiteColor)
+        draw.SimpleTextOutlined(string.format("%02d:%02d", minutes, seconds) .. " TIME IN RAID", "PuristaBold22", w / 2, EFGM.MenuScale(90), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        ExtractionPopup.MouseX, ExtractionPopup.MouseY = ExtractionPopup:LocalCursorPos()
+
+        if GetConVar("efgm_menu_parallax"):GetInt() == 1 then
+
+            ExtractionPopup.ParallaxX = math.Clamp(((ExtractionPopup.MouseX / math.Round(EFGM.MenuScale(1920), 1)) - 0.5) * EFGM.MenuScale(20), -10, 10)
+            ExtractionPopup.ParallaxY = math.Clamp(((ExtractionPopup.MouseY / math.Round(EFGM.MenuScale(1080), 1)) - 0.5) * EFGM.MenuScale(20), -10, 10)
+
+            ExtractionPopup:SetPos(0 + ExtractionPopup.ParallaxX, 0 + ExtractionPopup.ParallaxY)
+
+        else
+
+            ExtractionPopup.ParallaxX = 0
+            ExtractionPopup.ParallaxY = 0
+
+            ExtractionPopup:SetPos(0, 0)
+
+        end
+
+    end
+
+    ExtractionPopup:AlphaTo(255, 0.2, 0, nil)
+    surface.PlaySound("taskcomplete.wav")
+
+    local respawnButton = vgui.Create("DButton", ExtractionPopup)
+    respawnButton:SetSize(EFGM.MenuScale(1020), EFGM.MenuScale(50))
+    respawnButton:SetPos(ScrW() / 2 - EFGM.MenuScale(510), ExtractionPopup:GetTall() - EFGM.MenuScale(100))
+    respawnButton:SetText("")
+    respawnButton.Paint = function(s, w, h)
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, EFGM.MenuScale(1020), EFGM.MenuScale(2))
+
+        draw.SimpleTextOutlined("CLOSE", "PuristaBold32", w / 2, EFGM.MenuScale(7), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    function respawnButton:DoClick()
+
+        surface.PlaySound("ui/element_select.wav")
+        ExtractionPopup:AlphaTo(0, 0.1, 0, function() ExtractionPopup:Remove() end)
+
+    end
+
+    RewardsPanel = vgui.Create("DPanel", ExtractionPopup)
+    RewardsPanel:SetSize(EFGM.MenuScale(500), EFGM.MenuScale(800))
+    RewardsPanel:SetPos(ExtractionPopup:GetWide() / 2 - EFGM.MenuScale(255), EFGM.MenuScale(140))
+
+    RewardsPanel.Paint = function(self, w, h)
+
+        BlurPanel(RewardsPanel, EFGM.MenuScale(3))
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+    end
+
+    StatsPanel = vgui.Create("DPanel", RewardsPanel)
+    StatsPanel:SetSize(0, EFGM.MenuScale(500))
+    StatsPanel:Dock(TOP)
+    StatsPanel:DockMargin(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
+
+    StatsPanel.Paint = function(self, w, h)
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
+
+        surface.SetDrawColor(Color(255, 255, 255, 10))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+    end
+
+    local StatsText = vgui.Create("DPanel", StatsPanel)
+    StatsText:Dock(TOP)
+    StatsText:SetSize(0, EFGM.MenuScale(36))
+    function StatsText:Paint(w, h)
+
+        surface.SetDrawColor(Color(155, 155, 155, 10))
+        surface.DrawRect(0, 0, w, h)
+
+        draw.SimpleTextOutlined("STATS", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    LevelingPanel = vgui.Create("DPanel", RewardsPanel)
+    LevelingPanel:SetSize(0, EFGM.MenuScale(285))
+    LevelingPanel:Dock(TOP)
+    LevelingPanel:DockMargin(EFGM.MenuScale(5), 0, EFGM.MenuScale(5), EFGM.MenuScale(5))
+
+    LevelingPanel.Paint = function(self, w, h)
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
+
+        surface.SetDrawColor(Color(255, 255, 255, 10))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+    end
+
+    local LevelingText = vgui.Create("DPanel", LevelingPanel)
+    LevelingText:Dock(TOP)
+    LevelingText:SetSize(0, EFGM.MenuScale(36))
+    function LevelingText:Paint(w, h)
+
+        surface.SetDrawColor(Color(155, 155, 155, 10))
+        surface.DrawRect(0, 0, w, h)
+
+        draw.SimpleTextOutlined("LEVELING", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local LevelingHolder = vgui.Create("DPanel", LevelingPanel)
+    LevelingHolder:Dock(FILL)
+    LevelingHolder:DockMargin(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
+    LevelingHolder:SetSize(0, 0)
+    LevelingHolder.Paint = function(s, w, h)
+
+        surface.SetDrawColor(Color(0, 0, 0, 0))
+        surface.DrawRect(0, 0, w, h)
+
+        draw.SimpleTextOutlined("TIME: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(0), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined(xpTime .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(0), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        draw.SimpleTextOutlined("COMBAT: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(22), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined(xpCombat .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(22), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        draw.SimpleTextOutlined("EXPLORATION: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(44), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined(xpExploration .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(44), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        draw.SimpleTextOutlined("LOOTING: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(66), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined(xpLooting .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(66), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        draw.SimpleTextOutlined("BONUS: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(88), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined(xpBonus .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(88), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        draw.SimpleTextOutlined("TOTAL: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(120), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined(totalXPRaw .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(120), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        draw.SimpleTextOutlined("MULTIPLIER: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(142), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined(xpMult .. "x", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(142), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        draw.SimpleTextOutlined("FINAL XP: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(174), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined(totalXPReal .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(174), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        draw.SimpleTextOutlined(ply:GetNWInt("Level", 1), "PuristaBold24", EFGM.MenuScale(5), h - EFGM.MenuScale(40), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined(ply:GetNWInt("Level", 1) + 1, "PuristaBold24", w - EFGM.MenuScale(5), h - EFGM.MenuScale(40), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        draw.SimpleTextOutlined(ply:GetNWInt("Experience", 0) .. "/" .. ply:GetNWInt("ExperienceToNextLevel", 500), "PuristaBold16", EFGM.MenuScale(30), h - EFGM.MenuScale(33), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ATELIGN_TOP, 1, MenuAlias.blackColor)
+
+        surface.SetDrawColor(30, 30, 30, 125)
+        surface.DrawRect(EFGM.MenuScale(5), h - EFGM.MenuScale(15), EFGM.MenuScale(470), EFGM.MenuScale(10))
+
+        surface.SetDrawColor(255, 255, 255, 175)
+        surface.DrawRect(EFGM.MenuScale(5), h - EFGM.MenuScale(15), (ply:GetNWInt("Experience", 0) / ply:GetNWInt("ExperienceToNextLevel", 500)) * EFGM.MenuScale(470), EFGM.MenuScale(10))
+
+    end
+
+end)
+
 -- notifications
 function CreateNotification(text, icon)
     if IsValid(notif) then notif:Remove() end
@@ -376,6 +1099,537 @@ function CreateNotification(text, icon)
         surface.SetTextColor(255, 255, 255, 255)
         surface.DrawText(text)
     end
+end
+
+function HUDInspectItem(item, data, panel)
+
+    if IsValid(inspectPanel) then inspectPanel:Remove() end
+
+    local i = EFGMITEMS[item]
+    if i == nil then inspectPanel:Remove() return end
+
+    surface.SetFont("PuristaBold24")
+    local itemNameText = string.upper(i.fullName)
+    local itemNameSize = surface.GetTextSize(itemNameText)
+
+    local value = i.value
+
+    if data and data.att then
+
+        local atts = GetPrefixedAttachmentListFromCode(data.att)
+        if !atts then return end
+
+        for _, a in ipairs(atts) do
+
+            local att = EFGMITEMS[a]
+            if att == nil then return end
+
+            value = value + att.value
+
+        end
+
+    end
+
+    surface.SetFont("PuristaBold18")
+    local itemDescText = string.upper(i.displayType) .. " / " .. string.upper(i.weight) .. "KG" .. " / ₽" .. string.upper(comma_value(value))
+    local itemDescSize = surface.GetTextSize(itemDescText)
+
+    local iconSizeX, iconSizeY = EFGM.MenuScale(114 * i.sizeX), EFGM.MenuScale(114 * i.sizeY)
+
+    local panelWidth
+    if iconSizeX >= itemNameSize then panelWidth = iconSizeX else panelWidth = itemNameSize end
+    if itemDescSize >= panelWidth then panelWidth = itemDescSize end
+
+    local originalWidth, originalHeight = EFGM.MenuScale(114 * i.sizeX), EFGM.MenuScale(114 * i.sizeY)
+    local scaleFactor
+    local targetMaxDimension = math.min(panelWidth, i.sizeX * 200)
+
+    if originalWidth > originalHeight then
+
+        scaleFactor = targetMaxDimension / originalWidth
+
+    else
+
+        scaleFactor = targetMaxDimension / originalHeight
+
+    end
+
+    local newPanelWidth = math.Round(originalWidth * scaleFactor)
+    local newPanelHeight = math.Round(originalHeight * scaleFactor)
+
+    inspectPanel = vgui.Create("DFrame", panel)
+    inspectPanel:SetSize(panelWidth + EFGM.MenuScale(40), newPanelHeight + EFGM.MenuScale(100))
+    inspectPanel:Center()
+    inspectPanel:SetAlpha(0)
+    inspectPanel:SetTitle("")
+    inspectPanel:ShowCloseButton(false)
+    inspectPanel:SetScreenLock(true)
+    inspectPanel:AlphaTo(255, 0.1, 0, nil)
+
+    inspectPanel.Paint = function(s, w, h)
+
+        BlurPanel(s, EFGM.MenuScale(3))
+
+        surface.SetDrawColor(Color(20, 20, 20, 205))
+        surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
+
+        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+        draw.SimpleTextOutlined(itemNameText, "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined(itemDescText, "PuristaBold18", EFGM.MenuScale(5), EFGM.MenuScale(25), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        surface.SetDrawColor(255, 255, 255, 255)
+        surface.SetMaterial(i.icon)
+
+        -- panel width = 198, panel height = 216
+        local x = inspectPanel:GetWide() / 2 - (newPanelWidth / 2)
+        local y = inspectPanel:GetTall() / 2 - (newPanelHeight / 2)
+
+        surface.DrawTexturedRect(x, y, newPanelWidth, newPanelHeight)
+
+    end
+
+    local itemPullOutPanel = vgui.Create("DPanel", inspectPanel)
+    itemPullOutPanel:SetSize(inspectPanel:GetWide(), inspectPanel:GetTall() - EFGM.MenuScale(75))
+    itemPullOutPanel:SetPos(0, inspectPanel:GetTall() - EFGM.MenuScale(1))
+    itemPullOutPanel:SetAlpha(255)
+    itemPullOutPanel.Paint = function(s, w, h)
+
+        BlurPanel(s, EFGM.MenuScale(1))
+
+        surface.SetDrawColor(Color(20, 20, 20, 205))
+        surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+    end
+
+    surface.SetFont("PuristaBold24")
+    local infoText = "INFO"
+    local infoTextSize = surface.GetTextSize(infoText)
+
+    local itemInfoButton = vgui.Create("DButton", inspectPanel)
+    itemInfoButton:SetPos(EFGM.MenuScale(1), itemPullOutPanel:GetY() - EFGM.MenuScale(28))
+    itemInfoButton:SetSize(infoTextSize + EFGM.MenuScale(10), EFGM.MenuScale(28))
+    itemInfoButton:SetText("")
+    itemInfoButton.Paint = function(s, w, h)
+
+        s:SetY(itemPullOutPanel:GetY() - EFGM.MenuScale(28))
+
+        BlurPanel(s, EFGM.MenuScale(0))
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, infoTextSize + EFGM.MenuScale(10), h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, infoTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
+
+        draw.SimpleTextOutlined(infoText, "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    surface.SetFont("PuristaBold24")
+    local wikiText = "WIKI"
+    local wikiTextSize = surface.GetTextSize(wikiText)
+
+    local itemWikiButton = vgui.Create("DButton", inspectPanel)
+    itemWikiButton:SetPos(itemInfoButton:GetWide() + EFGM.MenuScale(1), itemPullOutPanel:GetY() - EFGM.MenuScale(28))
+    itemWikiButton:SetSize(wikiTextSize + EFGM.MenuScale(10), EFGM.MenuScale(28))
+    itemWikiButton:SetText("")
+    itemWikiButton.Paint = function(s, w, h)
+
+        s:SetY(itemPullOutPanel:GetY() - EFGM.MenuScale(28))
+
+        BlurPanel(s, EFGM.MenuScale(0))
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, wikiTextSize + EFGM.MenuScale(10), h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, wikiTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
+
+        draw.SimpleTextOutlined(wikiText, "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    if !data or table.IsEmpty(data) then
+
+        itemInfoButton:Remove()
+        itemWikiButton:SetX(EFGM.MenuScale(1))
+
+    end
+
+    local pullOutContent = vgui.Create("DPanel", itemPullOutPanel)
+    pullOutContent:Dock(FILL)
+    pullOutContent:DockPadding(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10))
+    pullOutContent:SetAlpha(0)
+    pullOutContent.Paint = function(s, w, h)
+
+        surface.SetDrawColor(MenuAlias.transparent)
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
+    itemPullOutPanel.content = pullOutContent
+
+    local tab
+
+    local function OpenPullOutInfoTab()
+
+        tab = "Info"
+
+        local infoContent = vgui.Create("DPanel", itemPullOutPanel)
+        infoContent:Dock(FILL)
+        infoContent:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
+        infoContent:SetAlpha(0)
+        infoContent.Paint = function(s, w, h)
+
+            surface.SetDrawColor(MenuAlias.transparent)
+            surface.DrawRect(0, 0, w, h)
+
+        end
+
+        local infoContentText = vgui.Create("RichText", infoContent)
+        infoContentText:Dock(FILL)
+        infoContentText:SetVerticalScrollbarEnabled(true)
+        infoContentText:InsertColorChange(255, 255, 255, 255)
+
+        if data.count != 0 and data.count != 1 and data.count != nil then
+
+            infoContentText:AppendText("COUNT: " .. data.count .. "\n")
+
+        end
+
+        if data.att then
+
+            infoContentText:AppendText("ATTACHMENTS: \n" .. GetAttachmentListFromCode(data.att) .. "\n")
+
+        end
+
+        function infoContentText:PerformLayout()
+
+            infoContentText:SetFontInternal("PuristaBold18")
+
+        end
+
+        itemPullOutPanel.content = infoContent
+
+    end
+
+    local function OpenPullOutWikiTab()
+
+        tab = "Wiki"
+
+        local wikiContent = vgui.Create("DPanel", itemPullOutPanel)
+        wikiContent:Dock(FILL)
+        wikiContent:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
+        wikiContent:SetAlpha(0)
+        wikiContent.Paint = function(s, w, h)
+
+            surface.SetDrawColor(MenuAlias.transparent)
+            surface.DrawRect(0, 0, w, h)
+
+        end
+
+        local wikiContentText = vgui.Create("RichText", wikiContent)
+        wikiContentText:Dock(FILL)
+        wikiContentText:SetVerticalScrollbarEnabled(true)
+        wikiContentText:InsertColorChange(255, 255, 255, 255)
+
+        local wep = table.Copy(weapons.Get(item))
+
+        if i.fullName and i.displayName then
+
+            wikiContentText:AppendText("NAME: " .. i.fullName .. " (" .. i.displayName .. ")" .. "\n")
+
+        end
+
+        if i.description then
+
+            wikiContentText:AppendText("DESCRIPTION: " .. i.description .. "\n")
+
+        elseif wep != nil and wep["Description"] then
+
+            wikiContentText:AppendText("DESCRIPTION: " .. wep["Description"] .. "\n")
+
+        end
+
+        if i.displayType then
+
+            wikiContentText:AppendText("TYPE: " .. i.displayType .. "\n")
+
+        end
+
+        if i.weight then
+
+            wikiContentText:AppendText("WEIGHT: " .. i.weight .. "kg" .. "\n")
+
+        end
+
+        if i.value then
+
+            wikiContentText:AppendText("EST. VALUE: ₽" .. comma_value(i.value) .. "\n")
+
+        end
+
+        if i.sizeX and i.sizeY then
+
+            wikiContentText:AppendText("SIZE: " .. i.sizeX .. "x" .. i.sizeY .. "\n")
+
+        end
+
+        if i.stackSize then
+
+            wikiContentText:AppendText("STACK SIZE: " .. i.stackSize  .. "\n")
+
+        end
+
+        if i.equipType == EQUIPTYPE.Weapon and wep != nil then
+
+            wikiContentText:AppendText("\n")
+
+            local caliber = ARC9:GetPhrase(wep["Trivia"]["eft_trivia_cal2"]) or nil
+            local firemodes = wep["Firemodes"] or nil
+            local damageMax = math.Round(wep["DamageMax"]) or nil
+            local damageMin = math.Round(wep["DamageMin"]) or nil
+            local rpm = math.Round(wep["RPM"]) or nil
+            local range = math.Round(wep["RangeMax"] * 0.0254) or nil
+            local velocity = math.Round(wep["PhysBulletMuzzleVelocity"] * 0.0254) or nil
+
+            local recoilMult = math.Round(wep["Recoil"]) or 1
+            local recoilUp = math.Round(wep["RecoilUp"] * recoilMult, 2) or nil
+            local recoilUpRand = math.Round(wep["RecoilRandomUp"] * recoilMult, 2) or nil
+            local recoilSide = math.Round(wep["RecoilSide"] * recoilMult, 2) or nil
+            local recoilSideRand = math.Round(wep["RecoilRandomSide"] * recoilMult, 2) or nil
+            local accuracy = math.Round(wep["Spread"] * 360 * 60 / 10, 2)
+            local ergo = wep["EFTErgo"] or nil
+
+            local manufacturer = ARC9:GetPhrase(wep["Trivia"]["eft_trivia_manuf1"]) or nil
+            local country = ARC9:GetPhrase(wep["Trivia"]["eft_trivia_country4"]) or nil
+            local year = wep["Trivia"]["eft_trivia_year5"] or nil
+
+            if caliber then
+
+                wikiContentText:AppendText("CALIBER: " ..  caliber .. "\n")
+
+            end
+
+            if firemodes then
+
+                str = ""
+
+                for k, v in pairs(firemodes) do
+                    if v.PrintName then str = str .. v.PrintName .. ", "
+
+                    else
+
+                        if v.Mode then
+
+                            if v.Mode == 0 then str = str .. "Safe" .. ", "
+                            elseif v.Mode < 0 then str = str .. "Auto" .. ", "
+                            elseif v.Mode == 1 then str = str .. "Single" .. ", "
+                            elseif v.Mode > 1 then str = str .. tostring(v.Mode) .. "-" .. "Burst" .. ", " end
+
+                        end
+
+                    end
+
+                end
+
+                str = string.sub(str, 1, string.len(str) - 2)
+
+                wikiContentText:AppendText("FIRING MODES: " ..  str .. "\n")
+
+            end
+
+            if damageMax and damageMin then
+
+                wikiContentText:AppendText("DAMAGE: " ..  damageMax .. " → " .. damageMin .. "\n")
+
+            end
+
+            if rpm then
+
+                wikiContentText:AppendText("RPM: " ..  rpm .. "\n")
+
+            end
+
+            if range then
+
+                wikiContentText:AppendText("RANGE: " ..  range .. "m" .. "\n")
+
+            end
+
+            if velocity then
+
+                wikiContentText:AppendText("MUZZLE VELOCITY: " ..  velocity .. "m/s" .. "\n")
+
+            end
+
+            if recoilUp and recoilUpRand then
+
+                wikiContentText:AppendText("VERTICAL RECOIL: " .. recoilUp .. " + " .. recoilUpRand .. "°" .. "\n")
+
+            end
+
+            if recoilSide and recoilSideRand then
+
+                wikiContentText:AppendText("HORIZONTAL RECOIL: " .. recoilSide .. " + " .. recoilSideRand .. "°" .. "\n")
+
+            end
+
+            if accuracy and accuracy != 0 then
+
+                wikiContentText:AppendText("ACCURACY: " .. accuracy .. " MOA" .. "\n")
+
+            end
+
+            if ergo and ergo != 0 then
+
+                wikiContentText:AppendText("ERGONOMICS: " .. ergo .. "\n")
+
+            end
+
+            wikiContentText:AppendText("\n")
+
+            if manufacturer then
+
+                wikiContentText:AppendText("MANUFACTURER: " ..  manufacturer .. "\n")
+
+            end
+
+            if country then
+
+                wikiContentText:AppendText("COUNTRY: " ..  country .. "\n")
+
+            end
+
+            if year then
+
+                wikiContentText:AppendText("YEAR: " ..  year)
+
+            end
+
+        end
+
+        function wikiContentText:PerformLayout()
+
+            wikiContentText:SetFontInternal("PuristaBold18")
+
+        end
+
+        itemPullOutPanel.content = wikiContent
+
+    end
+
+    itemInfoButton.OnCursorEntered = function(s)
+
+        surface.PlaySound("ui/element_hover.wav")
+
+    end
+
+    itemInfoButton.DoClick = function(s)
+
+        if tab == "Info" then return end
+
+        surface.PlaySound("ui/element_select.wav")
+
+        itemPullOutPanel:MoveTo(0, EFGM.MenuScale(75), 0.1, 0, 0.3)
+
+        itemPullOutPanel.content:AlphaTo(0, 0.05, 0, function()
+
+            itemPullOutPanel.content:Remove()
+            OpenPullOutInfoTab()
+            itemPullOutPanel.content:AlphaTo(255, 0.05, 0, nil)
+
+        end)
+
+    end
+
+    itemWikiButton.OnCursorEntered = function(s)
+
+        surface.PlaySound("ui/element_hover.wav")
+
+    end
+
+    itemWikiButton.DoClick = function(s)
+
+        if tab == "Wiki" then return end
+
+        surface.PlaySound("ui/element_select.wav")
+
+        itemPullOutPanel:MoveTo(0, EFGM.MenuScale(75), 0.1, 0, 0.3)
+
+        itemPullOutPanel.content:AlphaTo(0, 0.05, 0, function()
+
+            itemPullOutPanel.content:Remove()
+            OpenPullOutWikiTab()
+            itemPullOutPanel.content:AlphaTo(255, 0.05, 0, nil)
+
+        end)
+
+    end
+
+    inspectPanel.OnMousePressed = function(s)
+
+        itemPullOutPanel:MoveTo(0, inspectPanel:GetTall() - EFGM.MenuScale(1), 0.1, 0, 0.3)
+
+        tab = nil
+
+        itemPullOutPanel.content:AlphaTo(0, 0.05, 0, function() end)
+
+        local screenX, screenY = s:LocalToScreen( 0, 0 )
+
+        if ( s.m_bSizable && gui.MouseX() > ( screenX + s:GetWide() - 20 ) && gui.MouseY() > ( screenY + s:GetTall() - 20 ) ) then
+            s.Sizing = { gui.MouseX() - s:GetWide(), gui.MouseY() - s:GetTall() }
+            s:MouseCapture( true )
+            return
+        end
+
+        if ( s:GetDraggable() && gui.MouseY() < ( screenY + 24 ) ) then
+            s.Dragging = { gui.MouseX() - s.x, gui.MouseY() - s.y }
+            s:MouseCapture( true )
+            return
+        end
+
+    end
+
+    local closeButtonIcon = Material("icons/close_icon.png")
+    local closeButton = vgui.Create("DButton", inspectPanel)
+    closeButton:SetSize(EFGM.MenuScale(32), EFGM.MenuScale(32))
+    closeButton:SetPos(inspectPanel:GetWide() - EFGM.MenuScale(32), EFGM.MenuScale(5))
+    closeButton:SetText("")
+    closeButton.Paint = function(s, w, h)
+
+        surface.SetDrawColor(255, 255, 255, 255)
+        surface.SetMaterial(closeButtonIcon)
+        surface.DrawTexturedRect(EFGM.MenuScale(0), EFGM.MenuScale(0), EFGM.MenuScale(32), EFGM.MenuScale(32))
+
+    end
+
+    closeButton.OnCursorEntered = function(s)
+
+        surface.PlaySound("ui/element_hover.wav")
+
+    end
+
+    function closeButton:DoClick()
+
+        inspectPanel:AlphaTo(0, 0.1, 0, function() inspectPanel:Remove() end)
+
+    end
+
 end
 
 -- ads vignette

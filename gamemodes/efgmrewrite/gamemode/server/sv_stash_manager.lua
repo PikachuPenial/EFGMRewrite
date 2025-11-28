@@ -358,4 +358,9 @@ function WipeStash(ply)
     net.Send(ply)
 
 end
-concommand.Add("efgm_debug_wipestash", function(ply, cmd, args) WipeStash(ply) end)
+
+if GetConVar("efgm_derivesbox"):GetInt() == 1 then
+
+    concommand.Add("efgm_debug_wipestash", function(ply, cmd, args) WipeStash(ply) end)
+
+end

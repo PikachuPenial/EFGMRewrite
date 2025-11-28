@@ -105,6 +105,7 @@ hook.Add("PlayerInitialSpawn", "InitFirstSpawn", function(ply)
 
 end)
 
+util.AddNetworkString("CreateDeathInformation")
 function GM:PlayerDeath(victim, inflictor, attacker)
 
 	if !victim:CompareStatus(0) then
@@ -129,34 +130,48 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 
 	-- death sound
 	victim:EmitSound(Sound("deathsounds/death" .. math.random(1, 116) .. ".wav"), math.random(65, 80)) -- holy shit thats a few
+	victim:SetNWInt("RaidTime", 0)
 
 	-- when a player suicides
 	if !IsValid(attacker) or victim == attacker or !attacker:IsPlayer() then
 
-		victim:PrintMessage(HUD_PRINTCENTER, "You commited suicide")
+		local xpMult = 0.5
+
+		net.Start("CreateDeathInformation")
+		net.WriteFloat(xpMult)
+		net.WriteInt(victim:GetNWInt("RaidTime", 0), 16)
+		net.WriteInt(math.Round(victim:GetNWFloat("ExperienceTime", 0)), 16)
+		net.WriteInt(victim:GetNWInt("ExperienceCombat", 0), 16)
+		net.WriteInt(victim:GetNWInt("ExperienceExploration", 0), 16)
+		net.WriteInt(victim:GetNWInt("ExperienceLooting", 0), 16)
+		net.WriteInt(victim:GetNWInt("ExperienceBonus", 0), 16)
+		net.WriteEntity(victim)
+		net.WriteString("")
+		net.WriteInt(0, 16)
+		net.Send(victim)
+
 		ApplyPlayerExperience(victim, 0.5)
 		return
 
 	end
 
-	local weaponInfo
-	local weaponCal
 	local rawDistance = victim:GetPos():Distance(attacker:GetPos())
 	local distance = math.Round(rawDistance * 0.01905) -- convert hammer units to meters
 
-	if (attacker:GetActiveWeapon():IsValid()) then
+	local xpMult = 0.5
 
-		weaponInfo = weapons.Get(attacker:GetActiveWeapon():GetClass())
-		weaponCal = weaponInfo["Caliber"]
-
-	else
-
-		weaponCal = ""
-
-	end
-
-	-- death information
-	victim:PrintMessage(HUD_PRINTCENTER, attacker:GetName() .. " [" .. attacker:Health() .. " HP] killed you with " .. weaponCal .. " from " .. distance .. "m away")
+	net.Start("CreateDeathInformation")
+	net.WriteFloat(xpMult)
+	net.WriteInt(victim:GetNWInt("RaidTime", 0), 16)
+	net.WriteInt(math.Round(victim:GetNWFloat("ExperienceTime", 0)), 16)
+	net.WriteInt(victim:GetNWInt("ExperienceCombat", 0), 16)
+	net.WriteInt(victim:GetNWInt("ExperienceExploration", 0), 16)
+	net.WriteInt(victim:GetNWInt("ExperienceLooting", 0), 16)
+	net.WriteInt(victim:GetNWInt("ExperienceBonus", 0), 16)
+	net.WriteEntity(attacker)
+	net.WriteString(attacker:GetActiveWeapon():GetClass())
+	net.WriteInt(distance, 16)
+	net.Send(victim)
 
 	attacker:SetNWInt("ExperienceCombat", attacket:GetNWInt("ExperienceCombat") + 300)
 
@@ -168,7 +183,13 @@ hook.Add("RaidTimerTick", "RaidTimeExperience", function(ply)
 
 	for k, v in ipairs(player.GetHumans()) do
 
-		if !v:CompareStatus(0) then v:SetNWFloat("ExperienceTime", v:GetNWFloat("ExperienceTime") + 0.5) end
+		if !v:CompareStatus(0) then
+
+			v:SetNWFloat("ExperienceTime", v:GetNWFloat("ExperienceTime") + 0.5)
+			v:SetNWInt("RaidTime", v:GetNWInt("RaidTime", 0) + 1)
+			v:SetNWInt("Time", v:GetNWInt("Time") + 1)
+
+		end
 
 	end
 
@@ -177,10 +198,17 @@ end)
 hook.Add("PostPlayerDeath", "PlayerRemoveRaid", function(ply)
 
 	-- respawn timer
-	timer.Create(ply:SteamID() .. "respawnTime", respawnTime, 1, function() ply:Spawn() end)
+	timer.Create(ply:SteamID() .. "respawnTime", respawnTime, 1, function() end)
 	ply:SetNWBool("RaidReady", false)
 
 end)
+
+util.AddNetworkString("PlayerRequestRespawn")
+net.Receive("PlayerRequestRespawn", function(len, ply)
+
+	if !timer.Exists(ply:SteamID() .. "respawnTime") then ply:Spawn() end
+
+end )
 
 hook.Add("PlayerDeathSound", "RemoveDefaultDeathSound", function()
 

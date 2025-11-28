@@ -191,6 +191,7 @@ if SERVER then
     --}
 
     --{ HOOKS
+        util.AddNetworkString("CreateExtractionInformation")
         hook.Add("PlayerExtraction", "RaidExtract", function(ply, extractTime, isExtractGuranteed)
             lobbySpawns = ents.FindByClass("efgm_lobby_spawn") or {} -- gets a table of all the lobby spawns
 
@@ -226,6 +227,19 @@ if SERVER then
 
                 ply:SetNWInt("ExperienceBonus", ply:GetNWInt("ExperienceBonus") + 200)
 
+                local xpMult = 1
+
+                net.Start("CreateExtractionInformation")
+                net.WriteFloat(xpMult)
+                net.WriteInt(ply:GetNWInt("RaidTime", 0), 16)
+                net.WriteInt(math.Round(ply:GetNWFloat("ExperienceTime", 0)), 16)
+                net.WriteInt(ply:GetNWInt("ExperienceCombat", 0), 16)
+                net.WriteInt(ply:GetNWInt("ExperienceExploration", 0), 16)
+                net.WriteInt(ply:GetNWInt("ExperienceLooting", 0), 16)
+                net.WriteInt(ply:GetNWInt("ExperienceBonus", 0), 16)
+                net.Send(ply)
+
+                ply:SetNWInt("RaidTime", 0)
                 ApplyPlayerExperience(ply, 1)
             end)
         end)

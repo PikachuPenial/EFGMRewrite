@@ -689,47 +689,51 @@ hook.Add("PlayerSpawn", "GiveEquippedItemsOnSpawn", function(ply)
 
 end)
 
-function GiveAmmo(ply, count)
+if GetConVar("efgm_derivesbox"):GetInt() == 1 then
 
-    local ammo = "efgm_ammo_556x45"
-    local data = {}
-    data.count = count
+    function GiveAmmo(ply, count)
 
-    FlowItemToInventory(ply, ammo, EQUIPTYPE.Ammunition, data)
+        local ammo = "efgm_ammo_556x45"
+        local data = {}
+        data.count = count
+
+        FlowItemToInventory(ply, ammo, EQUIPTYPE.Ammunition, data)
+
+    end
+    concommand.Add("efgm_debug_giveammo", function(ply, cmd, args) GiveAmmo(ply, args[1]) end)
+
+    function GiveAttachment(ply)
+
+        local attachment = "arc9_att_eft_optic_boss"
+        local data = {}
+
+        AddItemToInventory(ply, attachment, EQUIPTYPE.Attachment, data)
+
+    end
+    concommand.Add("efgm_debug_giveattachment", function(ply, cmd, args) GiveAttachment(ply) end)
+
+    function GiveItem(ply, name, type, count)
+
+        local data = {}
+        data.count = count
+
+        AddItemToInventory(ply, name, type, data)
+
+    end
+    concommand.Add("efgm_debug_giveitem", function(ply, cmd, args) GiveItem(ply, args[1], tonumber(args[2]), tonumber(args[3])) end)
+
+    function WipeInventory(ply)
+
+        ply.invStr = ""
+        ply.inventory = {}
+
+        net.Start("PlayerNetworkInventory", false)
+        net.WriteString("")
+        net.Send(ply)
+
+        ply:SetNWFloat("InventoryWeight", 0.00)
+
+    end
+    concommand.Add("efgm_debug_wipeinventory", function(ply, cmd, args) WipeInventory(ply) end)
 
 end
-concommand.Add("efgm_debug_giveammo", function(ply, cmd, args) GiveAmmo(ply, args[1]) end)
-
-function GiveAttachment(ply)
-
-    local attachment = "arc9_att_eft_optic_boss"
-    local data = {}
-
-    AddItemToInventory(ply, attachment, EQUIPTYPE.Attachment, data)
-
-end
-concommand.Add("efgm_debug_giveattachment", function(ply, cmd, args) GiveAttachment(ply) end)
-
-function GiveItem(ply, name, type, count)
-
-    local data = {}
-    data.count = count
-
-    AddItemToInventory(ply, name, type, data)
-
-end
-concommand.Add("efgm_debug_giveitem", function(ply, cmd, args) GiveItem(ply, args[1], tonumber(args[2]), tonumber(args[3])) end)
-
-function WipeInventory(ply)
-
-    ply.invStr = ""
-    ply.inventory = {}
-
-    net.Start("PlayerNetworkInventory", false)
-    net.WriteString("")
-    net.Send(ply)
-
-    ply:SetNWFloat("InventoryWeight", 0.00)
-
-end
-concommand.Add("efgm_debug_wipeinventory", function(ply, cmd, args) WipeInventory(ply) end)

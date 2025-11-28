@@ -132,6 +132,55 @@ local function Calc(ply, pos, angles, fov, target)
 
 end
 
+function GetEntityBodygroups(ent, override)
+
+    local bg = {}
+
+    for i = 0, ent:GetNumBodyGroups() - 1 do
+
+		if override and override[i] then
+
+			bg[i] = override[i]
+
+		else
+
+			if ent:GetBodygroupCount(i) <= 1 then continue end
+			bg[i] = ent:GetBodygroup(i)
+
+		end
+
+	end
+
+	if next(bg) then
+
+		return bg
+
+	end
+
+end
+
+function GetEntitySkin(ent, override)
+
+	if override then return override end
+	if ent:SkinCount() > 1 then return ent:GetSkin() end
+
+end
+
+function GetEntityGroups(ent, override)
+
+	local groups = {}
+
+	groups.Bodygroups = GetEntityBodygroups(ent, override and override.Bodygroups)
+	groups.Skin = GetEntitySkin(ent, override and override.Skin)
+
+	if next(groups) then
+
+		return groups
+
+	end
+
+end
+
 hook.Add("CalcView", "PovDeath", function(ply, pos, angles, fov)
 
     local ragdoll = ply:GetRagdollEntity()
