@@ -410,7 +410,7 @@ function MatchWithEquippedAndUpdate(ply, itemName, attsTbl)
 
             if !table.IsEmpty(v) then
 
-                if v.name == itemName and v.data.att then
+                if v.name == itemName then
 
                     local atts = table.Copy(attsTbl)
                     local str = GenerateAttachString(atts)

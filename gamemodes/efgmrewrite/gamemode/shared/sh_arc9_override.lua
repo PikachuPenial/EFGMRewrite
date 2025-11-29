@@ -259,7 +259,7 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
                     self:RestoreClip()
                 end
 
-                MatchWithEquippedAndUpdate(self:GetOwner(), self.ClassName, self.Attachments)
+                MatchWithEquippedAndUpdate(client, self.ClassName, self.Attachments)
 
             end
         end
