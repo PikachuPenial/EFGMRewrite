@@ -5194,14 +5194,14 @@ function Menu.OpenTab.Inventory(container)
     itemsText:SetSize(0, EFGM.MenuScale(28))
     surface.SetFont("PuristaBold24")
     local usedWeight = string.format("%04.2f", Menu.Player:GetNWFloat("InventoryWeight", 0.00))
-    local maxWeight = 70
+    local maxWeight = 85
     local weightText = usedWeight .. " / " .. maxWeight .. "KG"
     local weightTextSize = surface.GetTextSize(weightText)
     itemsText.Paint = function(s, w, h)
 
         surface.SetFont("PuristaBold24")
         usedWeight = string.format("%04.2f", Menu.Player:GetNWFloat("InventoryWeight", 0.00))
-        maxWeight = 70
+        maxWeight = 85
         weightText = usedWeight .. " / " .. maxWeight .. "KG"
         weightTextSize = surface.GetTextSize(weightText)
 
@@ -5220,7 +5220,14 @@ function Menu.OpenTab.Inventory(container)
         surface.DrawRect(EFGM.MenuScale(30), EFGM.MenuScale(7), EFGM.MenuScale(180), EFGM.MenuScale(16))
 
         -- used weight capacity
-        surface.SetDrawColor(Color(255, 255, 255, 225))
+        if Menu.Player:GetNWFloat("InventoryWeight", 0.00) < 30 then
+            surface.SetDrawColor(Color(255, 255, 255, 225))
+        elseif Menu.Player:GetNWFloat("InventoryWeight", 0.00) >= 30 and Menu.Player:GetNWFloat("InventoryWeight", 0.00) < 85 then
+            surface.SetDrawColor(Color(255, 255, 0, 225))
+        elseif Menu.Player:GetNWFloat("InventoryWeight", 0.00) >= 85 then
+            surface.SetDrawColor(Color(255, 0, 0, 225))
+        end
+
         surface.DrawRect(EFGM.MenuScale(30), EFGM.MenuScale(7), math.min(EFGM.MenuScale((usedWeight / maxWeight) * 180), 180), EFGM.MenuScale(16))
 
         surface.SetDrawColor(Color(255, 255, 255, 25))

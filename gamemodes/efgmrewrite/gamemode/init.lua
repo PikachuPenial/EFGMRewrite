@@ -405,10 +405,3 @@ hook.Add("AllowPlayerPickup", "DisablePickups", function(ply, ent)
 	return false
 
 end )
-
-hook.Add("CanPlayerSuicide", "AllowSuicide", function (ply)
-
-	if GetConVar("efgm_derivesbox"):GetInt() == 1 then return true end
-	if !ply:CompareStatus(0) then return true else return false end
-
-end )
