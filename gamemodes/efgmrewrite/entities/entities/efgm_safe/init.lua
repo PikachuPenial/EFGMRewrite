@@ -10,7 +10,6 @@ ENT.Name = ""
 
 function ENT:Initialize()
 
-    -- temporary
 	self:SetModel(self.Model)
 	self:PhysicsInit(SOLID_VPHYSICS)
 	self:SetMoveType(MOVETYPE_VPHYSICS)
@@ -37,6 +36,8 @@ end
 function ENT:Use(activator)
 
     if !activator:IsPlayer() then return end
+
+    self:EmitSound("containers/open".. tostring(math.random(2)) ..".wav")
 
 	net.Start("PlayerOpenContainer", false)
 		net.WriteEntity(self)
