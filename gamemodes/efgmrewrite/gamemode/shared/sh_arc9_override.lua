@@ -374,7 +374,7 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
         if !self:GetProcessedValue("Throwable", true) then return end
         local owner = self:GetOwner()
 
-        owner.ARC9QuickthrowPls = nil 
+        owner.ARC9QuickthrowPls = nil
         local QuicknadeBind = owner:KeyDown(IN_GRENADE1)
 
         if self:GetSafe() and owner:KeyPressed(IN_ATTACK) then self:ToggleSafety(false) return end
@@ -409,7 +409,7 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
 
             local throwanimspeed = self:GetProcessedValue("ThrowAnimSpeed", true)
             if self:GetGrenadeRecovering() then
-                if self:GetProcessedValue("Disposable", true) and !IsValid(self:GetDetonatorEntity()) and SERVER and self:GetOwner():GetNWBool("InRange", false) == false then
+                if self:GetProcessedValue("Disposable", true) and !IsValid(self:GetDetonatorEntity()) and SERVER and owner:GetNWBool("InRange", false) == false then
                     self:Remove()
                     owner:ConCommand("lastinv") -- switch to prev weapon
                 elseif self.WasThrownByBind then
@@ -496,10 +496,10 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
         }
         self:RunHook("Hook_GrenadeThrown", override)
 
-        if self:GetOwner():GetNWBool("InRange", false) == false then
+        if owner:GetNWBool("InRange", false) == false then
 
             ConsumeGrenade(self:GetOwner())
-            timer.Simple(0.75, function() self:Holster(self:GetOwner():GetPreviousWeapon()) end)
+            timer.Simple(0.75, function() owner:ConCommand("lastinv") end)
 
         end
 
@@ -595,7 +595,9 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
             end
 
             self:RunHook("Hook_GrenadeCreated", nades)
+            if owner:GetNWBool("InRange", false) == false then owner:StripWeapon(self.ClassName) end
         end)
+
     end
 
 end)
