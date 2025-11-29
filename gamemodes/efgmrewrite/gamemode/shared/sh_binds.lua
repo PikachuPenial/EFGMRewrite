@@ -99,7 +99,7 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
         end
 
         -- equip grenade
-        if button == ply:GetInfoNum("efgm_bind_equip_grenade", KEY_4) then
+        if button == ply:GetInfoNum("efgm_bind_equip_utility", KEY_4) then
             ply:ConCommand("efgm_inventory_equip " .. WEAPONSLOTS.GRENADE.ID)
             return
         end

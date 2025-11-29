@@ -780,6 +780,21 @@ if CLIENT then
     ARC9AttButton.MatMarkerSlots = Material("arc9/ui/mark_slots.png", "mips smooth")
     ARC9AttButton.MatMarkerFavorite = Material("arc9/ui/mark_favorite.png", "mips smooth")
 
+    local ARC9TopButton = {}
+    ARC9TopButton.Color = ARC9.GetHUDColor("fg")
+    ARC9TopButton.ColorClicked = ARC9.GetHUDColor("hi")
+    ARC9TopButton.ColorNotif = Color(255, 50, 50)
+    ARC9TopButton.Icon = Material("arc9/ui/settings.png", "mips")
+    ARC9TopButton.MatIdle = Material("arc9/ui/topbutton.png", "mips")
+    ARC9TopButton.MatHovered = Material("arc9/ui/topbutton_hover.png", "mips")
+    ARC9TopButton.MatIdleL = Material("arc9/ui/topbutton_l.png", "mips")
+    ARC9TopButton.MatHoveredL = Material("arc9/ui/topbutton_hover_l.png", "mips")
+    ARC9TopButton.MatIdleM = Material("arc9/ui/topbutton_m.png", "mips")
+    ARC9TopButton.MatHoveredM = Material("arc9/ui/topbutton_hover_m.png", "mips")
+    ARC9TopButton.MatIdleR = Material("arc9/ui/topbutton_r.png", "mips")
+    ARC9TopButton.MatHoveredR = Material("arc9/ui/topbutton_hover_r.png", "mips")
+    ARC9TopButton.MatNotif = Material("arc9/ui/info.png", "mips")
+
     function ARC9AttButton:Init()
         self:SetText("")
         self:SetSize(ARC9ScreenScale(42.7), ARC9ScreenScale(42.7 + 14.6))

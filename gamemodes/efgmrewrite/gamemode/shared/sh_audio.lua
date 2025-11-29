@@ -1,5 +1,5 @@
 
-local fsVol = 2
+local fsVol = 1
 
 hook.Add("PlayerFootstep", "CustomFootstepVolume", function(ply, pos, foot, sound, volume)
 

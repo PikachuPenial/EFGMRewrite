@@ -174,7 +174,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	net.WriteInt(distance, 16)
 	net.Send(victim)
 
-	attacker:SetNWInt("ExperienceCombat", attacket:GetNWInt("ExperienceCombat") + 300)
+	attacker:SetNWInt("ExperienceCombat", attacker:GetNWInt("ExperienceCombat") + 300)
 
 	ApplyPlayerExperience(victim, 0.5)
 
