@@ -232,6 +232,10 @@ if SERVER then
                 net.Start("CreateExtractionInformation")
                 net.WriteFloat(xpMult)
                 net.WriteInt(ply:GetNWInt("RaidTime", 0), 16)
+                net.WriteInt(ply:GetNWInt("RaidDamageDealt", 0), 24)
+                net.WriteInt(ply:GetNWInt("RaidDamageRecieved", 0), 24)
+                net.WriteInt(ply:GetNWInt("RaidItemsLooted", 0), 24)
+                net.WriteInt(ply:GetNWInt("RaidKills", 0), 24)
                 net.WriteInt(math.Round(ply:GetNWFloat("ExperienceTime", 0)), 16)
                 net.WriteInt(ply:GetNWInt("ExperienceCombat", 0), 16)
                 net.WriteInt(ply:GetNWInt("ExperienceExploration", 0), 16)
@@ -241,6 +245,7 @@ if SERVER then
 
                 ply:SetNWInt("RaidTime", 0)
                 ApplyPlayerExperience(ply, 1)
+                ResetRaidStats(ply)
             end)
         end)
 

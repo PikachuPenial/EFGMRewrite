@@ -391,6 +391,14 @@ net.Receive("CreateDeathInformation", function()
 
     local timeInRaid = net.ReadInt(16)
 
+    local statsTbl = {
+        ["DAMAGE DEALT:"] = net.ReadInt(24),
+        ["DAMAGE RECEIVED:"] = net.ReadInt(24),
+        ["ITEMS LOOTED:"] = net.ReadInt(24),
+        ["OPERATORS KILLED:"] = net.ReadInt(24),
+    }
+    table.SortByKey(statsTbl)
+
     local xpTime = net.ReadInt(16)
     local xpCombat = net.ReadInt(16)
     local xpExploration = net.ReadInt(16)
@@ -527,6 +535,30 @@ net.Receive("CreateDeathInformation", function()
 
         end
 
+        local StatsHolder = vgui.Create("DPanel", StatsPanel)
+        StatsHolder:Dock(FILL)
+        StatsHolder:DockMargin(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
+        StatsHolder:SetSize(0, 0)
+        StatsHolder.Paint = function(s, w, h)
+
+            surface.SetDrawColor(Color(0, 0, 0, 0))
+            surface.DrawRect(0, 0, w, h)
+
+            local num = 0
+
+            for k, v in pairs(statsTbl) do
+
+                if v == 0 then continue end
+
+                draw.SimpleTextOutlined(k, "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(22) * num, MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined(v, "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(22) * num, MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                num = num + 1
+
+            end
+
+        end
+
         LevelingPanel = vgui.Create("DPanel", RewardsPanel)
         LevelingPanel:SetSize(0, EFGM.MenuScale(285))
         LevelingPanel:Dock(TOP)
@@ -591,7 +623,7 @@ net.Receive("CreateDeathInformation", function()
             draw.SimpleTextOutlined(xpMult .. "x", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(142), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
             draw.SimpleTextOutlined("FINAL XP: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(174), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-            draw.SimpleTextOutlined(totalXPReal .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(174), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            draw.SimpleTextOutlined("+" .. totalXPReal .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(174), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
             draw.SimpleTextOutlined(ply:GetNWInt("Level", 1), "PuristaBold24", EFGM.MenuScale(5), h - EFGM.MenuScale(40), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
             draw.SimpleTextOutlined(ply:GetNWInt("Level", 1) + 1, "PuristaBold24", w - EFGM.MenuScale(5), h - EFGM.MenuScale(40), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -857,6 +889,14 @@ net.Receive("CreateExtractionInformation", function()
 
     local timeInRaid = net.ReadInt(16)
 
+    local statsTbl = {
+        ["DAMAGE DEALT:"] = net.ReadInt(24),
+        ["DAMAGE RECEIVED:"] = net.ReadInt(24),
+        ["ITEMS LOOTED:"] = net.ReadInt(24),
+        ["OPERATORS KILLED:"] = net.ReadInt(24),
+    }
+    table.SortByKey(statsTbl)
+
     local xpTime = net.ReadInt(16)
     local xpCombat = net.ReadInt(16)
     local xpExploration = net.ReadInt(16)
@@ -987,6 +1027,30 @@ net.Receive("CreateExtractionInformation", function()
 
     end
 
+    local StatsHolder = vgui.Create("DPanel", StatsPanel)
+    StatsHolder:Dock(FILL)
+    StatsHolder:DockMargin(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
+    StatsHolder:SetSize(0, 0)
+    StatsHolder.Paint = function(s, w, h)
+
+        surface.SetDrawColor(Color(0, 0, 0, 0))
+        surface.DrawRect(0, 0, w, h)
+
+        local num = 0
+
+        for k, v in pairs(statsTbl) do
+
+            if v == 0 then continue end
+
+            draw.SimpleTextOutlined(k, "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(22) * num, MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            draw.SimpleTextOutlined(v, "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(22) * num, MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            num = num + 1
+
+        end
+
+    end
+
     LevelingPanel = vgui.Create("DPanel", RewardsPanel)
     LevelingPanel:SetSize(0, EFGM.MenuScale(285))
     LevelingPanel:Dock(TOP)
@@ -1051,7 +1115,7 @@ net.Receive("CreateExtractionInformation", function()
         draw.SimpleTextOutlined(xpMult .. "x", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(142), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
         draw.SimpleTextOutlined("FINAL XP: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(174), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-        draw.SimpleTextOutlined(totalXPReal .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(174), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined("+" .. totalXPReal .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(174), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
         draw.SimpleTextOutlined(ply:GetNWInt("Level", 1), "PuristaBold24", EFGM.MenuScale(5), h - EFGM.MenuScale(40), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
         draw.SimpleTextOutlined(ply:GetNWInt("Level", 1) + 1, "PuristaBold24", w - EFGM.MenuScale(5), h - EFGM.MenuScale(40), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)

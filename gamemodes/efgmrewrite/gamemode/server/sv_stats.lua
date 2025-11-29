@@ -37,6 +37,14 @@ function Stats.GetAll(ply)
     return tbl
 end
 
+function ResetRaidStats(ply)
+
+    ply:SetNWInt("RaidDamageDealt", 0)
+    ply:SetNWInt("RaidDamageRecieved", 0)
+    ply:SetNWInt("RaidItemsLooted", 0)
+
+end
+
 hook.Add("PlayerDeath", "DeathUpdateStats", function(victim, weapon, attacker)
     -- update victim's stats (cringe lootcel)
     victim:SetNWInt("Deaths", victim:GetNWInt("Deaths") + 1)
@@ -56,6 +64,7 @@ hook.Add("EntityTakeDamage", "DamageUpdateStats", function(ply, damageInfo)
         ply:SetNWInt("DamageHealed", ply:GetNWInt("DamageHealed") - damageAmount)
     elseif damageAmount > 0 then
         ply:SetNWInt("DamageRecieved", ply:GetNWInt("DamageRecieved") + damageAmount)
+        ply:SetNWInt("RaidDamageRecieved", ply:GetNWInt("RaidDamageRecieved") + damageAmount)
     end
 
     local attacker = damageInfo:GetAttacker()
@@ -67,6 +76,7 @@ hook.Add("EntityTakeDamage", "DamageUpdateStats", function(ply, damageInfo)
         attacker:SetNWInt("DamageHealed", attacker:GetNWInt("DamageHealed") - damageAmount)
     elseif damageAmount > 0 then
         attacker:SetNWInt("DamageDealt", attacker:GetNWInt("DamageDealt") + damageAmount)
+        attacker:SetNWInt("RaidDamageDealt", attacker:GetNWInt("RaidDamageDealt") + damageAmount)
     end
 end)
 

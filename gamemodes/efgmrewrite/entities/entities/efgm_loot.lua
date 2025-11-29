@@ -64,7 +64,15 @@ function ENT:SelectItems()
         data.count = math.Clamp(math.random(math.Round(def.stackSize / 6), def.stackSize), 1, def.stackSize)
 
         if def.equipType == EQUIPTYPE.Consumable then
+
             data.durability = math.Clamp(math.random(math.Round(def.consumableValue / 4), def.consumableValue), 1, def.consumableValue)
+
+        end
+
+        if def.equipType == EQUIPTYPE.Weapon and def.defAtts then
+
+            data.att = def.defAtts
+
         end
 
         local item = ITEM.Instantiate(itemKey, def.equipType, data)

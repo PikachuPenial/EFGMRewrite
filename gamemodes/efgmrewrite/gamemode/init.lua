@@ -141,6 +141,10 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		net.Start("CreateDeathInformation")
 		net.WriteFloat(xpMult)
 		net.WriteInt(victim:GetNWInt("RaidTime", 0), 16)
+		net.WriteInt(victim:GetNWInt("RaidDamageDealt", 0), 24)
+		net.WriteInt(victim:GetNWInt("RaidDamageRecieved", 0), 24)
+		net.WriteInt(victim:GetNWInt("RaidItemsLooted", 0), 24)
+		net.WriteInt(victim:GetNWInt("RaidKills", 0), 24)
 		net.WriteInt(math.Round(victim:GetNWFloat("ExperienceTime", 0)), 16)
 		net.WriteInt(victim:GetNWInt("ExperienceCombat", 0), 16)
 		net.WriteInt(victim:GetNWInt("ExperienceExploration", 0), 16)
@@ -152,6 +156,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		net.Send(victim)
 
 		ApplyPlayerExperience(victim, 0.5)
+		ResetRaidStats(victim)
 		return
 
 	end
@@ -164,6 +169,10 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	net.Start("CreateDeathInformation")
 	net.WriteFloat(xpMult)
 	net.WriteInt(victim:GetNWInt("RaidTime", 0), 16)
+	net.WriteInt(victim:GetNWInt("RaidDamageDealt", 0), 24)
+	net.WriteInt(victim:GetNWInt("RaidDamageRecieved", 0), 24)
+	net.WriteInt(victim:GetNWInt("RaidItemsLooted", 0), 24)
+	net.WriteInt(victim:GetNWInt("RaidKills", 0), 24)
 	net.WriteInt(math.Round(victim:GetNWFloat("ExperienceTime", 0)), 16)
 	net.WriteInt(victim:GetNWInt("ExperienceCombat", 0), 16)
 	net.WriteInt(victim:GetNWInt("ExperienceExploration", 0), 16)
@@ -175,8 +184,10 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	net.Send(victim)
 
 	attacker:SetNWInt("ExperienceCombat", attacker:GetNWInt("ExperienceCombat") + 300)
+	attacker:SetNWInt("RaidKills", attacker:GetNWInt("RaidKills") + 1)
 
 	ApplyPlayerExperience(victim, 0.5)
+	ResetRaidStats(victim)
 
 end
 

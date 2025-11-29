@@ -534,6 +534,13 @@ net.Receive("PlayerInventoryLootItemFromContainer", function(len, ply)
         net.WriteUInt(newIndex, 16)
     net.Send(ply)
 
+    if !ply:CompareStatus(0) then
+
+        ply:SetNWInt("RaidItemsLooted", ply:GetNWInt("RaidItemsLooted") + 1)
+        ply:SetNWInt("ExperienceLooting", ply:GetNWInt("ExperienceLooting") + math.random(5, 10))
+
+    end
+
     AddWeightToPlayer(ply, newItem.name, newItem.data.count)
     UpdateInventoryString(ply)
 
