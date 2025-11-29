@@ -87,7 +87,7 @@ net.Receive("PlayerInventoryAddItem", function(len, ply)
     index = net.ReadUInt(16)
 
     table.insert(playerInventory, index, ITEM.Instantiate(name, type, data))
-    ReloadInventory()
+    Menu.ReloadInventory()
 
 end )
 
@@ -99,7 +99,7 @@ net.Receive("PlayerInventoryUpdateItem", function(len, ply)
     index = net.ReadUInt(16)
 
     playerInventory[index].data = newData
-    ReloadInventory()
+    Menu.ReloadInventory()
 
 end )
 
@@ -111,7 +111,7 @@ net.Receive("PlayerInventoryDeleteItem", function(len, ply)
 
     table.remove(playerInventory, index)
 
-    ReloadInventory()
+    Menu.ReloadInventory()
 
 end )
 
@@ -147,7 +147,7 @@ net.Receive("PlayerInventoryUpdateEquipped", function(len, ply)
     key = net.ReadUInt(16)
 
     playerWeaponSlots[index][key].data = newData
-    ReloadSlots()
+    Menu.ReloadSlots()
 
 end )
 
@@ -159,7 +159,7 @@ function DropItemFromInventory(itemIndex, data)
     net.SendToServer()
 
     table.remove(playerInventory, itemIndex)
-    ReloadInventory()
+    Menu.ReloadInventory()
 
 end
 
@@ -178,7 +178,7 @@ function EquipItemFromInventory(itemIndex, equipSlot, primaryPref)
 
             playerWeaponSlots[equipSlot][1] = item
 
-            ReloadInventory()
+            Menu.ReloadInventory()
 
             net.Start("PlayerInventoryEquipItem", false)
                 net.WriteUInt(itemIndex, 16)
@@ -186,7 +186,7 @@ function EquipItemFromInventory(itemIndex, equipSlot, primaryPref)
                 net.WriteUInt(1, 16)
             net.SendToServer()
 
-            ReloadInventory()
+            Menu.ReloadInventory()
 
             return true
 
@@ -194,7 +194,7 @@ function EquipItemFromInventory(itemIndex, equipSlot, primaryPref)
 
             playerWeaponSlots[equipSlot][2] = item
 
-            ReloadInventory()
+            Menu.ReloadInventory()
 
             net.Start("PlayerInventoryEquipItem", false)
                 net.WriteUInt(itemIndex, 16)
@@ -202,7 +202,7 @@ function EquipItemFromInventory(itemIndex, equipSlot, primaryPref)
                 net.WriteUInt(2, 16)
             net.SendToServer()
 
-            ReloadInventory()
+            Menu.ReloadInventory()
 
             return true
 
@@ -216,7 +216,7 @@ function EquipItemFromInventory(itemIndex, equipSlot, primaryPref)
 
                 playerWeaponSlots[equipSlot][k] = item
 
-                ReloadInventory()
+                Menu.ReloadInventory()
 
                 net.Start("PlayerInventoryEquipItem", false)
                     net.WriteUInt(itemIndex, 16)
@@ -224,7 +224,7 @@ function EquipItemFromInventory(itemIndex, equipSlot, primaryPref)
                     net.WriteUInt(k, 16)
                 net.SendToServer()
 
-                ReloadInventory()
+                Menu.ReloadInventory()
 
                 return true
 
@@ -246,14 +246,14 @@ function UnEquipItemFromInventory(equipID, equipSlot)
 
     table.Empty(playerWeaponSlots[equipID][equipSlot])
 
-    ReloadSlots()
+    Menu.ReloadSlots()
 
     net.Start("PlayerInventoryUnEquipItem", false)
         net.WriteUInt(equipID, 4)
         net.WriteUInt(equipSlot, 4)
     net.SendToServer()
 
-    ReloadSlots()
+    Menu.ReloadSlots()
 
 end
 
@@ -265,14 +265,14 @@ function DropEquippedItem(equipID, equipSlot)
 
     table.Empty(playerWeaponSlots[equipID][equipSlot])
 
-    ReloadSlots()
+    Menu.ReloadSlots()
 
     net.Start("PlayerInventoryDropEquippedItem", false)
         net.WriteUInt(equipID, 4)
         net.WriteUInt(equipSlot, 4)
     net.SendToServer()
 
-    ReloadSlots()
+    Menu.ReloadSlots()
 
 end
 
@@ -281,14 +281,14 @@ function ConsumeItemFromInventory(itemIndex)
     net.Start("PlayerInventoryConsumeItem", false)
     net.WriteUInt(itemIndex, 16)
     net.SendToServer()
-    ReloadInventory()
+    Menu.ReloadInventory()
 
 end
 
 net.Receive("PlayerInventoryConsumeGrenade", function(len, ply)
 
     table.Empty(playerWeaponSlots[4][1])
-    ReloadSlots()
+    Menu.ReloadSlots()
 
 end )
 
