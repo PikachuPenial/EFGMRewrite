@@ -8,11 +8,12 @@ net.Receive("PlayerMarketPurchaseItem", function(len, ply)
     if ply:GetNWInt("StashCount", 0) >= ply:GetNWInt("StashMax", 150) then return false end
 
     local item = net.ReadString()
-    local count = net.ReadUInt(8)
+    local count = net.ReadUInt(16)
 
     local def = EFGMITEMS[item]
 
     if def.canPurchase == false then return end
+    if ply:GetNWInt("StashCount", 0) + math.floor(count / def.stackSize) >= ply:GetNWInt("StashMax", 150) then return false end
 
     local plyMoney = ply:GetNWInt("Money", 0)
     local plyLevel = ply:GetNWInt("Level", 1)
@@ -67,7 +68,7 @@ net.Receive("PlayerMarketPurchaseItemToInventory", function(len, ply)
     if !ply:CompareStatus(0) then return false end
 
     local item = net.ReadString()
-    local count = net.ReadUInt(8)
+    local count = net.ReadUInt(16)
 
     local def = EFGMITEMS[item]
 

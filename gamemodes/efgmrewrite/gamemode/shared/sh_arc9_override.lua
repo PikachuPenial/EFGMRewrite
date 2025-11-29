@@ -378,7 +378,7 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
         local QuicknadeBind = owner:KeyDown(IN_GRENADE1)
 
         if self:GetSafe() and owner:KeyPressed(IN_ATTACK) then self:ToggleSafety(false) return end
-        
+
         if IsValid(self:GetDetonatorEntity()) then
             if owner:KeyPressed(IN_ATTACK) then
                 self:TouchOff()
@@ -730,7 +730,7 @@ hook.Add("PlayerBindPress", "ARC9_Binds", function(ply, bind, pressed, code)
                     wpn:PostModify()
                 end
             end
-            
+
             return true
         end
     else

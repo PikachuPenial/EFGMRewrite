@@ -1611,7 +1611,9 @@ function Menu.ConfirmPurchase(item, sendTo)
     if plyMoney < i.value then surface.PlaySound("ui/element_deselect.wav") return end
     if plyLevel < (i.levelReq or 1) then surface.PlaySound("ui/element_deselect.wav") return end
 
-    local maxTransactionCount = math.Clamp(math.floor(plyMoney / i.value), 1, i.stackSize)
+    local maxTransactionCountMult = math.min(10, ply:GetNWInt("StashMax", 150) - ply:GetNWInt("StashCount", 0))
+    local maxTransactionCount = math.Clamp(math.floor(plyMoney / i.value), 1, i.stackSize * maxTransactionCountMult)
+    if i.stackSize == 1 then maxTransactionCount = 1 end
 
     surface.SetFont("PuristaBold24")
     local confirmText = "Purchase " .. transactionCount .. "x " .. i.fullName .. " (" .. i.displayName .. ") for ₽" .. comma_value(transactionCost) .. "?"
@@ -1625,7 +1627,7 @@ function Menu.ConfirmPurchase(item, sendTo)
 
     confirmPanel = vgui.Create("DFrame", Menu.MenuFrame)
     confirmPanel:SetSize(confirmTextSize + EFGM.MenuScale(10), confirmPanelHeight)
-    confirmPanel:Center()
+    confirmPanel:SetPos(Menu.MenuFrame:GetWide() / 2 - confirmPanel:GetWide() / 2, Menu.MenuFrame:GetTall() / 2 - confirmPanel:GetTall() / 2)
     confirmPanel:SetAlpha(0)
     confirmPanel:SetTitle("")
     confirmPanel:ShowCloseButton(false)
@@ -1636,6 +1638,7 @@ function Menu.ConfirmPurchase(item, sendTo)
     confirmPanel.Paint = function(s, w, h)
 
         confirmPanel:SetWide(confirmTextSize + EFGM.MenuScale(10))
+        confirmPanel:SetX(Menu.MenuFrame:GetWide() / 2 - confirmPanel:GetWide() / 2)
 
         BlurPanel(s, EFGM.MenuScale(3))
 
@@ -1662,7 +1665,7 @@ function Menu.ConfirmPurchase(item, sendTo)
     end
 
     surface.SetFont("PuristaBold24")
-    local yesText = "YES"
+    local yesText = "YES [ENTER]"
     local yesTextSize = surface.GetTextSize(yesText)
     local yesButtonSize = yesTextSize + EFGM.MenuScale(10)
 
@@ -1692,12 +1695,12 @@ function Menu.ConfirmPurchase(item, sendTo)
     local noButtonSize = noTextSize + EFGM.MenuScale(10)
 
     local noButton = vgui.Create("DButton", confirmPanel)
-    noButton:SetPos(confirmPanel:GetWide() / 2 - (noButtonSize / 2) + EFGM.MenuScale(25), confirmPanelHeight - EFGM.MenuScale(35))
+    noButton:SetPos(confirmPanel:GetWide() / 2 - (noButtonSize / 2) + yesButton:GetWide() / 2 + EFGM.MenuScale(5), confirmPanelHeight - EFGM.MenuScale(35))
     noButton:SetSize(noButtonSize, EFGM.MenuScale(28))
     noButton:SetText("")
     noButton.Paint = function(s, w, h)
 
-        noButton:SetX(confirmPanel:GetWide() / 2 - (noButtonSize / 2) + EFGM.MenuScale(25))
+        noButton:SetX(confirmPanel:GetWide() / 2 - (noButtonSize / 2) + yesButton:GetWide() / 2 + EFGM.MenuScale(5))
 
         BlurPanel(s, EFGM.MenuScale(0))
 
@@ -1714,17 +1717,18 @@ function Menu.ConfirmPurchase(item, sendTo)
     if maxTransactionCount > 1 then
 
         local amountInput = vgui.Create("DTextEntry", confirmPanel)
-        amountInput:SetPos(confirmPanel:GetWide() / 2 - EFGM.MenuScale(160), EFGM.MenuScale(35))
-        amountInput:SetSize(EFGM.MenuScale(240), EFGM.MenuScale(15))
-        amountInput:SetPlaceholderText("Amount to Buy")
+        amountInput:SetPos(confirmPanel:GetWide() / 2 - EFGM.MenuScale(80), EFGM.MenuScale(35))
+        amountInput:SetSize(EFGM.MenuScale(160), EFGM.MenuScale(15))
+        amountInput:SetPlaceholderText("1-" .. maxTransactionCount)
         amountInput:SetNumeric(true)
         amountInput:SetUpdateOnType(true)
+        amountInput:RequestFocus()
 
         amountInput.Think = function(self)
 
-            amountInput:SetValue(math.Clamp(amountInput:GetInt() or 1, 1, i.stackSize * 10))
+            amountInput:SetX(confirmPanel:GetWide() / 2 - EFGM.MenuScale(80))
 
-            local num = math.Clamp(amountInput:GetInt() or 1, 1, i.stackSize * 10)
+            local num = math.Clamp(amountInput:GetInt() or 1, 1, maxTransactionCount)
 
             transactionCount = num
             transactionCost = i.value * num
@@ -1764,9 +1768,9 @@ function Menu.ConfirmPurchase(item, sendTo)
 
     end
 
-    function confirmPanel:OnKeyCodePressed(KEY_ENTER)
+    function confirmPanel:OnKeyCodePressed(key)
 
-        yesButton:DoClick()
+        if key == KEY_ENTER then yesButton:DoClick() end
 
     end
 
@@ -1837,7 +1841,7 @@ function Menu.ConfirmSell(item, data, key)
 
     confirmPanel = vgui.Create("DFrame", Menu.MenuFrame)
     confirmPanel:SetSize(confirmTextSize + EFGM.MenuScale(10), confirmPanelHeight)
-    confirmPanel:Center()
+    confirmPanel:SetPos(Menu.MenuFrame:GetWide() / 2 - confirmPanel:GetWide() / 2, Menu.MenuFrame:GetTall() / 2 - confirmPanel:GetTall() / 2)
     confirmPanel:SetAlpha(0)
     confirmPanel:SetTitle("")
     confirmPanel:ShowCloseButton(false)
@@ -1848,6 +1852,7 @@ function Menu.ConfirmSell(item, data, key)
     confirmPanel.Paint = function(s, w, h)
 
         confirmPanel:SetWide(confirmTextSize + EFGM.MenuScale(10))
+        confirmPanel:SetX(Menu.MenuFrame:GetWide() / 2 - confirmPanel:GetWide() / 2)
 
         BlurPanel(s, EFGM.MenuScale(3))
 
@@ -1874,7 +1879,7 @@ function Menu.ConfirmSell(item, data, key)
     end
 
     surface.SetFont("PuristaBold24")
-    local yesText = "YES"
+    local yesText = "YES [ENTER]"
     local yesTextSize = surface.GetTextSize(yesText)
     local yesButtonSize = yesTextSize + EFGM.MenuScale(10)
 
@@ -1904,12 +1909,12 @@ function Menu.ConfirmSell(item, data, key)
     local noButtonSize = noTextSize + EFGM.MenuScale(10)
 
     local noButton = vgui.Create("DButton", confirmPanel)
-    noButton:SetPos(confirmPanel:GetWide() / 2 - (noButtonSize / 2) + EFGM.MenuScale(25), confirmPanelHeight - EFGM.MenuScale(35))
+    noButton:SetPos(confirmPanel:GetWide() / 2 - (noButtonSize / 2) + yesButton:GetWide() / 2 + EFGM.MenuScale(5), confirmPanelHeight - EFGM.MenuScale(35))
     noButton:SetSize(noButtonSize, EFGM.MenuScale(28))
     noButton:SetText("")
     noButton.Paint = function(s, w, h)
 
-        noButton:SetX(confirmPanel:GetWide() / 2 - (noButtonSize / 2) + EFGM.MenuScale(25))
+        noButton:SetX(confirmPanel:GetWide() / 2 - (noButtonSize / 2) + yesButton:GetWide() / 2 + EFGM.MenuScale(5))
 
         BlurPanel(s, EFGM.MenuScale(0))
 
@@ -1990,9 +1995,9 @@ function Menu.ConfirmSell(item, data, key)
 
     end
 
-    function confirmPanel:OnKeyCodePressed(KEY_ENTER)
+    function confirmPanel:OnKeyCodePressed(key)
 
-        yesButton:DoClick()
+        if key == KEY_ENTER then yesButton:DoClick() end
 
     end
 
@@ -2030,7 +2035,7 @@ function Menu.ConfirmSplit(item, data, key, inv)
 
     confirmPanel = vgui.Create("DFrame", Menu.MenuFrame)
     confirmPanel:SetSize(confirmTextSize + EFGM.MenuScale(10), confirmPanelHeight)
-    confirmPanel:Center()
+    confirmPanel:SetPos(Menu.MenuFrame:GetWide() / 2 - confirmPanel:GetWide() / 2, Menu.MenuFrame:GetTall() / 2 - confirmPanel:GetTall() / 2)
     confirmPanel:SetAlpha(0)
     confirmPanel:SetTitle("")
     confirmPanel:ShowCloseButton(false)
@@ -2041,6 +2046,7 @@ function Menu.ConfirmSplit(item, data, key, inv)
     confirmPanel.Paint = function(s, w, h)
 
         confirmPanel:SetWide(confirmTextSize + EFGM.MenuScale(10))
+        confirmPanel:SetX(Menu.MenuFrame:GetWide() / 2 - confirmPanel:GetWide() / 2)
 
         BlurPanel(s, EFGM.MenuScale(3))
 
@@ -2067,7 +2073,7 @@ function Menu.ConfirmSplit(item, data, key, inv)
     end
 
     surface.SetFont("PuristaBold24")
-    local yesText = "YES"
+    local yesText = "YES [ENTER]"
     local yesTextSize = surface.GetTextSize(yesText)
     local yesButtonSize = yesTextSize + EFGM.MenuScale(10)
 
@@ -2097,12 +2103,12 @@ function Menu.ConfirmSplit(item, data, key, inv)
     local noButtonSize = noTextSize + EFGM.MenuScale(10)
 
     local noButton = vgui.Create("DButton", confirmPanel)
-    noButton:SetPos(confirmPanel:GetWide() / 2 - (noButtonSize / 2) + EFGM.MenuScale(25), confirmPanelHeight - EFGM.MenuScale(35))
+    noButton:SetPos(confirmPanel:GetWide() / 2 - (noButtonSize / 2) + yesButton:GetWide() / 2 + EFGM.MenuScale(5), confirmPanelHeight - EFGM.MenuScale(35))
     noButton:SetSize(noButtonSize, EFGM.MenuScale(28))
     noButton:SetText("")
     noButton.Paint = function(s, w, h)
 
-        noButton:SetX(confirmPanel:GetWide() / 2 - (noButtonSize / 2) + EFGM.MenuScale(25))
+        noButton:SetX(confirmPanel:GetWide() / 2 - (noButtonSize / 2) + yesButton:GetWide() / 2 + EFGM.MenuScale(5))
 
         BlurPanel(s, EFGM.MenuScale(0))
 
@@ -2157,9 +2163,9 @@ function Menu.ConfirmSplit(item, data, key, inv)
 
     end
 
-    function confirmPanel:OnKeyCodePressed(KEY_ENTER)
+    function confirmPanel:OnKeyCodePressed(key)
 
-        yesButton:DoClick()
+        if key == KEY_ENTER then yesButton:DoClick() end
 
     end
 

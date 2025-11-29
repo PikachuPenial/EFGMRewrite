@@ -377,7 +377,7 @@ function PurchaseItem(item, count)
 
     net.Start("PlayerMarketPurchaseItem", false)
     net.WriteString(item)
-    net.WriteUInt(count, 8)
+    net.WriteUInt(count, 16)
     net.SendToServer()
 
 end
@@ -386,7 +386,7 @@ function PurchaseItemToInv(item, count)
 
     net.Start("PlayerMarketPurchaseItemToInventory", false)
     net.WriteString(item)
-    net.WriteUInt(count, 8)
+    net.WriteUInt(count, 16)
     net.SendToServer()
 
 end
