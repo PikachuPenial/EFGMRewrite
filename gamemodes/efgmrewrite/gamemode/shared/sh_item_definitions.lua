@@ -3774,7 +3774,7 @@ EFGMITEMS = {}
         ["displayName"] = "W. Office",
         ["displayType"] = "Concrete Key",
         ["weight"] = 0.2,
-        ["value"] = 29000,
+        ["value"] = 200000,
         ["levelReq"] = 1,
         ["equipType"] = EQUIPTYPE.None,
         ["consumableType"] = "key",
@@ -3793,7 +3793,7 @@ EFGMITEMS = {}
         ["displayName"] = "W. Armory",
         ["displayType"] = "Concrete Key",
         ["weight"] = 0.2,
-        ["value"] = 42000,
+        ["value"] = 250000,
         ["levelReq"] = 1,
         ["equipType"] = EQUIPTYPE.None,
         ["consumableType"] = "key",
@@ -3812,7 +3812,7 @@ EFGMITEMS = {}
         ["displayName"] = "Hotel mrk.",
         ["displayType"] = "Concrete Key",
         ["weight"] = 0.2,
-        ["value"] = 1000000,
+        ["value"] = 1250000,
         ["equipType"] = EQUIPTYPE.None,
         ["consumableType"] = "key",
         ["consumableValue"] = 5,
@@ -3832,7 +3832,7 @@ EFGMITEMS = {}
         ["displayName"] = "Br. Meeting",
         ["displayType"] = "Concrete Key",
         ["weight"] = 0.2,
-        ["value"] = 42000,
+        ["value"] = 200000,
         ["levelReq"] = 1,
         ["equipType"] = EQUIPTYPE.None,
         ["consumableType"] = "key",
@@ -3846,50 +3846,50 @@ EFGMITEMS = {}
         ["sizeY"] = 1
     }
 
-    EFGMITEMS["efgm_keycard_bunker_entrance"] = {
-        ["fullName"] = "Bunker Entrance Keycard",
-        ["displayName"] = "B. Door",
-        ["displayType"] = "Concrete Key",
-        ["weight"] = 0.2,
-        ["value"] = 90000,
-        ["levelReq"] = 1,
-        ["equipType"] = EQUIPTYPE.None,
-        ["consumableType"] = "key",
-        ["consumableValue"] = 5,
-        ["appearInInventory"] = true,
-        ["stackSize"] = 1,
-        ["icon"] = Material("items/keys/keycard_green.png", "smooth"),
-        ["iconColor"] = Color(31, 38, 26, 155),
+    -- EFGMITEMS["efgm_keycard_bunker_entrance"] = {
+    --     ["fullName"] = "Bunker Entrance Keycard",
+    --     ["displayName"] = "B. Door",
+    --     ["displayType"] = "Concrete Key",
+    --     ["weight"] = 0.2,
+    --     ["value"] = 90000,
+    --     ["levelReq"] = 1,
+    --     ["equipType"] = EQUIPTYPE.None,
+    --     ["consumableType"] = "key",
+    --     ["consumableValue"] = 5,
+    --     ["appearInInventory"] = true,
+    --     ["stackSize"] = 1,
+    --     ["icon"] = Material("items/keys/keycard_green.png", "smooth"),
+    --     ["iconColor"] = Color(31, 38, 26, 155),
 
-        ["sizeX"] = 1,
-        ["sizeY"] = 1
-    }
+    --     ["sizeX"] = 1,
+    --     ["sizeY"] = 1
+    -- }
 
-    EFGMITEMS["efgm_keycard_bunker_armory"] = {
-        ["fullName"] = "Bunker Armory Access Keycard",
-        ["displayName"] = "B. Armory",
-        ["displayType"] = "Concrete Key",
-        ["weight"] = 0.2,
-        ["value"] = 400000,
-        ["levelReq"] = 1,
-        ["equipType"] = EQUIPTYPE.None,
-        ["consumableType"] = "key",
-        ["consumableValue"] = 5,
-        ["appearInInventory"] = true,
-        ["stackSize"] = 1,
-        ["icon"] = Material("items/keys/keycard_dark_red.png", "smooth"),
-        ["iconColor"] = Color(31, 38, 26, 155),
+    -- EFGMITEMS["efgm_keycard_bunker_armory"] = {
+    --     ["fullName"] = "Bunker Armory Access Keycard",
+    --     ["displayName"] = "B. Armory",
+    --     ["displayType"] = "Concrete Key",
+    --     ["weight"] = 0.2,
+    --     ["value"] = 400000,
+    --     ["levelReq"] = 1,
+    --     ["equipType"] = EQUIPTYPE.None,
+    --     ["consumableType"] = "key",
+    --     ["consumableValue"] = 5,
+    --     ["appearInInventory"] = true,
+    --     ["stackSize"] = 1,
+    --     ["icon"] = Material("items/keys/keycard_dark_red.png", "smooth"),
+    --     ["iconColor"] = Color(31, 38, 26, 155),
 
-        ["sizeX"] = 1,
-        ["sizeY"] = 1
-    }
+    --     ["sizeX"] = 1,
+    --     ["sizeY"] = 1
+    -- }
 
     EFGMITEMS["efgm_keycard_storage_entrance"] = {
         ["fullName"] = "Storage Building Access Keycard",
         ["displayName"] = "Storage",
         ["displayType"] = "Concrete Key",
         ["weight"] = 0.2,
-        ["value"] = 60000,
+        ["value"] = 600000,
         ["levelReq"] = 1,
         ["equipType"] = EQUIPTYPE.None,
         ["consumableType"] = "key",
@@ -3909,7 +3909,7 @@ EFGMITEMS = {}
         ["displayName"] = "Break R.",
         ["displayType"] = "Belmont Key",
         ["weight"] = 0.2,
-        ["value"] = 40000,
+        ["value"] = 200000,
         ["levelReq"] = 1,
         ["equipType"] = EQUIPTYPE.None,
         ["consumableType"] = "key",
@@ -3928,7 +3928,7 @@ EFGMITEMS = {}
         ["displayName"] = "Kitchen",
         ["displayType"] = "Belmont Key",
         ["weight"] = 0.2,
-        ["value"] = 70000,
+        ["value"] = 200000,
         ["levelReq"] = 1,
         ["equipType"] = EQUIPTYPE.None,
         ["consumableType"] = "key",
@@ -3947,7 +3947,7 @@ EFGMITEMS = {}
         ["displayName"] = "Fenced A.",
         ["displayType"] = "Belmont Key",
         ["weight"] = 0.2,
-        ["value"] = 30000,
+        ["value"] = 200000,
         ["levelReq"] = 1,
         ["equipType"] = EQUIPTYPE.None,
         ["consumableType"] = "key",
@@ -7605,7 +7605,7 @@ EFGMITEMS = {}
 sellMultiplier = 0.5
 
 -- types:
--- 1 == any item
+-- 1 == any item (barring keys and attachments)
 -- 2 == military box (weapons, attachments, ammunition)
 -- 3 == ammunition box (ammunition, grenades)
 -- 4 == medical box (medical items)
@@ -7632,7 +7632,8 @@ function GenerateLootTables()
 
         -- generic loot pools
 
-        if v.displayType != "Attachment" and v.displayType != "Accessory" and v.displayType != "Barrel" and v.displayType != "Cover" and v.displayType != "Gas Block" and v.displayType != "Handguard" and v.displayType != "Magazine" and v.displayType != "Mount" and v.displayType != "Pistol Grip" and v.displayType != "Receiver" and v.displayType != "Sight" and v.displayType != "Stock" then
+        -- excluded keys bc you can find them fucking everywhere
+        if v.displayType != "Belmont Key" and v.displayType != "Concrete Key" and v.displayType != "Customs Key" and v.displayType != "Factory Key" and v.displayType != "Attachment" and v.displayType != "Accessory" and v.displayType != "Barrel" and v.displayType != "Cover" and v.displayType != "Gas Block" and v.displayType != "Handguard" and v.displayType != "Magazine" and v.displayType != "Mount" and v.displayType != "Pistol Grip" and v.displayType != "Receiver" and v.displayType != "Sight" and v.displayType != "Stock" then
 
             LOOT[1][k] = v
 

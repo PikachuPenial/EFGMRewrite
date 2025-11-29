@@ -91,6 +91,7 @@ function ENT:SpawnContainer(tbl)
 	container:Spawn()
 	container:Activate()
 	container:SetContainerData(self.ContainerLoot, self.ContainerName)
+    if self.LootType >= 1 and self.LootType <= 6 then container:SetSkin(self.LootType - 1) end
 
     self:TriggerOutput("OnSpawn", nil, nil)
 

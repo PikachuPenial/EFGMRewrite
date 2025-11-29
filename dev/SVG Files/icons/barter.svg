@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
+   sodipodi:docname="barter.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#000000"
+     bordercolor="#999999"
+     borderopacity="1"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="1.0167041"
+     inkscape:cx="308.34931"
+     inkscape:cy="559.15975"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       id="path6"
+       style="fill:#ffffff;stroke-width:1.105"
+       d="m 102.27283,103.05366 c -12.212159,-10e-6 -23.775525,5.49746 -31.484903,14.96859 l 5.329391,2.17351 c 6.663787,-7.43128 16.174029,-11.6772 26.155512,-11.67732 15.50339,1.5e-4 29.17389,10.16252 33.64135,25.00829 l -11.53779,-4.7594 13.87977,29.76615 13.88029,-29.76615 -10.64586,4.39095 c -4.75036,-17.75574 -20.83755,-30.1047 -39.21776,-30.10462 z m -35.983336,25.71367 -13.88029,29.76615 10.645862,-4.39095 c 4.75036,17.75574 20.837551,30.1047 39.217764,30.10462 12.21216,1e-5 23.77552,-5.49746 31.4849,-14.96859 l -5.32939,-2.17351 c -6.66379,7.43128 -16.17403,11.6772 -26.15551,11.67732 -15.503396,-1.4e-4 -29.173899,-10.16251 -33.64136,-25.00829 l 11.537797,4.7594 z"
+       sodipodi:nodetypes="cccccccccccccccccccc"
+       inkscape:export-filename="E:\Steam\steamapps\common\GarrysMod\garrysmod\addons\EFGMRewrite\materials\icons\barter.png"
+       inkscape:export-xdpi="99.259201"
+       inkscape:export-ydpi="99.259201" />
+  </g>
+</svg>

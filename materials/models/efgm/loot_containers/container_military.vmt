@@ -1,0 +1,6 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/efgm/loot_containers/container_military"
+	"$surfaceprop" "Metal"
+	"$model" 1
+}
