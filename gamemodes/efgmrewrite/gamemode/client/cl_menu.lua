@@ -1711,36 +1711,27 @@ function Menu.ConfirmPurchase(item, sendTo)
 
     end
 
-    if i.stackSize > 1 and maxTransactionCount > 1 then
+    if maxTransactionCount > 1 then
 
-        local amountSlider = vgui.Create("DNumSlider", confirmPanel)
-        amountSlider:SetPos(confirmPanel:GetWide() / 2 - EFGM.MenuScale(160), EFGM.MenuScale(35))
-        amountSlider:SetSize(EFGM.MenuScale(240), EFGM.MenuScale(15))
-        amountSlider:SetMin(1)
-        amountSlider:SetMax(maxTransactionCount)
-        amountSlider:SetValue(1)
-        amountSlider:SetDefaultValue(1)
-        amountSlider:SetDecimals(0)
+        local amountInput = vgui.Create("DTextEntry", confirmPanel)
+        amountInput:SetPos(confirmPanel:GetWide() / 2 - EFGM.MenuScale(160), EFGM.MenuScale(35))
+        amountInput:SetSize(EFGM.MenuScale(240), EFGM.MenuScale(15))
+        amountInput:SetPlaceholderText("Amount to Buy")
+        amountInput:SetNumeric(true)
+        amountInput:SetUpdateOnType(true)
 
-        local num = 1
-        amountSlider.OnValueChanged = function(self, val)
+        amountInput.Think = function(self)
 
-            if val == num then return end
+            amountInput:SetValue(math.Clamp(amountInput:GetInt() or 1, 1, i.stackSize * 10))
 
-            num = math.Round(val)
+            local num = math.Clamp(amountInput:GetInt() or 1, 1, i.stackSize * 10)
 
-            transactionCost = i.value * num
             transactionCount = num
+            transactionCost = i.value * num
 
             surface.SetFont("PuristaBold24")
             confirmText = "Purchase " .. transactionCount .. "x " .. i.fullName .. " (" .. i.displayName .. ") for ₽" .. comma_value(transactionCost) .. "?"
             confirmTextSize = math.max(EFGM.MenuScale(300), surface.GetTextSize(confirmText))
-
-        end
-
-        amountSlider.Think = function()
-
-            -- amountSlider:SetX(confirmPanel:GetWide() / 2 - EFGM.MenuScale(160))
 
         end
 
@@ -1770,6 +1761,12 @@ function Menu.ConfirmPurchase(item, sendTo)
             end)
 
         end
+
+    end
+
+    function confirmPanel:OnKeyCodePressed(KEY_ENTER)
+
+        yesButton:DoClick()
 
     end
 
@@ -1933,8 +1930,8 @@ function Menu.ConfirmSell(item, data, key)
         amountSlider:SetSize(EFGM.MenuScale(240), EFGM.MenuScale(15))
         amountSlider:SetMin(1)
         amountSlider:SetMax(maxTransactionCount)
-        amountSlider:SetValue(1)
-        amountSlider:SetDefaultValue(1)
+        amountSlider:SetValue(data.count)
+        amountSlider:SetDefaultValue(data.count)
         amountSlider:SetDecimals(0)
 
         local num = 1
@@ -1969,6 +1966,8 @@ function Menu.ConfirmSell(item, data, key)
 
         end
 
+        amountSlider:OnValueChanged(data.count)
+
         amountSlider.Think = function()
 
             -- amountSlider:SetX(confirmPanel:GetWide() / 2 - EFGM.MenuScale(160))
@@ -1988,6 +1987,12 @@ function Menu.ConfirmSell(item, data, key)
         surface.PlaySound("ui/success.wav")
         confirmPanel:AlphaTo(0, 0.1, 0, function() confirmPanel:Remove() end)
         SellItem(item, transactionCount, key)
+
+    end
+
+    function confirmPanel:OnKeyCodePressed(KEY_ENTER)
+
+        yesButton:DoClick()
 
     end
 
@@ -2116,8 +2121,8 @@ function Menu.ConfirmSplit(item, data, key, inv)
     amountSlider:SetSize(EFGM.MenuScale(240), EFGM.MenuScale(15))
     amountSlider:SetMin(1)
     amountSlider:SetMax(maxSplitCount)
-    amountSlider:SetValue(1)
-    amountSlider:SetDefaultValue(1)
+    amountSlider:SetValue(math.Round(data.count / 2))
+    amountSlider:SetDefaultValue(math.Round(data.count / 2))
     amountSlider:SetDecimals(0)
 
     local num = 1
@@ -2129,6 +2134,8 @@ function Menu.ConfirmSplit(item, data, key, inv)
         splitCount = num
 
     end
+
+    amountSlider:OnValueChanged(math.Round(data.count / 2))
 
     amountSlider.Think = function()
 
@@ -2147,6 +2154,12 @@ function Menu.ConfirmSplit(item, data, key, inv)
         surface.PlaySound("ui/element_select.wav")
         confirmPanel:AlphaTo(0, 0.1, 0, function() confirmPanel:Remove() end)
         SplitFromInventory(inv, item, splitCount, key)
+
+    end
+
+    function confirmPanel:OnKeyCodePressed(KEY_ENTER)
+
+        yesButton:DoClick()
 
     end
 
