@@ -2443,7 +2443,7 @@ function Menu.ReloadInventory(itemSearch)
         local duraSize = nil
         local duraFont = nil
 
-        if i.equipType == EQUIPTYPE.Consumable then
+        if i.consumableType == "heal" or i.consumableType == "key" then
             duraSize = surface.GetTextSize(i.consumableValue .. "/" .. i.consumableValue)
 
             if duraSize <= (EFGM.MenuScale(49 * i.sizeX)) then duraFont = "PuristaBold18"
@@ -2454,9 +2454,9 @@ function Menu.ReloadInventory(itemSearch)
 
             draw.SimpleTextOutlined(i.displayName, nameFont, w - EFGM.MenuScale(3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
-            if i.equipType == EQUIPTYPE.Ammunition then
+            if i.equipType == EQUIPTYPE.Ammunition and i.stackSize > 1 then
                 draw.SimpleTextOutlined(v.data.count, "PuristaBold18", w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
-            elseif i.equipType == EQUIPTYPE.Consumable then
+            elseif i.consumableType == "heal" or i.consumableType == "key" then
                 draw.SimpleTextOutlined(v.data.durability .. "/" .. i.consumableValue, duraFont, w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
             end
 
@@ -4378,7 +4378,7 @@ function Menu.ReloadStash(itemSearch)
         local duraSize = nil
         local duraFont = nil
 
-        if i.equipType == EQUIPTYPE.Consumable then
+        if i.consumableType == "heal" or i.consumableType == "key" then
 
             duraSize = surface.GetTextSize(i.consumableValue .. "/" .. i.consumableValue)
 
@@ -4391,9 +4391,9 @@ function Menu.ReloadStash(itemSearch)
 
             draw.SimpleTextOutlined(i.displayName, nameFont, w - EFGM.MenuScale(3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
-            if i.equipType == EQUIPTYPE.Ammunition then
+            if i.equipType == EQUIPTYPE.Ammunition and i.stackSize > 1 then
                 draw.SimpleTextOutlined(v.data.count, "PuristaBold18", w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
-            elseif i.equipType == EQUIPTYPE.Consumable then
+            elseif i.consumableType == "heal" or i.consumableType == "key" then
                 draw.SimpleTextOutlined(v.data.durability .. "/" .. i.consumableValue, duraFont, w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
             end
 
@@ -4812,7 +4812,7 @@ function Menu.ReloadMarketStash(itemSearch)
         local duraSize = nil
         local duraFont = nil
 
-        if i.equipType == EQUIPTYPE.Consumable then
+        if i.consumableType == "heal" or i.consumableType == "key" then
 
             duraSize = surface.GetTextSize(i.consumableValue .. "/" .. i.consumableValue)
 
@@ -4825,9 +4825,9 @@ function Menu.ReloadMarketStash(itemSearch)
 
             draw.SimpleTextOutlined(i.displayName, nameFont, w - EFGM.MenuScale(3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
-            if i.equipType == EQUIPTYPE.Ammunition then
+            if i.equipType == EQUIPTYPE.Ammunition and i.stackSize > 1 then
                 draw.SimpleTextOutlined(v.data.count, "PuristaBold18", w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
-            elseif i.equipType == EQUIPTYPE.Consumable then
+            elseif i.consumableType == "heal" or i.consumableType == "key" then
                 draw.SimpleTextOutlined(v.data.durability .. "/" .. i.consumableValue, duraFont, w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
             end
 
@@ -5056,7 +5056,7 @@ function Menu.ReloadContainer()
         local duraSize = nil
         local duraFont = nil
 
-        if i.equipType == EQUIPTYPE.Consumable then
+        if i.consumableType == "heal" or i.consumableType == "key" then
             duraSize = surface.GetTextSize(i.consumableValue .. "/" .. i.consumableValue)
 
             if duraSize <= (EFGM.MenuScale(49 * i.sizeX)) then duraFont = "PuristaBold18"
@@ -5067,9 +5067,9 @@ function Menu.ReloadContainer()
 
             draw.SimpleTextOutlined(i.displayName, nameFont, w - EFGM.MenuScale(3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
-            if i.equipType == EQUIPTYPE.Ammunition then
+            if i.equipType == EQUIPTYPE.Ammunition and i.stackSize > 1 then
                 draw.SimpleTextOutlined(v.data.count, "PuristaBold18", w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
-            elseif i.equipType == EQUIPTYPE.Consumable then
+            elseif i.consumableType == "heal" or i.consumableType == "key" then
                 draw.SimpleTextOutlined(v.data.durability .. "/" .. i.consumableValue, duraFont, w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
             end
 
@@ -6882,11 +6882,14 @@ function Menu.OpenTab.Market()
                 local countText
                 surface.SetFont("PuristaBold18")
 
-                if v.durability then countText = v.durability .. "/" .. v.durability else countText = v.stack .. "x" end
+                if v.consumableValue then countText = v.consumableValue .. "/" .. v.consumableValue else countText = v.stack .. "x" end
                 local countTextSize = surface.GetTextSize(countText)
 
                 local levelText = "LEVEL " .. v.level
                 local levelTextSize = surface.GetTextSize(levelText)
+
+                local caliberText = v.caliber or ""
+                local caliberTextSize = surface.GetTextSize(caliberText)
 
                 local value = v.value
 
@@ -6908,11 +6911,18 @@ function Menu.OpenTab.Market()
                     if v.canPurchase then
 
                         surface.SetDrawColor(Color(80, 80, 80, 50))
-                        surface.DrawRect(EFGM.MenuScale(1), h - EFGM.MenuScale(46), countTextSize + EFGM.MenuScale(10), EFGM.MenuScale(15))
+                        surface.DrawRect(w - countTextSize - EFGM.MenuScale(11), h - EFGM.MenuScale(46), countTextSize + EFGM.MenuScale(10), EFGM.MenuScale(15))
                         surface.DrawRect(EFGM.MenuScale(1), EFGM.MenuScale(17), levelTextSize + EFGM.MenuScale(8), EFGM.MenuScale(15))
 
-                        draw.SimpleTextOutlined(countText, "PuristaBold18", EFGM.MenuScale(5), h - EFGM.MenuScale(31), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                        draw.SimpleTextOutlined(countText, "PuristaBold18", w - EFGM.MenuScale(5), h - EFGM.MenuScale(31), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
                         draw.SimpleTextOutlined(levelText, "PuristaBold18", EFGM.MenuScale(5), EFGM.MenuScale(14), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                    end
+
+                    if v.caliber then
+
+                        surface.DrawRect(EFGM.MenuScale(1), h - EFGM.MenuScale(46), caliberTextSize + EFGM.MenuScale(10), EFGM.MenuScale(15))
+                        draw.SimpleTextOutlined(caliberText, "PuristaBold18", EFGM.MenuScale(5), h - EFGM.MenuScale(31), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
 
                     end
 
@@ -7094,11 +7104,12 @@ function Menu.OpenTab.Market()
                     entry.value = v2.value or 1000
                     entry.level = v2.levelReq or 1
                     entry.equipType = v2.equipType
-                    if entry.equipType == EQUIPTYPE.Consumable then entry.durability = v2.durability end
+                    entry.consumableValue = v2.consumableValue
                     entry.stack = v2.stackSize
                     entry.sizeX = v2.sizeX or 1
                     entry.sizeY = v2.sizeY or 1
                     entry.defAtts = v2.defAtts
+                    entry.caliber = v2.caliber
                     entry.canPurchase = purchasable
 
                     if entry.equipType == EQUIPTYPE.Weapon and entry.defAtts then

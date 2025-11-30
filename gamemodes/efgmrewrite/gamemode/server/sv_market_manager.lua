@@ -48,7 +48,7 @@ net.Receive("PlayerMarketPurchaseItem", function(len, ply)
 
     end
 
-    if def.equipType == EQUIPTYPE.Consumable and def.consumableValue then
+    if (def.consumableType == "heal" or def.consumableType == "key") and def.consumableValue then
 
         data.durability = def.consumableValue
 
@@ -107,7 +107,7 @@ net.Receive("PlayerMarketPurchaseItemToInventory", function(len, ply)
 
     end
 
-    if def.equipType == EQUIPTYPE.Consumable and def.consumableValue then
+    if (def.consumableType == "heal" or def.consumableType == "key") and def.consumableValue then
 
         data.durability = def.consumableValue
 
@@ -163,7 +163,7 @@ net.Receive("PlayerMarketSellItem", function(len, ply)
         ply:SetNWInt("Money", plyMoney + cost)
         return true
 
-    elseif def.equipType == EQUIPTYPE.Consumable then
+    elseif def.consumableType == "heal" or def.consumableType == "key" then
 
         local data = ply.stash[key].data
         local cost = math.floor((def.value * sellMultiplier) * (data.durability / def.consumableValue))

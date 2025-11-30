@@ -63,7 +63,7 @@ function ENT:SelectItems()
         local data = {}
         data.count = math.Clamp(math.random(math.Round(def.stackSize / 6), def.stackSize), 1, def.stackSize)
 
-        if def.equipType == EQUIPTYPE.Consumable then
+        if def.consumableType == "heal" or def.consumableType == "key" then
 
             data.durability = math.Clamp(math.random(math.Round(def.consumableValue / 4), def.consumableValue), 1, def.consumableValue)
 
