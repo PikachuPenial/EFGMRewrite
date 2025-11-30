@@ -151,11 +151,10 @@ net.Receive("PlayerInventoryUpdateEquipped", function(len, ply)
 
 end )
 
-function DropItemFromInventory(itemIndex, data)
+function DropItemFromInventory(itemIndex)
 
     net.Start("PlayerInventoryDropItem", false)
     net.WriteUInt(itemIndex, 16)
-    net.WriteTable(data)
     net.SendToServer()
 
     table.remove(playerInventory, itemIndex)

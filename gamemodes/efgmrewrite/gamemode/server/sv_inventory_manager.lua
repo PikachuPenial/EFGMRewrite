@@ -215,42 +215,16 @@ end
 net.Receive("PlayerInventoryDropItem", function(len, ply)
 
     local itemIndex = net.ReadUInt(16)
-    local data = net.ReadTable()
     local item = ply.inventory[itemIndex]
 
     if table.IsEmpty(item) then return end
 
-    local entity = ents.Create(item.name)
-
-    -- creating a custom entity if the item isn't an entity to begin with
-    if entity == NULL then
-
-        entity = ents.Create("efgm_dropped_item")
-        entity:SetItem(item.name, item.type, item.data)
-
-        entity:SetPos(ply:GetShootPos() + ply:GetForward() * 128)
-        entity:Spawn()
-        entity:PhysWake()
-
-        table.remove(ply.inventory, itemIndex)
-        RemoveWeightFromPlayer(ply, item.name, item.data.count)
-        UpdateInventoryString(ply)
-
-        return
-
-    end
-
-    if data.att then
-
-        LoadPresetFromCode(entity, data.att)
-
-    end
+    entity = ents.Create("efgm_dropped_item")
+    entity:SetItem(item.name, item.type, item.data)
 
     entity:SetPos(ply:GetShootPos() + ply:GetForward() * 128)
     entity:Spawn()
     entity:PhysWake()
-
-    if type(entity.GetData) == "function" then entity:GetData(data) end
 
     table.remove(ply.inventory, itemIndex)
     RemoveWeightFromPlayer(ply, item.name, item.data.count)
@@ -445,31 +419,14 @@ net.Receive("PlayerInventoryDropEquippedItem", function(len, ply)
 
     table.Empty(ply.weaponSlots[equipID][equipSlot])
 
-    local wep = ply:GetWeapon(item.name)
-
-    if wep != NULL and item.data.att then
-
-        local atts = table.Copy(wep.Attachments)
-        local str = GenerateAttachString(atts)
-        item.data.att = str
-
-    end
-
     ply:StripWeapon(item.name)
 
-    local newWep = ents.Create(item.name)
+    entity = ents.Create("efgm_dropped_item")
+    entity:SetItem(item.name, item.type, item.data)
 
-    if item.data.att then
-
-        LoadPresetFromCode(newWep, item.data.att)
-
-    end
-
-    newWep:SetPos(ply:GetShootPos() + ply:GetForward() * 128)
-    newWep:Spawn()
-    newWep:PhysWake()
-
-    if type(newWep.GetData) == "function" then newWep:GetData(item.data) end
+    entity:SetPos(ply:GetShootPos() + ply:GetForward() * 128)
+    entity:Spawn()
+    entity:PhysWake()
 
     RemoveWeightFromPlayer(ply, item.name, item.data.count)
     UpdateEquippedString(ply)

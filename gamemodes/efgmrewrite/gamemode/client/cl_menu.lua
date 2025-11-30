@@ -2523,7 +2523,7 @@ function Menu.ReloadInventory()
                 function itemDropButton:DoClick()
 
                     surface.PlaySound("ui/element_select.wav")
-                    DropItemFromInventory(v.id, v.data)
+                    DropItemFromInventory(v.id)
                     contextMenu:Remove()
                     playerItems:InvalidateLayout()
 
