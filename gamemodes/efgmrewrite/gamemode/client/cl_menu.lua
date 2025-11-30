@@ -9537,7 +9537,7 @@ function Menu.OpenTab.Settings()
     toggleUBGL:SetSelectedNumber(GetConVar("efgm_bind_toggleubgl"):GetInt())
     function toggleUBGL:OnChange(num)
 
-        RunConsoleCommand("efgm_bind_toggleubgl", changeSight:GetSelectedNumber())
+        RunConsoleCommand("efgm_bind_toggleubgl", toggleUBGL:GetSelectedNumber())
 
     end
 

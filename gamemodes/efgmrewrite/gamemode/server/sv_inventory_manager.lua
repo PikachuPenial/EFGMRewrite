@@ -295,6 +295,15 @@ net.Receive("PlayerInventoryUnEquipItem", function(len, ply)
 
         end
 
+        local clip2 = wep:Clip2()
+        if clip2 != -1 and clip2 != 0 and ply:GetNWBool("InRange", false) == false then
+
+            local data = {}
+            data.count = wep:Clip2()
+            FlowItemToInventory(ply, wep.UBGLAmmo, EQUIPTYPE.Ammunition, data)
+
+        end
+
     end
 
     ply:StripWeapon(item.name)
@@ -349,6 +358,15 @@ function UnequipAll(ply)
                         local data = {}
                         data.count = wep:Clip1()
                         FlowItemToInventory(ply, wep.Ammo, EQUIPTYPE.Ammunition, data)
+
+                    end
+
+                    local clip2 = wep:Clip2()
+                    if clip2 != -1 and clip2 != 0 and ply:GetNWBool("InRange", false) == false then
+
+                        local data = {}
+                        data.count = wep:Clip2()
+                        FlowItemToInventory(ply, wep.UBGLAmmo, EQUIPTYPE.Ammunition, data)
 
                     end
 

@@ -218,7 +218,7 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
 
                 if self:GetValue("UBGL") then
                     if !self.AlreadyGaveUBGLAmmo then
-                        self:SetClip2(self:GetMaxClip2())
+                        -- self:SetClip2(self:GetMaxClip2())
                         self.AlreadyGaveUBGLAmmo = true
                     end
 
@@ -294,6 +294,46 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
         if CLIENT then inventory = playerInventory end
 
         return AmountInInventory(inventory, self:GetValue("Ammo"))
+    end
+
+    function SWEP:Ammo2()
+        if !IsValid(self:GetOwner()) then return math.huge end
+
+        if self:GetInfiniteAmmo() or self:GetOwner():GetNWBool("InRange", false) == true then
+            return math.huge
+        end
+
+        local inventory = {}
+        if SERVER then inventory = self:GetOwner().inventory end
+        if CLIENT then inventory = playerInventory end
+
+        return AmountInInventory(inventory, self:GetValue("UBGLAmmo"))
+    end
+
+    function SWEP:ThinkUBGL()
+        if self:GetValue("UBGL") and !self:GetProcessedValue("UBGLInsteadOfSights", true)  then
+            local owner = self:GetOwner()
+            local mag = self:Clip2()
+            local magr = self:Ammo2()
+            local infmag = owner:GetNWBool("InRange", false)
+
+            if mag == 0 and (!infmag and magr == 0) then
+                if self:GetUBGL() then self:ToggleUBGL(false) end
+                return
+            end
+
+            if (owner:KeyDown(IN_USE) and owner:KeyPressed(IN_ATTACK2)) or owner:KeyPressed(ARC9.IN_UBGL) then
+                if self.NextUBGLSwitch and self.NextUBGLSwitch > CurTime() then return end
+                self.NextUBGLSwitch = CurTime() + (self.UBGLToggleTime or 1)
+
+                if self:GetUBGL() then
+                    self:ToggleUBGL(false)
+                else
+                    self:ToggleUBGL(true)
+                end
+            end
+
+        end
     end
 
     function SWEP:RestoreClip(amt)
