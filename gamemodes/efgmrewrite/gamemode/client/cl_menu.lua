@@ -2341,7 +2341,7 @@ end
 
 Menu.OpenTab = {}
 
-function Menu.ReloadInventory()
+function Menu.ReloadInventory(itemSearch)
 
     if !IsValid(playerItems) then return end
 
@@ -2391,6 +2391,10 @@ function Menu.ReloadInventory()
 
         local i = EFGMITEMS[v.name]
         if i == nil then return end
+
+        if itemSearchText then itemSearch = itemSearchText end
+
+        if itemSearch != "" and itemSearch != nil and !(string.find((i.fullName and i.fullName or i.displayName):lower(), itemSearch)) then continue end
 
         local item = playerItems:Add("DButton")
         item:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
@@ -4253,9 +4257,9 @@ function Menu.ReloadSlots()
 
 end
 
-function Menu.ReloadStash()
+function Menu.ReloadStash(itemSearch)
 
-    Menu.ReloadMarketStash()
+    Menu.ReloadMarketStash(itemSearch)
 
     if !IsValid(stashItems) then return end
 
@@ -4306,6 +4310,10 @@ function Menu.ReloadStash()
 
         local i = EFGMITEMS[v.name]
         if i == nil then return end
+
+        if stashItemSearchText then itemSearch = stashItemSearchText end
+
+        if itemSearch != "" and itemSearch != nil and !(string.find((i.fullName and i.fullName or i.displayName):lower(), itemSearch)) then continue end
 
         stashValue = stashValue + (i.value * v.data.count)
 
@@ -4683,7 +4691,7 @@ function Menu.ReloadStash()
 
 end
 
-function Menu.ReloadMarketStash()
+function Menu.ReloadMarketStash(itemSearch)
 
     if !IsValid(marketStashItems) then return end
 
@@ -4734,6 +4742,10 @@ function Menu.ReloadMarketStash()
 
         local i = EFGMITEMS[v.name]
         if i == nil then return end
+
+        if marketStashItemSearchText then itemSearch = marketStashItemSearchText end
+
+        if itemSearch != "" and itemSearch != nil and !(string.find((i.fullName and i.fullName or i.displayName):lower(), itemSearch)) then continue end
 
         stashValue = stashValue + i.value * v.data.count
         local itemValue = math.floor(i.value * sellMultiplier) * v.data.count
@@ -5782,31 +5794,58 @@ function Menu.OpenTab.Inventory(container)
     weightIcon:SetSize(EFGM.MenuScale(28), EFGM.MenuScale(28))
     weightIcon:SetImage("icons/weight_icon.png")
 
+    surface.SetFont("PuristaBold24")
+    local searchText = "SEARCH"
+    local searchTextSize = surface.GetTextSize(searchText)
+    local searchButtonSize = searchTextSize + EFGM.MenuScale(10)
+
     local searchButton = vgui.Create("DButton", itemsHolder)
-    searchButton:SetPos(EFGM.MenuScale(225) + weightTextSize, EFGM.MenuScale(1))
-    searchButton:SetSize(EFGM.MenuScale(27), EFGM.MenuScale(27))
+    searchButton:SetPos(EFGM.MenuScale(225) + weightTextSize, 0)
+    searchButton:SetSize(searchButtonSize, EFGM.MenuScale(28))
     searchButton:SetText("")
     searchButton.Paint = function(s, w, h)
 
         searchButton:SetX(EFGM.MenuScale(225) + weightTextSize)
 
-        BlurPanel(s, EFGM.MenuScale(3))
+        BlurPanel(s, EFGM.MenuScale(0))
 
         surface.SetDrawColor(Color(80, 80, 80, 10))
-        surface.DrawRect(0, 0, w, h)
+        surface.DrawRect(0, 0, searchTextSize + EFGM.MenuScale(10), h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 25))
-        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
-        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, searchTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
+
+        draw.SimpleTextOutlined(searchText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
     end
 
-    local searchIcon = vgui.Create("DImage", searchButton)
-    searchIcon:SetPos(EFGM.MenuScale(1), EFGM.MenuScale(1))
-    searchIcon:SetSize(EFGM.MenuScale(25), EFGM.MenuScale(25))
-    searchIcon:SetImage("icons/search_icon.png")
+    searchOpen = false
+    itemSearchText = ""
+
+    searchBox = vgui.Create("DTextEntry", itemsHolder)
+    searchBox:SetSize(EFGM.MenuScale(593) - searchButton:GetX() - searchButton:GetWide(), EFGM.MenuScale(28))
+    searchBox:SetPos(searchButton:GetX() + searchButtonSize, 0)
+    searchBox:SetPlaceholderText("search for items...")
+    searchBox:SetUpdateOnType(true)
+    searchBox:SetTextColor(MenuAlias.whiteColor)
+    searchBox:SetCursorColor(MenuAlias.whiteColor)
+    searchBox:SetAlpha(0)
+    searchBox:SetEditable(false)
+
+    searchBox.Think = function(s)
+
+        searchBox:SetWide(EFGM.MenuScale(593) - searchButton:GetX() - searchButton:GetWide())
+        searchBox:SetX(searchButton:GetX() + searchButtonSize)
+
+    end
+
+    searchBox.OnChange = function(self)
+
+        itemSearchText = self:GetValue():lower()
+
+        Menu.ReloadInventory(itemSearchText)
+
+    end
 
     searchButton.OnCursorEntered = function(s)
 
@@ -5818,43 +5857,24 @@ function Menu.OpenTab.Inventory(container)
 
         surface.PlaySound("ui/element_select.wav")
 
-    end
+        if searchOpen == false then
 
-    local filterButton = vgui.Create("DButton", itemsHolder)
-    filterButton:SetPos(EFGM.MenuScale(32) + searchButton:GetX(), EFGM.MenuScale(1))
-    filterButton:SetSize(EFGM.MenuScale(27), EFGM.MenuScale(27))
-    filterButton:SetText("")
-    filterButton.Paint = function(s, w, h)
+            searchBox:AlphaTo(255, 0.1, 0)
+            searchBox:SetEditable(true)
+            searchBox:RequestFocus()
+            searchOpen = true
 
-        filterButton:SetX(EFGM.MenuScale(32) + searchButton:GetX())
+        else
 
-        BlurPanel(s, EFGM.MenuScale(3))
+            searchBox:AlphaTo(0, 0.1, 0)
+            searchBox:SetEditable(false)
+            searchBox:SetValue("")
+            itemSearchText = ""
+            searchOpen = false
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
-        surface.DrawRect(0, 0, w, h)
+            Menu.ReloadInventory()
 
-        surface.SetDrawColor(Color(255, 255, 255, 25))
-        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
-        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
-
-    end
-
-    local filterIcon = vgui.Create("DImage", filterButton)
-    filterIcon:SetPos(EFGM.MenuScale(1), EFGM.MenuScale(1))
-    filterIcon:SetSize(EFGM.MenuScale(26), EFGM.MenuScale(26))
-    filterIcon:SetImage("icons/filter_icon.png")
-
-    filterButton.OnCursorEntered = function(s)
-
-        surface.PlaySound("ui/element_hover.wav")
-
-    end
-
-    function filterButton:DoClick()
-
-        surface.PlaySound("ui/element_select.wav")
+        end
 
     end
 
@@ -6094,31 +6114,58 @@ function Menu.OpenTab.Inventory(container)
 
     end
 
+    surface.SetFont("PuristaBold24")
+    local stashSearchText = "SEARCH"
+    local stashSearchTextSize = surface.GetTextSize(stashSearchText)
+    local stashSearchButtonSize = stashSearchTextSize + EFGM.MenuScale(10)
+
     local stashSearchButton = vgui.Create("DButton", stashHolder)
-    stashSearchButton:SetPos(EFGM.MenuScale(15) + valueTextSize, EFGM.MenuScale(1))
-    stashSearchButton:SetSize(EFGM.MenuScale(27), EFGM.MenuScale(27))
+    stashSearchButton:SetPos(EFGM.MenuScale(15) + valueTextSize, 0)
+    stashSearchButton:SetSize(stashSearchButtonSize, EFGM.MenuScale(28))
     stashSearchButton:SetText("")
     stashSearchButton.Paint = function(s, w, h)
 
         stashSearchButton:SetX(EFGM.MenuScale(15) + valueTextSize)
 
-        BlurPanel(s, EFGM.MenuScale(3))
+        BlurPanel(s, EFGM.MenuScale(0))
 
         surface.SetDrawColor(Color(80, 80, 80, 10))
-        surface.DrawRect(0, 0, w, h)
+        surface.DrawRect(0, 0, stashSearchTextSize + EFGM.MenuScale(10), h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 25))
-        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
-        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, stashSearchTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
+
+        draw.SimpleTextOutlined(stashSearchText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
     end
 
-    local stashSearchIcon = vgui.Create("DImage", stashSearchButton)
-    stashSearchIcon:SetPos(EFGM.MenuScale(1), EFGM.MenuScale(1))
-    stashSearchIcon:SetSize(EFGM.MenuScale(25), EFGM.MenuScale(25))
-    stashSearchIcon:SetImage("icons/search_icon.png")
+    stashSearchOpen = false
+    stashItemSearchText = ""
+
+    stashSearchBox = vgui.Create("DTextEntry", stashHolder)
+    stashSearchBox:SetSize(EFGM.MenuScale(593) - stashSearchButton:GetX() - stashSearchButton:GetWide(), EFGM.MenuScale(28))
+    stashSearchBox:SetPos(stashSearchButton:GetX() + stashSearchButtonSize, 0)
+    stashSearchBox:SetPlaceholderText("search for items...")
+    stashSearchBox:SetUpdateOnType(true)
+    stashSearchBox:SetTextColor(MenuAlias.whiteColor)
+    stashSearchBox:SetCursorColor(MenuAlias.whiteColor)
+    stashSearchBox:SetAlpha(0)
+    stashSearchBox:SetEditable(false)
+
+    stashSearchBox.Think = function(s)
+
+        stashSearchBox:SetWide(EFGM.MenuScale(593) - stashSearchButton:GetX() - stashSearchButton:GetWide())
+        stashSearchBox:SetX(stashSearchButton:GetX() + stashSearchButtonSize)
+
+    end
+
+    stashSearchBox.OnChange = function(self)
+
+        stashItemSearchText = self:GetValue():lower()
+
+        Menu.ReloadStash(stashItemSearchText)
+
+    end
 
     stashSearchButton.OnCursorEntered = function(s)
 
@@ -6130,43 +6177,24 @@ function Menu.OpenTab.Inventory(container)
 
         surface.PlaySound("ui/element_select.wav")
 
-    end
+        if stashSearchOpen == false then
 
-    local stashFilterButton = vgui.Create("DButton", stashHolder)
-    stashFilterButton:SetPos(EFGM.MenuScale(32) + stashSearchButton:GetX(), EFGM.MenuScale(1))
-    stashFilterButton:SetSize(EFGM.MenuScale(27), EFGM.MenuScale(27))
-    stashFilterButton:SetText("")
-    stashFilterButton.Paint = function(s, w, h)
+            stashSearchBox:AlphaTo(255, 0.1, 0)
+            stashSearchBox:SetEditable(true)
+            stashSearchBox:RequestFocus()
+            stashSearchOpen = true
 
-        stashFilterButton:SetX(EFGM.MenuScale(32) + stashSearchButton:GetX())
+        else
 
-        BlurPanel(s, EFGM.MenuScale(3))
+            stashSearchBox:AlphaTo(0, 0.1, 0)
+            stashSearchBox:SetEditable(false)
+            stashSearchBox:SetValue("")
+            stashItemSearchText = ""
+            stashSearchOpen = false
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
-        surface.DrawRect(0, 0, w, h)
+            Menu.ReloadStash()
 
-        surface.SetDrawColor(Color(255, 255, 255, 25))
-        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
-        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
-
-    end
-
-    local stashFilterIcon = vgui.Create("DImage", stashFilterButton)
-    stashFilterIcon:SetPos(EFGM.MenuScale(1), EFGM.MenuScale(1))
-    stashFilterIcon:SetSize(EFGM.MenuScale(26), EFGM.MenuScale(26))
-    stashFilterIcon:SetImage("icons/filter_icon.png")
-
-    stashFilterButton.OnCursorEntered = function(s)
-
-        surface.PlaySound("ui/element_hover.wav")
-
-    end
-
-    function stashFilterButton:DoClick()
-
-        surface.PlaySound("ui/element_select.wav")
+        end
 
     end
 
@@ -6326,31 +6354,58 @@ function Menu.OpenTab.Market()
 
     end
 
+    surface.SetFont("PuristaBold24")
+    local marketStashSearchText = "SEARCH"
+    local marketStashSearchTextSize = surface.GetTextSize(marketStashSearchText)
+    local marketStashSearchButtonSize = marketStashSearchTextSize + EFGM.MenuScale(10)
+
     local marketStashSearchButton = vgui.Create("DButton", marketStashHolder)
-    marketStashSearchButton:SetPos(EFGM.MenuScale(15) + valueTextSize, EFGM.MenuScale(1))
-    marketStashSearchButton:SetSize(EFGM.MenuScale(27), EFGM.MenuScale(27))
+    marketStashSearchButton:SetPos(EFGM.MenuScale(15) + valueTextSize, 0)
+    marketStashSearchButton:SetSize(marketStashSearchButtonSize, EFGM.MenuScale(28))
     marketStashSearchButton:SetText("")
     marketStashSearchButton.Paint = function(s, w, h)
 
         marketStashSearchButton:SetX(EFGM.MenuScale(15) + valueTextSize)
 
-        BlurPanel(s, EFGM.MenuScale(3))
+        BlurPanel(s, EFGM.MenuScale(0))
 
         surface.SetDrawColor(Color(80, 80, 80, 10))
-        surface.DrawRect(0, 0, w, h)
+        surface.DrawRect(0, 0, marketStashSearchTextSize + EFGM.MenuScale(10), h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 25))
-        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
-        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, marketStashSearchTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
+
+        draw.SimpleTextOutlined(marketStashSearchText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
     end
 
-    local marketStashSearchIcon = vgui.Create("DImage", marketStashSearchButton)
-    marketStashSearchIcon:SetPos(EFGM.MenuScale(1), EFGM.MenuScale(1))
-    marketStashSearchIcon:SetSize(EFGM.MenuScale(25), EFGM.MenuScale(25))
-    marketStashSearchIcon:SetImage("icons/search_icon.png")
+    marketStashSearchOpen = false
+    marketStashItemSearchText = ""
+
+    marketStashSearchBox = vgui.Create("DTextEntry", marketStashHolder)
+    marketStashSearchBox:SetSize(EFGM.MenuScale(593) - marketStashSearchButton:GetX() - marketStashSearchButton:GetWide(), EFGM.MenuScale(28))
+    marketStashSearchBox:SetPos(marketStashSearchButton:GetX() + marketStashSearchButtonSize, 0)
+    marketStashSearchBox:SetPlaceholderText("search for items...")
+    marketStashSearchBox:SetUpdateOnType(true)
+    marketStashSearchBox:SetTextColor(MenuAlias.whiteColor)
+    marketStashSearchBox:SetCursorColor(MenuAlias.whiteColor)
+    marketStashSearchBox:SetAlpha(0)
+    marketStashSearchBox:SetEditable(false)
+
+    marketStashSearchBox.Think = function(s)
+
+        marketStashSearchBox:SetWide(EFGM.MenuScale(593) - marketStashSearchButton:GetX() - marketStashSearchButton:GetWide())
+        marketStashSearchBox:SetX(marketStashSearchButton:GetX() + marketStashSearchButtonSize)
+
+    end
+
+    marketStashSearchBox.OnChange = function(self)
+
+        marketStashItemSearchText = self:GetValue():lower()
+
+        Menu.ReloadStash(marketStashItemSearchText)
+
+    end
 
     marketStashSearchButton.OnCursorEntered = function(s)
 
@@ -6362,43 +6417,24 @@ function Menu.OpenTab.Market()
 
         surface.PlaySound("ui/element_select.wav")
 
-    end
+        if marketStashSearchOpen == false then
 
-    local marketStashFilterButton = vgui.Create("DButton", marketStashHolder)
-    marketStashFilterButton:SetPos(EFGM.MenuScale(32) + marketStashSearchButton:GetX(), EFGM.MenuScale(1))
-    marketStashFilterButton:SetSize(EFGM.MenuScale(27), EFGM.MenuScale(27))
-    marketStashFilterButton:SetText("")
-    marketStashFilterButton.Paint = function(s, w, h)
+            marketStashSearchBox:AlphaTo(255, 0.1, 0)
+            marketStashSearchBox:SetEditable(true)
+            marketStashSearchBox:RequestFocus()
+            marketStashSearchOpen = true
 
-        marketStashFilterButton:SetX(EFGM.MenuScale(32) + marketStashSearchButton:GetX())
+        else
 
-        BlurPanel(s, EFGM.MenuScale(3))
+            marketStashSearchBox:AlphaTo(0, 0.1, 0)
+            marketStashSearchBox:SetEditable(false)
+            marketStashSearchBox:SetValue("")
+            marketStashItemSearchText = ""
+            marketStashSearchOpen = false
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
-        surface.DrawRect(0, 0, w, h)
+            Menu.ReloadStash()
 
-        surface.SetDrawColor(Color(255, 255, 255, 25))
-        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
-        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
-
-    end
-
-    local marketStashFilterIcon = vgui.Create("DImage", marketStashFilterButton)
-    marketStashFilterIcon:SetPos(EFGM.MenuScale(1), EFGM.MenuScale(1))
-    marketStashFilterIcon:SetSize(EFGM.MenuScale(26), EFGM.MenuScale(26))
-    marketStashFilterIcon:SetImage("icons/filter_icon.png")
-
-    marketStashFilterIcon.OnCursorEntered = function(s)
-
-        surface.PlaySound("ui/element_hover.wav")
-
-    end
-
-    function marketStashFilterIcon:DoClick()
-
-        surface.PlaySound("ui/element_select.wav")
+        end
 
     end
 
