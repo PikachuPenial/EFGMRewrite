@@ -2205,7 +2205,31 @@ function Menu.ReloadInventory()
 
     if table.IsEmpty(plyItems) then return end
 
-    table.sort(plyItems, function(a, b) return (EFGMITEMS[a.name].sizeX * EFGMITEMS[a.name].sizeY) > (EFGMITEMS[b.name].sizeX * EFGMITEMS[b.name].sizeY) end)
+    table.sort(plyItems, function(a, b)
+
+        if (EFGMITEMS[a.name].sizeX * EFGMITEMS[a.name].sizeY) != (EFGMITEMS[b.name].sizeX * EFGMITEMS[b.name].sizeY) then
+
+            return (EFGMITEMS[a.name].sizeX * EFGMITEMS[a.name].sizeY) > (EFGMITEMS[b.name].sizeX * EFGMITEMS[b.name].sizeY)
+
+        elseif EFGMITEMS[a.name].displayName != EFGMITEMS[b.name].displayName then
+
+            return EFGMITEMS[a.name].displayName < EFGMITEMS[b.name].displayName
+
+        else
+
+            if a.data.durability and b.data.durability then
+
+                return a.data.durability > b.data.durability
+
+            elseif a.data.count and b.data.count then
+
+                return a.data.count > b.data.count
+
+            end
+
+        end
+
+    end)
 
     -- inventory item entry
     for k, v in pairs(plyItems) do
@@ -3882,7 +3906,31 @@ function Menu.ReloadStash()
 
     if table.IsEmpty(plyStashItems) then return end
 
-    table.sort(plyStashItems, function(a, b) return (EFGMITEMS[a.name].sizeX * EFGMITEMS[a.name].sizeY) > (EFGMITEMS[b.name].sizeX * EFGMITEMS[b.name].sizeY) end)
+    table.sort(plyStashItems, function(a, b)
+
+        if (EFGMITEMS[a.name].sizeX * EFGMITEMS[a.name].sizeY) != (EFGMITEMS[b.name].sizeX * EFGMITEMS[b.name].sizeY) then
+
+            return (EFGMITEMS[a.name].sizeX * EFGMITEMS[a.name].sizeY) > (EFGMITEMS[b.name].sizeX * EFGMITEMS[b.name].sizeY)
+
+        elseif EFGMITEMS[a.name].displayName != EFGMITEMS[b.name].displayName then
+
+            return EFGMITEMS[a.name].displayName < EFGMITEMS[b.name].displayName
+
+        else
+
+            if a.data.durability and b.data.durability then
+
+                return a.data.durability > b.data.durability
+
+            elseif a.data.count and b.data.count then
+
+                return a.data.count > b.data.count
+
+            end
+
+        end
+
+    end)
 
     -- stash item entry
     for k, v in pairs(plyStashItems) do
@@ -4231,7 +4279,31 @@ function Menu.ReloadMarketStash()
 
     if table.IsEmpty(marketPlyStashItems) then return end
 
-    table.sort(marketPlyStashItems, function(a, b) return (EFGMITEMS[a.name].sizeX * EFGMITEMS[a.name].sizeY) > (EFGMITEMS[b.name].sizeX * EFGMITEMS[b.name].sizeY) end)
+    table.sort(marketPlyStashItems, function(a, b)
+
+        if (EFGMITEMS[a.name].sizeX * EFGMITEMS[a.name].sizeY) != (EFGMITEMS[b.name].sizeX * EFGMITEMS[b.name].sizeY) then
+
+            return (EFGMITEMS[a.name].sizeX * EFGMITEMS[a.name].sizeY) > (EFGMITEMS[b.name].sizeX * EFGMITEMS[b.name].sizeY)
+
+        elseif EFGMITEMS[a.name].displayName != EFGMITEMS[b.name].displayName then
+
+            return EFGMITEMS[a.name].displayName < EFGMITEMS[b.name].displayName
+
+        else
+
+            if a.data.durability and b.data.durability then
+
+                return a.data.durability > b.data.durability
+
+            elseif a.data.count and b.data.count then
+
+                return a.data.count > b.data.count
+
+            end
+
+        end
+
+    end)
 
     -- stash item entry
     for k, v in pairs(marketPlyStashItems) do
@@ -4473,7 +4545,31 @@ function Menu.ReloadContainer()
 
     if table.IsEmpty(conItems) then return end
 
-    table.sort(conItems, function(a, b) return (EFGMITEMS[a.name].sizeX * EFGMITEMS[a.name].sizeY) > (EFGMITEMS[b.name].sizeX * EFGMITEMS[b.name].sizeY) end)
+    table.sort(conItems, function(a, b)
+
+        if (EFGMITEMS[a.name].sizeX * EFGMITEMS[a.name].sizeY) != (EFGMITEMS[b.name].sizeX * EFGMITEMS[b.name].sizeY) then
+
+            return (EFGMITEMS[a.name].sizeX * EFGMITEMS[a.name].sizeY) > (EFGMITEMS[b.name].sizeX * EFGMITEMS[b.name].sizeY)
+
+        elseif EFGMITEMS[a.name].displayName != EFGMITEMS[b.name].displayName then
+
+            return EFGMITEMS[a.name].displayName < EFGMITEMS[b.name].displayName
+
+        else
+
+            if a.data.durability and b.data.durability then
+
+                return a.data.durability > b.data.durability
+
+            elseif a.data.count and b.data.count then
+
+                return a.data.count > b.data.count
+
+            end
+
+        end
+
+    end)
 
     for k, v in pairs(conItems) do
 
@@ -5524,7 +5620,7 @@ function Menu.OpenTab.Inventory(container)
 
     end
 
-    local maxStash = 150
+    local maxStash = Menu.Player:GetNWInt("StashMax", 0)
     local stashText = vgui.Create("DPanel", stashPanel)
     stashText:Dock(TOP)
     stashText:SetSize(0, EFGM.MenuScale(36))
@@ -5756,7 +5852,7 @@ function Menu.OpenTab.Market()
 
     end
 
-    local maxStash = 150
+    local maxStash = Menu.Player:GetNWInt("StashMax", 0)
     local marketStashText = vgui.Create("DPanel", marketStashPanel)
     marketStashText:Dock(TOP)
     marketStashText:SetSize(0, EFGM.MenuScale(36))
