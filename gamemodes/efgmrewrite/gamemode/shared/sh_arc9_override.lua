@@ -701,7 +701,7 @@ hook.Add("PlayerBindPress", "ARC9_Binds", function(ply, bind, pressed, code)
                 if efgmItem == nil then return end
 
                 ply:ConCommand("efgm_gamemenu Market")
-                timer.Simple(0.1, function() Menu.ConfirmPurchase(efgmAtt, "inv") end)
+                timer.Simple(0.1, function() Menu.ConfirmPurchase(efgmAtt, "inv", true) end)
             end
 
             return true

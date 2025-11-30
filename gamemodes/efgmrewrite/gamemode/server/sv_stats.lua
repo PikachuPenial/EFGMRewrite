@@ -42,6 +42,7 @@ function ResetRaidStats(ply)
     ply:SetNWInt("RaidDamageDealt", 0)
     ply:SetNWInt("RaidDamageRecieved", 0)
     ply:SetNWInt("RaidItemsLooted", 0)
+    ply:SetNWInt("RaidKills", 0)
 
 end
 
@@ -63,8 +64,8 @@ hook.Add("EntityTakeDamage", "DamageUpdateStats", function(ply, damageInfo)
     if damageAmount < 0 then -- if the player healed (this probably aint even gonna work)
         ply:SetNWInt("DamageHealed", ply:GetNWInt("DamageHealed") - damageAmount)
     elseif damageAmount > 0 then
-        ply:SetNWInt("DamageRecieved", ply:GetNWInt("DamageRecieved") + damageAmount)
-        ply:SetNWInt("RaidDamageRecieved", ply:GetNWInt("RaidDamageRecieved") + damageAmount)
+        ply:SetNWInt("DamageRecieved", ply:GetNWInt("DamageRecieved") + math.min(damageAmount, 100))
+        ply:SetNWInt("RaidDamageRecieved", ply:GetNWInt("RaidDamageRecieved") + math.min(damageAmount, 100))
     end
 
     local attacker = damageInfo:GetAttacker()
@@ -75,8 +76,8 @@ hook.Add("EntityTakeDamage", "DamageUpdateStats", function(ply, damageInfo)
     if damageAmount < 0 then -- if the attacker healed another player somehow
         attacker:SetNWInt("DamageHealed", attacker:GetNWInt("DamageHealed") - damageAmount)
     elseif damageAmount > 0 then
-        attacker:SetNWInt("DamageDealt", attacker:GetNWInt("DamageDealt") + damageAmount)
-        attacker:SetNWInt("RaidDamageDealt", attacker:GetNWInt("RaidDamageDealt") + damageAmount)
+        attacker:SetNWInt("DamageDealt", attacker:GetNWInt("DamageDealt") + math.min(damageAmount, 100))
+        attacker:SetNWInt("RaidDamageDealt", attacker:GetNWInt("RaidDamageDealt") + math.min(damageAmount, 100))
     end
 end)
 

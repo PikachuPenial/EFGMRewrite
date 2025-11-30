@@ -1594,7 +1594,7 @@ function Menu.InspectItem(item, data)
 
 end
 
-function Menu.ConfirmPurchase(item, sendTo)
+function Menu.ConfirmPurchase(item, sendTo, closeMenu)
 
     if IsValid(confirmPanel) then confirmPanel:Remove() end
 
@@ -1660,7 +1660,23 @@ function Menu.ConfirmPurchase(item, sendTo)
 
     confirmPanel.Think = function()
 
-        if (input.IsMouseDown(MOUSE_LEFT) or input.IsMouseDown(MOUSE_RIGHT) or input.IsMouseDown(MOUSE_MIDDLE) or input.IsMouseDown(MOUSE_WHEEL_DOWN) or input.IsMouseDown(MOUSE_WHEEL_UP)) and !confirmPanel:IsChildHovered() and !confirmPanel:IsHovered() then confirmPanel:AlphaTo(0, 0.1, 0, function() confirmPanel:Remove() end) end
+        if (input.IsMouseDown(MOUSE_LEFT) or input.IsMouseDown(MOUSE_RIGHT) or input.IsMouseDown(MOUSE_MIDDLE) or input.IsMouseDown(MOUSE_WHEEL_DOWN) or input.IsMouseDown(MOUSE_WHEEL_UP)) and !confirmPanel:IsChildHovered() and !confirmPanel:IsHovered() then 
+            
+            confirmPanel:AlphaTo(0, 0.1, 0, function() confirmPanel:Remove() end)
+
+            if closeMenu == true then
+
+                Menu.MenuFrame.Closing = true
+                Menu.MenuFrame:SetKeyboardInputEnabled(false)
+                Menu.MenuFrame:SetMouseInputEnabled(false)
+
+                Menu.MenuFrame:AlphaTo(0, 0.1, 0, function()
+                    Menu.MenuFrame:Close()
+                end)
+
+            end
+
+        end
 
     end
 
@@ -1752,9 +1768,9 @@ function Menu.ConfirmPurchase(item, sendTo)
         surface.PlaySound("ui/success.wav")
         confirmPanel:AlphaTo(0, 0.1, 0, function() confirmPanel:Remove() end)
 
-        if sendTo == "stash" then PurchaseItem(item, transactionCount) elseif sendTo == "inv" then 
-            
-            PurchaseItemToInv(item, transactionCount)
+        if sendTo == "stash" then PurchaseItem(item, transactionCount) elseif sendTo == "inv" then PurchaseItemToInv(item, transactionCount) end
+
+        if closeMenu == true then
 
             Menu.MenuFrame.Closing = true
             Menu.MenuFrame:SetKeyboardInputEnabled(false)
@@ -1785,7 +1801,7 @@ function Menu.ConfirmPurchase(item, sendTo)
         surface.PlaySound("ui/element_deselect.wav")
         confirmPanel:AlphaTo(0, 0.1, 0, function() confirmPanel:Remove() end)
 
-        if sendTo == "inv" then
+        if closeMenu == true then
 
             Menu.MenuFrame.Closing = true
             Menu.MenuFrame:SetKeyboardInputEnabled(false)
@@ -2195,7 +2211,7 @@ function Menu.ConfirmDelete(item, key, inv, eID, eSlot)
     local confirmText = "Delete " .. i.fullName .. " (" .. i.displayName .. ")?"
     local confirmTextSize = math.max(EFGM.MenuScale(300), surface.GetTextSize(confirmText))
 
-    local confirmPanelHeight = EFGM.MenuScale(75)
+    local confirmPanelHeight = EFGM.MenuScale(70)
 
     surface.PlaySound("ui/element_select.wav")
 
@@ -2551,7 +2567,9 @@ function Menu.ReloadInventory()
                 equipable = false,
                 consumable = false,
                 splittable = false,
-                stashable = false
+                stashable = false,
+                deletable = false,
+                ammoBuyable = false
             }
 
             actions.stashable = Menu.Player:CompareStatus(0) and table.IsEmpty(Menu.Container)
@@ -2559,6 +2577,7 @@ function Menu.ReloadInventory()
             actions.splittable = i.stackSize > 1 and v.data.count > 1
             actions.consumable = i.equipType == EQUIPTYPE.Consumable
             actions.deletable = Menu.Player:CompareStatus(0)
+            actions.ammoBuyable = Menu.Player:CompareStatus(0) and i.ammoID
 
             if actions.stashable then
 
@@ -2613,6 +2632,33 @@ function Menu.ReloadInventory()
                     EquipItemFromInventory(v.id, i.equipSlot)
 
                     Menu.ReloadSlots()
+
+                end
+
+            end
+
+            if actions.ammoBuyable then
+
+                contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
+
+                local itemBuyAmmoButton = vgui.Create("DButton", contextMenu)
+                itemBuyAmmoButton:Dock(TOP)
+                itemBuyAmmoButton:SetSize(0, EFGM.MenuScale(25))
+                itemBuyAmmoButton:SetText("BUY AMMO")
+
+                itemBuyAmmoButton.OnCursorEntered = function(s)
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
+                function itemBuyAmmoButton:DoClick()
+
+                    surface.PlaySound("ui/element_select.wav")
+                    contextMenu:Remove()
+                    playerItems:InvalidateLayout()
+
+                    Menu.ConfirmPurchase(i.ammoID, "inv", false)
 
                 end
 
@@ -2969,6 +3015,33 @@ function Menu.ReloadSlots()
 
                 surface.PlaySound("ui/element_select.wav")
                 contextMenu:KillFocus()
+
+            end
+
+            if Menu.Player:CompareStatus(0) and i.ammoID then
+
+                contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
+
+                local itemBuyAmmoButton = vgui.Create("DButton", contextMenu)
+                itemBuyAmmoButton:Dock(TOP)
+                itemBuyAmmoButton:SetSize(0, EFGM.MenuScale(25))
+                itemBuyAmmoButton:SetText("BUY AMMO")
+
+                itemBuyAmmoButton.OnCursorEntered = function(s)
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
+                function itemBuyAmmoButton:DoClick()
+
+                    surface.PlaySound("ui/element_select.wav")
+                    contextMenu:Remove()
+                    playerItems:InvalidateLayout()
+
+                    Menu.ConfirmPurchase(i.ammoID, "inv", false)
+
+                end
 
             end
 
@@ -4450,6 +4523,7 @@ function Menu.ReloadStash()
             actions.equipable = i.equipType == EQUIPTYPE.Weapon
             actions.splittable = i.stackSize > 1 and v.data.count > 1
             actions.consumable = i.equipType == EQUIPTYPE.Consumable
+            actions.ammoBuyable = Menu.Player:CompareStatus(0) and i.ammoID
 
             if actions.equipable then
 
@@ -4472,6 +4546,33 @@ function Menu.ReloadStash()
                     EquipItemFromStash(v.id, i.equipSlot)
                     contextMenu:Remove()
                     stashItems:InvalidateLayout()
+
+                end
+
+            end
+
+            if actions.ammoBuyable then
+
+                contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
+
+                local itemBuyAmmoButton = vgui.Create("DButton", contextMenu)
+                itemBuyAmmoButton:Dock(TOP)
+                itemBuyAmmoButton:SetSize(0, EFGM.MenuScale(25))
+                itemBuyAmmoButton:SetText("BUY AMMO")
+
+                itemBuyAmmoButton.OnCursorEntered = function(s)
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
+                function itemBuyAmmoButton:DoClick()
+
+                    surface.PlaySound("ui/element_select.wav")
+                    contextMenu:Remove()
+                    playerItems:InvalidateLayout()
+
+                    Menu.ConfirmPurchase(i.ammoID, "inv", false)
 
                 end
 
@@ -6798,7 +6899,7 @@ function Menu.OpenTab.Market()
                 function item:DoClick()
 
                     if !v.canPurchase then return end
-                    Menu.ConfirmPurchase(v.id, "stash")
+                    Menu.ConfirmPurchase(v.id, "stash", false)
 
                 end
 
@@ -6888,7 +6989,7 @@ function Menu.OpenTab.Market()
 
                         function itemBuyButton:DoClick()
 
-                            Menu.ConfirmPurchase(v.id, "stash")
+                            Menu.ConfirmPurchase(v.id, "stash", false)
                             contextMenu:KillFocus()
 
                         end
