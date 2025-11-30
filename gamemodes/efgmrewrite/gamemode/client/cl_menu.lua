@@ -4572,7 +4572,7 @@ function Menu.ReloadStash()
                     contextMenu:Remove()
                     playerItems:InvalidateLayout()
 
-                    Menu.ConfirmPurchase(i.ammoID, "inv", false)
+                    Menu.ConfirmPurchase(i.ammoID, "stash", false)
 
                 end
 
@@ -8686,11 +8686,11 @@ function Menu.OpenTab.Match()
 
                 if owner != Menu.Player then
 
-                    draw.SimpleTextOutlined("Leave Squad", "PuristaBold24", w / 2, EFGM.MenuScale(-2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                    draw.SimpleTextOutlined("LEAVE SQUAD", "PuristaBold24", w / 2, EFGM.MenuScale(-2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
                 else
 
-                    draw.SimpleTextOutlined("Disband Squad", "PuristaBold24", w / 2, EFGM.MenuScale(-2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                    draw.SimpleTextOutlined("DISBAND SQUAD", "PuristaBold24", w / 2, EFGM.MenuScale(-2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
                 end
 

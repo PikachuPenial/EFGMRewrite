@@ -2652,7 +2652,7 @@ EFGMITEMS = {}
         ["displayName"] = "FN40GL",
         ["displayType"] = "Launcher",
         ["weight"] = 3.0,
-        ["value"] = 160000,
+        ["value"] = 290000,
         ["levelReq"] = 40,
         ["equipType"] = EQUIPTYPE.Weapon,
         ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
@@ -2689,12 +2689,12 @@ EFGMITEMS = {}
         ["defAtts"] = "XQAAAQAJAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LcZnpdAq+1HxvVFYM8yMuG3QVvnwhP32P3T9+b6yx6EtZbue8dF7Fsj37UUn+7mk9v/HrNRAFGg6nQkIwWTKSU5Ht4euLD+2nV9cVQ5QTQEhTXHfBai51DvzIw0ZoLBPUIiwYXsBVck0Y40MSrORhD3wFxwGQfgA="
     }
 
-        EFGMITEMS["arc9_eft_rshg2"] = {
+    EFGMITEMS["arc9_eft_rshg2"] = {
         ["fullName"] = "RShG-2 72.5mm rocket launcher",
         ["displayName"] = "RShG-2",
         ["displayType"] = "Launcher",
         ["weight"] = 4.0,
-        ["value"] = 200000,
+        ["value"] = 500000,
         ["levelReq"] = 48,
         ["equipType"] = EQUIPTYPE.Weapon,
         ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
@@ -2706,6 +2706,7 @@ EFGMITEMS = {}
         ["sizeY"] = 1,
 
         ["caliber"] = "72.5",
+        ["ammoID"] = "efgm_ammo_725"
     }
 
     -- melee
@@ -3796,6 +3797,23 @@ EFGMITEMS = {}
         ["iconColor"] = Color(52, 53, 36, 155),
 
         ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["efgm_ammo_725"] = {
+        ["fullName"] = "72.5mm Warhead",
+        ["displayName"] = "72.5",
+        ["displayType"] = "Ammunition",
+        ["weight"] = 0.25,
+        ["value"] = 40000,
+        ["levelReq"] = 1,
+        ["equipType"] = EQUIPTYPE.Ammunition,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/ammo/725.png", "smooth"),
+        ["iconColor"] = Color(52, 53, 36, 155),
+
+        ["sizeX"] = 2,
         ["sizeY"] = 1
     }
 
