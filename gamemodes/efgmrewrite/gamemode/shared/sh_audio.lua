@@ -9,6 +9,7 @@ hook.Add("PlayerFootstep", "CustomFootstepVolume", function(ply, pos, foot, soun
         local soundLevel = math.Clamp(75 + (fsVol * 15), 75, 160)
 
         ply:EmitSound(sound, soundLevel, 100, math.min(fsVol, 1))
+        Raycast26(ply)
 
         return true
 

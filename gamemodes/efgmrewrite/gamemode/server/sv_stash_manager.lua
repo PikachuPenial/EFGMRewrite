@@ -219,7 +219,7 @@ net.Receive("PlayerStashAddItemFromEquipped", function(len, ply)
     if def.displayType != "Grenade" then
 
         local clip1 = wep:Clip1()
-        if clip1 != -1 and clip1 != 0 then
+        if clip1 != -1 and clip1 != 0 and ply:GetNWBool("InRange", false) == false then
 
             local data = {}
             data.count = wep:Clip1()

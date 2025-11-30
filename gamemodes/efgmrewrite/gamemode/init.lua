@@ -96,6 +96,7 @@ function GM:PlayerSpawn(ply)
 	ply:SetEnteringCrouch(false)
 	ply:SetExitingCrouch(false)
 	ply:SetNW2Bool("DoStep", false)
+	CalculateInventoryWeight(ply)
 
 end
 
