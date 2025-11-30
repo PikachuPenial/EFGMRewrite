@@ -107,6 +107,7 @@ if SERVER then
                             v:SetRaidStatus(status, spawn.SpawnGroup or "")
                             v:SetNW2String("PlayerInSquad", "nil")
                             v:SetNW2String("TeamChatChannel", squad .. "_" .. curTime)
+                            v:SetNWInt("RaidsPlayed", v:GetNWInt("RaidsPlayed") + 1)
                         end)
                     end)
                 end

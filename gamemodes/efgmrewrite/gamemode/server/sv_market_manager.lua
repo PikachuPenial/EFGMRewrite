@@ -58,6 +58,7 @@ net.Receive("PlayerMarketPurchaseItem", function(len, ply)
     UpdateStashString(ply)
 
     ply:SetNWInt("Money", plyMoney - cost)
+    ply:SetNWInt("MoneySpent", ply:GetNWInt("MoneySpent") + cost)
 
     return true
 
@@ -117,6 +118,7 @@ net.Receive("PlayerMarketPurchaseItemToInventory", function(len, ply)
     UpdateStashString(ply)
 
     ply:SetNWInt("Money", plyMoney - cost)
+    ply:SetNWInt("MoneySpent", ply:GetNWInt("MoneySpent") + cost)
 
     return true
 
@@ -161,6 +163,7 @@ net.Receive("PlayerMarketSellItem", function(len, ply)
         UpdateStashString(ply)
 
         ply:SetNWInt("Money", plyMoney + cost)
+        ply:SetNWInt("MoneyEarned", ply:GetNWInt("MoneyEarned") + cost)
         return true
 
     elseif def.consumableType == "heal" or def.consumableType == "key" then
@@ -194,6 +197,7 @@ net.Receive("PlayerMarketSellItem", function(len, ply)
         UpdateStashString(ply)
 
         ply:SetNWInt("Money", plyMoney + cost)
+        ply:SetNWInt("MoneyEarned", ply:GetNWInt("MoneyEarned") + cost)
         return true
 
     end

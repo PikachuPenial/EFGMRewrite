@@ -392,7 +392,6 @@ function SetupPlayerData(ply)
     InitializeNetworkInt(ply, query, "BestExtractionStreak", 0)
 
 	-- stash/inventory
-	InitializeNetworkFloat(ply, query, "InventoryWeight", 0)
 	InitializeNetworkInt(ply, query, "StashMax", 4500)
 
 	for k, v in ipairs(levelArray) do
@@ -486,7 +485,6 @@ function SavePlayerData(ply)
     UninitializeNetworkInt(ply, query, "BestExtractionStreak")
 
     -- stash/inventory
-	UninitializeNetworkFloat(ply, query, "InventoryWeight")
 	UninitializeNetworkInt(ply, query, "StashMax")
 
     UninitializeStashString(ply, query)
