@@ -9,9 +9,11 @@ util.AddNetworkString("PlayerInventoryUnEquipItem")
 util.AddNetworkString("PlayerInventoryUnEquipAll")
 util.AddNetworkString("PlayerInventoryUpdateEquipped")
 util.AddNetworkString("PlayerInventoryDropEquippedItem")
+util.AddNetworkString("PlayerInventoryDeleteEquippedItem")
 util.AddNetworkString("PlayerInventoryConsumeItem")
 util.AddNetworkString("PlayerInventoryLootItemFromContainer")
 util.AddNetworkString("PlayerInventorySplit")
+util.AddNetworkString("PlayerInventoryDelete")
 util.AddNetworkString("PlayerInventoryConsumeGrenade")
 
 function ReinstantiateInventory(ply)
@@ -262,8 +264,8 @@ end)
 
 net.Receive("PlayerInventoryUnEquipItem", function(len, ply)
 
-    equipID = net.ReadUInt(4)
-    equipSlot = net.ReadUInt(4)
+    local equipID = net.ReadUInt(4)
+    local equipSlot = net.ReadUInt(4)
 
     local item = table.Copy(ply.weaponSlots[equipID][equipSlot])
 
@@ -410,8 +412,8 @@ end
 
 net.Receive("PlayerInventoryDropEquippedItem", function(len, ply)
 
-    equipID = net.ReadUInt(4)
-    equipSlot = net.ReadUInt(4)
+    local equipID = net.ReadUInt(4)
+    local equipSlot = net.ReadUInt(4)
 
     local item = table.Copy(ply.weaponSlots[equipID][equipSlot])
 
@@ -550,6 +552,66 @@ net.Receive("PlayerInventorySplit", function(len, ply)
         AddItemToStash(ply, item, def.equipType, newNewData)
 
         UpdateStashString(ply)
+        return true
+
+    end
+
+end)
+
+net.Receive("PlayerInventoryDelete", function(len, ply)
+
+    local invType = net.ReadString()
+    local key = net.ReadUInt(16)
+    local equipID = net.ReadUInt(4)
+    local equipSlot = net.ReadUInt(4)
+
+    if !ply:CompareStatus(0) and invType == "stash" then return false end
+
+    if invType == "inv" then
+
+        local item = ply.inventory[key]
+
+        RemoveWeightFromPlayer(ply, item.name, item.data.count)
+
+        table.remove(ply.inventory, key)
+
+        net.Start("PlayerInventoryDeleteItem", false)
+        net.WriteUInt(key, 16)
+        net.Send(ply)
+
+        UpdateInventoryString(ply)
+
+        return true
+
+    elseif invType == "stash" then
+
+        table.remove(ply.stash, key)
+
+        net.Start("PlayerStashDeleteItem", false)
+        net.WriteUInt(key, 16)
+        net.Send(ply)
+
+        UpdateStashString(ply)
+        ply:SetNWInt("StashCount", #ply.stash)
+
+        return true
+
+    elseif invType == "equipped" then
+
+        local item = table.Copy(ply.weaponSlots[equipID][equipSlot])
+
+        table.Empty(ply.weaponSlots[equipID][equipSlot])
+
+        ply:StripWeapon(item.name)
+
+        net.Start("PlayerInventoryDeleteEquippedItem", false)
+        net.WriteUInt(equipID, 4)
+        net.WriteUInt(equipSlot, 4)
+        net.Send(ply)
+
+        RemoveWeightFromPlayer(ply, item.name, item.data.count)
+        UpdateEquippedString(ply)
+
         return true
 
     end

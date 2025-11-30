@@ -2184,6 +2184,145 @@ function Menu.ConfirmSplit(item, data, key, inv)
 
 end
 
+function Menu.ConfirmDelete(item, key, inv, eID, eSlot)
+
+    if IsValid(confirmPanel) then confirmPanel:Remove() end
+
+    local i = EFGMITEMS[item]
+    if i == nil then confirmPanel:Remove() return end
+
+    surface.SetFont("PuristaBold24")
+    local confirmText = "Delete " .. i.fullName .. " (" .. i.displayName .. ")?"
+    local confirmTextSize = math.max(EFGM.MenuScale(300), surface.GetTextSize(confirmText))
+
+    local confirmPanelHeight = EFGM.MenuScale(75)
+
+    surface.PlaySound("ui/element_select.wav")
+
+    confirmPanel = vgui.Create("DFrame", Menu.MenuFrame)
+    confirmPanel:SetSize(confirmTextSize + EFGM.MenuScale(10), confirmPanelHeight)
+    confirmPanel:SetPos(Menu.MenuFrame:GetWide() / 2 - confirmPanel:GetWide() / 2, Menu.MenuFrame:GetTall() / 2 - confirmPanel:GetTall() / 2)
+    confirmPanel:SetAlpha(0)
+    confirmPanel:SetTitle("")
+    confirmPanel:ShowCloseButton(false)
+    confirmPanel:SetScreenLock(true)
+    confirmPanel:AlphaTo(255, 0.1, 0, nil)
+    confirmPanel:RequestFocus()
+
+    confirmPanel.Paint = function(s, w, h)
+
+        confirmPanel:SetWide(confirmTextSize + EFGM.MenuScale(10))
+        confirmPanel:SetX(Menu.MenuFrame:GetWide() / 2 - confirmPanel:GetWide() / 2)
+
+        BlurPanel(s, EFGM.MenuScale(3))
+
+        surface.SetDrawColor(Color(20, 20, 20, 205))
+        surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
+
+        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+        draw.SimpleTextOutlined(confirmText, "PuristaBold24", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    confirmPanel.Think = function()
+
+        if (input.IsMouseDown(MOUSE_LEFT) or input.IsMouseDown(MOUSE_RIGHT) or input.IsMouseDown(MOUSE_MIDDLE) or input.IsMouseDown(MOUSE_WHEEL_DOWN) or input.IsMouseDown(MOUSE_WHEEL_UP)) and !confirmPanel:IsChildHovered() and !confirmPanel:IsHovered() then confirmPanel:AlphaTo(0, 0.1, 0, function() confirmPanel:Remove() end) end
+
+    end
+
+    surface.SetFont("PuristaBold24")
+    local yesText = "YES [ENTER]"
+    local yesTextSize = surface.GetTextSize(yesText)
+    local yesButtonSize = yesTextSize + EFGM.MenuScale(10)
+
+    local yesButton = vgui.Create("DButton", confirmPanel)
+    yesButton:SetPos(confirmPanel:GetWide() / 2 - (yesButtonSize / 2) - EFGM.MenuScale(25), confirmPanelHeight - EFGM.MenuScale(35))
+    yesButton:SetSize(yesButtonSize, EFGM.MenuScale(28))
+    yesButton:SetText("")
+    yesButton.Paint = function(s, w, h)
+
+        yesButton:SetX(confirmPanel:GetWide() / 2 - (yesButtonSize / 2) - EFGM.MenuScale(25))
+
+        BlurPanel(s, EFGM.MenuScale(0))
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, yesTextSize + EFGM.MenuScale(10), h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, yesTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
+
+        draw.SimpleTextOutlined(yesText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    surface.SetFont("PuristaBold24")
+    local noText = "NO"
+    local noTextSize = surface.GetTextSize(noText)
+    local noButtonSize = noTextSize + EFGM.MenuScale(10)
+
+    local noButton = vgui.Create("DButton", confirmPanel)
+    noButton:SetPos(confirmPanel:GetWide() / 2 - (noButtonSize / 2) + yesButton:GetWide() / 2 + EFGM.MenuScale(5), confirmPanelHeight - EFGM.MenuScale(35))
+    noButton:SetSize(noButtonSize, EFGM.MenuScale(28))
+    noButton:SetText("")
+    noButton.Paint = function(s, w, h)
+
+        noButton:SetX(confirmPanel:GetWide() / 2 - (noButtonSize / 2) + yesButton:GetWide() / 2 + EFGM.MenuScale(5))
+
+        BlurPanel(s, EFGM.MenuScale(0))
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, noButtonSize + EFGM.MenuScale(10), h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, noButtonSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
+
+        draw.SimpleTextOutlined(noText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    yesButton.OnCursorEntered = function(s)
+
+        surface.PlaySound("ui/element_hover.wav")
+
+    end
+
+    function yesButton:DoClick()
+
+        surface.PlaySound("ui/element_select.wav")
+        confirmPanel:AlphaTo(0, 0.1, 0, function() confirmPanel:Remove() end)
+        DeleteFromInventory(inv, item, key, eID, eSlot)
+
+    end
+
+    function confirmPanel:OnKeyCodePressed(key)
+
+        if key == KEY_ENTER then yesButton:DoClick() end
+
+    end
+
+    noButton.OnCursorEntered = function(s)
+
+        surface.PlaySound("ui/element_hover.wav")
+
+    end
+
+    function noButton:DoClick()
+
+        surface.PlaySound("ui/element_deselect.wav")
+        confirmPanel:AlphaTo(0, 0.1, 0, function() confirmPanel:Remove() end)
+
+    end
+
+end
+
 Menu.OpenTab = {}
 
 function Menu.ReloadInventory()
@@ -2419,6 +2558,7 @@ function Menu.ReloadInventory()
             actions.equipable = i.equipType == EQUIPTYPE.Weapon
             actions.splittable = i.stackSize > 1 and v.data.count > 1
             actions.consumable = i.equipType == EQUIPTYPE.Consumable
+            actions.deletable = Menu.Player:CompareStatus(0)
 
             if actions.stashable then
 
@@ -2548,6 +2688,32 @@ function Menu.ReloadInventory()
 
                     surface.PlaySound("ui/element_select.wav")
                     DropItemFromInventory(v.id)
+                    contextMenu:Remove()
+                    playerItems:InvalidateLayout()
+
+                end
+
+            end
+
+            if actions.deletable then
+
+                contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
+
+                local itemDeleteButton = vgui.Create("DButton", contextMenu)
+                itemDeleteButton:Dock(TOP)
+                itemDeleteButton:SetSize(0, EFGM.MenuScale(25))
+                itemDeleteButton:SetText("DELETE")
+
+                itemDeleteButton.OnCursorEntered = function(s)
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
+                function itemDeleteButton:DoClick()
+
+                    surface.PlaySound("ui/element_select.wav")
+                    Menu.ConfirmDelete(v.name, v.id, "inv", 0, 0)
                     contextMenu:Remove()
                     playerItems:InvalidateLayout()
 
@@ -2707,26 +2873,6 @@ function Menu.ReloadSlots()
             contextMenu:AlphaTo(255, 0.1, 0, nil)
             contextMenu:RequestFocus()
 
-            if sideH == true then
-
-                contextMenu:SetX(math.Clamp(x + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
-
-            else
-
-                contextMenu:SetX(math.Clamp(x - contextMenu:GetWide() - EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
-
-            end
-
-            if sideV == true then
-
-                contextMenu:SetY(math.Clamp(y + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
-
-            else
-
-                contextMenu:SetY(math.Clamp(y - contextMenu:GetTall() + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
-
-            end
-
             contextMenu.Paint = function(s, w, h)
 
                 if !IsValid(s) then return end
@@ -2843,6 +2989,52 @@ function Menu.ReloadSlots()
 
                 surface.PlaySound("ui/element_select.wav")
                 contextMenu:KillFocus()
+
+            end
+
+            if Menu.Player:CompareStatus(0) then
+
+                contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
+
+                local itemDeleteButton = vgui.Create("DButton", contextMenu)
+                itemDeleteButton:Dock(TOP)
+                itemDeleteButton:SetSize(0, EFGM.MenuScale(25))
+                itemDeleteButton:SetText("DELETE")
+
+                itemDeleteButton.OnCursorEntered = function(s)
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
+                function itemDeleteButton:DoClick()
+
+                    surface.PlaySound("ui/element_select.wav")
+                    Menu.ConfirmDelete(playerWeaponSlots[1][1].name, 0, "equipped", primaryItem.SLOTID, primaryItem.SLOT)
+                    contextMenu:Remove()
+                    playerItems:InvalidateLayout()
+
+                end
+
+            end
+
+            if sideH == true then
+
+                contextMenu:SetX(math.Clamp(x + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+            else
+
+                contextMenu:SetX(math.Clamp(x - contextMenu:GetWide() - EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+            end
+
+            if sideV == true then
+
+                contextMenu:SetY(math.Clamp(y + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
+
+            else
+
+                contextMenu:SetY(math.Clamp(y - contextMenu:GetTall() + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
 
             end
 
@@ -2975,26 +3167,6 @@ function Menu.ReloadSlots()
             contextMenu:AlphaTo(255, 0.1, 0, nil)
             contextMenu:RequestFocus()
 
-            if sideH == true then
-
-                contextMenu:SetX(math.Clamp(x + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
-
-            else
-
-                contextMenu:SetX(math.Clamp(x - contextMenu:GetWide(), EFGM.MenuScale(5), equipmentHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
-
-            end
-
-            if sideV == true then
-
-                contextMenu:SetY(math.Clamp(y + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
-
-            else
-
-                contextMenu:SetY(math.Clamp(y - contextMenu:GetTall() + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
-
-            end
-
             contextMenu.Paint = function(s, w, h)
 
                 if !IsValid(s) then return end
@@ -3111,6 +3283,52 @@ function Menu.ReloadSlots()
 
                 surface.PlaySound("ui/element_select.wav")
                 contextMenu:KillFocus()
+
+            end
+
+            if Menu.Player:CompareStatus(0) then
+
+                contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
+
+                local itemDeleteButton = vgui.Create("DButton", contextMenu)
+                itemDeleteButton:Dock(TOP)
+                itemDeleteButton:SetSize(0, EFGM.MenuScale(25))
+                itemDeleteButton:SetText("DELETE")
+
+                itemDeleteButton.OnCursorEntered = function(s)
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
+                function itemDeleteButton:DoClick()
+
+                    surface.PlaySound("ui/element_select.wav")
+                    Menu.ConfirmDelete(playerWeaponSlots[1][2].name, 0, "equipped", secondaryItem.SLOTID, secondaryItem.SLOT)
+                    contextMenu:Remove()
+                    playerItems:InvalidateLayout()
+
+                end
+
+            end
+
+            if sideH == true then
+
+                contextMenu:SetX(math.Clamp(x + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+            else
+
+                contextMenu:SetX(math.Clamp(x - contextMenu:GetWide(), EFGM.MenuScale(5), equipmentHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+            end
+
+            if sideV == true then
+
+                contextMenu:SetY(math.Clamp(y + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
+
+            else
+
+                contextMenu:SetY(math.Clamp(y - contextMenu:GetTall() + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
 
             end
 
@@ -3244,26 +3462,6 @@ function Menu.ReloadSlots()
             contextMenu:AlphaTo(255, 0.1, 0, nil)
             contextMenu:RequestFocus()
 
-            if sideH == true then
-
-                contextMenu:SetX(math.Clamp(x + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
-
-            else
-
-                contextMenu:SetX(math.Clamp(x - contextMenu:GetWide() - EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
-
-            end
-
-            if sideV == true then
-
-                contextMenu:SetY(math.Clamp(y + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
-
-            else
-
-                contextMenu:SetY(math.Clamp(y - contextMenu:GetTall() + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
-
-            end
-
             contextMenu.Paint = function(s, w, h)
 
                 if !IsValid(s) then return end
@@ -3383,6 +3581,52 @@ function Menu.ReloadSlots()
 
             end
 
+            if Menu.Player:CompareStatus(0) then
+
+                contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
+
+                local itemDeleteButton = vgui.Create("DButton", contextMenu)
+                itemDeleteButton:Dock(TOP)
+                itemDeleteButton:SetSize(0, EFGM.MenuScale(25))
+                itemDeleteButton:SetText("DELETE")
+
+                itemDeleteButton.OnCursorEntered = function(s)
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
+                function itemDeleteButton:DoClick()
+
+                    surface.PlaySound("ui/element_select.wav")
+                    Menu.ConfirmDelete(playerWeaponSlots[2][1].name, 0, "equipped", holsterItem.SLOTID, holsterItem.SLOT)
+                    contextMenu:Remove()
+                    playerItems:InvalidateLayout()
+
+                end
+
+            end
+
+            if sideH == true then
+
+                contextMenu:SetX(math.Clamp(x + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+            else
+
+                contextMenu:SetX(math.Clamp(x - contextMenu:GetWide() - EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+            end
+
+            if sideV == true then
+
+                contextMenu:SetY(math.Clamp(y + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
+
+            else
+
+                contextMenu:SetY(math.Clamp(y - contextMenu:GetTall() + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
+
+            end
+
         end
 
     else
@@ -3482,26 +3726,6 @@ function Menu.ReloadSlots()
             contextMenu:SetAlpha(0)
             contextMenu:AlphaTo(255, 0.1, 0, nil)
             contextMenu:RequestFocus()
-
-            if sideH == true then
-
-                contextMenu:SetX(math.Clamp(x + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
-
-            else
-
-                contextMenu:SetX(math.Clamp(x - contextMenu:GetWide() - EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
-
-            end
-
-            if sideV == true then
-
-                contextMenu:SetY(math.Clamp(y + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
-
-            else
-
-                contextMenu:SetY(math.Clamp(y - contextMenu:GetTall() + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
-
-            end
 
             contextMenu.Paint = function(s, w, h)
 
@@ -3622,6 +3846,52 @@ function Menu.ReloadSlots()
 
             end
 
+            if Menu.Player:CompareStatus(0) then
+
+                contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
+
+                local itemDeleteButton = vgui.Create("DButton", contextMenu)
+                itemDeleteButton:Dock(TOP)
+                itemDeleteButton:SetSize(0, EFGM.MenuScale(25))
+                itemDeleteButton:SetText("DELETE")
+
+                itemDeleteButton.OnCursorEntered = function(s)
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
+                function itemDeleteButton:DoClick()
+
+                    surface.PlaySound("ui/element_select.wav")
+                    Menu.ConfirmDelete(playerWeaponSlots[3][1].name, 0, "equipped", meleeItem.SLOTID, meleeItem.SLOT)
+                    contextMenu:Remove()
+                    playerItems:InvalidateLayout()
+
+                end
+
+            end
+
+            if sideH == true then
+
+                contextMenu:SetX(math.Clamp(x + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+            else
+
+                contextMenu:SetX(math.Clamp(x - contextMenu:GetWide() - EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+            end
+
+            if sideV == true then
+
+                contextMenu:SetY(math.Clamp(y + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
+
+            else
+
+                contextMenu:SetY(math.Clamp(y - contextMenu:GetTall() + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
+
+            end
+
         end
 
     else
@@ -3721,26 +3991,6 @@ function Menu.ReloadSlots()
             contextMenu:SetAlpha(0)
             contextMenu:AlphaTo(255, 0.1, 0, nil)
             contextMenu:RequestFocus()
-
-            if sideH == true then
-
-                contextMenu:SetX(math.Clamp(x + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
-
-            else
-
-                contextMenu:SetX(math.Clamp(x - contextMenu:GetWide() - EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
-
-            end
-
-            if sideV == true then
-
-                contextMenu:SetY(math.Clamp(y + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
-
-            else
-
-                contextMenu:SetY(math.Clamp(y - contextMenu:GetTall() + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
-
-            end
 
             contextMenu.Paint = function(s, w, h)
 
@@ -3858,6 +4108,52 @@ function Menu.ReloadSlots()
 
                 surface.PlaySound("ui/element_select.wav")
                 contextMenu:KillFocus()
+
+            end
+
+            if Menu.Player:CompareStatus(0) then
+
+                contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
+
+                local itemDeleteButton = vgui.Create("DButton", contextMenu)
+                itemDeleteButton:Dock(TOP)
+                itemDeleteButton:SetSize(0, EFGM.MenuScale(25))
+                itemDeleteButton:SetText("DELETE")
+
+                itemDeleteButton.OnCursorEntered = function(s)
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
+                function itemDeleteButton:DoClick()
+
+                    surface.PlaySound("ui/element_select.wav")
+                    Menu.ConfirmDelete(playerWeaponSlots[4][1].name, 0, "equipped", nadeItem.SLOTID, nadeItem.SLOT)
+                    contextMenu:Remove()
+                    playerItems:InvalidateLayout()
+
+                end
+
+            end
+
+            if sideH == true then
+
+                contextMenu:SetX(math.Clamp(x + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+            else
+
+                contextMenu:SetX(math.Clamp(x - contextMenu:GetWide() - EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+            end
+
+            if sideV == true then
+
+                contextMenu:SetY(math.Clamp(y + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
+
+            else
+
+                contextMenu:SetY(math.Clamp(y - contextMenu:GetTall() + EFGM.MenuScale(5), EFGM.MenuScale(5), equipmentHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
 
             end
 
@@ -4147,7 +4443,8 @@ function Menu.ReloadStash()
             local actions = {
                 equipable = false,
                 consumable = false,
-                splittable = false
+                splittable = false,
+                deletable = true
             }
 
             actions.equipable = i.equipType == EQUIPTYPE.Weapon
@@ -4226,6 +4523,32 @@ function Menu.ReloadStash()
                     Menu.ConfirmSplit(v.name, v.data, v.id, "stash")
                     contextMenu:Remove()
                     stashItems:InvalidateLayout()
+
+                end
+
+            end
+
+            if actions.deletable then
+
+                contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
+
+                local itemDeleteButton = vgui.Create("DButton", contextMenu)
+                itemDeleteButton:Dock(TOP)
+                itemDeleteButton:SetSize(0, EFGM.MenuScale(25))
+                itemDeleteButton:SetText("DELETE")
+
+                itemDeleteButton.OnCursorEntered = function(s)
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
+                function itemDeleteButton:DoClick()
+
+                    surface.PlaySound("ui/element_select.wav")
+                    Menu.ConfirmDelete(v.name, v.id, "stash", 0, 0)
+                    contextMenu:Remove()
+                    playerItems:InvalidateLayout()
 
                 end
 

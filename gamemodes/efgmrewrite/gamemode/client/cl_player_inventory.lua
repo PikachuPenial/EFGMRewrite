@@ -151,6 +151,19 @@ net.Receive("PlayerInventoryUpdateEquipped", function(len, ply)
 
 end )
 
+net.Receive("PlayerInventoryDeleteEquippedItem", function(len, ply)
+
+    local equipID, equipSlot
+
+    equipID = net.ReadUInt(4)
+    equipSlot = net.ReadUInt(4)
+
+    table.Empty(playerWeaponSlots[equipID][equipSlot])
+
+    Menu.ReloadSlots()
+
+end )
+
 function DropItemFromInventory(itemIndex)
 
     net.Start("PlayerInventoryDropItem", false)
@@ -368,6 +381,17 @@ function SplitFromInventory(inv, item, count, key)
     net.WriteString(item)
     net.WriteUInt(count, 8)
     net.WriteUInt(key, 16)
+    net.SendToServer()
+
+end
+
+function DeleteFromInventory(inv, item, key, eID, eSlot)
+
+    net.Start("PlayerInventoryDelete", false)
+    net.WriteString(inv)
+    net.WriteUInt(key, 16)
+    net.WriteUInt(eID, 4)
+    net.WriteUInt(eSlot, 4)
     net.SendToServer()
 
 end
