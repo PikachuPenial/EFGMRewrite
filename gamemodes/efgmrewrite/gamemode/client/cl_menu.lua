@@ -6690,7 +6690,7 @@ function Menu.OpenTab.Market()
     MarketCat.ALLITEMS = {
 
         name = "All Items",
-        items = {"Assault Carbine", "Assault Rifle", "Light Machine Gun", "Pistol", "Shotgun", "Sniper Rifle", "Marksman Rifle", "Submachine Gun", "Launcher", "Melee", "Grenade", "Special", "Ammunition", "Accessory", "Barrel", "Cover", "Foregrip", "Gas Block", "Handguard", "Magazine", "Mount", "Muzzle", "Optic", "Pistol Grip", "Receiver", "Sight", "Stock", "Tactical", "Medical", "Belmont Key", "Concrete Key", "Customs Key", "Factory Key", "Barter", "Building", "Electronic", "Energy", "Flammable", "Household", "Information", "Medicine", "Other", "Tool", "Valuable"},
+        items = {"Assault Carbine", "Assault Rifle", "Light Machine Gun", "Pistol", "Shotgun", "Sniper Rifle", "Marksman Rifle", "Submachine Gun", "Launcher", "Melee", "Grenade", "Special", "Ammunition", "Accessory", "Barrel", "Cover", "Foregrip", "Gas Block", "Handguard", "Magazine", "Mount", "Muzzle", "Optic", "Pistol Grip", "Receiver", "Sight", "Stock", "Tactical", "Medical", "Belmont Key", "Concrete Key", "Factory Key", "Barter", "Building", "Electronic", "Energy", "Flammable", "Household", "Information", "Medicine", "Other", "Tool", "Valuable"},
 
         children = {}
 
@@ -6768,13 +6768,12 @@ function Menu.OpenTab.Market()
     MarketCat.KEYS = {
 
         name = "Keys",
-        items = {"Belmont Key", "Concrete Key", "Customs Key", "Factory Key"},
+        items = {"Belmont Key", "Concrete Key", "Factory Key"},
 
         children = {
 
             ["Belmont"] = "Belmont Key",
             ["Concrete"] = "Concrete Key",
-            ["Customs"] = "Customs Key",
             ["Factory"] = "Factory Key",
 
         }

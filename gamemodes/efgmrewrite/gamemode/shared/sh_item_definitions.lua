@@ -7779,7 +7779,7 @@ function GenerateLootTables()
         -- generic loot pools
 
         -- excluded keys bc you can find them fucking everywhere
-        if v.displayType != "Belmont Key" and v.displayType != "Concrete Key" and v.displayType != "Customs Key" and v.displayType != "Factory Key" and v.displayType != "Attachment" and v.displayType != "Accessory" and v.displayType != "Barrel" and v.displayType != "Cover" and v.displayType != "Gas Block" and v.displayType != "Handguard" and v.displayType != "Magazine" and v.displayType != "Mount" and v.displayType != "Pistol Grip" and v.displayType != "Receiver" and v.displayType != "Sight" and v.displayType != "Stock" then
+        if v.displayType != "Belmont Key" and v.displayType != "Concrete Key" and v.displayType != "Factory Key" and v.displayType != "Attachment" and v.displayType != "Accessory" and v.displayType != "Barrel" and v.displayType != "Cover" and v.displayType != "Gas Block" and v.displayType != "Handguard" and v.displayType != "Magazine" and v.displayType != "Mount" and v.displayType != "Pistol Grip" and v.displayType != "Receiver" and v.displayType != "Sight" and v.displayType != "Stock" then
 
             LOOT[1][k] = v
 
@@ -7803,7 +7803,7 @@ function GenerateLootTables()
 
         end
 
-        if v.displayType == "Building" or v.displayType == "Electronic" or v.displayType == "Energy" or v.displayType == "Flammable" or v.displayType == "Household" or v.displayType == "Information" or v.displayType == "Medicine" or v.displayType == "Other" or v.displayType == "Tool" or v.displayType == "Valuable" or v.displayType == "Belmont Key" or v.displayType == "Concrete Key" or v.displayType == "Customs Key" or v.displayType == "Factory Key" then
+        if v.displayType == "Building" or v.displayType == "Electronic" or v.displayType == "Energy" or v.displayType == "Flammable" or v.displayType == "Household" or v.displayType == "Information" or v.displayType == "Medicine" or v.displayType == "Other" or v.displayType == "Tool" or v.displayType == "Valuable" or v.displayType == "Belmont Key" or v.displayType == "Concrete Key" or v.displayType == "Factory Key" then
 
             LOOT[5][k] = v
 
@@ -7825,7 +7825,7 @@ function GenerateLootTables()
         end
 
         -- filing cabinet loot pool
-        if ((v.displayType == "Electronic" or v.displayType == "Energy" or v.displayType == "Information" or v.displayType == "Other" or v.displayType == "Valuable" or v.displayType == "Belmont Key" or v.displayType == "Concrete Key" or v.displayType == "Customs Key" or v.displayType == "Factory Key") and v.sizeX == 1 and v.sizeY == 1) then
+        if ((v.displayType == "Electronic" or v.displayType == "Energy" or v.displayType == "Information" or v.displayType == "Other" or v.displayType == "Valuable" or v.displayType == "Belmont Key" or v.displayType == "Concrete Key" or v.displayType == "Factory Key") and v.sizeX == 1 and v.sizeY == 1) then
 
             LOOT[8][k] = v
 

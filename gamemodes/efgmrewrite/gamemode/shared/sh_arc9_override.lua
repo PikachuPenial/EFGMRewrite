@@ -58,7 +58,7 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
             local lerrppp = Lerp(self:GetSprintAmount(), 0, 1)
             sprintoffset, sprintoffset2 = sprintoffset * lerrppp, sprintoffset2 * lerrppp
 
-            pos:Add(ang:Up() * (sprintoffset2 + 10) * 0.1 * lerrppp)
+            pos:Add(ang:Up() * (sprintoffset2 + 2) * 0.1 * lerrppp)
             pos:Add(ang:Right() * sprintoffset2 * 0.2)
             pos:Add(ang:Forward() *  (sprintoffset2 + 10) * 0.1 * lerrppp)
             ang.z = ang.z + math.min(0, sprintoffset * -6)
@@ -770,6 +770,20 @@ hook.Add("PlayerBindPress", "ARC9_Binds", function(ply, bind, pressed, code)
     else
         if plususe then
             return ARC9.AttemptGiveNPCWeapon()
+        end
+
+        if wpn:GetInSights() then
+            if bind == "invnext" then
+                wpn:Scroll(1)
+                wpn.Peeking = false
+
+                return true
+            elseif bind == "invprev" then
+                wpn:Scroll(-1)
+                wpn.Peeking = false
+
+                return true
+            end
         end
     end
 
