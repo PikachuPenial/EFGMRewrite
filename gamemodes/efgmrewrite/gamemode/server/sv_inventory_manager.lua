@@ -219,14 +219,24 @@ net.Receive("PlayerInventoryDropItem", function(len, ply)
     local itemIndex = net.ReadUInt(16)
     local item = ply.inventory[itemIndex]
 
-    if table.IsEmpty(item) then return end
+    if table.IsEmpty(item) then return false end
 
     entity = ents.Create("efgm_dropped_item")
     entity:SetItem(item.name, item.type, item.data)
 
-    entity:SetPos(ply:GetShootPos() + ply:GetForward() * 128)
+    local pos, ang = ply:GetShootPos(), ply:EyeAngles()
+    local dir = (ang:Forward() * 32) + (ang:Right() * 6) + (ang:Up() * -5)
+
+    entity:SetPos(pos + dir)
     entity:Spawn()
+    entity:SetOwner(ply)
     entity:PhysWake()
+
+    local phys = entity:GetPhysicsObject()
+    if IsValid(phys) then
+        phys:ApplyForceCenter(ang:Forward() * 10)
+        phys:ApplyForceOffset(VectorRand(), vector_origin)
+    end
 
     table.remove(ply.inventory, itemIndex)
     RemoveWeightFromPlayer(ply, item.name, item.data.count)
@@ -444,9 +454,19 @@ net.Receive("PlayerInventoryDropEquippedItem", function(len, ply)
     entity = ents.Create("efgm_dropped_item")
     entity:SetItem(item.name, item.type, item.data)
 
-    entity:SetPos(ply:GetShootPos() + ply:GetForward() * 128)
+    local pos, ang = ply:GetShootPos(), ply:EyeAngles()
+    local dir = (ang:Forward() * 32) + (ang:Right() * 6) + (ang:Up() * -5)
+
+    entity:SetPos(pos + dir)
     entity:Spawn()
+    entity:SetOwner(ply)
     entity:PhysWake()
+
+    local phys = entity:GetPhysicsObject()
+    if IsValid(phys) then
+        phys:ApplyForceCenter(ang:Forward() * 10)
+        phys:ApplyForceOffset(VectorRand(), vector_origin)
+    end
 
     RemoveWeightFromPlayer(ply, item.name, item.data.count)
     UpdateEquippedString(ply)
