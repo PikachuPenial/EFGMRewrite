@@ -2284,6 +2284,13 @@ function Menu.ConfirmDelete(item, key, inv, eID, eSlot)
     local i = EFGMITEMS[item]
     if i == nil then confirmPanel:Remove() return end
 
+    if GetConVar("efgm_menu_deleteprompt"):GetInt() == 0 then
+
+        DeleteFromInventory(inv, item, key, eID, eSlot)
+        return
+
+    end
+
     surface.SetFont("PuristaBold24")
     local confirmText = "Delete " .. i.fullName .. " (" .. i.displayName .. ")?"
     local confirmTextSize = math.max(EFGM.MenuScale(300), surface.GetTextSize(confirmText))
@@ -9918,6 +9925,20 @@ function Menu.OpenTab.Settings()
     menuScalingMethod.OnSelect = function(self, value)
         RunConsoleCommand("efgm_menu_scalingmethod", value - 1)
     end
+
+    local menuDeletePromptPanel = vgui.Create("DPanel", interface)
+    menuDeletePromptPanel:Dock(TOP)
+    menuDeletePromptPanel:SetSize(0, EFGM.MenuScale(50))
+    function menuDeletePromptPanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Show Confirmation On Item Deletion", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local menuDeletePrompt = vgui.Create("DCheckBox", menuDeletePromptPanel)
+    menuDeletePrompt:SetPos(EFGM.MenuScale(152), EFGM.MenuScale(30))
+    menuDeletePrompt:SetConVar("efgm_menu_deleteprompt")
+    menuDeletePrompt:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
 
     -- visuals
 
