@@ -317,6 +317,7 @@ end
 hook.Add("HUDPaint", "DrawHUD", DrawHUD)
 
 net.Receive("PlayerRaidTransition", function()
+
     RaidTransition = vgui.Create("DPanel")
     RaidTransition:SetSize(ScrW(), ScrH())
     RaidTransition:SetPos(0, 0)
@@ -335,7 +336,11 @@ net.Receive("PlayerRaidTransition", function()
     RaidTransition:AlphaTo(255, 0.5, 0, nil)
     RaidTransition:AlphaTo(0, 0.35, 1, function() RaidTransition:Remove() end)
 
-    timer.Simple(2.5, function() RenderExtracts(ply) end)
+    timer.Simple(2.5, function()
+        RenderExtracts(ply)
+        RunConsoleCommand("+reload")
+        timer.Simple(0.2, function() RunConsoleCommand("-reload") end )
+    end)
 end )
 
 net.Receive("SendExtractionStatus", function()
