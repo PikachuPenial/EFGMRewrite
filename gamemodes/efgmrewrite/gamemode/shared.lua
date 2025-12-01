@@ -15,7 +15,6 @@ if CLIENT then
     CreateClientConVar("efgm_hud_compass_always", 0, false, true, "Adjust the behaviour of displaying the compass", 0, 1)
     CreateClientConVar("efgm_menu_parallax", 1, false, true, "Adjust the main menu parallax/jiggle when moving your cursor", 0, 1)
     CreateClientConVar("efgm_menu_scalingmethod", 0, false, true, "Adjust the method at which the menu positions itself after scaling", 0, 1)
-    CreateClientConVar("efgm_menu_dropprompt", 1, false, true, "Adjust if a confirmation prompt appears when dropping an item", 0, 1)
     CreateClientConVar("efgm_menu_deleteprompt", 1, false, true, "Adjust if a confirmation prompt appears when deleting an item", 0, 1)
     CreateClientConVar("efgm_visuals_highqualimpactfx", 1, false, true, "Adjust the quality of the bullets impact effects", 0, 1)
     CreateClientConVar("efgm_visuals_headbob", 1, true, true, "Adjust the bobbing motion of the players view while moving", 0, 1)

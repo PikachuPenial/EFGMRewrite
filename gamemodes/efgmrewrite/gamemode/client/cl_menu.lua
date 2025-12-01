@@ -1758,7 +1758,7 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
     end
 
     surface.SetFont("PuristaBold24")
-    local yesText = "YES [ENTER]"
+    local yesText = "YES [SPACE]"
     local yesTextSize = surface.GetTextSize(yesText)
     local yesButtonSize = yesTextSize + EFGM.MenuScale(10)
 
@@ -1863,7 +1863,7 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
 
     function confirmPanel:OnKeyCodePressed(key)
 
-        if key == KEY_ENTER then yesButton:DoClick() end
+        if key == KEY_ENTER or key == KEY_SPACE then yesButton:DoClick() end
 
     end
 
@@ -1972,7 +1972,7 @@ function Menu.ConfirmSell(item, data, key)
     end
 
     surface.SetFont("PuristaBold24")
-    local yesText = "YES [ENTER]"
+    local yesText = "YES [SPACE]"
     local yesTextSize = surface.GetTextSize(yesText)
     local yesButtonSize = yesTextSize + EFGM.MenuScale(10)
 
@@ -2090,7 +2090,7 @@ function Menu.ConfirmSell(item, data, key)
 
     function confirmPanel:OnKeyCodePressed(key)
 
-        if key == KEY_ENTER then yesButton:DoClick() end
+        if key == KEY_ENTER or key == KEY_SPACE then yesButton:DoClick() end
 
     end
 
@@ -2166,7 +2166,7 @@ function Menu.ConfirmSplit(item, data, key, inv)
     end
 
     surface.SetFont("PuristaBold24")
-    local yesText = "YES [ENTER]"
+    local yesText = "YES [SPACE]"
     local yesTextSize = surface.GetTextSize(yesText)
     local yesButtonSize = yesTextSize + EFGM.MenuScale(10)
 
@@ -2258,7 +2258,7 @@ function Menu.ConfirmSplit(item, data, key, inv)
 
     function confirmPanel:OnKeyCodePressed(key)
 
-        if key == KEY_ENTER then yesButton:DoClick() end
+        if key == KEY_ENTER or key == KEY_SPACE then yesButton:DoClick() end
 
     end
 
@@ -2339,7 +2339,7 @@ function Menu.ConfirmDelete(item, key, inv, eID, eSlot)
     end
 
     surface.SetFont("PuristaBold24")
-    local yesText = "YES [ENTER]"
+    local yesText = "YES [SPACE]"
     local yesTextSize = surface.GetTextSize(yesText)
     local yesButtonSize = yesTextSize + EFGM.MenuScale(10)
 
@@ -2404,7 +2404,7 @@ function Menu.ConfirmDelete(item, key, inv, eID, eSlot)
 
     function confirmPanel:OnKeyCodePressed(key)
 
-        if key == KEY_ENTER then yesButton:DoClick() end
+        if key == KEY_ENTER or key == KEY_SPACE then yesButton:DoClick() end
 
     end
 

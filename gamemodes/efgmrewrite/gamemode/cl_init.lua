@@ -46,30 +46,62 @@ end
 local efgm_hud_scale = GetConVar("efgm_hud_scale")
 EFGM.ScreenScale = function(size)
 
-    if size > 0 then
+	if ScrW() / ScrH() <= 1.8 then
 
-        return math.max(1, size / 3 * (ScrW() / 640) * efgm_hud_scale:GetFloat())
+		if size > 0 then
 
-    else
+			return math.max(1, size / 3 * (ScrW() / 640) * efgm_hud_scale:GetFloat())
 
-        return math.min(-1, size / 3 * (ScrW() / 640) * efgm_hud_scale:GetFloat())
+		else
 
-    end
+			return math.min(-1, size / 3 * (ScrW() / 640) * efgm_hud_scale:GetFloat())
+
+		end
+
+	else
+
+		if size > 0 then
+
+			return math.max(1, size / 3 * (ScrH() / 360) * efgm_hud_scale:GetFloat())
+
+		else
+
+			return math.min(-1, size / 3 * (ScrH() / 360) * efgm_hud_scale:GetFloat())
+
+		end
+
+	end
 
 end
 
 -- i can't be asked to support player controlled menu scaling, way too problematic, so we will seperate the HUDs scale and the menus scale
 EFGM.MenuScale = function(size)
 
-    if size > 0 then
+	if ScrW() / ScrH() <= 1.8 then
 
-        return math.max(1, size / 3 * (ScrW() / 640))
+		if size > 0 then
 
-    else
+			return math.max(1, size / 3 * (ScrW() / 640))
 
-        return math.min(-1, size / 3 * (ScrW() / 640))
+		else
 
-    end
+			return math.min(-1, size / 3 * (ScrW() / 640))
+
+		end
+
+	else
+
+		if size > 0 then
+
+			return math.max(1, size / 3 * (ScrH() / 360))
+
+		else
+
+			return math.min(-1, size / 3 * (ScrH() / 360))
+
+		end
+
+	end
 
 end
 
