@@ -523,6 +523,8 @@ hook.Add("PlayerDisconnected", "PlayerUninitializeStats", function(ply)
 
     end
 
+	UnequipAllFirearms(ply)
+
 	UpdateStashString(ply)
 	UpdateInventoryString(ply)
 	UpdateEquippedString(ply)
@@ -545,6 +547,8 @@ hook.Add("ShutDown", "ServerUninitializeStats", function(ply)
 			ReinstantiateInventory(v)
 
     	end
+
+		UnequipAllFirearms(v)
 
 		UpdateStashString(v)
 		UpdateInventoryString(v)

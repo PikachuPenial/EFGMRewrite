@@ -406,6 +406,79 @@ function UnequipAll(ply)
 
 end
 
+function UnequipAllFirearms(ply)
+
+    for i = 1, 5 do
+
+        if i == WEAPONSLOTS.MELEE.ID or i == WEAPONSLOTS.UTILITY.ID then continue end
+
+        for k, v in pairs(ply.weaponSlots[i]) do
+
+            if !table.IsEmpty(v) then
+
+                local item = table.Copy(v)
+
+                if item == nil then return end
+
+                table.Empty(ply.weaponSlots[i][k])
+
+                local wep = ply:GetWeapon(item.name)
+
+                if wep != NULL and item.data.att then
+
+                    local atts = table.Copy(wep.Attachments)
+                    local str = GenerateAttachString(atts)
+                    item.data.att = str
+
+                end
+
+                local def = EFGMITEMS[item.name]
+                if def.displayType != "Grenade" then
+
+                    local clip1 = wep:Clip1()
+                    if clip1 != -1 and clip1 != 0 and ply:GetNWBool("InRange", false) == false then
+
+                        local data = {}
+                        data.count = wep:Clip1()
+                        FlowItemToInventory(ply, wep.Ammo, EQUIPTYPE.Ammunition, data)
+
+                    end
+
+                    local clip2 = wep:Clip2()
+                    if clip2 != -1 and clip2 != 0 and ply:GetNWBool("InRange", false) == false then
+
+                        local data = {}
+                        data.count = wep:Clip2()
+                        FlowItemToInventory(ply, wep.UBGLAmmo, EQUIPTYPE.Ammunition, data)
+
+                    end
+
+                end
+
+                local newItem = ITEM.Instantiate(item.name, item.type, item.data)
+                local index = table.insert(ply.inventory, newItem)
+
+                net.Start("PlayerInventoryAddItem", false)
+                net.WriteString(item.name)
+                net.WriteUInt(item.type, 4)
+                net.WriteTable(item.data)
+                net.WriteUInt(index, 16)
+                net.Send(ply)
+
+                net.Start("PlayerInventoryUnEquipAll")
+                net.Send(ply)
+
+            end
+
+        end
+
+    end
+
+    UpdateInventoryString(ply)
+    UpdateEquippedString(ply)
+
+end
+
 function MatchWithEquippedAndUpdate(ply, itemName, attsTbl)
 
     for i = 1, 5 do
@@ -857,27 +930,23 @@ hook.Add("PlayerSpawn", "GiveEquippedItemsOnSpawn", function(ply)
 
     ply.SpawnTimerVManip = CurTime() + 1 -- fuck off
 
-    timer.Simple(1, function()
+    for i = 1, 5 do
 
-        for i = 1, 5 do
+        for k, v in pairs(ply.weaponSlots[i]) do
 
-            for k, v in pairs(ply.weaponSlots[i]) do
+            if !table.IsEmpty(v) then
 
-                if !table.IsEmpty(v) then
+                local item = table.Copy(v)
+                if item == nil then return end
 
-                    local item = table.Copy(v)
-                    if item == nil then return end
-
-                    equipWeaponName = item.name
-                    GiveWepWithPresetFromCode(ply, item.name, item.data.att)
-
-                end
+                equipWeaponName = item.name
+                GiveWepWithPresetFromCode(ply, item.name, item.data.att)
 
             end
 
         end
 
-    end)
+    end
 
 end)
 

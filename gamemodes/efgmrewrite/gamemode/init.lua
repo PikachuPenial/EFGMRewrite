@@ -156,6 +156,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		net.WriteInt(0, 16)
 		net.Send(victim)
 
+		UnequipAllFirearms(victim)
 		ApplyPlayerExperience(victim, 0.5)
 		ResetRaidStats(victim)
 		return
@@ -187,6 +188,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	attacker:SetNWInt("ExperienceCombat", attacker:GetNWInt("ExperienceCombat") + 300)
 	attacker:SetNWInt("RaidKills", attacker:GetNWInt("RaidKills") + 1)
 
+	UnequipAllFirearms(victim)
 	ApplyPlayerExperience(victim, 0.5)
 	ResetRaidStats(victim)
 
