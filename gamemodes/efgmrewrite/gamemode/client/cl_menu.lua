@@ -7212,7 +7212,7 @@ function Menu.OpenTab.Market()
     MarketCat.AAFAVORITE = {
 
         name = "★ Favorite Items",
-        items = {},
+        items = {"Assault Carbine", "Assault Rifle", "Light Machine Gun", "Pistol", "Shotgun", "Sniper Rifle", "Marksman Rifle", "Submachine Gun", "Launcher", "Melee", "Grenade", "Special", "Ammunition", "Accessory", "Barrel", "Cover", "Foregrip", "Gas Block", "Handguard", "Magazine", "Mount", "Muzzle", "Optic", "Pistol Grip", "Receiver", "Sight", "Stock", "Tactical", "Medical", "Belmont Key", "Concrete Key", "Factory Key", "Barter", "Building", "Electronic", "Energy", "Flammable", "Household", "Information", "Medicine", "Other", "Tool", "Valuable"},
 
         children = {}
 
@@ -7422,6 +7422,7 @@ function Menu.OpenTab.Market()
                 local roubleIcon = Material("icons/rouble_icon.png")
                 local sellIcon = Material("icons/sell_icon.png")
                 local lockIcon = Material("icons/lock_icon.png")
+                local favoriteIcon = Material("icons/favorite_icon.png")
 
                 local plyLevel = Menu.Player:GetNWInt("Level", 1)
 
@@ -7450,6 +7451,14 @@ function Menu.OpenTab.Market()
 
                     draw.SimpleTextOutlined(v.name, "PuristaBold18", EFGM.MenuScale(5), EFGM.MenuScale(0), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
                     draw.SimpleTextOutlined(itemValueText, "PuristaBold22", (w / 2) + EFGM.MenuScale(12), h - EFGM.MenuScale(29), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                    if EFGM.Favorites[v.id] then
+
+                        surface.SetDrawColor(255, 255, 255, 255)
+                        surface.SetMaterial(favoriteIcon)
+                        surface.DrawTexturedRect(w - EFGM.MenuScale(31), EFGM.MenuScale(1), EFGM.MenuScale(30), EFGM.MenuScale(30))
+
+                    end
 
                     surface.SetDrawColor(255, 255, 255, 255)
 
@@ -7480,7 +7489,7 @@ function Menu.OpenTab.Market()
 
                     if IsValid(contextMenu) then contextMenu:Remove() end
                     contextMenu = vgui.Create("DPanel", marketItemHolder)
-                    contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(35))
+                    contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(60))
                     contextMenu:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
                     contextMenu:SetAlpha(0)
                     contextMenu:AlphaTo(255, 0.1, 0, nil)
@@ -7539,6 +7548,38 @@ function Menu.OpenTab.Market()
 
                     end
 
+                    local itemFavoriteButton = vgui.Create("DButton", contextMenu)
+                    itemFavoriteButton:Dock(TOP)
+                    itemFavoriteButton:SetSize(0, EFGM.MenuScale(25))
+                    itemFavoriteButton:SetText("FAVORITE")
+
+                    itemFavoriteButton.OnCursorEntered = function(s)
+
+                        surface.PlaySound("ui/element_hover.wav")
+
+                    end
+
+                    itemFavoriteButton.Think = function(s)
+
+                        if EFGM.Favorites[v.id] then
+
+                            itemFavoriteButton:SetText("UNFAVORITE")
+
+                        else
+
+                            itemFavoriteButton:SetText("FAVORITE")
+
+                        end
+
+                    end
+
+                    function itemFavoriteButton:DoClick()
+
+                        EFGM:ToggleFavorite(v.id)
+                        contextMenu:KillFocus()
+
+                    end
+
                     if v.canPurchase and plyLevel >= v.level then
 
                         contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
@@ -7591,7 +7632,7 @@ function Menu.OpenTab.Market()
 
     end
 
-    local curItems = MarketCat.WEAPONS.items
+    local curItems = MarketCat._ALLITEMS.items
     local function UpdateMarketList(items)
 
         if items == nil then items = curItems end
@@ -7611,6 +7652,8 @@ function Menu.OpenTab.Market()
                 if marketSearchText != "" and !(string.find((v2.fullName and v2.fullName or v2.displayName):lower(), marketSearchText) or string.find((k2):lower(), marketSearchText)) then continue end
                 if showBasedOnLevel == "unlocked" and plyLevel < (v2.levelReq or 1) then continue end
                 if showBasedOnLevel == "unlocked" and !(v2.canPurchase or v2.canPurchase == nil) then continue end
+
+                if marketTab == "★ Favorite Items" and !EFGM.Favorites[k2] then continue end
 
                 if v2.displayType == v1 then
 
@@ -7633,6 +7676,8 @@ function Menu.OpenTab.Market()
                     entry.defAtts = v2.defAtts
                     entry.caliber = v2.caliber
                     entry.canPurchase = purchasable
+
+                    if EFGM.Favorites[k2] then entry.sortWeight = 9999 else entry.sortWeight = 0 end
 
                     if entry.equipType == EQUIPTYPE.Weapon and entry.defAtts then
 
@@ -7663,11 +7708,35 @@ function Menu.OpenTab.Market()
 
             if sortWith == "ascending" then
 
-                table.SortByMember(marketTbl, "name", true)
+                table.sort(marketTbl, function(a, b)
+
+                    if a.sortWeight != b.sortWeight then
+
+                        return a.sortWeight > b.sortWeight
+
+                    elseif a.name != b.name then
+
+                        return a.name < b.name
+
+                    end
+
+                end)
 
             else
 
-                table.SortByMember(marketTbl, "name", false)
+                table.sort(marketTbl, function(a, b)
+
+                    if a.sortWeight != b.sortWeight then
+
+                        return a.sortWeight > b.sortWeight
+
+                    elseif a.name != b.name then
+
+                        return a.name > b.name
+
+                    end
+
+                end)
 
             end
 
@@ -7675,11 +7744,35 @@ function Menu.OpenTab.Market()
 
             if sortWith == "ascending" then
 
-                table.SortByMember(marketTbl, "value", true)
+                table.sort(marketTbl, function(a, b)
+
+                    if a.sortWeight != b.sortWeight then
+
+                        return a.sortWeight > b.sortWeight
+
+                    elseif a.value != b.value then
+
+                        return a.value < b.value
+
+                    end
+
+                end)
 
             else
 
-                table.SortByMember(marketTbl, "value", false)
+                table.sort(marketTbl, function(a, b)
+
+                    if a.sortWeight != b.sortWeight then
+
+                        return a.sortWeight > b.sortWeight
+
+                    elseif a.value != b.value then
+
+                        return a.value > b.value
+
+                    end
+
+                end)
 
             end
 
@@ -7687,11 +7780,35 @@ function Menu.OpenTab.Market()
 
             if sortWith == "ascending" then
 
-                table.SortByMember(marketTbl, "level", true)
+                table.sort(marketTbl, function(a, b)
+
+                    if a.sortWeight != b.sortWeight then
+
+                        return a.sortWeight > b.sortWeight
+
+                    elseif a.level != b.level then
+
+                        return a.level < b.level
+
+                    end
+
+                end)
 
             else
 
-                table.SortByMember(marketTbl, "level", false)
+                table.sort(marketTbl, function(a, b)
+
+                    if a.sortWeight != b.sortWeight then
+
+                        return a.sortWeight > b.sortWeight
+
+                    elseif a.level != b.level then
+
+                        return a.level > b.level
+
+                    end
+
+                end)
 
             end
 
@@ -7800,7 +7917,7 @@ function Menu.OpenTab.Market()
     end
 
     -- default to the weapons tab
-    UpdateMarketList(MarketCat.WEAPONS.items)
+    UpdateMarketList(MarketCat._ALLITEMS.items)
 
     for k1, v1 in SortedPairs(MarketCat) do
 

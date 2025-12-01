@@ -1,30 +1,3 @@
-local FootstepAlias = {
-    ["physics/cardboard/cardboard_box_impact_soft"] = "rubber",
-    ["physics/plaster/ceiling_tile_step"] = "ceiling",
-    ["player/footsteps/chainlink"] = "metal_grate",
-    ["player/footsteps/concrete"] = "concrete",
-    ["player/footsteps/dirt"] = "dirt",
-    ["physics/plaster/drywall_footstep"] = "drywall",
-    ["physics/glass/glass_sheet_step"] = "glass",
-    ["player/footsteps/grass"] = "grass",
-    ["player/footsteps/gravel"] = "gravel",
-    ["player/footsteps/metal"] = "metal",
-    ["physics/metal/metal_box_footstep"] = "metal_box",
-    ["player/footsteps/metalgrate"] = "metal_grate",
-    ["player/footsteps/mud"] = "mud",
-    ["physics/plastic/plastic_barrel_impact_soft"] = "plastic",
-    ["physics/plastic/plastic_box_impact_soft"] = "plastic",
-    ["player/footsteps/rubber"] = "rubber",
-    ["player/footsteps/sand"] = "sand",
-    ["player/footsteps/snow"] = "snow",
-    ["player/footsteps/tile"] = "tile",
-    ["player/footsteps/duct"] = "vent",
-    ["player/footsteps/slosh"] = "water",
-    ["player/footsteps/wood"] = "wood",
-    ["physics/wood/wood_box_footstep"] = "wood",
-    ["player/footsteps/woodpanel"] = "wood_panel"
-}
-
 local footsteps_int =
 {
     [MAT_CONCRETE] = "concrete",
@@ -211,16 +184,6 @@ hook.Add("PlayerFootstep", "CustomFootstepVolume", function(ply, pos, foot, soun
     local step = "l"
     if (foot == 1) then step = "r" end
 
-    for k, v in pairs(FootstepAlias) do
-
-        if (string.StartWith(sound, k)) then
-
-            material = v
-
-        end
-
-    end
-
     if string.StartWith(sound, "player/footsteps/ladder") then
 
         ply:EmitSound("mfw.ladder_hands_" .. step .. "_0" .. math.random(1,5))
@@ -254,6 +217,14 @@ hook.Add("PlayerFootstep", "CustomFootstepVolume", function(ply, pos, foot, soun
 end)
 
 if SERVER then
+
+    hook.Add("OnPlayerJump", "SoundOnJump", function(ply, speed)
+
+        local material = "drywall"
+
+        ply:EmitSound("mfw." .. material .. "_jump_" .. math.random(1,5))
+
+    end)
 
     hook.Add("OnPlayerHitGround", "SoundOnLanding", function(ply, speed)
 
