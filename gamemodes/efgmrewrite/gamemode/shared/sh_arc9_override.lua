@@ -540,19 +540,19 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
 
         if CLIENT then
             self:InvalidateCache()
-            self:PruneAttachments()
+            -- self:PruneAttachments()
             self:KillModel()
             self:SetupModel(true)
             self:SetupModel(false)
             self:RefreshCustomizeMenu()
-            
+
             if !self.HasSightsPoseparam then -- fuck you
                 if self:LookupPoseParameter("sights") != -1 then self.HasSightsPoseparam = true end
                 if self:LookupPoseParameter("firemode") != -1 then self.HasFiremodePoseparam = true end
             end
         else
             self:InvalidateCache()
-            self:PruneAttachments()
+            -- self:PruneAttachments()
             self:FillIntegralSlots()
             self:SendWeapon()
             self:PostModify()
@@ -561,6 +561,30 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
         end
 
         -- self:SetBaseSettings()
+    end
+
+    function SWEP:ValidateInventoryForNewTree(tree)
+
+        local count = self:CountAttsInTree(tree)
+
+        local currcount = self:CountAttsInTree(self.Attachments)
+
+        for att, attc in pairs(count) do
+            local atttbl = ARC9.GetAttTable(att)
+
+            if atttbl.Free then continue end
+
+            local has = (currcount[att] or 0) + ARC9:PlayerGetAtts(self:GetOwner(), att, self)
+            local need = attc
+
+            if has >= need then
+                continue
+            end
+
+            return false
+        end
+
+        return true
     end
 
     if class != "arc9_eft_rshg2" then
