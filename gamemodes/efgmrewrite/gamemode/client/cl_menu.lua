@@ -3423,6 +3423,33 @@ function Menu.ReloadSlots()
 
             end
 
+            if Menu.Player:CompareStatus(0) and i.ammoID then
+
+                contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
+
+                local itemBuyAmmoButton = vgui.Create("DButton", contextMenu)
+                itemBuyAmmoButton:Dock(TOP)
+                itemBuyAmmoButton:SetSize(0, EFGM.MenuScale(25))
+                itemBuyAmmoButton:SetText("BUY AMMO")
+
+                itemBuyAmmoButton.OnCursorEntered = function(s)
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
+                function itemBuyAmmoButton:DoClick()
+
+                    surface.PlaySound("ui/element_select.wav")
+                    contextMenu:Remove()
+                    playerItems:InvalidateLayout()
+
+                    Menu.ConfirmPurchase(i.ammoID, "inv", false)
+
+                end
+
+            end
+
             local itemDropButton = vgui.Create("DButton", contextMenu)
             itemDropButton:Dock(TOP)
             itemDropButton:SetSize(0, EFGM.MenuScale(25))
@@ -3716,6 +3743,33 @@ function Menu.ReloadSlots()
 
                 surface.PlaySound("ui/element_select.wav")
                 contextMenu:KillFocus()
+
+            end
+
+            if Menu.Player:CompareStatus(0) and i.ammoID then
+
+                contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
+
+                local itemBuyAmmoButton = vgui.Create("DButton", contextMenu)
+                itemBuyAmmoButton:Dock(TOP)
+                itemBuyAmmoButton:SetSize(0, EFGM.MenuScale(25))
+                itemBuyAmmoButton:SetText("BUY AMMO")
+
+                itemBuyAmmoButton.OnCursorEntered = function(s)
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
+                function itemBuyAmmoButton:DoClick()
+
+                    surface.PlaySound("ui/element_select.wav")
+                    contextMenu:Remove()
+                    playerItems:InvalidateLayout()
+
+                    Menu.ConfirmPurchase(i.ammoID, "inv", false)
+
+                end
 
             end
 
