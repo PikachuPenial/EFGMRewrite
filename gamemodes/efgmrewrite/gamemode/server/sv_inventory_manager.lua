@@ -877,15 +877,31 @@ end
 
 function GiveWepWithPresetFromCode(ply, classname, preset)
 
-    if !ply:IsPlayer() or !isstring(classname) or !isstring(preset) then return end
+    if !ply:IsPlayer() or !isstring(classname) then return end 
+
 	local swep = list.Get("Weapon")[classname]
 	if swep == nil then return end
 
+    if isstring(preset) then
+
+        ply:Give(classname)
+        return
+
+    end
+
     if !GetConVar("arc9_free_atts"):GetBool() then
+
         local atts = GetAttsFromPreset(preset)
-        if !atts then return end
+
+        if !atts then
+
+            ply:Give(classname)
+            return
+
+        end
 
         GiveAttsFromList(ply, atts)
+
     end
 
     if ply:HasWeapon(classname) then
@@ -911,15 +927,20 @@ function GiveWepWithPresetFromCode(ply, classname, preset)
         local wpn = ply:Give(classname)
 
         wpn:SetNoPresets(true)
+
         timer.Simple(0.1, function()
+
             if IsValid(wpn) then
+
                 ply.givingPreset = true
 
                 net.Start("efgm_sendpreset")
                 net.WriteEntity(wpn)
                 net.WriteString(preset)
                 net.Send(ply)
+
             end
+
         end)
 
     end
