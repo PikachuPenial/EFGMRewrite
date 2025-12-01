@@ -337,7 +337,7 @@ concommand.Add("efgm_inventory_equip", function(ply, cmd, args)
                 if table.IsEmpty(item) then return end
 
                 weapon = LocalPlayer():GetWeapon(item.name)
-                input.SelectWeapon(weapon)
+                if weapon != NULL then input.SelectWeapon(weapon) end
 
                 playerEquippedSlot = equipSlot
                 playerEquippedSubSlot = 1
@@ -349,7 +349,7 @@ concommand.Add("efgm_inventory_equip", function(ply, cmd, args)
                 if table.IsEmpty(item) then return end
 
                 weapon = LocalPlayer():GetWeapon(item.name)
-                input.SelectWeapon(weapon)
+                if weapon != NULL then input.SelectWeapon(weapon) end
 
                 playerEquippedSlot = equipSlot
                 playerEquippedSubSlot = playerEquippedSubSlot + 1
@@ -363,7 +363,7 @@ concommand.Add("efgm_inventory_equip", function(ply, cmd, args)
             if table.IsEmpty(item) then return end
 
             weapon = LocalPlayer():GetWeapon(item.name)
-            input.SelectWeapon(weapon)
+            if weapon != NULL then input.SelectWeapon(weapon) end
 
             playerEquippedSlot = equipSlot
             playerEquippedSubSlot = 1
@@ -378,7 +378,7 @@ concommand.Add("efgm_inventory_equip", function(ply, cmd, args)
         if item == NULL then return end
 
         weapon = LocalPlayer():GetWeapon(item.name)
-        input.SelectWeapon(weapon)
+        if weapon != NULL then input.SelectWeapon(weapon) end
 
         playerEquippedSlot = equipSlot
         playerEquippedSubSlot = equipSubSlot

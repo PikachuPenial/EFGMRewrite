@@ -649,6 +649,8 @@ function Menu:Initialize(openTo, container)
     marketTab:Dock(LEFT)
     marketTab:SetSize(EFGM.MenuScale(38), 0)
 
+    if !Menu.Player:CompareStatus(0) then marketTab:Hide(true) end
+
     local marketIcon = vgui.Create("DImageButton", marketTab)
     marketIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
     marketIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
@@ -723,6 +725,7 @@ function Menu:Initialize(openTo, container)
     local tasksTab = vgui.Create("DPanel", self.MenuFrame.TabParentPanel)
     tasksTab:Dock(LEFT)
     tasksTab:SetSize(EFGM.MenuScale(38), 0)
+    tasksTab:Hide(true)
 
     local tasksIcon = vgui.Create("DImageButton", tasksTab)
     tasksIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
@@ -782,6 +785,7 @@ function Menu:Initialize(openTo, container)
     local skillsTab = vgui.Create("DPanel", self.MenuFrame.TabParentPanel)
     skillsTab:Dock(LEFT)
     skillsTab:SetSize(EFGM.MenuScale(38), 0)
+    skillsTab:Hide(true)
 
     local skillsIcon = vgui.Create("DImageButton", skillsTab)
     skillsIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
@@ -850,6 +854,7 @@ function Menu:Initialize(openTo, container)
     local intelTab = vgui.Create("DPanel", self.MenuFrame.TabParentPanel)
     intelTab:Dock(LEFT)
     intelTab:SetSize(EFGM.MenuScale(38), 0)
+    intelTab:Hide(true)
 
     local intelIcon = vgui.Create("DImageButton", intelTab)
     intelIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
@@ -918,6 +923,7 @@ function Menu:Initialize(openTo, container)
     local achievementsTab = vgui.Create("DPanel", self.MenuFrame.TabParentPanel)
     achievementsTab:Dock(LEFT)
     achievementsTab:SetSize(EFGM.MenuScale(38), 0)
+    achievementsTab:Hide(true)
 
     local achievementsIcon = vgui.Create("DImageButton", achievementsTab)
     achievementsIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
@@ -6839,7 +6845,16 @@ function Menu.OpenTab.Market()
     -- will load items based on the items "displayType" in it's item def.
     MarketCat = {}
 
-    MarketCat.ALLITEMS = {
+    MarketCat.AAFAVORITE = {
+
+        name = "★ Favorite Items",
+        items = {},
+
+        children = {}
+
+    }
+
+    MarketCat._ALLITEMS = {
 
         name = "All Items",
         items = {"Assault Carbine", "Assault Rifle", "Light Machine Gun", "Pistol", "Shotgun", "Sniper Rifle", "Marksman Rifle", "Submachine Gun", "Launcher", "Melee", "Grenade", "Special", "Ammunition", "Accessory", "Barrel", "Cover", "Foregrip", "Gas Block", "Handguard", "Magazine", "Mount", "Muzzle", "Optic", "Pistol Grip", "Receiver", "Sight", "Stock", "Tactical", "Medical", "Belmont Key", "Concrete Key", "Factory Key", "Barter", "Building", "Electronic", "Energy", "Flammable", "Household", "Information", "Medicine", "Other", "Tool", "Valuable"},
@@ -6951,15 +6966,6 @@ function Menu.OpenTab.Market()
             ["Valuables"] = "Valuable"
 
         }
-
-    }
-
-    MarketCat.MISCELLANEOUS = {
-
-        name = "Miscellaneous",
-        items = {},
-
-        children = {}
 
     }
 
@@ -7708,15 +7714,18 @@ function Menu.OpenTab.Match()
             local ping = v:Ping()
             local kills = v:Frags()
             local deaths = v:Deaths()
+            local status = v:CompareStatus(0)
 
             local pmcEntry = vgui.Create("DPanel", pmcList)
             pmcEntry:SetSize(pmcList:GetWide(), EFGM.MenuScale(50))
             pmcEntry:SetPos(0, 0)
-            pmcEntry.Paint = function(w, h)
+            function pmcEntry:Paint(w, h)
                 if !IsValid(v) then return end
-                draw.SimpleTextOutlined(name .. "         " .. ping  .. "ms", "Purista18", EFGM.MenuScale(50), EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined(name, "Purista18", EFGM.MenuScale(50), EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined(ping  .. "ms", "Purista18", w - EFGM.MenuScale(5), EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
                 draw.SimpleTextOutlined(kills, "Purista18", EFGM.MenuScale(50), EFGM.MenuScale(25), Color(0, 255, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
                 draw.SimpleTextOutlined(deaths, "Purista18", EFGM.MenuScale(85), EFGM.MenuScale(25), Color(255, 0, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                if !status then draw.SimpleTextOutlined("IN RAID", "Purista18", w - EFGM.MenuScale(5), EFGM.MenuScale(25), Color(255, 255, 0), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor) end
             end
 
             local pmcPFP = vgui.Create("AvatarImage", pmcEntry)

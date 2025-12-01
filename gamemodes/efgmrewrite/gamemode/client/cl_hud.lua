@@ -341,6 +341,19 @@ net.Receive("PlayerRaidTransition", function()
         RunConsoleCommand("+reload")
         timer.Simple(0.2, function() RunConsoleCommand("-reload") end )
     end)
+
+    if Menu.MenuFrame == nil then return end
+    if Menu.MenuFrame:IsActive() != true then return end
+
+    Menu.Closing = true
+    Menu.MenuFrame:SetKeyboardInputEnabled(false)
+    Menu.MenuFrame:SetMouseInputEnabled(false)
+    Menu.IsOpen = false
+
+    Menu.MenuFrame:AlphaTo(0, 0.1, 0, function()
+        Menu.MenuFrame:Close()
+    end)
+
 end )
 
 net.Receive("SendExtractionStatus", function()
