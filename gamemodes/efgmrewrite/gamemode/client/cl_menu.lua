@@ -1619,9 +1619,18 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
     local confirmText = "Purchase " .. transactionCount .. "x " .. i.fullName .. " (" .. i.displayName .. ") for ₽" .. comma_value(transactionCost) .. "?"
     local confirmTextSize = math.max(EFGM.MenuScale(300), surface.GetTextSize(confirmText))
 
-    local confirmPanelHeight = EFGM.MenuScale(70)
+    local confirmPanelHeight = EFGM.MenuScale(110)
 
-    if i.stackSize > 1 and maxTransactionCount > 1 then confirmPanelHeight = EFGM.MenuScale(100) end
+    if i.stackSize > 1 and maxTransactionCount > 1 then confirmPanelHeight = EFGM.MenuScale(135) end
+
+    surface.SetFont("PuristaBold16")
+    local invText = "INVENTORY"
+    local invTextSize = surface.GetTextSize(invText)
+
+    local stashText = "STASH"
+    local stashTextSize = surface.GetTextSize(stashText)
+
+    local transactionDestination = sendTo or "stash"
 
     surface.PlaySound("ui/element_select.wav")
 
@@ -1656,6 +1665,10 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
 
         draw.SimpleTextOutlined(confirmText, "PuristaBold24", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
+        draw.SimpleTextOutlined("SEND TO", "PuristaBold16", w / 2, confirmPanelHeight - EFGM.MenuScale(80), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined(invText, "PuristaBold16", w / 2 - EFGM.MenuScale(55), confirmPanelHeight - EFGM.MenuScale(61), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined(stashText, "PuristaBold16", w / 2 + EFGM.MenuScale(35), confirmPanelHeight - EFGM.MenuScale(61), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
     end
 
     confirmPanel.Think = function()
@@ -1680,13 +1693,77 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
 
     end
 
+    local sendToInventoryBox = vgui.Create("DCheckBox", confirmPanel)
+    sendToInventoryBox:SetPos(confirmPanel:GetWide() / 2 - EFGM.MenuScale(75), confirmPanelHeight - EFGM.MenuScale(60))
+    sendToInventoryBox:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+
+    sendToInventoryBox.Think = function(self)
+
+        sendToInventoryBox:SetX(confirmPanel:GetWide() / 2 - EFGM.MenuScale(75))
+
+    end
+
+    local sendToStashBox = vgui.Create("DCheckBox", confirmPanel)
+    sendToStashBox:SetPos(confirmPanel:GetWide() / 2 + EFGM.MenuScale(15), confirmPanelHeight - EFGM.MenuScale(60))
+    sendToStashBox:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+
+    sendToStashBox.Think = function(self)
+
+        sendToStashBox:SetX(confirmPanel:GetWide() / 2 + EFGM.MenuScale(15))
+
+    end
+
+    if transactionDestination == "inv" then
+
+        sendToInventoryBox:SetValue(true)
+        sendToStashBox:SetValue(false)
+
+    else
+
+        sendToInventoryBox:SetValue(false)
+        sendToStashBox:SetValue(true)
+
+    end
+
+    function sendToInventoryBox:OnChange(bVal)
+
+        if (bVal) then
+
+            sendToStashBox:SetChecked(false)
+            transactionDestination = "inv"
+
+        else
+
+            sendToStashBox:SetChecked(true)
+            transactionDestination = "stash"
+
+        end
+
+    end
+
+    function sendToStashBox:OnChange(bVal)
+
+        if (bVal) then
+
+            sendToInventoryBox:SetChecked(false)
+            transactionDestination = "stash"
+
+        else
+
+            sendToInventoryBox:SetChecked(true)
+            transactionDestination = "inv"
+
+        end
+
+    end
+
     surface.SetFont("PuristaBold24")
     local yesText = "YES [ENTER]"
     local yesTextSize = surface.GetTextSize(yesText)
     local yesButtonSize = yesTextSize + EFGM.MenuScale(10)
 
     local yesButton = vgui.Create("DButton", confirmPanel)
-    yesButton:SetPos(confirmPanel:GetWide() / 2 - (yesButtonSize / 2) - EFGM.MenuScale(25), confirmPanelHeight - EFGM.MenuScale(35))
+    yesButton:SetPos(confirmPanel:GetWide() / 2 - EFGM.MenuScale(100), confirmPanelHeight - EFGM.MenuScale(35))
     yesButton:SetSize(yesButtonSize, EFGM.MenuScale(28))
     yesButton:SetText("")
     yesButton.Paint = function(s, w, h)
@@ -1768,7 +1845,7 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
         surface.PlaySound("ui/success.wav")
         confirmPanel:AlphaTo(0, 0.1, 0, function() confirmPanel:Remove() end)
 
-        if sendTo == "stash" then PurchaseItem(item, transactionCount) elseif sendTo == "inv" then PurchaseItemToInv(item, transactionCount) end
+        if transactionDestination == "stash" then PurchaseItem(item, transactionCount) elseif transactionDestination == "inv" then PurchaseItemToInv(item, transactionCount) end
 
         if closeMenu == true then
 
@@ -2441,13 +2518,14 @@ function Menu.ReloadInventory(itemSearch)
         else nameFont = "PuristaBold14" end
 
         local duraSize = nil
+        local duraSizeY = nil
         local duraFont = nil
 
         if i.consumableType == "heal" or i.consumableType == "key" then
             duraSize = surface.GetTextSize(i.consumableValue .. "/" .. i.consumableValue)
 
-            if duraSize <= (EFGM.MenuScale(49 * i.sizeX)) then duraFont = "PuristaBold18"
-            else duraFont = "PuristaBold14" end
+            if duraSize <= (EFGM.MenuScale(49 * i.sizeX)) then duraFont = "PuristaBold18" duraSizeY = EFGM.MenuScale(19)
+            else duraFont = "PuristaBold14" duraSizeY = EFGM.MenuScale(15) end
         end
 
         function item:PaintOver(w, h)
@@ -2455,14 +2533,14 @@ function Menu.ReloadInventory(itemSearch)
             draw.SimpleTextOutlined(i.displayName, nameFont, w - EFGM.MenuScale(3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
             if i.equipType == EQUIPTYPE.Ammunition and i.stackSize > 1 then
-                draw.SimpleTextOutlined(v.data.count, "PuristaBold18", w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined(v.data.count, "PuristaBold18", w - EFGM.MenuScale(3), h - EFGM.MenuScale(19), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
             elseif i.consumableType == "heal" or i.consumableType == "key" then
-                draw.SimpleTextOutlined(v.data.durability .. "/" .. i.consumableValue, duraFont, w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined(v.data.durability .. "/" .. i.consumableValue, duraFont, w - EFGM.MenuScale(3), h - duraSizeY, MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
             end
 
             if i.caliber then
 
-                draw.SimpleTextOutlined(i.caliber, "PuristaBold18", EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined(i.caliber, "PuristaBold18", EFGM.MenuScale(3), h - EFGM.MenuScale(19), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
             end
 
@@ -2869,7 +2947,8 @@ function Menu.ReloadSlots()
         if clip == -1 then mag = "∞" end
 
         local magFont = "PuristaBold18"
-        if i.sizeX <= 2 then magFont = "PuristaBold14" end
+        local magSizeY = EFGM.MenuScale(19)
+        if i.sizeX <= 2 then magFont = "PuristaBold14" magSizeY = EFGM.MenuScale(15) end
 
         function primaryItem:PaintOver(w, h)
 
@@ -2877,13 +2956,13 @@ function Menu.ReloadSlots()
 
             if i.caliber then
 
-                draw.SimpleTextOutlined(i.caliber, "PuristaBold18", EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined(i.caliber, "PuristaBold18", EFGM.MenuScale(3), h - EFGM.MenuScale(19), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
             end
 
             if mag != "" then
 
-                draw.SimpleTextOutlined(string.upper(mag), magFont, w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined(string.upper(mag), magFont, w - EFGM.MenuScale(3), h - magSizeY, MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
             end
 
@@ -3190,7 +3269,8 @@ function Menu.ReloadSlots()
         if clip == -1 then mag = "∞" end
 
         local magFont = "PuristaBold18"
-        if i.sizeX <= 2 then magFont = "PuristaBold14" end
+        local magSizeY = EFGM.MenuScale(19)
+        if i.sizeX <= 2 then magFont = "PuristaBold14" magSizeY = EFGM.MenuScale(15) end
 
         function secondaryItem:PaintOver(w, h)
 
@@ -3198,13 +3278,13 @@ function Menu.ReloadSlots()
 
             if i.caliber then
 
-                draw.SimpleTextOutlined(i.caliber, "PuristaBold18", EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined(i.caliber, "PuristaBold18", EFGM.MenuScale(3), h - EFGM.MenuScale(19), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
             end
 
             if mag != "" then
 
-                draw.SimpleTextOutlined(string.upper(mag), magFont, w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined(string.upper(mag), magFont, w - EFGM.MenuScale(3), h - magSizeY, MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
             end
 
@@ -3485,7 +3565,8 @@ function Menu.ReloadSlots()
         if clip == -1 then mag = "∞" end
 
         local magFont = "PuristaBold18"
-        if i.sizeX <= 2 then magFont = "PuristaBold14" end
+        local magSizeY = EFGM.MenuScale(19)
+        if i.sizeX <= 2 then magFont = "PuristaBold14" magSizeY = EFGM.MenuScale(15) end
 
         function holsterItem:PaintOver(w, h)
 
@@ -3493,13 +3574,13 @@ function Menu.ReloadSlots()
 
             if i.caliber then
 
-                draw.SimpleTextOutlined(i.caliber, "PuristaBold18", EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined(i.caliber, "PuristaBold18", EFGM.MenuScale(3), h - EFGM.MenuScale(19), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
             end
 
             if mag != "" then
 
-                draw.SimpleTextOutlined(string.upper(mag), magFont, w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined(string.upper(mag), magFont, w - EFGM.MenuScale(3), h - magSizeY, MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
             end
 
@@ -3762,12 +3843,6 @@ function Menu.ReloadSlots()
 
             draw.SimpleTextOutlined(i.displayName, nameFont, w - EFGM.MenuScale(3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
-            if i.caliber then
-
-                draw.SimpleTextOutlined(i.caliber, "PuristaBold18", EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
-
-            end
-
         end
 
         function meleeItem:DoClick()
@@ -4026,12 +4101,6 @@ function Menu.ReloadSlots()
         function nadeItem:PaintOver(w, h)
 
             draw.SimpleTextOutlined(i.displayName, nameFont, w - EFGM.MenuScale(3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-            if i.caliber then
-
-                draw.SimpleTextOutlined(i.caliber, "PuristaBold18", EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
-
-            end
 
         end
 
@@ -4376,14 +4445,15 @@ function Menu.ReloadStash(itemSearch)
         else nameFont = "PuristaBold14" end
 
         local duraSize = nil
+        local duraSizeY = nil
         local duraFont = nil
 
         if i.consumableType == "heal" or i.consumableType == "key" then
 
             duraSize = surface.GetTextSize(i.consumableValue .. "/" .. i.consumableValue)
 
-            if duraSize <= (EFGM.MenuScale(49 * i.sizeX)) then duraFont = "PuristaBold18"
-            else duraFont = "PuristaBold14" end
+            if duraSize <= (EFGM.MenuScale(49 * i.sizeX)) then duraFont = "PuristaBold18" duraSizeY = EFGM.MenuScale(19)
+            else duraFont = "PuristaBold14" duraSizeY = EFGM.MenuScale(15) end
 
         end
 
@@ -4392,14 +4462,14 @@ function Menu.ReloadStash(itemSearch)
             draw.SimpleTextOutlined(i.displayName, nameFont, w - EFGM.MenuScale(3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
             if i.equipType == EQUIPTYPE.Ammunition and i.stackSize > 1 then
-                draw.SimpleTextOutlined(v.data.count, "PuristaBold18", w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined(v.data.count, "PuristaBold18", w - EFGM.MenuScale(3), h - EFGM.MenuScale(19), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
             elseif i.consumableType == "heal" or i.consumableType == "key" then
-                draw.SimpleTextOutlined(v.data.durability .. "/" .. i.consumableValue, duraFont, w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined(v.data.durability .. "/" .. i.consumableValue, duraFont, w - EFGM.MenuScale(3), h - duraSizeY, MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
             end
 
             if i.caliber then
 
-                draw.SimpleTextOutlined(i.caliber, "PuristaBold18", EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined(i.caliber, "PuristaBold18", EFGM.MenuScale(3), h - EFGM.MenuScale(19), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
             end
 
@@ -4810,14 +4880,15 @@ function Menu.ReloadMarketStash(itemSearch)
         else nameFont = "PuristaBold14" end
 
         local duraSize = nil
+        local duraSizeY = nil
         local duraFont = nil
 
         if i.consumableType == "heal" or i.consumableType == "key" then
 
             duraSize = surface.GetTextSize(i.consumableValue .. "/" .. i.consumableValue)
 
-            if duraSize <= (EFGM.MenuScale(49 * i.sizeX)) then duraFont = "PuristaBold18"
-            else duraFont = "PuristaBold14" end
+            if duraSize <= (EFGM.MenuScale(49 * i.sizeX)) then duraFont = "PuristaBold18" duraSizeY = EFGM.MenuScale(19)
+            else duraFont = "PuristaBold14" duraSizeY = EFGM.MenuScale(15) end
 
         end
 
@@ -4826,19 +4897,19 @@ function Menu.ReloadMarketStash(itemSearch)
             draw.SimpleTextOutlined(i.displayName, nameFont, w - EFGM.MenuScale(3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
             if i.equipType == EQUIPTYPE.Ammunition and i.stackSize > 1 then
-                draw.SimpleTextOutlined(v.data.count, "PuristaBold18", w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined(v.data.count, "PuristaBold18", w - EFGM.MenuScale(3), h - EFGM.MenuScale(19), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
             elseif i.consumableType == "heal" or i.consumableType == "key" then
-                draw.SimpleTextOutlined(v.data.durability .. "/" .. i.consumableValue, duraFont, w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined(v.data.durability .. "/" .. i.consumableValue, duraFont, w - EFGM.MenuScale(3), h - duraSizeY, MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
             end
 
             if i.caliber then
 
-                draw.SimpleTextOutlined(i.caliber, "PuristaBold18", EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined(i.caliber, "PuristaBold18", EFGM.MenuScale(3), h - EFGM.MenuScale(19), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
             end
 
-            if i.sizeX > 1 then draw.SimpleTextOutlined("₽" .. itemValue, "PuristaBold18", w / 2, h / 2, MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
-            else draw.SimpleTextOutlined("₽" .. itemValue, "PuristaBold14", w / 2, h / 2, MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor) end
+            if i.sizeX > 1 then draw.SimpleTextOutlined("₽" .. itemValue, "PuristaBold18", w / 2, h / 2 - EFGM.MenuScale(9), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            else draw.SimpleTextOutlined("₽" .. itemValue, "PuristaBold14", w / 2, h / 2 - EFGM.MenuScale(7), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor) end
 
         end
 
@@ -5054,13 +5125,14 @@ function Menu.ReloadContainer()
         else nameFont = "PuristaBold14" end
 
         local duraSize = nil
+        local duraSizeY = nil
         local duraFont = nil
 
         if i.consumableType == "heal" or i.consumableType == "key" then
             duraSize = surface.GetTextSize(i.consumableValue .. "/" .. i.consumableValue)
 
-            if duraSize <= (EFGM.MenuScale(49 * i.sizeX)) then duraFont = "PuristaBold18"
-            else duraFont = "PuristaBold14" end
+            if duraSize <= (EFGM.MenuScale(49 * i.sizeX)) then duraFont = "PuristaBold18" duraSizeY = EFGM.MenuScale(19)
+            else duraFont = "PuristaBold14" duraSizeY = EFGM.MenuScale(15) end
         end
 
         function item:PaintOver(w, h)
@@ -5068,14 +5140,14 @@ function Menu.ReloadContainer()
             draw.SimpleTextOutlined(i.displayName, nameFont, w - EFGM.MenuScale(3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
             if i.equipType == EQUIPTYPE.Ammunition and i.stackSize > 1 then
-                draw.SimpleTextOutlined(v.data.count, "PuristaBold18", w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined(v.data.count, "PuristaBold18", w - EFGM.MenuScale(3), h - EFGM.MenuScale(19), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
             elseif i.consumableType == "heal" or i.consumableType == "key" then
-                draw.SimpleTextOutlined(v.data.durability .. "/" .. i.consumableValue, duraFont, w - EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined(v.data.durability .. "/" .. i.consumableValue, duraFont, w - EFGM.MenuScale(3), h - duraSizeY, MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
             end
 
             if i.caliber then
 
-                draw.SimpleTextOutlined(i.caliber, "PuristaBold18", EFGM.MenuScale(3), h - EFGM.MenuScale(1), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined(i.caliber, "PuristaBold18", EFGM.MenuScale(3), h - EFGM.MenuScale(19), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
             end
 
@@ -6914,7 +6986,7 @@ function Menu.OpenTab.Market()
                         surface.DrawRect(w - countTextSize - EFGM.MenuScale(11), h - EFGM.MenuScale(46), countTextSize + EFGM.MenuScale(10), EFGM.MenuScale(15))
                         surface.DrawRect(EFGM.MenuScale(1), EFGM.MenuScale(17), levelTextSize + EFGM.MenuScale(8), EFGM.MenuScale(15))
 
-                        draw.SimpleTextOutlined(countText, "PuristaBold18", w - EFGM.MenuScale(5), h - EFGM.MenuScale(31), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                        draw.SimpleTextOutlined(countText, "PuristaBold18", w - EFGM.MenuScale(5), h - EFGM.MenuScale(49), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
                         draw.SimpleTextOutlined(levelText, "PuristaBold18", EFGM.MenuScale(5), EFGM.MenuScale(14), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
                     end
@@ -6922,12 +6994,12 @@ function Menu.OpenTab.Market()
                     if v.caliber then
 
                         surface.DrawRect(EFGM.MenuScale(1), h - EFGM.MenuScale(46), caliberTextSize + EFGM.MenuScale(10), EFGM.MenuScale(15))
-                        draw.SimpleTextOutlined(caliberText, "PuristaBold18", EFGM.MenuScale(5), h - EFGM.MenuScale(31), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM, 1, MenuAlias.blackColor)
+                        draw.SimpleTextOutlined(caliberText, "PuristaBold18", EFGM.MenuScale(5), h - EFGM.MenuScale(49), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
                     end
 
                     draw.SimpleTextOutlined(v.name, "PuristaBold18", EFGM.MenuScale(5), EFGM.MenuScale(0), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-                    draw.SimpleTextOutlined(itemValueText, "PuristaBold22", (w / 2) + EFGM.MenuScale(12), h - EFGM.MenuScale(18), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
+                    draw.SimpleTextOutlined(itemValueText, "PuristaBold22", (w / 2) + EFGM.MenuScale(12), h - EFGM.MenuScale(29), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
                     surface.SetDrawColor(255, 255, 255, 255)
 

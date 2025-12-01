@@ -20,7 +20,12 @@ function ENT:Initialize()
 
 	local phys = self:GetPhysicsObject()
 
-	if (IsValid(phys)) then phys:Wake() end
+	if (IsValid(phys)) then
+
+		phys:Wake()
+		phys:SetMass(40)
+
+	end
 
 	self:SetHealth(self.BaseHealth)
 

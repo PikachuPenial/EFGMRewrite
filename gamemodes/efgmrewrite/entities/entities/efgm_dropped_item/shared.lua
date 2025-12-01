@@ -5,7 +5,7 @@ ENT.Category = "EFGM"
 ENT.BaseHealth = 10
 ENT.Limit = 999
 ENT.Owner = nil
-ENT.Model = "models/props_lab/box01a.mdl"
+ENT.Model = "models/props_junk/cardboard_box003a.mdl"
 
 ENT.PrintName = "Dropped Item"
 ENT.Author = "Penial"

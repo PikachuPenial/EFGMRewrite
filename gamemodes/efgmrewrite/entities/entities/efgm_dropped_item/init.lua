@@ -13,7 +13,8 @@ function ENT:Initialize()
 	self:PhysicsInit(SOLID_VPHYSICS)
 	self:SetMoveType(MOVETYPE_VPHYSICS)
 	self:SetSolid(SOLID_VPHYSICS)
-    self:SetCollisionGroup(COLLISION_GROUP_PASSABLE_DOOR) -- will collide with everything other than the player
+    self:SetCollisionGroup(COLLISION_GROUP_WEAPON)
+	self:UseTriggerBounds(true, 24)
 
 	self:SetUseType(SIMPLE_USE)
 
@@ -22,6 +23,7 @@ function ENT:Initialize()
 	if (IsValid(phys)) then
 
 		phys:Wake()
+		phys:SetMass(20)
 
 	end
 
