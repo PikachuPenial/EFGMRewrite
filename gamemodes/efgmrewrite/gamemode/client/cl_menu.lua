@@ -9,6 +9,7 @@ Menu.ActiveTab = ""
 Menu.MouseX = 0
 Menu.MouseY = 0
 Menu.Player = LocalPlayer()
+Menu.IsOpen = false
 
 hook.Add("OnReloaded", "Reload", function()
 
@@ -20,6 +21,19 @@ local menuBind = GetConVar("efgm_bind_menu"):GetInt()
 cvars.AddChangeCallback("efgm_bind_menu", function(convar_name, value_old, value_new)
     menuBind = tonumber(value_new)
 end)
+
+hook.Add("PlayerBindPress", "BlockBindsWhileInMenu", function(ply, bind, pressed)
+
+    if Menu.MenuFrame == nil then return end
+    if Menu.MenuFrame:IsActive() != true then return end
+
+    if bind == "+attack" or bind == "+attack2" then
+
+        return true
+
+    end
+
+end )
 
 -- called non-globally to initialize the menu, that way it can only be initialized once by Menu:Open()
 -- also openTab is the name of the tab it should open to
@@ -61,6 +75,7 @@ function Menu:Initialize(openTo, container)
             self.Closing = true
             menuFrame:SetKeyboardInputEnabled(false)
             menuFrame:SetMouseInputEnabled(false)
+            Menu.IsOpen = false
 
             menuFrame:AlphaTo(0, 0.1, 0, function()
                 menuFrame:Close()
@@ -83,7 +98,7 @@ function Menu:Initialize(openTo, container)
 
             end
 
-            menuFrame:Remove()
+            menuFrame:Close()
 
         end
 
@@ -353,6 +368,7 @@ function Menu:Initialize(openTo, container)
     function lowerPanel:Paint(w, h)
 
         if !Menu.Player:Alive() then
+            Menu.IsOpen = false
             menuFrame:AlphaTo(0, 0.1, 0, function()
                 menuFrame:Close()
             end)
@@ -1682,6 +1698,7 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
                 Menu.MenuFrame.Closing = true
                 Menu.MenuFrame:SetKeyboardInputEnabled(false)
                 Menu.MenuFrame:SetMouseInputEnabled(false)
+                Menu.IsOpen = false
 
                 Menu.MenuFrame:AlphaTo(0, 0.1, 0, function()
                     Menu.MenuFrame:Close()
@@ -1852,6 +1869,7 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
             Menu.MenuFrame.Closing = true
             Menu.MenuFrame:SetKeyboardInputEnabled(false)
             Menu.MenuFrame:SetMouseInputEnabled(false)
+            Menu.IsOpen = false
 
             Menu.MenuFrame:AlphaTo(0, 0.1, 0, function()
                 Menu.MenuFrame:Close()
@@ -1883,6 +1901,7 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
             Menu.MenuFrame.Closing = true
             Menu.MenuFrame:SetKeyboardInputEnabled(false)
             Menu.MenuFrame:SetMouseInputEnabled(false)
+            Menu.IsOpen = false
 
             Menu.MenuFrame:AlphaTo(0, 0.1, 0, function()
                 Menu.MenuFrame:Close()
@@ -10169,6 +10188,7 @@ concommand.Add("efgm_gamemenu", function(ply, cmd, args)
     if !ply:Alive() then return end
 
     Menu:Open(tab)
+    Menu.IsOpen = true
 
 end)
 
@@ -10182,5 +10202,6 @@ net.Receive("PlayerOpenContainer", function(len, ply)
     container.items = net.ReadTable(true)
 
     Menu:Open(tab, container)
+    Menu.IsOpen = true
 
 end )
