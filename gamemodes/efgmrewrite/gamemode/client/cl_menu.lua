@@ -1169,6 +1169,12 @@ function Menu.InspectItem(item, data)
         draw.SimpleTextOutlined(itemNameText, "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
         draw.SimpleTextOutlined(itemDescText, "PuristaBold18", EFGM.MenuScale(5), EFGM.MenuScale(25), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
+        if data.tag then
+
+            draw.SimpleTextOutlined(data.tag, "PuristaBold14", EFGM.MenuScale(5), EFGM.MenuScale(40), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        end
+
         surface.SetDrawColor(255, 255, 255, 255)
         surface.SetMaterial(i.icon)
 
@@ -1289,9 +1295,27 @@ function Menu.InspectItem(item, data)
         infoContentText:SetVerticalScrollbarEnabled(true)
         infoContentText:InsertColorChange(255, 255, 255, 255)
 
+        if data.owner then
+
+            infoContentText:AppendText("OWNER: " .. data.owner .. "\n")
+
+        end
+
         if data.count != 0 and data.count != 1 and data.count != nil then
 
             infoContentText:AppendText("COUNT: " .. data.count .. "\n")
+
+        end
+
+        if data.durability then
+
+            infoContentText:AppendText("DURABILITY: " .. data.durability .. "\n")
+
+        end
+
+        if data.tag then
+
+            infoContentText:AppendText("NAME TAG: " .. data.tag .. "\n")
 
         end
 
@@ -2448,6 +2472,161 @@ function Menu.ConfirmDelete(item, key, inv, eID, eSlot)
 
 end
 
+function Menu.ConfirmTag(item, key, inv, eID, eSlot)
+
+    if IsValid(confirmPanel) then confirmPanel:Remove() end
+
+    local i = EFGMITEMS[item]
+    if i == nil then confirmPanel:Remove() return end
+
+    local tagString = ""
+
+    surface.SetFont("PuristaBold24")
+    local confirmText = "Set name tag for " .. i.fullName .. " (" .. i.displayName .. ")?"
+    local confirmTextSize = math.max(EFGM.MenuScale(300), surface.GetTextSize(confirmText))
+
+    local confirmPanelHeight = EFGM.MenuScale(110)
+
+    surface.PlaySound("ui/element_select.wav")
+
+    confirmPanel = vgui.Create("DFrame", Menu.MenuFrame)
+    confirmPanel:SetSize(confirmTextSize + EFGM.MenuScale(10), confirmPanelHeight)
+    confirmPanel:SetPos(Menu.MenuFrame:GetWide() / 2 - confirmPanel:GetWide() / 2, Menu.MenuFrame:GetTall() / 2 - confirmPanel:GetTall() / 2)
+    confirmPanel:SetAlpha(0)
+    confirmPanel:SetTitle("")
+    confirmPanel:ShowCloseButton(false)
+    confirmPanel:SetScreenLock(true)
+    confirmPanel:AlphaTo(255, 0.1, 0, nil)
+    confirmPanel:RequestFocus()
+
+    confirmPanel.Paint = function(s, w, h)
+
+        confirmPanel:SetWide(confirmTextSize + EFGM.MenuScale(10))
+        confirmPanel:SetX(Menu.MenuFrame:GetWide() / 2 - confirmPanel:GetWide() / 2)
+
+        BlurPanel(s, EFGM.MenuScale(3))
+
+        surface.SetDrawColor(Color(20, 20, 20, 205))
+        surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
+
+        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+        draw.SimpleTextOutlined(confirmText, "PuristaBold24", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        draw.SimpleTextOutlined("CANNOT BE UNDONE", "PuristaBold16", w / 2, confirmPanelHeight - EFGM.MenuScale(55), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    confirmPanel.Think = function()
+
+        if (input.IsMouseDown(MOUSE_LEFT) or input.IsMouseDown(MOUSE_RIGHT) or input.IsMouseDown(MOUSE_MIDDLE) or input.IsMouseDown(MOUSE_WHEEL_DOWN) or input.IsMouseDown(MOUSE_WHEEL_UP)) and !confirmPanel:IsChildHovered() and !confirmPanel:IsHovered() then confirmPanel:AlphaTo(0, 0.1, 0, function() confirmPanel:Remove() end) end
+
+    end
+
+    surface.SetFont("PuristaBold24")
+    local yesText = "YES"
+    local yesTextSize = surface.GetTextSize(yesText)
+    local yesButtonSize = yesTextSize + EFGM.MenuScale(10)
+
+    local yesButton = vgui.Create("DButton", confirmPanel)
+    yesButton:SetPos(confirmPanel:GetWide() / 2 - (yesButtonSize / 2) - EFGM.MenuScale(25), confirmPanelHeight - EFGM.MenuScale(35))
+    yesButton:SetSize(yesButtonSize, EFGM.MenuScale(28))
+    yesButton:SetText("")
+    yesButton.Paint = function(s, w, h)
+
+        yesButton:SetX(confirmPanel:GetWide() / 2 - (yesButtonSize / 2) - EFGM.MenuScale(25))
+
+        BlurPanel(s, EFGM.MenuScale(0))
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, yesTextSize + EFGM.MenuScale(10), h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, yesTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
+
+        draw.SimpleTextOutlined(yesText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    surface.SetFont("PuristaBold24")
+    local noText = "NO"
+    local noTextSize = surface.GetTextSize(noText)
+    local noButtonSize = noTextSize + EFGM.MenuScale(10)
+
+    local noButton = vgui.Create("DButton", confirmPanel)
+    noButton:SetPos(confirmPanel:GetWide() / 2 - (noButtonSize / 2) + yesButton:GetWide() / 2 + EFGM.MenuScale(5), confirmPanelHeight - EFGM.MenuScale(35))
+    noButton:SetSize(noButtonSize, EFGM.MenuScale(28))
+    noButton:SetText("")
+    noButton.Paint = function(s, w, h)
+
+        noButton:SetX(confirmPanel:GetWide() / 2 - (noButtonSize / 2) + yesButton:GetWide() / 2 + EFGM.MenuScale(5))
+
+        BlurPanel(s, EFGM.MenuScale(0))
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, noButtonSize + EFGM.MenuScale(10), h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, noButtonSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
+
+        draw.SimpleTextOutlined(noText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local tagInput = vgui.Create("DTextEntry", confirmPanel)
+    tagInput:SetPos(confirmPanel:GetWide() / 2 - EFGM.MenuScale(80), EFGM.MenuScale(35))
+    tagInput:SetSize(EFGM.MenuScale(160), EFGM.MenuScale(15))
+    tagInput:SetPlaceholderText("1-20 characters")
+    tagInput:SetMaximumCharCount(20)
+    tagInput:SetUpdateOnType(true)
+    tagInput:RequestFocus()
+
+    tagInput.Think = function(self)
+
+        tagInput:SetX(confirmPanel:GetWide() / 2 - EFGM.MenuScale(80))
+
+        tagString = tagInput:GetValue()
+
+    end
+
+    yesButton.OnCursorEntered = function(s)
+
+        surface.PlaySound("ui/element_hover.wav")
+
+    end
+
+    function yesButton:DoClick()
+
+        if tagString == "" then return end
+
+        surface.PlaySound("ui/element_select.wav")
+        confirmPanel:AlphaTo(0, 0.1, 0, function() confirmPanel:Remove() end)
+        TagFromInventory(tagString, inv, item, key, eID, eSlot)
+
+    end
+
+    noButton.OnCursorEntered = function(s)
+
+        surface.PlaySound("ui/element_hover.wav")
+
+    end
+
+    function noButton:DoClick()
+
+        surface.PlaySound("ui/element_deselect.wav")
+        confirmPanel:AlphaTo(0, 0.1, 0, function() confirmPanel:Remove() end)
+
+    end
+
+end
+
 Menu.OpenTab = {}
 
 function Menu.ReloadInventory(itemSearch)
@@ -2545,9 +2724,11 @@ function Menu.ReloadInventory(itemSearch)
 
         local nameSize = surface.GetTextSize(i.displayName)
         local nameFont
+        local tagFont
+        local tagH
 
-        if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18"
-        else nameFont = "PuristaBold14" end
+        if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18" tagFont = "PuristaBold14" tagH = EFGM.MenuScale(12)
+        else nameFont = "PuristaBold14" tagFont = "PuristaBold10" tagH = EFGM.MenuScale(10) end
 
         local duraSize = nil
         local duraSizeY = nil
@@ -2573,6 +2754,12 @@ function Menu.ReloadInventory(itemSearch)
             if i.caliber then
 
                 draw.SimpleTextOutlined(i.caliber, "PuristaBold18", EFGM.MenuScale(3), h - EFGM.MenuScale(19), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            end
+
+            if v.data.tag then
+
+                draw.SimpleTextOutlined(v.data.tag, tagFont, w - EFGM.MenuScale(3), tagH, MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
             end
 
@@ -2776,6 +2963,33 @@ function Menu.ReloadInventory(itemSearch)
 
                 end
 
+                if v.data.tag == nil then
+
+                    contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
+
+                    local itemSetTagButton = vgui.Create("DButton", contextMenu)
+                    itemSetTagButton:Dock(TOP)
+                    itemSetTagButton:SetSize(0, EFGM.MenuScale(25))
+                    itemSetTagButton:SetText("SET TAG")
+
+                    itemSetTagButton.OnCursorEntered = function(s)
+
+                        surface.PlaySound("ui/element_hover.wav")
+
+                    end
+
+                    function itemSetTagButton:DoClick()
+
+                        surface.PlaySound("ui/element_select.wav")
+                        contextMenu:Remove()
+                        playerItems:InvalidateLayout()
+
+                        Menu.ConfirmTag(v.name, v.id, "inv", 0, 0)
+
+                    end
+
+                end
+
             end
 
             if actions.consumable then
@@ -2953,9 +3167,11 @@ function Menu.ReloadSlots()
 
         local nameSize = surface.GetTextSize(i.displayName)
         local nameFont
+        local tagFont
+        local tagH
 
-        if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18"
-        else nameFont = "PuristaBold14" end
+        if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18" tagFont = "PuristaBold14" tagH = EFGM.MenuScale(12)
+        else nameFont = "PuristaBold14" tagFont = "PuristaBold10" tagH = EFGM.MenuScale(10) end
 
         local wep = ply:GetWeapon(playerWeaponSlots[1][1].name)
         local clip = 0
@@ -2989,6 +3205,12 @@ function Menu.ReloadSlots()
             if i.caliber then
 
                 draw.SimpleTextOutlined(i.caliber, "PuristaBold18", EFGM.MenuScale(3), h - EFGM.MenuScale(19), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            end
+
+            if playerWeaponSlots[1][1].data.tag then
+
+                draw.SimpleTextOutlined(playerWeaponSlots[1][1].data.tag, tagFont, w - EFGM.MenuScale(3), tagH, MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
             end
 
@@ -3158,6 +3380,31 @@ function Menu.ReloadSlots()
 
                 end
 
+                if playerWeaponSlots[1][1].data.tag == nil then
+
+                    local itemSetTagButton = vgui.Create("DButton", contextMenu)
+                    itemSetTagButton:Dock(TOP)
+                    itemSetTagButton:SetSize(0, EFGM.MenuScale(25))
+                    itemSetTagButton:SetText("SET TAG")
+
+                    itemSetTagButton.OnCursorEntered = function(s)
+
+                        surface.PlaySound("ui/element_hover.wav")
+
+                    end
+
+                    function itemSetTagButton:DoClick()
+
+                        surface.PlaySound("ui/element_select.wav")
+                        contextMenu:Remove()
+                        playerItems:InvalidateLayout()
+
+                        Menu.ConfirmTag(playerWeaponSlots[1][1].name, 0, "equipped", primaryItem.SLOTID, primaryItem.SLOT)
+
+                    end
+
+                end
+
             end
 
             local itemDropButton = vgui.Create("DButton", contextMenu)
@@ -3275,9 +3522,11 @@ function Menu.ReloadSlots()
 
         local nameSize = surface.GetTextSize(i.displayName)
         local nameFont
+        local tagFont
+        local tagH
 
-        if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18"
-        else nameFont = "PuristaBold14" end
+        if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18" tagFont = "PuristaBold14" tagH = EFGM.MenuScale(12)
+        else nameFont = "PuristaBold14" tagFont = "PuristaBold10" tagH = EFGM.MenuScale(10) end
 
         local wep = ply:GetWeapon(playerWeaponSlots[1][2].name)
         local clip = 0
@@ -3311,6 +3560,12 @@ function Menu.ReloadSlots()
             if i.caliber then
 
                 draw.SimpleTextOutlined(i.caliber, "PuristaBold18", EFGM.MenuScale(3), h - EFGM.MenuScale(19), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            end
+
+            if playerWeaponSlots[1][2].data.tag then
+
+                draw.SimpleTextOutlined(playerWeaponSlots[1][2].data.tag, tagFont, w - EFGM.MenuScale(3), tagH, MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
             end
 
@@ -3480,6 +3735,31 @@ function Menu.ReloadSlots()
 
                 end
 
+                if playerWeaponSlots[1][2].data.tag == nil then
+
+                    local itemSetTagButton = vgui.Create("DButton", contextMenu)
+                    itemSetTagButton:Dock(TOP)
+                    itemSetTagButton:SetSize(0, EFGM.MenuScale(25))
+                    itemSetTagButton:SetText("SET TAG")
+
+                    itemSetTagButton.OnCursorEntered = function(s)
+
+                        surface.PlaySound("ui/element_hover.wav")
+
+                    end
+
+                    function itemSetTagButton:DoClick()
+
+                        surface.PlaySound("ui/element_select.wav")
+                        contextMenu:Remove()
+                        playerItems:InvalidateLayout()
+
+                        Menu.ConfirmTag(playerWeaponSlots[1][2].name, 0, "equipped", secondaryItem.SLOTID, secondaryItem.SLOT)
+
+                    end
+
+                end
+
             end
 
             local itemDropButton = vgui.Create("DButton", contextMenu)
@@ -3598,9 +3878,11 @@ function Menu.ReloadSlots()
 
         local nameSize = surface.GetTextSize(i.displayName)
         local nameFont
+        local tagFont
+        local tagH
 
-        if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18"
-        else nameFont = "PuristaBold14" end
+        if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18" tagFont = "PuristaBold14" tagH = EFGM.MenuScale(12)
+        else nameFont = "PuristaBold14" tagFont = "PuristaBold10" tagH = EFGM.MenuScale(10) end
 
         local wep = ply:GetWeapon(playerWeaponSlots[2][1].name)
         local clip = 0
@@ -3634,6 +3916,12 @@ function Menu.ReloadSlots()
             if i.caliber then
 
                 draw.SimpleTextOutlined(i.caliber, "PuristaBold18", EFGM.MenuScale(3), h - EFGM.MenuScale(19), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            end
+
+            if playerWeaponSlots[2][1].data.tag then
+
+                draw.SimpleTextOutlined(playerWeaponSlots[2][1].data.tag, tagFont, w - EFGM.MenuScale(3), tagH, MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
             end
 
@@ -3800,6 +4088,31 @@ function Menu.ReloadSlots()
                     playerItems:InvalidateLayout()
 
                     Menu.ConfirmPurchase(i.ammoID, "inv", false)
+
+                end
+
+                if playerWeaponSlots[2][1].data.tag == nil then
+
+                    local itemSetTagButton = vgui.Create("DButton", contextMenu)
+                    itemSetTagButton:Dock(TOP)
+                    itemSetTagButton:SetSize(0, EFGM.MenuScale(25))
+                    itemSetTagButton:SetText("SET TAG")
+
+                    itemSetTagButton.OnCursorEntered = function(s)
+
+                        surface.PlaySound("ui/element_hover.wav")
+
+                    end
+
+                    function itemSetTagButton:DoClick()
+
+                        surface.PlaySound("ui/element_select.wav")
+                        contextMenu:Remove()
+                        playerItems:InvalidateLayout()
+
+                        Menu.ConfirmTag(playerWeaponSlots[2][1].name, 0, "equipped", holsterItem.SLOTID, holsterItem.SLOT)
+
+                    end
 
                 end
 
@@ -4526,9 +4839,11 @@ function Menu.ReloadStash(itemSearch)
 
         local nameSize = surface.GetTextSize(i.displayName)
         local nameFont
+        local tagFont
+        local tagH
 
-        if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18"
-        else nameFont = "PuristaBold14" end
+        if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18" tagFont = "PuristaBold14" tagH = EFGM.MenuScale(12)
+        else nameFont = "PuristaBold14" tagFont = "PuristaBold10" tagH = EFGM.MenuScale(10) end
 
         local duraSize = nil
         local duraSizeY = nil
@@ -4556,6 +4871,12 @@ function Menu.ReloadStash(itemSearch)
             if i.caliber then
 
                 draw.SimpleTextOutlined(i.caliber, "PuristaBold18", EFGM.MenuScale(3), h - EFGM.MenuScale(19), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            end
+
+            if v.data.tag then
+
+                draw.SimpleTextOutlined(v.data.tag, tagFont, w - EFGM.MenuScale(3), tagH, MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
             end
 
@@ -4737,6 +5058,33 @@ function Menu.ReloadStash(itemSearch)
                     playerItems:InvalidateLayout()
 
                     Menu.ConfirmPurchase(i.ammoID, "stash", false)
+
+                end
+
+                if v.data.tag == nil then
+
+                    contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
+
+                    local itemSetTagButton = vgui.Create("DButton", contextMenu)
+                    itemSetTagButton:Dock(TOP)
+                    itemSetTagButton:SetSize(0, EFGM.MenuScale(25))
+                    itemSetTagButton:SetText("SET TAG")
+
+                    itemSetTagButton.OnCursorEntered = function(s)
+
+                        surface.PlaySound("ui/element_hover.wav")
+
+                    end
+
+                    function itemSetTagButton:DoClick()
+
+                        surface.PlaySound("ui/element_select.wav")
+                        contextMenu:Remove()
+                        playerItems:InvalidateLayout()
+
+                        Menu.ConfirmTag(v.name, v.id, "stash", 0, 0)
+
+                    end
 
                 end
 
@@ -4961,9 +5309,11 @@ function Menu.ReloadMarketStash(itemSearch)
 
         local nameSize = surface.GetTextSize(i.displayName)
         local nameFont
+        local tagFont
+        local tagH
 
-        if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18"
-        else nameFont = "PuristaBold14" end
+        if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18" tagFont = "PuristaBold14" tagH = EFGM.MenuScale(12)
+        else nameFont = "PuristaBold14" tagFont = "PuristaBold10" tagH = EFGM.MenuScale(10) end
 
         local duraSize = nil
         local duraSizeY = nil
@@ -4991,6 +5341,12 @@ function Menu.ReloadMarketStash(itemSearch)
             if i.caliber then
 
                 draw.SimpleTextOutlined(i.caliber, "PuristaBold18", EFGM.MenuScale(3), h - EFGM.MenuScale(19), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            end
+
+            if v.data.tag then
+
+                draw.SimpleTextOutlined(v.data.tag, tagFont, w - EFGM.MenuScale(3), tagH, MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
             end
 
@@ -5206,9 +5562,11 @@ function Menu.ReloadContainer()
 
         local nameSize = surface.GetTextSize(i.displayName)
         local nameFont
+        local tagFont
+        local tagH
 
-        if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18"
-        else nameFont = "PuristaBold14" end
+        if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18" tagFont = "PuristaBold14" tagH = EFGM.MenuScale(12)
+        else nameFont = "PuristaBold14" tagFont = "PuristaBold10" tagH = EFGM.MenuScale(10) end
 
         local duraSize = nil
         local duraSizeY = nil
@@ -5234,6 +5592,12 @@ function Menu.ReloadContainer()
             if i.caliber then
 
                 draw.SimpleTextOutlined(i.caliber, "PuristaBold18", EFGM.MenuScale(3), h - EFGM.MenuScale(19), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            end
+
+            if v.data.tag then
+
+                draw.SimpleTextOutlined(v.data.tag, tagFont, w - EFGM.MenuScale(3), tagH, MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
             end
 

@@ -14,6 +14,7 @@ util.AddNetworkString("PlayerInventoryConsumeItem")
 util.AddNetworkString("PlayerInventoryLootItemFromContainer")
 util.AddNetworkString("PlayerInventorySplit")
 util.AddNetworkString("PlayerInventoryDelete")
+util.AddNetworkString("PlayerInventoryTag")
 util.AddNetworkString("PlayerInventoryConsumeGrenade")
 util.AddNetworkString("efgm_sendpreset")
 
@@ -45,6 +46,12 @@ function AddItemToInventory(ply, name, type, data)
 
     if data.count == 0 then return end -- dont add an item that doesnt exist lol!
     data.count = math.Clamp(tonumber(data.count) or 1, 1, def.stackSize)
+
+    if def.equipType == EQUIPTYPE.Weapon then
+
+        data.owner = ply:GetName()
+
+    end
 
     local item = ITEM.Instantiate(name, type, data)
     local index = table.insert(ply.inventory, item)
@@ -595,6 +602,15 @@ net.Receive("PlayerInventoryLootItemFromContainer", function(len, ply)
     local index = net.ReadUInt(16)
 
     local newItem = table.Copy(container.Inventory[index])
+
+    local def = EFGMITEMS[newItem.name]
+
+    if def.equipType == EQUIPTYPE.Weapon and !newItem.data.owner then
+
+        newItem.data.owner = ply:GetName()
+
+    end
+
     local newIndex = table.insert(ply.inventory, newItem)
 
     net.Start("PlayerInventoryAddItem", false)
@@ -720,6 +736,64 @@ net.Receive("PlayerInventoryDelete", function(len, ply)
         net.Send(ply)
 
         RemoveWeightFromPlayer(ply, item.name, item.data.count)
+        UpdateEquippedString(ply)
+
+        return true
+
+    end
+
+end)
+
+net.Receive("PlayerInventoryTag", function(len, ply)
+
+    local tag = net.ReadString()
+    local invType = net.ReadString()
+    local key = net.ReadUInt(16)
+    local equipID = net.ReadUInt(4)
+    local equipSlot = net.ReadUInt(4)
+
+    if !ply:CompareStatus(0) then return false end
+
+    if invType == "inv" then
+
+        if ply.inventory[key].data.tag != nil then return end
+        ply.inventory[key].data.tag = tag
+
+        net.Start("PlayerInventoryUpdateItem", false)
+        net.WriteTable(ply.inventory[key].data)
+        net.WriteUInt(key, 16)
+        net.Send(ply)
+
+        UpdateInventoryString(ply)
+
+        return true
+
+    elseif invType == "stash" then
+
+        if ply.stash[key].data.tag != nil then return end
+        ply.stash[key].data.tag = tag
+
+        net.Start("PlayerStashUpdateItem", false)
+        net.WriteTable(ply.stash[key].data)
+        net.WriteUInt(key, 16)
+        net.Send(ply)
+
+        UpdateStashString(ply)
+        ply:SetNWInt("StashCount", #ply.stash)
+
+        return true
+
+    elseif invType == "equipped" then
+
+        if ply.weaponSlots[equipID][equipSlot].data.tag != nil then return end
+        ply.weaponSlots[equipID][equipSlot].data.tag = tag
+
+        net.Start("PlayerInventoryUpdateEquipped", false)
+        net.WriteTable(ply.weaponSlots[equipID][equipSlot].data)
+        net.WriteUInt(equipID, 16)
+        net.WriteUInt(equipSlot, 16)
+        net.Send(ply)
+
         UpdateEquippedString(ply)
 
         return true

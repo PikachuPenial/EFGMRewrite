@@ -54,6 +54,12 @@ net.Receive("PlayerMarketPurchaseItem", function(len, ply)
 
     end
 
+    if def.equipType == EQUIPTYPE.Weapon then
+
+        data.owner = ply:GetName()
+
+    end
+
     FlowItemToStash(ply, item, def.equipType, data)
     UpdateStashString(ply)
 
@@ -111,6 +117,12 @@ net.Receive("PlayerMarketPurchaseItemToInventory", function(len, ply)
     if (def.consumableType == "heal" or def.consumableType == "key") and def.consumableValue then
 
         data.durability = def.consumableValue
+
+    end
+
+    if def.equipType == EQUIPTYPE.Weapon then
+
+        data.owner = ply:GetName()
 
     end
 

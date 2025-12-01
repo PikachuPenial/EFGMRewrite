@@ -409,6 +409,19 @@ function DeleteFromInventory(inv, item, key, eID, eSlot)
 
 end
 
+function TagFromInventory(tag, inv, item, key, eID, eSlot)
+
+    net.Start("PlayerInventoryTag", false)
+    net.WriteString(tag)
+    net.WriteString(inv)
+    net.WriteUInt(key, 16)
+    net.WriteUInt(eID, 4)
+    net.WriteUInt(eSlot, 4)
+    net.SendToServer()
+
+end
+
+
 function PurchaseItem(item, count)
 
     net.Start("PlayerMarketPurchaseItem", false)

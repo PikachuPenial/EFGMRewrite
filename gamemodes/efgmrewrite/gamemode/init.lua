@@ -393,6 +393,7 @@ hook.Add("PlayerCanPickupWeapon", "InventoryWeaponPickup", function(ply, wep)
 	data.att = str
 
 	data.count = 1
+    data.owner = ply:GetName()
 
 	tempEquipWeaponName = equipWeaponName
 	equipWeaponName = ""

@@ -797,6 +797,10 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
         self:StartLoop()
     end
 
+    function SWEP:CreatePresetMenu(reload)
+        return
+    end
+
     if class != "arc9_eft_rshg2" then
 
         function SWEP:ThinkGrenade()

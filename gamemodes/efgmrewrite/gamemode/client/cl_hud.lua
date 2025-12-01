@@ -1267,6 +1267,12 @@ function HUDInspectItem(item, data, panel)
         draw.SimpleTextOutlined(itemNameText, "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
         draw.SimpleTextOutlined(itemDescText, "PuristaBold18", EFGM.MenuScale(5), EFGM.MenuScale(25), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
+        if data.tag then
+
+            draw.SimpleTextOutlined(data.tag, "PuristaBold14", EFGM.MenuScale(5), EFGM.MenuScale(40), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        end
+
         surface.SetDrawColor(255, 255, 255, 255)
         surface.SetMaterial(i.icon)
 
@@ -1387,9 +1393,27 @@ function HUDInspectItem(item, data, panel)
         infoContentText:SetVerticalScrollbarEnabled(true)
         infoContentText:InsertColorChange(255, 255, 255, 255)
 
+        if data.owner then
+
+            infoContentText:AppendText("OWNER: " .. data.owner .. "\n")
+
+        end
+
         if data.count != 0 and data.count != 1 and data.count != nil then
 
             infoContentText:AppendText("COUNT: " .. data.count .. "\n")
+
+        end
+
+        if data.durability then
+
+            infoContentText:AppendText("DURABILITY: " .. data.durability .. "\n")
+
+        end
+
+        if data.tag then
+
+            infoContentText:AppendText("NAME TAG: " .. data.tag .. "\n")
 
         end
 

@@ -2,6 +2,7 @@
 local function CreateFonts()
     -- MENU (seriously, dont use this unless it is in the menu, it won't scale properly)
     -- use instead of 'DermaDefault' & just pick which will look better or smth
+    surface.CreateFont("PuristaBold10", {font = "PuristaBold", size = EFGM.MenuScale(10), weight = 500, antialias = true, extended = true})
     surface.CreateFont("PuristaBold12", {font = "PuristaBold", size = EFGM.MenuScale(12), weight = 500, antialias = true, extended = true})
     surface.CreateFont("PuristaBold14", {font = "PuristaBold", size = EFGM.MenuScale(14), weight = 500, antialias = true, extended = true})
     surface.CreateFont("PuristaBold16", {font = "PuristaBold", size = EFGM.MenuScale(16), weight = 500, antialias = true, extended = true})
