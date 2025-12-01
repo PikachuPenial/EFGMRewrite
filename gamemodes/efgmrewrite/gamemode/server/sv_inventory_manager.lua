@@ -15,6 +15,7 @@ util.AddNetworkString("PlayerInventoryLootItemFromContainer")
 util.AddNetworkString("PlayerInventorySplit")
 util.AddNetworkString("PlayerInventoryDelete")
 util.AddNetworkString("PlayerInventoryConsumeGrenade")
+util.AddNetworkString("efgm_sendpreset")
 
 function ReinstantiateInventory(ply)
 
@@ -263,8 +264,7 @@ net.Receive("PlayerInventoryEquipItem", function(len, ply)
         ply.weaponSlots[equipSlot][equipSubSlot] = item
 
         equipWeaponName = item.name
-        local wpn = ply:Give(item.name)
-        LoadPresetFromCode(wpn, item.data.att)
+        GiveWepWithPresetFromCode(ply, item.name, item.data.att)
 
     end
 
@@ -750,28 +750,134 @@ function CalculateInventoryWeight(ply)
 
 end
 
-hook.Add("PlayerSpawn", "GiveEquippedItemsOnSpawn", function(ply)
+local function DecompressTableRecursive(tbl)
 
-    ply.SpawnTimerVManip = CurTime() + 1 -- fuck off
+    local result = {}
 
-    for i = 1, 5 do
+    for _, v in ipairs(tbl) do
 
-        for k, v in pairs(ply.weaponSlots[i]) do
+        if v.i then table.insert(result, v.i) end
 
-            if !table.IsEmpty(v) then
+        if v.s then
 
-                local item = table.Copy(v)
-                if item == nil then return end
+            local meow = DecompressTableRecursive(v.s)
 
-                equipWeaponName = item.name
-                local wpn = ply:Give(item.name)
-                LoadPresetFromCode(wpn, item.data.att)
+            for _, v in ipairs(meow) do
+
+                table.insert(result, v)
 
             end
 
         end
 
     end
+
+    return result
+
+end
+
+local function GetAttsFromPreset(str)
+
+    if !str then return end
+    str = util.Base64Decode(str)
+    str = util.Decompress(str)
+    if !str then return end
+    local tbl = util.JSONToTable(str)
+    if !tbl then return end
+
+    return DecompressTableRecursive(tbl)
+
+end
+
+local function GiveAttsFromList(ply, tbl)
+
+    -- local take = false
+
+    for i, k in pairs(tbl) do
+        -- ARC9:PlayerGiveAtt(ply, k, 1)
+        take = true
+    end
+
+    -- if take then ARC9:PlayerSendAttInv(ply) end
+
+end
+
+function GiveWepWithPresetFromCode(ply, classname, preset)
+
+    if !ply:IsPlayer() or !isstring(classname) or !isstring(preset) then return end
+	local swep = list.Get("Weapon")[classname]
+	if swep == nil then return end
+
+    if !GetConVar("arc9_free_atts"):GetBool() then
+        local atts = GetAttsFromPreset(preset)
+        if !atts then return end
+
+        GiveAttsFromList(ply, atts)
+    end
+
+    if ply:HasWeapon(classname) then
+
+        local wpn = ply:GetWeapon(classname)
+
+        if IsValid(wpn) then
+
+            ply.givingPreset = true
+            wpn:SetNoPresets(true)
+
+            net.Start("efgm_sendpreset")
+            net.WriteEntity(wpn)
+            net.WriteString(preset)
+            net.Send(ply)
+
+            wpn:PostModify()
+
+        end
+
+    else
+
+        local wpn = ply:Give(classname)
+
+        wpn:SetNoPresets(true)
+        timer.Simple(0.1, function()
+            if IsValid(wpn) then
+                ply.givingPreset = true
+
+                net.Start("efgm_sendpreset")
+                net.WriteEntity(wpn)
+                net.WriteString(preset)
+                net.Send(ply)
+            end
+        end)
+
+    end
+
+end
+
+hook.Add("PlayerSpawn", "GiveEquippedItemsOnSpawn", function(ply)
+
+    ply.SpawnTimerVManip = CurTime() + 1 -- fuck off
+
+    timer.Simple(1, function()
+
+        for i = 1, 5 do
+
+            for k, v in pairs(ply.weaponSlots[i]) do
+
+                if !table.IsEmpty(v) then
+
+                    local item = table.Copy(v)
+                    if item == nil then return end
+
+                    equipWeaponName = item.name
+                    GiveWepWithPresetFromCode(ply, item.name, item.data.att)
+
+                end
+
+            end
+
+        end
+
+    end)
 
 end)
 

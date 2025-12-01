@@ -95,22 +95,3 @@ hook.Add("PlayerFootstep", "CustomFootstepVolume", function(ply, pos, foot, soun
     return true
 
 end)
-
-hook.Add( "OnPlayerHitGround", "LandingSound", function( ply, speed )
-
-    print("HI")
-
-    local tr = util.TraceLine( {
-        start = ply:GetPos(),
-        endpos = ply:GetPos() + ply:GetAngles():Up() * -10
-    } )
-
-    if (ply:WaterLevel() == 1) then
-        ply:EmitSound("mfw.water_land_" .. math.random(1,5))
-    end
-
-    if (footsteps_int[tr.MatType] == nil) then return end
-
-    ply:EmitSound("mfw." .. footsteps_int[tr.MatType] .. "_land_" .. math.random(1,5)) 
-
-end)

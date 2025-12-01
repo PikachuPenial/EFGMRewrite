@@ -304,6 +304,19 @@ net.Receive("PlayerInventoryConsumeGrenade", function(len, ply)
 
 end )
 
+net.Receive("efgm_sendpreset", function(len)
+
+    local wpn = net.ReadEntity()
+    local preset = net.ReadString()
+
+    if IsValid(wpn) and wpn.ARC9 then
+
+        wpn:LoadPresetFromTable(wpn:ImportPresetCode(preset))
+
+    end
+
+end)
+
 concommand.Add("efgm_inventory_equip", function(ply, cmd, args)
 
     -- if subslot is specified it tries to equip that specific slot, and if not it cycles through all subslots for that slot type (eg, for grenades or utility)

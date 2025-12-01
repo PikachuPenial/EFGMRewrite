@@ -410,6 +410,159 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
         self:SetLoadedRounds(0)
     end
 
+    if CLIENT then
+
+        function SWEP:LoadPresetFromTable(tbl)
+
+            self.Attachments = baseclass.Get(self:GetClass()).Attachments
+
+            for slot, slottbl in ipairs(self.Attachments) do
+                slottbl.Installed = nil
+                slottbl.SubAttachments = nil
+            end
+
+            self:PruneAttachments()
+
+            self:BuildSubAttachments(tbl)
+            self:PostModify()
+
+        end
+
+        function SWEP:ImportPresetCode(str)
+
+            if !str then return end
+            str = util.Base64Decode(str)
+            str = util.Decompress(str)
+
+            if !str then return end
+
+            local tbl = util.JSONToTable(str)
+
+            if tbl then
+
+                for i, k in pairs(tbl) do
+
+                    self:DecompressTableRecursive(k)
+
+                end
+
+            end
+
+            return tbl
+
+        end
+
+        function SWEP:DecompressTableRecursive(tbl)
+
+            for i, k in pairs(tbl) do
+                if i == "i" then
+                    tbl["i"] = nil
+                    tbl["Installed"] = k
+                elseif i == "s" then
+                    tbl["s"] = nil
+                    tbl["SubAttachments"] = k
+                elseif i == "t" then
+                    tbl["t"] = nil
+                    tbl["ToggleNum"] = k
+                end
+            end
+
+            if table.Count(tbl.SubAttachments or {}) > 0 then
+                for i, k in pairs(tbl.SubAttachments) do
+                    self:DecompressTableRecursive(k)
+                end
+            end
+
+        end
+
+    end
+
+    local arc9_atts_nocustomize = GetConVar("arc9_atts_nocustomize")
+    local arc9_atts_lock = GetConVar("arc9_atts_lock")
+
+    function SWEP:ReceiveWeapon()
+        if SERVER and arc9_atts_nocustomize:GetBool() then return end
+
+        local tbl = {}
+
+        for i, k in pairs(self.Attachments or {}) do
+            tbl[i] = self:ReceiveAttachmentTree()
+        end
+
+        if SERVER then
+
+            if !self:ValidateInventoryForNewTree(tbl) then
+                self:SendWeapon()
+                return
+            end
+
+            if !arc9_atts_lock:GetBool() then
+                local oldcount = self:CountAttsInTree(self.Attachments)
+                local newcount = self:CountAttsInTree(tbl)
+
+                for att, attc in pairs(newcount) do
+                    local atttbl = ARC9.GetAttTable(att)
+
+                    if atttbl.Free then continue end
+
+                    local has = oldcount[att] or 0
+                    local need = attc
+
+                    if has < need then
+                        local diff = need - has
+
+                        ARC9:PlayerTakeAtt(self:GetOwner(), att, diff)
+                    end
+                end
+
+                for att, attc in pairs(oldcount) do
+                    local atttbl = ARC9.GetAttTable(att)
+                    if !atttbl then ErrorNoHaltWithStack("The attachment trying to be installed doesn't exist. '" .. att .. "'") continue end
+                    if atttbl.Free then continue end
+                    if self:GetOwner().givingPreset == true then continue end
+
+                    local has = attc
+                    local need = newcount[att] or 0
+
+                    if has > need then
+                        local diff = has - need
+
+                        ARC9:PlayerGiveAtt(self:GetOwner(), att, diff)
+                    end
+                end
+            end
+
+            self:GetOwner().givingPreset = false
+
+        end
+
+        self:BuildSubAttachments(tbl)
+
+        if CLIENT then
+            self:InvalidateCache()
+            self:PruneAttachments()
+            self:KillModel()
+            self:SetupModel(true)
+            self:SetupModel(false)
+            self:RefreshCustomizeMenu()
+            
+            if !self.HasSightsPoseparam then -- fuck you
+                if self:LookupPoseParameter("sights") != -1 then self.HasSightsPoseparam = true end
+                if self:LookupPoseParameter("firemode") != -1 then self.HasFiremodePoseparam = true end
+            end
+        else
+            self:InvalidateCache()
+            self:PruneAttachments()
+            self:FillIntegralSlots()
+            self:SendWeapon()
+            self:PostModify()
+
+            ARC9:PlayerSendAttInv(self:GetOwner())
+        end
+
+        -- self:SetBaseSettings()
+    end
+
     if class != "arc9_eft_rshg2" then
 
         function SWEP:ThinkGrenade()
@@ -649,7 +802,14 @@ end)
 hook.Add("ARC9_PlayerGetAtts", "ARC9GetAtts", function(ply, att, wep)
 
     local inventory = {}
-    if SERVER then inventory = ply.inventory end
+
+    if SERVER then
+
+        inventory = ply.inventory
+        if ply.givingPreset == true then return 999 end
+
+    end
+
     if CLIENT then inventory = playerInventory end
 
     return AmountInInventory(inventory, "arc9_att_" .. att)

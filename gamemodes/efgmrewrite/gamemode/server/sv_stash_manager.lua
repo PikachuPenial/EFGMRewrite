@@ -276,8 +276,7 @@ net.Receive("PlayerStashEquipItem", function(len, ply)
         AddWeightToPlayer(ply, item.name, item.data.count)
 
         equipWeaponName = item.name
-        local wpn = ply:Give(item.name)
-        LoadPresetFromCode(wpn, item.data.att)
+        GiveWepWithPresetFromCode(ply, item.name, item.data.att)
 
     end
 
