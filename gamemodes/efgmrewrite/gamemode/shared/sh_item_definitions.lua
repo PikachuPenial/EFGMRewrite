@@ -3992,6 +3992,27 @@ EFGMITEMS = {}
         ["sizeY"] = 1
     }
 
+    EFGMITEMS["efgm_key_ow_admin"] = {
+        ["fullName"] = "Old Warehouse Admin Key",
+        ["displayName"] = "OW. Admin",
+        ["displayType"] = "Concrete Key",
+        ["weight"] = 0.2,
+        ["value"] = 500000,
+        ["levelReq"] = 1,
+        ["equipType"] = EQUIPTYPE.None,
+        ["consumableType"] = "key",
+        ["consumableValue"] = 5,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/keys/industrial.png", "smooth"),
+        ["iconColor"] = Color(31, 38, 26, 155),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
+    }
+
     -- EFGMITEMS["efgm_keycard_bunker_entrance"] = {
     --     ["fullName"] = "Bunker Entrance Keycard",
     --     ["displayName"] = "B. Door",
@@ -4046,7 +4067,9 @@ EFGMITEMS = {}
         ["iconColor"] = Color(31, 38, 26, 155),
 
         ["sizeX"] = 1,
-        ["sizeY"] = 1
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
     }
 
 
