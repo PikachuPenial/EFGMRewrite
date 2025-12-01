@@ -7892,7 +7892,8 @@ hook.Add("InitPostEntity", "AttsItemDef", function()
             ["sizeX"] = v.SizeX or 1,
             ["sizeY"] = v.SizeY or 1,
 
-            ["levelReq"] = v.EFGMLvl or 1
+            ["levelReq"] = v.EFGMLvl or 1,
+            ["canPurchase"] = v.EFGMCanPurchase or true
 
         }
 
@@ -7925,7 +7926,8 @@ hook.Add("OnReloaded", "AttsItemDefReload", function()
             ["sizeX"] = v.SizeX or 1,
             ["sizeY"] = v.SizeY or 1,
 
-            ["levelReq"] = v.EFGMLvl or 1
+            ["levelReq"] = v.EFGMLvl or 1,
+            ["canPurchase"] = v.EFGMCanPurchase or true
 
         }
 
