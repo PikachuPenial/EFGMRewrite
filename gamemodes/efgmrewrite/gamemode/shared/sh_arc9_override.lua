@@ -587,6 +587,216 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
         return true
     end
 
+    -- weapon sounds
+    local lsstr = "ShootSound"
+    local lsslr = "LayerSound"
+    local ldsstr = "DistantShootSound"
+
+    local sstrSilenced = "ShootSoundSilenced"
+    local sslrSilenced = "LayerSoundSilenced"
+    local dsstrSilenced = "DistantShootSoundSilenced"
+
+    local soundtab1 = {name = "shootsound"}
+    local soundtab2 = {name = "shootlayer"}
+    local soundtab3 = {name = "shootdistant"}
+    local soundtab4 = {name = "shootsoundindoor"}
+    local soundtab5 = {name = "shootlayerindoor"}
+    local soundtab6 = {name = "shootdistantindoor"}
+
+    function SWEP:DoShootSounds()
+        local pvar = self:GetProcessedValue("ShootPitchVariation", true)
+        local pvrand = math.Rand(-pvar, pvar) -- util.SharedRandom("ARC9_sshoot", -pvar, pvar) -- who gives a shit??? plus it broke af
+        local randomChoice = self.RandomChoice
+
+        local sstr = lsstr
+        local sslr = lsslr
+        local dsstr = ldsstr
+
+        local silenced = self:GetProcessedValue("Silencer", true) and !self:GetUBGL()
+        local indoor = self:GetIndoor()
+
+        local indoormix = 1 - indoor
+        local havedistant = self:GetProcessedValue(dsstr, true)
+
+        if self:GetProcessedValue("Silencer", true) and !self:GetUBGL() then
+            if self:GetProcessedValue(sstrSilenced, true) then
+                sstr = sstrSilenced
+            end
+            if self:GetProcessedValue(sslrSilenced, true) then
+                sslr = sslrSilenced
+            end
+            if havedistant and self:GetProcessedValue(dsstrSilenced, true) then
+                dsstr = dsstrSilenced
+            end
+        end
+
+        do
+            local burstCountZero = self:GetBurstCount() == 0
+            local sstrFirst = "First" .. sstr
+            local dsstrFirst = "First" .. dsstr
+
+            if burstCountZero and self:GetProcessedValue(sstrFirst, true) then
+                sstr = sstrFirst
+            end
+
+            if havedistant and burstCountZero and self:GetProcessedValue(dsstrFirst, true) then
+                dsstr = dsstrFirst
+            end
+        end
+
+        local ss = randomChoice(self, self:GetProcessedValue(sstr, true))
+        local sl = randomChoice(self, self:GetProcessedValue(sslr, true))
+        local dss
+
+        if havedistant then
+            dss = randomChoice(self, self:GetProcessedValue(dsstr, true))
+        end
+
+        local svolume, spitch, svolumeactual = self:GetProcessedValue("ShootVolume", true), self:GetProcessedValue("ShootPitch", true) + pvrand, self:GetProcessedValue("ShootVolumeActual", true) or 1
+        local dvolume, dpitch, dvolumeactual
+
+        if havedistant then
+            dvolume, dpitch, dvolumeactual = math.min(149, (self:GetProcessedValue("DistantShootVolume", true) or svolume) * 2), (self:GetProcessedValue("DistantShootPitch", true) or spitch) + pvrand, self:GetProcessedValue("DistantShootVolumeActual", true) or svolumeactual or 1
+        end
+
+        local volumeMix = svolumeactual * indoormix
+
+        local hardcutoff = self.IndoorSoundHardCutoff and self.IndoorSoundHardCutoffRatio < indoor
+
+        if hardcutoff then
+            indoormix = 0
+            indoor = 1
+        elseif self.IndoorSoundHardCutoff then
+            indoormix = 1
+            indoor = 0
+        end
+
+        local playTranslatedSound = self.PlayTranslatedSound
+        if indoormix > 0 then
+
+            -- doing this cuz it uses only 1 cached table and it works way faster
+            do
+                soundtab1.sound = ss or ""
+                soundtab1.level = svolume
+                soundtab1.pitch = spitch
+                soundtab1.volume = self.ShootSoundIndoor and volumeMix or 1
+                soundtab1.channel = ARC9.CHAN_WEAPON
+                -- soundtab1.networktoeveryone = true
+            end
+
+            playTranslatedSound(self, soundtab1)
+
+            do
+                soundtab2.sound = sl or ""
+                soundtab2.level = svolume
+                soundtab2.pitch = spitch
+                soundtab2.volume = self.LayerSoundIndoor and volumeMix or 1
+                soundtab2.channel = ARC9.CHAN_LAYER + 4
+                -- soundtab2.networktoeveryone = true
+            end
+
+            playTranslatedSound(self, soundtab2)
+
+            if havedistant then
+                do
+                    soundtab3.sound = dss or ""
+                    soundtab3.level = dvolume
+                    soundtab3.pitch = dpitch
+                    soundtab3.volume = dvolume * indoormix
+                    soundtab3.channel = ARC9.CHAN_DISTANT
+                    soundtab3.networktoeveryone = true
+                end
+
+                playTranslatedSound(self, soundtab3)
+            end
+        end
+
+        if indoor > 0 then
+            local ssIN = randomChoice(self, self:GetProcessedValue(sstr .. "Indoor", true))
+            local slIN = randomChoice(self, self:GetProcessedValue(sslr .. "Indoor", true))
+            local dssIN = havedistant and randomChoice(self, self:GetProcessedValue(dsstr .. "Indoor", true))
+            local indoorVolumeMix = svolumeactual * indoor
+
+
+            do
+                soundtab4.sound = ssIN or ""
+                soundtab4.level = svolume
+                soundtab4.pitch = spitch
+                soundtab4.volume = indoorVolumeMix
+                soundtab4.channel = ARC9.CHAN_INDOOR
+                -- soundtab4.networktoeveryone = true
+            end
+
+            playTranslatedSound(self, soundtab4)
+
+            do
+                soundtab5.sound = slIN or ""
+                soundtab5.level = svolume
+                soundtab5.pitch = spitch
+                soundtab5.volume = indoorVolumeMix
+                soundtab5.channel = ARC9.CHAN_INDOOR + 7
+                -- soundtab5.networktoeveryone = true
+            end
+
+            playTranslatedSound(self, soundtab5)
+
+            if havedistant then
+                do
+                    soundtab6.sound = dssIN or ""
+                    soundtab6.level = dvolume
+                    soundtab6.pitch = dpitch
+                    soundtab6.volume = dvolume * indoor
+                    soundtab6.channel = ARC9.CHAN_INDOORDISTANT
+                    soundtab6.networktoeveryone = true
+                end
+
+                playTranslatedSound(self, soundtab6)
+            end
+        end
+
+        local ammo = self.Primary.Ammo
+
+        if self:GetUBGL() then
+            ammo = self.Secondary.Ammo
+        end
+
+        if SERVER then
+            for k, v in pairs(player.GetAll()) do
+                local attacker = self:GetOwner()
+
+                if attacker:CompareStatus(0) then return end
+                if shotCaliber[ammo] == nil then return end
+
+                local shootPos = attacker:GetPos()
+                local plyDistance = attacker:GetPos():Distance(v:GetPos())
+                local bulletPitch = shotCaliber[ammo][1] or 100
+                local threshold = shotCaliber[ammo][2] or 6000
+                local style = shotCaliber[ammo][3] == "bullet" -- returns true if bullet, false if explosive
+                local volume = 1
+
+                if silenced then
+                    volume = 0.3
+                    bulletPitch = math.Clamp(math.Round(bulletPitch * 1.5), 0, 254)
+                end
+
+                for i = 1, self.Num do
+                    if plyDistance >= 2500 and v != attacker then
+                        net.Start("DistantGunAudio")
+                        net.WriteVector(shootPos)
+                        net.WriteFloat(plyDistance)
+                        net.WriteInt(bulletPitch, 9)
+                        net.WriteInt(threshold, 16)
+                        net.WriteFloat(volume)
+                        net.WriteBool(style)
+                        net.Send(v)
+                    end
+                end
+            end
+        end
+
+        self:StartLoop()
+    end
+
     if class != "arc9_eft_rshg2" then
 
         function SWEP:ThinkGrenade()

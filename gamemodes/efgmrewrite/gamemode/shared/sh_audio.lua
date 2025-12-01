@@ -108,7 +108,7 @@ for i = 1, 9 do
             name = "mfwmvmt.post_" .. w .. i,
             channel = CHAN_AUTO,
             volume = cloth_layer[w],
-            level = 80,
+            level = 70,
             pitch = 100,
             sound = "foley/mvmt/cloth/" .. w .. "/mvmtstep_cloth_plr_" .. w .. "_post_0" .. i .. ".wav"
         } )
@@ -136,7 +136,7 @@ for i = 1, 5 do
                 name = "mfw." .. t .. "_" .. w .."_" .. i,
                 channel = CHAN_AUTO,
                 volume = vlm,
-                level = 80,
+                level = 70,
                 pitch = 100,
                 sound = "foley/foot/" .. t .. "/step_" .. w .. "_" .. t .. "_0" .. i .. ".wav"
             } )
@@ -151,7 +151,7 @@ for i = 1, 5 do
                 name = "mfw.ladder_" .. w .. "_" .. f .. "_0" .. i,
                 channel = CHAN_AUTO,
                 volume = 1.0,
-                level = 80,
+                level = 70,
                 pitch = 100,
                 sound = "foley/foot/ladder/step_climb_" .. w .. "_ladder_" .. f .. "_0" .. i .. ".wav"
             } )
@@ -163,7 +163,7 @@ sound.Add( {
     name = "Player.FallDamage",
     channel = CHAN_AUTO,
     volume = 1.0,
-    level = 90,
+    level = 70,
     pitch = 100,
     sound = { "foley/foot/damage/step_land_damage_01.wav",
     "foley/foot/damage/step_land_damage_02.wav" }
@@ -173,7 +173,7 @@ sound.Add( {
     name = "Player.FallGib",
     channel = CHAN_AUTO,
     volume = 1.0,
-    level = 90,
+    level = 70,
     pitch = 100,
     sound = { "foley/foot/damage/step_land_damage_death_01.wav",
     "foley/foot/damage/step_land_damage_death_02.wav" }
@@ -211,26 +211,11 @@ hook.Add("PlayerFootstep", "CustomFootstepVolume", function(ply, pos, foot, soun
     local step = "l"
     if (foot == 1) then step = "r" end
 
-    local material = ""
-
     for k, v in pairs(FootstepAlias) do
 
         if (string.StartWith(sound, k)) then
 
             material = v
-
-        end
-
-    end
-
-    if GetPredictionPlayer() != NULL or !IsFirstTimePredicted() then
-
-        local cmd = ply:GetCurrentCommand()
-
-        if bit.band(cmd:GetButtons(), IN_JUMP) != 0 then
-
-            ply:EmitSound("mfw." .. material .. "_jump_" .. math.random(1,5))
-            return true
 
         end
 
@@ -252,9 +237,10 @@ hook.Add("PlayerFootstep", "CustomFootstepVolume", function(ply, pos, foot, soun
     if ply:GetNW2Bool("DoStep", false) then
 
         local fsVol = 1
-        if ply:Crouching() or ply:IsWalking() then fsVol = 0.25 end
+        local fsLvl = 70
+        if ply:Crouching() or ply:IsWalking() then fsVol = 0.25 fsLvl = 65 end
 
-        local soundLevel = math.Clamp(65 + (fsVol * 15), 65, 160)
+        local soundLevel = math.Clamp(fsLvl, 65, 160)
 
         ply:EmitSound(sound, soundLevel, 100, math.min(fsVol, 1))
         Raycast26(ply)
@@ -283,6 +269,90 @@ if SERVER then
         if (footsteps_int[tr.MatType] == nil) then return end
 
         ply:EmitSound("mfw." .. footsteps_int[tr.MatType] .. "_land_" .. math.random(1,5)) 
+
+    end)
+
+end
+
+-- gun sounds
+shotSounds = {
+    "cracks/distant/dist01.ogg",
+    "cracks/distant/dist02.ogg",
+    "cracks/distant/dist03.ogg",
+    "cracks/distant/dist04.ogg",
+    "cracks/distant/dist05.ogg",
+    "cracks/distant/dist06.ogg",
+    "cracks/distant/dist07.ogg",
+    "cracks/distant/dist08.ogg"
+}
+
+boomSounds = {
+    "weapons/darsu_eft/m203/gren_expl2_indoor_distant.ogg"
+}
+
+shotCaliber = {} -- pitch, threshold, style
+
+-- weapons
+
+shotCaliber["efgm_ammo_300"] =  {75, 6000, "bullet"}
+shotCaliber["efgm_ammo_338"] =  {35, 20000, "bullet"}
+shotCaliber["efgm_ammo_357"] =  {180, 3000, "bullet"}
+shotCaliber["efgm_ammo_366"] =  {75, 6000, "bullet"}
+shotCaliber["efgm_ammo_45"] =   {180, 3000, "bullet"}
+shotCaliber["efgm_ammo_50ae"] = {75, 6000, "bullet"}
+shotCaliber["efgm_ammo_50bmg"] = {35, 20000, "bullet"}
+shotCaliber["efgm_ammo_127x55"] = {55, 8000, "bullet"}
+shotCaliber["efgm_ammo_12gauge"] = {140, 3000, "bullet"}
+shotCaliber["efgm_ammo_20gauge"] = {140, 3000, "bullet"}
+shotCaliber["efgm_ammo_4gauge"] = {120, 3000, "bullet"}
+shotCaliber["efgm_ammo_26x75"] = {220, 3000, "bullet"}
+shotCaliber["efgm_ammo_46x30"] = {110, 4500, "bullet"}
+shotCaliber["efgm_ammo_545x39"] = {85, 6000, "bullet"}
+shotCaliber["efgm_ammo_556x45"] = {85, 6000, "bullet"}
+shotCaliber["efgm_ammo_57x28"] = {110, 4500, "bullet"}
+shotCaliber["efgm_ammo_68x51"] = {65, 6000, "bullet"}
+shotCaliber["efgm_ammo_762x25"] = {190, 3000, "bullet"}
+shotCaliber["efgm_ammo_762x39"] = {75, 6000, "bullet"}
+shotCaliber["efgm_ammo_762x51"] = {70, 7000, "bullet"}
+shotCaliber["efgm_ammo_762x54"] = {60, 7000, "bullet"}
+shotCaliber["efgm_ammo_9x18"] = {180, 3000, "bullet"}
+shotCaliber["efgm_ammo_9x19"] = {180, 3000, "bullet"}
+shotCaliber["efgm_ammo_9x21"] = {150, 4500, "bullet"}
+shotCaliber["efgm_ammo_9x39"] = {150, 2500, "bullet"}
+
+if SERVER then
+
+    util.AddNetworkString("DistantGunAudio")
+
+end
+
+if CLIENT then
+
+    net.Receive("DistantGunAudio", function()
+
+        local chosenSound
+        local receivedVect = net.ReadVector()
+        local distance = net.ReadFloat()
+        local pitch = net.ReadInt(9)
+        local threshold = net.ReadInt(16)
+        local volume = net.ReadFloat()
+        local style = net.ReadBool()
+
+        if style == true then
+
+            chosenSound = shotSounds[math.random(#shotSounds)]
+
+        else
+
+            chosenSound = boomSounds[math.random(#boomSounds)]
+
+        end
+
+        if receivedVect then
+
+            sound.Play(chosenSound, receivedVect, math.min(150, (150 * threshold) / distance), math.Clamp(pitch, 0, 254) + math.random(-15, 15), math.Rand(volume - 0.2, volume))
+
+        end
 
     end)
 

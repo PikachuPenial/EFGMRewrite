@@ -607,7 +607,6 @@ net.Receive("PlayerInventoryLootItemFromContainer", function(len, ply)
     if !ply:CompareStatus(0) then
 
         ply:SetNWInt("RaidItemsLooted", ply:GetNWInt("RaidItemsLooted") + 1)
-        ply:SetNWInt("ExperienceLooting", ply:GetNWInt("ExperienceLooting") + math.random(5, 10))
 
     end
 
