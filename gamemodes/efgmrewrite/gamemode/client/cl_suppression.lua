@@ -1,4 +1,4 @@
-local viewpunch_intensity = 0.66
+local viewpunch_intensity = 0.44
 local buildupspeed = 2.5
 local bloom_intensity = 0.5
 
@@ -63,7 +63,9 @@ local alphanew = 0
 hook.Add("RenderScreenspaceEffects", "suppression_vignette", function()
 	if effect_amount == 0 then return end
 
-	alphanew = Lerp(6 * FrameTime(), alphanew, effect_amount)
+	local vigEffectAmount = effect_amount * 0.66
+
+	alphanew = Lerp(6 * FrameTime(), alphanew, vigEffectAmount)
 
 	render.SetMaterial(m)
 	m:SetFloat("$alpha", alphanew)
