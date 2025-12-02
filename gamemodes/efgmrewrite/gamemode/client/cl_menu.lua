@@ -27,9 +27,31 @@ hook.Add("PlayerBindPress", "BlockBindsWhileInMenu", function(ply, bind, pressed
     if Menu.MenuFrame == nil then return end
     if Menu.MenuFrame:IsActive() != true then return end
 
-    if bind == "+attack" or bind == "+attack2" then
+    if bind == "+attack" or bind == "+attack2" or bind == "+jump" then
 
         return true
+
+    end
+
+end )
+
+hook.Add("OnPauseMenuShow", "DisableMenu", function()
+
+    if Menu.MenuFrame == nil then return true end
+    if Menu.MenuFrame:IsActive() == true then
+
+        Menu.Closing = true
+        Menu.MenuFrame:SetKeyboardInputEnabled(false)
+        Menu.MenuFrame:SetMouseInputEnabled(false)
+        Menu.IsOpen = false
+
+        Menu.MenuFrame:AlphaTo(0, 0.1, 0, function()
+
+            Menu.MenuFrame:Close()
+
+        end)
+
+        return false
 
     end
 
@@ -7125,7 +7147,7 @@ function Menu.OpenTab.Market()
 
     end
 
-    local marketTab = "Weapons"
+    local marketTab = "All Items"
     local marketSearchText = ""
 
     local marketCategoryHolder = vgui.Create("DPanel", marketEntryHolder)
