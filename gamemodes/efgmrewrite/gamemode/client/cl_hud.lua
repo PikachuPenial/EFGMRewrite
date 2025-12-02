@@ -344,8 +344,6 @@ net.Receive("PlayerRaidTransition", function()
 
     timer.Simple(2.5, function()
         RenderExtracts(ply)
-        RunConsoleCommand("+reload")
-        timer.Simple(0.2, function() RunConsoleCommand("-reload") end )
     end)
 
     if Menu.MenuFrame == nil then return end

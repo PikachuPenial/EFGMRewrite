@@ -267,6 +267,8 @@ net.Receive("PlayerInventoryEquipItem", function(len, ply)
 
     if table.IsEmpty(ply.weaponSlots[equipSlot][equipSubSlot]) then
 
+        if !item.data.owner then item.data.owner = ply:GetName() end
+
         DeleteItemFromInventory(ply, itemIndex, true)
         ply.weaponSlots[equipSlot][equipSubSlot] = item
 
@@ -950,12 +952,12 @@ end
 
 function GiveWepWithPresetFromCode(ply, classname, preset)
 
-    if !ply:IsPlayer() or !isstring(classname) then return end 
+    if !ply:IsPlayer() then return end
 
 	local swep = list.Get("Weapon")[classname]
 	if swep == nil then return end
 
-    if isstring(preset) then
+    if !isstring(preset) then
 
         ply:Give(classname)
         return
