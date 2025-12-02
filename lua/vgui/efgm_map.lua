@@ -187,6 +187,7 @@ function PANEL:Paint(w, h)
     local progress = (SysTime() % timeToDraw) / timeToDraw
 
     local previousPos = {}
+    local startPos = {}
 
     for k, v in pairs(RaidPositions) do
 
@@ -195,28 +196,31 @@ function PANEL:Paint(w, h)
 
         if !table.IsEmpty(previousPos) then
 
+            local distance = math.sqrt((posX - previousPos.x)^2 + (posY - previousPos.y)^2)
+
+            -- this line thickness thing took me like an hour to figure out with a pencil and paper, but shatgpt can lick my balls
+            local normal = {x = (posX - previousPos.x) / distance * 3, y = (posY - previousPos.y) / distance * 3}
+            local perpNormal = {x = normal.y, y = -normal.x}
+
+            local thickenedLine = {
+
+                {x = posX + normal.x + perpNormal.x, y = posY + normal.y + perpNormal.y},
+                {x = posX + normal.x - perpNormal.x, y = posY + normal.y - perpNormal.y},
+                {x = previousPos.x - normal.x - perpNormal.x, y = previousPos.y - normal.y - perpNormal.y},
+                {x = previousPos.x - normal.x + perpNormal.x, y = previousPos.y - normal.y + perpNormal.y}
+
+            }
             if k / #RaidPositions <= progress then
-
-                local distance = math.sqrt((posX - previousPos.x)^2 + (posY - previousPos.y)^2)
-
-                -- this line thickness thing took me like an hour to figure out with a pencil and paper, but shatgpt can lick my balls
-                local normal = {x = (posX - previousPos.x) / distance * 3, y = (posY - previousPos.y) / distance * 3}
-                local perpNormal = {x = normal.y, y = -normal.x}
-
-                local thickenedLine = {
-
-                    {x = posX + normal.x + perpNormal.x, y = posY + normal.y + perpNormal.y},
-                    {x = posX + normal.x - perpNormal.x, y = posY + normal.y - perpNormal.y},
-                    {x = previousPos.x - normal.x - perpNormal.x, y = previousPos.y - normal.y - perpNormal.y},
-                    {x = previousPos.x - normal.x + perpNormal.x, y = previousPos.y - normal.y + perpNormal.y}
-
-                }
-
                 surface.SetDrawColor(202, 20, 20, 255)
-                draw.NoTexture()
-                surface.DrawPoly(thickenedLine)
-
+            else
+                surface.SetDrawColor(71, 5, 5, 255)
             end
+            draw.NoTexture()
+            surface.DrawPoly(thickenedLine)
+
+        else
+
+            startPos = {x = posX, y = posY}
 
         end
 
@@ -230,7 +234,16 @@ function PANEL:Paint(w, h)
         local posY = (DeathPosition.y * self.MapSizeY * self.Zoom) + self.PanOffset.y
 
         surface.SetDrawColor(255, 255, 255, 240)
-        surface.SetMaterial(Material("icons/map/death.png", "mips"))
+        surface.SetMaterial(Material("icons/map/overview/death.png", "mips"))
+        surface.DrawTexturedRect(posX - 16, posY - 16, 32, 32)
+
+    else
+
+        local posX = (RaidPositions[#RaidPositions].x * self.MapSizeX * self.Zoom) + self.PanOffset.x
+        local posY = (RaidPositions[#RaidPositions].y * self.MapSizeY * self.Zoom) + self.PanOffset.y
+
+        surface.SetDrawColor(255, 255, 255, 240)
+        surface.SetMaterial(Material("icons/map/overview/extract.png", "mips"))
         surface.DrawTexturedRect(posX - 16, posY - 16, 32, 32)
 
     end
@@ -239,16 +252,22 @@ function PANEL:Paint(w, h)
     surface.SetDrawColor(202, 20, 20)
     for k, v in pairs(KillPositions) do
 
-        if v.time / #RaidPositions > progress then return end
-
         local posX = (v.x * self.MapSizeX * self.Zoom) + self.PanOffset.x
         local posY = (v.y * self.MapSizeY * self.Zoom) + self.PanOffset.y
 
-        surface.SetDrawColor(255, 255, 255, 240)
-        surface.SetMaterial(Material("icons/map/kill.png", "mips"))
+        if v.time / #RaidPositions <= progress then
+            surface.SetDrawColor(255, 255, 255, 240)
+        else
+            surface.SetDrawColor(125, 125, 125, 240)
+        end
+        surface.SetMaterial(Material("icons/map/overview/kill.png", "mips"))
         surface.DrawTexturedRect(posX - 16, posY - 16, 32, 32)
 
     end
+
+    surface.SetDrawColor(255, 255, 255, 240)
+    surface.SetMaterial(Material("icons/map/overview/spawn.png", "mips"))
+    surface.DrawTexturedRect(startPos.x - 16, startPos.y - 26, 32, 32)
 
 end
 
