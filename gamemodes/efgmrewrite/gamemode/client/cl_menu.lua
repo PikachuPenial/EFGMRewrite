@@ -8308,7 +8308,6 @@ function Menu.OpenTab.Match()
     end
 
     local mapRawName = game.GetMap()
-    local mapInfo = MAPINFO[mapRawName]
     local mapOverhead = Material("maps/" .. mapRawName .. ".png", "smooth")
 
     local mapSizeX = EFGM.MenuScale(1210)
@@ -8359,7 +8358,8 @@ function Menu.OpenTab.Match()
     map.MaxZoom = 2.5
     map.MapHolderX, map.MapHolderY = mapHolder:GetSize()
 
-    map.DrawRaidInfo = true
+    map.DrawRaidInfo = false
+    map.DrawFullInfo = true
 
     map.MapSizeX = mapSizeX
     map.MapSizeY = mapSizeY
@@ -8368,7 +8368,6 @@ function Menu.OpenTab.Match()
     map.OverheadImage = mapOverhead
 
     map:ClampPanOffset()
-    
 
     local mapName = MAPNAMES[mapRawName]
     surface.SetFont("PuristaBold50")

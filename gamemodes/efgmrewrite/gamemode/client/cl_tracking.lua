@@ -30,13 +30,23 @@ hook.Add("efgm_raid_enter", "efgm_tracker_start", function()
     KillPositions = {}
 
     enterRaidTime = SysTime()
-    print("Enter time: "..enterRaidTime)
 
     timer.Create("efgm_tracker", interval, 0, function() UpdateTrackedPosition(false) end)
 
 end)
 
 hook.Add("efgm_raid_exit", "efgm_tracker_stop", function(wasExtract)
+
+    if enterRaidTime == nil then
+
+        InsideRaidLength = nil
+        RaidPositions = {}
+        DeathPosition = {}
+        KillPositions = {}
+        enterRaidTime = nil
+        return
+
+    end
 
     if !wasExtract then
 
@@ -51,8 +61,6 @@ hook.Add("efgm_raid_exit", "efgm_tracker_stop", function(wasExtract)
     RaidPositions = raidPositions
     KillPositions = killPositions
     InsideRaidLength = SysTime() - enterRaidTime
-    print("Exit time: "..SysTime())
-    print("Was inside raid for "..InsideRaidLength.."s")
 
     killPositions = {}
     raidPositions = {}
@@ -60,7 +68,7 @@ hook.Add("efgm_raid_exit", "efgm_tracker_stop", function(wasExtract)
 
 end)
 
-hook.Add( "entity_killed", "efgm_tracker_kill", function( data ) 
+hook.Add("entity_killed", "efgm_tracker_kill", function(data) 
 
 	local attacker = data.entindex_attacker
 

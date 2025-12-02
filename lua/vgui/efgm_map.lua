@@ -112,72 +112,78 @@ end
 
 function PANEL:Paint(w, h)
 
-    if self.MapInfo == nil then return end
+    if self.OverheadImage == nil then return end
 
     surface.SetDrawColor(255, 255, 255, 255)
     surface.SetMaterial(self.OverheadImage)
     surface.DrawTexturedRect(0 + self.PanOffset.x, 0 + self.PanOffset.y, w * self.Zoom, h * self.Zoom)
 
-    surface.SetDrawColor(52, 124, 218, 240)
-    for k, v in pairs(self.MapInfo.spawns) do
+    if self.MapInfo == nil then return end
 
-        local posX = (v.pos.x * self.MapSizeX * self.Zoom) + self.PanOffset.x
-        local posY = (v.pos.y * self.MapSizeY * self.Zoom) + self.PanOffset.y
+    if self.DrawFullInfo then
 
-        surface.SetDrawColor(255, 255, 255, 240)
-        surface.SetMaterial(Material("icons/map/pmc_spawn_alt.png", "mips"))
-        surface.DrawTexturedRect(posX - 16, posY - 16, 32, 32)
+        surface.SetDrawColor(52, 124, 218, 240)
+        for k, v in pairs(self.MapInfo.spawns) do
 
-    end
+            local posX = (v.pos.x * self.MapSizeX * self.Zoom) + self.PanOffset.x
+            local posY = (v.pos.y * self.MapSizeY * self.Zoom) + self.PanOffset.y
 
-    surface.SetDrawColor(19, 196, 34, 240)
-    for k, v in pairs(self.MapInfo.extracts) do
+            surface.SetDrawColor(255, 255, 255, 240)
+            surface.SetMaterial(Material("icons/map/pmc_spawn_alt.png", "mips"))
+            surface.DrawTexturedRect(posX - 16, posY - 16, 32, 32)
 
-        local posX = (v.pos.x * self.MapSizeX * self.Zoom) + self.PanOffset.x
-        local posY = (v.pos.y * self.MapSizeY * self.Zoom) + self.PanOffset.y
+        end
 
-        surface.SetDrawColor(255, 255, 255, 240)
-        surface.SetMaterial(Material("icons/map/extract_full.png", "mips"))
-        surface.DrawTexturedRect(posX - 16, posY - 16, 32, 32)
+        surface.SetDrawColor(19, 196, 34, 240)
+        for k, v in pairs(self.MapInfo.extracts) do
 
-        local text = v.name
-        draw.DrawText( text, "PuristaBold16", posX, posY - 36, Color(19, 196, 34, 240), TEXT_ALIGN_CENTER )
+            local posX = (v.pos.x * self.MapSizeX * self.Zoom) + self.PanOffset.x
+            local posY = (v.pos.y * self.MapSizeY * self.Zoom) + self.PanOffset.y
 
-    end
+            surface.SetDrawColor(255, 255, 255, 240)
+            surface.SetMaterial(Material("icons/map/extract_full.png", "mips"))
+            surface.DrawTexturedRect(posX - 16, posY - 16, 32, 32)
 
-    surface.SetDrawColor(202, 20, 20, 240)
-    for k, v in pairs(self.MapInfo.locations) do
+            local text = v.name
+            draw.DrawText( text, "PuristaBold16", posX, posY - 36, Color(19, 196, 34, 240), TEXT_ALIGN_CENTER )
 
-        local posX = (v.pos.x * self.MapSizeX * self.Zoom) + self.PanOffset.x
-        local posY = (v.pos.y * self.MapSizeY * self.Zoom) + self.PanOffset.y
+        end
 
-        surface.SetDrawColor(255, 255, 255, 240)
-        surface.SetMaterial(Material("icons/map/location_alt.png", "mips"))
-        surface.DrawTexturedRect(posX - 32, posY - 32, 64, 64)
+        surface.SetDrawColor(202, 20, 20, 240)
+        for k, v in pairs(self.MapInfo.locations) do
 
-        draw.DrawText( v.name, "PuristaBold16", posX, posY - 48, Color(202, 20, 20, 240), TEXT_ALIGN_CENTER )
-        draw.DrawText( "Loot:" .. v.loot .. "/5", "PuristaBold16", posX, posY + 32, Color(202, 20, 20, 240), TEXT_ALIGN_CENTER )
+            local posX = (v.pos.x * self.MapSizeX * self.Zoom) + self.PanOffset.x
+            local posY = (v.pos.y * self.MapSizeY * self.Zoom) + self.PanOffset.y
 
-    end
+            surface.SetDrawColor(255, 255, 255, 240)
+            surface.SetMaterial(Material("icons/map/location_alt.png", "mips"))
+            surface.DrawTexturedRect(posX - 32, posY - 32, 64, 64)
 
-    surface.SetDrawColor(252, 152, 2, 240)
-    for k, v in pairs(self.MapInfo.keys) do
+            draw.DrawText( v.name, "PuristaBold16", posX, posY - 48, Color(202, 20, 20, 240), TEXT_ALIGN_CENTER )
+            draw.DrawText( "Loot:" .. v.loot .. "/5", "PuristaBold16", posX, posY + 32, Color(202, 20, 20, 240), TEXT_ALIGN_CENTER )
 
-        local posX = (v.pos.x * self.MapSizeX * self.Zoom) + self.PanOffset.x
-        local posY = (v.pos.y * self.MapSizeY * self.Zoom) + self.PanOffset.y
+        end
 
-        surface.SetDrawColor(255, 255, 255, 240)
-        surface.SetMaterial(Material("icons/map/key.png", "mips"))
-        surface.DrawTexturedRect(posX - 16, posY - 16, 32, 32)
-        
-        draw.DrawText( v.name, "PuristaBold16", posX, posY - 36, Color(252, 152, 2, 240), TEXT_ALIGN_CENTER )
+        surface.SetDrawColor(252, 152, 2, 240)
+        for k, v in pairs(self.MapInfo.keys) do
+
+            local posX = (v.pos.x * self.MapSizeX * self.Zoom) + self.PanOffset.x
+            local posY = (v.pos.y * self.MapSizeY * self.Zoom) + self.PanOffset.y
+
+            surface.SetDrawColor(255, 255, 255, 240)
+            surface.SetMaterial(Material("icons/map/key.png", "mips"))
+            surface.DrawTexturedRect(posX - 16, posY - 16, 32, 32)
+
+            draw.DrawText( v.name, "PuristaBold16", posX, posY - 36, Color(252, 152, 2, 240), TEXT_ALIGN_CENTER )
+
+        end
 
     end
 
     if !self.DrawRaidInfo or InsideRaidLength == nil then return end
 
     local timeToDraw = math.min(InsideRaidLength / 4, 60)
-    
+
     local progress = (SysTime() % timeToDraw) / timeToDraw
 
     local previousPos = {}
@@ -205,11 +211,11 @@ function PANEL:Paint(w, h)
                     {x = previousPos.x - normal.x + perpNormal.x, y = previousPos.y - normal.y + perpNormal.y}
 
                 }
-                
+
                 surface.SetDrawColor(202, 20, 20, 255)
                 draw.NoTexture()
                 surface.DrawPoly(thickenedLine)
-            
+
             end
 
         end
@@ -232,7 +238,7 @@ function PANEL:Paint(w, h)
 
     surface.SetDrawColor(202, 20, 20)
     for k, v in pairs(KillPositions) do
-        
+
         if v.time / #RaidPositions > progress then return end
 
         local posX = (v.x * self.MapSizeX * self.Zoom) + self.PanOffset.x
@@ -243,8 +249,7 @@ function PANEL:Paint(w, h)
         surface.DrawTexturedRect(posX - 16, posY - 16, 32, 32)
 
     end
-      
-        
+
 end
 
 vgui.Register("EFGM_Map", PANEL, "DPanel")
