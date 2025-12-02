@@ -66,6 +66,8 @@ if GetConVar("efgm_derivesbox"):GetInt() == 1 then
         mapReport.extracts = {}
         mapReport.locations = {}
         mapReport.keys = {}
+        mapReport.factor = {x = factorX, y = factorY}
+        mapReport.offset = {x = offsetX, y = offsetY}
 
         for k, v in pairs(ents.FindByClass("efgm_raid_spawn")) do
             
@@ -107,6 +109,7 @@ if GetConVar("efgm_derivesbox"):GetInt() == 1 then
 
         local json = util.TableToJSON(mapReport, tobool( args[2] ) or false)
         print("File ("..(args[1] or "map").."_mapreport_final.json"..") written to (garrysmod/data)!")
+        print(json)
         file.Write((args[1] or "map").."_mapreport_final.json", json)
 
     end)

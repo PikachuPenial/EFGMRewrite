@@ -8319,203 +8319,34 @@ function Menu.OpenTab.Match()
 
     end
 
-    local maxZoom = 2.5
-    local minZoom = 1
 
     local xDiff = EFGM.MenuScale(1210) / mapSizeX
     local yDiff = EFGM.MenuScale(1210) / mapSizeY
 
-    minZoom = math.max(xDiff, yDiff)
+    local minZoom = math.max(xDiff, yDiff)
 
     if yDiff > xDiff and mapSizeX > mapSizeY then minZoom = math.min(xDiff, yDiff) end
 
-    local map = vgui.Create("DPanel", mapHolder)
+
+    local map = vgui.Create("EFGM_Map", mapHolder)
     map:SetSize(mapSizeX, mapSizeY)
     map:SetMouseInputEnabled(true)
     map:SetCursor("crosshair")
-    map.Dragging = false
     map.Zoom = minZoom
-    map.DragPos = {x = 0, y = 0}
-    map.PanOffset = {x = 0, y = 0}
+    map.MinZoom = minZoom
+    map.MaxZoom = 2.5
+    map.MapHolderX, map.MapHolderY = mapHolder:GetSize()
 
-    function map:ClampPanOffset()
+    map.DrawRaidInfo = true
 
-        local panelW, panelH = mapHolder:GetSize()
-        local zoom = self.Zoom
-        local pan = self.PanOffset
+    map.MapSizeX = mapSizeX
+    map.MapSizeY = mapSizeY
 
-        local contentScreenW = mapSizeX * zoom
-        local contentScreenH = mapSizeY * zoom
-
-        local minPanX, maxPanX
-        local minPanY, maxPanY
-
-        if contentScreenW > panelW then
-
-            minPanX = panelW - contentScreenW
-            maxPanX = 0
-
-        else
-
-            minPanX = (panelW - contentScreenW) / 2
-            maxPanX = minPanX
-
-        end
-
-        if contentScreenH > panelH then
-
-            minPanY = panelH - contentScreenH
-            maxPanY = 0
-
-        else
-
-            minPanY = (panelH - contentScreenH) / 2
-            maxPanY = minPanY
-
-        end
-
-        self.PanOffset.x = math.Clamp(pan.x, minPanX, maxPanX)
-        self.PanOffset.y = math.Clamp(pan.y, minPanY, maxPanY)
-
-    end
+    map.MapInfo = MAPINFO[mapRawName]
+    map.OverheadImage = mapOverhead
 
     map:ClampPanOffset()
-
-    -- most of this was vibe coded, and im genuinely scared how well it works
-    -- lmao bro vibe codes
-    function map:OnMouseWheeled(delta)
-
-        local oldZoom = self.Zoom
-        local zoomSpeed = 0.1
-        self.Zoom = math.Clamp(self.Zoom + delta * zoomSpeed, minZoom, maxZoom)
-
-        local newZoom = self.Zoom
-
-        if newZoom == oldZoom then return true end
-
-        local mouseX, mouseY = self:CursorPos()
-
-        self.PanOffset.x = mouseX - ((mouseX - self.PanOffset.x) / oldZoom) * newZoom
-        self.PanOffset.y = mouseY - ((mouseY - self.PanOffset.y) / oldZoom) * newZoom
-
-        self:ClampPanOffset()
-
-    end
-
-    function map:OnMousePressed(mousecode)
-
-        if mousecode == MOUSE_LEFT then
-
-            self.Dragging = true
-            self.DragPos.x, self.DragPos.y = gui.MousePos()
-            self:MouseCapture(true)
-
-        end
-
-    end
-
-    function map:OnMouseReleased(mousecode)
-
-        if mousecode == MOUSE_LEFT then
-
-            self.Dragging = false
-            self:MouseCapture(false)
-
-        end
-
-    end
-
-    function map:Think()
-
-        if self.Dragging then
-
-            local mx, my = gui.MousePos()
-            local dx = mx - self.DragPos.x
-            local dy = my - self.DragPos.y
-
-            self.PanOffset.x = self.PanOffset.x + dx / self.Zoom
-            self.PanOffset.y = self.PanOffset.y + dy / self.Zoom
-
-            self:ClampPanOffset()
-
-            self.DragPos.x, self.DragPos.y = mx, my
-
-        end
-
-    end
-
-    function map:Paint(w, h)
-
-        if mapInfo == nil then return end
-
-        surface.SetDrawColor(255, 255, 255, 255)
-        surface.SetMaterial(mapOverhead)
-        surface.DrawTexturedRect(0 + self.PanOffset.x, 0 + self.PanOffset.y, w * self.Zoom, h * self.Zoom)
-
-        surface.SetDrawColor(52, 124, 218, 240)
-        for k, v in pairs(mapInfo.spawns) do
-
-            local posX = (v.pos.x * mapSizeX * self.Zoom) + self.PanOffset.x
-            local posY = (v.pos.y * mapSizeY * self.Zoom) + self.PanOffset.y
-
-            -- surface.DrawCircle(posX, posY, (5 * mapSizeX * self.Zoom) / 720 )
-            surface.SetDrawColor(255, 255, 255, 240)
-            surface.SetMaterial(Material("icons/map/pmc_spawn_alt.png", "mips"))
-            surface.DrawTexturedRect(posX - 16, posY - 16, 32, 32)
-
-            -- local text = "Spawn"
-
-            -- draw.DrawText( text, "PuristaBold16", posX, posY - 20 * (self.Zoom * 1.6), Color(52, 124, 218, 240), TEXT_ALIGN_CENTER )
-
-        end
-
-        surface.SetDrawColor(19, 196, 34, 240)
-        for k, v in pairs(mapInfo.extracts) do
-
-            local posX = (v.pos.x * mapSizeX * self.Zoom) + self.PanOffset.x
-            local posY = (v.pos.y * mapSizeY * self.Zoom) + self.PanOffset.y
-
-            surface.SetDrawColor(255, 255, 255, 240)
-            surface.SetMaterial(Material("icons/map/extract_full.png", "mips"))
-            surface.DrawTexturedRect(posX - 16, posY - 16, 32, 32)
-
-            local text = v.name
-            --  * (self.Zoom * 2.2)
-            draw.DrawText( text, "PuristaBold16", posX, posY - 36, Color(19, 196, 34, 240), TEXT_ALIGN_CENTER )
-
-        end
-
-        surface.SetDrawColor(202, 20, 20, 240)
-        for k, v in pairs(mapInfo.locations) do
-
-            local posX = (v.pos.x * mapSizeX * self.Zoom) + self.PanOffset.x
-            local posY = (v.pos.y * mapSizeY * self.Zoom) + self.PanOffset.y
-
-            surface.SetDrawColor(255, 255, 255, 240)
-            surface.SetMaterial(Material("icons/map/location_alt.png", "mips"))
-            surface.DrawTexturedRect(posX - 32, posY - 32, 64, 64)
-
-            draw.DrawText( v.name, "PuristaBold16", posX, posY - 48, Color(202, 20, 20, 240), TEXT_ALIGN_CENTER )
-            draw.DrawText( "Loot:" .. v.loot .. "/5", "PuristaBold16", posX, posY + 32, Color(202, 20, 20, 240), TEXT_ALIGN_CENTER )
-
-        end
-
-        surface.SetDrawColor(252, 152, 2, 240)
-        for k, v in pairs(mapInfo.keys) do
-
-            local posX = (v.pos.x * mapSizeX * self.Zoom) + self.PanOffset.x
-            local posY = (v.pos.y * mapSizeY * self.Zoom) + self.PanOffset.y
-
-            surface.SetDrawColor(255, 255, 255, 240)
-            surface.SetMaterial(Material("icons/map/key.png", "mips"))
-            surface.DrawTexturedRect(posX - 16, posY - 16, 32, 32)
-            
-            --  * (self.Zoom * 2.4)
-            draw.DrawText( v.name, "PuristaBold16", posX, posY - 36, Color(252, 152, 2, 240), TEXT_ALIGN_CENTER )
-
-        end
-
-    end
+    
 
     local mapName = MAPNAMES[mapRawName]
     surface.SetFont("PuristaBold50")

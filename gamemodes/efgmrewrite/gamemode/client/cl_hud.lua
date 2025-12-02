@@ -317,6 +317,12 @@ end
 hook.Add("HUDPaint", "DrawHUD", DrawHUD)
 
 net.Receive("PlayerRaidTransition", function()
+    
+    if LocalPlayer():GetNWBool("PlayerRaidStatus", 0) == 0 then
+
+        hook.Run("efgm_raid_enter")
+
+    end
 
     RaidTransition = vgui.Create("DPanel")
     RaidTransition:SetSize(ScrW(), ScrH())
@@ -402,6 +408,8 @@ net.Receive("SendExtractionStatus", function()
 end)
 
 net.Receive("CreateDeathInformation", function()
+
+    hook.Run("efgm_raid_exit", false)
 
     local ply = LocalPlayer()
 
@@ -900,6 +908,8 @@ net.Receive("CreateDeathInformation", function()
 end)
 
 net.Receive("CreateExtractionInformation", function()
+
+    hook.Run("efgm_raid_exit", true)
 
     local ply = LocalPlayer()
 
