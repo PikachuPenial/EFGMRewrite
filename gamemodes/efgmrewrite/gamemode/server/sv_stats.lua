@@ -2,6 +2,7 @@
 Stats = {}
 
 function Stats.GetAll(ply)
+
     local tbl = {}
 
     -- stats
@@ -35,18 +36,22 @@ function Stats.GetAll(ply)
     tbl["BestExtractionStreak"] = ply:GetNWInt("BestExtractionStreak")
 
     return tbl
+
 end
 
 function ResetRaidStats(ply)
 
     ply:SetNWInt("RaidDamageDealt", 0)
-    ply:SetNWInt("RaidDamageRecieved", 0)
+    ply:SetNWInt("RaidDamageRecievedPlayers", 0)
+    ply:SetNWInt("RaidDamageRecievedFalling", 0)
     ply:SetNWInt("RaidItemsLooted", 0)
+    ply:SetNWInt("RaidContainersLooted", 0)
     ply:SetNWInt("RaidKills", 0)
 
 end
 
 hook.Add("PlayerDeath", "DeathUpdateStats", function(victim, weapon, attacker)
+
     -- update victim's stats (cringe lootcel)
     victim:SetNWInt("Deaths", victim:GetNWInt("Deaths") + 1)
 
@@ -54,33 +59,38 @@ hook.Add("PlayerDeath", "DeathUpdateStats", function(victim, weapon, attacker)
     if attacker == victim then return end
 
     attacker:SetNWInt("Kills", attacker:GetNWInt("Kills") + 1)
+
 end)
 
 hook.Add("EntityTakeDamage", "DamageUpdateStats", function(ply, damageInfo)
+
     if !ply:IsPlayer() then return end
-
-    local damageAmount = damageInfo:GetDamage()
-
-    if damageAmount < 0 then -- if the player healed (this probably aint even gonna work)
-        ply:SetNWInt("DamageHealed", ply:GetNWInt("DamageHealed") - damageAmount)
-    elseif damageAmount > 0 then
-        ply:SetNWInt("DamageRecieved", ply:GetNWInt("DamageRecieved") + math.min(damageAmount, 100))
-        ply:SetNWInt("RaidDamageRecieved", ply:GetNWInt("RaidDamageRecieved") + math.min(damageAmount, 100))
-    end
 
     local attacker = damageInfo:GetAttacker()
 
     if !attacker:IsPlayer() then return end
     if attacker == ply then return end
 
-    if damageAmount < 0 then -- if the attacker healed another player somehow
-        attacker:SetNWInt("DamageHealed", attacker:GetNWInt("DamageHealed") - damageAmount)
-    elseif damageAmount > 0 then
+    local damageAmount = damageInfo:GetDamage()
+
+    if damageAmount > 0 then
+
+        ply:SetNWInt("DamageRecieved", ply:GetNWInt("DamageRecieved") + math.min(damageAmount, 100))
+        ply:SetNWInt("RaidDamageRecievedPlayers", ply:GetNWInt("RaidDamageRecievedPlayers") + math.min(damageAmount, 100))
+
+    end
+
+    if damageAmount > 0 then
+
         attacker:SetNWInt("DamageDealt", attacker:GetNWInt("DamageDealt") + math.min(damageAmount, 100))
         attacker:SetNWInt("RaidDamageDealt", attacker:GetNWInt("RaidDamageDealt") + math.min(damageAmount, 100))
+
     end
+
 end)
 
 hook.Add("PlayerExtraction", "ExtractUpdateStats", function(ply, time, isGuranteed)
+
     ply:SetNWInt("Extractions", ply:GetNWInt("Extractions") + 1)
+
 end)

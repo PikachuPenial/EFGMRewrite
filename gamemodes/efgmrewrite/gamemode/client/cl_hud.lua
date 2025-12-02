@@ -416,10 +416,13 @@ net.Receive("CreateDeathInformation", function()
     local timeInRaid = net.ReadInt(16)
 
     local statsTbl = {
-        ["DAMAGE DEALT:"] = net.ReadInt(24),
-        ["DAMAGE RECEIVED:"] = net.ReadInt(24),
-        ["ITEMS LOOTED:"] = net.ReadInt(24),
-        ["OPERATORS KILLED:"] = net.ReadInt(24),
+        ["DAMAGE DEALT:"] = ply:GetNWInt("RaidDamageDealt", 0),
+        ["DAMAGE RECEIVED FROM OPERATORS:"] = ply:GetNWInt("RaidDamageRecievedPlayers", 0),
+        ["DAMAGE RECEIVED FROM FALLING:"] = ply:GetNWInt("RaidDamageRecievedFalling", 0),
+        ["DAMAGE RECEIVED:"] = statsTbl["DAMAGE RECEIVED FROM OPERATORS:"] + statsTbl["DAMAGE RECEIVED FROM FALLING:"],
+        ["ITEMS LOOTED:"] = ply:GetNWInt("RaidItemsLooted", 0),
+        ["CONTAINERS OPENED:"] = ply:GetNWInt("RaidContainersLooted", 0),
+        ["OPERATORS KILLED:"] = ply:GetNWInt("RaidKills", 0),
     }
     table.SortByKey(statsTbl)
 
@@ -432,6 +435,7 @@ net.Receive("CreateDeathInformation", function()
     local killedBy = net.ReadEntity()
     local killedByWeapon = net.ReadString()
     local killedFrom = net.ReadInt(16)
+    local hitGroup = net.ReadInt(5)
 
     local minutes = math.floor(timeInRaid / 60)
     local seconds = timeInRaid % 60
@@ -1022,10 +1026,13 @@ net.Receive("CreateExtractionInformation", function()
     local timeInRaid = net.ReadInt(16)
 
     local statsTbl = {
-        ["DAMAGE DEALT:"] = net.ReadInt(24),
-        ["DAMAGE RECEIVED:"] = net.ReadInt(24),
-        ["ITEMS LOOTED:"] = net.ReadInt(24),
-        ["OPERATORS KILLED:"] = net.ReadInt(24),
+        ["DAMAGE DEALT:"] = ply:GetNWInt("RaidDamageDealt", 0),
+        ["DAMAGE RECEIVED FROM OPERATORS:"] = ply:GetNWInt("RaidDamageRecievedPlayers", 0),
+        ["DAMAGE RECEIVED FROM FALLING:"] = ply:GetNWInt("RaidDamageRecievedFalling", 0),
+        ["DAMAGE RECEIVED:"] = statsTbl["DAMAGE RECEIVED FROM OPERATORS:"] + statsTbl["DAMAGE RECEIVED FROM FALLING:"],
+        ["ITEMS LOOTED:"] = ply:GetNWInt("RaidItemsLooted", 0),
+        ["CONTAINERS OPENED:"] = ply:GetNWInt("RaidContainersLooted", 0),
+        ["OPERATORS KILLED:"] = ply:GetNWInt("RaidKills", 0),
     }
     table.SortByKey(statsTbl)
 

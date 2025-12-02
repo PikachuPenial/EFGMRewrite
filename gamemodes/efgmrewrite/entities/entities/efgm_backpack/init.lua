@@ -56,10 +56,17 @@ function ENT:Use(activator)
 	for k, v in pairs(self.Inventory) do
 
 		activator:SetNWInt("ExperienceLooting", activator:GetNWInt("ExperienceLooting") + math.random(3, 8))
+		activator:SetNWInt("RaidContainersLooted", activator:GetNWInt("RaidContainersLooted") + 1)
 
 	end
 
 	self.PlayersSearched[activator:SteamID64()] = true
+
+end
+
+function ENT:ResetLootedStatus(ply)
+
+	if self.PlayersSearched[ply:SteamID64()] == true then self.PlayersSearched[ply:SteamID64()] = false end
 
 end
 

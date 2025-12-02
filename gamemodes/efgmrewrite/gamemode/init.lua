@@ -128,6 +128,11 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		net.Start("PlayerReinstantiateInventory", false)
 		net.Send(victim)
 
+	else
+
+		-- to not show outdated information is suiciding in hideout
+		ResetRaidStats(victim)
+
 	end
 
 	-- death sound
@@ -142,10 +147,6 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		net.Start("CreateDeathInformation")
 		net.WriteFloat(xpMult)
 		net.WriteInt(victim:GetNWInt("RaidTime", 0), 16)
-		net.WriteInt(victim:GetNWInt("RaidDamageDealt", 0), 24)
-		net.WriteInt(victim:GetNWInt("RaidDamageRecieved", 0), 24)
-		net.WriteInt(victim:GetNWInt("RaidItemsLooted", 0), 24)
-		net.WriteInt(victim:GetNWInt("RaidKills", 0), 24)
 		net.WriteInt(math.Round(victim:GetNWFloat("ExperienceTime", 0)), 16)
 		net.WriteInt(victim:GetNWInt("ExperienceCombat", 0), 16)
 		net.WriteInt(victim:GetNWInt("ExperienceExploration", 0), 16)
@@ -154,27 +155,24 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		net.WriteEntity(victim)
 		net.WriteString("")
 		net.WriteInt(0, 16)
+		net.WriteInt(0, 5)
 		net.Send(victim)
 
 		UnequipAllFirearms(victim)
 		ApplyPlayerExperience(victim, 0.5)
-		ResetRaidStats(victim)
 		return
 
 	end
 
 	local rawDistance = victim:GetPos():Distance(attacker:GetPos())
 	local distance = math.Round(rawDistance * 0.01905) -- convert hammer units to meters
+	local victimHitgroup = victim:LastHitGroup()
 
 	local xpMult = 0.5
 
 	net.Start("CreateDeathInformation")
 	net.WriteFloat(xpMult)
 	net.WriteInt(victim:GetNWInt("RaidTime", 0), 16)
-	net.WriteInt(victim:GetNWInt("RaidDamageDealt", 0), 24)
-	net.WriteInt(victim:GetNWInt("RaidDamageRecieved", 0), 24)
-	net.WriteInt(victim:GetNWInt("RaidItemsLooted", 0), 24)
-	net.WriteInt(victim:GetNWInt("RaidKills", 0), 24)
 	net.WriteInt(math.Round(victim:GetNWFloat("ExperienceTime", 0)), 16)
 	net.WriteInt(victim:GetNWInt("ExperienceCombat", 0), 16)
 	net.WriteInt(victim:GetNWInt("ExperienceExploration", 0), 16)
@@ -183,6 +181,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	net.WriteEntity(attacker)
 	net.WriteString(attacker:GetActiveWeapon():GetClass())
 	net.WriteInt(distance, 16)
+	net.WriteInt(victimHitgroup, 5)
 	net.Send(victim)
 
 	attacker:SetNWInt("ExperienceCombat", attacker:GetNWInt("ExperienceCombat") + 300)
@@ -190,7 +189,6 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 
 	UnequipAllFirearms(victim)
 	ApplyPlayerExperience(victim, 0.5)
-	ResetRaidStats(victim)
 
 end
 
@@ -240,7 +238,10 @@ end)
 -- more lethal fall damage
 hook.Add("GetFallDamage", "FallDmgCalc", function(ply, speed)
 
-	return speed / 6
+	local dmg = math.max(0, math.ceil(0.2418 * speed - 141.75))
+
+	ply:SetNWInt("RaidDamageRecievedFalling", ply:GetNWInt("RaidDamageRecievedFalling") + math.min(dmg, 100))
+	return dmg
 
 end)
 

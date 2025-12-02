@@ -70,7 +70,7 @@ if SERVER then
             net.Broadcast()
 
             for k, v in ipairs(player.GetHumans()) do
-                if not v:CompareStatus(0) then v:Kill() end
+                if !v:CompareStatus(0) and !v:HasGodMode() then v:Kill() end
             end
         end
 
@@ -108,6 +108,7 @@ if SERVER then
                             v:SetNW2String("PlayerInSquad", "nil")
                             v:SetNW2String("TeamChatChannel", squad .. "_" .. curTime)
                             v:SetNWInt("RaidsPlayed", v:GetNWInt("RaidsPlayed") + 1)
+                            ResetRaidStats(v)
                         end)
                     end)
                 end
@@ -214,7 +215,7 @@ if SERVER then
             net.Start("PlayerRaidTransition")
             net.Send(ply)
 
-            ply:Freeze(true)
+            ply:Lock()
 
             timer.Create("Extract" .. ply:SteamID64(), 1, 1, function()
                 ply:Teleport(randomSpawn:GetPos(), randomSpawn:GetAngles(), Vector(0, 0, 0))
@@ -224,7 +225,7 @@ if SERVER then
                 ply:SetRaidStatus(0, "")
                 ply:SetNWBool("RaidReady", false)
 
-                ply:Freeze(false)
+                ply:UnLock()
 
                 ply:SetNWInt("ExperienceBonus", ply:GetNWInt("ExperienceBonus") + 200)
 
@@ -233,10 +234,6 @@ if SERVER then
                 net.Start("CreateExtractionInformation")
                 net.WriteFloat(xpMult)
                 net.WriteInt(ply:GetNWInt("RaidTime", 0), 16)
-                net.WriteInt(ply:GetNWInt("RaidDamageDealt", 0), 24)
-                net.WriteInt(ply:GetNWInt("RaidDamageRecieved", 0), 24)
-                net.WriteInt(ply:GetNWInt("RaidItemsLooted", 0), 24)
-                net.WriteInt(ply:GetNWInt("RaidKills", 0), 24)
                 net.WriteInt(math.Round(ply:GetNWFloat("ExperienceTime", 0)), 16)
                 net.WriteInt(ply:GetNWInt("ExperienceCombat", 0), 16)
                 net.WriteInt(ply:GetNWInt("ExperienceExploration", 0), 16)
@@ -246,7 +243,6 @@ if SERVER then
 
                 ply:SetNWInt("RaidTime", 0)
                 ApplyPlayerExperience(ply, 1)
-                ResetRaidStats(ply)
             end)
         end)
 
