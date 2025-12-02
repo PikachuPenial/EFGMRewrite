@@ -63,7 +63,7 @@ local alphanew = 0
 hook.Add("RenderScreenspaceEffects", "suppression_vignette", function()
 	if effect_amount == 0 then return end
 
-	local vigEffectAmount = effect_amount * 0.66
+	local vigEffectAmount = effect_amount * 0.6
 
 	alphanew = Lerp(6 * FrameTime(), alphanew, vigEffectAmount)
 

@@ -88,6 +88,18 @@ function ENT:SelectItems()
         local item = ITEM.Instantiate(itemKey, def.equipType, data)
         table.insert(containerLoot, item)
 
+        if def.ammoID then
+
+            local ammoDef = EFGMITEMS[def.ammoID]
+
+            local ammoData = {}
+            ammoData.count = math.Clamp(math.random(math.Round(ammoDef.stackSize / 6), ammoDef.stackSize / 2), 1, ammoDef.stackSize / 2)
+
+            local ammoItem = ITEM.Instantiate(def.ammoID, ammoDef.equipType, ammoData)
+            table.insert(containerLoot, ammoItem)
+
+        end
+
     end
 
     return containerLoot

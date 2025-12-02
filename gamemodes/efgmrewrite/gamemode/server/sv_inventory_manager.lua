@@ -615,23 +615,13 @@ net.Receive("PlayerInventoryLootItemFromContainer", function(len, ply)
 
     end
 
-    local newIndex = table.insert(ply.inventory, newItem)
-
-    net.Start("PlayerInventoryAddItem", false)
-        net.WriteString(newItem.name)
-        net.WriteUInt(newItem.type, 4)
-        net.WriteTable(newItem.data)
-        net.WriteUInt(newIndex, 16)
-    net.Send(ply)
+    FlowItemToInventory(ply, newItem.name, newItem.type, newItem.data)
 
     if !ply:CompareStatus(0) then
 
         ply:SetNWInt("RaidItemsLooted", ply:GetNWInt("RaidItemsLooted") + 1)
 
     end
-
-    AddWeightToPlayer(ply, newItem.name, newItem.data.count)
-    UpdateInventoryString(ply)
 
     table.remove(container.Inventory, index)
 

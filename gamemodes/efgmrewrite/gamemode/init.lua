@@ -249,7 +249,7 @@ hook.Add("EntityTakeDamage", "HitFlinch", function(target, dmginfo)
 
 	if IsValid(target) and target:IsPlayer() then
 
-		util.ScreenShake(target:GetPos(), 1, 3, 0.1, 500)
+		util.ScreenShake(target:GetPos(), 0.33, 3, 0.1, 500)
 
 	end
 
