@@ -98,8 +98,9 @@ function EFFECT:Init(data)
     ang:RotateAroundAxis(ang:Forward(), 90 + correctang.p)
     ang:RotateAroundAxis(ang:Right(), correctang.y)
     ang:RotateAroundAxis(ang:Up(), correctang.r)
-    
-    if self.VMContext then origin = FormatViewModelAttachment(origin, false) end
+
+    if self.VMContext then origin = FormatViewModelAttachment(origin, false) or origin end
+    if !origin then self:Remove() return end
     self:SetPos(origin)
     self:SetModel(model or "")
     self:SetMaterial(material or "")
@@ -194,7 +195,7 @@ function EFFECT:Think()
     if vel > 20 then self.SpawnTime = CurTime() end
     if vel < 5 and self.VMContext then self.VMContext = false self:SetNoDraw(false) end
 
-    -- self:StopSound("Default.ScrapeRough")
+    self:StopSound("Default.ScrapeRough")
 
     if (self.SpawnTime + self.ShellTime) <= CurTime() then
         if !IsValid(self) then return end

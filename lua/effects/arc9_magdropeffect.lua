@@ -44,7 +44,7 @@ function EFFECT:Init(data)
         wm = true
         self.VMContext = false
     end
-    
+
     local model = ent:GetProcessedValue("DropMagazineModel", true)
     local skinn = ent:GetProcessedValue("DropMagazineSkin", true)
     local sounds = ent:GetProcessedValue("DropMagazineSounds", true)

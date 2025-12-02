@@ -1175,7 +1175,7 @@ EFGMITEMS = {}
         ["displayType"] = "Pistol",
         ["weight"] = 1.7,
         ["value"] = 38000,
-        ["levelReq"] = 6,
+        ["levelReq"] = 8,
         ["equipType"] = EQUIPTYPE.Weapon,
         ["equipSlot"] = WEAPONSLOTS.HOLSTER.ID,
         ["appearInInventory"] = true,
@@ -1406,7 +1406,7 @@ EFGMITEMS = {}
         ["displayType"] = "Pistol",
         ["weight"] = 2.2,
         ["value"] = 78000,
-        ["levelReq"] = 20,
+        ["levelReq"] = 16,
         ["equipType"] = EQUIPTYPE.Weapon,
         ["equipSlot"] = WEAPONSLOTS.HOLSTER.ID,
         ["appearInInventory"] = true,
@@ -2887,7 +2887,7 @@ EFGMITEMS = {}
         ["displayType"] = "Melee",
         ["weight"] = 0.2,
         ["value"] = 75000,
-        ["levelReq"] = 0,
+        ["levelReq"] = 48,
         ["equipType"] = EQUIPTYPE.Weapon,
         ["equipSlot"] = WEAPONSLOTS.MELEE.ID,
         ["appearInInventory"] = true,
@@ -3856,13 +3856,32 @@ EFGMITEMS = {}
         ["sizeY"] = 1
     }
 
+    EFGMITEMS["efgm_meds_car"] = {
+        ["fullName"] = "Car first aid kit",
+        ["displayName"] = "Car",
+        ["displayType"] = "Medical",
+        ["weight"] = 1,
+        ["value"] = 8500,
+        ["levelReq"] = 4,
+        ["equipType"] = EQUIPTYPE.Consumable,
+        ["consumableType"] = "heal",
+        ["consumableValue"] = 75,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/meds/car.png", "smooth"),
+        ["iconColor"] = Color(41, 33, 26, 155),
+
+        ["sizeX"] = 2,
+        ["sizeY"] = 1
+    }
+
     EFGMITEMS["efgm_meds_ifak"] = {
         ["fullName"] = "IFAK individual first aid kit",
         ["displayName"] = "IFAK",
         ["displayType"] = "Medical",
         ["weight"] = 1,
-        ["value"] = 12000,
-        ["levelReq"] = 5,
+        ["value"] = 15000,
+        ["levelReq"] = 7,
         ["equipType"] = EQUIPTYPE.Consumable,
         ["consumableType"] = "heal",
         ["consumableValue"] = 120,
@@ -3880,8 +3899,8 @@ EFGMITEMS = {}
         ["displayName"] = "Salewa",
         ["displayType"] = "Medical",
         ["weight"] = 0.8,
-        ["value"] = 20000,
-        ["levelReq"] = 10,
+        ["value"] = 28000,
+        ["levelReq"] = 14,
         ["equipType"] = EQUIPTYPE.Consumable,
         ["consumableType"] = "heal",
         ["consumableValue"] = 200,
@@ -3894,16 +3913,35 @@ EFGMITEMS = {}
         ["sizeY"] = 2
     }
 
+    EFGMITEMS["efgm_meds_afak"] = {
+        ["fullName"] = "AFAK tactical individual first aid kit",
+        ["displayName"] = "AFAK",
+        ["displayType"] = "Medical",
+        ["weight"] = 0.8,
+        ["value"] = 36500,
+        ["levelReq"] = 21,
+        ["equipType"] = EQUIPTYPE.Consumable,
+        ["consumableType"] = "heal",
+        ["consumableValue"] = 320,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/meds/afak.png", "smooth"),
+        ["iconColor"] = Color(41, 33, 26, 155),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
     EFGMITEMS["efgm_meds_grizzly"] = {
         ["fullName"] = "Grizzly medical kit",
         ["displayName"] = "Grizzly",
         ["displayType"] = "Medical",
         ["weight"] = 1.6,
-        ["value"] = 35000,
-        ["levelReq"] = 15,
+        ["value"] = 55500,
+        ["levelReq"] = 28,
         ["equipType"] = EQUIPTYPE.Consumable,
         ["consumableType"] = "heal",
-        ["consumableValue"] = 400,
+        ["consumableValue"] = 480,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/meds/grizzly.png", "smooth"),
@@ -4008,9 +4046,7 @@ EFGMITEMS = {}
         ["iconColor"] = Color(31, 38, 26, 155),
 
         ["sizeX"] = 1,
-        ["sizeY"] = 1,
-
-        ["canPurchase"] = false
+        ["sizeY"] = 1
     }
 
     -- EFGMITEMS["efgm_keycard_bunker_entrance"] = {
@@ -4067,9 +4103,7 @@ EFGMITEMS = {}
         ["iconColor"] = Color(31, 38, 26, 155),
 
         ["sizeX"] = 1,
-        ["sizeY"] = 1,
-
-        ["canPurchase"] = false
+        ["sizeY"] = 1
     }
 
 
