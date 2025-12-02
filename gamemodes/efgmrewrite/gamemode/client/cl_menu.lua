@@ -6574,6 +6574,25 @@ function Menu.OpenTab.Inventory(container)
         containerItems:SetSpaceY(0)
         containerItems:SetSpaceX(0)
 
+        containerItems.Think = function(s)
+
+            if !IsValid(container.entity) then
+
+                Menu.Closing = true
+                Menu.MenuFrame:SetKeyboardInputEnabled(false)
+                Menu.MenuFrame:SetMouseInputEnabled(false)
+                Menu.IsOpen = false
+
+                Menu.MenuFrame:AlphaTo(0, 0.1, 0, function()
+
+                    Menu.MenuFrame:Close()
+
+                end)
+
+            end
+
+        end
+
         local containerItemsBar = containerItemsHolder:GetVBar()
         containerItemsBar:SetHideButtons(true)
         containerItemsBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))

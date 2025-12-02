@@ -7,6 +7,7 @@ util.AddNetworkString("PlayerOpenContainer")
 
 ENT.Inventory = {}
 ENT.Name = ""
+ENT.PlayersSearched = {}
 
 function ENT:Initialize()
 
@@ -42,11 +43,23 @@ function ENT:Use(activator)
 
     if !activator:IsPlayer() then return end
 
+	self:EmitSound("containers/open" .. tostring(math.random(2)) .. ".wav")
+
 	net.Start("PlayerOpenContainer", false)
 		net.WriteEntity(self)
 		net.WriteString(self.Name)
 		net.WriteTable(self.Inventory, true)
 	net.Send(activator)
+
+	if self.PlayersSearched[activator:SteamID64()] == true then return end
+
+	for k, v in pairs(self.Inventory) do
+
+		activator:SetNWInt("ExperienceLooting", activator:GetNWInt("ExperienceLooting") + math.random(3, 8))
+
+	end
+
+	self.PlayersSearched[activator:SteamID64()] = true
 
 end
 

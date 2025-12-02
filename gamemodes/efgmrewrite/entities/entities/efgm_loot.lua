@@ -8,10 +8,14 @@ ENT.ItemChancePerRoll = 10
 ENT.LootType = 1
 ENT.ContainerLoot = {}
 ENT.ContainerName = ""
+ENT.LinkedContainer = NULL
+ENT.WaitingCooldown = false
+ENT.CooldownMin = 480
+ENT.CooldownMax = 780
 
 -- flags
 
-ENT.SpawnOnStart = false
+ENT.SpawnOnStart = false -- currently does nothing idrk why
 ENT.HasValidType = true
 
 function ENT:KeyValue(key, value)
@@ -63,9 +67,15 @@ function ENT:SelectItems()
         local data = {}
         data.count = math.Clamp(math.random(math.Round(def.stackSize / 6), def.stackSize), 1, def.stackSize)
 
-        if def.consumableType == "heal" or def.consumableType == "key" then
+        if def.consumableType == "heal" then
 
             data.durability = math.Clamp(math.random(math.Round(def.consumableValue / 4), def.consumableValue), 1, def.consumableValue)
+
+        end
+
+        if def.consumableType == "key" then
+
+            data.durability = def.consumableValue
 
         end
 
@@ -98,19 +108,71 @@ function ENT:SpawnContainer(tbl)
     container:SetAngles(self:GetAngles())
 	container:Spawn()
 	container:Activate()
+    container:SetLinkedEnt(self)
 	container:SetContainerData(self.ContainerLoot, self.ContainerName)
+    self.LinkedContainer = container
     if self.LootType >= 1 and self.LootType <= 6 then container:SetSkin(self.LootType - 1) end
 
     self:TriggerOutput("OnSpawn", nil, nil)
 
 end
 
-function ENT:AcceptInput(name, activator, caller, data)
+function ENT:BeginLootCooldown()
 
-	if name == "SpawnLoot" && self.HasValidType then
+    if !self.HasValidType then return end
+
+    if self.WaitingCooldown == true then return end
+
+    self.WaitingCooldown = true
+
+    timer.Simple(math.random(self.CooldownMin, self.CooldownMax), function()
+
+        if self.WaitingCooldown == false then return end
+
+        self.WaitingCooldown = false
 
         local items = self:SelectItems()
-        if items == nil then return end
+        if items == nil then self:BeginLootCooldown() return end
+
+        if self.LinkedContainer != NULL then
+
+            self.LinkedContainer:Remove()
+
+        end
+
+        self:SpawnContainer(items)
+
+    end )
+
+end
+
+
+function ENT:AcceptInput(name, activator, caller, data)
+
+    if !self.HasValidType then return end
+
+    -- map start
+    if name == "SpawnStartLoot" then
+
+        local items = self:SelectItems()
+        if items == nil then self:BeginLootCooldown() return end
+		self:SpawnContainer(items)
+
+	end
+
+    -- respawn
+	if name == "SpawnLoot" then
+
+        if self.LinkedContainer != NULL then
+
+            self.LinkedContainer:Remove()
+
+        end
+
+        self.WaitingCooldown = false
+
+        local items = self:SelectItems()
+        if items == nil then self:BeginLootCooldown() return end
 		self:SpawnContainer(items)
 
 	end

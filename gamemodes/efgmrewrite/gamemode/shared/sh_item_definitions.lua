@@ -7863,7 +7863,23 @@ function SpawnAllLoot()
     if SERVER then
 
         for _, ent in ipairs(ents.FindByName("efgm_loot")) do
+
+            ent:Fire("SpawnStartLoot", 0, 0)
+
+        end
+
+    end
+
+end
+
+function RespawnAllLoot()
+
+    if SERVER then
+
+        for _, ent in ipairs(ents.FindByName("efgm_loot")) do
+
             ent:Fire("SpawnLoot", 0, 0)
+
         end
 
     end

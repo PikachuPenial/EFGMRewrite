@@ -603,6 +603,8 @@ net.Receive("PlayerInventoryLootItemFromContainer", function(len, ply)
     local container = net.ReadEntity()
     local index = net.ReadUInt(16)
 
+    if container == nil then return end
+
     local newItem = table.Copy(container.Inventory[index])
 
     local def = EFGMITEMS[newItem.name]
