@@ -191,3 +191,18 @@ function ConsumeItemFromStash(itemIndex)
     Menu.ReloadStash()
 
 end
+
+function PinItemFromStash(itemIndex)
+
+    if !ply:CompareStatus(0) then return end
+
+    local item = playerStash[itemIndex]
+    if item == nil then return end
+
+    net.Start("PlayerStashPinItem", false)
+        net.WriteUInt(itemIndex, 16)
+    net.SendToServer()
+
+    Menu.ReloadStash()
+
+end

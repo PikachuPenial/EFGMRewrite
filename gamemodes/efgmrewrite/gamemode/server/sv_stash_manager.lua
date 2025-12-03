@@ -7,7 +7,7 @@ util.AddNetworkString("PlayerStashAddItemFromEquipped")
 util.AddNetworkString("PlayerStashTakeItemToInventory")
 util.AddNetworkString("PlayerStashEquipItem")
 util.AddNetworkString("PlayerStashConsumeItem")
-util.AddNetworkString("PlayerInventoryDeleteItem")
+util.AddNetworkString("PlayerStashPinItem")
 
 function AddItemToStash(ply, name, type, data)
 
@@ -257,6 +257,7 @@ net.Receive("PlayerStashTakeItemToInventory", function(len, ply)
     local item = DeleteItemFromStash(ply, itemIndex)
 
     if item == nil then return end
+    item.data.pin = nil
 
     FlowItemToInventory(ply, item.name, item.type, item.data)
 
@@ -277,6 +278,8 @@ net.Receive("PlayerStashEquipItem", function(len, ply)
 
     local item = ply.stash[itemIndex]
     if item == nil then return end
+
+    item.data.pin = nil
 
     if AmountInInventory(ply.weaponSlots[equipSlot], item.name) > 0 then return end
 
@@ -338,6 +341,31 @@ net.Receive("PlayerStashConsumeItem", function(len, ply)
 
     UpdateStashString(ply)
     ply:SetNWInt("StashCount", #ply.stash)
+
+end)
+
+net.Receive("PlayerStashPinItem", function(len, ply)
+
+    if !ply:CompareStatus(0) then return end
+
+    local itemIndex = net.ReadUInt(16)
+
+    if ply.stash[itemIndex].data.pin != 1 then
+
+        ply.stash[itemIndex].data.pin = 1
+
+    else
+
+        ply.stash[itemIndex].data.pin = nil
+
+    end
+
+    net.Start("PlayerStashUpdateItem", false)
+    net.WriteTable(ply.stash[itemIndex].data)
+    net.WriteUInt(itemIndex, 16)
+    net.Send(ply)
+
+    UpdateStashString(ply)
 
 end)
 

@@ -5069,7 +5069,11 @@ function Menu.ReloadStash(itemSearch)
 
     table.sort(plyStashItems, function(a, b)
 
-        if (EFGMITEMS[a.name].sizeX * EFGMITEMS[a.name].sizeY) != (EFGMITEMS[b.name].sizeX * EFGMITEMS[b.name].sizeY) then
+        if (a.data.pin or 0) != (b.data.pin or 0) then
+
+            return (a.data.pin or 0) > (b.data.pin or 0)
+
+        elseif (EFGMITEMS[a.name].sizeX * EFGMITEMS[a.name].sizeY) != (EFGMITEMS[b.name].sizeX * EFGMITEMS[b.name].sizeY) then
 
             return (EFGMITEMS[a.name].sizeX * EFGMITEMS[a.name].sizeY) > (EFGMITEMS[b.name].sizeX * EFGMITEMS[b.name].sizeY)
 
@@ -5138,6 +5142,8 @@ function Menu.ReloadStash(itemSearch)
 
         end
 
+        local pinIcon = Material("icons/pin_icon.png")
+
         function item:Paint(w, h)
 
             surface.SetDrawColor(Color(255, 255, 255, 2))
@@ -5197,6 +5203,14 @@ function Menu.ReloadStash(itemSearch)
             if v.data.tag then
 
                 draw.SimpleTextOutlined(v.data.tag, tagFont, w - EFGM.MenuScale(3), tagH, MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            end
+
+            if v.data.pin == 1 then
+
+                surface.SetDrawColor(255, 255, 255, 255)
+                surface.SetMaterial(pinIcon)
+                surface.DrawTexturedRect(w - EFGM.MenuScale(15), h - EFGM.MenuScale(18), EFGM.MenuScale(16), EFGM.MenuScale(16))
 
             end
 
@@ -5461,6 +5475,27 @@ function Menu.ReloadStash(itemSearch)
 
             end
 
+            contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
+            local itemPinButton = vgui.Create("DButton", contextMenu)
+            itemPinButton:Dock(TOP)
+            itemPinButton:SetSize(0, EFGM.MenuScale(25))
+            if v.data.pin == 1 then itemPinButton:SetText("UNPIN") else itemPinButton:SetText("PIN") end
+
+            itemPinButton.OnCursorEntered = function(s)
+
+                surface.PlaySound("ui/element_hover.wav")
+
+            end
+
+            function itemPinButton:DoClick()
+
+                surface.PlaySound("ui/element_select.wav")
+                PinItemFromStash(v.id)
+                contextMenu:Remove()
+                stashItems:InvalidateLayout()
+
+            end
+
             if actions.deletable then
 
                 contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
@@ -5537,7 +5572,11 @@ function Menu.ReloadMarketStash(itemSearch)
 
     table.sort(marketPlyStashItems, function(a, b)
 
-        if (EFGMITEMS[a.name].sizeX * EFGMITEMS[a.name].sizeY) != (EFGMITEMS[b.name].sizeX * EFGMITEMS[b.name].sizeY) then
+        if (a.data.pin or 0) != (b.data.pin or 0) then
+
+            return (a.data.pin or 0) > (b.data.pin or 0)
+
+        elseif (EFGMITEMS[a.name].sizeX * EFGMITEMS[a.name].sizeY) != (EFGMITEMS[b.name].sizeX * EFGMITEMS[b.name].sizeY) then
 
             return (EFGMITEMS[a.name].sizeX * EFGMITEMS[a.name].sizeY) > (EFGMITEMS[b.name].sizeX * EFGMITEMS[b.name].sizeY)
 
@@ -5608,6 +5647,8 @@ function Menu.ReloadMarketStash(itemSearch)
 
         end
 
+        local pinIcon = Material("icons/pin_icon.png")
+
         function item:Paint(w, h)
 
             surface.SetDrawColor(Color(255, 255, 255, 2))
@@ -5667,6 +5708,14 @@ function Menu.ReloadMarketStash(itemSearch)
             if v.data.tag then
 
                 draw.SimpleTextOutlined(v.data.tag, tagFont, w - EFGM.MenuScale(3), tagH, MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            end
+
+            if v.data.pin == 1 then
+
+                surface.SetDrawColor(255, 255, 255, 255)
+                surface.SetMaterial(pinIcon)
+                surface.DrawTexturedRect(w - EFGM.MenuScale(15), h - EFGM.MenuScale(18), EFGM.MenuScale(16), EFGM.MenuScale(16))
 
             end
 
@@ -10763,23 +10812,6 @@ function Menu.OpenTab.Settings()
     lodDistance:SetMin(0.3)
     lodDistance:SetMax(3)
     lodDistance:SetDecimals(1)
-
-    local soundQuality = vgui.Create("DPanel", visuals)
-    soundQuality:Dock(TOP)
-    soundQuality:SetSize(0, EFGM.MenuScale(50))
-    function soundQuality:Paint(w, h)
-
-        draw.SimpleTextOutlined("Sound Calculation Quality", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-    end
-
-    local soundQualitySlider = vgui.Create("DNumSlider", soundQuality)
-    soundQualitySlider:SetPos(EFGM.MenuScale(35), EFGM.MenuScale(30))
-    soundQualitySlider:SetSize(EFGM.MenuScale(200), EFGM.MenuScale(15))
-    soundQualitySlider:SetConVar("arc9_indoorsound")
-    soundQualitySlider:SetMin(0)
-    soundQualitySlider:SetMax(2)
-    soundQualitySlider:SetDecimals(0)
 
     -- account
 
