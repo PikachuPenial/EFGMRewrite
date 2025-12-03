@@ -10,6 +10,7 @@ Menu.MouseX = 0
 Menu.MouseY = 0
 Menu.Player = LocalPlayer()
 Menu.IsOpen = false
+Menu.PerferredShopDestination = nil
 
 hook.Add("OnReloaded", "Reload", function()
 
@@ -127,6 +128,8 @@ function Menu:Initialize(openTo, container)
     end
 
     function menuFrame:OnClose()
+
+        Menu.PerferredShopDestination = nil
 
         if Menu.ActiveTab == "Match" then
 
@@ -1698,7 +1701,8 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
     local stashText = "STASH"
     local stashTextSize = surface.GetTextSize(stashText)
 
-    local transactionDestination = sendTo or "stash"
+    local transactionDestination = sendTo or Menu.PerferredShopDestination or "stash"
+    Menu.PerferredShopDestination = transactionDestination
 
     surface.PlaySound("ui/element_select.wav")
 
@@ -1800,11 +1804,13 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
 
             sendToStashBox:SetChecked(false)
             transactionDestination = "inv"
+            Menu.PerferredShopDestination = "inv"
 
         else
 
             sendToStashBox:SetChecked(true)
             transactionDestination = "stash"
+            Menu.PerferredShopDestination = "stash"
 
         end
 
@@ -1816,11 +1822,13 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
 
             sendToInventoryBox:SetChecked(false)
             transactionDestination = "stash"
+            Menu.PerferredShopDestination = "stash"
 
         else
 
             sendToInventoryBox:SetChecked(true)
             transactionDestination = "inv"
+            Menu.PerferredShopDestination = "inv"
 
         end
 
@@ -7863,7 +7871,7 @@ function Menu.OpenTab.Market()
                 function item:DoClick()
 
                     if !v.canPurchase then return end
-                    Menu.ConfirmPurchase(v.id, "stash", false)
+                    Menu.ConfirmPurchase(v.id, nil, false)
 
                 end
 
@@ -7985,7 +7993,7 @@ function Menu.OpenTab.Market()
 
                         function itemBuyButton:DoClick()
 
-                            Menu.ConfirmPurchase(v.id, "stash", false)
+                            Menu.ConfirmPurchase(v.id, nil, false)
                             contextMenu:KillFocus()
 
                         end
