@@ -51,7 +51,7 @@ function ENT:Use(activator)
 		net.WriteTable(self.Inventory, true)
 	net.Send(activator)
 
-	if self.PlayersSearched[activator:SteamID64()] == true then return end
+	if self.PlayersSearched[activator:SteamID64()] == activator:GetNWInt("Level", 0) then return end
 
 	activator:SetNWInt("RaidContainersLooted", activator:GetNWInt("RaidContainersLooted") + 1)
 
@@ -61,13 +61,7 @@ function ENT:Use(activator)
 
 	end
 
-	self.PlayersSearched[activator:SteamID64()] = true
-
-end
-
-function ENT:ResetLootedStatus(ply)
-
-	if self.PlayersSearched[ply:SteamID64()] == true then self.PlayersSearched[ply:SteamID64()] = false end
+	self.PlayersSearched[activator:SteamID64()] = activator:GetNWInt("Level", 0)
 
 end
 

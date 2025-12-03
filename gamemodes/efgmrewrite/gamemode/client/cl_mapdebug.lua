@@ -12,7 +12,7 @@
 
 -- Run "cl_leveloverview 0" or reload map
 
-
+ 
 -- To generate the icons and align them to the map image:
 
 
