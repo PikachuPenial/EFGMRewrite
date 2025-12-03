@@ -443,11 +443,11 @@ net.Receive("CreateDeathInformation", function()
     local timeInRaid = net.ReadInt(16)
 
     local statsTbl = {
-        ["DAMAGE DEALT:"] = ply:GetNWInt("RaidDamageDealt", 0),
-        ["DAMAGE RECEIVED FROM OPERATORS:"] = ply:GetNWInt("RaidDamageRecievedPlayers", 0),
-        ["DAMAGE RECEIVED FROM FALLING:"] = ply:GetNWInt("RaidDamageRecievedFalling", 0),
-        ["DAMAGE RECEIVED:"] = ply:GetNWInt("RaidDamageRecievedPlayers", 0) + ply:GetNWInt("RaidDamageRecievedFalling", 0),
-        ["HEALTH HEALED:"] = ply:GetNWInt("RaidHealthHealed", 0),
+        ["DAMAGE DEALT:"] = math.Round(ply:GetNWInt("RaidDamageDealt", 0)),
+        ["DAMAGE RECEIVED FROM OPERATORS:"] = math.Round(ply:GetNWInt("RaidDamageRecievedPlayers", 0)),
+        ["DAMAGE RECEIVED FROM FALLING:"] = math.Round(ply:GetNWInt("RaidDamageRecievedFalling", 0)),
+        ["DAMAGE RECEIVED:"] = math.Round(ply:GetNWInt("RaidDamageRecievedPlayers", 0) + ply:GetNWInt("RaidDamageRecievedFalling", 0)),
+        ["HEALTH HEALED:"] = math.Round(ply:GetNWInt("RaidHealthHealed", 0)),
         ["ITEMS LOOTED:"] = ply:GetNWInt("RaidItemsLooted", 0),
         ["CONTAINERS OPENED:"] = ply:GetNWInt("RaidContainersLooted", 0),
         ["OPERATORS KILLED:"] = ply:GetNWInt("RaidKills", 0),
@@ -729,7 +729,7 @@ net.Receive("CreateDeathInformation", function()
 
         end
 
-        if ply == killedBy then
+        if ply != killedBy then
 
             AttackerPanel = vgui.Create("DPanel", DeathPopup)
             AttackerPanel:SetSize(EFGM.MenuScale(500), EFGM.MenuScale(800))
@@ -1075,11 +1075,11 @@ net.Receive("CreateExtractionInformation", function()
     local timeInRaid = net.ReadInt(16)
 
     local statsTbl = {
-        ["DAMAGE DEALT:"] = ply:GetNWInt("RaidDamageDealt", 0),
-        ["DAMAGE RECEIVED FROM OPERATORS:"] = ply:GetNWInt("RaidDamageRecievedPlayers", 0),
-        ["DAMAGE RECEIVED FROM FALLING:"] = ply:GetNWInt("RaidDamageRecievedFalling", 0),
-        ["DAMAGE RECEIVED:"] = ply:GetNWInt("RaidDamageRecievedPlayers", 0) + ply:GetNWInt("RaidDamageRecievedFalling", 0),
-        ["HEALTH HEALED:"] = ply:GetNWInt("RaidHealthHealed", 0),
+        ["DAMAGE DEALT:"] = math.Round(ply:GetNWInt("RaidDamageDealt", 0)),
+        ["DAMAGE RECEIVED FROM OPERATORS:"] = math.Round(ply:GetNWInt("RaidDamageRecievedPlayers", 0)),
+        ["DAMAGE RECEIVED FROM FALLING:"] = math.Round(ply:GetNWInt("RaidDamageRecievedFalling", 0)),
+        ["DAMAGE RECEIVED:"] = math.Round(ply:GetNWInt("RaidDamageRecievedPlayers", 0) + ply:GetNWInt("RaidDamageRecievedFalling", 0)),
+        ["HEALTH HEALED:"] = math.Round(ply:GetNWInt("RaidHealthHealed", 0)),
         ["ITEMS LOOTED:"] = ply:GetNWInt("RaidItemsLooted", 0),
         ["CONTAINERS OPENED:"] = ply:GetNWInt("RaidContainersLooted", 0),
         ["OPERATORS KILLED:"] = ply:GetNWInt("RaidKills", 0),
