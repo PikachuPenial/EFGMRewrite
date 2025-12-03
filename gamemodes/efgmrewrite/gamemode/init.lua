@@ -56,8 +56,8 @@ function GM:PlayerSpawn(ply)
 
 	ply:SetGravity(.72)
 	ply:SetMaxHealth(100)
-	ply:SetRunSpeed(215)
-	ply:SetWalkSpeed(130)
+	ply:SetRunSpeed(220)
+	ply:SetWalkSpeed(135)
 	ply:SetJumpPower(140)
 
 	ply:SetLadderClimbSpeed(120)
