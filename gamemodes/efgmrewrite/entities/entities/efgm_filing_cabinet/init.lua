@@ -62,10 +62,11 @@ function ENT:Use(activator)
 
 	if self.PlayersSearched[activator:SteamID64()] == true then return end
 
+	activator:SetNWInt("RaidContainersLooted", activator:GetNWInt("RaidContainersLooted") + 1)
+
 	for k, v in pairs(self.Inventory) do
 
 		activator:SetNWInt("ExperienceLooting", activator:GetNWInt("ExperienceLooting") + math.random(3, 8))
-		activator:SetNWInt("RaidContainersLooted", activator:GetNWInt("RaidContainersLooted") + 1)
 
 	end
 

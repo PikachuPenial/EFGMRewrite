@@ -306,6 +306,8 @@ local function Regeneration()
 
 					if (ply:Health() < 100 or healthRegenSpeed < 0) then
 
+						ply:SetNWInt("HealthHealed", ply:GetNWInt("HealthHealed") + add)
+						ply:SetNWInt("RaidHealthHealed", ply:GetNWInt("RaidHealthHealed") + add)
 						ply:SetHealth(math.min(ply:Health() + add, 100))
 
 					end

@@ -226,6 +226,29 @@ function RenderExtracts(ply)
     extracts:AlphaTo(0, 1, 4.65, function() extracts:Remove() end)
 end
 
+-- intro
+function RenderRaidIntro(ply)
+    if IsValid(intro) then return end
+
+    intro = vgui.Create("DPanel")
+    intro:SetSize(ScrW(), ScrH())
+    intro:SetPos(0, 0)
+    intro:SetAlpha(0)
+    intro:MoveToFront()
+
+    intro.Paint = function(self, w, h)
+        if not ply:Alive() then return end
+
+        draw.DrawText("Raid #" .. ply:GetNWInt("RaidsPlayed", 0), "BenderAmmoCount", EFGM.ScreenScale(20), EFGM.ScreenScale(21), Color(255, 255, 255, 200), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+        draw.DrawText(os.date("%H:%M:%S"), "BenderAmmoCount", EFGM.ScreenScale(20), EFGM.ScreenScale(50), Color(255, 255, 255, 200), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+        draw.DrawText("Level " .. ply:GetNWInt("Level", 0) .. ", Operator " .. ply:GetName(), "BenderAmmoCount", EFGM.ScreenScale(20), EFGM.ScreenScale(80), Color(255, 255, 255, 200), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+        draw.DrawText("Garkov, " .. MAPNAMES[game.GetMap()] or "", "BenderAmmoCount", EFGM.ScreenScale(20), EFGM.ScreenScale(110), Color(255, 255, 255, 200), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+    end
+
+    intro:AlphaTo(255, 0.35, 0, nil)
+    intro:AlphaTo(0, 1, 5.65, function() intro:Remove() end)
+end
+
 -- compass
 function RenderCompass(ply)
     -- no need to create the compass panel if it already exists
@@ -342,6 +365,10 @@ net.Receive("PlayerRaidTransition", function()
     RaidTransition:AlphaTo(255, 0.5, 0, nil)
     RaidTransition:AlphaTo(0, 0.35, 1, function() RaidTransition:Remove() end)
 
+    timer.Simple(1.5, function()
+        RenderRaidIntro(ply)
+    end)
+
     timer.Simple(2.5, function()
         RenderExtracts(ply)
     end)
@@ -419,10 +446,13 @@ net.Receive("CreateDeathInformation", function()
         ["DAMAGE DEALT:"] = ply:GetNWInt("RaidDamageDealt", 0),
         ["DAMAGE RECEIVED FROM OPERATORS:"] = ply:GetNWInt("RaidDamageRecievedPlayers", 0),
         ["DAMAGE RECEIVED FROM FALLING:"] = ply:GetNWInt("RaidDamageRecievedFalling", 0),
-        ["DAMAGE RECEIVED:"] = statsTbl["DAMAGE RECEIVED FROM OPERATORS:"] + statsTbl["DAMAGE RECEIVED FROM FALLING:"],
+        ["DAMAGE RECEIVED:"] = ply:GetNWInt("RaidDamageRecievedPlayers", 0) + ply:GetNWInt("RaidDamageRecievedFalling", 0),
+        ["HEALTH HEALED:"] = ply:GetNWInt("RaidHealthHealed", 0),
         ["ITEMS LOOTED:"] = ply:GetNWInt("RaidItemsLooted", 0),
         ["CONTAINERS OPENED:"] = ply:GetNWInt("RaidContainersLooted", 0),
         ["OPERATORS KILLED:"] = ply:GetNWInt("RaidKills", 0),
+        ["SHOTS FIRED:"] = ply:GetNWInt("RaidShotsFired", 0),
+        ["SHOTS HIT:"] = ply:GetNWInt("RaidShotsHit", 0),
     }
     table.SortByKey(statsTbl)
 
@@ -699,7 +729,7 @@ net.Receive("CreateDeathInformation", function()
 
         end
 
-        if ply != killedBy then
+        if ply == killedBy then
 
             AttackerPanel = vgui.Create("DPanel", DeathPopup)
             AttackerPanel:SetSize(EFGM.MenuScale(500), EFGM.MenuScale(800))
@@ -764,7 +794,26 @@ net.Receive("CreateDeathInformation", function()
                 surface.DrawRect(0, 0, w, h)
 
                 draw.SimpleTextOutlined(killedBy:GetName(), "PuristaBold24", EFGM.MenuScale(90), EFGM.MenuScale(0), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-                draw.SimpleTextOutlined("from " .. killedFrom .. "m away", "PuristaBold16", EFGM.MenuScale(90), EFGM.MenuScale(18), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                if killedFrom != 0 then
+
+                    draw.SimpleTextOutlined("from " .. killedFrom .. "m away", "PuristaBold16", EFGM.MenuScale(90), EFGM.MenuScale(18), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                end
+
+                if hitGroup != 0 and HITGROUPS[hitGroup] != nil then
+
+                    if killedFrom != 0 then
+
+                        draw.SimpleTextOutlined("in the " .. HITGROUPS[hitGroup], "PuristaBold16", EFGM.MenuScale(90), EFGM.MenuScale(30), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                    else
+
+                        draw.SimpleTextOutlined("in the " .. HITGROUPS[hitGroup], "PuristaBold16", EFGM.MenuScale(90), EFGM.MenuScale(18), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                    end
+
+                end
 
             end
 
@@ -1029,10 +1078,13 @@ net.Receive("CreateExtractionInformation", function()
         ["DAMAGE DEALT:"] = ply:GetNWInt("RaidDamageDealt", 0),
         ["DAMAGE RECEIVED FROM OPERATORS:"] = ply:GetNWInt("RaidDamageRecievedPlayers", 0),
         ["DAMAGE RECEIVED FROM FALLING:"] = ply:GetNWInt("RaidDamageRecievedFalling", 0),
-        ["DAMAGE RECEIVED:"] = statsTbl["DAMAGE RECEIVED FROM OPERATORS:"] + statsTbl["DAMAGE RECEIVED FROM FALLING:"],
+        ["DAMAGE RECEIVED:"] = ply:GetNWInt("RaidDamageRecievedPlayers", 0) + ply:GetNWInt("RaidDamageRecievedFalling", 0),
+        ["HEALTH HEALED:"] = ply:GetNWInt("RaidHealthHealed", 0),
         ["ITEMS LOOTED:"] = ply:GetNWInt("RaidItemsLooted", 0),
         ["CONTAINERS OPENED:"] = ply:GetNWInt("RaidContainersLooted", 0),
         ["OPERATORS KILLED:"] = ply:GetNWInt("RaidKills", 0),
+        ["SHOTS FIRED:"] = ply:GetNWInt("RaidShotsFired", 0),
+        ["SHOTS HIT:"] = ply:GetNWInt("RaidShotsHit", 0),
     }
     table.SortByKey(statsTbl)
 

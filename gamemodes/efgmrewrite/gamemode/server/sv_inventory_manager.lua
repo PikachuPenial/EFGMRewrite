@@ -571,6 +571,8 @@ net.Receive("PlayerInventoryConsumeItem", function(len, ply)
         if durability < healAmount then healAmount = durability end
 
         ply:SetHealth(math.min(ply:Health() + healAmount, 100))
+        ply:SetNWInt("HealthHealed", ply:GetNWInt("HealthHealed") + healAmount)
+        ply:SetNWInt("RaidHealthHealed", ply:GetNWInt("RaidHealthHealed") + healAmount)
         ply.inventory[itemIndex].data.durability = durability - healAmount
 
         if ply.inventory[itemIndex].data.durability > 0 then

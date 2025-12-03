@@ -9382,33 +9382,36 @@ function Menu.OpenTab.Stats()
 
     -- only temporary, I gotta find a way to automate this shit
 
-    local stats = {}
+    local statsTbl = {}
 
-    stats.Level = Menu.Player:GetNWInt("Level")
-    stats.Experience = Menu.Player:GetNWInt("Experience")
-    stats.MoneyEarned = Menu.Player:GetNWInt("MoneyEarned")
-    stats.MoneySpent = Menu.Player:GetNWInt("MoneySpent")
-    stats.Time = Menu.Player:GetNWInt("Time")
-    stats.StashValue = Menu.Player:GetNWInt("StashValue")
+    statsTbl.Level = Menu.Player:GetNWInt("Level")
+    statsTbl.Experience = Menu.Player:GetNWInt("Experience")
+    statsTbl.MoneyEarned = Menu.Player:GetNWInt("MoneyEarned")
+    statsTbl.MoneySpent = Menu.Player:GetNWInt("MoneySpent")
+    statsTbl.Time = Menu.Player:GetNWInt("Time")
+    statsTbl.StashValue = Menu.Player:GetNWInt("StashValue")
 
-    stats.Kills = Menu.Player:GetNWInt("Kills")
-    stats.Deaths = Menu.Player:GetNWInt("Deaths")
-    stats.Suicides = Menu.Player:GetNWInt("Suicides")
-    stats.DamageDealt = Menu.Player:GetNWInt("DamageDealt")
-    stats.DamageRecieved = Menu.Player:GetNWInt("DamageRecieved")
-    stats.DamageHealed = Menu.Player:GetNWInt("DamageHealed")
-    stats.Headshots = Menu.Player:GetNWInt("Headshots")
-    stats.FarthestKill = Menu.Player:GetNWInt("FarthestKill")
-    stats.Extractions = Menu.Player:GetNWInt("Extractions")
-    stats.Quits = Menu.Player:GetNWInt("Quits")
-    stats.RaidsPlayed = Menu.Player:GetNWInt("RaidsPlayed")
+    statsTbl.Kills = Menu.Player:GetNWInt("Kills")
+    statsTbl.Deaths = Menu.Player:GetNWInt("Deaths")
+    statsTbl.Suicides = Menu.Player:GetNWInt("Suicides")
+    statsTbl.DamageDealt = Menu.Player:GetNWInt("DamageDealt")
+    statsTbl.DamageRecieved = Menu.Player:GetNWInt("DamageRecieved")
+    statsTbl.DamageHealed = Menu.Player:GetNWInt("DamageHealed")
+    statsTbl.ShotsFired = Menu.Player:GetNWInt("ShotsFired")
+    statsTbl.ShotsHit = Menu.Player:GetNWInt("ShotsHit")
+    statsTbl.Headshots = Menu.Player:GetNWInt("Headshots")
+    statsTbl.FarthestKill = Menu.Player:GetNWInt("FarthestKill")
 
-    stats.CurrentKillStreak = Menu.Player:GetNWInt("CurrentKillStreak") 
-    stats.BestKillStreak = Menu.Player:GetNWInt("BestKillStreak")
-    stats.CurrentExtractionStreak = Menu.Player:GetNWInt("CurrentExtractionStreak")
-    stats.BestExtractionStreak = Menu.Player:GetNWInt("BestExtractionStreak")
+    statsTbl.Extractions = Menu.Player:GetNWInt("Extractions")
+    statsTbl.Quits = Menu.Player:GetNWInt("Quits")
+    statsTbl.RaidsPlayed = Menu.Player:GetNWInt("RaidsPlayed")
 
-    for k, v in SortedPairs(stats) do
+    statsTbl.CurrentKillStreak = Menu.Player:GetNWInt("CurrentKillStreak")
+    statsTbl.BestKillStreak = Menu.Player:GetNWInt("BestKillStreak")
+    statsTbl.CurrentExtractionStreak = Menu.Player:GetNWInt("CurrentExtractionStreak")
+    statsTbl.BestExtractionStreak = Menu.Player:GetNWInt("BestExtractionStreak")
+
+    for k, v in SortedPairs(statsTbl) do
 
         local statEntry = vgui.Create("DPanel", importantStats)
         statEntry:Dock(TOP)

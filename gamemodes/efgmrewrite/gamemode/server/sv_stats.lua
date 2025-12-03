@@ -20,7 +20,9 @@ function Stats.GetAll(ply)
     tbl["Suicides"] = ply:GetNWInt("Suicides")
     tbl["DamageDealt"] = ply:GetNWInt("DamageDealt")
     tbl["DamageRecieved"] = ply:GetNWInt("DamageRecieved")
-    tbl["DamageHealed"] = ply:GetNWInt("DamageHealed")
+    tbl["HealthHealed"] = ply:GetNWInt("HealthHealed")
+    tbl["ShotsFired"] = ply:GetNWInt("ShotsFired")
+    tbl["ShotsHit"] = ply:GetNWInt("ShotsHit")
     tbl["Headshots"] = ply:GetNWInt("Headshots")
     tbl["FarthestKill"] = ply:GetNWInt("FarthestKill")
 
@@ -44,9 +46,12 @@ function ResetRaidStats(ply)
     ply:SetNWInt("RaidDamageDealt", 0)
     ply:SetNWInt("RaidDamageRecievedPlayers", 0)
     ply:SetNWInt("RaidDamageRecievedFalling", 0)
+    ply:SetNWInt("RaidHealthHealed", 0)
     ply:SetNWInt("RaidItemsLooted", 0)
     ply:SetNWInt("RaidContainersLooted", 0)
     ply:SetNWInt("RaidKills", 0)
+    ply:SetNWInt("RaidShotsFired", 0)
+    ply:SetNWInt("RaidShotsHit", 0)
 
 end
 

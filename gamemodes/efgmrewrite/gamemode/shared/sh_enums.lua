@@ -43,13 +43,13 @@ WEAPONSLOTS = {
 }
 
 HITGROUPS = {
-    HITGROUP_HEAD = "HEAD",
-    HITGROUP_CHEST = "CHEST",
-    HITGROUP_STOMACH = "STOMACH",
-    HITGROUP_LEFTARM = "LEFT ARM",
-    HITGROUP_RIGHTARM = "RIGHT ARM",
-    HITGROUP_LEFTLEG = "LEFT LEG",
-    HITGROUP_RIGHTLEG = "RIGHT LEG",
+    [1] = "HEAD, EYES",
+    [2] = "CHEST",
+    [3] = "STOMACH",
+    [4] = "LEFT ARM",
+    [5] = "RIGHT ARM",
+    [6] = "LEFT LEG",
+    [7] = "RIGHT LEG",
 }
 
 revCat = {}

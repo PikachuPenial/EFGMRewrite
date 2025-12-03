@@ -587,6 +587,405 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
         return true
     end
 
+    local cancelmults = ARC9.CancelMultipliers[engine.ActiveGamemode()] or ARC9.CancelMultipliers[1]
+
+    function SWEP:DoPrimaryAttack()
+
+        if self.FireInterruptInspect and self:GetInspecting() then self:CancelInspect() end
+        if self:StillWaiting() then return end
+        if self.NoFireDuringSighting and (self:GetInSights() and self:GetSightAmount() < 0.8 or false) then return end
+
+        local currentFiremode = self:GetCurrentFiremode()
+        local burstCount = self:GetBurstCount()
+
+        if currentFiremode > 0 and burstCount >= currentFiremode then return end
+
+        local clip = self:GetLoadedClip()
+
+        if self:GetProcessedValue("BottomlessClip", true) then
+            self:RestoreClip(math.huge)
+        end
+
+        if !self:HasAmmoInClip() then
+            if self:GetUBGL() and !self:GetProcessedValue("UBGLInsteadOfSights", true) then
+                if self:GetMaxClip2() < 2 then -- mytton doesn't like auto ubgl reload
+                    if self:CanReload() then
+                        self:Reload()
+                    else
+                        self:ToggleUBGL(false)
+                        self:SetNeedTriggerPress(true)
+                        self:ExitSights()
+                    end
+                end
+
+                return
+            else
+                self:DryFire()
+                return
+            end
+        end
+
+        if !self:GetProcessedValue("CanFireUnderwater", true) then
+            if bit.band(util.PointContents(self:GetShootPos()), CONTENTS_WATER) == CONTENTS_WATER then
+                self:DryFire()
+                return
+            end
+        end
+
+        self:SetBaseSettings()
+
+        if self:RunHook("HookP_BlockFire") then return end
+
+        if self:GetJammed() or self:GetHeatLockout() then
+            self:DryFire()
+            return
+        end
+
+        self:RunHook("Hook_PrimaryAttack")
+
+        self:SetEmptyReload(false)
+        self:TakeAmmo()
+
+        local owner = self:GetOwner()
+
+        if SERVER and IsValid(owner) and owner:IsPlayer() and !owner:CompareStatus(0) then
+
+            owner:SetNWInt("ShotsFired", owner:GetNWInt("ShotsFired") + 1)
+            owner:SetNWInt("RaidShotsFired", owner:GetNWInt("RaidShotsFired") + 1)
+
+        end
+
+        local triggerStartFireAnim = self:GetProcessedValue("TriggerStartFireAnim", true)
+        local nthShot = self:GetNthShot()
+
+        if self:GetProcessedValue("DoFireAnimation", true) and !triggerStartFireAnim then
+            local anim = "fire"
+
+            if self:GetProcessedValue("Akimbo", true) then
+                if self:GetProcessedValue( "AkimboBoth", true) then
+                    anim = "fire_both"
+                elseif nthShot % 2 == 0 then
+                    anim = "fire_right"
+                else
+                    anim = "fire_left"
+                end
+            end
+
+            local banim = anim
+
+            if !self.SuppressCumulativeShoot then
+                for i = 1, burstCount + 1 do
+                    if self:HasAnimation(anim .. "_" .. i, true) then
+                        banim = anim .. "_" .. i
+                    end
+                end
+            end
+
+            self:PlayAnimation(banim, 1, false, true)
+        end
+
+        local clip1 = self:Clip1()
+
+        self:SetLoadedRounds(clip1)
+
+        local manualaction = self:GetProcessedValue("ManualAction", true)
+
+        if !self:GetProcessedValue("NoShellEject", true) and !(manualaction and !self:GetProcessedValue("ManualActionEjectAnyway", true)) then
+            local ejectdelay = self:GetProcessedValue("EjectDelay", true)
+
+            if ejectdelay == 0 then
+                self:DoEject()
+            else
+                self:SetTimer(ejectdelay, function()
+                    self:DoEject()
+                end)
+            end
+        end
+
+        self:SetAfterShot(true)
+
+        self:DoShootSounds()
+
+        self:DoPlayerAnimationEvent(self:GetProcessedValue("AnimShoot", true))
+
+        local delay = 60 / self:GetProcessedValue( "RPM")
+        local time = CurTime()
+
+        local curatt = self:GetNextPrimaryFire()
+        local diff = time - curatt
+
+        if diff > engine.TickInterval() or diff < 0 then
+            curatt = time
+        end
+
+        self:SetNextPrimaryFire(curatt + delay)
+
+        self:SetNthShot(nthShot + 1)
+
+        self:DoEffects()
+
+        if self:HoldingBreath() then
+            self:SetBreath(math.max(0, self:GetBreath() - math.max(10, self:GetProcessedValue(  "HoldBreathTime", true) / 20)))
+        end
+
+        -- ewww
+        if self:GetProcessedValue( "AkimboBoth", true) then
+            self:SetNthShot(nthShot + 2)
+            self:DoEffects()
+            if !self:GetProcessedValue("NoShellEject", true) and !(manualaction and !self:GetProcessedValue("ManualActionEjectAnyway", true)) then
+                local ejectdelay = self:GetProcessedValue("EjectDelay", true)
+                if ejectdelay == 0 then
+                    self:DoEject()
+                else
+                    self:SetTimer(ejectdelay, function()
+                        self:DoEject()
+                    end)
+                end
+            end
+            self:SetNthShot(nthShot + 1)
+        end
+
+        if sp then
+            if SERVER then
+                self:CallOnClient("SInputRumble")
+            end
+        else
+            if CLIENT then
+                self:SInputRumble()
+            end
+        end
+
+        local spread = self:GetProcessedValue("Spread")
+
+        spread = math.Max(spread, 0)
+
+        local sp, sa = self:GetShootPos()
+
+        if IsValid(self:GetLockOnTarget()) and self:GetLockedOn() and self:GetProcessedValue("LockOnAutoaim", true) then
+            sa = (self:GetLockOnTarget():EyePos() - sp):Angle()
+        end
+
+        self:DoProjectileAttack(sp, sa, spread)
+
+        self:ApplyRecoil()
+        self:DoVisualRecoil()
+
+        if burstCount == 0 and currentFiremode > 1 and self:GetProcessedValue("RunawayBurst", true) then
+            if !self:GetProcessedValue("AutoBurst", true) then
+                self:SetNeedTriggerPress(true)
+            end
+        end
+
+        if manualaction then
+            nthShot = nthShot + 1
+            if clip1 > 0 or !self:GetProcessedValue("ManualActionNoLastCycle", true) then
+                if nthShot % self:GetProcessedValue("ManualActionChamber", true) == 0 then
+                    self:SetNeedsCycle(true)
+                end
+            end
+        end
+        -- print("shot = " .. nthShot)
+
+        if currentFiremode == 1 or clip == 0 then
+            self:SetNeedTriggerPress(true)
+        end
+
+        self:DoHeat()
+
+        if !self:GetUBGL() then
+            if !manualaction or manualaction and !self.MalfunctionCycle then
+                self:RollJam()
+            end
+        end
+
+        if clip1 == 0 then
+            self:SetNthShot(0)
+        end
+
+        if self:GetProcessedValue("TriggerDelayRepeat", true) and self:GetOwner():KeyDown(IN_ATTACK) and currentFiremode != 1 then
+            self:SetTriggerDelay(time + self:GetProcessedValue("TriggerDelayTime"))
+            if triggerStartFireAnim then
+                self:PlayAnimation("fire")
+            else
+                self:PlayAnimation("trigger")
+            end
+            self:SetPrimedAttack(true)
+        end
+
+        self:SetBurstCount(burstCount + 1)
+    end
+
+    local runHook = {}
+    local bodyDamageCancel = GetConVar("arc9_mod_bodydamagecancel")
+    local arc9_npc_equality = GetConVar("arc9_npc_equality")
+
+    local soundTab2 = {
+        name = "impact"
+    }
+
+    function SWEP:AfterShotFunction(tr, dmg, range, penleft, alreadypenned, secondary)
+        if !IsFirstTimePredicted() and !sp then return end
+
+        local lastsecondary = self:GetUBGL()
+
+        self:SetUBGL(secondary)
+
+        dmg:SetDamageType(self:GetProcessedValue( "DamageType", true) or DMG_BULLET)
+
+        local dmgv = self:GetDamageAtRange(range)
+        local dmgvoriginal = dmgv
+
+        runHook.tr = tr
+        runHook.dmg = dmg
+        runHook.range = range
+        runHook.penleft = penleft
+        runHook.alreadypenned = alreadypenned
+        runHook.dmgv = dmgv
+
+        self:RunHook("Hook_BulletImpact", runHook)
+
+        -- Penetration
+        local pen = self:GetProcessedValue( "Penetration", true)
+        local pendeltaval = self:GetProcessedValue( "PenetrationDelta", true)
+        if pen > 0 then
+            local pendelta = penleft / pen
+            pendelta = Lerp(pendelta, pendeltaval, 1) -- it arleady clamps inside
+            dmgv = dmgv * pendelta
+        end
+
+        -- NPC damage nerf
+        local owner = self:GetOwner()
+        if owner:IsNPC() and !arc9_npc_equality:GetBool() then
+            dmgv = dmgv * 0.25
+        end
+
+        -- Limb multipliers
+        local traceEntity = tr.Entity
+        local hitGroup = tr.HitGroup
+
+        if SERVER and IsValid(owner) and owner:IsPlayer() and traceEntity:IsPlayer() and !owner:CompareStatus(0) then
+
+            owner:SetNWInt("ShotsHit", owner:GetNWInt("ShotsHit") + 1)
+            owner:SetNWInt("RaidShotsHit", owner:GetNWInt("RaidShotsHit") + 1)
+
+        end
+
+        if !ARC9.NoBodyPartsDamageMults then
+            local bodydamage = self:GetProcessedValue( "BodyDamageMults", true)
+
+            if bodydamage[hitGroup] then
+                dmgv = dmgv * bodydamage[hitGroup]
+            end
+            if hitGroup == HITGROUP_HEAD then
+                dmgv = dmgv * self:GetProcessedValue( "HeadshotDamage", true)
+            elseif hitGroup == HITGROUP_CHEST then
+                dmgv = dmgv * self:GetProcessedValue( "ChestDamage", true)
+            elseif hitGroup == HITGROUP_STOMACH then
+                dmgv = dmgv * self:GetProcessedValue( "StomachDamage", true)
+            elseif hitGroup == HITGROUP_LEFTARM or hitGroup == HITGROUP_RIGHTARM then
+                dmgv = dmgv * self:GetProcessedValue( "ArmDamage", true)
+            elseif hitGroup == HITGROUP_LEFTLEG or hitGroup == HITGROUP_RIGHTLEG then
+                dmgv = dmgv * self:GetProcessedValue( "LegDamage", true)
+            end
+        end
+
+        -- Armor piercing (done after weapon's limb multipliers but BEFORE body damage cancel)
+        local ap = math.Clamp(self:GetProcessedValue( "ArmorPiercing", true), 0, 1)
+        if ap > 0 and !alreadypenned[traceEntity] then
+            if traceEntity:GetClass() == "npc_helicopter" then
+                local apdmg = DamageInfo()
+                apdmg:SetDamage(dmgv * ap)
+                apdmg:SetDamageType(DMG_AIRBOAT)
+                apdmg:SetInflictor(dmg:GetInflictor())
+                apdmg:SetAttacker(dmg:GetAttacker())
+
+                if traceEntity.TakeDamageInfo then traceEntity:TakeDamageInfo(apdmg) end
+            elseif traceEntity:GetClass() == "npc_gunship" or traceEntity:GetClass() == "npc_strider" then
+                local apdmg = DamageInfo()
+                apdmg:SetDamage(dmgv * ap)
+                apdmg:SetDamageType(DMG_BLAST)
+                apdmg:SetInflictor(dmg:GetInflictor())
+                apdmg:SetAttacker(dmg:GetAttacker())
+
+                if traceEntity.TakeDamageInfo then traceEntity:TakeDamageInfo(apdmg) end
+            elseif traceEntity:IsPlayer() then
+                if !ARC9.NoArmorPiercing then -- dumbass
+                    local apdmg = math.ceil(dmgv * ap)
+                    -- Delay health removal so that we can confirm the damage actually applied before removing health
+                    dmg:SetDamageCustom(ARC9.DMG_CUST_AP)
+                    traceEntity.ARC9APDamage = apdmg
+                    -- traceEntity:SetHealth(traceEntity:Health() - apdmg)
+                    dmgv = math.max(1, dmgv - apdmg)
+                else
+                    ARC9.LastArmorPiercedPlayer = traceEntity
+                    ARC9.LastArmorPierceValue = ap
+                    ARC9.LastArmorPiercedTime = CurTime()
+
+                    traceEntity.ARC9APPower = pen
+                    traceEntity.ARC9APDelta = pendeltaval
+                    traceEntity.ARC9APRangeMult = dmgvoriginal / self:GetProcessedValue( "DamageMax", true)
+                end
+            end
+        end
+
+        -- Cancel out sandbox/ttt limb damage multipliers. Done last since AP damage does not go through this
+        -- Lambda Players call ScalePlayerDamage and cancel out hitgroup damage... except on the head
+        if bodyDamageCancel:GetBool() and cancelmults[hitGroup] and (!traceEntity.IsLambdaPlayer or hitgroup == HITGROUP_HEAD) then
+            dmgv = dmgv / cancelmults[hitGroup]
+        end
+
+        dmg:SetDamage(dmgv)
+
+        local hitPos = tr.HitPos
+        local hitNormal = tr.HitNormal
+
+        if self:GetProcessedValue( "ImpactDecal", true) then
+            util.Decal(self:GetProcessedValue( "ImpactDecal", true), tr.StartPos, hitPos - (hitNormal * 2), owner)
+        end
+
+        if self:GetProcessedValue( "ImpactEffect", true) then
+            local fx = EffectData()
+            fx:SetOrigin(hitPos)
+            fx:SetNormal(hitNormal)
+            util.Effect(self:GetProcessedValue( "ImpactEffect", true), fx, true)
+        end
+
+        if self:GetProcessedValue( "ImpactSound", true) then
+            soundTab2.sound = self:GetProcessedValue( "ImpactSound", true)
+
+            soundTab2 = self:RunHook("HookP_TranslateSound", soundTab2) or soundTab2
+
+            sound.Play(soundTab2.sound, hitPos, soundTab2.level, soundTab2.pitch, soundTab2.volume)
+        end
+
+        if self:GetProcessedValue( "ExplosionDamage") > 0 then
+            util.BlastDamage(self, IsValid(owner) and owner or self, hitPos, self:GetProcessedValue( "ExplosionRadius", true), self:GetProcessedValue( "ExplosionDamage"))
+        end
+
+        if self:GetProcessedValue( "ExplosionEffect", true) then
+            local fx = EffectData()
+            fx:SetOrigin(hitPos)
+            fx:SetNormal(hitNormal)
+            fx:SetAngles(tr.HitNormal:Angle())
+
+            if bit.band(util.PointContents(hitPos), CONTENTS_WATER) == CONTENTS_WATER then
+                util.Effect("WaterSurfaceExplosion", fx, true)
+            else
+                util.Effect(self:GetProcessedValue( "ExplosionEffect", true), fx, true)
+            end
+        end
+
+        if traceEntity and alreadypenned[traceEntity] then
+            dmg:SetDamage(0)
+        elseif traceEntity then
+            alreadypenned[traceEntity] = true
+        end
+
+        self:Penetrate(table.Copy(tr), range, penleft, alreadypenned)
+
+        self:SetUBGL(lastsecondary)
+    end
+
     -- weapon sounds
     local lsstr = "ShootSound"
     local lsslr = "LayerSound"
