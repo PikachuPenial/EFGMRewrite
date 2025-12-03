@@ -3495,7 +3495,7 @@ function Menu.ReloadSlots()
 
             end
 
-            if playerWeaponSlots[1][1].data.tag then
+            if playerWeaponSlots[1][1].data and playerWeaponSlots[1][1].data.tag then
 
                 draw.SimpleTextOutlined(playerWeaponSlots[1][1].data.tag, tagFont, w - EFGM.MenuScale(3), tagH, MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
@@ -3850,7 +3850,7 @@ function Menu.ReloadSlots()
 
             end
 
-            if playerWeaponSlots[1][2].data.tag then
+            if playerWeaponSlots[1][2].data and playerWeaponSlots[1][2].data.tag then
 
                 draw.SimpleTextOutlined(playerWeaponSlots[1][2].data.tag, tagFont, w - EFGM.MenuScale(3), tagH, MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
@@ -4206,7 +4206,7 @@ function Menu.ReloadSlots()
 
             end
 
-            if playerWeaponSlots[2][1].data.tag then
+            if playerWeaponSlots[2][1].data and playerWeaponSlots[2][1].data.tag then
 
                 draw.SimpleTextOutlined(playerWeaponSlots[2][1].data.tag, tagFont, w - EFGM.MenuScale(3), tagH, MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
@@ -4531,7 +4531,7 @@ function Menu.ReloadSlots()
 
             draw.SimpleTextOutlined(i.displayName, nameFont, w - EFGM.MenuScale(3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
-            if playerWeaponSlots[3][1].data.tag then
+            if playerWeaponSlots[3][1].data and playerWeaponSlots[3][1].data.tag then
 
                 draw.SimpleTextOutlined(playerWeaponSlots[3][1].data.tag, tagFont, w - EFGM.MenuScale(3), tagH, MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
