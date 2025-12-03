@@ -121,9 +121,14 @@ function FlowItemToInventory(ply, name, type, data)
 
     if data.count == 0 then return end -- dont add an item that doesnt exist lol!
 
-    if stackSize == 1 then -- items that can't stack do not need to flow
+    if stackSize == 1 then -- items that can't stack do not need to flow (but they do need to be created multiple times lol!)
 
-        AddItemToInventory(ply, name, type, data)
+        for i = 1, data.count do
+
+            AddItemToInventory(ply, name, type, data)
+
+        end
+
         return
 
     end

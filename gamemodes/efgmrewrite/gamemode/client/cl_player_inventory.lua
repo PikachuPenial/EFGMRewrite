@@ -440,6 +440,14 @@ function PurchaseItemToInv(item, count)
 
 end
 
+function PurchasePresetToInventory(atts)
+
+    net.Start("PlayerMarketPurchasePresetToInventory", false)
+    net.WriteTable(atts)
+    net.SendToServer()
+
+end
+
 function SellItem(item, count, key)
 
     net.Start("PlayerMarketSellItem", false)

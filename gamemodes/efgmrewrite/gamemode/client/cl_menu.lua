@@ -2649,6 +2649,271 @@ function Menu.ConfirmTag(item, key, inv, eID, eSlot)
 
 end
 
+function Menu.ConfirmPreset(atts, presetName, presetID, closeMenu)
+
+    if IsValid(confirmPanel) then confirmPanel:Remove() end
+
+    local confirmPanelHeight = EFGM.MenuScale(75)
+    local highestAttSize = 0
+
+    local transactionCost = 0
+    local highestLvlAtt = 0
+
+    local plyMoney = Menu.Player:GetNWInt("Money", 0)
+    local plyLevel = Menu.Player:GetNWInt("Level", 1)
+
+    for att, count in pairs(atts) do
+
+        local i = EFGMITEMS[att]
+        if i == nil then confirmPanel:Remove() return end
+
+        transactionCost = transactionCost + (i.value * count)
+        if (i.levelReq or 1) > highestLvlAtt then highestLvlAtt = (i.levelReq or 1) end
+
+        confirmPanelHeight = confirmPanelHeight + EFGM.MenuScale(15)
+
+        surface.SetFont("PuristaBold16")
+        local attText = count .. "x " .. i.fullName .. " (" .. i.displayName .. "):   ₽" .. i.value
+        local attTextSize = surface.GetTextSize(attText)
+
+        if attTextSize > highestAttSize then highestAttSize = attTextSize end
+
+    end
+
+    -- can't afford all of the attachments for the preset
+    if plyMoney < transactionCost then
+
+        surface.PlaySound("ui/element_deselect.wav")
+
+        if closeMenu == true then
+
+            Menu.MenuFrame.Closing = true
+            Menu.MenuFrame:SetKeyboardInputEnabled(false)
+            Menu.MenuFrame:SetMouseInputEnabled(false)
+            Menu.IsOpen = false
+
+            Menu.MenuFrame:AlphaTo(0, 0.1, 0, function()
+                Menu.MenuFrame:Close()
+            end)
+
+        end
+
+        return
+
+    end
+
+    if plyLevel < highestLvlAtt then
+
+        surface.PlaySound("ui/element_deselect.wav")
+
+        if closeMenu == true then
+
+            Menu.MenuFrame.Closing = true
+            Menu.MenuFrame:SetKeyboardInputEnabled(false)
+            Menu.MenuFrame:SetMouseInputEnabled(false)
+            Menu.IsOpen = false
+
+            Menu.MenuFrame:AlphaTo(0, 0.1, 0, function()
+                Menu.MenuFrame:Close()
+            end)
+
+        end
+
+        return
+
+    end
+
+    surface.SetFont("PuristaBold24")
+    local confirmText = "Buy attachments for the " .. string.upper(presetName) .. " preset for ₽" .. comma_value(transactionCost) .. "?"
+    local confirmTextSize = math.max(EFGM.MenuScale(300), surface.GetTextSize(confirmText))
+
+    local confirmPanelSize = confirmTextSize + EFGM.MenuScale(10)
+    if highestAttSize + EFGM.MenuScale(15) > confirmPanelSize then confirmPanelSize = highestAttSize + EFGM.MenuScale(15) end
+
+    surface.PlaySound("ui/element_select.wav")
+
+    confirmPanel = vgui.Create("DFrame", Menu.MenuFrame)
+    confirmPanel:SetSize(confirmPanelSize, confirmPanelHeight)
+    confirmPanel:SetPos(Menu.MenuFrame:GetWide() / 2 - confirmPanel:GetWide() / 2, Menu.MenuFrame:GetTall() / 2 - confirmPanel:GetTall() / 2)
+    confirmPanel:SetAlpha(0)
+    confirmPanel:SetTitle("")
+    confirmPanel:ShowCloseButton(false)
+    confirmPanel:SetScreenLock(true)
+    confirmPanel:AlphaTo(255, 0.1, 0, nil)
+    confirmPanel:RequestFocus()
+
+    confirmPanel.Paint = function(s, w, h)
+
+        confirmPanel:SetX(Menu.MenuFrame:GetWide() / 2 - confirmPanel:GetWide() / 2)
+
+        BlurPanel(s, EFGM.MenuScale(3))
+
+        surface.SetDrawColor(Color(20, 20, 20, 205))
+        surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
+
+        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+        draw.SimpleTextOutlined(confirmText, "PuristaBold24", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        local num = 0
+
+        for k, v in pairs(atts) do
+
+            local i = EFGMITEMS[k]
+
+            draw.SimpleTextOutlined(v .. "x " .. i.fullName .. " (" .. i.displayName .. "):", "PuristaBold16", EFGM.MenuScale(5), EFGM.MenuScale(30) + (EFGM.MenuScale(15) * num), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            draw.SimpleTextOutlined("₽" .. (i.value * v), "PuristaBold16", w - EFGM.MenuScale(5), EFGM.MenuScale(30) + (EFGM.MenuScale(15) * num), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            num = num + 1
+
+        end
+
+    end
+
+    confirmPanel.Think = function()
+
+        if (input.IsMouseDown(MOUSE_LEFT) or input.IsMouseDown(MOUSE_RIGHT) or input.IsMouseDown(MOUSE_MIDDLE) or input.IsMouseDown(MOUSE_WHEEL_DOWN) or input.IsMouseDown(MOUSE_WHEEL_UP)) and !confirmPanel:IsChildHovered() and !confirmPanel:IsHovered() then
+
+            confirmPanel:AlphaTo(0, 0.1, 0, function() confirmPanel:Remove() end)
+
+            if closeMenu == true then
+
+                Menu.MenuFrame.Closing = true
+                Menu.MenuFrame:SetKeyboardInputEnabled(false)
+                Menu.MenuFrame:SetMouseInputEnabled(false)
+                Menu.IsOpen = false
+
+                Menu.MenuFrame:AlphaTo(0, 0.1, 0, function()
+                    Menu.MenuFrame:Close()
+                end)
+
+            end
+
+        end
+
+    end
+
+    surface.SetFont("PuristaBold24")
+    local yesText = "YES [SPACE]"
+    local yesTextSize = surface.GetTextSize(yesText)
+    local yesButtonSize = yesTextSize + EFGM.MenuScale(10)
+
+    local yesButton = vgui.Create("DButton", confirmPanel)
+    yesButton:SetPos(confirmPanel:GetWide() / 2 - EFGM.MenuScale(100), confirmPanelHeight - EFGM.MenuScale(35))
+    yesButton:SetSize(yesButtonSize, EFGM.MenuScale(28))
+    yesButton:SetText("")
+    yesButton.Paint = function(s, w, h)
+
+        yesButton:SetX(confirmPanel:GetWide() / 2 - (yesButtonSize / 2) - EFGM.MenuScale(25))
+
+        BlurPanel(s, EFGM.MenuScale(0))
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, yesTextSize + EFGM.MenuScale(10), h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, yesTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
+
+        draw.SimpleTextOutlined(yesText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    surface.SetFont("PuristaBold24")
+    local noText = "NO"
+    local noTextSize = surface.GetTextSize(noText)
+    local noButtonSize = noTextSize + EFGM.MenuScale(10)
+
+    local noButton = vgui.Create("DButton", confirmPanel)
+    noButton:SetPos(confirmPanel:GetWide() / 2 - (noButtonSize / 2) + yesButton:GetWide() / 2 + EFGM.MenuScale(5), confirmPanelHeight - EFGM.MenuScale(35))
+    noButton:SetSize(noButtonSize, EFGM.MenuScale(28))
+    noButton:SetText("")
+    noButton.Paint = function(s, w, h)
+
+        noButton:SetX(confirmPanel:GetWide() / 2 - (noButtonSize / 2) + yesButton:GetWide() / 2 + EFGM.MenuScale(5))
+
+        BlurPanel(s, EFGM.MenuScale(0))
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, noButtonSize + EFGM.MenuScale(10), h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, noButtonSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
+
+        draw.SimpleTextOutlined(noText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    yesButton.OnCursorEntered = function(s)
+
+        surface.PlaySound("ui/element_hover.wav")
+
+    end
+
+    function yesButton:DoClick()
+
+        surface.PlaySound("ui/success.wav")
+        confirmPanel:AlphaTo(0, 0.1, 0, function() confirmPanel:Remove() end)
+
+        PurchasePresetToInventory(atts)
+
+        if closeMenu == true then
+
+            Menu.MenuFrame.Closing = true
+            Menu.MenuFrame:SetKeyboardInputEnabled(false)
+            Menu.MenuFrame:SetMouseInputEnabled(false)
+            Menu.IsOpen = false
+
+            Menu.MenuFrame:AlphaTo(0, 0.1, 0, function()
+                Menu.MenuFrame:Close()
+                local wep = Menu.Player:GetActiveWeapon()
+                if wep != NULL then wep:LoadPreset(presetID) end
+            end)
+
+        end
+
+    end
+
+    function confirmPanel:OnKeyCodePressed(key)
+
+        if key == KEY_ENTER or key == KEY_SPACE then yesButton:DoClick() end
+
+    end
+
+    noButton.OnCursorEntered = function(s)
+
+        surface.PlaySound("ui/element_hover.wav")
+
+    end
+
+    function noButton:DoClick()
+
+        surface.PlaySound("ui/element_deselect.wav")
+        confirmPanel:AlphaTo(0, 0.1, 0, function() confirmPanel:Remove() end)
+
+        if closeMenu == true then
+
+            Menu.MenuFrame.Closing = true
+            Menu.MenuFrame:SetKeyboardInputEnabled(false)
+            Menu.MenuFrame:SetMouseInputEnabled(false)
+            Menu.IsOpen = false
+
+            Menu.MenuFrame:AlphaTo(0, 0.1, 0, function()
+                Menu.MenuFrame:Close()
+            end)
+
+        end
+
+    end
+
+end
+
 Menu.OpenTab = {}
 
 function Menu.ReloadInventory(itemSearch)

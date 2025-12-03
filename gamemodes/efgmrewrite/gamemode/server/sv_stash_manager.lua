@@ -81,7 +81,12 @@ function FlowItemToStash(ply, name, type, data)
 
     if stackSize == 1 then -- items that can't stack do not need to flow
 
-        AddItemToStash(ply, name, type, data)
+        for i = 1, data.count do
+
+            AddItemToStash(ply, name, type, data)
+
+        end
+
         return
 
     end

@@ -1,5 +1,6 @@
 util.AddNetworkString("PlayerMarketPurchaseItem")
 util.AddNetworkString("PlayerMarketPurchaseItemToInventory")
+util.AddNetworkString("PlayerMarketPurchasePresetToInventory")
 util.AddNetworkString("PlayerMarketSellItem")
 
 net.Receive("PlayerMarketPurchaseItem", function(len, ply)
@@ -127,7 +128,50 @@ net.Receive("PlayerMarketPurchaseItemToInventory", function(len, ply)
     end
 
     FlowItemToInventory(ply, item, def.equipType, data)
-    UpdateStashString(ply)
+    UpdateInventoryString(ply)
+
+    ply:SetNWInt("Money", plyMoney - cost)
+    ply:SetNWInt("MoneySpent", ply:GetNWInt("MoneySpent") + cost)
+
+    return true
+
+end)
+
+net.Receive("PlayerMarketPurchasePresetToInventory", function(len, ply)
+
+    if !ply:CompareStatus(0) then return false end
+
+    local presetAtts = net.ReadTable()
+
+    local plyMoney = ply:GetNWInt("Money", 0)
+    local plyLevel = ply:GetNWInt("Level", 1)
+
+    local cost = 0
+    local highestLvl = 0
+
+    for att, attcount in pairs(presetAtts) do
+
+        local i = EFGMITEMS[att]
+        if i == nil then return false end
+
+        cost = cost + (i.value * attcount)
+        if (i.levelReq or 1) > highestLvl then highestLvl = (i.levelReq or 1) end
+        if !i.canPurchase then return false end
+
+    end
+
+    if plyMoney < cost then return false end
+    if plyLevel < highestLvl then return false end
+
+    for att, attcount in pairs(presetAtts) do
+
+        local data = {}
+        data.count = attcount
+        FlowItemToInventory(ply, att, EQUIPTYPE.Attachment, data)
+
+    end
+
+    UpdateInventoryString(ply)
 
     ply:SetNWInt("Money", plyMoney - cost)
     ply:SetNWInt("MoneySpent", ply:GetNWInt("MoneySpent") + cost)
