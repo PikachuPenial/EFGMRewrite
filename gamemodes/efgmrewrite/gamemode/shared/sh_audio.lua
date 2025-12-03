@@ -81,7 +81,7 @@ for i = 1, 9 do
             name = "mfwmvmt.post_" .. w .. i,
             channel = CHAN_AUTO,
             volume = cloth_layer[w],
-            level = 75,
+            level = 84,
             pitch = 100,
             sound = "foley/mvmt/cloth/" .. w .. "/mvmtstep_cloth_plr_" .. w .. "_post_0" .. i .. ".wav"
         } )
@@ -109,7 +109,7 @@ for i = 1, 5 do
                 name = "mfw." .. t .. "_" .. w .."_" .. i,
                 channel = CHAN_AUTO,
                 volume = vlm,
-                level = 75,
+                level = 84,
                 pitch = 100,
                 sound = "foley/foot/" .. t .. "/step_" .. w .. "_" .. t .. "_0" .. i .. ".wav"
             } )
@@ -124,7 +124,7 @@ for i = 1, 5 do
                 name = "mfw.ladder_" .. w .. "_" .. f .. "_0" .. i,
                 channel = CHAN_AUTO,
                 volume = 1.0,
-                level = 75,
+                level = 84,
                 pitch = 100,
                 sound = "foley/foot/ladder/step_climb_" .. w .. "_ladder_" .. f .. "_0" .. i .. ".wav"
             } )
@@ -136,7 +136,7 @@ sound.Add( {
     name = "Player.FallDamage",
     channel = CHAN_AUTO,
     volume = 1.0,
-    level = 75,
+    level = 84,
     pitch = 100,
     sound = { "foley/foot/damage/step_land_damage_01.wav",
     "foley/foot/damage/step_land_damage_02.wav" }
@@ -146,7 +146,7 @@ sound.Add( {
     name = "Player.FallGib",
     channel = CHAN_AUTO,
     volume = 1.0,
-    level = 75,
+    level = 84,
     pitch = 100,
     sound = { "foley/foot/damage/step_land_damage_death_01.wav",
     "foley/foot/damage/step_land_damage_death_02.wav" }
@@ -200,10 +200,10 @@ hook.Add("PlayerFootstep", "CustomFootstepVolume", function(ply, pos, foot, soun
     if ply:GetNW2Bool("DoStep", false) then
 
         local fsVol = 1
-        local fsLvl = 75
-        if ply:Crouching() or ply:IsWalking() then fsVol = 0.25 fsLvl = 70 end
+        local fsLvl = 80
+        if ply:Crouching() or ply:IsWalking() then fsVol = 0.25 fsLvl = 73 end
 
-        local soundLevel = math.Clamp(fsLvl, 70, 160)
+        local soundLevel = math.Clamp(fsLvl, 73, 160)
 
         ply:EmitSound(sound, soundLevel, 100, math.min(fsVol, 1))
         Raycast26(ply)

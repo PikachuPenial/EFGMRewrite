@@ -47,7 +47,7 @@ function AddItemToInventory(ply, name, type, data)
     if data.count == 0 then return end -- dont add an item that doesnt exist lol!
     data.count = math.Clamp(tonumber(data.count) or 1, 1, def.stackSize)
 
-    if def.equipType == EQUIPTYPE.Weapon then
+    if def.equipType == EQUIPTYPE.Weapon and !data.owner then
 
         data.owner = ply:GetName()
 
