@@ -866,7 +866,7 @@ function CalculateInventoryWeight(ply)
 
     local newWeight = 0
 
-    for k, v in pairs(ply.inventory) do
+    for k, v in ipairs(ply.inventory) do
 
         local def = EFGMITEMS[v.name]
         local count = v.data.count or 1

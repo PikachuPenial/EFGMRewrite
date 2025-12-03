@@ -3100,7 +3100,7 @@ function Menu.ReloadInventory(itemSearch)
     playerItems:Clear()
     plyItems = {}
 
-    for k, v in pairs(playerInventory) do
+    for k, v in ipairs(playerInventory) do
 
         plyItems[k] = {}
         plyItems[k].name = v.name
@@ -3139,7 +3139,7 @@ function Menu.ReloadInventory(itemSearch)
     end)
 
     -- inventory item entry
-    for k, v in pairs(plyItems) do
+    for k, v in ipairs(plyItems) do
 
         local i = EFGMITEMS[v.name]
         if i == nil then return end
@@ -5232,7 +5232,7 @@ function Menu.ReloadStash(itemSearch)
     stashItems:Clear()
     plyStashItems = {}
 
-    for k, v in pairs(playerStash) do
+    for k, v in ipairs(playerStash) do
 
         plyStashItems[k] = {}
         plyStashItems[k].name = v.name
@@ -5275,7 +5275,7 @@ function Menu.ReloadStash(itemSearch)
     end)
 
     -- stash item entry
-    for k, v in pairs(plyStashItems) do
+    for k, v in ipairs(plyStashItems) do
 
         local i = EFGMITEMS[v.name]
         if i == nil then return end
@@ -5744,7 +5744,7 @@ function Menu.ReloadMarketStash(itemSearch)
     marketStashItems:Clear()
     marketPlyStashItems = {}
 
-    for k, v in pairs(playerStash) do
+    for k, v in ipairs(playerStash) do
 
         marketPlyStashItems[k] = {}
         marketPlyStashItems[k].name = v.name
@@ -5787,7 +5787,7 @@ function Menu.ReloadMarketStash(itemSearch)
     end)
 
     -- stash item entry
-    for k, v in pairs(marketPlyStashItems) do
+    for k, v in ipairs(marketPlyStashItems) do
 
         local i = EFGMITEMS[v.name]
         if i == nil then return end
@@ -6145,7 +6145,7 @@ function Menu.ReloadContainer()
 
     end)
 
-    for k, v in pairs(conItems) do
+    for k, v in ipairs(conItems) do
 
         local i = EFGMITEMS[v.name]
         if i == nil then return end
