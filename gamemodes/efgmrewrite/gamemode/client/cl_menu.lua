@@ -4521,13 +4521,21 @@ function Menu.ReloadSlots()
 
         local nameSize = surface.GetTextSize(i.displayName)
         local nameFont
+        local tagFont
+        local tagH
 
-        if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18"
-        else nameFont = "PuristaBold14" end
+        if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18" tagFont = "PuristaBold14" tagH = EFGM.MenuScale(12)
+        else nameFont = "PuristaBold14" tagFont = "PuristaBold10" tagH = EFGM.MenuScale(10) end
 
         function meleeItem:PaintOver(w, h)
 
             draw.SimpleTextOutlined(i.displayName, nameFont, w - EFGM.MenuScale(3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            if playerWeaponSlots[3][1].data.tag then
+
+                draw.SimpleTextOutlined(playerWeaponSlots[3][1].data.tag, tagFont, w - EFGM.MenuScale(3), tagH, MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            end
 
         end
 
@@ -4661,6 +4669,31 @@ function Menu.ReloadSlots()
 
                 surface.PlaySound("ui/element_select.wav")
                 contextMenu:KillFocus()
+
+            end
+
+            if playerWeaponSlots[3][1].data.tag == nil then
+
+                local itemSetTagButton = vgui.Create("DButton", contextMenu)
+                itemSetTagButton:Dock(TOP)
+                itemSetTagButton:SetSize(0, EFGM.MenuScale(25))
+                itemSetTagButton:SetText("SET TAG")
+
+                itemSetTagButton.OnCursorEntered = function(s)
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
+                function itemSetTagButton:DoClick()
+
+                    surface.PlaySound("ui/element_select.wav")
+                    contextMenu:Remove()
+                    playerItems:InvalidateLayout()
+
+                    Menu.ConfirmTag(playerWeaponSlots[3][1].name, 0, "equipped", meleeItem.SLOTID, meleeItem.SLOT)
+
+                end
 
             end
 

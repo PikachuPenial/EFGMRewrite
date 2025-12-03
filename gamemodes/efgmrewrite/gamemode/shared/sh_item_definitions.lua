@@ -2724,7 +2724,9 @@ EFGMITEMS = {}
         ["icon"] = Material("items/melee/taran.png", "smooth"),
 
         ["sizeX"] = 1,
-        ["sizeY"] = 2
+        ["sizeY"] = 2,
+
+        ["canPurchase"] = false
     }
 
     EFGMITEMS["arc9_eft_melee_6x5"] = {
@@ -2741,7 +2743,9 @@ EFGMITEMS = {}
         ["icon"] = Material("items/melee/6x5.png", "smooth"),
 
         ["sizeX"] = 2,
-        ["sizeY"] = 1
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
     }
 
     EFGMITEMS["arc9_eft_melee_akula"] = {
@@ -2758,7 +2762,9 @@ EFGMITEMS = {}
         ["icon"] = Material("items/melee/akula.png", "smooth"),
 
         ["sizeX"] = 1,
-        ["sizeY"] = 1
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
     }
 
     EFGMITEMS["arc9_eft_melee_wycc"] = {
@@ -2775,7 +2781,9 @@ EFGMITEMS = {}
         ["icon"] = Material("items/melee/axe.png", "smooth"),
 
         ["sizeX"] = 1,
-        ["sizeY"] = 2
+        ["sizeY"] = 2,
+
+        ["canPurchase"] = false
     }
 
     EFGMITEMS["arc9_eft_melee_gladius"] = {
@@ -2792,7 +2800,9 @@ EFGMITEMS = {}
         ["icon"] = Material("items/melee/gladius.png", "smooth"),
 
         ["sizeX"] = 1,
-        ["sizeY"] = 4
+        ["sizeY"] = 4,
+
+        ["canPurchase"] = false
     }
 
     EFGMITEMS["arc9_eft_melee_a2607"] = {
@@ -2809,7 +2819,9 @@ EFGMITEMS = {}
         ["icon"] = Material("items/melee/a2607.png", "smooth"),
 
         ["sizeX"] = 2,
-        ["sizeY"] = 1
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
     }
 
     EFGMITEMS["arc9_eft_melee_a2607d"] = {
@@ -2826,7 +2838,9 @@ EFGMITEMS = {}
         ["icon"] = Material("items/melee/a2607d.png", "smooth"),
 
         ["sizeX"] = 2,
-        ["sizeY"] = 1
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
     }
 
     EFGMITEMS["arc9_eft_melee_camper"] = {
@@ -2843,7 +2857,9 @@ EFGMITEMS = {}
         ["icon"] = Material("items/melee/camper.png", "smooth"),
 
         ["sizeX"] = 1,
-        ["sizeY"] = 3
+        ["sizeY"] = 3,
+
+        ["canPurchase"] = false
     }
 
     EFGMITEMS["arc9_eft_melee_labris"] = {
@@ -2878,7 +2894,9 @@ EFGMITEMS = {}
         ["icon"] = Material("items/melee/crash.png", "smooth"),
 
         ["sizeX"] = 1,
-        ["sizeY"] = 3
+        ["sizeY"] = 3,
+
+        ["canPurchase"] = false
     }
 
     EFGMITEMS["arc9_eft_melee_cultist"] = {
@@ -2914,7 +2932,9 @@ EFGMITEMS = {}
         ["icon"] = Material("items/melee/fulcrum.png", "smooth"),
 
         ["sizeX"] = 2,
-        ["sizeY"] = 1
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
     }
 
     EFGMITEMS["arc9_eft_melee_crowbar"] = {
@@ -2931,7 +2951,9 @@ EFGMITEMS = {}
         ["icon"] = Material("items/melee/crowbar.png", "smooth"),
 
         ["sizeX"] = 1,
-        ["sizeY"] = 3
+        ["sizeY"] = 3,
+
+        ["canPurchase"] = false
     }
 
     EFGMITEMS["arc9_eft_melee_kiba"] = {
@@ -2948,7 +2970,9 @@ EFGMITEMS = {}
         ["icon"] = Material("items/melee/katt.png", "smooth"),
 
         ["sizeX"] = 1,
-        ["sizeY"] = 3
+        ["sizeY"] = 3,
+
+        ["canPurchase"] = false
     }
 
     EFGMITEMS["arc9_eft_melee_kukri"] = {
@@ -2965,7 +2989,9 @@ EFGMITEMS = {}
         ["icon"] = Material("items/melee/kukri.png", "smooth"),
 
         ["sizeX"] = 2,
-        ["sizeY"] = 1
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
     }
 
     EFGMITEMS["arc9_eft_melee_m2"] = {
@@ -2982,7 +3008,9 @@ EFGMITEMS = {}
         ["icon"] = Material("items/melee/m2.png", "smooth"),
 
         ["sizeX"] = 1,
-        ["sizeY"] = 3
+        ["sizeY"] = 3,
+
+        ["canPurchase"] = false
     }
 
     EFGMITEMS["arc9_eft_melee_mpl50"] = {
@@ -2999,7 +3027,9 @@ EFGMITEMS = {}
         ["icon"] = Material("items/melee/mpl50.png", "smooth"),
 
         ["sizeX"] = 1,
-        ["sizeY"] = 3
+        ["sizeY"] = 3,
+
+        ["canPurchase"] = false
     }
 
     EFGMITEMS["arc9_eft_melee_rebel"] = {
@@ -3016,7 +3046,9 @@ EFGMITEMS = {}
         ["icon"] = Material("items/melee/rebel.png", "smooth"),
 
         ["sizeX"] = 1,
-        ["sizeY"] = 3
+        ["sizeY"] = 3,
+
+        ["canPurchase"] = false
     }
 
     EFGMITEMS["arc9_eft_melee_voodoo"] = {
@@ -3033,7 +3065,9 @@ EFGMITEMS = {}
         ["icon"] = Material("items/melee/voodoo.png", "smooth"),
 
         ["sizeX"] = 1,
-        ["sizeY"] = 2
+        ["sizeY"] = 2,
+
+        ["canPurchase"] = false
     }
 
     EFGMITEMS["arc9_eft_melee_sp8"] = {
@@ -3067,7 +3101,9 @@ EFGMITEMS = {}
         ["icon"] = Material("items/melee/taiga.png", "smooth"),
 
         ["sizeX"] = 1,
-        ["sizeY"] = 3
+        ["sizeY"] = 3,
+
+        ["canPurchase"] = false
     }
 
     -- grenades
