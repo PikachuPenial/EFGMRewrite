@@ -457,3 +457,11 @@ function SellItem(item, count, key)
     net.SendToServer()
 
 end
+
+function SellBulk(ids)
+
+    net.Start("PlayerMarketSellBulk", false)
+    net.WriteTable(ids)
+    net.SendToServer()
+
+end

@@ -1939,9 +1939,11 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
 
     end
 
+    local cd = false
+
     function confirmPanel:OnKeyCodePressed(key)
 
-        if key == KEY_ENTER or key == KEY_SPACE then yesButton:DoClick() end
+        if (key == KEY_ENTER or key == KEY_SPACE) and cd == false then yesButton:DoClick() cd = true end
 
     end
 
@@ -2167,9 +2169,11 @@ function Menu.ConfirmSell(item, data, key)
 
     end
 
+    local cd = false
+
     function confirmPanel:OnKeyCodePressed(key)
 
-        if key == KEY_ENTER or key == KEY_SPACE then yesButton:DoClick() end
+        if (key == KEY_ENTER or key == KEY_SPACE) and cd == false then yesButton:DoClick() cd = true end
 
     end
 
@@ -2335,9 +2339,11 @@ function Menu.ConfirmSplit(item, data, key, inv)
 
     end
 
+    local cd = false
+
     function confirmPanel:OnKeyCodePressed(key)
 
-        if key == KEY_ENTER or key == KEY_SPACE then yesButton:DoClick() end
+        if (key == KEY_ENTER or key == KEY_SPACE) and cd == false then yesButton:DoClick() cd = true end
 
     end
 
@@ -2481,9 +2487,11 @@ function Menu.ConfirmDelete(item, key, inv, eID, eSlot)
 
     end
 
+    local cd = false
+
     function confirmPanel:OnKeyCodePressed(key)
 
-        if key == KEY_ENTER or key == KEY_SPACE then yesButton:DoClick() end
+        if (key == KEY_ENTER or key == KEY_SPACE) and cd == false then yesButton:DoClick() cd = true end
 
     end
 
@@ -2888,9 +2896,11 @@ function Menu.ConfirmPreset(atts, presetName, presetID, closeMenu)
 
     end
 
+    local cd = false
+
     function confirmPanel:OnKeyCodePressed(key)
 
-        if key == KEY_ENTER or key == KEY_SPACE then yesButton:DoClick() end
+        if (key == KEY_ENTER or key == KEY_SPACE) and cd == false then yesButton:DoClick() cd = true end
 
     end
 
@@ -2917,6 +2927,165 @@ function Menu.ConfirmPreset(atts, presetName, presetID, closeMenu)
             end)
 
         end
+
+    end
+
+end
+
+function Menu.ConfirmBulk(amt, value)
+
+    if IsValid(confirmPanel) then confirmPanel:Remove() end
+
+    surface.SetFont("PuristaBold24")
+    local confirmText = "Sell " .. amt .. " selected items for " .. "₽" .. comma_value(value) .. "?"
+    local confirmTextSize = math.max(EFGM.MenuScale(300), surface.GetTextSize(confirmText))
+
+    local confirmPanelHeight = EFGM.MenuScale(70)
+
+    surface.PlaySound("ui/element_select.wav")
+
+    confirmPanel = vgui.Create("DFrame", Menu.MenuFrame)
+    confirmPanel:SetSize(confirmTextSize + EFGM.MenuScale(10), confirmPanelHeight)
+    confirmPanel:SetPos(Menu.MenuFrame:GetWide() / 2 - confirmPanel:GetWide() / 2, Menu.MenuFrame:GetTall() / 2 - confirmPanel:GetTall() / 2)
+    confirmPanel:SetAlpha(0)
+    confirmPanel:SetTitle("")
+    confirmPanel:ShowCloseButton(false)
+    confirmPanel:SetScreenLock(true)
+    confirmPanel:AlphaTo(255, 0.1, 0, nil)
+    confirmPanel:RequestFocus()
+
+    confirmPanel.Paint = function(s, w, h)
+
+        confirmPanel:SetWide(confirmTextSize + EFGM.MenuScale(10))
+        confirmPanel:SetX(Menu.MenuFrame:GetWide() / 2 - confirmPanel:GetWide() / 2)
+
+        BlurPanel(s, EFGM.MenuScale(3))
+
+        surface.SetDrawColor(Color(20, 20, 20, 205))
+        surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
+
+        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+        draw.SimpleTextOutlined(confirmText, "PuristaBold24", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    confirmPanel.Think = function()
+
+        if (input.IsMouseDown(MOUSE_LEFT) or input.IsMouseDown(MOUSE_RIGHT) or input.IsMouseDown(MOUSE_MIDDLE) or input.IsMouseDown(MOUSE_WHEEL_DOWN) or input.IsMouseDown(MOUSE_WHEEL_UP)) and !confirmPanel:IsChildHovered() and !confirmPanel:IsHovered() then confirmPanel:AlphaTo(0, 0.1, 0, function() confirmPanel:Remove() end) end
+
+    end
+
+    surface.SetFont("PuristaBold24")
+    local yesText = "YES [SPACE]"
+    local yesTextSize = surface.GetTextSize(yesText)
+    local yesButtonSize = yesTextSize + EFGM.MenuScale(10)
+
+    local yesButton = vgui.Create("DButton", confirmPanel)
+    yesButton:SetPos(confirmPanel:GetWide() / 2 - (yesButtonSize / 2) - EFGM.MenuScale(25), confirmPanelHeight - EFGM.MenuScale(35))
+    yesButton:SetSize(yesButtonSize, EFGM.MenuScale(28))
+    yesButton:SetText("")
+    yesButton.Paint = function(s, w, h)
+
+        yesButton:SetX(confirmPanel:GetWide() / 2 - (yesButtonSize / 2) - EFGM.MenuScale(25))
+
+        BlurPanel(s, EFGM.MenuScale(0))
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, yesTextSize + EFGM.MenuScale(10), h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, yesTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
+
+        draw.SimpleTextOutlined(yesText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    surface.SetFont("PuristaBold24")
+    local noText = "NO"
+    local noTextSize = surface.GetTextSize(noText)
+    local noButtonSize = noTextSize + EFGM.MenuScale(10)
+
+    local noButton = vgui.Create("DButton", confirmPanel)
+    noButton:SetPos(confirmPanel:GetWide() / 2 - (noButtonSize / 2) + yesButton:GetWide() / 2 + EFGM.MenuScale(5), confirmPanelHeight - EFGM.MenuScale(35))
+    noButton:SetSize(noButtonSize, EFGM.MenuScale(28))
+    noButton:SetText("")
+    noButton.Paint = function(s, w, h)
+
+        noButton:SetX(confirmPanel:GetWide() / 2 - (noButtonSize / 2) + yesButton:GetWide() / 2 + EFGM.MenuScale(5))
+
+        BlurPanel(s, EFGM.MenuScale(0))
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, noButtonSize + EFGM.MenuScale(10), h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, noButtonSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
+
+        draw.SimpleTextOutlined(noText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    yesButton.OnCursorEntered = function(s)
+
+        surface.PlaySound("ui/element_hover.wav")
+
+    end
+
+    function yesButton:DoClick()
+
+        surface.PlaySound("ui/element_select.wav")
+        confirmPanel:AlphaTo(0, 0.1, 0, function() confirmPanel:Remove() end)
+        SellBulk(bulkSellIDs)
+
+        bulkSellEnabled = false
+        bulkSellIDs = {}
+        bulkSellValue = 0
+
+        surface.SetFont("PuristaBold24")
+        bulkSellText = "BULK SELL"
+        bulkSellTextSize = surface.GetTextSize(bulkSellText)
+        bulkSellButtonSize = bulkSellTextSize + EFGM.MenuScale(10)
+
+        if IsValid(confirmBulkButton) then
+
+            confirmBulkButton:Remove()
+            confirmBulkButton = nil
+            confirmBulkText = nil
+            confirmBulkTextSize = nil
+            confirmBulkButtonSize = nil
+
+        end
+
+        Menu.ReloadStash(marketStashItemSearchText)
+
+    end
+
+    local cd = false
+
+    function confirmPanel:OnKeyCodePressed(key)
+
+        if (key == KEY_ENTER or key == KEY_SPACE) and cd == false then yesButton:DoClick() cd = true end
+
+    end
+
+    noButton.OnCursorEntered = function(s)
+
+        surface.PlaySound("ui/element_hover.wav")
+
+    end
+
+    function noButton:DoClick()
+
+        surface.PlaySound("ui/element_deselect.wav")
+        confirmPanel:AlphaTo(0, 0.1, 0, function() confirmPanel:Remove() end)
 
     end
 
@@ -5218,7 +5387,16 @@ function Menu.ReloadStash(itemSearch)
 
                 surface.SetDrawColor(255, 255, 255, 255)
                 surface.SetMaterial(pinIcon)
-                surface.DrawTexturedRect(w - EFGM.MenuScale(15), h - EFGM.MenuScale(18), EFGM.MenuScale(16), EFGM.MenuScale(16))
+
+                if i.equipType == EQUIPTYPE.Ammunition or i.consumableType == "heal" or i.consumableType == "key" then
+
+                    surface.DrawTexturedRect(w - EFGM.MenuScale(15), h - EFGM.MenuScale(32), EFGM.MenuScale(16), EFGM.MenuScale(16))
+
+                else
+
+                    surface.DrawTexturedRect(w - EFGM.MenuScale(15), h - EFGM.MenuScale(18), EFGM.MenuScale(16), EFGM.MenuScale(16))
+
+                end
 
             end
 
@@ -5656,10 +5834,22 @@ function Menu.ReloadMarketStash(itemSearch)
         end
 
         local pinIcon = Material("icons/pin_icon.png")
+        local costColor
 
         function item:Paint(w, h)
 
-            surface.SetDrawColor(Color(255, 255, 255, 2))
+            if bulkSellIDs[v.id] != nil then
+
+                costColor = Color(0, 255, 0, 255)
+                surface.SetDrawColor(Color(255, 255, 255, 255))
+
+            else
+
+                costColor = MenuAlias.whiteColor
+                surface.SetDrawColor(Color(255, 255, 255, 2))
+
+            end
+
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
             surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -5723,18 +5913,41 @@ function Menu.ReloadMarketStash(itemSearch)
 
                 surface.SetDrawColor(255, 255, 255, 255)
                 surface.SetMaterial(pinIcon)
-                surface.DrawTexturedRect(w - EFGM.MenuScale(15), h - EFGM.MenuScale(18), EFGM.MenuScale(16), EFGM.MenuScale(16))
+
+                if i.equipType == EQUIPTYPE.Ammunition or i.consumableType == "heal" or i.consumableType == "key" then
+
+                    surface.DrawTexturedRect(w - EFGM.MenuScale(15), h - EFGM.MenuScale(32), EFGM.MenuScale(16), EFGM.MenuScale(16))
+
+                else
+
+                    surface.DrawTexturedRect(w - EFGM.MenuScale(15), h - EFGM.MenuScale(18), EFGM.MenuScale(16), EFGM.MenuScale(16))
+
+                end
 
             end
 
-            if i.sizeX > 1 then draw.SimpleTextOutlined("₽" .. itemValue, "PuristaBold18", w / 2, h / 2 - EFGM.MenuScale(9), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-            else draw.SimpleTextOutlined("₽" .. itemValue, "PuristaBold14", w / 2, h / 2 - EFGM.MenuScale(7), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor) end
+            if i.sizeX > 1 then draw.SimpleTextOutlined("₽" .. itemValue, "PuristaBold18", w / 2, h / 2 - EFGM.MenuScale(9), costColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            else draw.SimpleTextOutlined("₽" .. itemValue, "PuristaBold14", w / 2, h / 2 - EFGM.MenuScale(7), costColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor) end
 
         end
 
         function item:DoClick()
 
-            Menu.ConfirmSell(v.name, v.data, v.id)
+            if !bulkSellEnabled then
+
+                Menu.ConfirmSell(v.name, v.data, v.id)
+
+            elseif bulkSellIDs[v.id] == nil then
+
+                bulkSellIDs[v.id] = itemValue
+                bulkSellValue = bulkSellValue + itemValue
+
+            else
+
+                bulkSellIDs[v.id] = nil
+                bulkSellValue = bulkSellValue - itemValue
+
+            end
 
         end
 
@@ -5805,21 +6018,56 @@ function Menu.ReloadMarketStash(itemSearch)
 
             end
 
-            local itemSellButton = vgui.Create("DButton", contextMenu)
-            itemSellButton:Dock(TOP)
-            itemSellButton:SetSize(0, EFGM.MenuScale(25))
-            itemSellButton:SetText("SELL")
+            if !bulkSellEnabled then
 
-            itemSellButton.OnCursorEntered = function(s)
+                local itemSellButton = vgui.Create("DButton", contextMenu)
+                itemSellButton:Dock(TOP)
+                itemSellButton:SetSize(0, EFGM.MenuScale(25))
+                itemSellButton:SetText("SELL")
 
-                surface.PlaySound("ui/element_hover.wav")
+                itemSellButton.OnCursorEntered = function(s)
 
-            end
+                    surface.PlaySound("ui/element_hover.wav")
 
-            function itemSellButton:DoClick()
+                end
 
-                Menu.ConfirmSell(v.name, v.data, v.id)
-                contextMenu:KillFocus()
+                function itemSellButton:DoClick()
+
+                    Menu.ConfirmSell(v.name, v.data, v.id)
+                    contextMenu:KillFocus()
+
+                end
+
+            else
+
+                local itemSelectButton = vgui.Create("DButton", contextMenu)
+                itemSelectButton:Dock(TOP)
+                itemSelectButton:SetSize(0, EFGM.MenuScale(25))
+                if bulkSellIDs[v.id] == nil then itemSelectButton:SetText("SELECT") else itemSelectButton:SetText("UNSELECT") end
+
+                itemSelectButton.OnCursorEntered = function(s)
+
+                    surface.PlaySound("ui/element_hover.wav")
+
+                end
+
+                function itemSelectButton:DoClick()
+
+                    if bulkSellIDs[v.id] == nil then
+
+                        bulkSellIDs[v.id] = itemValue
+                        bulkSellValue = bulkSellValue + itemValue
+
+                    else
+
+                        bulkSellIDs[v.id] = nil
+                        bulkSellValue = bulkSellValue - itemValue
+
+                    end
+
+                    contextMenu:KillFocus()
+
+                end
 
             end
 
@@ -7273,17 +7521,164 @@ function Menu.OpenTab.Market()
     end
 
     surface.SetFont("PuristaBold24")
+    bulkSellText = "BULK SELL"
+    bulkSellTextSize = surface.GetTextSize(bulkSellText)
+    bulkSellButtonSize = bulkSellTextSize + EFGM.MenuScale(10)
+
+    bulkSellEnabled = false
+    bulkSellIDs = {}
+    bulkSellValue = 0
+
+    confirmBulkButton = nil
+    confirmBulkText = nil
+    confirmBulkTextSize = nil
+    confirmBulkButtonSize = nil
+
+    local bulkSellButton = vgui.Create("DButton", marketStashHolder)
+    bulkSellButton:SetPos(EFGM.MenuScale(15) + valueTextSize, 0)
+    bulkSellButton:SetSize(bulkSellButtonSize, EFGM.MenuScale(28))
+    bulkSellButton:SetText("")
+    bulkSellButton.Paint = function(s, w, h)
+
+        if !confirmBulkTextSize then
+
+            bulkSellButton:SetX(EFGM.MenuScale(15) + valueTextSize)
+
+        else
+
+            bulkSellButton:SetX(EFGM.MenuScale(30) + valueTextSize + confirmBulkTextSize)
+
+        end
+
+        bulkSellButton:SetWide(bulkSellButtonSize)
+
+        BlurPanel(s, EFGM.MenuScale(0))
+
+        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.DrawRect(0, 0, bulkSellTextSize + EFGM.MenuScale(10), h)
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(0, 0, bulkSellTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
+
+        draw.SimpleTextOutlined(bulkSellText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    bulkSellButton.OnCursorEntered = function(s)
+
+        surface.PlaySound("ui/element_hover.wav")
+
+    end
+
+    function bulkSellButton:DoClick()
+
+        surface.PlaySound("ui/element_select.wav")
+
+        if bulkSellEnabled == false then
+
+            bulkSellEnabled = true
+            bulkSellIDs = {}
+            bulkSellValue = 0
+
+            surface.SetFont("PuristaBold24")
+            bulkSellText = "CANCEL"
+            bulkSellTextSize = surface.GetTextSize(bulkSellText)
+            bulkSellButtonSize = bulkSellTextSize + EFGM.MenuScale(10)
+
+            confirmBulkText = "₽" .. comma_value(bulkSellValue)
+            confirmBulkTextSize = surface.GetTextSize(confirmBulkText)
+            confirmBulkButtonSize = confirmBulkTextSize + EFGM.MenuScale(10)
+
+            confirmBulkButton = vgui.Create("DButton", marketStashHolder)
+            confirmBulkButton:SetPos(EFGM.MenuScale(15) + valueTextSize, 0)
+            confirmBulkButton:SetSize(confirmBulkButtonSize, EFGM.MenuScale(28))
+            confirmBulkButton:SetText("")
+            confirmBulkButton.Paint = function(s, w, h)
+
+                surface.SetFont("PuristaBold24")
+                confirmBulkText = "₽" .. comma_value(bulkSellValue)
+                confirmBulkTextSize = surface.GetTextSize(confirmBulkText)
+                confirmBulkButtonSize = confirmBulkTextSize + EFGM.MenuScale(10)
+
+                confirmBulkButton:SetX(EFGM.MenuScale(15) + valueTextSize)
+                confirmBulkButton:SetWide(confirmBulkButtonSize)
+
+                BlurPanel(s, EFGM.MenuScale(0))
+
+                surface.SetDrawColor(Color(10, 155, 10, 10))
+                surface.DrawRect(0, 0, confirmBulkTextSize + EFGM.MenuScale(10), h)
+
+                surface.SetDrawColor(Color(255, 255, 255, 155))
+                surface.DrawRect(0, 0, confirmBulkTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
+
+                draw.SimpleTextOutlined(confirmBulkText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            end
+
+            confirmBulkButton.OnCursorEntered = function(s)
+
+                surface.PlaySound("ui/element_hover.wav")
+
+            end
+
+            function confirmBulkButton:DoClick()
+
+                local amt = table.Count(bulkSellIDs)
+                if amt == 0 then return end
+
+                Menu.ConfirmBulk(table.Count(bulkSellIDs) ,bulkSellValue)
+
+            end
+
+            Menu.ReloadStash(marketStashItemSearchText)
+
+        else
+
+            bulkSellEnabled = false
+            bulkSellIDs = {}
+            bulkSellValue = 0
+
+            surface.SetFont("PuristaBold24")
+            bulkSellText = "BULK SELL"
+            bulkSellTextSize = surface.GetTextSize(bulkSellText)
+            bulkSellButtonSize = bulkSellTextSize + EFGM.MenuScale(10)
+
+            if IsValid(confirmBulkButton) then
+
+                confirmBulkButton:Remove()
+                confirmBulkButton = nil
+                confirmBulkText = nil
+                confirmBulkTextSize = nil
+                confirmBulkButtonSize = nil
+
+            end
+
+            Menu.ReloadStash(marketStashItemSearchText)
+
+        end
+
+    end
+
+    surface.SetFont("PuristaBold24")
     local marketStashSearchText = "SEARCH"
     local marketStashSearchTextSize = surface.GetTextSize(marketStashSearchText)
     local marketStashSearchButtonSize = marketStashSearchTextSize + EFGM.MenuScale(10)
 
     local marketStashSearchButton = vgui.Create("DButton", marketStashHolder)
-    marketStashSearchButton:SetPos(EFGM.MenuScale(15) + valueTextSize, 0)
+    marketStashSearchButton:SetPos(EFGM.MenuScale(30) + valueTextSize + bulkSellTextSize, 0)
     marketStashSearchButton:SetSize(marketStashSearchButtonSize, EFGM.MenuScale(28))
     marketStashSearchButton:SetText("")
     marketStashSearchButton.Paint = function(s, w, h)
 
-        marketStashSearchButton:SetX(EFGM.MenuScale(15) + valueTextSize)
+        if !confirmBulkTextSize then
+
+            marketStashSearchButton:SetX(EFGM.MenuScale(30) + valueTextSize + bulkSellTextSize)
+
+        else
+
+            marketStashSearchButton:SetX(EFGM.MenuScale(45) + valueTextSize + bulkSellTextSize + confirmBulkTextSize)
+
+        end
 
         BlurPanel(s, EFGM.MenuScale(0))
 
