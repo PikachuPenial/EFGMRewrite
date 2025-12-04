@@ -1141,6 +1141,7 @@ function Menu.InspectItem(item, data)
 
     surface.SetFont("PuristaBold18")
     local itemDescText = string.upper(i.displayType) .. " / " .. string.upper(i.weight) .. "KG" .. " / ₽" .. string.upper(comma_value(value))
+    if i.canPurchase == true then itemDescText = itemDescText .. " / LEVEL " .. string.upper(i.levelReq) end
     local itemDescSize = surface.GetTextSize(itemDescText)
 
     local iconSizeX, iconSizeY = EFGM.MenuScale(114 * i.sizeX), EFGM.MenuScale(114 * i.sizeY)
