@@ -135,8 +135,10 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 
 	end
 
+	local victimHitgroup = victim:LastHitGroup()
+
 	-- death sound
-	victim:EmitSound(Sound("deathsounds/death" .. math.random(1, 116) .. ".wav"), math.random(65, 80)) -- holy shit thats a few
+	if victimHitgroup != HITGROUP_HEAD then victim:EmitSound(Sound("deathsounds/death" .. math.random(1, 116) .. ".wav"), 84) end -- holy shit thats a few
 	victim:SetNWInt("RaidTime", 0)
 
 	-- when a player suicides
@@ -166,7 +168,6 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 
 	local rawDistance = victim:GetPos():Distance(attacker:GetPos())
 	local distance = math.Round(rawDistance * 0.01905) -- convert hammer units to meters
-	local victimHitgroup = victim:LastHitGroup()
 
 	local xpMult = 0.5
 
