@@ -3,6 +3,7 @@ ENT.Base = "base_point"
 
 -- These are defined by the entity in hammer
 
+ENT.InternalName = ""
 ENT.ExtractTime = 10
 ENT.ExtractName = ""
 ENT.DisabledMessage = ""
@@ -14,6 +15,10 @@ ENT.IsGuranteed = true
 ENT.InstantExtract = false
 
 function ENT:KeyValue(key, value)
+
+	if key == "targetname" then
+		self.InternalName = value
+	end
 	if key == "extractTime" then
 		self.ExtractTime = tonumber(value)
 	end
@@ -152,5 +157,5 @@ end
 
 function ENT:Extract(ply)
     self:TriggerOutput("OnPlayerExtract", ply)
-    hook.Run("PlayerExtraction", ply, self.ExtractTime, self.IsGuranteed)
+    hook.Run("PlayerExtraction", ply, self.ExtractTime, self.IsGuranteed, self.InternalName)
 end

@@ -429,6 +429,20 @@ function SetupPlayerData(ply)
 
 	CalculateInventoryWeight(ply)
 
+    -- tasks (WIP)
+
+    ply.tasks = {}
+
+    for k, v in pairs(EFGMTASKS) do
+        
+        if v.requirements[1] == REQUIREMENT.None then
+
+            table.insert(ply.tasks, TASK.Instantiate(k))
+
+        end
+
+    end
+
     net.Start("PlayerNetworkStash", false)
     net.WriteString(stashString)
     net.Send(ply)
