@@ -81,7 +81,7 @@ end )
 local distance = 16
 local leanSpeed = 1.5
 local interp = 2
-local maxLossSway = 0.5
+local maxLossSway = 0.6
 
 local hull_size_5 = Vector(6.3, 6.3, 6.3)
 local hull_size_5_negative = Vector(-6.3, -6.3, -6.3)
@@ -95,7 +95,7 @@ hook.Add("SetupMove", "Leaning", function(ply, mv, cmd)
     local leaning_left = ply:GetNW2Bool("leaning_left")
     local leaning_right = ply:GetNW2Bool("leaning_right")
 
-    local speed = leanSpeed * math.min(1, 1 - math.min(maxLossSway, math.Round(math.max(0, ply:GetNWFloat("InventoryWeight", 0.00) - underweightLimit) * 0.009, 2)))
+    local speed = leanSpeed * math.min(1, 1 - math.min(maxLossSway, math.Round(math.max(0, ply:GetNWFloat("InventoryWeight", 0.00) - underweightLimit) * 0.0109, 2)))
 
     if !cmd:KeyDown(IN_SPEED) then
         if leaning_left then fraction = Lerp(FrameTime() * 5 * speed + FrameTime(), fraction, -1) end
@@ -277,10 +277,10 @@ hook.Add("CreateMove", "Inertia", function(cmd)
     end
 end)
 
-local maxLossMove = 30
+local maxLossMove = 45
 hook.Add("Move", "MovementWeight", function(ply, mv)
 
-    local deduction = math.max(0, math.min(maxLossMove, math.Round(math.max(0, ply:GetNWFloat("InventoryWeight", 0.00) - underweightLimit) * 0.545, 2)))
+    local deduction = math.max(0, math.min(maxLossMove, math.Round(math.max(0, ply:GetNWFloat("InventoryWeight", 0.00) - underweightLimit) * 0.818, 2)))
 
 	ply:SetRunSpeed(220 - deduction)
 	ply:SetWalkSpeed(135 - deduction)
