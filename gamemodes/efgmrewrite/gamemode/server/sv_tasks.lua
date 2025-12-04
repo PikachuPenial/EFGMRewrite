@@ -1,4 +1,6 @@
 
+util.AddNetworkString("TaskPay")
+
 -- Task shit
 
 function CheckTaskCompletion(ply, taskName)
@@ -26,23 +28,26 @@ function CheckTaskCompletion(ply, taskName)
     local isProgressionComplete = true
 
 
-    for k, v in ipairs(info.objectiveTypes) do
+    for objIndex, objType in ipairs(info.objectiveTypes) do
 
         -- PrintTable(info)
 
-        if v == OBJECTIVE.Pay or v == OBJECTIVE.Kill && info.objectives[k] > ply.tasks[taskIndex].progress[k] then
+        if (objType == OBJECTIVE.Pay or objType == OBJECTIVE.Kill) && info.objectives[objIndex] > ply.tasks[taskIndex].progress[objIndex] then
             
             isProgressionComplete = false
 
-            print("progression ain't complete yet")
+            print("progression "..objIndex.." ain't complete yet")
 
             return
 
-        elseif v == OBJECTIVE.Extract or v == OBJECTIVE.GiveItem && info.objectives[k][1] > ply.tasks[taskIndex].progress[k] then
+        elseif (objType == OBJECTIVE.Extract or objType == OBJECTIVE.GiveItem) && info.objectives[objIndex][1] > ply.tasks[taskIndex].progress[objIndex] then
             
+            print(info.objectives[objIndex][1])
+            print(ply.tasks[taskIndex].progress[objIndex])
+
             isProgressionComplete = false
 
-            print("progression ain't complete yet")
+            print("progression "..objIndex.." ain't complete yet")
 
             return
 
@@ -135,6 +140,44 @@ hook.Add("PlayerExtraction", "TaskExtract", function(ply, extractTime, isGurante
         
     end
 
+end)
+
+net.Receive("taskPay", function(len, ply)
+
+    local task = net.ReadString()
+    local amount = net.ReadUInt(32)
+
+    local info = EFGMTASKS[task]
+
+    if info == nil then return end
+
+    -- getting objective
+
+    for taskIndex, taskInstance in ipairs(ply.tasks) do
+        
+        if taskInstance.name == task then
+
+            for objIndex, objType in ipairs(info.objectiveTypes) do
+                
+                if objType == OBJECTIVE.Pay then
+
+                    local moneyToPay = math.Clamp(amount, 0, ply:GetNWInt("Money", 0))
+                    moneyToPay = math.Clamp(amount, 0, info.objectives[objIndex] - ply.tasks[taskIndex].progress[objIndex])
+
+                    ply:SetNWInt("Money", ply:GetNWInt("Money", 0) - moneyToPay)
+                    ply.tasks[taskIndex].progress[objIndex] = ply.tasks[taskIndex].progress[objIndex] + moneyToPay
+
+                    CheckTaskCompletion(ply, task)
+
+                end
+
+            end
+
+        end
+
+    end
+
+    
 end)
 
 -- Debugging
