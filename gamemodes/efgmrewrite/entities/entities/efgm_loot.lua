@@ -59,10 +59,13 @@ function ENT:SelectItems()
 
     while chance >= chanceRand do
 
-        chance = chance - self.ItemChancePerRoll
-
         local itemVal, itemKey = table.Random(LOOT[self.LootType])
         local def = EFGMITEMS[itemKey]
+
+        local itemChance = def.lootWeight or 100
+        if itemChance < 100 and itemChance < math.random(0, 100) then continue end -- bad roll, replace with new item
+
+        chance = chance - self.ItemChancePerRoll
 
         local data = {}
         data.count = math.Clamp(math.random(math.Round(def.stackSize / 6), def.stackSize), 1, def.stackSize)

@@ -142,7 +142,7 @@ EFGMITEMS = {}
         ["displayName"] = "SR-3M",
         ["displayType"] = "Assault Carbine",
         ["weight"] = 2.5,
-        ["value"] = 147000,
+        ["value"] = 167000,
         ["levelReq"] = 40,
         ["equipType"] = EQUIPTYPE.Weapon,
         ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
@@ -152,6 +152,8 @@ EFGMITEMS = {}
 
         ["sizeX"] = 3,
         ["sizeY"] = 2,
+
+        ["lootWeight"] = 65,
 
         ["caliber"] = "9x39",
         ["ammoID"] = "efgm_ammo_9x39",
@@ -553,6 +555,8 @@ EFGMITEMS = {}
         ["sizeX"] = 5,
         ["sizeY"] = 2,
 
+        ["lootWeight"] = 65,
+
         ["caliber"] = "9x39",
         ["ammoID"] = "efgm_ammo_9x39",
         ["defAtts"] = "XQAAAQCSAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8OwmVfT2hq/H64qBlSsLc/OGn6XwHM3Rbx0N1ed9Tqdupk/nUylj0UY2YpYpkPX3jeqgqAnCrVaPLvk0QTUg3LiNYYr49MDIapMWEO2/dbjsxcacl4KCmDehoHgxY0hbp4PPja3elSuaXxpvgvSz44rShom0jdSFYl4PdazbHs57zFavwA"
@@ -574,6 +578,8 @@ EFGMITEMS = {}
         ["sizeX"] = 4,
         ["sizeY"] = 2,
 
+        ["lootWeight"] = 75,
+
         ["caliber"] = "12.7x55",
         ["ammoID"] = "efgm_ammo_127x55",
         ["defAtts"] = "XQAAAQCeAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8Lcjh5PiK/llZGDr7oa+u0gaZ5EJru7gxOqJdvNbXpy5tlUiCzfDxOhcoz5+HaAwLcuGJng8zD00WC4H58kQa5GFmHMGDajP9AjQuzCyaf/ErixY5umfnP41eoXt+tOg6oIuPRiquOyhx7c78EIYCpis14lvAw28laBPvvJoVLaNT9SgA="
@@ -585,7 +591,7 @@ EFGMITEMS = {}
         ["displayType"] = "Assault Rifle",
         ["weight"] = 2.9,
         ["value"] = 97000,
-        ["levelReq"] = 18,
+        ["levelReq"] = 23,
         ["equipType"] = EQUIPTYPE.Weapon,
         ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
         ["appearInInventory"] = true,
@@ -636,6 +642,8 @@ EFGMITEMS = {}
 
         ["sizeX"] = 4,
         ["sizeY"] = 2,
+
+        ["lootWeight"] = 75,
 
         ["caliber"] = "7.62x51",
         ["ammoID"] = "efgm_ammo_762x51",
@@ -710,8 +718,8 @@ EFGMITEMS = {}
         ["displayName"] = "HK 416A5",
         ["displayType"] = "Assault Rifle",
         ["weight"] = 3.8,
-        ["value"] = 99000,
-        ["levelReq"] = 24,
+        ["value"] = 139000,
+        ["levelReq"] = 29,
         ["equipType"] = EQUIPTYPE.Weapon,
         ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
         ["appearInInventory"] = true,
@@ -720,6 +728,8 @@ EFGMITEMS = {}
 
         ["sizeX"] = 5,
         ["sizeY"] = 2,
+
+        ["lootWeight"] = 75,
 
         ["caliber"] = "5.56x45",
         ["ammoID"] = "efgm_ammo_556x45",
@@ -732,7 +742,7 @@ EFGMITEMS = {}
         ["displayType"] = "Assault Rifle",
         ["weight"] = 3,
         ["value"] = 47000,
-        ["levelReq"] = 8,
+        ["levelReq"] = 12,
         ["equipType"] = EQUIPTYPE.Weapon,
         ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
         ["appearInInventory"] = true,
@@ -784,6 +794,8 @@ EFGMITEMS = {}
         ["sizeX"] = 4,
         ["sizeY"] = 2,
 
+        ["lootWeight"] = 75,
+
         ["caliber"] = "7.62x39",
         ["ammoID"] = "efgm_ammo_762x39",
         ["defAtts"] = "XQAAAQAkAwAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8Lchzpvw0LefC8nJifjVbTknHCQBjxUoQrnXPJE9wVW1sa2b3/dGIriqHhC9sLIkt8/JzzkdUEJ5nYk8T3lqyL22ZE1nvjUItPtSzo866Tp0eCSJaACFrWrJ8YcYaYztbxHFp6JS7x5FMSjLlzJNh2WYabJqumoLED74PSOkpXUHoChT5JEVUPXArnvXUUmh/B0SxRZsXUShWtLcYL7xA8185qm6V4YJrRvQZqI6+h/yqwsrgCkidnvmmksQjWyFV0KoH/5QKKkltDU66v3OzX6zZi7O8g1LJUnxM1COq0qyngret0kIyDwtmewwOxuVfQ"
@@ -826,6 +838,8 @@ EFGMITEMS = {}
         ["sizeX"] = 5,
         ["sizeY"] = 2,
 
+        ["lootWeight"] = 75,
+
         ["caliber"] = "7.62x51",
         ["ammoID"] = "efgm_ammo_762x51",
         ["defAtts"] = "XQAAAQBqAwAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8Lchzpvw0LefC8cKmSsx2FONi6w2fdtBqbRE9Vb00gVDvijCNLXoLoPgvffNK3Ts0huoSj2t/J0Qabzrcgv9pIaOT9CCdac3Y+YiE7NjVh97i2MicncONHdm6NmZli1bQsBg+UTHTU98QHIxHQLweawMprPi2gNBjCbnVttJXN95pQwlC0EmP5DBXXneqo6nXKML8S5RR1fGFOKRvar9owEqwt4A1DEstTSYzieAWWa+SXpmEeUk1ILuF0+09C2JkHAU7J9gP7ARmjV8LngiaZT1VbsnJvpbHAiNAFCd/mMbzcEazLVyfG"
@@ -867,6 +881,8 @@ EFGMITEMS = {}
 
         ["sizeX"] = 6,
         ["sizeY"] = 2,
+
+        ["lootWeight"] = 65,
 
         ["caliber"] = "6.8x51",
         ["ammoID"] = "efgm_ammo_68x51",
@@ -921,7 +937,7 @@ EFGMITEMS = {}
         ["displayType"] = "Assault Rifle",
         ["weight"] = 4.2,
         ["value"] = 61000,
-        ["levelReq"] = 12,
+        ["levelReq"] = 15,
         ["equipType"] = EQUIPTYPE.Weapon,
         ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
         ["appearInInventory"] = true,
@@ -964,7 +980,7 @@ EFGMITEMS = {}
         ["displayType"] = "Light Machine Gun",
         ["weight"] = 9.4,
         ["value"] = 110000,
-        ["levelReq"] = 16,
+        ["levelReq"] = 18,
         ["equipType"] = EQUIPTYPE.Weapon,
         ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
         ["appearInInventory"] = true,
@@ -995,6 +1011,8 @@ EFGMITEMS = {}
         ["sizeX"] = 6,
         ["sizeY"] = 3,
 
+        ["lootWeight"] = 75,
+
         ["caliber"] = "7.62x54",
         ["ammoID"] = "efgm_ammo_762x54",
         ["defAtts"] = "XQAAAQB1AQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+VxqdivxON2A4c/UqwSJhqDo+4MgoaYe3T9Uq9jxbrXbeouPZLy1sIP/T9DyOZBwzjl8btLjhrC3FgFrmdqNCYWkz30yzsETGz/5o6wAs0ZzQw8mceqa3lJoSXZGbka9NLvH0SOwaeLSmbAtj5lQrj3w6en7CSh2yTolf1HY02GOWY"
@@ -1016,6 +1034,8 @@ EFGMITEMS = {}
         ["sizeX"] = 6,
         ["sizeY"] = 3,
 
+        ["lootWeight"] = 75,
+
         ["caliber"] = "7.62x54",
         ["ammoID"] = "efgm_ammo_762x54",
         ["defAtts"] = "XQAAAQBAAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+VxqdivxON6Som3vL2ybUBNPLkDFs7ArpEbRhf//vDzHLbNjwl/yi0+ghuUFk0qpomQmY51j7k5NmwRm4tC6nxVy7gbHQo7OSzUJB2xaJHe+Xp4GXZ/5OAUrxrBimVt5hyP/sKIQjw7g8P+evKxFjVgPcA"
@@ -1027,7 +1047,7 @@ EFGMITEMS = {}
         ["displayType"] = "Light Machine Gun",
         ["weight"] = 7.4,
         ["value"] = 99000,
-        ["levelReq"] = 20,
+        ["levelReq"] = 24,
         ["equipType"] = EQUIPTYPE.Weapon,
         ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
         ["appearInInventory"] = true,
@@ -1722,7 +1742,7 @@ EFGMITEMS = {}
         ["displayType"] = "Shotgun",
         ["weight"] = 5.0,
         ["value"] = 120000,
-        ["levelReq"] = 20,
+        ["levelReq"] = 30,
         ["equipType"] = EQUIPTYPE.Weapon,
         ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
         ["appearInInventory"] = true,
@@ -1731,6 +1751,8 @@ EFGMITEMS = {}
 
         ["sizeX"] = 5,
         ["sizeY"] = 2,
+
+        ["lootWeight"] = 75,
 
         ["caliber"] = "12/70",
         ["ammoID"] = "efgm_ammo_12gauge",
@@ -1785,7 +1807,7 @@ EFGMITEMS = {}
         ["displayType"] = "Shotgun",
         ["weight"] = 5.6,
         ["value"] = 140000,
-        ["levelReq"] = 28,
+        ["levelReq"] = 33,
         ["equipType"] = EQUIPTYPE.Weapon,
         ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
         ["appearInInventory"] = true,
@@ -1794,6 +1816,8 @@ EFGMITEMS = {}
 
         ["sizeX"] = 6,
         ["sizeY"] = 2,
+
+        ["lootWeight"] = 75,
 
         ["caliber"] = "12/70",
         ["ammoID"] = "efgm_ammo_12gauge",
@@ -1836,6 +1860,8 @@ EFGMITEMS = {}
 
         ["sizeX"] = 6,
         ["sizeY"] = 1,
+
+        ["lootWeight"] = 75,
 
         ["caliber"] = "23x75",
         ["ammoID"] = "efgm_ammo_4gauge",
@@ -1880,6 +1906,9 @@ EFGMITEMS = {}
         ["sizeX"] = 5,
         ["sizeY"] = 2,
 
+        ["canPurchase"] = false,
+        ["lootWeight"] = 50,
+
         ["caliber"] = ".338",
         ["ammoID"] = "efgm_ammo_338",
         ["defAtts"] = "XQAAAQDhAwAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LcsYCbthEf9oFSoSxAkrJ5MHEtbkpwPQvQB1xFtCyk1QLE+imKyPumFPHpcXKuIe+j4b3sDvYqfe7IxMhskP2yHt/GS6VwCdLv1JnbWDvOkzqVT0vfDRHIIBDfbBCeWE8UAItC5RpezcbUMzJe3DEJiZN6RO2H0yuwdj5fc6uqC17vEP2AFNDhK/TKz9ahfIuuo8wZ77EN1GK2LnmvIDyXyP4GEUWCnMW227BnoYs50TuigRg/r1bitCvXeRVhepEt2M/Wg=="
@@ -1890,7 +1919,7 @@ EFGMITEMS = {}
         ["displayName"] = "AK-50",
         ["displayType"] = "Sniper Rifle",
         ["weight"] = 12.8,
-        ["value"] = 400000,
+        ["value"] = 600000,
         ["levelReq"] = 48,
         ["equipType"] = EQUIPTYPE.Weapon,
         ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
@@ -1902,6 +1931,7 @@ EFGMITEMS = {}
         ["sizeY"] = 2,
 
         ["canPurchase"] = false,
+        ["lootWeight"] = 25,
 
         ["caliber"] = ".50 BMG",
         ["ammoID"] = "efgm_ammo_50bmg",
@@ -1924,6 +1954,8 @@ EFGMITEMS = {}
         ["sizeX"] = 6,
         ["sizeY"] = 3,
 
+        ["lootWeight"] = 65,
+
         ["caliber"] = "7.62x51",
         ["ammoID"] = "efgm_ammo_762x51",
         ["defAtts"] = "XQAAAQAsBAAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8Lchzpvw0LefC8hu4+7dXYbNKzz014YolWmVqMYRuK5YCam2fgKlEcPvm+rzjsun8OdBpgt/uNSe/ayL7WJrLzw6FF1DHgRU/lqG3hEf61nWTu+CPJYddv3r4ez8tOMz+eOV8+mkLKbetrK2wKBNbLmPmSyVdJEyIH9VwuPJNniIkCb8dFC43uVgLlR6InZkEkfTCj1y2lg2ed0HeuCRQGVwiDp8GKbjgBp0Xd7vFbiW1eSlLF9oUcCdJWeDBTZ51Iiwu/AT9Bm2VOLM89IekkmaqlaLsx6VnaSyM1tAXeP+1R4HH1VlZu7N1MvD8m7XcnMuR4kyRw7CouhSNNSjZMvLWI1QP2JMaWgziL8H1MxqJv"
@@ -1935,7 +1967,7 @@ EFGMITEMS = {}
         ["displayType"] = "Marksman Rifle",
         ["weight"] = 3.8,
         ["value"] = 120000,
-        ["levelReq"] = 28,
+        ["levelReq"] = 26,
         ["equipType"] = EQUIPTYPE.Weapon,
         ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
         ["appearInInventory"] = true,
@@ -1956,7 +1988,7 @@ EFGMITEMS = {}
         ["displayType"] = "Sniper Rifle",
         ["weight"] = 5.0,
         ["value"] = 150000,
-        ["levelReq"] = 24,
+        ["levelReq"] = 28,
         ["equipType"] = EQUIPTYPE.Weapon,
         ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
         ["appearInInventory"] = true,
@@ -1965,6 +1997,8 @@ EFGMITEMS = {}
 
         ["sizeX"] = 5,
         ["sizeY"] = 2,
+
+        ["lootWeight"] = 75,
 
         ["caliber"] = "7.62x51",
         ["ammoID"] = "efgm_ammo_762x51",
@@ -1977,7 +2011,7 @@ EFGMITEMS = {}
         ["displayType"] = "Marksman Rifle",
         ["weight"] = 6.5,
         ["value"] = 330000,
-        ["levelReq"] = 36,
+        ["levelReq"] = 39,
         ["equipType"] = EQUIPTYPE.Weapon,
         ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
         ["appearInInventory"] = true,
@@ -1986,6 +2020,8 @@ EFGMITEMS = {}
 
         ["sizeX"] = 6,
         ["sizeY"] = 2,
+
+        ["lootWeight"] = 50,
 
         ["canPurchase"] = false,
 
@@ -2115,6 +2151,8 @@ EFGMITEMS = {}
         ["sizeX"] = 5,
         ["sizeY"] = 2,
 
+        ["lootWeight"] = 75,
+
         ["caliber"] = "7.62x51",
         ["ammoID"] = "efgm_ammo_762x51",
         ["defAtts"] = "XQAAAQC5AgAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8Lchzpvw0LefC8nH/Q5D/5WQm8ZkY/7e2UXLJ+U/sr/LGlYPiAkUENKsUNQ0OZJKV4xujGrotTXTK8lWcV3TAANhKb/Y1Xlt99olDTPMak9UrUGXYynFY3+5gltTTTt/P/SxEFydUMCy2KHtPyB8Ob/wjkKc34cULXS3sZffRqyqs+BoiZk95dUmpFTX4ngnqMF4+KpxEyzSjMxMIUumYijLMTfQNL60+WWkBdmCA8JlHVj/2AgnNI42dWJ+MGwrAtAA=="
@@ -2126,7 +2164,7 @@ EFGMITEMS = {}
         ["displayType"] = "Marksman Rifle",
         ["weight"] = 3.9,
         ["value"] = 105000,
-        ["levelReq"] = 19,
+        ["levelReq"] = 18,
         ["equipType"] = EQUIPTYPE.Weapon,
         ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
         ["appearInInventory"] = true,
@@ -2220,6 +2258,8 @@ EFGMITEMS = {}
         ["sizeX"] = 5,
         ["sizeY"] = 2,
 
+        ["lootWeight"] = 65,
+
         ["caliber"] = "9x39",
         ["ammoID"] = "efgm_ammo_9x39",
         ["defAtts"] = "XQAAAQBtAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8OwmVfT2hq/H64qBlSsLc/OGn6XwHM3Rbx0N1ed9Tqdupk/nUylj0UY2YpYpkPX3jeqgqAnCrVaNv1fySJhu99NEpabNPsEGTjXDLy7jmO+jBxswQ7Nq0MpQq9SWRznk2rHKBFdXEEuWDGJSVnjp0XHF7iu5IsLOUKVfodqQ1AEA=="
@@ -2240,6 +2280,8 @@ EFGMITEMS = {}
 
         ["sizeX"] = 6,
         ["sizeY"] = 2,
+
+        ["lootWeight"] = 50,
 
         ["caliber"] = ".338",
         ["ammoID"] = "efgm_ammo_338",
@@ -2273,7 +2315,7 @@ EFGMITEMS = {}
         ["displayName"] = "MP9-N",
         ["displayType"] = "Submachine Gun",
         ["weight"] = 1.4,
-        ["value"] = 50000,
+        ["value"] = 60000,
         ["levelReq"] = 11,
         ["equipType"] = EQUIPTYPE.Weapon,
         ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
@@ -2295,7 +2337,7 @@ EFGMITEMS = {}
         ["displayType"] = "Submachine Gun",
         ["weight"] = 2.9,
         ["value"] = 72000,
-        ["levelReq"] = 24,
+        ["levelReq"] = 28,
         ["equipType"] = EQUIPTYPE.Weapon,
         ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
         ["appearInInventory"] = true,
@@ -2304,6 +2346,8 @@ EFGMITEMS = {}
 
         ["sizeX"] = 3,
         ["sizeY"] = 2,
+
+        ["lootWeight"] = 80,
 
         ["caliber"] = "5.7x28",
         ["ammoID"] = "efgm_ammo_57x28",
@@ -2389,6 +2433,8 @@ EFGMITEMS = {}
         ["sizeX"] = 3,
         ["sizeY"] = 1,
 
+        ["lootWeight"] = 80,
+
         ["caliber"] = "4.6x30",
         ["ammoID"] = "efgm_ammo_46x30",
         ["defAtts"] = "XQAAAQBoAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8NV6XBeOzbVc3/+oJVTjqv2y1/N6rCbsp5PT5ky5xEMVwRLNgW0fN8cTRAuAizUrBVXXF/YybHeXMOq38nmuYZjE8rO8MdHthSgqamIKXz4/vfLxrEx5t5AeABLGPYyRXBa5WJ7l0Q9DHa5FunPA8b8LPQdhozbE/jMgtnf9G3"
@@ -2463,7 +2509,7 @@ EFGMITEMS = {}
         ["displayType"] = "Submachine Gun",
         ["weight"] = 2.6,
         ["value"] = 78000,
-        ["levelReq"] = 24,
+        ["levelReq"] = 27,
         ["equipType"] = EQUIPTYPE.Weapon,
         ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
         ["appearInInventory"] = true,
@@ -2472,6 +2518,8 @@ EFGMITEMS = {}
 
         ["sizeX"] = 3,
         ["sizeY"] = 2,
+
+        ["lootWeight"] = 80,
 
         ["caliber"] = ".45",
         ["ammoID"] = "efgm_ammo_45",
@@ -2484,7 +2532,7 @@ EFGMITEMS = {}
         ["displayType"] = "Submachine Gun",
         ["weight"] = 2.5,
         ["value"] = 72000,
-        ["levelReq"] = 20,
+        ["levelReq"] = 25,
         ["equipType"] = EQUIPTYPE.Weapon,
         ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
         ["appearInInventory"] = true,
@@ -2493,6 +2541,8 @@ EFGMITEMS = {}
 
         ["sizeX"] = 3,
         ["sizeY"] = 2,
+
+        ["lootWeight"] = 80,
 
         ["caliber"] = "9x19",
         ["ammoID"] = "efgm_ammo_9x19",
@@ -2589,7 +2639,7 @@ EFGMITEMS = {}
         ["displayType"] = "Submachine Gun",
         ["weight"] = 2.8,
         ["value"] = 54000,
-        ["levelReq"] = 9,
+        ["levelReq"] = 10,
         ["equipType"] = EQUIPTYPE.Weapon,
         ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
         ["appearInInventory"] = true,
@@ -2610,7 +2660,7 @@ EFGMITEMS = {}
         ["displayType"] = "Submachine Gun",
         ["weight"] = 2.0,
         ["value"] = 43000,
-        ["levelReq"] = 5,
+        ["levelReq"] = 6,
         ["equipType"] = EQUIPTYPE.Weapon,
         ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
         ["appearInInventory"] = true,
@@ -2631,7 +2681,7 @@ EFGMITEMS = {}
         ["displayType"] = "Submachine Gun",
         ["weight"] = 1.7,
         ["value"] = 53000,
-        ["levelReq"] = 13,
+        ["levelReq"] = 14,
         ["equipType"] = EQUIPTYPE.Weapon,
         ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
         ["appearInInventory"] = true,
@@ -2663,6 +2713,9 @@ EFGMITEMS = {}
         ["sizeX"] = 3,
         ["sizeY"] = 2,
 
+        ["canPurchase"] = false,
+        ["lootWeight"] = 25,
+
         ["caliber"] = "40x46",
         ["ammoID"] = "efgm_ammo_40x46",
         ["defAtts"] = "XQAAAQCrAAAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LcZnpdAq+1HxvVFYM8yMuG3QVvnwhP32P3T9+b6yx6EtZbue8c+rXbC1/wisVwiACA9z7RE6ODiOAXKohmGfZ731lBAX2dwTm+1X5GW6w0B97mkHiGQA="
@@ -2684,6 +2737,9 @@ EFGMITEMS = {}
         ["sizeX"] = 4,
         ["sizeY"] = 2,
 
+        ["canPurchase"] = false,
+        ["lootWeight"] = 25,
+
         ["caliber"] = "40x46",
         ["ammoID"] = "efgm_ammo_40x46",
         ["defAtts"] = "XQAAAQAJAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LcZnpdAq+1HxvVFYM8yMuG3QVvnwhP32P3T9+b6yx6EtZbue8dF7Fsj37UUn+7mk9v/HrNRAFGg6nQkIwWTKSU5Ht4euLD+2nV9cVQ5QTQEhTXHfBai51DvzIw0ZoLBPUIiwYXsBVck0Y40MSrORhD3wFxwGQfgA="
@@ -2694,7 +2750,7 @@ EFGMITEMS = {}
         ["displayName"] = "RShG-2",
         ["displayType"] = "Launcher",
         ["weight"] = 4.0,
-        ["value"] = 500000,
+        ["value"] = 900000,
         ["levelReq"] = 48,
         ["equipType"] = EQUIPTYPE.Weapon,
         ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
@@ -2704,6 +2760,9 @@ EFGMITEMS = {}
 
         ["sizeX"] = 4,
         ["sizeY"] = 1,
+
+        ["canPurchase"] = false,
+        ["lootWeight"] = 25,
 
         ["caliber"] = "72.5",
         ["ammoID"] = "efgm_ammo_725"
@@ -2764,6 +2823,8 @@ EFGMITEMS = {}
         ["sizeX"] = 1,
         ["sizeY"] = 1,
 
+        ["lootWeight"] = 50,
+
         ["canPurchase"] = false
     }
 
@@ -2801,6 +2862,8 @@ EFGMITEMS = {}
 
         ["sizeX"] = 1,
         ["sizeY"] = 4,
+
+        ["lootWeight"] = 25,
 
         ["canPurchase"] = false
     }
@@ -2877,6 +2940,8 @@ EFGMITEMS = {}
         ["sizeX"] = 5,
         ["sizeY"] = 5,
 
+        ["lootWeight"] = 25,
+
         ["canPurchase"] = false
     }
 
@@ -2896,6 +2961,8 @@ EFGMITEMS = {}
         ["sizeX"] = 1,
         ["sizeY"] = 3,
 
+        ["lootWeight"] = 25,
+
         ["canPurchase"] = false
     }
 
@@ -2904,7 +2971,7 @@ EFGMITEMS = {}
         ["displayName"] = "Knife",
         ["displayType"] = "Melee",
         ["weight"] = 0.2,
-        ["value"] = 75000,
+        ["value"] = 750000,
         ["levelReq"] = 48,
         ["equipType"] = EQUIPTYPE.Weapon,
         ["equipSlot"] = WEAPONSLOTS.MELEE.ID,
@@ -2914,6 +2981,8 @@ EFGMITEMS = {}
 
         ["sizeX"] = 2,
         ["sizeY"] = 1,
+
+        ["lootWeight"] = 25,
 
         ["canPurchase"] = false
     }
@@ -2991,6 +3060,8 @@ EFGMITEMS = {}
         ["sizeX"] = 2,
         ["sizeY"] = 1,
 
+        ["lootWeight"] = 50,
+
         ["canPurchase"] = false
     }
 
@@ -3009,6 +3080,8 @@ EFGMITEMS = {}
 
         ["sizeX"] = 1,
         ["sizeY"] = 3,
+
+        ["lootWeight"] = 25,
 
         ["canPurchase"] = false
     }
@@ -3048,6 +3121,8 @@ EFGMITEMS = {}
         ["sizeX"] = 1,
         ["sizeY"] = 3,
 
+        ["lootWeight"] = 25,
+
         ["canPurchase"] = false
     }
 
@@ -3066,6 +3141,8 @@ EFGMITEMS = {}
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
+
+        ["lootWeight"] = 25,
 
         ["canPurchase"] = false
     }
@@ -3102,6 +3179,8 @@ EFGMITEMS = {}
 
         ["sizeX"] = 1,
         ["sizeY"] = 3,
+
+        ["lootWeight"] = 25,
 
         ["canPurchase"] = false
     }
@@ -3242,7 +3321,8 @@ EFGMITEMS = {}
         ["sizeX"] = 1,
         ["sizeY"] = 1,
 
-        ["canPurchase"] = false
+        ["canPurchase"] = false,
+        ["lootWeight"] = 50
     }
 
     EFGMITEMS["arc9_eft_rgo"] = {
@@ -3261,7 +3341,8 @@ EFGMITEMS = {}
         ["sizeX"] = 1,
         ["sizeY"] = 1,
 
-        ["canPurchase"] = false
+        ["canPurchase"] = false,
+        ["lootWeight"] = 50
     }
 
     EFGMITEMS["arc9_eft_v40"] = {
@@ -3984,7 +4065,9 @@ EFGMITEMS = {}
         ["iconColor"] = Color(41, 33, 26, 155),
 
         ["sizeX"] = 2,
-        ["sizeY"] = 2
+        ["sizeY"] = 2,
+
+        ["lootWeight"] = 50,
     }
 
 -- KEYS
@@ -4046,7 +4129,8 @@ EFGMITEMS = {}
         ["sizeX"] = 1,
         ["sizeY"] = 1,
 
-        ["canPurchase"] = false
+        ["canPurchase"] = false,
+        ["lootWeight"] = 25
     }
 
     EFGMITEMS["efgm_key_bigred_meeting"] = {
@@ -7988,7 +8072,8 @@ hook.Add("InitPostEntity", "AttsItemDef", function()
             ["sizeY"] = v.SizeY or 1,
 
             ["levelReq"] = v.EFGMLvl or 1,
-            ["canPurchase"] = v.EFGMCanPurchase or true
+            ["canPurchase"] = v.EFGMCanPurchase or true,
+            ["lootWeight"] = v.EFGMLootWeight or 100
 
         }
 
@@ -8022,7 +8107,8 @@ hook.Add("OnReloaded", "AttsItemDefReload", function()
             ["sizeY"] = v.SizeY or 1,
 
             ["levelReq"] = v.EFGMLvl or 1,
-            ["canPurchase"] = v.EFGMCanPurchase or true
+            ["canPurchase"] = v.EFGMCanPurchase or true,
+            ["lootWeight"] = v.EFGMLootWeight or 100
 
         }
 

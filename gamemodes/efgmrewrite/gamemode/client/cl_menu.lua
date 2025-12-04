@@ -1406,13 +1406,34 @@ function Menu.InspectItem(item, data)
 
         if i.weight then
 
-            wikiContentText:AppendText("WEIGHT: " .. i.weight .. "kg" .. "\n")
+            wikiContentText:AppendText("BASE WEIGHT: " .. i.weight .. "kg" .. "\n")
 
         end
 
         if i.value then
 
-            wikiContentText:AppendText("EST. VALUE: ₽" .. comma_value(i.value) .. "\n")
+            wikiContentText:AppendText("BASE VALUE: ₽" .. comma_value(i.value) .. "\n")
+
+        end
+
+        if i.lootWeight then
+
+            wikiContentText:AppendText("LOOT WEIGHT: " .. i.lootWeight .. "%" .. "\n")
+
+        end
+
+        if i.canPurchase == true then
+
+            if i.levelReq then
+
+                wikiContentText:AppendText("CAN PURCHASE FROM MARKET: " .. tostring(string.upper(i.canPurchase)) .. "\n")
+                wikiContentText:AppendText("UNLOCKS AT: LEVEL " .. i.levelReq .. "\n")
+
+            end
+
+        else
+
+            wikiContentText:AppendText("CAN PURCHASE FROM MARKET: " .. tostring(string.upper(i.canPurchase)) .. "\n")
 
         end
 
@@ -1438,7 +1459,7 @@ function Menu.InspectItem(item, data)
             local damageMin = math.Round(wep["DamageMin"]) or nil
             local rpm = math.Round(wep["RPM"]) or nil
             local range = math.Round(wep["RangeMax"] * 0.0254) or nil
-            local velocity = math.Round(wep["PhysBulletMuzzleVelocity"] * 0.0254) or nil
+            local velocity = math.Round((wep["PhysBulletMuzzleVelocity"] * 0.0254) * 1.2) or nil
 
             local recoilMult = math.Round(wep["Recoil"]) or 1
             local recoilUp = math.Round(wep["RecoilUp"] * recoilMult, 2) or nil

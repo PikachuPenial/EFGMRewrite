@@ -49,7 +49,7 @@ HITGROUPS = {
     [4] = "LEFT ARM",
     [5] = "RIGHT ARM",
     [6] = "LEFT LEG",
-    [7] = "RIGHT LEG",
+    [7] = "RIGHT LEG"
 }
 
 revCat = {}
@@ -69,5 +69,5 @@ models = {
     ["RPG_Round"] = "models/items/ammocrate_rockets.mdl",
     ["XBowBolt"] = "models/Items/CrossbowRounds.mdl",
     ["SMG1_Grenade"] = "models/Items/AR2_Grenade.mdl",
-    ["AR2AltFire"] = "models/Items/combine_rifle_ammo01.mdl",
+    ["AR2AltFire"] = "models/Items/combine_rifle_ammo01.mdl"
 }
