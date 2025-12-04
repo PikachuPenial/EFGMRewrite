@@ -28,9 +28,49 @@ function ENT:AcceptInput(name, ply, caller, data)
 
         else
 
+            local keyWithLowestDura = 0
+            local lowestDura = 0
+
+            for k, v in ipairs(ply.inventory) do
+
+                if !table.IsEmpty(v) and v.name == self.KeyName and v.data.durability > lowestDura then
+
+                    keyWithLowestDura = k
+                    lowestDura = v.data.durability
+
+                end
+
+            end
+
+            if keyWithLowestDura == 0 then return end
+
             self:TriggerOutput( "OnHasKey", ply, data )
 
-            -- take away key durability, idk how to do that
+            local item = ply.inventory[keyWithLowestDura]
+            local durability = item.data.durability
+
+            ply.inventory[keyWithLowestDura].data.durability = durability - 1
+
+            if ply.inventory[keyWithLowestDura].data.durability > 0 then
+
+                net.Start("PlayerInventoryUpdateItem", false)
+                net.WriteTable(item.data)
+                net.WriteUInt(keyWithLowestDura, 16)
+                net.Send(ply)
+
+            else
+
+                net.Start("PlayerInventoryDeleteItem", false)
+                net.WriteUInt(keyWithLowestDura, 16)
+                net.Send(ply)
+
+                table.remove(ply.inventory, keyWithLowestDura)
+
+                RemoveWeightFromPlayer(ply, item.name, item.data.count)
+
+            end
+
+            UpdateInventoryString(ply)
 
             -- so opening a double door or something doesn't take up two uses
             self.PlayersUsed[ply:SteamID64()] = true
