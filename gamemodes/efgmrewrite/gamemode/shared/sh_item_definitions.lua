@@ -3995,7 +3995,6 @@ EFGMITEMS = {}
         ["displayType"] = "Concrete Key",
         ["weight"] = 0.2,
         ["value"] = 200000,
-        ["levelReq"] = 1,
         ["equipType"] = EQUIPTYPE.None,
         ["consumableType"] = "key",
         ["consumableValue"] = 5,
@@ -4005,7 +4004,9 @@ EFGMITEMS = {}
         ["iconColor"] = Color(31, 38, 26, 155),
 
         ["sizeX"] = 1,
-        ["sizeY"] = 1
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
     }
 
     EFGMITEMS["efgm_key_workshop_armory"] = {
@@ -4014,7 +4015,6 @@ EFGMITEMS = {}
         ["displayType"] = "Concrete Key",
         ["weight"] = 0.2,
         ["value"] = 250000,
-        ["levelReq"] = 1,
         ["equipType"] = EQUIPTYPE.None,
         ["consumableType"] = "key",
         ["consumableValue"] = 5,
@@ -4024,7 +4024,9 @@ EFGMITEMS = {}
         ["iconColor"] = Color(31, 38, 26, 155),
 
         ["sizeX"] = 1,
-        ["sizeY"] = 1
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
     }
 
     EFGMITEMS["efgm_key_hotel_marked"] = {
@@ -4053,7 +4055,6 @@ EFGMITEMS = {}
         ["displayType"] = "Concrete Key",
         ["weight"] = 0.2,
         ["value"] = 200000,
-        ["levelReq"] = 1,
         ["equipType"] = EQUIPTYPE.None,
         ["consumableType"] = "key",
         ["consumableValue"] = 5,
@@ -4063,7 +4064,9 @@ EFGMITEMS = {}
         ["iconColor"] = Color(31, 38, 26, 155),
 
         ["sizeX"] = 1,
-        ["sizeY"] = 1
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
     }
 
     EFGMITEMS["efgm_key_ow_admin"] = {
@@ -4072,7 +4075,6 @@ EFGMITEMS = {}
         ["displayType"] = "Concrete Key",
         ["weight"] = 0.2,
         ["value"] = 500000,
-        ["levelReq"] = 1,
         ["equipType"] = EQUIPTYPE.None,
         ["consumableType"] = "key",
         ["consumableValue"] = 5,
@@ -4082,7 +4084,9 @@ EFGMITEMS = {}
         ["iconColor"] = Color(31, 38, 26, 155),
 
         ["sizeX"] = 1,
-        ["sizeY"] = 1
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
     }
 
     -- EFGMITEMS["efgm_keycard_bunker_entrance"] = {
@@ -4091,7 +4095,6 @@ EFGMITEMS = {}
     --     ["displayType"] = "Concrete Key",
     --     ["weight"] = 0.2,
     --     ["value"] = 90000,
-    --     ["levelReq"] = 1,
     --     ["equipType"] = EQUIPTYPE.None,
     --     ["consumableType"] = "key",
     --     ["consumableValue"] = 5,
@@ -4101,7 +4104,9 @@ EFGMITEMS = {}
     --     ["iconColor"] = Color(31, 38, 26, 155),
 
     --     ["sizeX"] = 1,
-    --     ["sizeY"] = 1
+    --     ["sizeY"] = 1,
+
+    --     ["canPurchase"] = false
     -- }
 
     -- EFGMITEMS["efgm_keycard_bunker_armory"] = {
@@ -4110,7 +4115,6 @@ EFGMITEMS = {}
     --     ["displayType"] = "Concrete Key",
     --     ["weight"] = 0.2,
     --     ["value"] = 400000,
-    --     ["levelReq"] = 1,
     --     ["equipType"] = EQUIPTYPE.None,
     --     ["consumableType"] = "key",
     --     ["consumableValue"] = 5,
@@ -4120,7 +4124,8 @@ EFGMITEMS = {}
     --     ["iconColor"] = Color(31, 38, 26, 155),
 
     --     ["sizeX"] = 1,
-    --     ["sizeY"] = 1
+    --     ["sizeY"] = 1,
+    --     ["canPurchase"] = false
     -- }
 
     EFGMITEMS["efgm_keycard_storage_entrance"] = {
@@ -4129,7 +4134,6 @@ EFGMITEMS = {}
         ["displayType"] = "Concrete Key",
         ["weight"] = 0.2,
         ["value"] = 600000,
-        ["levelReq"] = 1,
         ["equipType"] = EQUIPTYPE.None,
         ["consumableType"] = "key",
         ["consumableValue"] = 5,
@@ -4139,7 +4143,8 @@ EFGMITEMS = {}
         ["iconColor"] = Color(31, 38, 26, 155),
 
         ["sizeX"] = 1,
-        ["sizeY"] = 1
+        ["sizeY"] = 1,
+        ["canPurchase"] = false
     }
 
 
@@ -4149,7 +4154,6 @@ EFGMITEMS = {}
         ["displayType"] = "Belmont Key",
         ["weight"] = 0.2,
         ["value"] = 200000,
-        ["levelReq"] = 1,
         ["equipType"] = EQUIPTYPE.None,
         ["consumableType"] = "key",
         ["consumableValue"] = 5,
@@ -4159,7 +4163,9 @@ EFGMITEMS = {}
         ["iconColor"] = Color(31, 38, 26, 155),
 
         ["sizeX"] = 1,
-        ["sizeY"] = 1
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
     }
 
     EFGMITEMS["efgm_key_kitchen"] = {
@@ -4168,7 +4174,6 @@ EFGMITEMS = {}
         ["displayType"] = "Belmont Key",
         ["weight"] = 0.2,
         ["value"] = 200000,
-        ["levelReq"] = 1,
         ["equipType"] = EQUIPTYPE.None,
         ["consumableType"] = "key",
         ["consumableValue"] = 5,
@@ -4178,7 +4183,9 @@ EFGMITEMS = {}
         ["iconColor"] = Color(31, 38, 26, 155),
 
         ["sizeX"] = 1,
-        ["sizeY"] = 1
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
     }
 
     EFGMITEMS["efgm_key_fencedoff"] = {
@@ -4187,7 +4194,6 @@ EFGMITEMS = {}
         ["displayType"] = "Belmont Key",
         ["weight"] = 0.2,
         ["value"] = 200000,
-        ["levelReq"] = 1,
         ["equipType"] = EQUIPTYPE.None,
         ["consumableType"] = "key",
         ["consumableValue"] = 5,
@@ -4197,7 +4203,9 @@ EFGMITEMS = {}
         ["iconColor"] = Color(31, 38, 26, 155),
 
         ["sizeX"] = 1,
-        ["sizeY"] = 1
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
     }
 
 -- BARTER

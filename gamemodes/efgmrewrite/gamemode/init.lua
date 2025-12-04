@@ -238,7 +238,7 @@ end)
 -- more lethal fall damage
 hook.Add("GetFallDamage", "FallDmgCalc", function(ply, speed)
 
-	local dmg = math.max(0, math.ceil(0.2418 * speed - 141.75))
+	local dmg = speed / 7
 
 	ply:SetNWInt("RaidDamageRecievedFalling", ply:GetNWInt("RaidDamageRecievedFalling") + math.min(dmg, 100))
 	return dmg
