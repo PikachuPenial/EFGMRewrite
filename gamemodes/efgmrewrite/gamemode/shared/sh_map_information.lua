@@ -14,7 +14,7 @@ MAPNAMES["efgm_concrete_rw"] = "Concrete"
 MAPNAMES["efgm_factory_rw"] = "Factory"
 
 function WorldToMapSpace(position, map)
-    
+
     local mapInfo = MAPINFO[map or game.GetMap()]
 
     if mapInfo == nil then return end

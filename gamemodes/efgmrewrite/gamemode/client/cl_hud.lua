@@ -2079,8 +2079,181 @@ hook.Add("ScoreboardShow", "DisableHL2Scoreboard", function() return true end )
 hook.Add("PlayerStartVoice", "ImageOnVoice", function() return false end)
 
 net.Receive("VoteableMaps", function(len)
+
     local tbl = net.ReadTable()
 
-    LocalPlayer():PrintMessage(HUD_PRINTTALK, "Go into the console and type 'efgm_vote ___' and vote for one of the maps!")
-    PrintTable(tbl)
+    timer.Simple(20, function()
+
+        local ply = LocalPlayer()
+
+        if IsValid(VotePopup) then VotePopup:Remove() end
+
+        VotePopup = vgui.Create("DPanel")
+        VotePopup:SetSize(ScrW(), ScrH())
+        VotePopup:SetPos(0, 0)
+        VotePopup:SetAlpha(0)
+        VotePopup:MakePopup()
+        VotePopup:SetMouseInputEnabled(true)
+        VotePopup:SetKeyboardInputEnabled(true)
+
+        VotePopup.Paint = function(self, w, h)
+
+            BlurPanel(VotePopup, EFGM.MenuScale(5))
+
+            surface.SetDrawColor(Color(10, 10, 10, 155))
+            surface.DrawRect(0, 0, w, h)
+
+            draw.SimpleTextOutlined("VOTE FOR THE NEXT MAP", "PuristaBold64", w / 2, EFGM.MenuScale(35), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            VotePopup.MouseX, VotePopup.MouseY = VotePopup:LocalCursorPos()
+
+            if GetConVar("efgm_menu_parallax"):GetInt() == 1 then
+
+                VotePopup.ParallaxX = math.Clamp(((VotePopup.MouseX / math.Round(EFGM.MenuScale(1920), 1)) - 0.5) * EFGM.MenuScale(20), -10, 10)
+                VotePopup.ParallaxY = math.Clamp(((VotePopup.MouseY / math.Round(EFGM.MenuScale(1080), 1)) - 0.5) * EFGM.MenuScale(20), -10, 10)
+
+                VotePopup:SetPos(0 + VotePopup.ParallaxX, 0 + VotePopup.ParallaxY)
+
+            else
+
+                VotePopup.ParallaxX = 0
+                VotePopup.ParallaxY = 0
+
+                VotePopup:SetPos(0, 0)
+
+            end
+
+        end
+
+        VotePopup:AlphaTo(255, 0.2, 0, nil)
+
+        local belmontIcon = Material("maps/icon_efgm_belmont_rw.png")
+        local concreteIcon = Material("maps/icon_efgm_concrete_rw.png")
+        local factoryIcon = Material("maps/icon_efgm_factory_rw.png")
+
+        local belmontButton = vgui.Create("DButton", VotePopup)
+        belmontButton:SetSize(EFGM.MenuScale(500), EFGM.MenuScale(500))
+        belmontButton:SetPos(VotePopup:GetWide() / 2 - EFGM.MenuScale(775), VotePopup:GetTall() / 2 - EFGM.MenuScale(250))
+        belmontButton:SetText("")
+        belmontButton.Paint = function(s, w, h)
+
+            surface.SetDrawColor(Color(80, 80, 80, 10))
+            surface.DrawRect(0, 0, w, h)
+
+            surface.SetDrawColor(255, 255, 255, 255)
+            surface.SetMaterial(belmontIcon)
+            surface.DrawTexturedRect(0, 0, w, h)
+
+        end
+
+        function belmontButton:PaintOver(w, h)
+
+            surface.SetDrawColor(Color(255, 255, 255, 255))
+            surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+            surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+            if belmontButton:IsHovered() then draw.SimpleTextOutlined("BELMONT", "PuristaBold64", w / 2, h / 2 - EFGM.MenuScale(32), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor) end
+
+        end
+
+        belmontButton.OnCursorEntered = function(s)
+
+            surface.PlaySound("ui/element_hover.wav")
+
+        end
+
+        function belmontButton:DoClick()
+
+            surface.PlaySound("ui/element_select.wav")
+            RunConsoleCommand("efgm_vote", "efgm_belmont_rw")
+            VotePopup:AlphaTo(0, 0.1, 0, function() VotePopup:Remove() end)
+
+        end
+
+        local concreteButton = vgui.Create("DButton", VotePopup)
+        concreteButton:SetSize(EFGM.MenuScale(500), EFGM.MenuScale(500))
+        concreteButton:SetPos(VotePopup:GetWide() / 2 - EFGM.MenuScale(250), VotePopup:GetTall() / 2 - EFGM.MenuScale(250))
+        concreteButton:SetText("")
+        concreteButton.Paint = function(s, w, h)
+
+            surface.SetDrawColor(Color(80, 80, 80, 10))
+            surface.DrawRect(0, 0, w, h)
+
+            surface.SetDrawColor(255, 255, 255, 255)
+            surface.SetMaterial(concreteIcon)
+            surface.DrawTexturedRect(0, 0, w, h)
+
+        end
+
+        function concreteButton:PaintOver(w, h)
+
+            surface.SetDrawColor(Color(255, 255, 255, 255))
+            surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+            surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+            if concreteButton:IsHovered() then draw.SimpleTextOutlined("CONCRETE", "PuristaBold64", w / 2, h / 2 - EFGM.MenuScale(32), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor) end
+
+        end
+
+        concreteButton.OnCursorEntered = function(s)
+
+            surface.PlaySound("ui/element_hover.wav")
+
+        end
+
+        function concreteButton:DoClick()
+
+            surface.PlaySound("ui/element_select.wav")
+            RunConsoleCommand("efgm_vote", "efgm_concrete_rw")
+            VotePopup:AlphaTo(0, 0.1, 0, function() VotePopup:Remove() end)
+
+        end
+
+        local factoryButton = vgui.Create("DButton", VotePopup)
+        factoryButton:SetSize(EFGM.MenuScale(500), EFGM.MenuScale(500))
+        factoryButton:SetPos(VotePopup:GetWide() / 2 + EFGM.MenuScale(275), VotePopup:GetTall() / 2 - EFGM.MenuScale(250))
+        factoryButton:SetText("")
+        factoryButton.Paint = function(s, w, h)
+
+            surface.SetDrawColor(Color(80, 80, 80, 10))
+            surface.DrawRect(0, 0, w, h)
+
+            surface.SetDrawColor(255, 255, 255, 255)
+            surface.SetMaterial(factoryIcon)
+            surface.DrawTexturedRect(0, 0, w, h)
+
+        end
+
+        function factoryButton:PaintOver(w, h)
+
+            surface.SetDrawColor(Color(255, 255, 255, 255))
+            surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+            surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+            if factoryButton:IsHovered() then draw.SimpleTextOutlined("FACTORY", "PuristaBold64", w / 2, h / 2 - EFGM.MenuScale(32), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor) end
+
+        end
+
+        factoryButton.OnCursorEntered = function(s)
+
+            surface.PlaySound("ui/element_hover.wav")
+
+        end
+
+        function factoryButton:DoClick()
+
+            surface.PlaySound("ui/element_select.wav")
+            RunConsoleCommand("efgm_vote", "efgm_factory_rw")
+            VotePopup:AlphaTo(0, 0.1, 0, function() VotePopup:Remove() end)
+
+        end
+
+    end)
+
 end)
