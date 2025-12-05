@@ -1141,7 +1141,7 @@ function Menu.InspectItem(item, data)
 
     surface.SetFont("PuristaBold18")
     local itemDescText = string.upper(i.displayType) .. " / " .. string.upper(i.weight) .. "KG" .. " / ₽" .. string.upper(comma_value(value))
-    if i.canPurchase == true then itemDescText = itemDescText .. " / LEVEL " .. string.upper(i.levelReq) end
+    if i.canPurchase == true or i.canPurchase == nil then itemDescText = itemDescText .. " / LEVEL " .. string.upper(i.levelReq) end
     local itemDescSize = surface.GetTextSize(itemDescText)
 
     local iconSizeX, iconSizeY = EFGM.MenuScale(114 * i.sizeX), EFGM.MenuScale(114 * i.sizeY)
@@ -1423,18 +1423,18 @@ function Menu.InspectItem(item, data)
 
         end
 
-        if i.canPurchase == true then
+        if i.canPurchase == true or i.canPurchase == nil then
 
             if i.levelReq then
 
-                wikiContentText:AppendText("CAN PURCHASE FROM MARKET: " .. tostring(string.upper(i.canPurchase)) .. "\n")
+                wikiContentText:AppendText("CAN PURCHASE FROM MARKET: TRUE" .. "\n")
                 wikiContentText:AppendText("UNLOCKS AT: LEVEL " .. i.levelReq .. "\n")
 
             end
 
         else
 
-            wikiContentText:AppendText("CAN PURCHASE FROM MARKET: " .. tostring(string.upper(i.canPurchase)) .. "\n")
+            wikiContentText:AppendText("CAN PURCHASE FROM MARKET: " .. string.upper(tostring(i.canPurchase)) .. "\n")
 
         end
 
@@ -3128,7 +3128,7 @@ function Menu.ReloadInventory(itemSearch)
         plyItems[k].name = v.name
         plyItems[k].id = k
         plyItems[k].data = v.data
-        plyItems[k].type = v.type
+        -- plyItems[k].type = v.type
 
     end
 
@@ -5260,7 +5260,7 @@ function Menu.ReloadStash(itemSearch)
         plyStashItems[k].name = v.name
         plyStashItems[k].id = k
         plyStashItems[k].data = v.data
-        plyStashItems[k].type = v.type
+        -- plyStashItems[k].type = v.type
 
     end
 
@@ -5772,7 +5772,7 @@ function Menu.ReloadMarketStash(itemSearch)
         marketPlyStashItems[k].name = v.name
         marketPlyStashItems[k].id = k
         marketPlyStashItems[k].data = v.data
-        marketPlyStashItems[k].type = v.type
+        -- marketPlyStashItems[k].type = v.type
 
     end
 
@@ -6135,7 +6135,7 @@ function Menu.ReloadContainer()
         conItems[k].name = v.name
         conItems[k].id = k
         conItems[k].data = v.data
-        conItems[k].type = v.type
+        -- conItems[k].type = v.type
 
     end
 

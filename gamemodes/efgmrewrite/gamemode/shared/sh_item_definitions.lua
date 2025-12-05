@@ -882,6 +882,7 @@ EFGMITEMS = {}
         ["sizeX"] = 6,
         ["sizeY"] = 2,
 
+        ["canPurchase"] = false,
         ["lootWeight"] = 65,
 
         ["caliber"] = "6.8x51",
@@ -1807,7 +1808,7 @@ EFGMITEMS = {}
         ["displayType"] = "Shotgun",
         ["weight"] = 5.6,
         ["value"] = 140000,
-        ["levelReq"] = 33,
+        ["levelReq"] = 36,
         ["equipType"] = EQUIPTYPE.Weapon,
         ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
         ["appearInInventory"] = true,
@@ -2011,7 +2012,7 @@ EFGMITEMS = {}
         ["displayType"] = "Marksman Rifle",
         ["weight"] = 6.5,
         ["value"] = 330000,
-        ["levelReq"] = 39,
+        ["levelReq"] = 48,
         ["equipType"] = EQUIPTYPE.Weapon,
         ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
         ["appearInInventory"] = true,
@@ -2141,7 +2142,7 @@ EFGMITEMS = {}
         ["displayType"] = "Marksman Rifle",
         ["weight"] = 4.9,
         ["value"] = 130000,
-        ["levelReq"] = 30,
+        ["levelReq"] = 34,
         ["equipType"] = EQUIPTYPE.Weapon,
         ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
         ["appearInInventory"] = true,
@@ -2206,7 +2207,7 @@ EFGMITEMS = {}
         ["displayType"] = "Marksman Rifle",
         ["weight"] = 4.3,
         ["value"] = 85000,
-        ["levelReq"] = 18,
+        ["levelReq"] = 19,
         ["equipType"] = EQUIPTYPE.Weapon,
         ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
         ["appearInInventory"] = true,
@@ -2937,8 +2938,8 @@ EFGMITEMS = {}
         ["stackSize"] = 1,
         ["icon"] = Material("items/melee/labris.png", "smooth"),
 
-        ["sizeX"] = 5,
-        ["sizeY"] = 5,
+        ["sizeX"] = 4,
+        ["sizeY"] = 4,
 
         ["lootWeight"] = 25,
 

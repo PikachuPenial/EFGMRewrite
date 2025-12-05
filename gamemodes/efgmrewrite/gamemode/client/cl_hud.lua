@@ -1482,7 +1482,7 @@ function HUDInspectItem(item, data, panel)
 
     surface.SetFont("PuristaBold18")
     local itemDescText = string.upper(i.displayType) .. " / " .. string.upper(i.weight) .. "KG" .. " / ₽" .. string.upper(comma_value(value))
-    if i.canPurchase == true then itemDescText = itemDescText .. " / LEVEL " .. string.upper(i.levelReq) end
+    if i.canPurchase == true or i.canPurchase == nil then itemDescText = itemDescText .. " / LEVEL " .. string.upper(i.levelReq) end
     local itemDescSize = surface.GetTextSize(itemDescText)
 
     local iconSizeX, iconSizeY = EFGM.MenuScale(114 * i.sizeX), EFGM.MenuScale(114 * i.sizeY)
@@ -1764,18 +1764,18 @@ function HUDInspectItem(item, data, panel)
 
         end
 
-        if i.canPurchase == true then
+        if i.canPurchase == true or i.canPurchase == nil then
 
             if i.levelReq then
 
-                wikiContentText:AppendText("CAN PURCHASE FROM MARKET: " .. tostring(string.upper(i.canPurchase)) .. "\n")
+                wikiContentText:AppendText("CAN PURCHASE FROM MARKET: TRUE" .. "\n")
                 wikiContentText:AppendText("UNLOCKS AT: LEVEL " .. i.levelReq .. "\n")
 
             end
 
         else
 
-            wikiContentText:AppendText("CAN PURCHASE FROM MARKET: " .. tostring(string.upper(i.canPurchase)) .. "\n")
+            wikiContentText:AppendText("CAN PURCHASE FROM MARKET: " .. string.upper(tostring(i.canPurchase)) .. "\n")
 
         end
 
