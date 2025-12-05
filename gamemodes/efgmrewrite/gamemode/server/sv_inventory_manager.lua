@@ -7,6 +7,7 @@ util.AddNetworkString("PlayerInventoryDropItem")
 util.AddNetworkString("PlayerInventoryEquipItem")
 util.AddNetworkString("PlayerInventoryUnEquipItem")
 util.AddNetworkString("PlayerInventoryUnEquipAll")
+util.AddNetworkString("PlayerInventoryUnEquipAllCL")
 util.AddNetworkString("PlayerInventoryUpdateEquipped")
 util.AddNetworkString("PlayerInventoryDropEquippedItem")
 util.AddNetworkString("PlayerInventoryDeleteEquippedItem")
@@ -406,6 +407,8 @@ function UnequipAll(ply)
                 net.WriteUInt(index, 16)
                 net.Send(ply)
 
+                ply:StripWeapon(item.name)
+
                 net.Start("PlayerInventoryUnEquipAll")
                 net.Send(ply)
 
@@ -419,6 +422,12 @@ function UnequipAll(ply)
     UpdateEquippedString(ply)
 
 end
+
+net.Receive("PlayerInventoryUnEquipAllCL", function(len, ply)
+
+    UnequipAll(ply)
+
+end)
 
 function UnequipAllFirearms(ply)
 

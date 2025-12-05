@@ -4,6 +4,7 @@ util.AddNetworkString("PlayerStashUpdateItem")
 util.AddNetworkString("PlayerStashDeleteItem")
 util.AddNetworkString("PlayerStashAddItemFromInventory")
 util.AddNetworkString("PlayerStashAddItemFromEquipped")
+util.AddNetworkString("PlayerStashAddAllFromInventory")
 util.AddNetworkString("PlayerStashTakeItemToInventory")
 util.AddNetworkString("PlayerStashEquipItem")
 util.AddNetworkString("PlayerStashConsumeItem")
@@ -246,6 +247,32 @@ net.Receive("PlayerStashAddItemFromEquipped", function(len, ply)
     UpdateEquippedString(ply)
 
     AddItemToStash(ply, item.name, item.type, item.data)
+
+end)
+
+net.Receive("PlayerStashAddAllFromInventory", function(len, ply)
+
+    if !ply:CompareStatus(0) then return end
+
+    local indexes = #ply.inventory
+    local indexesNuked = 0
+
+    for i = 1, indexes do
+
+        if ply:GetNWInt("StashCount", 0) >= ply:GetNWInt("StashMax", 150) then return end
+
+        local itemIndex = i - indexesNuked
+        local item = DeleteItemFromInventory(ply, itemIndex, false)
+        indexesNuked = indexesNuked + 1
+
+        if item == nil then return end
+
+        FlowItemToStash(ply, item.name, item.type, item.data)
+        ply:SetNWInt("StashCount", #ply.stash)
+
+    end
+
+    UpdateStashString(ply)
 
 end)
 

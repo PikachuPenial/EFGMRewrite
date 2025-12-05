@@ -5636,32 +5636,6 @@ function Menu.ReloadStash(itemSearch)
 
             end
 
-            if actions.consumable then
-
-                contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
-
-                local itemConsumeButton = vgui.Create("DButton", contextMenu)
-                itemConsumeButton:Dock(TOP)
-                itemConsumeButton:SetSize(0, EFGM.MenuScale(25))
-                itemConsumeButton:SetText("USE")
-
-                itemConsumeButton.OnCursorEntered = function(s)
-
-                    surface.PlaySound("ui/element_hover.wav")
-
-                end
-
-                function itemConsumeButton:DoClick()
-
-                    surface.PlaySound("ui/element_select.wav")
-                    -- ConsumeItemFromInventory(v.id)
-                    contextMenu:Remove()
-                    stashItems:InvalidateLayout()
-
-                end
-
-            end
-
             if actions.splittable then
 
                 contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
@@ -6873,6 +6847,46 @@ function Menu.OpenTab.Inventory(container)
     factionIcon:SetImageColor(Color(255, 255, 255, 2))
     if Menu.Player:GetModel() == "models/eft/pmcs/usec_extended_pm.mdl" then factionIcon:SetImage("icons/usec_icon.png") else factionIcon:SetImage("icons/bear_icon.png") end
 
+    if Menu.Player:CompareStatus(0) then
+
+        surface.SetFont("PuristaBold24")
+        local unloadText = "UNEQUIP ALL"
+        local unloadTextSize = surface.GetTextSize(unloadText)
+        local unloadButtonSize = unloadTextSize + EFGM.MenuScale(10)
+
+        local unloadButton = vgui.Create("DButton", playerPanel)
+        unloadButton:SetPos(playerPanel:GetWide() - unloadTextSize - EFGM.MenuScale(15), EFGM.MenuScale(46))
+        unloadButton:SetSize(unloadButtonSize, EFGM.MenuScale(28))
+        unloadButton:SetText("")
+        unloadButton.Paint = function(s, w, h)
+
+            BlurPanel(s, EFGM.MenuScale(0))
+
+            surface.SetDrawColor(Color(80, 80, 80, 10))
+            surface.DrawRect(0, 0, unloadTextSize + EFGM.MenuScale(10), h)
+
+            surface.SetDrawColor(Color(255, 255, 255, 155))
+            surface.DrawRect(0, 0, unloadTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
+
+            draw.SimpleTextOutlined(unloadText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        end
+
+        unloadButton.OnCursorEntered = function(s)
+
+            surface.PlaySound("ui/element_hover.wav")
+
+        end
+
+        function unloadButton:DoClick()
+
+            surface.PlaySound("ui/element_select.wav")
+
+            UnequipAll()
+
+        end
+
+    end
 
     local inventoryPanel = vgui.Create("DPanel", contents)
     inventoryPanel:Dock(LEFT)
@@ -6967,18 +6981,65 @@ function Menu.OpenTab.Inventory(container)
     weightIcon:SetSize(EFGM.MenuScale(28), EFGM.MenuScale(28))
     weightIcon:SetImage("icons/weight_icon.png")
 
+    local unloadText = ""
+    local unloadTextSize = EFGM.MenuScale(-15)
+    local unloadButtonSize = 0
+
+    if Menu.Player:CompareStatus(0) then
+
+        surface.SetFont("PuristaBold24")
+        unloadText = "UNLOAD"
+        unloadTextSize = surface.GetTextSize(unloadText)
+        unloadButtonSize = unloadTextSize + EFGM.MenuScale(10)
+
+        local unloadButton = vgui.Create("DButton", itemsHolder)
+        unloadButton:SetPos(EFGM.MenuScale(225) + weightTextSize, 0)
+        unloadButton:SetSize(unloadButtonSize, EFGM.MenuScale(28))
+        unloadButton:SetText("")
+        unloadButton.Paint = function(s, w, h)
+
+            unloadButton:SetX(EFGM.MenuScale(225) + weightTextSize)
+
+            BlurPanel(s, EFGM.MenuScale(0))
+
+            surface.SetDrawColor(Color(80, 80, 80, 10))
+            surface.DrawRect(0, 0, unloadTextSize + EFGM.MenuScale(10), h)
+
+            surface.SetDrawColor(Color(255, 255, 255, 155))
+            surface.DrawRect(0, 0, unloadTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
+
+            draw.SimpleTextOutlined(unloadText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        end
+
+        unloadButton.OnCursorEntered = function(s)
+
+            surface.PlaySound("ui/element_hover.wav")
+
+        end
+
+        function unloadButton:DoClick()
+
+            surface.PlaySound("ui/element_select.wav")
+
+            UnloadInventoryToStash()
+
+        end
+
+    end
+
     surface.SetFont("PuristaBold24")
     local searchText = "SEARCH"
     local searchTextSize = surface.GetTextSize(searchText)
     local searchButtonSize = searchTextSize + EFGM.MenuScale(10)
 
     local searchButton = vgui.Create("DButton", itemsHolder)
-    searchButton:SetPos(EFGM.MenuScale(225) + weightTextSize, 0)
+    searchButton:SetPos(EFGM.MenuScale(240) + weightTextSize + unloadTextSize, 0)
     searchButton:SetSize(searchButtonSize, EFGM.MenuScale(28))
     searchButton:SetText("")
     searchButton.Paint = function(s, w, h)
 
-        searchButton:SetX(EFGM.MenuScale(225) + weightTextSize)
+        searchButton:SetX(EFGM.MenuScale(240) + weightTextSize + unloadTextSize)
 
         BlurPanel(s, EFGM.MenuScale(0))
 
@@ -6998,7 +7059,7 @@ function Menu.OpenTab.Inventory(container)
     searchBox = vgui.Create("DTextEntry", itemsHolder)
     searchBox:SetSize(EFGM.MenuScale(593) - searchButton:GetX() - searchButton:GetWide(), EFGM.MenuScale(28))
     searchBox:SetPos(searchButton:GetX() + searchButtonSize, 0)
-    searchBox:SetPlaceholderText("search for items...")
+    searchBox:SetPlaceholderText("search...")
     searchBox:SetUpdateOnType(true)
     searchBox:SetTextColor(MenuAlias.whiteColor)
     searchBox:SetCursorColor(MenuAlias.whiteColor)

@@ -95,6 +95,13 @@ function StashItemFromEquipped(equipID, equipSlot)
 
 end
 
+function UnloadInventoryToStash()
+
+    net.Start("PlayerStashAddAllFromInventory", false)
+    net.SendToServer()
+
+end
+
 function TakeFromStashToInventory(itemIndex)
 
     if !ply:CompareStatus(0) then return end
@@ -106,8 +113,8 @@ function TakeFromStashToInventory(itemIndex)
         net.WriteUInt(itemIndex, 16)
     net.SendToServer()
 
-    Menu.ReloadInventory()
     Menu.ReloadStash()
+    Menu.ReloadInventory()
 
 end
 

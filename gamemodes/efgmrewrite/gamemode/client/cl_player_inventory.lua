@@ -136,7 +136,16 @@ net.Receive("PlayerInventoryUnEquipAll", function(len, ply)
 
     if equMelee != nil then playerWeaponSlots[WEAPONSLOTS.MELEE.ID] = equMelee end
 
+    Menu.ReloadSlots()
+
 end )
+
+function UnequipAll()
+
+    net.Start("PlayerInventoryUnEquipAllCL", false)
+    net.SendToServer()
+
+end
 
 net.Receive("PlayerInventoryUpdateEquipped", function(len, ply)
 
