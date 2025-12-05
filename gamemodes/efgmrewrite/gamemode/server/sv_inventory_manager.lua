@@ -129,7 +129,14 @@ function FlowItemToInventory(ply, name, type, data)
 
     local inv = {}
 
-    for k, v in ipairs(ply.inventory) do inv[k].id = k end
+    for k, v in ipairs(ply.inventory) do
+
+        inv[k] = {}
+        inv[k].name = v.name
+        inv[k].data = v.data
+        inv[k].id = k
+
+    end
 
     table.sort(inv, function(a, b) return a.data.count > b.data.count end)
 
@@ -188,7 +195,14 @@ function DeflowItemsFromInventory(ply, name, count)
     local amount = count
     local inv = {}
 
-    for k, v in ipairs(ply.inventory) do inv[k].id = k end
+    for k, v in ipairs(ply.inventory) do
+
+        inv[k] = {}
+        inv[k].name = v.name
+        inv[k].data = v.data
+        inv[k].id = k
+
+    end
 
     table.sort(inv, function(a, b) return a.data.count < b.data.count end)
 

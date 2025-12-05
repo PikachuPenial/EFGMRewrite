@@ -23,7 +23,7 @@ function AmountInInventory(inventory, itemName)
 
         if !table.IsEmpty(v) then
             if v.name == itemName then
-                count = count + (v.data.count or 1)
+                count = count + (math.max(v.data.count, 1) or 1)
             end
         end
 

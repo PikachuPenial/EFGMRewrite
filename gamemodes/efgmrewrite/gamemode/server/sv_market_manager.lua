@@ -24,12 +24,12 @@ net.Receive("PlayerMarketPurchaseItem", function(len, ply)
     if def.equipType == EQUIPTYPE.Weapon and def.defAtts then
 
         local atts = GetPrefixedAttachmentListFromCode(def.defAtts)
-        if !atts then continue end
+        if !atts then return end
 
         for _, a in ipairs(atts) do
 
             local att = EFGMITEMS[a]
-            if att == nil then continue end
+            if att == nil then return end
 
             cost = cost + att.value
 
@@ -89,12 +89,12 @@ net.Receive("PlayerMarketPurchaseItemToInventory", function(len, ply)
     if def.equipType == EQUIPTYPE.Weapon and def.defAtts then
 
         local atts = GetPrefixedAttachmentListFromCode(def.defAtts)
-        if !atts then continue end
+        if !atts then return end
 
         for _, a in ipairs(atts) do
 
             local att = EFGMITEMS[a]
-            if att == nil then continue end
+            if att == nil then return end
 
             cost = cost + att.value
 
@@ -198,12 +198,12 @@ net.Receive("PlayerMarketSellItem", function(len, ply)
         if data.att then
 
             local atts = GetPrefixedAttachmentListFromCode(data.att)
-            if !atts then continue end
+            if !atts then return end
 
             for _, a in ipairs(atts) do
 
                 local att = EFGMITEMS[a]
-                if att == nil then continue end
+                if att == nil then return end
 
                 cost = cost + math.floor(att.value * sellMultiplier)
 
@@ -232,14 +232,14 @@ net.Receive("PlayerMarketSellItem", function(len, ply)
         local data = ply.stash[key].data
         local cost = math.floor(def.value * sellMultiplier) * count
 
-        if count == data.count then
+        if count == math.max(data.count, 1) then
 
             DeleteItemFromStash(ply, key)
 
         else
 
             local newData = table.Copy(data)
-            newData.count = data.count - count
+            newData.count = math.max(data.count, 1) - count
             UpdateItemFromStash(ply, key, newData)
 
         end
@@ -249,86 +249,6 @@ net.Receive("PlayerMarketSellItem", function(len, ply)
         return true
 
     end
-
-end)
-
-net.Receive("PlayerMarketSellBulk", function(len, ply)
-
-    if !ply:CompareStatus(0) then return false end
-
-    local ids = net.ReadTable()
-
-    if table.IsEmpty(ids) then return end
-
-    table.SortByKey(ids)
-
-    local plyMoney = ply:GetNWInt("Money", 0)
-    local moneyToGive = 0
-    local indexesNuked = 0
-
-    for id, value in pairs(ids) do
-
-        local item = ply.stash[id - indexesNuked]
-
-        local def = EFGMITEMS[item.name]
-
-        if def.equipType == EQUIPTYPE.Weapon then
-
-            local data = ply.stash[id - indexesNuked].data
-            local cost = math.floor(def.value * sellMultiplier)
-
-            if data.att then
-
-                local atts = GetPrefixedAttachmentListFromCode(data.att)
-                if !atts then continue end
-
-                for _, a in ipairs(atts) do
-
-                    local att = EFGMITEMS[a]
-                    if att == nil then continue end
-
-                    cost = cost + math.floor(att.value * sellMultiplier)
-
-                end
-
-            end
-
-            DeleteItemFromStash(ply, id - indexesNuked)
-
-            moneyToGive = moneyToGive + cost
-            indexesNuked = indexesNuked + 1
-            continue
-
-        elseif def.consumableType == "heal" or def.consumableType == "key" then
-
-            local data = ply.stash[id - indexesNuked].data
-            local cost = math.floor((def.value * sellMultiplier) * (data.durability / def.consumableValue))
-
-            DeleteItemFromStash(ply, id - indexesNuked)
-
-            moneyToGive = moneyToGive + cost
-            indexesNuked = indexesNuked + 1
-            continue
-
-        else
-
-            local data = ply.stash[id - indexesNuked].data
-            local count = data.count
-            local cost = math.floor(def.value * sellMultiplier) * count
-
-            DeleteItemFromStash(ply, id - indexesNuked)
-
-            moneyToGive = moneyToGive + cost
-            indexesNuked = indexesNuked + 1
-            continue
-
-        end
-
-    end
-
-    ply:SetNWInt("Money", plyMoney + moneyToGive)
-    ply:SetNWInt("MoneyEarned", ply:GetNWInt("MoneyEarned") + moneyToGive)
-    return true
 
 end)
 

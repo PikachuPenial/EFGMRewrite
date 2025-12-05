@@ -12,6 +12,10 @@ Menu.Player = LocalPlayer()
 Menu.IsOpen = false
 Menu.PerferredShopDestination = nil
 
+local plyItems = {}
+local plyStashItems = {}
+local marketPlyStashItems = {}
+
 hook.Add("OnReloaded", "Reload", function()
 
     Menu.Player = LocalPlayer()
@@ -2029,6 +2033,20 @@ function Menu.ConfirmSell(item, data, key)
 
     local maxTransactionCount = math.Clamp(data.count or 1, 1, i.stackSize)
 
+    if maxTransactionCount <= 1 and GetConVar("efgm_menu_sellprompt_single"):GetInt() == 0 then
+
+        surface.PlaySound("ui/element_select.wav")
+        SellItem(item, maxTransactionCount, key)
+        return
+
+    elseif maxTransactionCount > 1 and GetConVar("efgm_menu_sellprompt_stacked"):GetInt() == 0 then
+
+        surface.PlaySound("ui/element_select.wav")
+        SellItem(item, maxTransactionCount, key)
+        return
+
+    end
+
     surface.SetFont("PuristaBold24")
     local confirmText = "Sell " .. transactionCount .. "x " .. i.fullName .. " (" .. i.displayName .. ") for ₽" .. comma_value(transactionCost) .. "?"
     local confirmTextSize = math.max(EFGM.MenuScale(300), surface.GetTextSize(confirmText))
@@ -2958,168 +2976,11 @@ function Menu.ConfirmPreset(atts, presetName, presetID, closeMenu)
 
 end
 
-function Menu.ConfirmBulk(amt, value)
-
-    if IsValid(confirmPanel) then confirmPanel:Remove() end
-
-    surface.SetFont("PuristaBold24")
-    local confirmText = "Sell " .. amt .. " selected items for " .. "₽" .. comma_value(value) .. "?"
-    local confirmTextSize = math.max(EFGM.MenuScale(300), surface.GetTextSize(confirmText))
-
-    local confirmPanelHeight = EFGM.MenuScale(70)
-
-    surface.PlaySound("ui/element_select.wav")
-
-    confirmPanel = vgui.Create("DFrame", Menu.MenuFrame)
-    confirmPanel:SetSize(confirmTextSize + EFGM.MenuScale(10), confirmPanelHeight)
-    confirmPanel:SetPos(Menu.MenuFrame:GetWide() / 2 - confirmPanel:GetWide() / 2, Menu.MenuFrame:GetTall() / 2 - confirmPanel:GetTall() / 2)
-    confirmPanel:SetAlpha(0)
-    confirmPanel:SetTitle("")
-    confirmPanel:ShowCloseButton(false)
-    confirmPanel:SetScreenLock(true)
-    confirmPanel:AlphaTo(255, 0.1, 0, nil)
-    confirmPanel:RequestFocus()
-
-    confirmPanel.Paint = function(s, w, h)
-
-        confirmPanel:SetWide(confirmTextSize + EFGM.MenuScale(10))
-        confirmPanel:SetX(Menu.MenuFrame:GetWide() / 2 - confirmPanel:GetWide() / 2)
-
-        BlurPanel(s, EFGM.MenuScale(3))
-
-        surface.SetDrawColor(Color(20, 20, 20, 205))
-        surface.DrawRect(0, 0, w, h)
-
-        surface.SetDrawColor(Color(255, 255, 255, 155))
-        surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
-
-        surface.SetDrawColor(Color(255, 255, 255, 25))
-        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
-        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
-
-        draw.SimpleTextOutlined(confirmText, "PuristaBold24", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-    end
-
-    confirmPanel.Think = function()
-
-        if (input.IsMouseDown(MOUSE_LEFT) or input.IsMouseDown(MOUSE_RIGHT) or input.IsMouseDown(MOUSE_MIDDLE) or input.IsMouseDown(MOUSE_WHEEL_DOWN) or input.IsMouseDown(MOUSE_WHEEL_UP)) and !confirmPanel:IsChildHovered() and !confirmPanel:IsHovered() then confirmPanel:AlphaTo(0, 0.1, 0, function() confirmPanel:Remove() end) end
-
-    end
-
-    surface.SetFont("PuristaBold24")
-    local yesText = "YES [SPACE]"
-    local yesTextSize = surface.GetTextSize(yesText)
-    local yesButtonSize = yesTextSize + EFGM.MenuScale(10)
-
-    local yesButton = vgui.Create("DButton", confirmPanel)
-    yesButton:SetPos(confirmPanel:GetWide() / 2 - (yesButtonSize / 2) - EFGM.MenuScale(25), confirmPanelHeight - EFGM.MenuScale(35))
-    yesButton:SetSize(yesButtonSize, EFGM.MenuScale(28))
-    yesButton:SetText("")
-    yesButton.Paint = function(s, w, h)
-
-        yesButton:SetX(confirmPanel:GetWide() / 2 - (yesButtonSize / 2) - EFGM.MenuScale(25))
-
-        BlurPanel(s, EFGM.MenuScale(0))
-
-        surface.SetDrawColor(Color(80, 80, 80, 10))
-        surface.DrawRect(0, 0, yesTextSize + EFGM.MenuScale(10), h)
-
-        surface.SetDrawColor(Color(255, 255, 255, 155))
-        surface.DrawRect(0, 0, yesTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
-
-        draw.SimpleTextOutlined(yesText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-    end
-
-    surface.SetFont("PuristaBold24")
-    local noText = "NO"
-    local noTextSize = surface.GetTextSize(noText)
-    local noButtonSize = noTextSize + EFGM.MenuScale(10)
-
-    local noButton = vgui.Create("DButton", confirmPanel)
-    noButton:SetPos(confirmPanel:GetWide() / 2 - (noButtonSize / 2) + yesButton:GetWide() / 2 + EFGM.MenuScale(5), confirmPanelHeight - EFGM.MenuScale(35))
-    noButton:SetSize(noButtonSize, EFGM.MenuScale(28))
-    noButton:SetText("")
-    noButton.Paint = function(s, w, h)
-
-        noButton:SetX(confirmPanel:GetWide() / 2 - (noButtonSize / 2) + yesButton:GetWide() / 2 + EFGM.MenuScale(5))
-
-        BlurPanel(s, EFGM.MenuScale(0))
-
-        surface.SetDrawColor(Color(80, 80, 80, 10))
-        surface.DrawRect(0, 0, noButtonSize + EFGM.MenuScale(10), h)
-
-        surface.SetDrawColor(Color(255, 255, 255, 155))
-        surface.DrawRect(0, 0, noButtonSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
-
-        draw.SimpleTextOutlined(noText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-    end
-
-    yesButton.OnCursorEntered = function(s)
-
-        surface.PlaySound("ui/element_hover.wav")
-
-    end
-
-    function yesButton:DoClick()
-
-        surface.PlaySound("ui/element_select.wav")
-        confirmPanel:AlphaTo(0, 0.1, 0, function() confirmPanel:Remove() end)
-        SellBulk(bulkSellIDs)
-
-        bulkSellEnabled = false
-        bulkSellIDs = {}
-        bulkSellValue = 0
-
-        surface.SetFont("PuristaBold24")
-        bulkSellText = "BULK SELL"
-        bulkSellTextSize = surface.GetTextSize(bulkSellText)
-        bulkSellButtonSize = bulkSellTextSize + EFGM.MenuScale(10)
-
-        if IsValid(confirmBulkButton) then
-
-            confirmBulkButton:Remove()
-            confirmBulkButton = nil
-            confirmBulkText = nil
-            confirmBulkTextSize = nil
-            confirmBulkButtonSize = nil
-
-        end
-
-        Menu.ReloadStash(marketStashItemSearchText)
-
-    end
-
-    local cd = false
-
-    function confirmPanel:OnKeyCodePressed(key)
-
-        if (key == KEY_ENTER or key == KEY_SPACE) and cd == false then yesButton:DoClick() cd = true end
-
-    end
-
-    noButton.OnCursorEntered = function(s)
-
-        surface.PlaySound("ui/element_hover.wav")
-
-    end
-
-    function noButton:DoClick()
-
-        surface.PlaySound("ui/element_deselect.wav")
-        confirmPanel:AlphaTo(0, 0.1, 0, function() confirmPanel:Remove() end)
-
-    end
-
-end
-
 Menu.OpenTab = {}
 
-function Menu.ReloadInventory(itemSearch)
+local itemSearchText = ""
+
+function Menu.ReloadInventory()
 
     if !IsValid(playerItems) then return end
 
@@ -3260,18 +3121,14 @@ function Menu.ReloadInventory(itemSearch)
             if input.IsKeyDown(KEY_LSHIFT) and (Menu.Player:CompareStatus(0) and table.IsEmpty(Menu.Container)) then
 
                 surface.PlaySound("ui/element_select.wav")
-                playerItems:InvalidateLayout()
                 StashItemFromInventory(v.id)
-                Menu.ReloadStash()
 
             end
 
             if input.IsKeyDown(KEY_LALT) and (i.equipType == EQUIPTYPE.Weapon) then
 
                 surface.PlaySound("ui/element_select.wav")
-                playerItems:InvalidateLayout()
                 EquipItemFromInventory(v.id, i.equipSlot)
-                Menu.ReloadSlots()
 
             end
 
@@ -3389,11 +3246,8 @@ function Menu.ReloadInventory(itemSearch)
 
                     surface.PlaySound("ui/element_select.wav")
                     contextMenu:Remove()
-                    playerItems:InvalidateLayout()
 
                     StashItemFromInventory(v.id)
-
-                    Menu.ReloadStash()
 
                 end
 
@@ -3418,11 +3272,8 @@ function Menu.ReloadInventory(itemSearch)
 
                     surface.PlaySound("ui/element_select.wav")
                     contextMenu:Remove()
-                    playerItems:InvalidateLayout()
 
                     EquipItemFromInventory(v.id, i.equipSlot)
-
-                    Menu.ReloadSlots()
 
                 end
 
@@ -3447,7 +3298,6 @@ function Menu.ReloadInventory(itemSearch)
 
                     surface.PlaySound("ui/element_select.wav")
                     contextMenu:Remove()
-                    playerItems:InvalidateLayout()
 
                     Menu.ConfirmPurchase(i.ammoID, "inv", false)
 
@@ -3472,7 +3322,6 @@ function Menu.ReloadInventory(itemSearch)
 
                         surface.PlaySound("ui/element_select.wav")
                         contextMenu:Remove()
-                        playerItems:InvalidateLayout()
 
                         Menu.ConfirmTag(v.name, v.id, "inv", 0, 0)
 
@@ -3502,7 +3351,6 @@ function Menu.ReloadInventory(itemSearch)
                     surface.PlaySound("ui/element_select.wav")
                     ConsumeItemFromInventory(v.id)
                     contextMenu:Remove()
-                    playerItems:InvalidateLayout()
 
                 end
 
@@ -3527,7 +3375,6 @@ function Menu.ReloadInventory(itemSearch)
 
                     Menu.ConfirmSplit(v.name, v.data, v.id, "inv")
                     contextMenu:KillFocus()
-                    playerItems:InvalidateLayout()
 
                 end
 
@@ -3553,7 +3400,6 @@ function Menu.ReloadInventory(itemSearch)
                     surface.PlaySound("ui/element_select.wav")
                     DropItemFromInventory(v.id)
                     contextMenu:Remove()
-                    playerItems:InvalidateLayout()
 
                 end
 
@@ -3579,7 +3425,6 @@ function Menu.ReloadInventory(itemSearch)
                     surface.PlaySound("ui/element_select.wav")
                     Menu.ConfirmDelete(v.name, v.id, "inv", 0, 0)
                     contextMenu:Remove()
-                    playerItems:InvalidateLayout()
 
                 end
 
@@ -3608,8 +3453,6 @@ function Menu.ReloadInventory(itemSearch)
         end
 
     end
-
-    playerItems:InvalidateLayout()
 
 end
 
@@ -3819,8 +3662,6 @@ function Menu.ReloadSlots()
 
                     StashItemFromEquipped(primaryItem.SLOTID, primaryItem.SLOT)
 
-                    Menu.ReloadStash()
-
                 end
 
             end
@@ -3864,7 +3705,6 @@ function Menu.ReloadSlots()
 
                     surface.PlaySound("ui/element_select.wav")
                     contextMenu:Remove()
-                    playerItems:InvalidateLayout()
 
                     Menu.ConfirmPurchase(i.ammoID, "inv", false)
 
@@ -3887,7 +3727,6 @@ function Menu.ReloadSlots()
 
                         surface.PlaySound("ui/element_select.wav")
                         contextMenu:Remove()
-                        playerItems:InvalidateLayout()
 
                         Menu.ConfirmTag(playerWeaponSlots[1][1].name, 0, "equipped", primaryItem.SLOTID, primaryItem.SLOT)
 
@@ -3937,7 +3776,6 @@ function Menu.ReloadSlots()
                     surface.PlaySound("ui/element_select.wav")
                     Menu.ConfirmDelete(playerWeaponSlots[1][1].name, 0, "equipped", primaryItem.SLOTID, primaryItem.SLOT)
                     contextMenu:Remove()
-                    playerItems:InvalidateLayout()
 
                 end
 
@@ -4174,8 +4012,6 @@ function Menu.ReloadSlots()
 
                     StashItemFromEquipped(secondaryItem.SLOTID, secondaryItem.SLOT)
 
-                    Menu.ReloadStash()
-
                 end
 
             end
@@ -4219,7 +4055,6 @@ function Menu.ReloadSlots()
 
                     surface.PlaySound("ui/element_select.wav")
                     contextMenu:Remove()
-                    playerItems:InvalidateLayout()
 
                     Menu.ConfirmPurchase(i.ammoID, "inv", false)
 
@@ -4242,7 +4077,6 @@ function Menu.ReloadSlots()
 
                         surface.PlaySound("ui/element_select.wav")
                         contextMenu:Remove()
-                        playerItems:InvalidateLayout()
 
                         Menu.ConfirmTag(playerWeaponSlots[1][2].name, 0, "equipped", secondaryItem.SLOTID, secondaryItem.SLOT)
 
@@ -4292,7 +4126,6 @@ function Menu.ReloadSlots()
                     surface.PlaySound("ui/element_select.wav")
                     Menu.ConfirmDelete(playerWeaponSlots[1][2].name, 0, "equipped", secondaryItem.SLOTID, secondaryItem.SLOT)
                     contextMenu:Remove()
-                    playerItems:InvalidateLayout()
 
                 end
 
@@ -4530,8 +4363,6 @@ function Menu.ReloadSlots()
 
                     StashItemFromEquipped(holsterItem.SLOTID, holsterItem.SLOT)
 
-                    Menu.ReloadStash()
-
                 end
 
             end
@@ -4575,7 +4406,6 @@ function Menu.ReloadSlots()
 
                     surface.PlaySound("ui/element_select.wav")
                     contextMenu:Remove()
-                    playerItems:InvalidateLayout()
 
                     Menu.ConfirmPurchase(i.ammoID, "inv", false)
 
@@ -4598,7 +4428,6 @@ function Menu.ReloadSlots()
 
                         surface.PlaySound("ui/element_select.wav")
                         contextMenu:Remove()
-                        playerItems:InvalidateLayout()
 
                         Menu.ConfirmTag(playerWeaponSlots[2][1].name, 0, "equipped", holsterItem.SLOTID, holsterItem.SLOT)
 
@@ -4648,7 +4477,6 @@ function Menu.ReloadSlots()
                     surface.PlaySound("ui/element_select.wav")
                     Menu.ConfirmDelete(playerWeaponSlots[2][1].name, 0, "equipped", holsterItem.SLOTID, holsterItem.SLOT)
                     contextMenu:Remove()
-                    playerItems:InvalidateLayout()
 
                 end
 
@@ -4849,8 +4677,6 @@ function Menu.ReloadSlots()
 
                     StashItemFromEquipped(meleeItem.SLOTID, meleeItem.SLOT)
 
-                    Menu.ReloadStash()
-
                 end
 
             end
@@ -4892,7 +4718,6 @@ function Menu.ReloadSlots()
 
                     surface.PlaySound("ui/element_select.wav")
                     contextMenu:Remove()
-                    playerItems:InvalidateLayout()
 
                     Menu.ConfirmTag(playerWeaponSlots[3][1].name, 0, "equipped", meleeItem.SLOTID, meleeItem.SLOT)
 
@@ -4940,7 +4765,6 @@ function Menu.ReloadSlots()
                     surface.PlaySound("ui/element_select.wav")
                     Menu.ConfirmDelete(playerWeaponSlots[3][1].name, 0, "equipped", meleeItem.SLOTID, meleeItem.SLOT)
                     contextMenu:Remove()
-                    playerItems:InvalidateLayout()
 
                 end
 
@@ -5133,8 +4957,6 @@ function Menu.ReloadSlots()
 
                     StashItemFromEquipped(nadeItem.SLOTID, nadeItem.SLOT)
 
-                    Menu.ReloadStash()
-
                 end
 
             end
@@ -5199,7 +5021,6 @@ function Menu.ReloadSlots()
                     surface.PlaySound("ui/element_select.wav")
                     Menu.ConfirmDelete(playerWeaponSlots[4][1].name, 0, "equipped", nadeItem.SLOTID, nadeItem.SLOT)
                     contextMenu:Remove()
-                    playerItems:InvalidateLayout()
 
                 end
 
@@ -5248,9 +5069,11 @@ function Menu.ReloadSlots()
 
 end
 
-function Menu.ReloadStash(itemSearch)
+local stashItemSearchText = ""
 
-    Menu.ReloadMarketStash(itemSearch)
+function Menu.ReloadStash()
+
+    Menu.ReloadMarketStash()
 
     if !IsValid(stashItems) then return end
 
@@ -5310,7 +5133,7 @@ function Menu.ReloadStash(itemSearch)
 
         if itemSearch != "" and itemSearch != nil and !(string.find((i.fullName and i.fullName or i.displayName):lower(), itemSearch)) then continue end
 
-        stashValue = stashValue + (i.value * v.data.count)
+        stashValue = stashValue + (i.value * math.Clamp(v.data.count, 1, i.stackSize))
 
         local item = stashItems:Add("DButton")
         item:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
@@ -5433,7 +5256,6 @@ function Menu.ReloadStash(itemSearch)
             if input.IsKeyDown(KEY_LSHIFT) then
 
                 surface.PlaySound("ui/element_select.wav")
-                playerItems:InvalidateLayout()
                 TakeFromStashToInventory(v.id)
 
             end
@@ -5441,7 +5263,6 @@ function Menu.ReloadStash(itemSearch)
             if input.IsKeyDown(KEY_LALT) and (i.equipType == EQUIPTYPE.Weapon) then
 
                 surface.PlaySound("ui/element_select.wav")
-                stashItems:InvalidateLayout()
                 EquipItemFromStash(v.id, i.equipSlot)
 
             end
@@ -5538,7 +5359,6 @@ function Menu.ReloadStash(itemSearch)
                 surface.PlaySound("ui/element_select.wav")
                 TakeFromStashToInventory(v.id)
                 contextMenu:Remove()
-                stashItems:InvalidateLayout()
 
             end
 
@@ -5576,7 +5396,6 @@ function Menu.ReloadStash(itemSearch)
                     surface.PlaySound("ui/element_select.wav")
                     EquipItemFromStash(v.id, i.equipSlot)
                     contextMenu:Remove()
-                    stashItems:InvalidateLayout()
 
                 end
 
@@ -5601,7 +5420,6 @@ function Menu.ReloadStash(itemSearch)
 
                     surface.PlaySound("ui/element_select.wav")
                     contextMenu:Remove()
-                    playerItems:InvalidateLayout()
 
                     Menu.ConfirmPurchase(i.ammoID, "stash", false)
 
@@ -5626,7 +5444,6 @@ function Menu.ReloadStash(itemSearch)
 
                         surface.PlaySound("ui/element_select.wav")
                         contextMenu:Remove()
-                        playerItems:InvalidateLayout()
 
                         Menu.ConfirmTag(v.name, v.id, "stash", 0, 0)
 
@@ -5655,7 +5472,6 @@ function Menu.ReloadStash(itemSearch)
 
                     Menu.ConfirmSplit(v.name, v.data, v.id, "stash")
                     contextMenu:Remove()
-                    stashItems:InvalidateLayout()
 
                 end
 
@@ -5678,7 +5494,6 @@ function Menu.ReloadStash(itemSearch)
                 surface.PlaySound("ui/element_select.wav")
                 PinItemFromStash(v.id)
                 contextMenu:Remove()
-                stashItems:InvalidateLayout()
 
             end
 
@@ -5702,7 +5517,6 @@ function Menu.ReloadStash(itemSearch)
                     surface.PlaySound("ui/element_select.wav")
                     Menu.ConfirmDelete(v.name, v.id, "stash", 0, 0)
                     contextMenu:Remove()
-                    playerItems:InvalidateLayout()
 
                 end
 
@@ -5732,11 +5546,11 @@ function Menu.ReloadStash(itemSearch)
 
     end
 
-    stashItems:InvalidateLayout()
-
 end
 
-function Menu.ReloadMarketStash(itemSearch)
+local marketStashItemSearchText = ""
+
+function Menu.ReloadMarketStash()
 
     if !IsValid(marketStashItems) then return end
 
@@ -5796,8 +5610,8 @@ function Menu.ReloadMarketStash(itemSearch)
 
         if itemSearch != "" and itemSearch != nil and !(string.find((i.fullName and i.fullName or i.displayName):lower(), itemSearch)) then continue end
 
-        stashValue = stashValue + i.value * v.data.count
-        local itemValue = math.floor(i.value * sellMultiplier) * v.data.count
+        stashValue = stashValue + (i.value * math.Clamp(v.data.count, 1, i.stackSize))
+        local itemValue = math.floor(i.value * sellMultiplier) * math.Clamp(v.data.count, 1, i.stackSize)
 
         local item = marketStashItems:Add("DButton")
         item:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
@@ -5838,17 +5652,8 @@ function Menu.ReloadMarketStash(itemSearch)
 
         function item:Paint(w, h)
 
-            if bulkSellIDs[v.id] != nil then
-
-                costColor = Color(0, 255, 0, 255)
-                surface.SetDrawColor(Color(255, 255, 255, 255))
-
-            else
-
-                costColor = MenuAlias.whiteColor
-                surface.SetDrawColor(Color(255, 255, 255, 2))
-
-            end
+            costColor = MenuAlias.whiteColor
+            surface.SetDrawColor(Color(255, 255, 255, 2))
 
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
             surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
@@ -5933,21 +5738,7 @@ function Menu.ReloadMarketStash(itemSearch)
 
         function item:DoClick()
 
-            if !bulkSellEnabled then
-
-                Menu.ConfirmSell(v.name, v.data, v.id)
-
-            elseif bulkSellIDs[v.id] == nil then
-
-                bulkSellIDs[v.id] = itemValue
-                bulkSellValue = bulkSellValue + itemValue
-
-            else
-
-                bulkSellIDs[v.id] = nil
-                bulkSellValue = bulkSellValue - itemValue
-
-            end
+            Menu.ConfirmSell(v.name, v.data, v.id)
 
         end
 
@@ -6018,56 +5809,21 @@ function Menu.ReloadMarketStash(itemSearch)
 
             end
 
-            if !bulkSellEnabled then
+            local itemSellButton = vgui.Create("DButton", contextMenu)
+            itemSellButton:Dock(TOP)
+            itemSellButton:SetSize(0, EFGM.MenuScale(25))
+            itemSellButton:SetText("SELL")
 
-                local itemSellButton = vgui.Create("DButton", contextMenu)
-                itemSellButton:Dock(TOP)
-                itemSellButton:SetSize(0, EFGM.MenuScale(25))
-                itemSellButton:SetText("SELL")
+            itemSellButton.OnCursorEntered = function(s)
 
-                itemSellButton.OnCursorEntered = function(s)
+                surface.PlaySound("ui/element_hover.wav")
 
-                    surface.PlaySound("ui/element_hover.wav")
+            end
 
-                end
+            function itemSellButton:DoClick()
 
-                function itemSellButton:DoClick()
-
-                    Menu.ConfirmSell(v.name, v.data, v.id)
-                    contextMenu:KillFocus()
-
-                end
-
-            else
-
-                local itemSelectButton = vgui.Create("DButton", contextMenu)
-                itemSelectButton:Dock(TOP)
-                itemSelectButton:SetSize(0, EFGM.MenuScale(25))
-                if bulkSellIDs[v.id] == nil then itemSelectButton:SetText("SELECT") else itemSelectButton:SetText("UNSELECT") end
-
-                itemSelectButton.OnCursorEntered = function(s)
-
-                    surface.PlaySound("ui/element_hover.wav")
-
-                end
-
-                function itemSelectButton:DoClick()
-
-                    if bulkSellIDs[v.id] == nil then
-
-                        bulkSellIDs[v.id] = itemValue
-                        bulkSellValue = bulkSellValue + itemValue
-
-                    else
-
-                        bulkSellIDs[v.id] = nil
-                        bulkSellValue = bulkSellValue - itemValue
-
-                    end
-
-                    contextMenu:KillFocus()
-
-                end
+                Menu.ConfirmSell(v.name, v.data, v.id)
+                contextMenu:KillFocus()
 
             end
 
@@ -6094,8 +5850,6 @@ function Menu.ReloadMarketStash(itemSearch)
         end
 
     end
-
-    marketStashItems:InvalidateLayout()
 
 end
 
@@ -6242,7 +5996,6 @@ function Menu.ReloadContainer()
                 net.SendToServer()
 
                 Menu.ReloadContainer()
-                Menu.ReloadInventory()
 
             end
 
@@ -6356,7 +6109,6 @@ function Menu.ReloadContainer()
                     net.SendToServer()
 
                     Menu.ReloadContainer()
-                    Menu.ReloadInventory()
 
 
                 end
@@ -6702,7 +6454,6 @@ function Menu.OpenTab.Inventory(container)
 
             surface.PlaySound("ui/element_select.wav")
             EquipItemFromInventory(panels[1].ID, panels[1].SLOT, 2)
-            Menu.ReloadSlots()
 
         end
 
@@ -6710,7 +6461,6 @@ function Menu.OpenTab.Inventory(container)
 
             surface.PlaySound("ui/element_select.wav")
             EquipItemFromStash(panels[1].ID, panels[1].SLOT, 2)
-            Menu.ReloadSlots()
 
         end
 
@@ -6725,7 +6475,6 @@ function Menu.OpenTab.Inventory(container)
 
             surface.PlaySound("ui/element_select.wav")
             EquipItemFromInventory(panels[1].ID, panels[1].SLOT, 1)
-            Menu.ReloadSlots()
 
         end
 
@@ -6733,7 +6482,6 @@ function Menu.OpenTab.Inventory(container)
 
             surface.PlaySound("ui/element_select.wav")
             EquipItemFromStash(panels[1].ID, panels[1].SLOT, 1)
-            Menu.ReloadSlots()
 
         end
 
@@ -6748,7 +6496,6 @@ function Menu.OpenTab.Inventory(container)
 
             surface.PlaySound("ui/element_select.wav")
             EquipItemFromInventory(panels[1].ID, panels[1].SLOT)
-            Menu.ReloadSlots()
 
         end
 
@@ -6756,7 +6503,6 @@ function Menu.OpenTab.Inventory(container)
 
             surface.PlaySound("ui/element_select.wav")
             EquipItemFromStash(panels[1].ID, panels[1].SLOT)
-            Menu.ReloadSlots()
 
         end
 
@@ -6771,7 +6517,6 @@ function Menu.OpenTab.Inventory(container)
 
             surface.PlaySound("ui/element_select.wav")
             EquipItemFromInventory(panels[1].ID, panels[1].SLOT)
-            Menu.ReloadSlots()
 
         end
 
@@ -6779,7 +6524,6 @@ function Menu.OpenTab.Inventory(container)
 
             surface.PlaySound("ui/element_select.wav")
             EquipItemFromStash(panels[1].ID, panels[1].SLOT)
-            Menu.ReloadSlots()
 
         end
 
@@ -6794,7 +6538,6 @@ function Menu.OpenTab.Inventory(container)
 
             surface.PlaySound("ui/element_select.wav")
             EquipItemFromInventory(panels[1].ID, panels[1].SLOT)
-            Menu.ReloadSlots()
 
         end
 
@@ -6802,7 +6545,6 @@ function Menu.OpenTab.Inventory(container)
 
             surface.PlaySound("ui/element_select.wav")
             EquipItemFromStash(panels[1].ID, panels[1].SLOT)
-            Menu.ReloadSlots()
 
         end
 
@@ -7076,8 +6818,7 @@ function Menu.OpenTab.Inventory(container)
     searchBox.OnChange = function(self)
 
         itemSearchText = self:GetValue():lower()
-
-        Menu.ReloadInventory(itemSearchText)
+        Menu.ReloadInventory()
 
     end
 
@@ -7105,8 +6846,6 @@ function Menu.OpenTab.Inventory(container)
             searchBox:SetValue("")
             itemSearchText = ""
             searchOpen = false
-
-            Menu.ReloadInventory()
 
         end
 
@@ -7167,7 +6906,6 @@ function Menu.OpenTab.Inventory(container)
             net.SendToServer()
 
             Menu.ReloadContainer()
-            Menu.ReloadInventory()
 
         end
 
@@ -7187,8 +6925,6 @@ function Menu.OpenTab.Inventory(container)
     function playerItemsBar.btnGrip:Paint(w, h)
         draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
     end
-
-    plyItems = {}
 
     Menu.ReloadInventory()
 
@@ -7415,8 +7151,7 @@ function Menu.OpenTab.Inventory(container)
     stashSearchBox.OnChange = function(self)
 
         stashItemSearchText = self:GetValue():lower()
-
-        Menu.ReloadStash(stashItemSearchText)
+        Menu.ReloadStash()
 
     end
 
@@ -7444,8 +7179,6 @@ function Menu.OpenTab.Inventory(container)
             stashSearchBox:SetValue("")
             stashItemSearchText = ""
             stashSearchOpen = false
-
-            Menu.ReloadStash()
 
         end
 
@@ -7487,9 +7220,6 @@ function Menu.OpenTab.Inventory(container)
 
             StashItemFromInventory(panels[1].ID)
 
-            Menu.ReloadInventory()
-            Menu.ReloadStash()
-
         end
 
         if panels[1].ORIGIN == "equipped" then
@@ -7497,9 +7227,6 @@ function Menu.OpenTab.Inventory(container)
             surface.PlaySound("ui/element_select.wav")
 
             StashItemFromEquipped(panels[1].SLOTID, panels[1].SLOT)
-
-            Menu.ReloadSlots()
-            Menu.ReloadStash()
 
         end
 
@@ -7519,8 +7246,6 @@ function Menu.OpenTab.Inventory(container)
     function stashItemsBar.btnGrip:Paint(w, h)
         draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
     end
-
-    plyStashItems = {}
 
     Menu.ReloadStash()
 
@@ -7608,164 +7333,17 @@ function Menu.OpenTab.Market()
     end
 
     surface.SetFont("PuristaBold24")
-    bulkSellText = "BULK SELL"
-    bulkSellTextSize = surface.GetTextSize(bulkSellText)
-    bulkSellButtonSize = bulkSellTextSize + EFGM.MenuScale(10)
-
-    bulkSellEnabled = false
-    bulkSellIDs = {}
-    bulkSellValue = 0
-
-    confirmBulkButton = nil
-    confirmBulkText = nil
-    confirmBulkTextSize = nil
-    confirmBulkButtonSize = nil
-
-    local bulkSellButton = vgui.Create("DButton", marketStashHolder)
-    bulkSellButton:SetPos(EFGM.MenuScale(15) + valueTextSize, 0)
-    bulkSellButton:SetSize(bulkSellButtonSize, EFGM.MenuScale(28))
-    bulkSellButton:SetText("")
-    bulkSellButton.Paint = function(s, w, h)
-
-        if !confirmBulkTextSize then
-
-            bulkSellButton:SetX(EFGM.MenuScale(15) + valueTextSize)
-
-        else
-
-            bulkSellButton:SetX(EFGM.MenuScale(30) + valueTextSize + confirmBulkTextSize)
-
-        end
-
-        bulkSellButton:SetWide(bulkSellButtonSize)
-
-        BlurPanel(s, EFGM.MenuScale(0))
-
-        surface.SetDrawColor(Color(80, 80, 80, 10))
-        surface.DrawRect(0, 0, bulkSellTextSize + EFGM.MenuScale(10), h)
-
-        surface.SetDrawColor(Color(255, 255, 255, 155))
-        surface.DrawRect(0, 0, bulkSellTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
-
-        draw.SimpleTextOutlined(bulkSellText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-    end
-
-    bulkSellButton.OnCursorEntered = function(s)
-
-        surface.PlaySound("ui/element_hover.wav")
-
-    end
-
-    function bulkSellButton:DoClick()
-
-        surface.PlaySound("ui/element_select.wav")
-
-        if bulkSellEnabled == false then
-
-            bulkSellEnabled = true
-            bulkSellIDs = {}
-            bulkSellValue = 0
-
-            surface.SetFont("PuristaBold24")
-            bulkSellText = "CANCEL"
-            bulkSellTextSize = surface.GetTextSize(bulkSellText)
-            bulkSellButtonSize = bulkSellTextSize + EFGM.MenuScale(10)
-
-            confirmBulkText = "₽" .. comma_value(bulkSellValue)
-            confirmBulkTextSize = surface.GetTextSize(confirmBulkText)
-            confirmBulkButtonSize = confirmBulkTextSize + EFGM.MenuScale(10)
-
-            confirmBulkButton = vgui.Create("DButton", marketStashHolder)
-            confirmBulkButton:SetPos(EFGM.MenuScale(15) + valueTextSize, 0)
-            confirmBulkButton:SetSize(confirmBulkButtonSize, EFGM.MenuScale(28))
-            confirmBulkButton:SetText("")
-            confirmBulkButton.Paint = function(s, w, h)
-
-                surface.SetFont("PuristaBold24")
-                confirmBulkText = "₽" .. comma_value(bulkSellValue)
-                confirmBulkTextSize = surface.GetTextSize(confirmBulkText)
-                confirmBulkButtonSize = confirmBulkTextSize + EFGM.MenuScale(10)
-
-                confirmBulkButton:SetX(EFGM.MenuScale(15) + valueTextSize)
-                confirmBulkButton:SetWide(confirmBulkButtonSize)
-
-                BlurPanel(s, EFGM.MenuScale(0))
-
-                surface.SetDrawColor(Color(10, 155, 10, 10))
-                surface.DrawRect(0, 0, confirmBulkTextSize + EFGM.MenuScale(10), h)
-
-                surface.SetDrawColor(Color(255, 255, 255, 155))
-                surface.DrawRect(0, 0, confirmBulkTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
-
-                draw.SimpleTextOutlined(confirmBulkText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-            end
-
-            confirmBulkButton.OnCursorEntered = function(s)
-
-                surface.PlaySound("ui/element_hover.wav")
-
-            end
-
-            function confirmBulkButton:DoClick()
-
-                local amt = table.Count(bulkSellIDs)
-                if amt == 0 then return end
-
-                Menu.ConfirmBulk(table.Count(bulkSellIDs) ,bulkSellValue)
-
-            end
-
-            Menu.ReloadStash(marketStashItemSearchText)
-
-        else
-
-            bulkSellEnabled = false
-            bulkSellIDs = {}
-            bulkSellValue = 0
-
-            surface.SetFont("PuristaBold24")
-            bulkSellText = "BULK SELL"
-            bulkSellTextSize = surface.GetTextSize(bulkSellText)
-            bulkSellButtonSize = bulkSellTextSize + EFGM.MenuScale(10)
-
-            if IsValid(confirmBulkButton) then
-
-                confirmBulkButton:Remove()
-                confirmBulkButton = nil
-                confirmBulkText = nil
-                confirmBulkTextSize = nil
-                confirmBulkButtonSize = nil
-
-            end
-
-            Menu.ReloadStash(marketStashItemSearchText)
-
-        end
-
-    end
-
-    surface.SetFont("PuristaBold24")
     local marketStashSearchText = "SEARCH"
     local marketStashSearchTextSize = surface.GetTextSize(marketStashSearchText)
     local marketStashSearchButtonSize = marketStashSearchTextSize + EFGM.MenuScale(10)
 
     local marketStashSearchButton = vgui.Create("DButton", marketStashHolder)
-    marketStashSearchButton:SetPos(EFGM.MenuScale(30) + valueTextSize + bulkSellTextSize, 0)
+    marketStashSearchButton:SetPos(EFGM.MenuScale(15) + valueTextSize, 0)
     marketStashSearchButton:SetSize(marketStashSearchButtonSize, EFGM.MenuScale(28))
     marketStashSearchButton:SetText("")
     marketStashSearchButton.Paint = function(s, w, h)
 
-        if !confirmBulkTextSize then
-
-            marketStashSearchButton:SetX(EFGM.MenuScale(30) + valueTextSize + bulkSellTextSize)
-
-        else
-
-            marketStashSearchButton:SetX(EFGM.MenuScale(45) + valueTextSize + bulkSellTextSize + confirmBulkTextSize)
-
-        end
+        marketStashSearchButton:SetX(EFGM.MenuScale(15) + valueTextSize)
 
         BlurPanel(s, EFGM.MenuScale(0))
 
@@ -7802,8 +7380,7 @@ function Menu.OpenTab.Market()
     marketStashSearchBox.OnChange = function(self)
 
         marketStashItemSearchText = self:GetValue():lower()
-
-        Menu.ReloadStash(marketStashItemSearchText)
+        Menu.ReloadStash()
 
     end
 
@@ -7878,8 +7455,6 @@ function Menu.OpenTab.Market()
     function marketStashItemsBar.btnGrip:Paint(w, h)
         draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
     end
-
-    marketPlyStashItems = {}
 
     Menu.ReloadMarketStash()
 
@@ -8724,7 +8299,6 @@ function Menu.OpenTab.Market()
     marketSearchBox.OnChange = function(self)
 
         marketSearchText = self:GetValue():lower()
-
         UpdateMarketList()
 
     end
@@ -11159,6 +10733,34 @@ function Menu.OpenTab.Settings()
     menuDeletePrompt:SetPos(EFGM.MenuScale(152), EFGM.MenuScale(30))
     menuDeletePrompt:SetConVar("efgm_menu_deleteprompt")
     menuDeletePrompt:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+
+    local menuSellPromptPanel = vgui.Create("DPanel", interface)
+    menuSellPromptPanel:Dock(TOP)
+    menuSellPromptPanel:SetSize(0, EFGM.MenuScale(50))
+    function menuSellPromptPanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Show Confirmation On Single Item Sell", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local menuSellPrompt = vgui.Create("DCheckBox", menuSellPromptPanel)
+    menuSellPrompt:SetPos(EFGM.MenuScale(152), EFGM.MenuScale(30))
+    menuSellPrompt:SetConVar("efgm_menu_sellprompt_single")
+    menuSellPrompt:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+
+    local menuSellStackedPromptPanel = vgui.Create("DPanel", interface)
+    menuSellStackedPromptPanel:Dock(TOP)
+    menuSellStackedPromptPanel:SetSize(0, EFGM.MenuScale(50))
+    function menuSellStackedPromptPanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Show Confirmation On Stacked Item Sell", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local menuSellStackedPrompt = vgui.Create("DCheckBox", menuSellStackedPromptPanel)
+    menuSellStackedPrompt:SetPos(EFGM.MenuScale(152), EFGM.MenuScale(30))
+    menuSellStackedPrompt:SetConVar("efgm_menu_sellprompt_stacked")
+    menuSellStackedPrompt:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
 
     -- visuals
 

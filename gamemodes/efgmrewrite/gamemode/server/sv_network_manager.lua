@@ -394,7 +394,7 @@ function SetupPlayerData(ply)
     InitializeNetworkInt(ply, query, "BestExtractionStreak", 0)
 
 	-- stash/inventory
-	InitializeNetworkInt(ply, query, "StashMax", 4500)
+	InitializeNetworkInt(ply, query, "StashMax", 1000)
 
 	for k, v in ipairs(levelArray) do
 
