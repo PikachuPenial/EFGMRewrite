@@ -1,4 +1,6 @@
 
+playerTasks = {}
+
 concommand.Add("efgm_task_pay", function(ply, cmd, args)
 
     local task, amount = args[1], tonumber(args[2])
@@ -44,5 +46,19 @@ concommand.Add("efgm_task_complete", function(ply, cmd, args)
     net.Start("TaskTryComplete")
     net.WriteString(task)
     net.SendToServer()
+
+end)
+
+concommand.Add("efgm_task_requestall", function(ply, cmd, args)
+    
+    net.Start("TaskRequestAll")
+    net.SendToServer()
+
+end)
+
+net.Receive("TaskSendAll", function(len, ply)
+
+    playerTasks = net.ReadTable()
+    PrintTable(playerTasks)
 
 end)

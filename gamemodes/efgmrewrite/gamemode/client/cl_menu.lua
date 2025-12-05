@@ -86,6 +86,8 @@ function Menu:Initialize(openTo, container)
     self.Unblur = false
     self.Closing = false
 
+    RunConsoleCommand("efgm_task_requestall")
+
     function menuFrame:Paint(w, h)
 
         surface.SetDrawColor(0, 0, 0, 240)
@@ -467,625 +469,654 @@ function Menu:Initialize(openTo, container)
 
     Menu.MenuFrame.LowerPanel.Contents = contents
 
-    -- for text size calculations
-    surface.SetFont("PuristaBold32")
+    -- MENU TABS
+        -- STATS
 
-    local statsTab = vgui.Create("DPanel", self.MenuFrame.TabParentPanel)
-    statsTab:Dock(LEFT)
-    statsTab:SetSize(EFGM.MenuScale(38), 0)
+            -- for text size calculations
+            surface.SetFont("PuristaBold32")
 
-    local statsIcon = vgui.Create("DImageButton", statsTab)
-    statsIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
-    statsIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
-    statsIcon:SetImage("icons/profile_icon.png")
-    statsIcon:SetDepressImage(false)
+            local statsTab = vgui.Create("DPanel", self.MenuFrame.TabParentPanel)
+            statsTab:Dock(LEFT)
+            statsTab:SetSize(EFGM.MenuScale(38), 0)
 
-    local statsBGColor = MenuAlias.transparent
-    local statsText = string.upper(Menu.Player:GetName())
-    local statsTextSize = surface.GetTextSize(statsText)
+            local statsIcon = vgui.Create("DImageButton", statsTab)
+            statsIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
+            statsIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
+            statsIcon:SetImage("icons/profile_icon.png")
+            statsIcon:SetDepressImage(false)
 
-    statsTab.Paint = function(s, w, h)
+            local statsBGColor = MenuAlias.transparent
+            local statsText = string.upper(Menu.Player:GetName())
+            local statsTextSize = surface.GetTextSize(statsText)
 
-        surface.SetDrawColor(statsBGColor)
-        surface.DrawRect(0, 0, w, h)
+            statsTab.Paint = function(s, w, h)
 
-        draw.SimpleTextOutlined(statsText, "PuristaBold32", EFGM.MenuScale(43), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                surface.SetDrawColor(statsBGColor)
+                surface.DrawRect(0, 0, w, h)
 
-        if Menu.ActiveTab == "Stats" then
+                draw.SimpleTextOutlined(statsText, "PuristaBold32", EFGM.MenuScale(43), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
-            surface.SetDrawColor(MenuAlias.whiteColor)
-            surface.DrawRect(EFGM.MenuScale(2), EFGM.MenuScale(39), w - EFGM.MenuScale(2), EFGM.MenuScale(2))
+                if Menu.ActiveTab == "Stats" then
 
-        end
+                    surface.SetDrawColor(MenuAlias.whiteColor)
+                    surface.DrawRect(EFGM.MenuScale(2), EFGM.MenuScale(39), w - EFGM.MenuScale(2), EFGM.MenuScale(2))
 
-    end
+                end
 
-    statsIcon.OnCursorEntered = function(s)
+            end
 
-        statsTab:SizeTo(EFGM.MenuScale(46) + statsTextSize, statsTab:GetTall(), 0.15, 0, 0.5)
-        surface.PlaySound("ui/element_hover.wav")
+            statsIcon.OnCursorEntered = function(s)
 
-    end
+                statsTab:SizeTo(EFGM.MenuScale(46) + statsTextSize, statsTab:GetTall(), 0.15, 0, 0.5)
+                surface.PlaySound("ui/element_hover.wav")
 
-    statsIcon.OnCursorExited = function(s)
+            end
 
-        statsTab:SizeTo(EFGM.MenuScale(38), statsTab:GetTall(), 0.15, 0, 0.5)
+            statsIcon.OnCursorExited = function(s)
 
-    end
+                statsTab:SizeTo(EFGM.MenuScale(38), statsTab:GetTall(), 0.15, 0, 0.5)
 
-    function statsIcon:DoClick()
+            end
 
-        if Menu.ActiveTab == "Stats" then return end
+            function statsIcon:DoClick()
 
-        surface.PlaySound("ui/element_select.wav")
+                if Menu.ActiveTab == "Stats" then return end
 
-        if Menu.ActiveTab == "Match" then
+                surface.PlaySound("ui/element_select.wav")
 
-            net.Start("RemovePlayerSquadRF")
-            net.SendToServer()
+                if Menu.ActiveTab == "Match" then
 
-        end
+                    net.Start("RemovePlayerSquadRF")
+                    net.SendToServer()
 
-        Menu.MenuFrame.LowerPanel.Contents:AlphaTo(0, 0.05, 0, function()
+                end
 
-            Menu.MenuFrame.LowerPanel.Contents:Remove()
-            Menu.OpenTab.Stats()
-            Menu.ActiveTab = "Stats"
+                Menu.MenuFrame.LowerPanel.Contents:AlphaTo(0, 0.05, 0, function()
 
-            Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, nil)
+                    Menu.MenuFrame.LowerPanel.Contents:Remove()
+                    Menu.OpenTab.Stats()
+                    Menu.ActiveTab = "Stats"
 
-        end)
+                    Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, nil)
 
-    end
+                end)
 
-    local matchTab = vgui.Create("DPanel", self.MenuFrame.TabParentPanel)
-    matchTab:Dock(LEFT)
-    matchTab:SetSize(EFGM.MenuScale(38), 0)
+            end
 
-    local matchIcon = vgui.Create("DImageButton", matchTab)
-    matchIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
-    matchIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
-    matchIcon:SetImage("icons/match_icon.png")
-    matchIcon:SetDepressImage(false)
+        -- MATCH
 
-    local matchBGColor = MenuAlias.transparent
-    local matchText = "#menu.tab.match"
-    local matchTextSize = surface.GetTextSize(matchText)
+            local matchTab = vgui.Create("DPanel", self.MenuFrame.TabParentPanel)
+            matchTab:Dock(LEFT)
+            matchTab:SetSize(EFGM.MenuScale(38), 0)
 
-    matchTab.Paint = function(s, w, h)
+            local matchIcon = vgui.Create("DImageButton", matchTab)
+            matchIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
+            matchIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
+            matchIcon:SetImage("icons/match_icon.png")
+            matchIcon:SetDepressImage(false)
 
-        surface.SetDrawColor(matchBGColor)
-        surface.DrawRect(0, 0, w, h)
+            local matchBGColor = MenuAlias.transparent
+            local matchText = "#menu.tab.match"
+            local matchTextSize = surface.GetTextSize(matchText)
 
-        draw.SimpleTextOutlined(matchText, "PuristaBold32", EFGM.MenuScale(43), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            matchTab.Paint = function(s, w, h)
 
-        if Menu.ActiveTab == "Match" then
+                surface.SetDrawColor(matchBGColor)
+                surface.DrawRect(0, 0, w, h)
 
-            surface.SetDrawColor(MenuAlias.whiteColor)
-            surface.DrawRect(EFGM.MenuScale(2), EFGM.MenuScale(39), w - EFGM.MenuScale(2), EFGM.MenuScale(2))
+                draw.SimpleTextOutlined(matchText, "PuristaBold32", EFGM.MenuScale(43), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
-        end
+                if Menu.ActiveTab == "Match" then
 
-    end
+                    surface.SetDrawColor(MenuAlias.whiteColor)
+                    surface.DrawRect(EFGM.MenuScale(2), EFGM.MenuScale(39), w - EFGM.MenuScale(2), EFGM.MenuScale(2))
 
-    matchIcon.OnCursorEntered = function(s)
+                end
 
-        matchTab:SizeTo(EFGM.MenuScale(46) + matchTextSize, matchTab:GetTall(), 0.15, 0, 0.5)
-        surface.PlaySound("ui/element_hover.wav")
+            end
 
-    end
+            matchIcon.OnCursorEntered = function(s)
 
-    matchIcon.OnCursorExited = function(s)
+                matchTab:SizeTo(EFGM.MenuScale(46) + matchTextSize, matchTab:GetTall(), 0.15, 0, 0.5)
+                surface.PlaySound("ui/element_hover.wav")
 
-        matchTab:SizeTo(EFGM.MenuScale(38), matchTab:GetTall(), 0.15, 0, 0.5)
+            end
 
-    end
+            matchIcon.OnCursorExited = function(s)
 
-    function matchIcon:DoClick()
+                matchTab:SizeTo(EFGM.MenuScale(38), matchTab:GetTall(), 0.15, 0, 0.5)
 
-        if Menu.ActiveTab == "Match" then return end
+            end
 
-        surface.PlaySound("ui/element_select.wav")
+            function matchIcon:DoClick()
 
-        Menu.MenuFrame.LowerPanel.Contents:AlphaTo(0, 0.05, 0, function()
+                if Menu.ActiveTab == "Match" then return end
 
-            Menu.MenuFrame.LowerPanel.Contents:Remove()
-            Menu.OpenTab.Match()
-            Menu.ActiveTab = "Match"
+                surface.PlaySound("ui/element_select.wav")
 
-            Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, nil)
+                Menu.MenuFrame.LowerPanel.Contents:AlphaTo(0, 0.05, 0, function()
 
-        end)
+                    Menu.MenuFrame.LowerPanel.Contents:Remove()
+                    Menu.OpenTab.Match()
+                    Menu.ActiveTab = "Match"
 
-        if Menu.Player:CompareStatus(0) then
+                    Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, nil)
 
-            net.Start("AddPlayerSquadRF")
-            net.SendToServer()
+                end)
 
-        end
+                if Menu.Player:CompareStatus(0) then
 
-    end
+                    net.Start("AddPlayerSquadRF")
+                    net.SendToServer()
 
-    local inventoryTab = vgui.Create("DPanel", self.MenuFrame.TabParentPanel)
-    inventoryTab:Dock(LEFT)
-    inventoryTab:SetSize(EFGM.MenuScale(38), 0)
+                end
 
-    local inventoryIcon = vgui.Create("DImageButton", inventoryTab)
-    inventoryIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
-    inventoryIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
-    inventoryIcon:SetImage("icons/inventory_icon.png")
-    inventoryIcon:SetDepressImage(false)
+            end
 
-    local inventoryBGColor = MenuAlias.transparent
-    local inventoryText = "#menu.tab.inventory"
-    local inventoryTextSize = surface.GetTextSize(inventoryText)
+        -- INVENTORY
 
-    inventoryTab.Paint = function(s, w, h)
+            local inventoryTab = vgui.Create("DPanel", self.MenuFrame.TabParentPanel)
+            inventoryTab:Dock(LEFT)
+            inventoryTab:SetSize(EFGM.MenuScale(38), 0)
 
-        surface.SetDrawColor(inventoryBGColor)
-        surface.DrawRect(0, 0, w, h)
+            local inventoryIcon = vgui.Create("DImageButton", inventoryTab)
+            inventoryIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
+            inventoryIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
+            inventoryIcon:SetImage("icons/inventory_icon.png")
+            inventoryIcon:SetDepressImage(false)
 
-        draw.SimpleTextOutlined(inventoryText, "PuristaBold32", EFGM.MenuScale(43), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            local inventoryBGColor = MenuAlias.transparent
+            local inventoryText = "#menu.tab.inventory"
+            local inventoryTextSize = surface.GetTextSize(inventoryText)
 
-        if Menu.ActiveTab == "Inventory" then
+            inventoryTab.Paint = function(s, w, h)
 
-            surface.SetDrawColor(MenuAlias.whiteColor)
-            surface.DrawRect(EFGM.MenuScale(2), EFGM.MenuScale(39), w - EFGM.MenuScale(2), EFGM.MenuScale(2))
+                surface.SetDrawColor(inventoryBGColor)
+                surface.DrawRect(0, 0, w, h)
 
-        end
+                draw.SimpleTextOutlined(inventoryText, "PuristaBold32", EFGM.MenuScale(43), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
-    end
+                if Menu.ActiveTab == "Inventory" then
 
-    inventoryIcon.OnCursorEntered = function(s)
+                    surface.SetDrawColor(MenuAlias.whiteColor)
+                    surface.DrawRect(EFGM.MenuScale(2), EFGM.MenuScale(39), w - EFGM.MenuScale(2), EFGM.MenuScale(2))
 
-        inventoryTab:SizeTo(EFGM.MenuScale(46) + inventoryTextSize, inventoryTab:GetTall(), 0.15, 0, 0.5)
-        surface.PlaySound("ui/element_hover.wav")
+                end
 
-    end
+            end
 
-    inventoryIcon.OnCursorExited = function(s)
+            inventoryIcon.OnCursorEntered = function(s)
 
-        inventoryTab:SizeTo(EFGM.MenuScale(38), inventoryTab:GetTall(), 0.15, 0, 0.5)
+                inventoryTab:SizeTo(EFGM.MenuScale(46) + inventoryTextSize, inventoryTab:GetTall(), 0.15, 0, 0.5)
+                surface.PlaySound("ui/element_hover.wav")
 
-    end
+            end
 
-    function inventoryIcon:DoClick()
+            inventoryIcon.OnCursorExited = function(s)
 
-        if Menu.ActiveTab == "Inventory" then return end
+                inventoryTab:SizeTo(EFGM.MenuScale(38), inventoryTab:GetTall(), 0.15, 0, 0.5)
 
-        if Menu.ActiveTab == "Match" then
+            end
 
-            net.Start("RemovePlayerSquadRF")
-            net.SendToServer()
+            function inventoryIcon:DoClick()
 
-        end
+                if Menu.ActiveTab == "Inventory" then return end
 
-        surface.PlaySound("ui/element_select.wav")
+                if Menu.ActiveTab == "Match" then
 
-        Menu.MenuFrame.LowerPanel.Contents:AlphaTo(0, 0.05, 0, function()
+                    net.Start("RemovePlayerSquadRF")
+                    net.SendToServer()
 
-            Menu.MenuFrame.LowerPanel.Contents:Remove()
-            Menu.OpenTab.Inventory(Menu.Container)
-            Menu.ActiveTab = "Inventory"
+                end
 
-            Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, nil)
+                surface.PlaySound("ui/element_select.wav")
 
-        end)
+                Menu.MenuFrame.LowerPanel.Contents:AlphaTo(0, 0.05, 0, function()
 
-    end
+                    Menu.MenuFrame.LowerPanel.Contents:Remove()
+                    Menu.OpenTab.Inventory(Menu.Container)
+                    Menu.ActiveTab = "Inventory"
 
-    local marketTab = vgui.Create("DPanel", self.MenuFrame.TabParentPanel)
-    marketTab:Dock(LEFT)
-    marketTab:SetSize(EFGM.MenuScale(38), 0)
+                    Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, nil)
 
-    if !Menu.Player:CompareStatus(0) then marketTab:Hide(true) end
+                end)
 
-    local marketIcon = vgui.Create("DImageButton", marketTab)
-    marketIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
-    marketIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
-    marketIcon:SetImage("icons/market_icon.png")
-    marketIcon:SetDepressImage(false)
+            end
 
-    local marketBGColor = MenuAlias.transparent
-    local marketText = "#menu.tab.market"
-    local marketTextSize = surface.GetTextSize(marketText)
+        -- MARKET
 
-    marketTab.Paint = function(s, w, h)
+            local marketTab = vgui.Create("DPanel", self.MenuFrame.TabParentPanel)
+            marketTab:Dock(LEFT)
+            marketTab:SetSize(EFGM.MenuScale(38), 0)
 
-        surface.SetDrawColor(marketBGColor)
-        surface.DrawRect(0, 0, w, h)
+            if !Menu.Player:CompareStatus(0) then marketTab:Hide(true) end
 
-        draw.SimpleTextOutlined(marketText, "PuristaBold32", EFGM.MenuScale(43), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            local marketIcon = vgui.Create("DImageButton", marketTab)
+            marketIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
+            marketIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
+            marketIcon:SetImage("icons/market_icon.png")
+            marketIcon:SetDepressImage(false)
 
-        if Menu.ActiveTab == "Market" then
+            local marketBGColor = MenuAlias.transparent
+            local marketText = "#menu.tab.market"
+            local marketTextSize = surface.GetTextSize(marketText)
 
-            surface.SetDrawColor(MenuAlias.whiteColor)
-            surface.DrawRect(EFGM.MenuScale(2), EFGM.MenuScale(39), w - EFGM.MenuScale(2), EFGM.MenuScale(2))
+            marketTab.Paint = function(s, w, h)
 
-        end
+                surface.SetDrawColor(marketBGColor)
+                surface.DrawRect(0, 0, w, h)
 
-    end
+                draw.SimpleTextOutlined(marketText, "PuristaBold32", EFGM.MenuScale(43), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
-    marketIcon.OnCursorEntered = function(s)
+                if Menu.ActiveTab == "Market" then
 
-        marketTab:SizeTo(EFGM.MenuScale(46) + marketTextSize, marketTab:GetTall(), 0.15, 0, 0.5)
-        surface.PlaySound("ui/element_hover.wav")
+                    surface.SetDrawColor(MenuAlias.whiteColor)
+                    surface.DrawRect(EFGM.MenuScale(2), EFGM.MenuScale(39), w - EFGM.MenuScale(2), EFGM.MenuScale(2))
 
-    end
+                end
 
-    marketIcon.OnCursorExited = function(s)
+            end
 
-        marketTab:SizeTo(EFGM.MenuScale(38), marketTab:GetTall(), 0.15, 0, 0.5)
+            marketIcon.OnCursorEntered = function(s)
 
-    end
+                marketTab:SizeTo(EFGM.MenuScale(46) + marketTextSize, marketTab:GetTall(), 0.15, 0, 0.5)
+                surface.PlaySound("ui/element_hover.wav")
 
-    function marketIcon:DoClick()
+            end
 
-        if !Menu.Player:CompareStatus(0) then
+            marketIcon.OnCursorExited = function(s)
 
-            surface.PlaySound("common/wpn_denyselect.wav")
-            return
+                marketTab:SizeTo(EFGM.MenuScale(38), marketTab:GetTall(), 0.15, 0, 0.5)
 
-        end
+            end
 
-        if Menu.ActiveTab == "Market" then return end
+            function marketIcon:DoClick()
 
-        if Menu.ActiveTab == "Match" then
+                if !Menu.Player:CompareStatus(0) then
 
-            net.Start("RemovePlayerSquadRF")
-            net.SendToServer()
+                    surface.PlaySound("common/wpn_denyselect.wav")
+                    return
 
-        end
+                end
 
-        surface.PlaySound("ui/element_select.wav")
+                if Menu.ActiveTab == "Market" then return end
 
-        Menu.MenuFrame.LowerPanel.Contents:AlphaTo(0, 0.05, 0, function()
+                if Menu.ActiveTab == "Match" then
 
-            Menu.MenuFrame.LowerPanel.Contents:Remove()
-            Menu.OpenTab.Market()
-            Menu.ActiveTab = "Market"
+                    net.Start("RemovePlayerSquadRF")
+                    net.SendToServer()
 
-            Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, nil)
+                end
 
-        end)
+                surface.PlaySound("ui/element_select.wav")
 
-    end
+                Menu.MenuFrame.LowerPanel.Contents:AlphaTo(0, 0.05, 0, function()
 
-    local tasksTab = vgui.Create("DPanel", self.MenuFrame.TabParentPanel)
-    tasksTab:Dock(LEFT)
-    tasksTab:SetSize(EFGM.MenuScale(38), 0)
-    tasksTab:Hide(true)
+                    Menu.MenuFrame.LowerPanel.Contents:Remove()
+                    Menu.OpenTab.Market()
+                    Menu.ActiveTab = "Market"
 
-    local tasksIcon = vgui.Create("DImageButton", tasksTab)
-    tasksIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
-    tasksIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
-    tasksIcon:SetImage("icons/tasks_icon.png")
-    tasksIcon:SetDepressImage(false)
+                    Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, nil)
 
-    local tasksBGColor = MenuAlias.transparent
-    local tasksText = "#menu.tab.tasks"
-    local tasksTextSize = surface.GetTextSize(tasksText)
+                end)
 
-    tasksTab.Paint = function(s, w, h)
+            end
 
-        surface.SetDrawColor(tasksBGColor)
-        surface.DrawRect(0, 0, w, h)
+        -- TASKS <3
 
-        draw.SimpleTextOutlined(tasksText, "PuristaBold32", EFGM.MenuScale(43), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            local tasksTab = vgui.Create("DPanel", self.MenuFrame.TabParentPanel)
+            tasksTab:Dock(LEFT)
+            tasksTab:SetSize(EFGM.MenuScale(38), 0)
 
-        if Menu.ActiveTab == "Tasks" then
+            local tasksIcon = vgui.Create("DImageButton", tasksTab)
+            tasksIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
+            tasksIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
+            tasksIcon:SetImage("icons/tasks_icon.png")
+            tasksIcon:SetDepressImage(false)
 
-            surface.SetDrawColor(MenuAlias.whiteColor)
-            surface.DrawRect(EFGM.MenuScale(2), EFGM.MenuScale(39), w - EFGM.MenuScale(2), EFGM.MenuScale(2))
+            local tasksBGColor = MenuAlias.transparent
+            local tasksText = "#menu.tab.tasks"
+            local tasksTextSize = surface.GetTextSize(tasksText)
 
-        end
+            tasksTab.Paint = function(s, w, h)
 
-    end
+                surface.SetDrawColor(tasksBGColor)
+                surface.DrawRect(0, 0, w, h)
 
-    tasksIcon.OnCursorEntered = function(s)
+                draw.SimpleTextOutlined(tasksText, "PuristaBold32", EFGM.MenuScale(43), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
-        tasksTab:SizeTo(EFGM.MenuScale(46) + tasksTextSize, tasksTab:GetTall(), 0.15, 0, 0.5)
-        surface.PlaySound("ui/element_hover.wav")
+                if Menu.ActiveTab == "Tasks" then
 
-    end
+                    surface.SetDrawColor(MenuAlias.whiteColor)
+                    surface.DrawRect(EFGM.MenuScale(2), EFGM.MenuScale(39), w - EFGM.MenuScale(2), EFGM.MenuScale(2))
 
-    tasksIcon.OnCursorExited = function(s)
+                end
 
-        tasksTab:SizeTo(EFGM.MenuScale(38), tasksTab:GetTall(), 0.15, 0, 0.5)
+            end
 
-    end
+            tasksIcon.OnCursorEntered = function(s)
 
-    function tasksIcon:DoClick()
+                tasksTab:SizeTo(EFGM.MenuScale(46) + tasksTextSize, tasksTab:GetTall(), 0.15, 0, 0.5)
+                surface.PlaySound("ui/element_hover.wav")
 
-        if Menu.ActiveTab == "Tasks" then return end
+            end
 
-        if Menu.ActiveTab == "Match" then
+            tasksIcon.OnCursorExited = function(s)
 
-            net.Start("RemovePlayerSquadRF")
-            net.SendToServer()
+                tasksTab:SizeTo(EFGM.MenuScale(38), tasksTab:GetTall(), 0.15, 0, 0.5)
 
-        end
+            end
 
-        surface.PlaySound("common/wpn_denyselect.wav")
-        return
+            function tasksIcon:DoClick()
 
-    end
+                if Menu.ActiveTab == "Tasks" then return end
 
-    local skillsTab = vgui.Create("DPanel", self.MenuFrame.TabParentPanel)
-    skillsTab:Dock(LEFT)
-    skillsTab:SetSize(EFGM.MenuScale(38), 0)
-    skillsTab:Hide(true)
+                if Menu.ActiveTab == "Match" then
 
-    local skillsIcon = vgui.Create("DImageButton", skillsTab)
-    skillsIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
-    skillsIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
-    skillsIcon:SetImage("icons/skills_icon.png")
-    skillsIcon:SetDepressImage(false)
+                    net.Start("RemovePlayerSquadRF")
+                    net.SendToServer()
 
-    local skillsBGColor = MenuAlias.transparent
-    local skillsText = "#menu.tab.skills"
-    local skillsTextSize = surface.GetTextSize(skillsText)
+                end
 
-    skillsTab.Paint = function(s, w, h)
+                surface.PlaySound("ui/element_select.wav")
 
-        surface.SetDrawColor(skillsBGColor)
-        surface.DrawRect(0, 0, w, h)
+                Menu.MenuFrame.LowerPanel.Contents:AlphaTo(0, 0.05, 0, function()
 
-        draw.SimpleTextOutlined(skillsText, "PuristaBold32", EFGM.MenuScale(43), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                    Menu.MenuFrame.LowerPanel.Contents:Remove()
+                    Menu.OpenTab.Tasks()
+                    Menu.ActiveTab = "Tasks"
 
-        if Menu.ActiveTab == "Skills" then
+                    Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, nil)
 
-            surface.SetDrawColor(MenuAlias.whiteColor)
-            surface.DrawRect(EFGM.MenuScale(2), EFGM.MenuScale(39), w - EFGM.MenuScale(2), EFGM.MenuScale(2))
+                end)
 
-        end
+            end
 
-    end
+        -- SKILLS
 
-    skillsIcon.OnCursorEntered = function(s)
+            local skillsTab = vgui.Create("DPanel", self.MenuFrame.TabParentPanel)
+            skillsTab:Dock(LEFT)
+            skillsTab:SetSize(EFGM.MenuScale(38), 0)
+            skillsTab:Hide(true)
 
-        skillsTab:SizeTo(EFGM.MenuScale(46) + skillsTextSize, skillsTab:GetTall(), 0.15, 0, 0.5)
-        surface.PlaySound("ui/element_hover.wav")
+            local skillsIcon = vgui.Create("DImageButton", skillsTab)
+            skillsIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
+            skillsIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
+            skillsIcon:SetImage("icons/skills_icon.png")
+            skillsIcon:SetDepressImage(false)
 
-    end
+            local skillsBGColor = MenuAlias.transparent
+            local skillsText = "#menu.tab.skills"
+            local skillsTextSize = surface.GetTextSize(skillsText)
 
-    skillsIcon.OnCursorExited = function(s)
+            skillsTab.Paint = function(s, w, h)
 
-        skillsTab:SizeTo(EFGM.MenuScale(38), skillsTab:GetTall(), 0.15, 0, 0.5)
+                surface.SetDrawColor(skillsBGColor)
+                surface.DrawRect(0, 0, w, h)
 
-    end
+                draw.SimpleTextOutlined(skillsText, "PuristaBold32", EFGM.MenuScale(43), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
-    function skillsIcon:DoClick()
+                if Menu.ActiveTab == "Skills" then
 
-        if Menu.ActiveTab == "Skills" then return end
+                    surface.SetDrawColor(MenuAlias.whiteColor)
+                    surface.DrawRect(EFGM.MenuScale(2), EFGM.MenuScale(39), w - EFGM.MenuScale(2), EFGM.MenuScale(2))
 
-        if Menu.ActiveTab == "Match" then
+                end
 
-            net.Start("RemovePlayerSquadRF")
-            net.SendToServer()
+            end
 
-        end
+            skillsIcon.OnCursorEntered = function(s)
 
-        surface.PlaySound("ui/element_select.wav")
+                skillsTab:SizeTo(EFGM.MenuScale(46) + skillsTextSize, skillsTab:GetTall(), 0.15, 0, 0.5)
+                surface.PlaySound("ui/element_hover.wav")
 
-        Menu.MenuFrame.LowerPanel.Contents:AlphaTo(0, 0.05, 0, function()
+            end
 
-            Menu.MenuFrame.LowerPanel.Contents:Remove()
-            Menu.OpenTab.Skills()
-            Menu.ActiveTab = "Skills"
+            skillsIcon.OnCursorExited = function(s)
 
-            Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, nil)
+                skillsTab:SizeTo(EFGM.MenuScale(38), skillsTab:GetTall(), 0.15, 0, 0.5)
 
-        end)
+            end
 
-    end
+            function skillsIcon:DoClick()
 
-    local intelTab = vgui.Create("DPanel", self.MenuFrame.TabParentPanel)
-    intelTab:Dock(LEFT)
-    intelTab:SetSize(EFGM.MenuScale(38), 0)
-    intelTab:Hide(true)
+                if Menu.ActiveTab == "Skills" then return end
 
-    local intelIcon = vgui.Create("DImageButton", intelTab)
-    intelIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
-    intelIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
-    intelIcon:SetImage("icons/intel_icon.png")
-    intelIcon:SetDepressImage(false)
+                if Menu.ActiveTab == "Match" then
 
-    local intelBGColor = MenuAlias.transparent
-    local intelText = "#menu.tab.intel"
-    local intelTextSize = surface.GetTextSize(intelText)
+                    net.Start("RemovePlayerSquadRF")
+                    net.SendToServer()
 
-    intelTab.Paint = function(s, w, h)
+                end
 
-        surface.SetDrawColor(intelBGColor)
-        surface.DrawRect(0, 0, w, h)
+                surface.PlaySound("ui/element_select.wav")
 
-        draw.SimpleTextOutlined(intelText, "PuristaBold32", EFGM.MenuScale(43), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                Menu.MenuFrame.LowerPanel.Contents:AlphaTo(0, 0.05, 0, function()
 
-        if Menu.ActiveTab == "Intel" then
+                    Menu.MenuFrame.LowerPanel.Contents:Remove()
+                    Menu.OpenTab.Skills()
+                    Menu.ActiveTab = "Skills"
 
-            surface.SetDrawColor(MenuAlias.whiteColor)
-            surface.DrawRect(EFGM.MenuScale(2), EFGM.MenuScale(39), w - EFGM.MenuScale(2), EFGM.MenuScale(2))
+                    Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, nil)
 
-        end
+                end)
 
-    end
+            end
 
-    intelIcon.OnCursorEntered = function(s)
+        -- INTEL
 
-        intelTab:SizeTo(EFGM.MenuScale(46) + intelTextSize, intelTab:GetTall(), 0.15, 0, 0.5)
-        surface.PlaySound("ui/element_hover.wav")
+            local intelTab = vgui.Create("DPanel", self.MenuFrame.TabParentPanel)
+            intelTab:Dock(LEFT)
+            intelTab:SetSize(EFGM.MenuScale(38), 0)
+            intelTab:Hide(true)
 
-    end
+            local intelIcon = vgui.Create("DImageButton", intelTab)
+            intelIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
+            intelIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
+            intelIcon:SetImage("icons/intel_icon.png")
+            intelIcon:SetDepressImage(false)
 
-    intelIcon.OnCursorExited = function(s)
+            local intelBGColor = MenuAlias.transparent
+            local intelText = "#menu.tab.intel"
+            local intelTextSize = surface.GetTextSize(intelText)
 
-        intelTab:SizeTo(EFGM.MenuScale(38), intelTab:GetTall(), 0.15, 0, 0.5)
+            intelTab.Paint = function(s, w, h)
 
-    end
+                surface.SetDrawColor(intelBGColor)
+                surface.DrawRect(0, 0, w, h)
 
-    function intelIcon:DoClick()
+                draw.SimpleTextOutlined(intelText, "PuristaBold32", EFGM.MenuScale(43), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
-        if Menu.ActiveTab == "Intel" then return end
+                if Menu.ActiveTab == "Intel" then
 
-        surface.PlaySound("ui/element_select.wav")
+                    surface.SetDrawColor(MenuAlias.whiteColor)
+                    surface.DrawRect(EFGM.MenuScale(2), EFGM.MenuScale(39), w - EFGM.MenuScale(2), EFGM.MenuScale(2))
 
-        if Menu.ActiveTab == "Match" then
+                end
 
-            net.Start("RemovePlayerSquadRF")
-            net.SendToServer()
+            end
 
-        end
+            intelIcon.OnCursorEntered = function(s)
 
-        Menu.MenuFrame.LowerPanel.Contents:AlphaTo(0, 0.05, 0, function()
+                intelTab:SizeTo(EFGM.MenuScale(46) + intelTextSize, intelTab:GetTall(), 0.15, 0, 0.5)
+                surface.PlaySound("ui/element_hover.wav")
 
-            Menu.MenuFrame.LowerPanel.Contents:Remove()
-            Menu.OpenTab.Intel()
-            Menu.ActiveTab = "Intel"
+            end
 
-            Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, nil)
+            intelIcon.OnCursorExited = function(s)
 
-        end)
+                intelTab:SizeTo(EFGM.MenuScale(38), intelTab:GetTall(), 0.15, 0, 0.5)
 
-    end
+            end
 
-    local achievementsTab = vgui.Create("DPanel", self.MenuFrame.TabParentPanel)
-    achievementsTab:Dock(LEFT)
-    achievementsTab:SetSize(EFGM.MenuScale(38), 0)
-    achievementsTab:Hide(true)
+            function intelIcon:DoClick()
 
-    local achievementsIcon = vgui.Create("DImageButton", achievementsTab)
-    achievementsIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
-    achievementsIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
-    achievementsIcon:SetImage("icons/achievement_icon.png")
-    achievementsIcon:SetDepressImage(false)
+                if Menu.ActiveTab == "Intel" then return end
 
-    local achievementsBGColor = MenuAlias.transparent
-    local achievementsText = "#menu.tab.achievements"
-    local achievementsTextSize = surface.GetTextSize(achievementsText)
+                surface.PlaySound("ui/element_select.wav")
 
-    achievementsTab.Paint = function(s, w, h)
+                if Menu.ActiveTab == "Match" then
 
-        surface.SetDrawColor(achievementsBGColor)
-        surface.DrawRect(0, 0, w, h)
+                    net.Start("RemovePlayerSquadRF")
+                    net.SendToServer()
 
-        draw.SimpleTextOutlined(achievementsText, "PuristaBold32", EFGM.MenuScale(43), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                end
 
-        if Menu.ActiveTab == "Achievements" then
+                Menu.MenuFrame.LowerPanel.Contents:AlphaTo(0, 0.05, 0, function()
 
-            surface.SetDrawColor(MenuAlias.whiteColor)
-            surface.DrawRect(EFGM.MenuScale(2), EFGM.MenuScale(39), w - EFGM.MenuScale(2), EFGM.MenuScale(2))
+                    Menu.MenuFrame.LowerPanel.Contents:Remove()
+                    Menu.OpenTab.Intel()
+                    Menu.ActiveTab = "Intel"
 
-        end
+                    Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, nil)
 
-    end
+                end)
 
-    achievementsIcon.OnCursorEntered = function(s)
+            end
 
-        achievementsTab:SizeTo(EFGM.MenuScale(46) + achievementsTextSize, achievementsTab:GetTall(), 0.15, 0, 0.5)
-        surface.PlaySound("ui/element_hover.wav")
+        -- ACHIEVEMENTS
 
-    end
+            local achievementsTab = vgui.Create("DPanel", self.MenuFrame.TabParentPanel)
+            achievementsTab:Dock(LEFT)
+            achievementsTab:SetSize(EFGM.MenuScale(38), 0)
+            achievementsTab:Hide(true)
 
-    achievementsIcon.OnCursorExited = function(s)
+            local achievementsIcon = vgui.Create("DImageButton", achievementsTab)
+            achievementsIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
+            achievementsIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
+            achievementsIcon:SetImage("icons/achievement_icon.png")
+            achievementsIcon:SetDepressImage(false)
 
-        achievementsTab:SizeTo(EFGM.MenuScale(38), achievementsTab:GetTall(), 0.15, 0, 0.5)
+            local achievementsBGColor = MenuAlias.transparent
+            local achievementsText = "#menu.tab.achievements"
+            local achievementsTextSize = surface.GetTextSize(achievementsText)
 
-    end
+            achievementsTab.Paint = function(s, w, h)
 
-    function achievementsIcon:DoClick()
+                surface.SetDrawColor(achievementsBGColor)
+                surface.DrawRect(0, 0, w, h)
 
-        if Menu.ActiveTab == "Achievements" then return end
+                draw.SimpleTextOutlined(achievementsText, "PuristaBold32", EFGM.MenuScale(43), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
-        if Menu.ActiveTab == "Match" then
+                if Menu.ActiveTab == "Achievements" then
 
-            net.Start("RemovePlayerSquadRF")
-            net.SendToServer()
+                    surface.SetDrawColor(MenuAlias.whiteColor)
+                    surface.DrawRect(EFGM.MenuScale(2), EFGM.MenuScale(39), w - EFGM.MenuScale(2), EFGM.MenuScale(2))
 
-        end
+                end
 
-        surface.PlaySound("common/wpn_denyselect.wav")
-        return
+            end
 
-    end
+            achievementsIcon.OnCursorEntered = function(s)
 
-    -- local contractsTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
-    -- contractsTab:Dock(LEFT)
-    -- contractsTab:SetSize(surface.GetTextSize("Contracts") + EFGM.MenuScale(50), 0)
-    -- contractsTab:SetText("Contracts")
+                achievementsTab:SizeTo(EFGM.MenuScale(46) + achievementsTextSize, achievementsTab:GetTall(), 0.15, 0, 0.5)
+                surface.PlaySound("ui/element_hover.wav")
 
-    -- local unlocksTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
-    -- unlocksTab:Dock(LEFT)
-    -- unlocksTab:SetSize(surface.GetTextSize("Unlocks") + EFGM.MenuScale(50), 0)
-    -- unlocksTab:SetText("Unlocks")
+            end
 
-    local settingsTab = vgui.Create("DPanel", self.MenuFrame.TabParentPanel)
-    settingsTab:Dock(LEFT)
-    settingsTab:SetSize(EFGM.MenuScale(38), 0)
+            achievementsIcon.OnCursorExited = function(s)
 
-    local settingsIcon = vgui.Create("DImageButton", settingsTab)
-    settingsIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
-    settingsIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
-    settingsIcon:SetImage("icons/settings_icon.png")
-    settingsIcon:SetDepressImage(false)
+                achievementsTab:SizeTo(EFGM.MenuScale(38), achievementsTab:GetTall(), 0.15, 0, 0.5)
 
-    local settingsBGColor = MenuAlias.transparent
-    local settingsText = "#menu.tab.settings"
-    local settingsTextSize = surface.GetTextSize(settingsText)
+            end
 
-    settingsTab.Paint = function(s, w, h)
+            function achievementsIcon:DoClick()
 
-        surface.SetDrawColor(settingsBGColor)
-        surface.DrawRect(0, 0, w, h)
+                if Menu.ActiveTab == "Achievements" then return end
 
-        draw.SimpleTextOutlined(settingsText, "PuristaBold32", EFGM.MenuScale(43), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                if Menu.ActiveTab == "Match" then
 
-        if Menu.ActiveTab == "Settings" then
+                    net.Start("RemovePlayerSquadRF")
+                    net.SendToServer()
 
-            surface.SetDrawColor(MenuAlias.whiteColor)
-            surface.DrawRect(EFGM.MenuScale(2), EFGM.MenuScale(39), w - EFGM.MenuScale(2), EFGM.MenuScale(2))
+                end
 
-        end
+                surface.PlaySound("common/wpn_denyselect.wav")
+                return
 
-    end
+            end
 
-    settingsIcon.OnCursorEntered = function(s)
+            -- local contractsTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
+            -- contractsTab:Dock(LEFT)
+            -- contractsTab:SetSize(surface.GetTextSize("Contracts") + EFGM.MenuScale(50), 0)
+            -- contractsTab:SetText("Contracts")
 
-        settingsTab:SizeTo(EFGM.MenuScale(46) + settingsTextSize, settingsTab:GetTall(), 0.15, 0, 0.5)
-        surface.PlaySound("ui/element_hover.wav")
+            -- local unlocksTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
+            -- unlocksTab:Dock(LEFT)
+            -- unlocksTab:SetSize(surface.GetTextSize("Unlocks") + EFGM.MenuScale(50), 0)
+            -- unlocksTab:SetText("Unlocks")
 
-    end
+        -- SETTINGS
 
-    settingsIcon.OnCursorExited = function(s)
+            local settingsTab = vgui.Create("DPanel", self.MenuFrame.TabParentPanel)
+            settingsTab:Dock(LEFT)
+            settingsTab:SetSize(EFGM.MenuScale(38), 0)
 
-        settingsTab:SizeTo(EFGM.MenuScale(38), settingsTab:GetTall(), 0.15, 0, 0.5)
+            local settingsIcon = vgui.Create("DImageButton", settingsTab)
+            settingsIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
+            settingsIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
+            settingsIcon:SetImage("icons/settings_icon.png")
+            settingsIcon:SetDepressImage(false)
 
-    end
+            local settingsBGColor = MenuAlias.transparent
+            local settingsText = "#menu.tab.settings"
+            local settingsTextSize = surface.GetTextSize(settingsText)
 
-    function settingsIcon:DoClick()
+            settingsTab.Paint = function(s, w, h)
 
-        if Menu.ActiveTab == "Settings" then return end
+                surface.SetDrawColor(settingsBGColor)
+                surface.DrawRect(0, 0, w, h)
 
-        surface.PlaySound("ui/element_select.wav")
+                draw.SimpleTextOutlined(settingsText, "PuristaBold32", EFGM.MenuScale(43), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
-        if Menu.ActiveTab == "Match" then
+                if Menu.ActiveTab == "Settings" then
 
-            net.Start("RemovePlayerSquadRF")
-            net.SendToServer()
+                    surface.SetDrawColor(MenuAlias.whiteColor)
+                    surface.DrawRect(EFGM.MenuScale(2), EFGM.MenuScale(39), w - EFGM.MenuScale(2), EFGM.MenuScale(2))
 
-        end
+                end
 
-        Menu.MenuFrame.LowerPanel.Contents:AlphaTo(0, 0.05, 0, function()
+            end
 
-            Menu.MenuFrame.LowerPanel.Contents:Remove()
-            Menu.OpenTab.Settings()
-            Menu.ActiveTab = "Settings"
+            settingsIcon.OnCursorEntered = function(s)
 
-            Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, nil)
+                settingsTab:SizeTo(EFGM.MenuScale(46) + settingsTextSize, settingsTab:GetTall(), 0.15, 0, 0.5)
+                surface.PlaySound("ui/element_hover.wav")
 
-        end)
+            end
 
-    end
+            settingsIcon.OnCursorExited = function(s)
+
+                settingsTab:SizeTo(EFGM.MenuScale(38), settingsTab:GetTall(), 0.15, 0, 0.5)
+
+            end
+
+            function settingsIcon:DoClick()
+
+                if Menu.ActiveTab == "Settings" then return end
+
+                surface.PlaySound("ui/element_select.wav")
+
+                if Menu.ActiveTab == "Match" then
+
+                    net.Start("RemovePlayerSquadRF")
+                    net.SendToServer()
+
+                end
+
+                Menu.MenuFrame.LowerPanel.Contents:AlphaTo(0, 0.05, 0, function()
+
+                    Menu.MenuFrame.LowerPanel.Contents:Remove()
+                    Menu.OpenTab.Settings()
+                    Menu.ActiveTab = "Settings"
+
+                    Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, nil)
+
+                end)
+
+            end
+
+    -- TABS END
 
     -- if provided, open to the tab of the users choice
     if openTo != nil then
@@ -11078,6 +11109,422 @@ function Menu.OpenTab.Settings()
     invitePrivacy.OnSelect = function(self, value)
         RunConsoleCommand("efgm_privacy_invites", value - 1)
     end
+
+end
+
+function Menu.OpenTab.Tasks()
+
+    local contents = vgui.Create("DPanel", Menu.MenuFrame.LowerPanel)
+    contents:Dock(FILL)
+    contents:DockPadding(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10))
+    contents:SetAlpha(0)
+    contents.Paint = function(s, w, h)
+
+        surface.SetDrawColor(MenuAlias.transparent)
+        surface.DrawRect(0, 0, w, h)
+
+    end
+
+    -- Task List
+
+        local taskList = vgui.Create("DPanel", contents)
+        taskList:Dock(LEFT)
+        taskList:SetSize(EFGM.MenuScale(600), 0)
+        taskList.Paint = function(s, w, h)
+
+            BlurPanel(s, EFGM.MenuScale(10))
+
+            surface.SetDrawColor(Color(80, 80, 80, 10))
+            surface.DrawRect(0, 0, w, h)
+
+            surface.SetDrawColor(Color(255, 255, 255, 155))
+            surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
+
+        end
+
+        function DrawTaskList()
+
+            taskList:Clear()
+
+            local taskListHeader = vgui.Create("DPanel", taskList)
+            taskListHeader:Dock(TOP)
+            taskListHeader:SetSize(0, EFGM.MenuScale(40))
+            function taskListHeader:Paint(w, h)
+
+                surface.SetDrawColor(Color(155, 155, 155, 10))
+                surface.DrawRect(0, 0, w, h)
+
+                draw.SimpleTextOutlined("TASKS", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            end
+
+            local taskListScroller = vgui.Create("DScrollPanel", taskList)
+            taskListScroller:Dock(FILL)
+
+            if !table.IsEmpty(playerTasks) then
+                
+                for taskName, taskInstance in pairs(playerTasks) do
+
+                    local info = EFGMTASKS[taskName]
+
+                    local taskButton = taskListScroller:Add("DButton")
+                    taskButton:SetHeight(EFGM.MenuScale(110))
+                    taskButton:SetText( "" )	
+                    taskButton:Dock(TOP)
+                    taskButton:DockMargin(0, EFGM.MenuScale(6), 0, EFGM.MenuScale(6))
+
+                    function taskButton:Paint(w, h)
+
+                        surface.SetMaterial( info.uibackground or Material("taskbg/concrete/general.jpg", "smooth") )
+                        surface.SetDrawColor( Color(255, 255, 255, 255) )
+                        surface.DrawTexturedRect( 0, 0, w, h )
+
+                    end
+
+                    function taskButton:DoClick()
+
+                        DrawTaskDisplay(taskName)
+
+                    end
+
+                    local taskButtonHeader = vgui.Create("DPanel", taskButton)
+                    taskButtonHeader:Dock(TOP)
+                    taskButtonHeader:SetSize(0, EFGM.MenuScale(36))
+                    function taskButtonHeader:Paint(w, h)
+
+                        surface.SetDrawColor(Color(0, 0, 0, 155))
+                        surface.DrawRect(0, 0, w, h)
+
+                        surface.SetDrawColor(Color(255, 255, 255, 155))
+                        surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
+
+                        draw.SimpleTextOutlined(info.name, "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(7), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                        draw.SimpleTextOutlined("("..TASKSTATUSSTRING[playerTasks[taskName].status]..")", "PuristaBold24", w - EFGM.MenuScale(5), EFGM.MenuScale(7), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                    end
+                    
+                end
+
+            end
+        end
+
+        DrawTaskList()
+
+    -- Task Display
+
+        local taskDisplay = vgui.Create("DPanel", contents)
+        taskDisplay:Dock(RIGHT)
+        taskDisplay:SetSize(EFGM.MenuScale(1220), 0)
+        taskDisplay.Paint = function(s, w, h)
+
+            BlurPanel(s, EFGM.MenuScale(10))
+
+            surface.SetDrawColor(Color(80, 80, 80, 10))
+            surface.DrawRect(0, 0, w, h)
+
+            surface.SetDrawColor(Color(255, 255, 255, 155))
+            surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
+
+        end
+        taskDisplay:SetVisible(false)
+
+        function DrawTaskDisplay(taskName)
+
+            taskDisplay:Clear()
+            taskDisplay:SetVisible(true)
+
+            local taskInfo = EFGMTASKS[taskName]
+
+            local taskDisplayHeader = vgui.Create("DPanel", taskDisplay)
+            taskDisplayHeader:Dock(TOP)
+            taskDisplayHeader:SetSize(0, EFGM.MenuScale(40))
+            function taskDisplayHeader:Paint(w, h)
+
+                surface.SetDrawColor(Color(155, 155, 155, 10))
+                surface.DrawRect(0, 0, w, h)
+
+                draw.SimpleTextOutlined(string.upper( taskInfo.name ), "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            end
+
+            -- Accept / Decline Buttons
+
+                if playerTasks[taskName].status == TASKSTATUS.AcceptPending and ply:CompareStatus(0) then
+
+                    local buttonHolder = vgui.Create("DPanel", taskDisplay)
+                    buttonHolder:Dock(TOP)
+                    buttonHolder:SetHeight(EFGM.MenuScale(120))
+                    function buttonHolder:Paint(w, h) end
+
+                    local acceptButton = vgui.Create("DButton", buttonHolder)
+                    acceptButton:Dock(LEFT)
+                    acceptButton:DockMargin(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10))
+                    acceptButton:SetWidth(EFGM.MenuScale(590))
+                    acceptButton:SetText("")
+
+                    function acceptButton:Paint(w, h)
+
+                        surface.SetDrawColor(Color(155, 155, 155, 10))
+                        surface.DrawRect(0, 0, w, h)
+
+                        surface.SetDrawColor(Color(80, 80, 80, 255))
+                        surface.DrawOutlinedRect(0, 0, w, h, EFGM.MenuScale(5))
+
+                        draw.SimpleTextOutlined("Accept "..taskInfo.name, "PuristaBold50", w / 2, h / 2, MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
+
+                    end
+
+                    function acceptButton:DoClick()
+
+                        RunConsoleCommand("efgm_task_accept", taskName)
+                        RunConsoleCommand("efgm_task_requestall")
+                        taskDisplay:Clear()
+                        timer.Simple(0.1, function()
+                            DrawTaskDisplay(taskName)
+                            DrawTaskList()
+                        end)
+
+                    end
+
+
+                    local declineButton = vgui.Create("DButton", buttonHolder)
+                    declineButton:Dock(RIGHT)
+                    declineButton:DockMargin(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10))
+                    declineButton:SetWidth(EFGM.MenuScale(590))
+                    declineButton:SetText("")
+
+                    function declineButton:Paint(w, h)
+
+                        surface.SetDrawColor(Color(155, 155, 155, 10))
+                        surface.DrawRect(0, 0, w, h)
+
+                        surface.SetDrawColor(Color(80, 80, 80, 255))
+                        surface.DrawOutlinedRect(0, 0, w, h, EFGM.MenuScale(5))
+
+                        draw.SimpleTextOutlined("Decline "..taskInfo.name, "PuristaBold50", w / 2, h / 2, MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
+
+                    end
+
+                    function declineButton:DoClick()
+
+                        RunConsoleCommand("efgm_task_decline", taskName)
+                        RunConsoleCommand("efgm_task_requestall")
+                        taskDisplay:Clear()
+                        timer.Simple(0.1, function()
+                            DrawTaskDisplay(taskName)
+                            DrawTaskList()
+                        end)
+
+                    end
+                    
+                end
+
+            -- Complete button
+
+                if playerTasks[taskName].status == TASKSTATUS.CompletePending and ply:CompareStatus(0) then
+
+                    local completeButton = vgui.Create("DButton", taskDisplay)
+                    completeButton:Dock(TOP)
+                    completeButton:DockMargin(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10))
+                    completeButton:SetHeight(EFGM.MenuScale(120))
+                    completeButton:SetText("")
+
+                    function completeButton:Paint(w, h)
+
+                        surface.SetDrawColor(Color(155, 155, 155, 10))
+                        surface.DrawRect(0, 0, w, h)
+
+                        surface.SetDrawColor(Color(80, 80, 80, 255))
+                        surface.DrawOutlinedRect(0, 0, w, h, EFGM.MenuScale(5))
+
+                        draw.SimpleTextOutlined("Complete "..taskInfo.name, "PuristaBold50", w / 2, h / 2, MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
+
+                    end
+
+                    function completeButton:DoClick()
+
+                        RunConsoleCommand("efgm_task_complete", taskName)
+                        RunConsoleCommand("efgm_task_requestall")
+                        taskDisplay:Clear()
+                        timer.Simple(0.1, function()
+                            DrawTaskDisplay(taskName)
+                            DrawTaskList()
+                        end)
+
+                    end
+                    
+                end
+
+            -- Task Description
+
+                local messageMarkup = markup.Parse("<font=PuristaBold24>"..taskInfo.description.."</font>", EFGM.MenuScale(1100))
+
+                local messagePanel = vgui.Create("DPanel", taskDisplay)
+                messagePanel:Dock(TOP)
+                messagePanel:DockMargin(EFGM.MenuScale(25), EFGM.MenuScale(12), EFGM.MenuScale(25), EFGM.MenuScale(12))
+                messagePanel:SetSize(0, EFGM.MenuScale(200))
+
+                local messagePanelHeader = vgui.Create("DPanel", messagePanel)
+                messagePanelHeader:Dock(TOP)
+                messagePanelHeader:SetSize(0, EFGM.MenuScale(40))
+                function messagePanelHeader:Paint(w, h)
+
+                    surface.SetDrawColor(Color(155, 155, 155, 10))
+                    surface.DrawRect(0, 0, w, h)
+
+                    draw.SimpleTextOutlined("Incoming message from "..taskInfo.traderName, "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                end
+
+                local messageScroller = vgui.Create("DScrollPanel", messagePanel)
+                messageScroller:Dock(FILL)
+                messageScroller:DockMargin(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10))
+
+                local messageTextPanel = messageScroller:Add("DPanel")
+                messageTextPanel:SetSize(messageMarkup:GetWidth(), messageMarkup:GetHeight())
+                function messageTextPanel:Paint(w, h)
+
+                    messageMarkup:Draw(0, 0, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+
+                end
+
+            -- Task Objectives
+
+                local objectivePanel = vgui.Create("DPanel", taskDisplay)
+                objectivePanel:Dock(TOP)
+                objectivePanel:DockMargin(EFGM.MenuScale(25), EFGM.MenuScale(12), EFGM.MenuScale(25), EFGM.MenuScale(12))
+                objectivePanel:SetSize(0, EFGM.MenuScale(260))
+
+                local objectivePanelHeader = vgui.Create("DPanel", objectivePanel)
+                objectivePanelHeader:Dock(TOP)
+                objectivePanelHeader:SetSize(0, EFGM.MenuScale(40))
+                function objectivePanelHeader:Paint(w, h)
+
+                    surface.SetDrawColor(Color(155, 155, 155, 10))
+                    surface.DrawRect(0, 0, w, h)
+
+                    draw.SimpleTextOutlined("Objective(s)", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                end
+
+                local objectiveScroller = vgui.Create("DScrollPanel", objectivePanel)
+                objectiveScroller:Dock(FILL)
+                objectiveScroller:DockMargin(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10))
+
+                for objIndex, objType in ipairs(taskInfo.objectiveTypes) do
+                    
+                    local objective = objectiveScroller:Add("DPanel")
+                    objective:Dock(TOP)
+                    objective:DockMargin(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10))
+                    objective:SetSize(0, EFGM.MenuScale(40))
+                    function objective:Paint(w, h)
+
+                        surface.SetDrawColor(Color(155, 155, 155, 10))
+                        surface.DrawRect(0, 0, w, h)
+
+                        local objText = GetObjectiveText(taskInfo.objectives[objIndex], objType)
+
+                        draw.SimpleTextOutlined(objText, "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                        local curProgress, maxProgress = GetProgressNumbers(playerTasks[taskName].progress[objIndex], taskInfo.objectives[objIndex], objType)
+
+                        if playerTasks[taskName].status == TASKSTATUS.InProgress or playerTasks[taskName].status == TASKSTATUS.CompletePending then
+
+                            surface.SetDrawColor(Color(80, 80, 80, 255))
+                            surface.DrawRect((w*3/5), EFGM.MenuScale(5), math.Remap(curProgress, 0, maxProgress, 0, (w*2/5) - EFGM.MenuScale(120)), h - EFGM.MenuScale(10), EFGM.MenuScale(4))
+                        
+                            draw.SimpleTextOutlined(curProgress.."/"..maxProgress, "PuristaBold32", w - EFGM.MenuScale(110), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                        else
+
+                            draw.SimpleTextOutlined("0/"..maxProgress, "PuristaBold32", w - EFGM.MenuScale(110), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                        end
+
+                        surface.SetDrawColor(Color(155, 155, 155, 255))
+                        surface.DrawOutlinedRect((w*3/5), EFGM.MenuScale(5), (w*2/5) - EFGM.MenuScale(120), h - EFGM.MenuScale(10), EFGM.MenuScale(2))
+
+                    end
+
+                end
+
+        end
+
+    Menu.MenuFrame.LowerPanel.Contents = contents
+
+end
+
+function GetObjectiveText(obj, objType)
+
+    if objType == OBJECTIVE.Kill then
+        if obj[2] != nil then
+            return "Eliminate PMC's at "..MAPNAMES[obj[2]]
+        else
+            return "Eliminate PMC's across Garkov"
+        end
+    end
+
+
+    if objType == OBJECTIVE.Extract then
+        if obj[3] != nil then
+            return "Extract from "..MAPNAMES[obj[2]].." through "..obj[3]
+        elseif obj[2] != nil then
+            return "Extract from "..MAPNAMES[obj[2]]
+        else
+            return "Extract from any map"
+        end
+    end
+
+    if objType == OBJECTIVE.GiveItem then
+        if obj[3] != nil then
+            return "Hand over found in raid "..EFGMITEMS[obj[2]].displayName
+        else
+            return "Hand over "..EFGMITEMS[obj[2]].displayName
+        end
+        
+    end
+
+    if objType == OBJECTIVE.Pay then
+        if obj != 1 then
+            return "Pay "..obj.." roubles"
+        else
+            return "Pay a singular rouble..."
+        end
+    end
+
+    if objType == OBJECTIVE.QuestItem then
+        return "Retrieve "..EFGMQUESTITEM[obj].name
+    end
+    
+    return "Counting or not counting OBJECTIVE["..objType.."]?"
+
+end
+
+function GetProgressNumbers(progress, obj, objType)
+
+    if objType == OBJECTIVE.Kill then
+        return progress, obj[1]
+    end
+
+
+    if objType == OBJECTIVE.Extract then
+        return progress, obj[1]
+    end
+
+    if objType == OBJECTIVE.GiveItem then
+        return progress, obj[1]
+    end
+
+    if objType == OBJECTIVE.Pay then
+        return progress, obj
+    end
+
+    if objType == OBJECTIVE.QuestItem then
+        return progress, 1
+    end
+    
+    return "Counting or not counting OBJECTIVE["..objType.."]?"
 
 end
 
