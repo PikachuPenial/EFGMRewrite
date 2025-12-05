@@ -131,6 +131,10 @@
 
     input ChangeDisabledMessage(string) :   "Changes the disabled message. Good for extracts with multiple prerequisites ig. Maybe with like a train, it could be changed from 'route power to track' to 'wait for train'."
     
+    input InstantlyExtractPlayer(void)  :   "Pretty self explanatory imo."
+
+    input InstantlyExtractPlayeIgnoreDisabled(void)  :   "Pretty self explanatory imo."
+
     spawnflags(flags) =
     [
         // <flag value 2^i> : "Checkbox Display Text" : <0 for false on default, 1 for true>

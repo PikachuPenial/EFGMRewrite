@@ -117,6 +117,22 @@ function ENT:AcceptInput(name, ply, caller, data)
         if !ply:CompareStatus( 0 ) && ply:CompareSpawnGroup( self.ExtractGroup ) then self:StopExtract( ply ) end
     end
 
+    if name == "InstantlyExtractPlayer" and !self.IsDisabled and ply:IsPlayer() then
+        if ply:CompareStatus(0) or !ply:CompareSpawnGroup(self.ExtractGroup) then return end
+
+        if self.IsDisabled then
+            ply:PrintMessage( HUD_PRINTCENTER, self.DisabledMessage )
+        else
+            self:Extract(ply)
+        end
+    end
+
+    if name == "InstantlyExtractPlayeIgnoreDisabled" and ply:IsPlayer() then
+        if ply:CompareStatus(0) or !ply:CompareSpawnGroup(self.ExtractGroup) then return end
+
+        self:Extract(ply)
+    end
+
 end
 
 function ENT:StartExtract(ply)
