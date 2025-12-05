@@ -1,10 +1,10 @@
 
 TASKSTATUS = {}
-TASKSTATUS.Locked = 1
-TASKSTATUS.InProgress = 2
-TASKSTATUS.Complete = 3
-TASKSTATUS.Declined = 4 -- wouldnt it be funny if people could just opt out of the fucking task line lmao
-TASKSTATUS.AcceptPending = 5
+TASKSTATUS.InProgress = 1
+TASKSTATUS.Complete = 2
+TASKSTATUS.Declined = 3 -- wouldnt it be funny if people could just opt out of the fucking task line lmao
+TASKSTATUS.AcceptPending = 4
+TASKSTATUS.CompletePending = 5 -- for when the task is technically complete but player needs to claim they rewards
 
 TASK = {}
 

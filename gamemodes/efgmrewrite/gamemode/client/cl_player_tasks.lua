@@ -36,3 +36,13 @@ concommand.Add("efgm_task_accept", function(ply, cmd, args)
     net.SendToServer()
 
 end)
+
+concommand.Add("efgm_task_complete", function(ply, cmd, args)
+
+    local task = args[1]
+
+    net.Start("TaskTryComplete")
+    net.WriteString(task)
+    net.SendToServer()
+
+end)

@@ -2,6 +2,7 @@
 util.AddNetworkString("TaskPay")
 util.AddNetworkString("TaskGiveItem")
 util.AddNetworkString("TaskAccept")
+util.AddNetworkString("TaskTryComplete")
 
 -- Task shit
 
@@ -44,53 +45,16 @@ function CheckTaskCompletion(ply, taskName)
 
     if isProgressionComplete then
         
-        hook.Run("efgm_task_completion", ply, taskName)
+        hook.Run("efgm_task_"..TASKSTATUS.CompletePending, ply, taskName)
 
-        ply.tasks[taskName].status = TASKSTATUS.Complete
+        ply.tasks[taskName].status = TASKSTATUS.CompletePending
         print("Completed task "..info.name)
 
         UpdateTasks(ply)
 
         PrintTable(ply.tasks)
 
-        -- rewards here
-
-        for rewardIndex, rewardType in ipairs(info.rewardTypes) do
-
-            if rewardType == REWARD.PlayerStat && info.rewards[rewardIndex][2] == "Experience" then
-
-                local exp = info.rewards[rewardIndex][1]
-
-                print(exp)
-
-                ply:SetNWInt("Experience", ply:GetNWInt("Experience", 0) + exp)
-
-                local curExp = ply:GetNWInt("Experience")
-                local curLvl = ply:GetNWInt("Level")
-
-                while (curExp >= ply:GetNWInt("ExperienceToNextLevel")) do
-
-                    print(ply:GetNWInt("Level"))
-
-                    curExp = curExp - ply:GetNWInt("ExperienceToNextLevel")
-                    ply:SetNWInt("Level", curLvl + 1)
-                    ply:SetNWInt("Experience", curExp)
-
-                    for k, v in ipairs(levelArray) do
-
-                        if (curLvl + 1) == k then ply:SetNWInt("ExperienceToNextLevel", v) end
-
-                    end
-
-                end
-
-            elseif rewardType == REWARD.PlayerStat && info.rewards[rewardIndex][2] != "Experience" then
-
-                ply:SetNWInt(info.rewards[rewardIndex][2], ply:GetNWInt(info.rewards[rewardIndex][2]) + info.rewards[rewardIndex][1])
-
-            end
-            
-        end
+        ply:PrintMessage(HUD_PRINTTALK, "Task "..info.name.." finished, completion pending!")
 
     end
 
@@ -139,16 +103,61 @@ function AssignTask(ply, taskName, status, progress)
     if !table.IsEmpty( ply.tasks ) and ply.tasks[taskName] != nil then return end
 
     ply.tasks[taskName] = TASK.Instantiate(taskName, status, progress)
+    
+    ply:PrintMessage(HUD_PRINTTALK, "Task "..EFGMTASKS[taskName].name.." assigned!")
+
+end
+
+function CompleteTask(ply, taskName)
+
+    -- already verified that task is pending completion
+
+    info = EFGMTASKS[taskName]
+
+    for rewardIndex, rewardType in ipairs(info.rewardTypes) do
+
+        if rewardType == REWARD.PlayerStat && info.rewards[rewardIndex][2] == "Experience" then
+
+            local exp = info.rewards[rewardIndex][1]
+
+            print(exp)
+
+            ply:SetNWInt("Experience", ply:GetNWInt("Experience", 0) + exp)
+
+            local curExp = ply:GetNWInt("Experience")
+            local curLvl = ply:GetNWInt("Level")
+
+            while (curExp >= ply:GetNWInt("ExperienceToNextLevel")) do
+
+                print(ply:GetNWInt("Level"))
+
+                curExp = curExp - ply:GetNWInt("ExperienceToNextLevel")
+                ply:SetNWInt("Level", curLvl + 1)
+                ply:SetNWInt("Experience", curExp)
+
+                for k, v in ipairs(levelArray) do
+
+                    if (curLvl + 1) == k then ply:SetNWInt("ExperienceToNextLevel", v) end
+
+                end
+
+            end
+
+        elseif rewardType == REWARD.PlayerStat && info.rewards[rewardIndex][2] != "Experience" then
+
+            ply:SetNWInt(info.rewards[rewardIndex][2], ply:GetNWInt(info.rewards[rewardIndex][2]) + info.rewards[rewardIndex][1])
+
+        end
+            
+    end
+
+    ply:PrintMessage(HUD_PRINTTALK, "Completed task "..info.name.."!")
 
 end
 
 -- Progression hooks
 
-
-
-hook.Add("OnNPCKilled", "TaskKill", function(victim, attacker, inflictor)
-
-    -- PrintTable(attacker.tasks)
+hook.Add("PlayerDeath", "TaskKill", function(victim, inflictor, attacker)
 
     if victim:IsPlayer() then
 
@@ -321,6 +330,18 @@ net.Receive("TaskAccept", function(len, ply)
     if table.IsEmpty(ply.tasks) or ply.tasks[taskName] == nil or ply.tasks[taskName].status != TASKSTATUS.AcceptPending then return end
 
     ply.tasks[taskName].status = TASKSTATUS.InProgress
+    
+    ply:PrintMessage(HUD_PRINTTALK, "Task "..EFGMTASKS[taskName].name.." accepted!")
+
+end)
+
+net.Receive("TaskTryComplete", function(len, ply)
+
+    local taskName = net.ReadString()
+
+    if table.IsEmpty(ply.tasks) or ply.tasks[taskName] == nil or ply.tasks[taskName].status != TASKSTATUS.CompletePending then return end
+
+    CompleteTask(ply, taskName)
 
 end)
 
@@ -331,6 +352,40 @@ if GetConVar("efgm_derivesbox"):GetInt() == 1 then
     concommand.Add("efgm_debug_gettasks", function(ply, cmd, args)
         
         PrintTable(ply.tasks)
+
+    end)
+
+    hook.Add("OnNPCKilled", "TaskKill", function(victim, attacker, inflictor)
+
+        if victim:IsPlayer() then
+
+            victim.questItems = {}
+            
+        end
+
+        if !attacker:IsPlayer() or table.IsEmpty(ply.tasks) then return end
+
+        for taskName, taskInstance in pairs(attacker.tasks) do
+
+            if taskInstance.status == TASKSTATUS.InProgress then
+            
+                local info = EFGMTASKS[taskName]
+
+                for objIndex, objType in ipairs(info.objectiveTypes) do
+
+                    if objType == OBJECTIVE.Kill then
+                    
+                        attacker.tasks[taskName].progress[objIndex] = math.Clamp( taskInstance.progress[objIndex] + 1, 0, info.objectives[objIndex])
+
+                        CheckTaskCompletion(attacker, taskName)
+
+                    end
+                
+                end
+
+            end
+
+        end
 
     end)
 
