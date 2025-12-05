@@ -1421,6 +1421,10 @@ function Menu.InspectItem(item, data)
 
             wikiContentText:AppendText("LOOT WEIGHT: " .. i.lootWeight .. "%" .. "\n")
 
+        else
+
+            wikiContentText:AppendText("LOOT WEIGHT: 100%" .. "\n")
+
         end
 
         if i.canPurchase == true or i.canPurchase == nil then
