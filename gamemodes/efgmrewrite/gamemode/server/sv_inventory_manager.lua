@@ -1,5 +1,7 @@
 
 util.AddNetworkString("PlayerReinstantiateInventory")
+util.AddNetworkString("PlayerInventoryReload")
+util.AddNetworkString("PlayerSlotsReload")
 util.AddNetworkString("PlayerInventoryAddItem")
 util.AddNetworkString("PlayerInventoryUpdateItem")
 util.AddNetworkString("PlayerInventoryDeleteItem")
@@ -38,6 +40,20 @@ function ReinstantiateInventory(ply)
     if equMelee != nil then ply.weaponSlots[WEAPONSLOTS.MELEE.ID] = equMelee end
 
     CalculateInventoryWeight(ply)
+
+end
+
+function ReloadInventory(ply)
+
+    net.Start("PlayerInventoryReload", false)
+    net.Send(ply)
+
+end
+
+function ReloadSlots(ply)
+
+    net.Start("PlayerSlotsReload", false)
+    net.Send(ply)
 
 end
 
@@ -288,6 +304,8 @@ net.Receive("PlayerInventoryEquipItem", function(len, ply)
 
     end
 
+    ReloadInventory(ply)
+
 end)
 
 net.Receive("PlayerInventoryUnEquipItem", function(len, ply)
@@ -347,6 +365,8 @@ net.Receive("PlayerInventoryUnEquipItem", function(len, ply)
     net.WriteTable(item.data)
     net.WriteUInt(index, 16)
     net.Send(ply)
+
+    ReloadInventory(ply)
 
 end)
 
@@ -421,6 +441,8 @@ function UnequipAll(ply)
         end
 
     end
+
+    ReloadInventory(ply)
 
 end
 
@@ -499,6 +521,8 @@ function UnequipAllFirearms(ply)
         end
 
     end
+
+    ReloadInventory(ply)
 
 end
 
@@ -609,6 +633,8 @@ net.Receive("PlayerInventoryConsumeItem", function(len, ply)
 
     end
 
+    ReloadInventory(ply)
+
 end)
 
 net.Receive("PlayerInventoryLootItemFromContainer", function(len, ply)
@@ -629,6 +655,8 @@ net.Receive("PlayerInventoryLootItemFromContainer", function(len, ply)
     end
 
     FlowItemToInventory(ply, newItem.name, newItem.type, newItem.data)
+
+    ReloadInventory(ply)
 
     if !ply:CompareStatus(0) then
 
@@ -667,6 +695,8 @@ net.Receive("PlayerInventorySplit", function(len, ply)
         newNewData.count = count
         AddItemToInventory(ply, item, def.equipType, newNewData)
 
+        ReloadInventory(ply)
+
         return true
 
     elseif invType == "stash" then
@@ -679,9 +709,11 @@ net.Receive("PlayerInventorySplit", function(len, ply)
         newData.count = data.count - count
         UpdateItemFromStash(ply, key, newData)
 
-        local newNewData = table.Copy(data) -- fuck
+        local newNewData = table.Copy(data) -- fuckkkk
         newNewData.count = count
         AddItemToStash(ply, item, def.equipType, newNewData)
+
+        ReloadStash(ply)
 
         return true
 
@@ -710,6 +742,8 @@ net.Receive("PlayerInventoryDelete", function(len, ply)
         net.WriteUInt(key, 16)
         net.Send(ply)
 
+        ReloadInventory(ply)
+
         return true
 
     elseif invType == "stash" then
@@ -719,6 +753,8 @@ net.Receive("PlayerInventoryDelete", function(len, ply)
         net.Start("PlayerStashDeleteItem", false)
         net.WriteUInt(key, 16)
         net.Send(ply)
+
+        ReloadStash(ply)
 
         ply:SetNWInt("StashCount", #ply.stash)
 
@@ -765,6 +801,8 @@ net.Receive("PlayerInventoryTag", function(len, ply)
         net.WriteUInt(key, 16)
         net.Send(ply)
 
+        ReloadInventory(ply)
+
         return true
 
     elseif invType == "stash" then
@@ -777,6 +815,7 @@ net.Receive("PlayerInventoryTag", function(len, ply)
         net.WriteUInt(key, 16)
         net.Send(ply)
 
+        ReloadStash(ply)
         ply:SetNWInt("StashCount", #ply.stash)
 
         return true
@@ -1047,6 +1086,7 @@ if GetConVar("efgm_derivesbox"):GetInt() == 1 then
         data.count = count
 
         FlowItemToInventory(ply, ammo, EQUIPTYPE.Ammunition, data)
+        ReloadInventory(ply)
 
     end
     concommand.Add("efgm_debug_giveammo", function(ply, cmd, args) GiveAmmo(ply, args[1]) end)
@@ -1057,6 +1097,7 @@ if GetConVar("efgm_derivesbox"):GetInt() == 1 then
         local data = {}
 
         AddItemToInventory(ply, attachment, EQUIPTYPE.Attachment, data)
+        ReloadInventory(ply)
 
     end
     concommand.Add("efgm_debug_giveattachment", function(ply, cmd, args) GiveAttachment(ply) end)
@@ -1067,6 +1108,7 @@ if GetConVar("efgm_derivesbox"):GetInt() == 1 then
         data.count = count
 
         AddItemToInventory(ply, name, type, data)
+        ReloadInventory(ply)
 
     end
     concommand.Add("efgm_debug_giveitem", function(ply, cmd, args) GiveItem(ply, args[1], tonumber(args[2]), tonumber(args[3])) end)

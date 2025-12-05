@@ -58,6 +58,8 @@ function ENT:AcceptInput(name, ply, caller, data)
                 net.WriteUInt(keyWithLowestDura, 16)
                 net.Send(ply)
 
+                UpdateInventory(ply)
+
             else
 
                 net.Start("PlayerInventoryDeleteItem", false)
@@ -66,6 +68,7 @@ function ENT:AcceptInput(name, ply, caller, data)
 
                 table.remove(ply.inventory, keyWithLowestDura)
 
+                UpdateInventory(ply)
                 RemoveWeightFromPlayer(ply, item.name, item.data.count)
 
             end

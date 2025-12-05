@@ -31,7 +31,6 @@ net.Receive("PlayerStashAddItem", function(len, ply)
     index = net.ReadUInt(16)
 
     table.insert(playerStash, index, ITEM.Instantiate(name, type, data))
-    Menu.ReloadStash()
 
 end )
 
@@ -43,7 +42,6 @@ net.Receive("PlayerStashUpdateItem", function(len, ply)
     index = net.ReadUInt(16)
 
     playerStash[index].data = newData
-    Menu.ReloadStash()
 
 end )
 
@@ -54,8 +52,6 @@ net.Receive("PlayerStashDeleteItem", function(len, ply)
     index = net.ReadUInt(16)
 
     table.remove(playerStash, index)
-
-    Menu.ReloadStash()
 
 end )
 
@@ -69,9 +65,6 @@ function StashItemFromInventory(itemIndex)
     net.Start("PlayerStashAddItemFromInventory", false)
         net.WriteUInt(itemIndex, 16)
     net.SendToServer()
-
-    Menu.ReloadInventory()
-    Menu.ReloadStash()
 
 end
 
@@ -89,9 +82,6 @@ function StashItemFromEquipped(equipID, equipSlot)
         net.WriteUInt(equipID, 4)
         net.WriteUInt(equipSlot, 4)
     net.SendToServer()
-
-    Menu.ReloadSlots()
-    Menu.ReloadStash()
 
 end
 
@@ -112,9 +102,6 @@ function TakeFromStashToInventory(itemIndex)
     net.Start("PlayerStashTakeItemToInventory", false)
         net.WriteUInt(itemIndex, 16)
     net.SendToServer()
-
-    Menu.ReloadStash()
-    Menu.ReloadInventory()
 
 end
 
@@ -140,8 +127,6 @@ function EquipItemFromStash(itemIndex, equipSlot, primaryPref)
                 net.WriteUInt(1, 16)
             net.SendToServer()
 
-            Menu.ReloadSlots()
-
             return true
 
         else
@@ -153,8 +138,6 @@ function EquipItemFromStash(itemIndex, equipSlot, primaryPref)
                 net.WriteUInt(equipSlot, 4)
                 net.WriteUInt(2, 16)
             net.SendToServer()
-
-            Menu.ReloadSlots()
 
             return true
 
@@ -173,8 +156,6 @@ function EquipItemFromStash(itemIndex, equipSlot, primaryPref)
                     net.WriteUInt(equipSlot, 4)
                     net.WriteUInt(k, 16)
                 net.SendToServer()
-
-                Menu.ReloadSlots()
 
                 return true
 
@@ -195,7 +176,6 @@ function ConsumeItemFromStash(itemIndex)
     net.Start("PlayerStashConsumeItem", false)
     net.WriteUInt(itemIndex, 16)
     net.SendToServer()
-    Menu.ReloadStash()
 
 end
 
@@ -209,7 +189,5 @@ function PinItemFromStash(itemIndex)
     net.Start("PlayerStashPinItem", false)
         net.WriteUInt(itemIndex, 16)
     net.SendToServer()
-
-    Menu.ReloadStash()
 
 end

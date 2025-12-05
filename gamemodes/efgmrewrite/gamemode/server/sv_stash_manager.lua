@@ -1,4 +1,5 @@
 
+util.AddNetworkString("PlayerStashReload")
 util.AddNetworkString("PlayerStashAddItem")
 util.AddNetworkString("PlayerStashUpdateItem")
 util.AddNetworkString("PlayerStashDeleteItem")
@@ -9,6 +10,13 @@ util.AddNetworkString("PlayerStashTakeItemToInventory")
 util.AddNetworkString("PlayerStashEquipItem")
 util.AddNetworkString("PlayerStashConsumeItem")
 util.AddNetworkString("PlayerStashPinItem")
+
+function ReloadStash(ply)
+
+    net.Start("PlayerStashReload", false)
+    net.Send(ply)
+
+end
 
 function AddItemToStash(ply, name, type, data)
 
@@ -206,6 +214,9 @@ net.Receive("PlayerStashAddItemFromInventory", function(len, ply)
 
     FlowItemToStash(ply, item.name, item.type, item.data)
 
+    ReloadInventory(ply)
+    ReloadStash(ply)
+
     ply:SetNWInt("StashCount", #ply.stash)
 
 end)
@@ -257,13 +268,19 @@ net.Receive("PlayerStashAddItemFromEquipped", function(len, ply)
 
         end
 
+        ReloadInventory(ply)
+
     end
+
+    ReloadSlots(ply)
 
     ply:StripWeapon(item.name)
 
     RemoveWeightFromPlayer(ply, item.name, item.data.count)
 
     AddItemToStash(ply, item.name, item.type, item.data)
+
+    ReloadStash(ply)
 
 end)
 
@@ -285,9 +302,13 @@ net.Receive("PlayerStashAddAllFromInventory", function(len, ply)
         if item == nil then return end
 
         FlowItemToStash(ply, item.name, item.type, item.data)
+
         ply:SetNWInt("StashCount", #ply.stash)
 
     end
+
+    ReloadInventory(ply)
+    ReloadStash(ply)
 
 end)
 
@@ -302,6 +323,9 @@ net.Receive("PlayerStashTakeItemToInventory", function(len, ply)
     item.data.pin = nil
 
     FlowItemToInventory(ply, item.name, item.type, item.data)
+
+    ReloadStash(ply)
+    ReloadInventory(ply)
 
     ply:SetNWInt("StashCount", #ply.stash)
 
@@ -332,6 +356,9 @@ net.Receive("PlayerStashEquipItem", function(len, ply)
 
         equipWeaponName = item.name
         GiveWepWithPresetFromCode(ply, item.name, item.data.att)
+
+        ReloadStash(ply)
+        ReloadSlots(ply)
 
     end
 
@@ -378,6 +405,7 @@ net.Receive("PlayerStashConsumeItem", function(len, ply)
 
     end
 
+    ReloadStash(ply)
     ply:SetNWInt("StashCount", #ply.stash)
 
 end)
@@ -402,6 +430,8 @@ net.Receive("PlayerStashPinItem", function(len, ply)
     net.WriteTable(ply.stash[itemIndex].data)
     net.WriteUInt(itemIndex, 16)
     net.Send(ply)
+
+    ReloadStash(ply)
 
 end)
 

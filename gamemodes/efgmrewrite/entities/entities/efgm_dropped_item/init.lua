@@ -44,6 +44,7 @@ function ENT:Use(activator)
 
 	self:Remove()
     FlowItemToInventory(activator, self.ItemName, self.ItemType, self.ItemData)
+	ReloadInventory(activator)
 
 end
 

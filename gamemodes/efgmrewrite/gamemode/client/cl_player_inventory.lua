@@ -77,6 +77,18 @@ end
 
 net.Receive("PlayerReinstantiateInventory", function(len, ply) ReinstantiateInventory() end)
 
+net.Receive("PlayerInventoryReload", function(len, ply)
+
+    Menu.ReloadInventory()
+
+end )
+
+net.Receive("PlayerSlotsReload", function(len, ply)
+
+    Menu.ReloadSlots()
+
+end )
+
 net.Receive("PlayerInventoryAddItem", function(len, ply)
 
     local name, type, data, index
@@ -87,7 +99,6 @@ net.Receive("PlayerInventoryAddItem", function(len, ply)
     index = net.ReadUInt(16)
 
     table.insert(playerInventory, index, ITEM.Instantiate(name, type, data))
-    Menu.ReloadInventory()
 
 end )
 
@@ -99,7 +110,6 @@ net.Receive("PlayerInventoryUpdateItem", function(len, ply)
     index = net.ReadUInt(16)
 
     playerInventory[index].data = newData
-    Menu.ReloadInventory()
 
 end )
 
@@ -110,8 +120,6 @@ net.Receive("PlayerInventoryDeleteItem", function(len, ply)
     index = net.ReadUInt(16)
 
     table.remove(playerInventory, index)
-
-    Menu.ReloadInventory()
 
 end )
 
@@ -302,7 +310,6 @@ function ConsumeItemFromInventory(itemIndex)
     net.Start("PlayerInventoryConsumeItem", false)
     net.WriteUInt(itemIndex, 16)
     net.SendToServer()
-    Menu.ReloadInventory()
 
 end
 

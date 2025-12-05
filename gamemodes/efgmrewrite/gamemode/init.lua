@@ -405,6 +405,7 @@ hook.Add("PlayerCanPickupWeapon", "InventoryWeaponPickup", function(ply, wep)
 	if wepClass != tempEquipWeaponName then
 
 		AddItemToInventory(ply, wepClass, EQUIPTYPE.Weapon, data)
+		ReloadInventory(ply)
 
 		timer.Simple(0, function()
 

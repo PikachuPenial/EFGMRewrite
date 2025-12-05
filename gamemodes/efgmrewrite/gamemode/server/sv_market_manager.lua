@@ -62,6 +62,7 @@ net.Receive("PlayerMarketPurchaseItem", function(len, ply)
     end
 
     FlowItemToStash(ply, item, def.equipType, data)
+    ReloadStash(ply)
 
     ply:SetNWInt("Money", plyMoney - cost)
     ply:SetNWInt("MoneySpent", ply:GetNWInt("MoneySpent") + cost)
@@ -127,6 +128,7 @@ net.Receive("PlayerMarketPurchaseItemToInventory", function(len, ply)
     end
 
     FlowItemToInventory(ply, item, def.equipType, data)
+    ReloadInventory(ply)
 
     ply:SetNWInt("Money", plyMoney - cost)
     ply:SetNWInt("MoneySpent", ply:GetNWInt("MoneySpent") + cost)
@@ -168,6 +170,8 @@ net.Receive("PlayerMarketPurchasePresetToInventory", function(len, ply)
         FlowItemToInventory(ply, att, EQUIPTYPE.Attachment, data)
 
     end
+
+    ReloadInventory(ply)
 
     ply:SetNWInt("Money", plyMoney - cost)
     ply:SetNWInt("MoneySpent", ply:GetNWInt("MoneySpent") + cost)
@@ -212,6 +216,7 @@ net.Receive("PlayerMarketSellItem", function(len, ply)
         end
 
         DeleteItemFromStash(ply, key)
+        ReloadStash(ply)
 
         ply:SetNWInt("Money", plyMoney + cost)
         ply:SetNWInt("MoneyEarned", ply:GetNWInt("MoneyEarned") + cost)
@@ -223,6 +228,7 @@ net.Receive("PlayerMarketSellItem", function(len, ply)
         local cost = math.floor((def.value * sellMultiplier) * (data.durability / def.consumableValue))
 
         DeleteItemFromStash(ply, key)
+        ReloadStash(ply)
 
         ply:SetNWInt("Money", plyMoney + cost)
         return true
@@ -243,6 +249,8 @@ net.Receive("PlayerMarketSellItem", function(len, ply)
             UpdateItemFromStash(ply, key, newData)
 
         end
+
+        ReloadStash(ply)
 
         ply:SetNWInt("Money", plyMoney + cost)
         ply:SetNWInt("MoneyEarned", ply:GetNWInt("MoneyEarned") + cost)

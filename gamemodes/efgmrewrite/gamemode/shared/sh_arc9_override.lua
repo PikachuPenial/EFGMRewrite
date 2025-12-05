@@ -260,6 +260,7 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
                 end
 
                 MatchWithEquippedAndUpdate(client, self.ClassName, self.Attachments)
+                ReloadInventory(client)
 
             end
         end
@@ -394,6 +395,8 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
             end
         end
 
+        ReloadInventory(ply)
+
         return clip - lastclip
     end
 
@@ -403,6 +406,7 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
                 local data = {}
                 data.count = self:Clip1()
                 FlowItemToInventory(self:GetOwner(), self.Ammo, EQUIPTYPE.Ammunition, data)
+                ReloadInventory(client)
                 -- self:GetOwner():GiveAmmo(self:Clip1(), self.Ammo, true)
             end
         end
@@ -1922,13 +1926,15 @@ hook.Add("ARC9_PlayerGiveAtt", "ARC9GiveAtt", function(ply, att, amt)
 
     local data = {}
     data.count = amt
-    if SERVER then return FlowItemToInventory(ply, "arc9_att_" .. att, EQUIPTYPE.Attachment, data) end
+    if SERVER then FlowItemToInventory(ply, "arc9_att_" .. att, EQUIPTYPE.Attachment, data) ReloadInventory(ply) return end
 
 end)
 
 hook.Add("ARC9_PlayerTakeAtt", "ARC9TakeAtt", function(ply, att, amt)
 
-    return DeflowItemsFromInventory(ply, "arc9_att_" .. att, amt)
+    local i = DeflowItemsFromInventory(ply, "arc9_att_" .. att, amt)
+    ReloadInventory(ply)
+    return i
 
 end)
 

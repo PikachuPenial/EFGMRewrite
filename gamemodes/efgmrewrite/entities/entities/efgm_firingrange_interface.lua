@@ -37,6 +37,7 @@ function ENT:AcceptInput(name, ply, caller, data)
 
             end
 
+            ReloadInventory(ply)
             ply:SetNWBool("InRange", true)
 
         else
