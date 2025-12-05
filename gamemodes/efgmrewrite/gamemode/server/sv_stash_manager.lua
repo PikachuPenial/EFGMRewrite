@@ -14,7 +14,6 @@ function AddItemToStash(ply, name, type, data)
 
     local def = EFGMITEMS[name]
 
-    if data.count == 0 then return end -- dont add an item that doesnt exist lol!
     data.count = math.Clamp(tonumber(data.count) or 1, 1, def.stackSize)
 
     if def.equipType == EQUIPTYPE.Weapon and !data.owner then
@@ -78,8 +77,6 @@ function FlowItemToStash(ply, name, type, data)
     local def = EFGMITEMS[name]
     local stackSize = def.stackSize
 
-    if data.count == 0 then return end -- dont add an item that doesnt exist lol!
-
     if stackSize == 1 then -- items that can't stack do not need to flow
 
         for i = 1, data.count do
@@ -93,9 +90,9 @@ function FlowItemToStash(ply, name, type, data)
     end
 
     local amount = tonumber(data.count)
-    local inv = table.Copy(ply.stash)
+    local inv = {}
 
-    for k, v in ipairs(inv) do inv[k].id = k end
+    for k, v in ipairs(ply.stash) do inv[k].id = k end
 
     table.sort(inv, function(a, b) return a.data.count > b.data.count end)
 
@@ -152,9 +149,9 @@ end
 function DeflowItemsFromStash(ply, name, count)
 
     local amount = count
-    local inv = table.Copy(ply.stash)
+    local inv = {}
 
-    for k, v in ipairs(inv) do inv[k].id = k end
+    for k, v in ipairs(ply.stash) do inv[k].id = k end
 
     table.sort(inv, function(a, b) return a.data.count < b.data.count end)
 
@@ -231,11 +228,22 @@ net.Receive("PlayerStashAddItemFromEquipped", function(len, ply)
     if def.displayType != "Grenade" then
 
         local clip1 = wep:Clip1()
-        if clip1 != -1 and clip1 != 0 and ply:GetNWBool("InRange", false) == false then
+        local ammoDef = EFGMITEMS[wep.Ammo]
+        if clip1 > 0 and ply:GetNWBool("InRange", false) == false and ammoDef then
 
             local data = {}
-            data.count = wep:Clip1()
+            data.count = math.Clamp(wep:Clip1(), 1, ammoDef.stackSize)
             FlowItemToInventory(ply, wep.Ammo, EQUIPTYPE.Ammunition, data)
+
+        end
+
+        local clip2 = wep:Clip2()
+        local ammoDef2 = EFGMITEMS[wep.UBGLAmmo]
+        if clip2 > 0 and ply:GetNWBool("InRange", false) == false and ammoDef2 then
+
+            local data = {}
+            data.count = math.Clamp(wep:Clip2(), 1, ammoDef2.stackSize)
+            FlowItemToInventory(ply, wep.UBGLAmmo, EQUIPTYPE.Ammunition, data)
 
         end
 

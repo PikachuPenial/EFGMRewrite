@@ -7,7 +7,6 @@ util.AddNetworkString("PlayerMarketSellBulk")
 net.Receive("PlayerMarketPurchaseItem", function(len, ply)
 
     if !ply:CompareStatus(0) then return false end
-    if ply:GetNWInt("StashCount", 0) >= ply:GetNWInt("StashMax", 150) then return false end
 
     local item = net.ReadString()
     local count = net.ReadUInt(16)
@@ -25,12 +24,12 @@ net.Receive("PlayerMarketPurchaseItem", function(len, ply)
     if def.equipType == EQUIPTYPE.Weapon and def.defAtts then
 
         local atts = GetPrefixedAttachmentListFromCode(def.defAtts)
-        if !atts then return end
+        if !atts then continue end
 
         for _, a in ipairs(atts) do
 
             local att = EFGMITEMS[a]
-            if att == nil then return end
+            if att == nil then continue end
 
             cost = cost + att.value
 
@@ -91,12 +90,12 @@ net.Receive("PlayerMarketPurchaseItemToInventory", function(len, ply)
     if def.equipType == EQUIPTYPE.Weapon and def.defAtts then
 
         local atts = GetPrefixedAttachmentListFromCode(def.defAtts)
-        if !atts then return end
+        if !atts then continue end
 
         for _, a in ipairs(atts) do
 
             local att = EFGMITEMS[a]
-            if att == nil then return end
+            if att == nil then continue end
 
             cost = cost + att.value
 
@@ -203,12 +202,12 @@ net.Receive("PlayerMarketSellItem", function(len, ply)
         if data.att then
 
             local atts = GetPrefixedAttachmentListFromCode(data.att)
-            if !atts then return end
+            if !atts then continue end
 
             for _, a in ipairs(atts) do
 
                 local att = EFGMITEMS[a]
-                if att == nil then return end
+                if att == nil then continue end
 
                 cost = cost + math.floor(att.value * sellMultiplier)
 
@@ -289,12 +288,12 @@ net.Receive("PlayerMarketSellBulk", function(len, ply)
             if data.att then
 
                 local atts = GetPrefixedAttachmentListFromCode(data.att)
-                if !atts then return end
+                if !atts then continue end
 
                 for _, a in ipairs(atts) do
 
                     local att = EFGMITEMS[a]
-                    if att == nil then return end
+                    if att == nil then continue end
 
                     cost = cost + math.floor(att.value * sellMultiplier)
 

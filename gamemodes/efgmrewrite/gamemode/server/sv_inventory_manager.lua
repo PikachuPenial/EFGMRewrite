@@ -45,7 +45,6 @@ function AddItemToInventory(ply, name, type, data)
 
     local def = EFGMITEMS[name]
 
-    if data.count == 0 then return end -- dont add an item that doesnt exist lol!
     data.count = math.Clamp(tonumber(data.count) or 1, 1, def.stackSize)
 
     if def.equipType == EQUIPTYPE.Weapon and !data.owner then
@@ -119,12 +118,11 @@ function FlowItemToInventory(ply, name, type, data)
 
     local def = EFGMITEMS[name]
     local stackSize = def.stackSize
-
-    if data.count == 0 then return end -- dont add an item that doesnt exist lol!
+    local amount = tonumber(data.count)
 
     if stackSize == 1 then -- items that can't stack do not need to flow (but they do need to be created multiple times lol!)
 
-        for i = 1, data.count do
+        for i = 1, amount do
 
             AddItemToInventory(ply, name, type, data)
 
@@ -134,16 +132,15 @@ function FlowItemToInventory(ply, name, type, data)
 
     end
 
-    local amount = tonumber(data.count)
-    local inv = table.Copy(ply.inventory)
+    local inv = {}
 
-    for k, v in ipairs(inv) do inv[k].id = k end
+    for k, v in ipairs(ply.inventory) do inv[k].id = k end
 
     table.sort(inv, function(a, b) return a.data.count > b.data.count end)
 
     for k, v in ipairs(inv) do
 
-        if v.name == name and v.data.count != def.stackSize and amount > 0 then
+        if v.name == name and v.data.count != stackSize and amount > 0 then
 
             local countToMax = stackSize - v.data.count
 
@@ -194,9 +191,9 @@ end
 function DeflowItemsFromInventory(ply, name, count)
 
     local amount = count
-    local inv = table.Copy(ply.inventory)
+    local inv = {}
 
-    for k, v in ipairs(inv) do inv[k].id = k end
+    for k, v in ipairs(ply.inventory) do inv[k].id = k end
 
     table.sort(inv, function(a, b) return a.data.count < b.data.count end)
 
@@ -312,19 +309,21 @@ net.Receive("PlayerInventoryUnEquipItem", function(len, ply)
     if def.displayType != "Grenade" then
 
         local clip1 = wep:Clip1()
-        if clip1 != -1 and clip1 != 0 and ply:GetNWBool("InRange", false) == false then
+        local ammoDef = EFGMITEMS[wep.Ammo]
+        if clip1 > 0 and ply:GetNWBool("InRange", false) == false and ammoDef then
 
             local data = {}
-            data.count = wep:Clip1()
+            data.count = math.Clamp(wep:Clip1(), 1, ammoDef.stackSize)
             FlowItemToInventory(ply, wep.Ammo, EQUIPTYPE.Ammunition, data)
 
         end
 
         local clip2 = wep:Clip2()
-        if clip2 != -1 and clip2 != 0 and ply:GetNWBool("InRange", false) == false then
+        local ammoDef2 = EFGMITEMS[wep.UBGLAmmo]
+        if clip2 > 0 and ply:GetNWBool("InRange", false) == false and ammoDef2 then
 
             local data = {}
-            data.count = wep:Clip2()
+            data.count = math.Clamp(wep:Clip2(), 1, ammoDef2.stackSize)
             FlowItemToInventory(ply, wep.UBGLAmmo, EQUIPTYPE.Ammunition, data)
 
         end
@@ -378,19 +377,21 @@ function UnequipAll(ply)
                 if def.displayType != "Grenade" then
 
                     local clip1 = wep:Clip1()
-                    if clip1 != -1 and clip1 != 0 and ply:GetNWBool("InRange", false) == false then
+                    local ammoDef = EFGMITEMS[wep.Ammo]
+                    if clip1 > 0 and ply:GetNWBool("InRange", false) == false and ammoDef then
 
                         local data = {}
-                        data.count = wep:Clip1()
+                        data.count = math.Clamp(wep:Clip1(), 1, ammoDef.stackSize)
                         FlowItemToInventory(ply, wep.Ammo, EQUIPTYPE.Ammunition, data)
 
                     end
 
                     local clip2 = wep:Clip2()
-                    if clip2 != -1 and clip2 != 0 and ply:GetNWBool("InRange", false) == false then
+                    local ammoDef2 = EFGMITEMS[wep.UBGLAmmo]
+                    if clip2 > 0 and ply:GetNWBool("InRange", false) == false and ammoDef2 then
 
                         local data = {}
-                        data.count = wep:Clip2()
+                        data.count = math.Clamp(wep:Clip2(), 1, ammoDef2.stackSize)
                         FlowItemToInventory(ply, wep.UBGLAmmo, EQUIPTYPE.Ammunition, data)
 
                     end
@@ -459,19 +460,21 @@ function UnequipAllFirearms(ply)
                 if def.displayType != "Grenade" then
 
                     local clip1 = wep:Clip1()
-                    if clip1 != -1 and clip1 != 0 and ply:GetNWBool("InRange", false) == false then
+                    local ammoDef = EFGMITEMS[wep.Ammo]
+                    if clip1 > 0 and ply:GetNWBool("InRange", false) == false and ammoDef then
 
                         local data = {}
-                        data.count = wep:Clip1()
+                        data.count = math.Clamp(wep:Clip1(), 1, ammoDef.stackSize)
                         FlowItemToInventory(ply, wep.Ammo, EQUIPTYPE.Ammunition, data)
 
                     end
 
                     local clip2 = wep:Clip2()
-                    if clip2 != -1 and clip2 != 0 and ply:GetNWBool("InRange", false) == false then
+                    local ammoDef2 = EFGMITEMS[wep.UBGLAmmo]
+                    if clip2 > 0 and ply:GetNWBool("InRange", false) == false and ammoDef2 then
 
                         local data = {}
-                        data.count = wep:Clip2()
+                        data.count = math.Clamp(wep:Clip2(), 1, ammoDef2.stackSize)
                         FlowItemToInventory(ply, wep.UBGLAmmo, EQUIPTYPE.Ammunition, data)
 
                     end
@@ -587,7 +590,7 @@ net.Receive("PlayerInventoryConsumeItem", function(len, ply)
         ply:SetHealth(math.min(ply:Health() + healAmount, 100))
         ply:SetNWInt("HealthHealed", ply:GetNWInt("HealthHealed") + healAmount)
         ply:SetNWInt("RaidHealthHealed", ply:GetNWInt("RaidHealthHealed") + healAmount)
-        ply.inventory[itemIndex].data.durability = durability - healAmount
+        ply.inventory[itemIndex].data.durability = math.Clamp(durability - healAmount, 0, i.consumableValue)
 
         if ply.inventory[itemIndex].data.durability > 0 then
 
