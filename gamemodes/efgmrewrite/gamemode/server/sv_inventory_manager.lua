@@ -64,7 +64,6 @@ function AddItemToInventory(ply, name, type, data)
     net.Send(ply)
 
     AddWeightToPlayer(ply, name, data.count)
-    UpdateInventoryString(ply)
 
 end
 
@@ -90,8 +89,6 @@ function UpdateItemFromInventory(ply, index, data)
     net.WriteUInt(index, 16)
     net.Send(ply)
 
-    UpdateInventoryString(ply)
-
     return item
 
 end
@@ -107,8 +104,6 @@ function DeleteItemFromInventory(ply, index, isEquipped)
     net.Start("PlayerInventoryDeleteItem", false)
     net.WriteUInt(index, 16)
     net.Send(ply)
-
-    UpdateInventoryString(ply)
 
     return item
 
@@ -251,7 +246,6 @@ net.Receive("PlayerInventoryDropItem", function(len, ply)
 
     table.remove(ply.inventory, itemIndex)
     RemoveWeightFromPlayer(ply, item.name, item.data.count)
-    UpdateInventoryString(ply)
 
 end)
 
@@ -279,8 +273,6 @@ net.Receive("PlayerInventoryEquipItem", function(len, ply)
         GiveWepWithPresetFromCode(ply, item.name, item.data.att)
 
     end
-
-    UpdateEquippedString(ply)
 
 end)
 
@@ -341,9 +333,6 @@ net.Receive("PlayerInventoryUnEquipItem", function(len, ply)
     net.WriteTable(item.data)
     net.WriteUInt(index, 16)
     net.Send(ply)
-
-    UpdateInventoryString(ply)
-    UpdateEquippedString(ply)
 
 end)
 
@@ -418,9 +407,6 @@ function UnequipAll(ply)
         end
 
     end
-
-    UpdateInventoryString(ply)
-    UpdateEquippedString(ply)
 
 end
 
@@ -500,9 +486,6 @@ function UnequipAllFirearms(ply)
 
     end
 
-    UpdateInventoryString(ply)
-    UpdateEquippedString(ply)
-
 end
 
 function MatchWithEquippedAndUpdate(ply, itemName, attsTbl)
@@ -568,7 +551,6 @@ net.Receive("PlayerInventoryDropEquippedItem", function(len, ply)
     end
 
     RemoveWeightFromPlayer(ply, item.name, item.data.count)
-    UpdateEquippedString(ply)
 
 end)
 
@@ -612,8 +594,6 @@ net.Receive("PlayerInventoryConsumeItem", function(len, ply)
         end
 
     end
-
-    UpdateInventoryString(ply)
 
 end)
 
@@ -673,7 +653,6 @@ net.Receive("PlayerInventorySplit", function(len, ply)
         newNewData.count = count
         AddItemToInventory(ply, item, def.equipType, newNewData)
 
-        UpdateInventoryString(ply)
         return true
 
     elseif invType == "stash" then
@@ -690,7 +669,6 @@ net.Receive("PlayerInventorySplit", function(len, ply)
         newNewData.count = count
         AddItemToStash(ply, item, def.equipType, newNewData)
 
-        UpdateStashString(ply)
         return true
 
     end
@@ -718,8 +696,6 @@ net.Receive("PlayerInventoryDelete", function(len, ply)
         net.WriteUInt(key, 16)
         net.Send(ply)
 
-        UpdateInventoryString(ply)
-
         return true
 
     elseif invType == "stash" then
@@ -730,7 +706,6 @@ net.Receive("PlayerInventoryDelete", function(len, ply)
         net.WriteUInt(key, 16)
         net.Send(ply)
 
-        UpdateStashString(ply)
         ply:SetNWInt("StashCount", #ply.stash)
 
         return true
@@ -749,7 +724,6 @@ net.Receive("PlayerInventoryDelete", function(len, ply)
         net.Send(ply)
 
         RemoveWeightFromPlayer(ply, item.name, item.data.count)
-        UpdateEquippedString(ply)
 
         return true
 
@@ -777,8 +751,6 @@ net.Receive("PlayerInventoryTag", function(len, ply)
         net.WriteUInt(key, 16)
         net.Send(ply)
 
-        UpdateInventoryString(ply)
-
         return true
 
     elseif invType == "stash" then
@@ -791,7 +763,6 @@ net.Receive("PlayerInventoryTag", function(len, ply)
         net.WriteUInt(key, 16)
         net.Send(ply)
 
-        UpdateStashString(ply)
         ply:SetNWInt("StashCount", #ply.stash)
 
         return true
@@ -807,8 +778,6 @@ net.Receive("PlayerInventoryTag", function(len, ply)
         net.WriteUInt(equipSlot, 16)
         net.Send(ply)
 
-        UpdateEquippedString(ply)
-
         return true
 
     end
@@ -821,8 +790,6 @@ function ConsumeGrenade(ply)
 
     net.Start("PlayerInventoryConsumeGrenade", false)
     net.Send(ply)
-
-    UpdateEquippedString(ply)
 
 end
 

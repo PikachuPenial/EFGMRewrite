@@ -32,7 +32,6 @@ function AddItemToStash(ply, name, type, data)
     net.WriteUInt(index, 16)
     net.Send(ply)
 
-    UpdateStashString(ply)
     ply:SetNWInt("StashCount", #ply.stash)
 
 end
@@ -48,7 +47,6 @@ function UpdateItemFromStash(ply, index, data)
     net.WriteUInt(index, 16)
     net.Send(ply)
 
-    UpdateStashString(ply)
     ply:SetNWInt("StashCount", #ply.stash)
 
     return item
@@ -65,7 +63,6 @@ function DeleteItemFromStash(ply, index)
     net.WriteUInt(index, 16)
     net.Send(ply)
 
-    UpdateStashString(ply)
     ply:SetNWInt("StashCount", #ply.stash)
 
     return item
@@ -195,7 +192,6 @@ net.Receive("PlayerStashAddItemFromInventory", function(len, ply)
 
     FlowItemToStash(ply, item.name, item.type, item.data)
 
-    UpdateStashString(ply)
     ply:SetNWInt("StashCount", #ply.stash)
 
 end)
@@ -252,7 +248,6 @@ net.Receive("PlayerStashAddItemFromEquipped", function(len, ply)
     ply:StripWeapon(item.name)
 
     RemoveWeightFromPlayer(ply, item.name, item.data.count)
-    UpdateEquippedString(ply)
 
     AddItemToStash(ply, item.name, item.type, item.data)
 
@@ -280,8 +275,6 @@ net.Receive("PlayerStashAddAllFromInventory", function(len, ply)
 
     end
 
-    UpdateStashString(ply)
-
 end)
 
 net.Receive("PlayerStashTakeItemToInventory", function(len, ply)
@@ -296,7 +289,6 @@ net.Receive("PlayerStashTakeItemToInventory", function(len, ply)
 
     FlowItemToInventory(ply, item.name, item.type, item.data)
 
-    UpdateStashString(ply)
     ply:SetNWInt("StashCount", #ply.stash)
 
 end)
@@ -328,8 +320,6 @@ net.Receive("PlayerStashEquipItem", function(len, ply)
         GiveWepWithPresetFromCode(ply, item.name, item.data.att)
 
     end
-
-    UpdateEquippedString(ply)
 
 end)
 
@@ -374,7 +364,6 @@ net.Receive("PlayerStashConsumeItem", function(len, ply)
 
     end
 
-    UpdateStashString(ply)
     ply:SetNWInt("StashCount", #ply.stash)
 
 end)
@@ -399,8 +388,6 @@ net.Receive("PlayerStashPinItem", function(len, ply)
     net.WriteTable(ply.stash[itemIndex].data)
     net.WriteUInt(itemIndex, 16)
     net.Send(ply)
-
-    UpdateStashString(ply)
 
 end)
 

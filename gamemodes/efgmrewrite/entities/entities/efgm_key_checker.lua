@@ -70,8 +70,6 @@ function ENT:AcceptInput(name, ply, caller, data)
 
             end
 
-            UpdateInventoryString(ply)
-
             -- so opening a double door or something doesn't take up two uses
             self.PlayersUsed[ply:SteamID64()] = true
 

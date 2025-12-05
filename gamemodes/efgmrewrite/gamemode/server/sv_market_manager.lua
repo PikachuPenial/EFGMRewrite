@@ -62,7 +62,6 @@ net.Receive("PlayerMarketPurchaseItem", function(len, ply)
     end
 
     FlowItemToStash(ply, item, def.equipType, data)
-    UpdateStashString(ply)
 
     ply:SetNWInt("Money", plyMoney - cost)
     ply:SetNWInt("MoneySpent", ply:GetNWInt("MoneySpent") + cost)
@@ -128,7 +127,6 @@ net.Receive("PlayerMarketPurchaseItemToInventory", function(len, ply)
     end
 
     FlowItemToInventory(ply, item, def.equipType, data)
-    UpdateInventoryString(ply)
 
     ply:SetNWInt("Money", plyMoney - cost)
     ply:SetNWInt("MoneySpent", ply:GetNWInt("MoneySpent") + cost)
@@ -170,8 +168,6 @@ net.Receive("PlayerMarketPurchasePresetToInventory", function(len, ply)
         FlowItemToInventory(ply, att, EQUIPTYPE.Attachment, data)
 
     end
-
-    UpdateInventoryString(ply)
 
     ply:SetNWInt("Money", plyMoney - cost)
     ply:SetNWInt("MoneySpent", ply:GetNWInt("MoneySpent") + cost)
@@ -216,7 +212,6 @@ net.Receive("PlayerMarketSellItem", function(len, ply)
         end
 
         DeleteItemFromStash(ply, key)
-        UpdateStashString(ply)
 
         ply:SetNWInt("Money", plyMoney + cost)
         ply:SetNWInt("MoneyEarned", ply:GetNWInt("MoneyEarned") + cost)
@@ -228,7 +223,6 @@ net.Receive("PlayerMarketSellItem", function(len, ply)
         local cost = math.floor((def.value * sellMultiplier) * (data.durability / def.consumableValue))
 
         DeleteItemFromStash(ply, key)
-        UpdateStashString(ply)
 
         ply:SetNWInt("Money", plyMoney + cost)
         return true
@@ -249,8 +243,6 @@ net.Receive("PlayerMarketSellItem", function(len, ply)
             UpdateItemFromStash(ply, key, newData)
 
         end
-
-        UpdateStashString(ply)
 
         ply:SetNWInt("Money", plyMoney + cost)
         ply:SetNWInt("MoneyEarned", ply:GetNWInt("MoneyEarned") + cost)
@@ -333,8 +325,6 @@ net.Receive("PlayerMarketSellBulk", function(len, ply)
         end
 
     end
-
-    UpdateStashString(ply)
 
     ply:SetNWInt("Money", plyMoney + moneyToGive)
     ply:SetNWInt("MoneyEarned", ply:GetNWInt("MoneyEarned") + moneyToGive)
