@@ -435,6 +435,48 @@ net.Receive("PlayerStashPinItem", function(len, ply)
 
 end)
 
+function CalculateStashValue(ply)
+
+    local value = 0
+
+    for k, v in ipairs(ply.stash) do
+
+        local def = EFGMITEMS[v.name]
+        local count = math.Clamp(v.data.count, 1, def.stackSize) or 1
+
+        if def.consumableType != "heal" and def.consumableType != "key" then
+
+            value = value + (def.value * count)
+
+        else
+
+            value = value + math.floor(def.value * (v.data.durability / def.consumableValue))
+
+        end
+
+        if def.equipType == EQUIPTYPE.Weapon and v.data.att then
+
+            local atts = GetPrefixedAttachmentListFromCode(v.data.att)
+            if !atts then return end
+
+            for _, a in ipairs(atts) do
+
+                local att = EFGMITEMS[a]
+                if att == nil then return end
+
+                value = value + att.value
+
+            end
+
+        end
+
+    end
+
+    ply:SetNWInt("StashValue", value)
+    return value
+
+end
+
 function UpdateStashString(ply)
 
     local stashStr = util.TableToJSON(ply.stash)
