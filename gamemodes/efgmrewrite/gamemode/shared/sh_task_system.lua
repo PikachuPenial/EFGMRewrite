@@ -1,12 +1,18 @@
 
+TASKSTATUS = {}
+TASKSTATUS.Locked = 1
+TASKSTATUS.InProgress = 2
+TASKSTATUS.Complete = 3
+TASKSTATUS.Declined = 4 -- wouldnt it be funny if people could just opt out of the fucking task line lmao
+TASKSTATUS.AcceptPending = 5
+
 TASK = {}
 
-function TASK.Instantiate(name, progress)
+function TASK.Instantiate(name, status, progress)
 
     if name == nil then return nil end
 
     local task = {}
-    task.name = name
 
     local info = EFGMTASKS[name]
 
@@ -22,12 +28,13 @@ function TASK.Instantiate(name, progress)
 
         end
 
-        return task
+    else
+
+        task.progress = progress
 
     end
 
-
-    task.progress = progress
+    task.status = status or TASKSTATUS.AcceptPending
 
     return task
 

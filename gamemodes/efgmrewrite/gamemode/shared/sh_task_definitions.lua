@@ -1,4 +1,6 @@
 
+-- If requirements aren't set, task is unlocked at start
+-- Also, tasks are only unlocked if ALL requirements are met, this should change at some point
 REQUIREMENT = {}
 REQUIREMENT.Level = 1
 REQUIREMENT.QuestCompletion = 2
@@ -17,6 +19,7 @@ OBJECTIVE.Kill = 1
 OBJECTIVE.Extract = 2
 OBJECTIVE.GiveItem = 3
 OBJECTIVE.Pay = 4
+OBJECTIVE.QuestItem = 5
 
 EFGMTASKS = {}
 
@@ -32,15 +35,12 @@ EFGMTASKS["debut"] = {
         for you. Dismissed, soldier!]],
     traderName = "Prapor",
 
-    requirements = {REQUIREMENT.None},
-
+    -- Objectives and rewards work by having separate type tables. The main table sets the parameters, and the type sets how the parameters are used.
     objectiveTypes = {OBJECTIVE.Kill},
     objectives = {5},
 
     rewardTypes = { REWARD.Experience, REWARD.Money, REWARD.Item, REWARD.Item, REWARD.Item},
     rewards = {1700, 15000, ITEM.Instantiate("arc9_eft_pp1901", 1, {}), ITEM.Instantiate("arc9_eft_pp1901", 1, {}), ITEM.Instantiate("efgm_ammo_9x19", 2, {count = 60})},
-
-    nextTask = "luxlife"
 
 }
 
@@ -60,7 +60,8 @@ EFGMTASKS["luxlife"] = {
         to slip me some fake shit.]],
     traderName = "Prapor",
 
-    requirements = {REQUIREMENT.QuestCompletion},
+    requirementTypes = {REQUIREMENT.QuestCompletion},
+    requirements = {"debut"},
 
     objectiveTypes = {OBJECTIVE.Kill},
     objectives = {20},
@@ -75,12 +76,10 @@ EFGMTASKS["testTask"] = {
     name = "Test Task",
     description =
         [[Yo. Do some shit, idk.]],
-    traderName = "idk",
+    traderName = "Some shit, idk",
 
-    requirements = {REQUIREMENT.None},
-
-    objectiveTypes = {OBJECTIVE.Kill, OBJECTIVE.Extract, OBJECTIVE.GiveItem, OBJECTIVE.Pay},
-    objectives = {2, {1, "efgm_concrete_rw", "extract_helicopter"}, {1, "efgm_barter_tankbattery"}, 25000},
+    objectiveTypes = {OBJECTIVE.Kill, OBJECTIVE.Extract, OBJECTIVE.GiveItem, OBJECTIVE.Pay, OBJECTIVE.QuestItem},
+    objectives = {2, {1, "efgm_concrete_rw", "extract_helicopter"}, {1, "efgm_barter_tankbattery", true}, 25000, "briefcase"},
 
     rewardTypes = { REWARD.Experience, REWARD.Money, REWARD.Item, REWARD.Item, REWARD.Item},
     rewards = {1700, 15000, ITEM.Instantiate("arc9_eft_pp1901", 1, {}), ITEM.Instantiate("arc9_eft_pp1901", 1, {}), ITEM.Instantiate("efgm_ammo_9x19", 2, {count = 60})}

@@ -210,3 +210,20 @@
     displayName(string) : "Display Name" : "" : "Display name of the location. Will go on the map, one of these days"
 
 ]
+
+@PointClass base(Targetname) = efgm_quest_item : "Quest Item"
+[
+
+    // Key Values
+    quest_item(string) : "Quest Item" : "" : "Internal name of the item."
+
+    input Enable(void)           :   "Turns the item on"
+
+    input Disable(void)           :   "Turns the item off"
+
+    spawnflags(flags) =
+    [
+        1 : "Start Enabled" : 1
+    ]
+
+]

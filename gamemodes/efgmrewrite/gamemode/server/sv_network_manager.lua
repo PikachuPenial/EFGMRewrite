@@ -432,16 +432,9 @@ function SetupPlayerData(ply)
     -- tasks (WIP)
 
     ply.tasks = {}
+    ply.questItems = {}
 
-    for k, v in pairs(EFGMTASKS) do
-        
-        if v.requirements[1] == REQUIREMENT.None then
-
-            table.insert(ply.tasks, TASK.Instantiate(k))
-
-        end
-
-    end
+    UpdateTasks(ply)
 
     net.Start("PlayerNetworkStash", false)
     net.WriteString(stashString)

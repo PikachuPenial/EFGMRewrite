@@ -1,0 +1,7 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/efgm/quest_items/briefcase"
+	"$normalmap" "models/efgm/quest_items/briefcase_normal"
+	"$surfaceprop" "Metal"
+	"$model" 1
+}
