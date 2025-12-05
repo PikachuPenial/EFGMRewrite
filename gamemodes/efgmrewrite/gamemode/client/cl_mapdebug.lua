@@ -303,7 +303,7 @@ if GetConVar("efgm_derivesbox"):GetInt() == 1 then
                 local posY = v.pos.y * mapSizeY
                 surface.DrawCircle(posX, posY, (25 * mapSizeX) / 720  )
                 draw.DrawText( v.name, "DermaDefault", posX, posY - 8, Color(202, 20, 20, 240), TEXT_ALIGN_CENTER )
-                draw.DrawText( "Loot:" .. v.loot .. "/5", "DermaDefault", posX, posY + 8, Color(202, 20, 20, 240), TEXT_ALIGN_CENTER )
+                draw.DrawText( "Loot: " .. v.loot .. "/5", "DermaDefault", posX, posY + 8, Color(202, 20, 20, 240), TEXT_ALIGN_CENTER )
 
             end
 

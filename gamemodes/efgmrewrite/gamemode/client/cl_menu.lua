@@ -5133,7 +5133,15 @@ function Menu.ReloadStash()
 
         if itemSearch != "" and itemSearch != nil and !(string.find((i.fullName and i.fullName or i.displayName):lower(), itemSearch)) then continue end
 
-        stashValue = stashValue + (i.value * math.Clamp(v.data.count, 1, i.stackSize))
+        if i.consumableType != "heal" and i.consumableType != "key" then
+
+            stashValue = stashValue + (i.value * math.Clamp(v.data.count, 1, i.stackSize))
+
+        else
+
+            stashValue = stashValue + math.floor(i.value * (v.data.durability / i.consumableValue))
+
+        end
 
         local item = stashItems:Add("DButton")
         item:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
@@ -5610,8 +5618,19 @@ function Menu.ReloadMarketStash()
 
         if itemSearch != "" and itemSearch != nil and !(string.find((i.fullName and i.fullName or i.displayName):lower(), itemSearch)) then continue end
 
-        stashValue = stashValue + (i.value * math.Clamp(v.data.count, 1, i.stackSize))
-        local itemValue = math.floor(i.value * sellMultiplier) * math.Clamp(v.data.count, 1, i.stackSize)
+        local itemValue
+
+        if i.consumableType != "heal" and i.consumableType != "key" then
+
+            stashValue = stashValue + (i.value * math.Clamp(v.data.count, 1, i.stackSize))
+            itemValue = math.floor(i.value * sellMultiplier) * math.Clamp(v.data.count, 1, i.stackSize)
+
+        else
+
+            stashValue = stashValue + math.floor(i.value * (v.data.durability / i.consumableValue))
+            itemValue = math.floor((i.value * sellMultiplier) * (v.data.durability / i.consumableValue))
+
+        end
 
         local item = marketStashItems:Add("DButton")
         item:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))

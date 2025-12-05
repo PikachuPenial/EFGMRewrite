@@ -160,7 +160,7 @@ function PANEL:Paint(w, h)
             surface.DrawTexturedRect(posX - 32, posY - 32, 64, 64)
 
             draw.DrawText( v.name, "PuristaBold16", posX, posY - 48, Color(202, 20, 20, 240), TEXT_ALIGN_CENTER )
-            draw.DrawText( "Loot:" .. v.loot .. "/5", "PuristaBold16", posX, posY + 32, Color(202, 20, 20, 240), TEXT_ALIGN_CENTER )
+            draw.DrawText( "Loot: " .. v.loot .. "/5", "PuristaBold16", posX, posY + 32, Color(202, 20, 20, 240), TEXT_ALIGN_CENTER )
 
         end
 
