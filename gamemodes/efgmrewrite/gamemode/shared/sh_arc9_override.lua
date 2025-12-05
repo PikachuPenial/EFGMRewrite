@@ -395,7 +395,7 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
             end
         end
 
-        ReloadInventory(ply)
+        ReloadInventory(self:GetOwner())
 
         return clip - lastclip
     end
@@ -406,7 +406,7 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
                 local data = {}
                 data.count = self:Clip1()
                 FlowItemToInventory(self:GetOwner(), self.Ammo, EQUIPTYPE.Ammunition, data)
-                ReloadInventory(client)
+                ReloadInventory(self:GetOwner())
                 -- self:GetOwner():GiveAmmo(self:Clip1(), self.Ammo, true)
             end
         end

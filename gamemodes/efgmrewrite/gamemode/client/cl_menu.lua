@@ -1490,7 +1490,7 @@ function Menu.InspectItem(item, data)
 
             if firemodes then
 
-                str = ""
+                local str = ""
 
                 for k, v in pairs(firemodes) do
                     if v.PrintName then str = str .. v.PrintName .. ", "
@@ -6616,7 +6616,7 @@ function Menu.OpenTab.Inventory(container)
         local unloadButtonSize = unloadTextSize + EFGM.MenuScale(10)
 
         local unloadButton = vgui.Create("DButton", playerPanel)
-        unloadButton:SetPos(playerPanel:GetWide() - unloadTextSize - EFGM.MenuScale(15), EFGM.MenuScale(46))
+        unloadButton:SetPos(playerPanel:GetWide() - unloadTextSize - EFGM.MenuScale(20), EFGM.MenuScale(46))
         unloadButton:SetSize(unloadButtonSize, EFGM.MenuScale(28))
         unloadButton:SetText("")
         unloadButton.Paint = function(s, w, h)
@@ -9792,18 +9792,8 @@ function Menu.OpenTab.Stats()
 
     local importantStats = vgui.Create("DPanel", stats)
     importantStats:Dock(TOP)
-    importantStats:SetSize(0, EFGM.MenuScale(500))
+    importantStats:SetSize(0, EFGM.MenuScale(460))
     importantStats.Paint = function(s, w, h)
-
-        surface.SetDrawColor(MenuAlias.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
-
-    local playerInfo = vgui.Create("DPanel", contents)
-    playerInfo:Dock(TOP)
-    playerInfo:SetSize(0, EFGM.MenuScale(300))
-    playerInfo.Paint = function(s, w, h)
 
         surface.SetDrawColor(MenuAlias.transparent)
         surface.DrawRect(0, 0, w, h)
@@ -9851,12 +9841,117 @@ function Menu.OpenTab.Stats()
             surface.SetDrawColor(MenuAlias.transparent)
             surface.DrawRect(0, 0, w, h)
 
-            draw.SimpleTextOutlined(k .. "", "Purista18", 0, 0, MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-            draw.SimpleTextOutlined(math.Round(v), "Purista18", w, 0, MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            draw.SimpleTextOutlined(k .. "", "Purista18", EFGM.MenuScale(5), 0, MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            draw.SimpleTextOutlined(math.Round(v), "Purista18", w - EFGM.MenuScale(5), 0, MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
         end
 
     end
+
+    local selectedBoard
+    local selectedBoardName
+
+    local leaderboardTitle = vgui.Create("DPanel", stats)
+    leaderboardTitle:Dock(TOP)
+    leaderboardTitle:SetSize(0, EFGM.MenuScale(32))
+    function leaderboardTitle:Paint(w, h)
+
+        surface.SetDrawColor(MenuAlias.transparent)
+        surface.DrawRect(0, 0, w, h)
+
+        draw.SimpleTextOutlined("LEADERBOARDS", "PuristaBold32", w / 2, 0, MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    function selectBoard(text, data)
+
+        if selectedBoardName == text then return end
+
+        net.Start("GrabLeaderboardData")
+        net.WriteString(data)
+        net.SendToServer()
+
+        selectedBoardName = text
+
+    end
+
+    local leaderboardSelectButton = vgui.Create("DButton", stats)
+    leaderboardSelectButton:Dock(TOP)
+    leaderboardSelectButton:SetText("SELECT LEADERBOARD")
+
+    leaderboardSelectButton.OnCursorEntered = function(s)
+
+        surface.PlaySound("ui/element_hover.wav")
+
+    end
+
+    function leaderboardSelectButton:DoClick()
+
+        surface.PlaySound("ui/element_select.wav")
+
+        local boardSelection = DermaMenu()
+        boardSelection:AddOption("Level", function() selectBoard("Level", "Level") end)
+        boardSelection:AddOption("Money Earned", function() selectBoard("Money Earned", "MoneyEarned") end)
+        boardSelection:AddOption("Money Spent", function() selectBoard("Money Spent", "MoneySpent") end)
+        boardSelection:AddOption("Time Played", function() selectBoard("Time Played", "Time") end)
+        boardSelection:AddOption("Stash Value", function() selectBoard("Stash Value", "StashValue") end)
+        boardSelection:AddOption("Kills", function() selectBoard("Kills", "Kills") end)
+        boardSelection:AddOption("Deaths", function() selectBoard("Deaths", "Deaths") end)
+        boardSelection:AddOption("Damage Dealt", function() selectBoard("Damage Dealt", "DamageDealt") end)
+        boardSelection:AddOption("Damage Recieved", function() selectBoard("Damage Recieved", "DamageRecieved") end)
+        boardSelection:AddOption("Damage Healed", function() selectBoard("Damage Healed", "DamageHealed") end)
+        boardSelection:AddOption("Shots Fired", function() selectBoard("Shots Fired", "ShotsFired") end)
+        boardSelection:AddOption("Shots Hit", function() selectBoard("Shots Hit", "ShotsHit") end)
+        boardSelection:AddOption("Raids Played", function() selectBoard("Raids Played", "RaidsPlayed") end)
+        boardSelection:AddOption("Extractions", function() selectBoard("Extractions", "Extractions") end)
+
+        boardSelection:Open()
+
+    end
+
+    local yColor = Color(255, 255, 0, 255)
+    selectBoard("Stash Value", "StashValue")
+
+    local leaderboardContents = vgui.Create("DScrollPanel", stats)
+    leaderboardContents:Dock(TOP)
+    leaderboardContents:SetSize(0, EFGM.MenuScale(380))
+    leaderboardContents.Paint = function(s, w, h)
+
+        surface.SetDrawColor(MenuAlias.transparent)
+        surface.DrawRect(0, 0, w, h)
+
+        if selectedBoard == nil then return end
+
+        draw.SimpleTextOutlined(string.upper(selectedBoardName), "PuristaBold22", w / 2, EFGM.MenuScale(5), color, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        for k, v in ipairs(selectedBoard) do
+
+            local color = MenuAlias.whiteColor
+            if v.SteamName == Menu.Player:GetName() then color = yColor end
+            draw.SimpleTextOutlined(k, "Purista18", EFGM.MenuScale(5), EFGM.MenuScale(25) + ((k - 1) * EFGM.MenuScale(20)), color, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            draw.SimpleTextOutlined(string.sub(v.SteamName, 1, 21), "Purista18", EFGM.MenuScale(25), EFGM.MenuScale(25) + ((k - 1) * EFGM.MenuScale(20)), color, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            draw.SimpleTextOutlined(v.Value, "Purista18", w - EFGM.MenuScale(5), EFGM.MenuScale(25) + ((k - 1) * EFGM.MenuScale(20)), color, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+        end
+
+    end
+
+    net.Receive("SendLeaderboardData", function(len, ply)
+
+        local str = net.ReadString()
+
+        if !str then return end
+
+        str = util.Base64Decode(str)
+        str = util.Decompress(str)
+
+        if !str then return end
+
+        local tbl = util.JSONToTable(str)
+
+        selectedBoard = tbl
+
+    end )
 
 end
 

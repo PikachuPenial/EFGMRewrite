@@ -117,7 +117,7 @@ local function RenderPlayerStance(ply)
     local CrouchingAlpha = 0
 
     -- health check
-    if health <= maxHealth / 10 then
+    if health <= maxHealth / 4 then
         lowHealthAlpha = 255
         healthAlpha = 0
     end
@@ -1827,7 +1827,7 @@ function HUDInspectItem(item, data, panel)
 
             if firemodes then
 
-                str = ""
+                local str = ""
 
                 for k, v in pairs(firemodes) do
                     if v.PrintName then str = str .. v.PrintName .. ", "
