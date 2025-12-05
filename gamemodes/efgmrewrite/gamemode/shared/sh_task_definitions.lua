@@ -33,8 +33,8 @@ EFGMTASKS["debut"] = {
     traderName = "Prapor",
 
     -- Objectives and rewards work by having separate type tables. The main table sets the parameters, and the type sets how the parameters are used.
-    objectiveTypes = {OBJECTIVE.Kill},
-    objectives = {{5, "efgm_concrete_rw"}},
+    objectiveTypes = {OBJECTIVE.Kill, OBJECTIVE.GiveItem},
+    objectives = {{5, "efgm_concrete_rw"}, {2, "arc9_eft_mr133"}},
 
     rewardTypes = { REWARD.Experience, REWARD.Money, REWARD.Item, REWARD.Item, REWARD.Item},
     rewards = {

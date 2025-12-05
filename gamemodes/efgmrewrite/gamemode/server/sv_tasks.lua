@@ -103,7 +103,7 @@ function AssignTask(ply, taskName, status, progress)
 
     ply.tasks[taskName] = TASK.Instantiate(taskName, status, progress)
     
-    ply:PrintMessage(HUD_PRINTTALK, "Task "..EFGMTASKS[taskName].name.." assigned!")
+    -- ply:PrintMessage(HUD_PRINTTALK, "Task "..EFGMTASKS[taskName].name.." assigned!")
 
 end
 

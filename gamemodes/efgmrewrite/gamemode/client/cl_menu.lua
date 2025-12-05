@@ -11429,16 +11429,16 @@ function Menu.OpenTab.Tasks()
 
                         local curProgress, maxProgress = GetProgressNumbers(playerTasks[taskName].progress[objIndex], taskInfo.objectives[objIndex], objType)
 
-                        if playerTasks[taskName].status == TASKSTATUS.InProgress or playerTasks[taskName].status == TASKSTATUS.CompletePending then
+                        if playerTasks[taskName].status == TASKSTATUS.AcceptPending or playerTasks[taskName].status == TASKSTATUS.Declined then
+                            
+                            draw.SimpleTextOutlined("0/"..maxProgress, "PuristaBold32", w - EFGM.MenuScale(110), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                        
+                        else
 
                             surface.SetDrawColor(Color(80, 80, 80, 255))
                             surface.DrawRect((w*3/5), EFGM.MenuScale(5), math.Remap(curProgress, 0, maxProgress, 0, (w*2/5) - EFGM.MenuScale(120)), h - EFGM.MenuScale(10), EFGM.MenuScale(4))
                         
                             draw.SimpleTextOutlined(curProgress.."/"..maxProgress, "PuristaBold32", w - EFGM.MenuScale(110), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-                        else
-
-                            draw.SimpleTextOutlined("0/"..maxProgress, "PuristaBold32", w - EFGM.MenuScale(110), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
                         end
 
@@ -11478,9 +11478,9 @@ function GetObjectiveText(obj, objType)
 
     if objType == OBJECTIVE.GiveItem then
         if obj[3] != nil then
-            return "Hand over found in raid "..EFGMITEMS[obj[2]].displayName
+            return "Hand over found in raid "..EFGMITEMS[obj[2]].fullName
         else
-            return "Hand over "..EFGMITEMS[obj[2]].displayName
+            return "Hand over "..EFGMITEMS[obj[2]].fullName
         end
         
     end
