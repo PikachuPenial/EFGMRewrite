@@ -2,17 +2,14 @@
 -- If requirements aren't set, task is unlocked at start
 -- Also, tasks are only unlocked if ALL requirements are met, this should change at some point
 REQUIREMENT = {}
-REQUIREMENT.Level = 1
+REQUIREMENT.PlayerStat = 1 -- Only supports NWInt's rn
 REQUIREMENT.QuestCompletion = 2
 REQUIREMENT.ItemFound = 3
-REQUIREMENT.PlayerStat = 4
 
 REWARD = {}
-REWARD.Experience = 1
-REWARD.Money = 2
-REWARD.Item = 3
-REWARD.Skill = 4
-REWARD.MarketUnlock = 5
+REWARD.PlayerStat = 1
+REWARD.Item = 2
+REWARD.MarketUnlock = 3
 
 OBJECTIVE = {}
 OBJECTIVE.Kill = 1
@@ -71,7 +68,7 @@ EFGMTASKS["luxlife"] = {
 
 }
 
-EFGMTASKS["testTask"] = {
+EFGMTASKS["testtask"] = {
 
     name = "Test Task",
     description =
@@ -83,5 +80,23 @@ EFGMTASKS["testTask"] = {
 
     rewardTypes = { REWARD.Experience, REWARD.Money, REWARD.Item, REWARD.Item, REWARD.Item},
     rewards = {1700, 15000, ITEM.Instantiate("arc9_eft_pp1901", 1, {}), ITEM.Instantiate("arc9_eft_pp1901", 1, {}), ITEM.Instantiate("efgm_ammo_9x19", 2, {count = 60})}
+
+}
+
+EFGMTASKS["testreq"] = {
+
+    name = "Test Requirements",
+    description =
+        [[I FUCKING HATE DEBUGGING]],
+    traderName = "Prapornator",
+
+    requirementTypes = {REQUIREMENT.PlayerStat},
+    requirements = {{1, "Level"}},
+
+    objectiveTypes = {OBJECTIVE.Extract},
+    objectives = {{1}},
+
+    rewardTypes = { REWARD.PlayerStat},
+    rewards = {{10000, "Experience"}}
 
 }

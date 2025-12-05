@@ -39,8 +39,6 @@ function CheckTaskCompletion(ply, taskName)
             return
 
         end
-
-        -- TODO: Give rewards here
         
     end
 
@@ -54,6 +52,45 @@ function CheckTaskCompletion(ply, taskName)
         UpdateTasks(ply)
 
         PrintTable(ply.tasks)
+
+        -- rewards here
+
+        for rewardIndex, rewardType in ipairs(info.rewardTypes) do
+
+            if rewardType == REWARD.PlayerStat && info.rewards[rewardIndex][2] == "Experience" then
+
+                local exp = info.rewards[rewardIndex][1]
+
+                print(exp)
+
+                ply:SetNWInt("Experience", ply:GetNWInt("Experience", 0) + exp)
+
+                local curExp = ply:GetNWInt("Experience")
+                local curLvl = ply:GetNWInt("Level")
+
+                while (curExp >= ply:GetNWInt("ExperienceToNextLevel")) do
+
+                    print(ply:GetNWInt("Level"))
+
+                    curExp = curExp - ply:GetNWInt("ExperienceToNextLevel")
+                    ply:SetNWInt("Level", curLvl + 1)
+                    ply:SetNWInt("Experience", curExp)
+
+                    for k, v in ipairs(levelArray) do
+
+                        if (curLvl + 1) == k then ply:SetNWInt("ExperienceToNextLevel", v) end
+
+                    end
+
+                end
+
+            elseif rewardType == REWARD.PlayerStat && info.rewards[rewardIndex][2] != "Experience" then
+
+                ply:SetNWInt(info.rewards[rewardIndex][2], ply:GetNWInt(info.rewards[rewardIndex][2]) + info.rewards[rewardIndex][1])
+
+            end
+            
+        end
 
     end
 
@@ -76,7 +113,11 @@ function UpdateTasks(ply)
                 if reqType == REQUIREMENT.QuestCompletion and (table.IsEmpty(ply.tasks) or ply.tasks[taskInfo.requirements[reqIndex]] == nil or ply.tasks[taskInfo.requirements[reqIndex]].status != TASKSTATUS.Complete) then
 
                     doAssignTask = false
+
+                elseif reqType == REQUIREMENT.PlayerStat and ply:GetNWInt(taskInfo.requirements[reqIndex][2], 1) < taskInfo.requirements[reqIndex][1] then
                     
+                    doAssignTask = false
+
                 end
 
                 -- TODO: Other requirement types like skill
@@ -115,7 +156,7 @@ hook.Add("OnNPCKilled", "TaskKill", function(victim, attacker, inflictor)
         
     end
 
-    if !attacker:IsPlayer() then return end
+    if !attacker:IsPlayer() or table.IsEmpty(ply.tasks) then return end
 
     for taskName, taskInstance in pairs(attacker.tasks) do
 
@@ -144,6 +185,8 @@ end)
 hook.Add("PlayerExtraction", "TaskExtract", function(ply, extractTime, isGuranteed, internalName)
 
     -- PrintTable(ply.tasks)
+
+    if table.IsEmpty(ply.tasks) then return end
 
     for taskName, taskInstance in pairs(ply.tasks) do
 
@@ -283,8 +326,12 @@ end)
 
 -- Debugging
 
-concommand.Add("efgm_debug_gettasks", function(ply, cmd, args)
-    
-    PrintTable(ply.tasks)
+if GetConVar("efgm_derivesbox"):GetInt() == 1 then
 
-end)
+    concommand.Add("efgm_debug_gettasks", function(ply, cmd, args)
+        
+        PrintTable(ply.tasks)
+
+    end)
+
+end
