@@ -1765,7 +1765,7 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
     local transactionDestination = sendTo or Menu.PerferredShopDestination or "stash"
     Menu.PerferredShopDestination = transactionDestination
 
-    surface.PlaySound("ui/element_select.wav")
+    surface.PlaySound("ui/market_select.wav")
 
     confirmPanel = vgui.Create("DFrame", Menu.MenuFrame)
     confirmPanel:SetSize(confirmTextSize + EFGM.MenuScale(10), confirmPanelHeight)
@@ -3158,7 +3158,7 @@ function Menu.ReloadInventory()
 
             if input.IsKeyDown(KEY_LALT) and (i.equipType == EQUIPTYPE.Weapon) then
 
-                surface.PlaySound("ui/element_select.wav")
+                surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
                 EquipItemFromInventory(v.id, i.equipSlot)
 
             end
@@ -3175,7 +3175,7 @@ function Menu.ReloadInventory()
         function item:DoRightClick()
 
             local x, y = itemsHolder:LocalCursorPos()
-            surface.PlaySound("ui/element_hover.wav")
+            surface.PlaySound("ui/context.wav")
 
             if x <= (itemsHolder:GetWide() / 2) then sideH = true else sideH = false end
             if y <= (itemsHolder:GetTall() / 2) then sideV = true else sideV = false end
@@ -3301,7 +3301,7 @@ function Menu.ReloadInventory()
 
                 function itemEquipButton:DoClick()
 
-                    surface.PlaySound("ui/element_select.wav")
+                    surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
                     contextMenu:Remove()
 
                     EquipItemFromInventory(v.id, i.equipSlot)
@@ -3590,7 +3590,7 @@ function Menu.ReloadSlots()
 
             if input.IsKeyDown(KEY_LSHIFT) then
 
-                surface.PlaySound("ui/element_select.wav")
+                surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
                 UnEquipItemFromInventory(primaryItem.SLOTID, primaryItem.SLOT)
 
             end
@@ -3607,14 +3607,14 @@ function Menu.ReloadSlots()
         function primaryItem:DoRightClick()
 
             local x, y = equipmentHolder:LocalCursorPos()
-            surface.PlaySound("ui/element_hover.wav")
+            surface.PlaySound("ui/context.wav")
 
             if x <= (equipmentHolder:GetWide() / 2) then sideH = true else sideH = false end
             if y <= (equipmentHolder:GetTall() / 2) then sideV = true else sideV = false end
 
             if IsValid(contextMenu) then contextMenu:Remove() end
             contextMenu = vgui.Create("DPanel", equipmentHolder)
-            contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(85))
+            contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(110))
             contextMenu:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
             contextMenu:SetAlpha(0)
             contextMenu:AlphaTo(255, 0.1, 0, nil)
@@ -3710,9 +3710,9 @@ function Menu.ReloadSlots()
 
             function itemUnequipButton:DoClick()
 
+                surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
                 UnEquipItemFromInventory(primaryItem.SLOTID, primaryItem.SLOT)
 
-                surface.PlaySound("ui/element_select.wav")
                 contextMenu:KillFocus()
 
             end
@@ -3947,7 +3947,7 @@ function Menu.ReloadSlots()
 
             if input.IsKeyDown(KEY_LSHIFT) then
 
-                surface.PlaySound("ui/element_select.wav")
+                surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
                 UnEquipItemFromInventory(secondaryItem.SLOTID, secondaryItem.SLOT)
 
             end
@@ -3957,14 +3957,14 @@ function Menu.ReloadSlots()
         function secondaryItem:DoRightClick()
 
             local x, y = equipmentHolder:LocalCursorPos()
-            surface.PlaySound("ui/element_hover.wav")
+            surface.PlaySound("ui/context.wav")
 
             if x <= (equipmentHolder:GetWide() / 2) then sideH = true else sideH = false end
             if y <= (equipmentHolder:GetTall() / 2) then sideV = true else sideV = false end
 
             if IsValid(contextMenu) then contextMenu:Remove() end
             contextMenu = vgui.Create("DPanel", equipmentHolder)
-            contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(85))
+            contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(110))
             contextMenu:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
             contextMenu:SetAlpha(0)
             contextMenu:AlphaTo(255, 0.1, 0, nil)
@@ -4060,9 +4060,8 @@ function Menu.ReloadSlots()
 
             function itemUnequipButton:DoClick()
 
+                surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
                 UnEquipItemFromInventory(secondaryItem.SLOTID, secondaryItem.SLOT)
-
-                surface.PlaySound("ui/element_select.wav")
                 contextMenu:KillFocus()
 
             end
@@ -4291,7 +4290,7 @@ function Menu.ReloadSlots()
 
             if input.IsKeyDown(KEY_LSHIFT) then
 
-                surface.PlaySound("ui/element_select.wav")
+                surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
                 UnEquipItemFromInventory(holsterItem.SLOTID, holsterItem.SLOT)
 
             end
@@ -4308,14 +4307,14 @@ function Menu.ReloadSlots()
         function holsterItem:DoRightClick()
 
             local x, y = equipmentHolder:LocalCursorPos()
-            surface.PlaySound("ui/element_hover.wav")
+            surface.PlaySound("ui/context.wav")
 
             if x <= (equipmentHolder:GetWide() / 2) then sideH = true else sideH = false end
             if y <= (equipmentHolder:GetTall() / 2) then sideV = true else sideV = false end
 
             if IsValid(contextMenu) then contextMenu:Remove() end
             contextMenu = vgui.Create("DPanel", equipmentHolder)
-            contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(85))
+            contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(110))
             contextMenu:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
             contextMenu:SetAlpha(0)
             contextMenu:AlphaTo(255, 0.1, 0, nil)
@@ -4411,9 +4410,8 @@ function Menu.ReloadSlots()
 
             function itemUnequipButton:DoClick()
 
+                surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
                 UnEquipItemFromInventory(holsterItem.SLOTID, holsterItem.SLOT)
-
-                surface.PlaySound("ui/element_select.wav")
                 contextMenu:KillFocus()
 
             end
@@ -4605,7 +4603,7 @@ function Menu.ReloadSlots()
 
             if input.IsKeyDown(KEY_LSHIFT) then
 
-                surface.PlaySound("ui/element_select.wav")
+                surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
                 UnEquipItemFromInventory(meleeItem.SLOTID, meleeItem.SLOT)
 
             end
@@ -4622,14 +4620,14 @@ function Menu.ReloadSlots()
         function meleeItem:DoRightClick()
 
             local x, y = equipmentHolder:LocalCursorPos()
-            surface.PlaySound("ui/element_hover.wav")
+            surface.PlaySound("ui/context.wav")
 
             if x <= (equipmentHolder:GetWide() / 2) then sideH = true else sideH = false end
             if y <= (equipmentHolder:GetTall() / 2) then sideV = true else sideV = false end
 
             if IsValid(contextMenu) then contextMenu:Remove() end
             contextMenu = vgui.Create("DPanel", equipmentHolder)
-            contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(85))
+            contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(110))
             contextMenu:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
             contextMenu:SetAlpha(0)
             contextMenu:AlphaTo(255, 0.1, 0, nil)
@@ -4725,9 +4723,9 @@ function Menu.ReloadSlots()
 
             function itemUnequipButton:DoClick()
 
+                surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
                 UnEquipItemFromInventory(meleeItem.SLOTID, meleeItem.SLOT)
 
-                surface.PlaySound("ui/element_select.wav")
                 contextMenu:KillFocus()
 
             end
@@ -4885,7 +4883,7 @@ function Menu.ReloadSlots()
 
             if input.IsKeyDown(KEY_LSHIFT) then
 
-                surface.PlaySound("ui/element_select.wav")
+                surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
                 UnEquipItemFromInventory(nadeItem.SLOTID, nadeItem.SLOT)
 
             end
@@ -4902,14 +4900,14 @@ function Menu.ReloadSlots()
         function nadeItem:DoRightClick()
 
             local x, y = equipmentHolder:LocalCursorPos()
-            surface.PlaySound("ui/element_hover.wav")
+            surface.PlaySound("ui/context.wav")
 
             if x <= (equipmentHolder:GetWide() / 2) then sideH = true else sideH = false end
             if y <= (equipmentHolder:GetTall() / 2) then sideV = true else sideV = false end
 
             if IsValid(contextMenu) then contextMenu:Remove() end
             contextMenu = vgui.Create("DPanel", equipmentHolder)
-            contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(85))
+            contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(110))
             contextMenu:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
             contextMenu:SetAlpha(0)
             contextMenu:AlphaTo(255, 0.1, 0, nil)
@@ -5005,9 +5003,9 @@ function Menu.ReloadSlots()
 
             function itemUnequipButton:DoClick()
 
+                surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
                 UnEquipItemFromInventory(nadeItem.SLOTID, nadeItem.SLOT)
 
-                surface.PlaySound("ui/element_select.wav")
                 contextMenu:KillFocus()
 
             end
@@ -5301,7 +5299,7 @@ function Menu.ReloadStash()
 
             if input.IsKeyDown(KEY_LALT) and (i.equipType == EQUIPTYPE.Weapon) then
 
-                surface.PlaySound("ui/element_select.wav")
+                surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
                 EquipItemFromStash(v.id, i.equipSlot)
 
             end
@@ -5318,7 +5316,7 @@ function Menu.ReloadStash()
         function item:DoRightClick()
 
             local x, y = stashHolder:LocalCursorPos()
-            surface.PlaySound("ui/element_hover.wav")
+            surface.PlaySound("ui/context.wav")
 
             if x <= (stashHolder:GetWide() / 2) then sideH = true else sideH = false end
             if y <= (stashHolder:GetTall() / 2) then sideV = true else sideV = false end
@@ -5432,7 +5430,7 @@ function Menu.ReloadStash()
 
                 function itemEquipButton:DoClick()
 
-                    surface.PlaySound("ui/element_select.wav")
+                    surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
                     EquipItemFromStash(v.id, i.equipSlot)
                     contextMenu:Remove()
 
@@ -5795,7 +5793,7 @@ function Menu.ReloadMarketStash()
         function item:DoRightClick()
 
             local x, y = marketStashHolder:LocalCursorPos()
-            surface.PlaySound("ui/element_hover.wav")
+            surface.PlaySound("ui/context.wav")
 
             if x <= (marketStashHolder:GetWide() / 2) then sideH = true else sideH = false end
             if y <= (marketStashHolder:GetTall() / 2) then sideV = true else sideV = false end
@@ -6061,7 +6059,7 @@ function Menu.ReloadContainer()
         function item:DoRightClick()
 
             local x, y = containerHolder:LocalCursorPos()
-            surface.PlaySound("ui/element_hover.wav")
+            surface.PlaySound("ui/context.wav")
 
             if x <= (containerHolder:GetWide() / 2) then sideH = true else sideH = false end
             if y <= (containerHolder:GetTall() / 2) then sideV = true else sideV = false end
@@ -6502,14 +6500,14 @@ function Menu.OpenTab.Inventory(container)
 
         if panels[1].ORIGIN == "inventory" then
 
-            surface.PlaySound("ui/element_select.wav")
+            surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
             EquipItemFromInventory(panels[1].ID, panels[1].SLOT, 2)
 
         end
 
         if panels[1].ORIGIN == "stash" then
 
-            surface.PlaySound("ui/element_select.wav")
+            surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
             EquipItemFromStash(panels[1].ID, panels[1].SLOT, 2)
 
         end
@@ -6523,14 +6521,14 @@ function Menu.OpenTab.Inventory(container)
 
         if panels[1].ORIGIN == "inventory" then
 
-            surface.PlaySound("ui/element_select.wav")
+            surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
             EquipItemFromInventory(panels[1].ID, panels[1].SLOT, 1)
 
         end
 
         if panels[1].ORIGIN == "stash" then
 
-            surface.PlaySound("ui/element_select.wav")
+            surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
             EquipItemFromStash(panels[1].ID, panels[1].SLOT, 1)
 
         end
@@ -6544,14 +6542,14 @@ function Menu.OpenTab.Inventory(container)
 
         if panels[1].ORIGIN == "inventory" then
 
-            surface.PlaySound("ui/element_select.wav")
+            surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
             EquipItemFromInventory(panels[1].ID, panels[1].SLOT)
 
         end
 
         if panels[1].ORIGIN == "stash" then
 
-            surface.PlaySound("ui/element_select.wav")
+            surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
             EquipItemFromStash(panels[1].ID, panels[1].SLOT)
 
         end
@@ -6565,14 +6563,14 @@ function Menu.OpenTab.Inventory(container)
 
         if panels[1].ORIGIN == "inventory" then
 
-            surface.PlaySound("ui/element_select.wav")
+            surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
             EquipItemFromInventory(panels[1].ID, panels[1].SLOT)
 
         end
 
         if panels[1].ORIGIN == "stash" then
 
-            surface.PlaySound("ui/element_select.wav")
+            surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
             EquipItemFromStash(panels[1].ID, panels[1].SLOT)
 
         end
@@ -6586,14 +6584,14 @@ function Menu.OpenTab.Inventory(container)
 
         if panels[1].ORIGIN == "inventory" then
 
-            surface.PlaySound("ui/element_select.wav")
+            surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
             EquipItemFromInventory(panels[1].ID, panels[1].SLOT)
 
         end
 
         if panels[1].ORIGIN == "stash" then
 
-            surface.PlaySound("ui/element_select.wav")
+            surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
             EquipItemFromStash(panels[1].ID, panels[1].SLOT)
 
         end
@@ -6896,6 +6894,7 @@ function Menu.OpenTab.Inventory(container)
             searchBox:SetValue("")
             itemSearchText = ""
             searchOpen = false
+            Menu.ReloadInventory()
 
         end
 
@@ -6933,7 +6932,7 @@ function Menu.OpenTab.Inventory(container)
 
         if panels[1].ORIGIN == "equipped" then
 
-            surface.PlaySound("ui/element_select.wav")
+            surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
             UnEquipItemFromInventory(panels[1].SLOTID, panels[1].SLOT)
 
         end
@@ -7229,6 +7228,7 @@ function Menu.OpenTab.Inventory(container)
             stashSearchBox:SetValue("")
             stashItemSearchText = ""
             stashSearchOpen = false
+            Menu.ReloadStash()
 
         end
 
@@ -7458,7 +7458,6 @@ function Menu.OpenTab.Market()
             marketStashSearchBox:SetValue("")
             marketStashItemSearchText = ""
             marketStashSearchOpen = false
-
             Menu.ReloadStash()
 
         end
@@ -7985,7 +7984,7 @@ function Menu.OpenTab.Market()
                 function item:DoRightClick()
 
                     local x, y = marketItemHolder:LocalCursorPos()
-                    surface.PlaySound("ui/element_hover.wav")
+                    surface.PlaySound("ui/context.wav")
 
                     if x <= (marketItemHolder:GetWide() / 2) then sideH = true else sideH = false end
                     if y <= (marketItemHolder:GetTall() / 2) then sideV = true else sideV = false end

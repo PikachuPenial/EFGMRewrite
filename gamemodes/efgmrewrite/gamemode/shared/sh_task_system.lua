@@ -30,7 +30,7 @@ function TASK.Instantiate(name, status, progress)
     if progress == nil then
 
         for k, v in ipairs(info.objectives) do
-        
+
             task.progress[k] = 0
 
         end

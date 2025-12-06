@@ -1,5 +1,5 @@
 -- variables
-respawnTime = 5
+respawnTime = 7
 underweightLimit = 30
 
 -- weapon arrays for gameplay testing purposes

@@ -438,6 +438,8 @@ net.Receive("CreateDeathInformation", function()
 
     hook.Run("efgm_raid_exit", false)
 
+    surface.PlaySound("death_heartbeat.wav")
+
     local xpMult = net.ReadFloat()
 
     local timeInRaid = net.ReadInt(16)
@@ -546,7 +548,7 @@ net.Receive("CreateDeathInformation", function()
         end
 
         DeathPopup:AlphaTo(255, 0.2, 0, nil)
-        surface.PlaySound("taskfailed.wav")
+        surface.PlaySound("extract_failed.wav")
 
         respawnButton = vgui.Create("DButton", DeathPopup)
         respawnButton:SetSize(EFGM.MenuScale(1020), EFGM.MenuScale(50))
@@ -1160,7 +1162,7 @@ net.Receive("CreateExtractionInformation", function()
     end
 
     ExtractionPopup:AlphaTo(255, 0.2, 0, nil)
-    surface.PlaySound("taskcomplete.wav")
+    surface.PlaySound("storytask_end.wav")
 
     respawnButton = vgui.Create("DButton", ExtractionPopup)
     respawnButton:SetSize(EFGM.MenuScale(1020), EFGM.MenuScale(50))
@@ -1419,13 +1421,17 @@ net.Receive("CreateExtractionInformation", function()
 end)
 
 -- notifications
-function CreateNotification(text, icon)
+local notif
+function CreateNotification(text, icon, snd)
     if IsValid(notif) then notif:Remove() end
+
+    local panel = GetHUDPanel()
+    if Menu.MenuFrame != nil and Menu.MenuFrame:IsActive() == true then panel = Menu.MenuFrame end
 
     surface.SetFont("BenderNotification")
     local tw = surface.GetTextSize(text) + EFGM.ScreenScale(45)
 
-    local notif = vgui.Create("DPanel", GetHUDPanel())
+    notif = vgui.Create("DPanel", panel)
     notif:SetPos(ScrW() / 2 - (tw / 2), ScrH())
     notif:SetSize(tw, EFGM.ScreenScale(30))
     notif:SetAlpha(0)
@@ -1433,10 +1439,12 @@ function CreateNotification(text, icon)
     notif:MoveTo(ScrW() / 2 - (tw / 2), ScrH() - EFGM.ScreenScale(40), 0.25, 0.1, 1, nil)
     notif:AlphaTo(255, 0.3, 0.1, nil)
 
-    notif:AlphaTo(0, 0.2, 2.5, nil)
-    notif:MoveTo(ScrW() / 2 - (tw / 2), ScrH(), 0.25, 2.5, 1, function() notif:Remove() end)
+    notif:AlphaTo(0, 0.2, 4, nil)
+    notif:MoveTo(ScrW() / 2 - (tw / 2), ScrH(), 0.25, 4, 1, function() notif:Remove() end)
 
     notif:MoveToBack()
+
+    if snd then surface.PlaySound(snd) end
 
     notif.Paint = function(self2, w, h)
         surface.SetDrawColor(0, 0, 0, 200)
@@ -1450,6 +1458,18 @@ function CreateNotification(text, icon)
         surface.DrawText(text)
     end
 end
+
+net.Receive("SendNotification", function()
+
+    local text = net.ReadString()
+    local mat = net.ReadString()
+    local snd = net.ReadString()
+
+    local material = Material(mat, "smooth")
+
+    CreateNotification(text, material, snd)
+
+end)
 
 function HUDInspectItem(item, data, panel)
 
