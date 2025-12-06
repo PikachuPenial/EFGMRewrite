@@ -50,7 +50,7 @@ concommand.Add("efgm_task_complete", function(ply, cmd, args)
 end)
 
 concommand.Add("efgm_task_requestall", function(ply, cmd, args)
-    
+
     net.Start("TaskRequestAll")
     net.SendToServer()
 

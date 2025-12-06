@@ -5,7 +5,7 @@
 hook.Add("IsSpawnpointSuitable", "CheckSpawnPoint", function(ply, spawnpointent, bMakeSuitable)
 	local pos = spawnpointent:GetPos()
 
-	local entities = ents.FindInBox(pos + Vector(-4096, -4096, -4096), pos + Vector(4096, 4096, 4096))
+	local entities = ents.FindInBox(pos + Vector(-2048, -2048, -2048), pos + Vector(2048, 2048, 2048))
 	local entsBlocking = 0
 
 	for _, v in ipairs(entities) do

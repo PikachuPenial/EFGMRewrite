@@ -93,8 +93,6 @@ function UpdateTasks(ply)
 
             end
 
-            print("DoAssignTask = "..tostring(doAssignTask))
-
             if doAssignTask then AssignTask(ply, taskName) end
 
         end

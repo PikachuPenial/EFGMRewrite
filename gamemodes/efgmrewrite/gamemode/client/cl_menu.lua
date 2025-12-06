@@ -2600,8 +2600,6 @@ function Menu.ConfirmTag(item, key, inv, eID, eSlot)
 
     local confirmPanelHeight = EFGM.MenuScale(110)
 
-    surface.PlaySound("ui/element_select.wav")
-
     confirmPanel = vgui.Create("DFrame", Menu.MenuFrame)
     confirmPanel:SetSize(confirmTextSize + EFGM.MenuScale(10), confirmPanelHeight)
     confirmPanel:SetPos(Menu.MenuFrame:GetWide() / 2 - confirmPanel:GetWide() / 2, Menu.MenuFrame:GetTall() / 2 - confirmPanel:GetTall() / 2)
@@ -11212,8 +11210,15 @@ function Menu.OpenTab.Tasks()
 
                     end
 
+                    taskButton.OnCursorEntered = function(s)
+
+                        surface.PlaySound("ui/element_hover.wav")
+
+                    end
+
                     function taskButton:DoClick()
 
+                        surface.PlaySound("ui/element_select.wav")
                         DrawTaskDisplay(taskName)
 
                     end
@@ -11286,8 +11291,15 @@ function Menu.OpenTab.Tasks()
 
                     end
 
+                    acceptButton.OnCursorEntered = function(s)
+
+                        surface.PlaySound("ui/element_hover.wav")
+
+                    end
+
                     function acceptButton:DoClick()
 
+                        surface.PlaySound("ui/element_select.wav")
                         RunConsoleCommand("efgm_task_accept", taskName)
                         RunConsoleCommand("efgm_task_requestall")
                         taskDisplay:Clear()
@@ -11322,8 +11334,15 @@ function Menu.OpenTab.Tasks()
 
                     end
 
+                    completeButton.OnCursorEntered = function(s)
+
+                        surface.PlaySound("ui/element_hover.wav")
+
+                    end
+
                     function completeButton:DoClick()
 
+                        surface.PlaySound("ui/element_select.wav")
                         RunConsoleCommand("efgm_task_complete", taskName)
                         RunConsoleCommand("efgm_task_requestall")
                         taskDisplay:Clear()
