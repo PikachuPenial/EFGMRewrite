@@ -4,7 +4,8 @@
 REQUIREMENT = {}
 REQUIREMENT.PlayerStat = 1 -- Only supports NWInt's rn
 REQUIREMENT.QuestCompletion = 2
-REQUIREMENT.ItemFound = 3
+REQUIREMENT.ItemDiscovered = 3 -- (Not implemented) So special quests can open if like, idk, the player finds a certain key
+REQUIREMENT.AreaVisited = 4 -- (Not fully implemented)
 
 REWARD = {}
 REWARD.PlayerStat = 1
@@ -17,111 +18,106 @@ OBJECTIVE.Extract = 2
 OBJECTIVE.GiveItem = 3
 OBJECTIVE.Pay = 4
 OBJECTIVE.QuestItem = 5
+OBJECTIVE.VisitArea = 6
 
 EFGMTASKS = {}
 
--- for testing porpuses
-EFGMTASKS["debut"] = {
-
-    name = "Debut",
-    description =
-        "Hello there, soldier. I got a job that's a little too easy for my guys. But you'll do fine. "..
-        "Hey, don't get pissy, I don't know you that well yet to give you a normal job! There's a lot of "..
-        "bandit scum roaming the streets. They don't bother me much, but they're still a nuisance. Calm "..
-        "down, say, five of them, and get a couple of MP-133 shotguns off them. I think that'll be enough "..
-        "for you. Dismissed, soldier!",
-    traderName = "Prapor",
-
-    -- Objectives and rewards work by having separate type tables. The main table sets the parameters, and the type sets how the parameters are used.
-    objectiveTypes = {OBJECTIVE.Kill, OBJECTIVE.GiveItem},
-    objectives = {{5, "efgm_concrete_rw"}, {2, "arc9_eft_mr133"}},
-
-    rewardTypes = { REWARD.Experience, REWARD.Money, REWARD.Item, REWARD.Item, REWARD.Item},
-    rewards = {
-        1700,
-        15000,
-        ITEM.Instantiate("arc9_eft_pp1901", 1, {}),
-        ITEM.Instantiate("arc9_eft_pp1901", 1, {}),
-        ITEM.Instantiate("efgm_ammo_9x19", 2, {count = 60})
-    },
-
-    uibackground = Material("taskbg/concrete/general.jpg", "smooth")
-
-}
-
-EFGMTASKS["luxlife"] = {
-
-    name = "Luxurious Life",
-    description =
-        "Hey! You did well on the first job, but it's not enough to make me happy. "..
-        "You're gonna have to do a little more legwork, soldier. I need to find a bottle "..
-        "of wine. I myself am more of a hard drinker, but I know a man who collects "..
-        "wine. And not just any kind, but the rarest kind! I want to give him a "..
-        "bottle as a gesture of goodwill. Nowadays in Tarkov, any connections with "..
-        "reputable people are worth their weight in gold, you know? There was a "..
-        "liquor store in the city center. They used to sell booze three times the "..
-        "price, for the elite folks. I'm sure there's some left. Go there and search "..
-        "the place and get me a good bottle of some French wine! And don't even try "..
-        "to slip me some fake shit.",
-    traderName = "Prapor",
-
-    requirementTypes = {REQUIREMENT.QuestCompletion},
-    requirements = {"debut"},
-
-    objectiveTypes = {OBJECTIVE.Kill},
-    objectives = {{20, "efgm_concrete_rw"}},
-
-    rewardTypes = { REWARD.Experience, REWARD.Money, REWARD.Item, REWARD.Item, REWARD.Item},
-    rewards = {
-        1700,
-        15000,
-        ITEM.Instantiate("arc9_eft_pp1901", 1, {}),
-        ITEM.Instantiate("arc9_eft_pp1901", 1, {}),
-        ITEM.Instantiate("efgm_ammo_9x19", 2, {count = 60})
-    },
-
-    uibackground = Material("taskbg/concrete/general.jpg", "smooth")
-
-}
-
-EFGMTASKS["testtask"] = {
-
-    name = "Test Task",
-    description =
-        [[Yo. Do some shit, idk.]],
-    traderName = "Some shit, idk",
-
-    objectiveTypes = {OBJECTIVE.Kill, OBJECTIVE.Extract, OBJECTIVE.GiveItem, OBJECTIVE.Pay, OBJECTIVE.QuestItem},
-    objectives = {{2, "efgm_concrete_rw"}, {1, "efgm_concrete_rw", "extract_helicopter"}, {1, "efgm_barter_tankbattery", true}, 25000, "briefcase"},
-
-    rewardTypes = { REWARD.Experience, REWARD.Money, REWARD.Item, REWARD.Item, REWARD.Item},
-    rewards = {
-        1700,
-        15000,
-        ITEM.Instantiate("arc9_eft_pp1901", 1, {}),
-        ITEM.Instantiate("arc9_eft_pp1901", 1, {}),
-        ITEM.Instantiate("efgm_ammo_9x19", 2, {count = 60})
-    },
-
-    uibackground = Material("taskbg/concrete/workshop.jpg", "smooth")
-
-}
-
-EFGMTASKS["testreq"] = {
-
-    name = "Test Requirements",
-    description = "Just hook it up to a car and have the gas pedal pushed down so that it spins as fast as possible, at that point it’ll go so fast that the chair tears itself apart. But, for the sake of argument let’s assume that hypothetically this chair does not break this would mean that the Escape from Tarkov: Edge of Darkness Edition is moving up and down at speeds of roughly 200 miles an hour because of this if someone were to sit on the chair I think they would literally get torn open or assuming once more than for the sake of argument this person hypothetically receives no damage this word instead stretch the Escape from Tarkov: Edge of Darkness Edition to the point where it could cause permanent damage to the colonOr otherwise at the very least result in set a person not being able to walk or even stand upright for possibly hours if not even days due to the extreme trauma that their ass went through Now assuming that this contraption can work with interchangeable attachments we will stick with the method of using a car or some other sort of motorized vehicle in order to power the chair this could also become a very useful tool as the flat part of the chair used for sitting could also be used to lay certain items on if this were true then a Escape from Tarkov: Edge of Darkness Edition could be attached to the end instead and could be used as a very fine precision cutting tool which may be effective and useful against thin  but durable materials such as aluminum or planks of wood which would allow the chair to become industrialized and even possibly a common household appliance however if we were going to Stick with the original intended purpose of the chair then it could be used in interrogations as a way of forcing enemy operatives to divulge classified information the chair may not even have to be used as seeing it implies the third of having to sit on it which means that it could become very effective and convincing in the argument of asking one to divulge information, however if this chair were used for self Escape from Tarkov: Edge of Darkness Edition then it would likely require high amounts of Escape from Tarkov: Edge of Darkness Edition not only for the chain so that I can remain in working order but also for the participant who is sitting on the chair as without said Escape from Tarkov: Edge of Darkness Edition A higher velocity Escape from Tarkov: Edge of Darkness Edition travelling into the Escape from Tarkov: Edge of Darkness Edition could cause irrepairable damage. I’m going back to the argument of interchangeable accessory’s the hole on the chair is clearly large enough to fit larger items onto the attachment which means even larger Escape from Tarkov: Edge of Darkness Editions could be in fact applied to the chair with similar affects however these may have the effect of being too dangerous as they would carry much more force with them as they would be likely heavier This could lead to the chair rapidly moving upward and downward’s or shaking Side to side which could be marketed as a Escape from Tarkov: Edge of Darkness Edition function. Thank you for attending my speech",
-    traderName = "Jaeger Probably",
+-- wip tasks to spruce up playtesting maybe
+-- for the record i havent wrote a story since like third grade and that shit was ass
+EFGMTASKS["connections"] = {
+    
+    name = "Connections",
+    description = "Hey, soldier. I don't think I've seen you before. What do you want? Guns? Ammunition? A truckload of vodka? "..
+    "Oh, I should've guessed, you want to escape the city. Well, I can't say I can help you there, but I might know a guy who knows a guy. "..
+    "You're not gonna get any names out of me yet, though, I don't trust you. How about this? I have a job that needs doing, and I have some "..
+    "roubles burning a hole in my pocket. You're familiar with that Concrete place, right? South of the capital? I had some guys get ambushed "..
+    "there the other day, and I gotta make sure it doesn't happen again. I want you to scout out some vantage points around the location... "..
+    "say, the top of the hotel, and the roof of the workshop. You know, that white building up north, with the bigass awning at the front. "..
+    "While you're at it, get rid of some of the locals, let's say five of them. Let's see you get that done, then we can talk about connections.",
+    
+    traderName = "Bartender",
+    traderIcon = Material("traders/generic.png", "smooth"),
 
     requirementTypes = {REQUIREMENT.PlayerStat},
-    requirements = {{1, "Level"}},
+    requirements = {{2, "Level"}},
 
-    objectiveTypes = {OBJECTIVE.Extract},
-    objectives = {{1}},
+    objectiveTypes = {OBJECTIVE.VisitArea, OBJECTIVE.VisitArea, OBJECTIVE.Kill},
+    objectives = {
+        {"efgm_concrete_rw", "qa_hotel_roof", "Hotel Roof"},
+        {"efgm_concrete_rw", "qa_workshop_roof", "Workshop Roof"},
+        {5, "efgm_concrete_rw"}
+    },
+
+    rewardTypes = { REWARD.PlayerStat, REWARD.PlayerStat},
+    rewards = {
+        {10000, "Experience"},
+        {50000, "Money"},
+    },
+
+    uibackground = Material("taskbg/concrete/general.jpg", "smooth")
+
+}
+
+EFGMTASKS["civs1"] = {
+    
+    name = "Civilians - Part 1",
+    description = "Greetings, operator. I am Aleksei, a PMC like yourself, and I have a request for you. "..
+    "Earlier, as I was scouting out the southern parts of the city for an associate, I came across a few civilians in a bombed out building, "..
+    "with a small child among them. Usually, I would mind my own business, but against my better judgement I promised to guide them to a "..
+    "safer part of the city once my job is complete. Anyway, I decided on a place for them, but to get there I'll have to guide them straight "..
+    "through Concrete.\n\nFor their sake and for mine, I want to make sure this trip is as uneventful as possible. I'll need you to verify some safe "..
+    "extraction routes, and to dispatch any threats you come across while doing so. In the meantime, I will stay with the family, and make sure no "..
+    "harm comes their way. Good luck, and let me know when it is done.",
+    
+    traderName = "Soldier",
+    traderIcon = Material("traders/soldier.png", "smooth"),
+
+    requirementTypes = {REQUIREMENT.PlayerStat},
+    requirements = {{7, "Level"}},
+
+    objectiveTypes = {OBJECTIVE.Kill, OBJECTIVE.Extract, OBJECTIVE.Extract, OBJECTIVE.Extract, OBJECTIVE.Extract},
+    objectives = {
+        {15, "efgm_concrete_rw"},
+        {1, "efgm_concrete_rw", "extract_driver", "Getaway Driver"},
+        {1, "efgm_concrete_rw", "extract_helicopter", "USEC Helicopter"},
+        {1, "efgm_concrete_rw", "extract_manhole", "Sewer Manhole"},
+        {1, "efgm_concrete_rw", "extract_railway", "Railway to Belmont"}
+    },
 
     rewardTypes = { REWARD.PlayerStat},
     rewards = {{10000, "Experience"}},
 
-    uibackground = Material("taskbg/concrete/old_warehouse.jpg", "smooth")
+    uibackground = Material("taskbg/concrete/outdoors.jpg", "smooth")
+
+}
+
+EFGMTASKS["civs2"] = {
+    
+    name = "Civilians - Part 2",
+    description = "Hello again, operator. Thanks to you, I managed to guide them through Concrete unharmed. Unfortunately, "..
+    "there is still more to be done before I feel comfortable leaving the family. For one, the safehouse "..
+    "I had planned for them to stay at had been looted by the locals. Although some of the supplies have been untouched, "..
+    "the threat of bandits returning makes it an unsuitable location for these civilians to stay long-term. As such, we made the decision that they would "..
+    "accompany me to my own base of operations, many kilometers north of here. It will be a dangerous journey for them, which is "..
+    "why I must ask more of you.\n\nI need good quality supplies; rations, medicine, ammunition, utilities, and weapons for the family. "..
+    "I also need you to retrieve a briefcase left behind on Concrete. If memory serves, it would have been lost on the floor of "..
+    "that old car dealership. It contains documents and other items of importance to the family, so it must be "..
+    "returned to them prior to our expedition. Here is my location; please return shortly.",
+    
+    traderName = "Soldier",
+    traderIcon = Material("traders/soldier.png", "smooth"),
+
+    requirementTypes = {REQUIREMENT.PlayerStat, REQUIREMENT.QuestCompletion},
+    requirements = {{11, "Level"}, "civs1"},
+
+    objectiveTypes = {OBJECTIVE.Pay, OBJECTIVE.QuestItem},
+    objectives = {
+        500000, "briefcase"
+    },
+
+    rewardTypes = { REWARD.PlayerStat},
+    rewards = {{10000, "Experience"}},
+
+    uibackground = Material("taskbg/concrete/outdoors.jpg", "smooth")
 
 }

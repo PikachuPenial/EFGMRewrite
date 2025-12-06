@@ -164,6 +164,18 @@ function CompleteTask(ply, taskName)
 
 end
 
+local function TaskObjectiveComplete(ply, taskName)
+
+    net.Start("SendNotification", false)
+    net.WriteString("Objective for " .. EFGMTASKS[taskName].name .. " completed!")
+    net.WriteString("icons/task_add_icon.png")
+    net.WriteString("storytask_started.wav")
+    net.Send(ply)
+
+    CheckTaskCompletion(ply, taskName)
+
+end
+
 -- Progression hooks
 
 hook.Add("PlayerDeath", "TaskKill", function(victim, inflictor, attacker)
@@ -174,7 +186,7 @@ hook.Add("PlayerDeath", "TaskKill", function(victim, inflictor, attacker)
 
     end
 
-    if !attacker:IsPlayer() or table.IsEmpty(attacker.tasks) then return end
+    if !attacker:IsPlayer() or table.IsEmpty(attacker.tasks) or victim == attacker or victim:CompareStatus(0) then return end
 
     for taskName, taskInstance in pairs(attacker.tasks) do
 
@@ -184,11 +196,11 @@ hook.Add("PlayerDeath", "TaskKill", function(victim, inflictor, attacker)
 
             for objIndex, objType in ipairs(info.objectiveTypes) do
 
-                if objType == OBJECTIVE.Kill then
+                if objType == OBJECTIVE.Kill && attacker.tasks[taskName].progress[objIndex] < info.objectives[objIndex][1] then
 
-                    attacker.tasks[taskName].progress[objIndex] = math.Clamp( taskInstance.progress[objIndex] + 1, 0, info.objectives[objIndex][1])
+                    attacker.tasks[taskName].progress[objIndex] = taskInstance.progress[objIndex] + 1
 
-                    CheckTaskCompletion(attacker, taskName)
+                    TaskObjectiveComplete(ply, taskName)
 
                 end
 
@@ -202,8 +214,6 @@ end)
 
 hook.Add("PlayerExtraction", "TaskExtract", function(ply, extractTime, isGuranteed, internalName)
 
-    UpdateTasks(ply)
-
     if table.IsEmpty(ply.tasks) then return end
 
     for taskName, taskInstance in pairs(ply.tasks) do
@@ -214,33 +224,34 @@ hook.Add("PlayerExtraction", "TaskExtract", function(ply, extractTime, isGurante
 
             for objIndex, objType in ipairs(info.objectiveTypes) do
 
-                if objType == OBJECTIVE.Extract then
+                if objType == OBJECTIVE.Extract && ply.tasks[taskName].progress[objIndex] < info.objectives[objIndex][1] then
 
                     if info.objectives[objIndex][3] != nil then -- extract specified
 
                         if info.objectives[objIndex][3] == internalName then
-                            ply.tasks[taskName].progress[objIndex] = math.Clamp( taskInstance.progress[objIndex] + 1, 0, info.objectives[objIndex][1])
+                            ply.tasks[taskName].progress[objIndex] = taskInstance.progress[objIndex] + 1
+                            TaskObjectiveComplete(ply, taskName)
                         end
 
                     elseif info.objectives[objIndex][2] != nil then -- map specified
 
                         if info.objectives[objIndex][2] == game.GetMap() then
-                            ply.tasks[taskName].progress[objIndex] = math.Clamp( taskInstance.progress[objIndex] + 1, 0, info.objectives[objIndex][1])
+                            ply.tasks[taskName].progress[objIndex] = taskInstance.progress[objIndex] + 1
+                            TaskObjectiveComplete(ply, taskName)
                         end
 
                     else -- extract in general
-                        ply.tasks[taskName].progress[objIndex] = math.Clamp( taskInstance.progress[objIndex] + 1, 0, info.objectives[objIndex][1])
+                        ply.tasks[taskName].progress[objIndex] = taskInstance.progress[objIndex] + 1
+                        TaskObjectiveComplete(ply, taskName)
                     end
 
-                    CheckTaskCompletion(ply, taskName)
-
-                elseif objType == OBJECTIVE.QuestItem && ply.questItems[info.objectives[objIndex]] == true then
+                elseif objType == OBJECTIVE.QuestItem && ply.questItems[info.objectives[objIndex]] == true  && ply.tasks[taskName].progress[objIndex] == 0 then
 
                     ply.tasks[taskName].progress[objIndex] = 1
 
                     ply.questItems[info.objectives[objIndex]] = nil
 
-                    CheckTaskCompletion(ply, taskName)
+                    TaskObjectiveComplete(ply, taskName)
 
                 end
 
@@ -261,6 +272,34 @@ hook.Add("TaskQuestItemPickup", "TaskAddQuestItem", function(ply, item)
     net.Send(ply)
 
     ply.questItems[item] = true
+
+end)
+
+hook.Add("TaskAreaVisited", "TaskAddVisitedArea", function(ply, areaName)
+
+    if table.IsEmpty(ply.tasks) then return end
+
+    for taskName, taskInstance in pairs(ply.tasks) do
+
+        if taskInstance.status == TASKSTATUS.InProgress then
+
+            local info = EFGMTASKS[taskName]
+
+            for objIndex, objType in ipairs(info.objectiveTypes) do
+
+                if objType == OBJECTIVE.VisitArea && info.objectives[objIndex][2] == areaName && ply.tasks[taskName].progress[objIndex] == 0 then
+
+                    ply.tasks[taskName].progress[objIndex] = 1
+
+                    TaskObjectiveComplete(ply, taskName)
+
+                end
+
+            end
+
+        end
+
+    end
 
 end)
 
@@ -307,8 +346,6 @@ net.Receive("TaskPay", function(len, ply)
 
     if ply:GetNWInt("PlayerRaidStatus", 0) != 0 then return end
 
-    print("in lobby")
-
     local taskName = net.ReadString()
     local amount = net.ReadUInt(32)
 
@@ -316,11 +353,9 @@ net.Receive("TaskPay", function(len, ply)
 
     if info == nil or table.IsEmpty(ply.tasks) or ply.tasks[taskName] == nil or ply.tasks[taskName].status != TASKSTATUS.InProgress then return end
 
-    print("passed checkz")
-
     for objIndex, objType in ipairs(info.objectiveTypes) do
 
-        if objType == OBJECTIVE.Pay then
+        if objType == OBJECTIVE.Pay && ply.tasks[taskName].progress[objIndex] < info.objectives[objIndex] then
 
             local moneyToPay = math.Clamp(amount, 0, ply:GetNWInt("Money", 0))
             moneyToPay = math.Clamp(amount, 0, info.objectives[objIndex] - ply.tasks[taskName].progress[objIndex])
@@ -330,7 +365,9 @@ net.Receive("TaskPay", function(len, ply)
             ply:SetNWInt("Money", ply:GetNWInt("Money", 0) - moneyToPay)
             ply.tasks[taskName].progress[objIndex] = ply.tasks[taskName].progress[objIndex] + moneyToPay
 
-            CheckTaskCompletion(ply, task)
+            if ply.tasks[taskName].progress[objIndex] >= info.objectives[objIndex] then
+                TaskObjectiveComplete(ply, taskName)
+            end
 
             return
 

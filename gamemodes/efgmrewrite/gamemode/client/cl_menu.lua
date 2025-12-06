@@ -11109,7 +11109,11 @@ function Menu.OpenTab.Settings()
 
 end
 
+local selectedTask = ""
+
 function Menu.OpenTab.Tasks()
+
+    selectedTask = ""
 
     local contents = vgui.Create("DPanel", Menu.MenuFrame.LowerPanel)
     contents:Dock(FILL)
@@ -11269,7 +11273,7 @@ function Menu.OpenTab.Tasks()
 
             end
 
-            -- Accept / Decline Buttons
+            -- Accept Button
 
                 if playerTasks[taskName].status == TASKSTATUS.AcceptPending and ply:CompareStatus(0) then
 
@@ -11465,6 +11469,8 @@ function Menu.OpenTab.Tasks()
                 end
 
                 for objIndex, objType in ipairs(taskInfo.objectiveTypes) do
+                    
+                    local curProgress, maxProgress = GetProgressNumbers(playerTasks[taskName].progress[objIndex], taskInfo.objectives[objIndex], objType)
 
                     local objective = objectiveScroller:Add("DPanel")
                     objective:Dock(TOP)
@@ -11482,8 +11488,6 @@ function Menu.OpenTab.Tasks()
                         local objText = GetObjectiveText(taskInfo.objectives[objIndex], objType)
 
                         draw.SimpleTextOutlined(objText, "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(6), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-                        local curProgress, maxProgress = GetProgressNumbers(playerTasks[taskName].progress[objIndex], taskInfo.objectives[objIndex], objType)
 
                         if playerTasks[taskName].status == TASKSTATUS.AcceptPending or playerTasks[taskName].status == TASKSTATUS.Declined then
 
@@ -11520,6 +11524,28 @@ function Menu.OpenTab.Tasks()
 
                     end
 
+                    if curProgress != maxProgress && objType == OBJECTIVE.Pay && playerTasks[taskName].status == TASKSTATUS.InProgress && ply:CompareStatus(0) then
+                        
+                        local payButton = vgui.Create("DButton", objective)
+                        payButton:SetSize(EFGM.MenuScale(120), EFGM.MenuScale(25))
+                        payButton:Center()
+                        payButton:AlignLeft(EFGM.MenuScale(520))
+                        payButton:SetText("Pay")
+                        function payButton:DoClick()
+
+                            RunConsoleCommand("efgm_task_pay", taskName, maxProgress - curProgress)
+                            RunConsoleCommand("efgm_task_requestall")
+                            taskDisplay:Clear()
+
+                            timer.Simple(0.1, function()
+                                DrawTaskDisplay(taskName)
+                                DrawTaskList()
+                            end)
+
+                        end
+
+                    end
+
                 end
 
         end
@@ -11541,7 +11567,7 @@ function GetObjectiveText(obj, objType)
 
     if objType == OBJECTIVE.Extract then
         if obj[3] != nil then
-            return "Extract from " .. MAPNAMES[obj[2]] .. " through " .. obj[3]
+            return "Extract from " .. MAPNAMES[obj[2]] .. " through " .. obj[4]
         elseif obj[2] != nil then
             return "Extract from " .. MAPNAMES[obj[2]]
         else
@@ -11570,6 +11596,10 @@ function GetObjectiveText(obj, objType)
         return "Retrieve " .. EFGMQUESTITEM[obj].name
     end
 
+    if objType == OBJECTIVE.VisitArea then
+        return "Scout out " .. obj[3] .. " at " .. MAPNAMES[obj[1]]
+    end
+
     return "Counting or not counting OBJECTIVE[" .. objType .. "]?"
 
 end
@@ -11594,6 +11624,10 @@ function GetProgressNumbers(progress, obj, objType)
     end
 
     if objType == OBJECTIVE.QuestItem then
+        return progress, 1
+    end
+
+    if objType == OBJECTIVE.VisitArea then
         return progress, 1
     end
 

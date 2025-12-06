@@ -1,24 +1,37 @@
 include("shared.lua")
 
-ENT.ShouldPlayerDraw = true
-ENT.HasPickedUp = false
 ENT.Model = ""
+ENT.Item = ""
 
 function ENT:Initialize()
 
-    local item = self:GetNWString("Item", "")
+    self.Item = self:GetNWString("Item", "")
 
-    print("Item = "..item)
-
-    self.Model = item
+    self.Model = EFGMQUESTITEM[self.Item].model
 
 end
 
+-- is it great, iterating over dozens of objectives every frame? no. do i care? also no
 function ENT:Draw()
 
-    -- TODO: Network whether player should draw the item
+    if table.IsEmpty(playerTasks) then return end
 
-    if self.ShouldPlayerDraw and !self.HasPickedUp then
-	    self:DrawModel()
+    for taskName, taskInstance in pairs(playerTasks) do
+        
+        local taskInfo = EFGMTASKS[taskName]
+
+        for objIndex, objType in ipairs(taskInfo.objectiveTypes) do
+
+            if objType == OBJECTIVE.QuestItem and taskInfo.objectives[objIndex] == self.Item and taskInstance.progress[objIndex] == 0 then
+
+	            self:DrawModel()
+
+                return
+
+            end
+            
+        end
+
     end
+    
 end

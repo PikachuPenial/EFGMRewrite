@@ -15,6 +15,7 @@ end
 function ENT:Initialize()
 
 	self:SetModel(EFGMQUESTITEM[self.QuestItem].model)
+    self:SetAngles(self:GetAngles())
 	self:PhysicsInit(SOLID_VPHYSICS)
 	self:SetMoveType(MOVETYPE_VPHYSICS)
 	self:SetSolid(SOLID_VPHYSICS)
