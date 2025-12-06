@@ -11129,7 +11129,7 @@ function Menu.OpenTab.Tasks()
 
         local taskList = vgui.Create("DPanel", contents)
         taskList:Dock(LEFT)
-        taskList:SetSize(EFGM.MenuScale(600), 0)
+        taskList:SetSize(EFGM.MenuScale(550), 0)
         taskList.Paint = function(s, w, h)
 
             BlurPanel(s, EFGM.MenuScale(10))
@@ -11148,7 +11148,7 @@ function Menu.OpenTab.Tasks()
 
             local taskListHeader = vgui.Create("DPanel", taskList)
             taskListHeader:Dock(TOP)
-            taskListHeader:SetSize(0, EFGM.MenuScale(40))
+            taskListHeader:SetSize(0, EFGM.MenuScale(36))
             function taskListHeader:Paint(w, h)
 
                 surface.SetDrawColor(Color(155, 155, 155, 10))
@@ -11161,23 +11161,55 @@ function Menu.OpenTab.Tasks()
             local taskListScroller = vgui.Create("DScrollPanel", taskList)
             taskListScroller:Dock(FILL)
 
+            local taskListBar = taskListScroller:GetVBar()
+            taskListBar:SetHideButtons(true)
+            taskListBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+            function taskListBar:Paint(w, h)
+                draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
+            end
+            function taskListBar.btnGrip:Paint(w, h)
+                draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
+            end
+
             if !table.IsEmpty(playerTasks) then
-                
+
                 for taskName, taskInstance in pairs(playerTasks) do
 
                     local info = EFGMTASKS[taskName]
 
                     local taskButton = taskListScroller:Add("DButton")
                     taskButton:SetHeight(EFGM.MenuScale(110))
-                    taskButton:SetText( "" )	
+                    taskButton:SetText("")
                     taskButton:Dock(TOP)
-                    taskButton:DockMargin(0, EFGM.MenuScale(6), 0, EFGM.MenuScale(6))
+                    taskButton:DockMargin(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), 0)
+
+                    local genericTaskBG = Material("taskbg/concrete/general.jpg", "smooth")
 
                     function taskButton:Paint(w, h)
 
-                        surface.SetMaterial( info.uibackground or Material("taskbg/concrete/general.jpg", "smooth") )
-                        surface.SetDrawColor( Color(255, 255, 255, 255) )
-                        surface.DrawTexturedRect( 0, 0, w, h )
+                        surface.SetMaterial(info.uibackground or genericTaskBG)
+                        surface.SetDrawColor(Color(255, 255, 255, 255))
+                        surface.DrawTexturedRect(0, 0, w, h)
+
+                    end
+
+                    function taskButton:PaintOver(w, h)
+
+                        surface.SetDrawColor(Color(0, 0, 0, 155))
+                        surface.DrawRect(0, 0, w, EFGM.MenuScale(36))
+
+                        surface.SetDrawColor(Color(255, 255, 255, 155))
+                        surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
+
+                        surface.SetDrawColor(Color(255, 255, 255, 25))
+                        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+                        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+                        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                        draw.SimpleTextOutlined(string.upper(info.name), "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(7), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                        draw.SimpleTextOutlined("[" .. string.upper(TASKSTATUSSTRING[playerTasks[taskName].status]) .. "]", "PuristaBold24", w - EFGM.MenuScale(5), EFGM.MenuScale(7), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
                     end
 
@@ -11187,26 +11219,10 @@ function Menu.OpenTab.Tasks()
 
                     end
 
-                    local taskButtonHeader = vgui.Create("DPanel", taskButton)
-                    taskButtonHeader:Dock(TOP)
-                    taskButtonHeader:SetSize(0, EFGM.MenuScale(36))
-                    function taskButtonHeader:Paint(w, h)
-
-                        surface.SetDrawColor(Color(0, 0, 0, 155))
-                        surface.DrawRect(0, 0, w, h)
-
-                        surface.SetDrawColor(Color(255, 255, 255, 155))
-                        surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
-
-                        draw.SimpleTextOutlined(info.name, "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(7), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-                        draw.SimpleTextOutlined("("..TASKSTATUSSTRING[playerTasks[taskName].status]..")", "PuristaBold24", w - EFGM.MenuScale(5), EFGM.MenuScale(7), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-
-                    end
-                    
                 end
 
             end
+
         end
 
         DrawTaskList()
@@ -11214,8 +11230,9 @@ function Menu.OpenTab.Tasks()
     -- Task Display
 
         local taskDisplay = vgui.Create("DPanel", contents)
-        taskDisplay:Dock(RIGHT)
-        taskDisplay:SetSize(EFGM.MenuScale(1220), 0)
+        taskDisplay:Dock(LEFT)
+        taskDisplay:SetSize(EFGM.MenuScale(1305), 0)
+        taskDisplay:DockMargin(EFGM.MenuScale(13), 0, 0, 0)
         taskDisplay.Paint = function(s, w, h)
 
             BlurPanel(s, EFGM.MenuScale(10))
@@ -11238,13 +11255,13 @@ function Menu.OpenTab.Tasks()
 
             local taskDisplayHeader = vgui.Create("DPanel", taskDisplay)
             taskDisplayHeader:Dock(TOP)
-            taskDisplayHeader:SetSize(0, EFGM.MenuScale(40))
+            taskDisplayHeader:SetSize(0, EFGM.MenuScale(36))
             function taskDisplayHeader:Paint(w, h)
 
                 surface.SetDrawColor(Color(155, 155, 155, 10))
                 surface.DrawRect(0, 0, w, h)
 
-                draw.SimpleTextOutlined(string.upper( taskInfo.name ), "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined(string.upper(taskInfo.name), "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
             end
 
@@ -11252,26 +11269,21 @@ function Menu.OpenTab.Tasks()
 
                 if playerTasks[taskName].status == TASKSTATUS.AcceptPending and ply:CompareStatus(0) then
 
-                    local buttonHolder = vgui.Create("DPanel", taskDisplay)
-                    buttonHolder:Dock(TOP)
-                    buttonHolder:SetHeight(EFGM.MenuScale(120))
-                    function buttonHolder:Paint(w, h) end
-
-                    local acceptButton = vgui.Create("DButton", buttonHolder)
-                    acceptButton:Dock(LEFT)
-                    acceptButton:DockMargin(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10))
-                    acceptButton:SetWidth(EFGM.MenuScale(590))
+                    local acceptButton = vgui.Create("DButton", taskDisplay)
+                    acceptButton:Dock(TOP)
+                    acceptButton:DockMargin(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), 0)
+                    acceptButton:SetSize(0, EFGM.MenuScale(50))
                     acceptButton:SetText("")
 
                     function acceptButton:Paint(w, h)
 
-                        surface.SetDrawColor(Color(155, 155, 155, 10))
+                        surface.SetDrawColor(Color(80, 80, 80, 10))
                         surface.DrawRect(0, 0, w, h)
 
-                        surface.SetDrawColor(Color(80, 80, 80, 255))
-                        surface.DrawOutlinedRect(0, 0, w, h, EFGM.MenuScale(5))
+                        surface.SetDrawColor(Color(255, 255, 255, 155))
+                        surface.DrawRect(0, 0, acceptButton:GetWide(), EFGM.MenuScale(2))
 
-                        draw.SimpleTextOutlined("Accept "..taskInfo.name, "PuristaBold50", w / 2, h / 2, MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
+                        draw.SimpleTextOutlined("ACCEPT", "PuristaBold32", w / 2, EFGM.MenuScale(7), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
                     end
 
@@ -11287,37 +11299,6 @@ function Menu.OpenTab.Tasks()
 
                     end
 
-
-                    local declineButton = vgui.Create("DButton", buttonHolder)
-                    declineButton:Dock(RIGHT)
-                    declineButton:DockMargin(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10))
-                    declineButton:SetWidth(EFGM.MenuScale(590))
-                    declineButton:SetText("")
-
-                    function declineButton:Paint(w, h)
-
-                        surface.SetDrawColor(Color(155, 155, 155, 10))
-                        surface.DrawRect(0, 0, w, h)
-
-                        surface.SetDrawColor(Color(80, 80, 80, 255))
-                        surface.DrawOutlinedRect(0, 0, w, h, EFGM.MenuScale(5))
-
-                        draw.SimpleTextOutlined("Decline "..taskInfo.name, "PuristaBold50", w / 2, h / 2, MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
-
-                    end
-
-                    function declineButton:DoClick()
-
-                        RunConsoleCommand("efgm_task_decline", taskName)
-                        RunConsoleCommand("efgm_task_requestall")
-                        taskDisplay:Clear()
-                        timer.Simple(0.1, function()
-                            DrawTaskDisplay(taskName)
-                            DrawTaskList()
-                        end)
-
-                    end
-                    
                 end
 
             -- Complete button
@@ -11326,19 +11307,19 @@ function Menu.OpenTab.Tasks()
 
                     local completeButton = vgui.Create("DButton", taskDisplay)
                     completeButton:Dock(TOP)
-                    completeButton:DockMargin(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10))
-                    completeButton:SetHeight(EFGM.MenuScale(120))
+                    completeButton:DockMargin(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), 0)
+                    completeButton:SetHeight(EFGM.MenuScale(50))
                     completeButton:SetText("")
 
                     function completeButton:Paint(w, h)
 
-                        surface.SetDrawColor(Color(155, 155, 155, 10))
+                        surface.SetDrawColor(Color(80, 80, 80, 10))
                         surface.DrawRect(0, 0, w, h)
 
-                        surface.SetDrawColor(Color(80, 80, 80, 255))
-                        surface.DrawOutlinedRect(0, 0, w, h, EFGM.MenuScale(5))
+                        surface.SetDrawColor(Color(255, 255, 255, 155))
+                        surface.DrawRect(0, 0, completeButton:GetWide(), EFGM.MenuScale(2))
 
-                        draw.SimpleTextOutlined("Complete "..taskInfo.name, "PuristaBold50", w / 2, h / 2, MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, MenuAlias.blackColor)
+                        draw.SimpleTextOutlined("COMPLETE", "PuristaBold32", w / 2, EFGM.MenuScale(7), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
                     end
 
@@ -11353,39 +11334,79 @@ function Menu.OpenTab.Tasks()
                         end)
 
                     end
-                    
+
                 end
 
             -- Task Description
 
-                local messageMarkup = markup.Parse("<font=PuristaBold24>"..taskInfo.description.."</font>", EFGM.MenuScale(1100))
+                local genericTraderIcon = Material("traders/generic.png", "smooth")
+
+                local messageMarkup = markup.Parse("<font=PuristaBold24>" .. taskInfo.description .. "</font>", EFGM.MenuScale(1025))
 
                 local messagePanel = vgui.Create("DPanel", taskDisplay)
                 messagePanel:Dock(TOP)
-                messagePanel:DockMargin(EFGM.MenuScale(25), EFGM.MenuScale(12), EFGM.MenuScale(25), EFGM.MenuScale(12))
-                messagePanel:SetSize(0, EFGM.MenuScale(200))
+                messagePanel:DockMargin(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), 0)
+                messagePanel:SetSize(0, EFGM.MenuScale(246))
 
                 local messagePanelHeader = vgui.Create("DPanel", messagePanel)
                 messagePanelHeader:Dock(TOP)
-                messagePanelHeader:SetSize(0, EFGM.MenuScale(40))
+                messagePanelHeader:SetSize(0, EFGM.MenuScale(36))
                 function messagePanelHeader:Paint(w, h)
 
                     surface.SetDrawColor(Color(155, 155, 155, 10))
                     surface.DrawRect(0, 0, w, h)
 
-                    draw.SimpleTextOutlined("Incoming message from "..taskInfo.traderName, "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                    surface.SetDrawColor(Color(255, 255, 255, 155))
+                    surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
+
+                    draw.SimpleTextOutlined("INCOMING TRANSMISSION FROM " .. string.upper(taskInfo.traderName), "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+                end
+
+                local messageIcon = vgui.Create("DPanel", messagePanel)
+                messageIcon:Dock(LEFT)
+                messageIcon:SetSize(EFGM.MenuScale(200), EFGM.MenuScale(200))
+                messageIcon:DockMargin(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), 0)
+
+                function messageIcon:Paint(w, h)
+
+                    surface.SetMaterial(taskInfo.traderIcon or genericTraderIcon)
+                    surface.SetDrawColor(Color(255, 255, 255, 255))
+                    surface.DrawTexturedRect(0, 0, EFGM.MenuScale(200), EFGM.MenuScale(200))
+
+                end
+
+                function messageIcon:PaintOver(w, h)
+
+                    surface.SetDrawColor(Color(255, 255, 255, 25))
+                    surface.DrawRect(0, 0, EFGM.MenuScale(200), EFGM.MenuScale(1))
+                    surface.DrawRect(0, EFGM.MenuScale(200) - EFGM.MenuScale(1), EFGM.MenuScale(200), EFGM.MenuScale(1))
+                    surface.DrawRect(0, 0, EFGM.MenuScale(1), EFGM.MenuScale(200))
+                    surface.DrawRect(EFGM.MenuScale(200) - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), EFGM.MenuScale(200))
 
                 end
 
                 local messageScroller = vgui.Create("DScrollPanel", messagePanel)
-                messageScroller:Dock(FILL)
-                messageScroller:DockMargin(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10))
+                messageScroller:Dock(LEFT)
+                messageScroller:SetSize(EFGM.MenuScale(1075), 0)
+                messageScroller:DockMargin(0, EFGM.MenuScale(5), EFGM.MenuScale(5), 0)
 
-                local messageTextPanel = messageScroller:Add("DPanel")
+                local messageBar = messageScroller:GetVBar()
+                messageBar:SetHideButtons(true)
+                messageBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+                function messageBar:Paint(w, h)
+                    draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
+                end
+                function messageBar.btnGrip:Paint(w, h)
+                    draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
+                end
+
+                local messageTextPanel = vgui.Create("DPanel", messageScroller)
                 messageTextPanel:SetSize(messageMarkup:GetWidth(), messageMarkup:GetHeight())
+                messageTextPanel:SetPos(EFGM.MenuScale(5), 0)
                 function messageTextPanel:Paint(w, h)
 
-                    messageMarkup:Draw(0, 0, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+                    messageMarkup:Draw(0, EFGM.MenuScale(-5), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
 
                 end
 
@@ -11393,31 +11414,48 @@ function Menu.OpenTab.Tasks()
 
                 local objectivePanel = vgui.Create("DPanel", taskDisplay)
                 objectivePanel:Dock(TOP)
-                objectivePanel:DockMargin(EFGM.MenuScale(25), EFGM.MenuScale(12), EFGM.MenuScale(25), EFGM.MenuScale(12))
-                objectivePanel:SetSize(0, EFGM.MenuScale(260))
+                objectivePanel:DockMargin(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
+                objectivePanel:SetSize(0, EFGM.MenuScale(265))
 
                 local objectivePanelHeader = vgui.Create("DPanel", objectivePanel)
                 objectivePanelHeader:Dock(TOP)
-                objectivePanelHeader:SetSize(0, EFGM.MenuScale(40))
+                objectivePanelHeader:SetSize(0, EFGM.MenuScale(36))
                 function objectivePanelHeader:Paint(w, h)
 
                     surface.SetDrawColor(Color(155, 155, 155, 10))
                     surface.DrawRect(0, 0, w, h)
 
-                    draw.SimpleTextOutlined("Objective(s)", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                    surface.SetDrawColor(Color(255, 255, 255, 155))
+                    surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
+
+                    draw.SimpleTextOutlined("OBJECTIVES", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
                 end
 
                 local objectiveScroller = vgui.Create("DScrollPanel", objectivePanel)
                 objectiveScroller:Dock(FILL)
-                objectiveScroller:DockMargin(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10))
+                objectiveScroller:DockMargin(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), 0)
+
+                local objectiveBar = objectiveScroller:GetVBar()
+                objectiveBar:SetHideButtons(true)
+                objectiveBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+                function objectiveBar:Paint(w, h)
+                    draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
+                end
+                function objectiveBar.btnGrip:Paint(w, h)
+                    draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
+                end
 
                 for objIndex, objType in ipairs(taskInfo.objectiveTypes) do
-                    
+
                     local objective = objectiveScroller:Add("DPanel")
                     objective:Dock(TOP)
-                    objective:DockMargin(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10))
+                    objective:DockMargin(0, 0, 0, EFGM.MenuScale(5))
                     objective:SetSize(0, EFGM.MenuScale(40))
+
+                    local progressText
+                    local progressTextSize
+
                     function objective:Paint(w, h)
 
                         surface.SetDrawColor(Color(155, 155, 155, 10))
@@ -11425,25 +11463,42 @@ function Menu.OpenTab.Tasks()
 
                         local objText = GetObjectiveText(taskInfo.objectives[objIndex], objType)
 
-                        draw.SimpleTextOutlined(objText, "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                        draw.SimpleTextOutlined(objText, "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(6), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
                         local curProgress, maxProgress = GetProgressNumbers(playerTasks[taskName].progress[objIndex], taskInfo.objectives[objIndex], objType)
 
                         if playerTasks[taskName].status == TASKSTATUS.AcceptPending or playerTasks[taskName].status == TASKSTATUS.Declined then
-                            
-                            draw.SimpleTextOutlined("0/"..maxProgress, "PuristaBold32", w - EFGM.MenuScale(110), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-                        
+
+                            surface.SetFont("PuristaBold24")
+                            progressText = "0/" .. comma_value(maxProgress)
+                            progressTextSize = surface.GetTextSize(progressText)
+                            draw.SimpleTextOutlined(progressText, "PuristaBold24", w - EFGM.MenuScale(5), EFGM.MenuScale(6), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
                         else
 
+                            surface.SetFont("PuristaBold24")
+                            progressText = comma_value(curProgress) .. "/" .. comma_value(maxProgress)
+                            progressTextSize = surface.GetTextSize(progressText)
+
                             surface.SetDrawColor(Color(80, 80, 80, 255))
-                            surface.DrawRect((w*3/5), EFGM.MenuScale(5), math.Remap(curProgress, 0, maxProgress, 0, (w*2/5) - EFGM.MenuScale(120)), h - EFGM.MenuScale(10), EFGM.MenuScale(4))
-                        
-                            draw.SimpleTextOutlined(curProgress.."/"..maxProgress, "PuristaBold32", w - EFGM.MenuScale(110), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                            surface.DrawRect(w - EFGM.MenuScale(410), EFGM.MenuScale(5), math.Remap(curProgress, 0, maxProgress, 0, EFGM.MenuScale(400) - progressTextSize), h - EFGM.MenuScale(10))
+
+                            draw.SimpleTextOutlined(progressText, "PuristaBold24", w - EFGM.MenuScale(5), EFGM.MenuScale(6), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
                         end
 
-                        surface.SetDrawColor(Color(155, 155, 155, 255))
-                        surface.DrawOutlinedRect((w*3/5), EFGM.MenuScale(5), (w*2/5) - EFGM.MenuScale(120), h - EFGM.MenuScale(10), EFGM.MenuScale(2))
+                        surface.SetDrawColor(Color(205, 205, 205, 255))
+                        surface.DrawOutlinedRect(w - EFGM.MenuScale(410), EFGM.MenuScale(5), EFGM.MenuScale(400) - progressTextSize, h - EFGM.MenuScale(10), EFGM.MenuScale(1))
+
+                    end
+
+                    function objective:PaintOver(w, h)
+
+                        surface.SetDrawColor(Color(255, 255, 255, 25))
+                        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+                        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+                        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
 
                     end
 
@@ -11468,9 +11523,9 @@ function GetObjectiveText(obj, objType)
 
     if objType == OBJECTIVE.Extract then
         if obj[3] != nil then
-            return "Extract from "..MAPNAMES[obj[2]].." through "..obj[3]
+            return "Extract from " .. MAPNAMES[obj[2]] .. " through " .. obj[3]
         elseif obj[2] != nil then
-            return "Extract from "..MAPNAMES[obj[2]]
+            return "Extract from " .. MAPNAMES[obj[2]]
         else
             return "Extract from any map"
         end
@@ -11478,26 +11533,26 @@ function GetObjectiveText(obj, objType)
 
     if objType == OBJECTIVE.GiveItem then
         if obj[3] != nil then
-            return "Hand over found in raid "..EFGMITEMS[obj[2]].fullName
+            return "Hand over found in raid " .. EFGMITEMS[obj[2]].fullName
         else
-            return "Hand over "..EFGMITEMS[obj[2]].fullName
+            return "Hand over " .. EFGMITEMS[obj[2]].fullName
         end
-        
+
     end
 
     if objType == OBJECTIVE.Pay then
         if obj != 1 then
-            return "Pay "..obj.." roubles"
+            return "Pay " .. comma_value(obj) .. " roubles"
         else
             return "Pay a singular rouble..."
         end
     end
 
     if objType == OBJECTIVE.QuestItem then
-        return "Retrieve "..EFGMQUESTITEM[obj].name
+        return "Retrieve " .. EFGMQUESTITEM[obj].name
     end
-    
-    return "Counting or not counting OBJECTIVE["..objType.."]?"
+
+    return "Counting or not counting OBJECTIVE[" .. objType .. "]?"
 
 end
 
@@ -11523,7 +11578,7 @@ function GetProgressNumbers(progress, obj, objType)
     if objType == OBJECTIVE.QuestItem then
         return progress, 1
     end
-    
+
     return "Counting or not counting OBJECTIVE["..objType.."]?"
 
 end
