@@ -147,6 +147,26 @@ function InitializeEquippedString(ply, query, value)
 
 end
 
+function InitializeTaskString(ply, query, value)
+
+	if query == "new" then return tostring(value) end
+
+	for k, v in ipairs(query) do
+
+		if v.Key == "Tasks" then
+
+			return tostring(v.Value)
+
+		end
+
+	end
+
+    return tostring(value)
+
+end
+
+
+
 function UninitializeNetworkBool(ply, query, key)
 
 	local id64 = ply:SteamID64()
@@ -349,6 +369,34 @@ function UninitializeEquippedString(ply, query, valueOverride)
 
 end
 
+function UninitializeTaskString(ply, query)
+
+	local id64 = ply:SteamID64()
+	local name = ply:Name()
+    local value = ""
+
+    local taskStr = util.TableToJSON(ply.tasks)
+    taskStr = util.Compress(taskStr)
+    taskStr = util.Base64Encode(taskStr, true)
+    value = tostring(ply.taskStr)
+
+	if query == "new" then tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr("Tasks") .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), " return end
+
+	for k, v in ipairs(query) do
+
+		if v.Key == "Tasks" then
+
+			tempCMD = tempCMD .. "WHEN " .. SQLStr("Tasks") .. " THEN " .. SQLStr(value) .. " "
+			return
+
+		end
+
+	end
+
+	tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr("Tasks") .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), "
+
+end
+
 util.AddNetworkString("PlayerNetworkStash")
 util.AddNetworkString("PlayerNetworkInventory")
 util.AddNetworkString("PlayerNetworkEquipped")
@@ -431,10 +479,11 @@ function SetupPlayerData(ply)
 
     -- tasks (WIP)
 
-    ply.tasks = {}
-    ply.questItems = {}
-
+    local taskString = InitializeTaskString(ply, query, "")
+    ply.tasks = DecodeStash(ply, taskString)
+    if ply.tasks == nil then ply.tasks = {} end
     UpdateTasks(ply)
+
 
     net.Start("PlayerNetworkStash", false)
     net.WriteString(stashString)
@@ -447,6 +496,8 @@ function SetupPlayerData(ply)
 	net.Start("PlayerNetworkEquipped", false)
 	net.WriteString(equippedString)
     net.Send(ply)
+
+    -- task system already networks on its own, change if you want idrc
 
 end
 
@@ -501,6 +552,7 @@ function SavePlayerData(ply)
     UninitializeStashString(ply, query)
 	UninitializeInventoryString(ply, query)
 	UninitializeEquippedString(ply, query)
+	UninitializeTaskString(ply, query)
 
 	tempNewCMD = string.sub(tempNewCMD, 1, -3) .. ";"
 	tempCMD = tempCMD .. "ELSE Value END WHERE SteamID = " .. id64 .. ";"

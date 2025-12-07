@@ -266,7 +266,7 @@ end
 
 hook.Add("PlayerDeath", "TaskKill", function(victim, inflictor, attacker)
 
-    if victim:IsPlayer() then
+    if victim:IsPlayer() and !victim:CompareStatus(0) then
 
         TaskWipeTempObjectives(victim)
 
@@ -307,74 +307,21 @@ end)
 
 net.Receive("TaskGiveItem", function(len, ply)
 
-    if ply:GetNWInt("PlayerRaidStatus", 0) != 0 then return end
-
     local taskName = net.ReadString()
     local itemIndex = net.ReadUInt(32)
 
-    local info = EFGMTASKS[taskName]
+    -- logic later
 
-    if info == nil or table.IsEmpty(ply.tasks) or ply.tasks[taskName] == nil or ply.tasks[taskName].status != TASKSTATUS.InProgress then return end
-
-    for objIndex, objType in ipairs(info.objectiveTypes) do
-
-        if objType == OBJECTIVE.GiveItem then
-
-            if info.objectives[objIndex][3] == true then -- item has to be FIR
-
-                ply.tasks[taskName].progress[objIndex] = math.Clamp( ply.tasks[taskName].progress[objIndex] + 1, 0, info.objectives[objIndex][1])
-
-            else
-
-                ply.tasks[taskName].progress[objIndex] = math.Clamp( ply.tasks[taskName].progress[objIndex] + 1, 0, info.objectives[objIndex][1])
-
-            end
-
-            print("Task objective 'Give Item' is incomplete!")
-
-            CheckTaskCompletion(ply, task)
-
-            return
-
-        end
-
-    end
+    -- TaskProgressObjective(ply, OBJECTIVE.GiveItem, 1, game.GetMap(), areaName)
 
 end)
 
 net.Receive("TaskPay", function(len, ply)
 
-    if ply:GetNWInt("PlayerRaidStatus", 0) != 0 then return end
-
     local taskName = net.ReadString()
     local amount = net.ReadUInt(32)
 
-    local info = EFGMTASKS[taskName]
-
-    if info == nil or table.IsEmpty(ply.tasks) or ply.tasks[taskName] == nil or ply.tasks[taskName].status != TASKSTATUS.InProgress then return end
-
-    for objIndex, objType in ipairs(info.objectiveTypes) do
-
-        if objType == OBJECTIVE.Pay && ply.tasks[taskName].progress[objIndex] < info.objectives[objIndex] then
-
-            local moneyToPay = math.Clamp(amount, 0, ply:GetNWInt("Money", 0))
-            moneyToPay = math.Clamp(amount, 0, info.objectives[objIndex] - ply.tasks[taskName].progress[objIndex])
-
-            print(moneyToPay)
-
-            ply:SetNWInt("Money", ply:GetNWInt("Money", 0) - moneyToPay)
-            ply.tasks[taskName].progress[objIndex] = ply.tasks[taskName].progress[objIndex] + moneyToPay
-
-            if ply.tasks[taskName].progress[objIndex] >= info.objectives[objIndex] then
-                TaskObjectiveComplete(ply, taskName)
-            end
-
-            return
-
-        end
-
-    end
-
+    TaskProgressObjective(ply, OBJECTIVE.Pay, amount, nil, nil, taskName)
 
 end)
 
