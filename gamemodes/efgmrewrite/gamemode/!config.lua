@@ -48,7 +48,7 @@ if SERVER then
 
     -- damage falloff (in meters)
     RunConsoleCommand("arc9_eft_mindmgrange", "160")
-    RunConsoleCommand("arc9_eft_mindmgrange_sg", "100")
+    RunConsoleCommand("arc9_eft_mindmgrange_sg", "40")
     RunConsoleCommand("arc9_eft_mult_338", "0.55")
     RunConsoleCommand("arc9_eft_mult_bigrifle", "0.65")
     RunConsoleCommand("arc9_eft_mult_carabine", "0.4")

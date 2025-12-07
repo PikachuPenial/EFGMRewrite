@@ -9884,9 +9884,9 @@ function Menu.OpenTab.Stats()
 
         if selectedBoardName == text then return end
 
-        net.Start("GrabLeaderboardData")
-        net.WriteString(data)
-        net.SendToServer()
+        -- net.Start("GrabLeaderboardData")
+        -- net.WriteString(data)
+        -- net.SendToServer()
 
         selectedBoardName = text
 
@@ -9943,11 +9943,11 @@ function Menu.OpenTab.Stats()
 
         for k, v in ipairs(selectedBoard) do
 
-            local color = MenuAlias.whiteColor
-            if v.SteamName == Menu.Player:GetName() then color = yColor end
-            draw.SimpleTextOutlined(k, "Purista18", EFGM.MenuScale(5), EFGM.MenuScale(25) + ((k - 1) * EFGM.MenuScale(20)), color, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-            draw.SimpleTextOutlined(string.sub(v.SteamName, 1, 21), "Purista18", EFGM.MenuScale(25), EFGM.MenuScale(25) + ((k - 1) * EFGM.MenuScale(20)), color, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-            draw.SimpleTextOutlined(v.Value, "Purista18", w - EFGM.MenuScale(5), EFGM.MenuScale(25) + ((k - 1) * EFGM.MenuScale(20)), color, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            -- local color = MenuAlias.whiteColor
+            -- if v.SteamName == Menu.Player:GetName() then color = yColor end
+            -- draw.SimpleTextOutlined(k, "Purista18", EFGM.MenuScale(5), EFGM.MenuScale(25) + ((k - 1) * EFGM.MenuScale(20)), color, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            -- draw.SimpleTextOutlined(string.sub(v.SteamName, 1, 21), "Purista18", EFGM.MenuScale(25), EFGM.MenuScale(25) + ((k - 1) * EFGM.MenuScale(20)), color, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            -- draw.SimpleTextOutlined(v.Value, "Purista18", w - EFGM.MenuScale(5), EFGM.MenuScale(25) + ((k - 1) * EFGM.MenuScale(20)), color, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
         end
 

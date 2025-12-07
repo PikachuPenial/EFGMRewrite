@@ -1862,6 +1862,7 @@ EFGMITEMS = {}
         ["sizeX"] = 6,
         ["sizeY"] = 1,
 
+        ["canPurchase"] = false,
         ["lootWeight"] = 75,
 
         ["caliber"] = "23x75",

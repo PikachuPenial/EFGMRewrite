@@ -105,15 +105,15 @@ end)
 
 net.Receive("GrabLeaderboardData", function(len, ply)
 
-	local key = net.ReadString()
+	-- local key = net.ReadString()
 
-	local str = util.TableToJSON(sql.Query("SELECT SteamID, SteamName, Value FROM EFGMPlayerData64 WHERE Key = " .. SQLStr(key) .. " ORDER BY Value + 0 DESC LIMIT 100;"))
+	-- local str = util.TableToJSON(sql.Query("SELECT SteamID, SteamName, Value FROM EFGMPlayerData64 WHERE Key = " .. SQLStr(key) .. " ORDER BY Value + 0 DESC LIMIT 100;"))
 
-    str = util.Compress(str)
-    str = util.Base64Encode(str, true)
+    -- str = util.Compress(str)
+    -- str = util.Base64Encode(str, true)
 
-	net.Start("SendLeaderboardData", true)
-	net.WriteString(str)
-	net.Send(ply)
+	-- net.Start("SendLeaderboardData", true)
+	-- net.WriteString(str)
+	-- net.Send(ply)
 
 end )
