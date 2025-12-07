@@ -426,7 +426,6 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
 
             local total_lights = 0
             local lp = LocalPlayer()
-            nvgon = checknvg(self)
 
             for _, k in ipairs(self:GetSubSlotList()) do
                 if !k.Installed then continue end
@@ -441,11 +440,6 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
                         qca = atttbl.FlashlightAttachment,
                         nodotter = atttbl.Flashlight360
                     }
-
-                    if nvgon and atttbl.FlashlightIR then
-                        newlight.col = irflashcolor
-                        newlight.br = 1
-                    end
 
                     total_lights = total_lights + 1
 
@@ -466,14 +460,6 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
                     l:SetColor(atttbl.FlashlightColor or color_white)
                     l:SetTexture(atttbl.FlashlightMaterial or "effects/flashlight001")
                     l:SetBrightness(atttbl.FlashlightBrightness or 3)
-
-                    if nvgon and atttbl.FlashlightIR then
-                        l:SetFOV((atttbl.FlashlightFOV or 50) * 1.5)
-                        l:SetFarZ(2048)
-                        l:SetColor(irflashcolor)
-                        -- l:SetTexture(atttbl.FlashlightMaterial or "effects/flashlight001")
-                        l:SetBrightness(1)
-                    end
 
                     l:SetEnableShadows(false)
                     l:Update()
