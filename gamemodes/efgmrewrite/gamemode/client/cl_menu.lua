@@ -824,30 +824,30 @@ function Menu:Initialize(openTo, container)
 
             end
 
-            -- function tasksIcon:DoClick()
+            function tasksIcon:DoClick()
 
-            --     if Menu.ActiveTab == "Tasks" then return end
+                if Menu.ActiveTab == "Tasks" then return end
 
-            --     if Menu.ActiveTab == "Match" then
+                if Menu.ActiveTab == "Match" then
 
-            --         net.Start("RemovePlayerSquadRF")
-            --         net.SendToServer()
+                    net.Start("RemovePlayerSquadRF")
+                    net.SendToServer()
 
-            --     end
+                end
 
-            --     surface.PlaySound("ui/element_select.wav")
+                surface.PlaySound("ui/element_select.wav")
 
-            --     Menu.MenuFrame.LowerPanel.Contents:AlphaTo(0, 0.05, 0, function()
+                Menu.MenuFrame.LowerPanel.Contents:AlphaTo(0, 0.05, 0, function()
 
-            --         Menu.MenuFrame.LowerPanel.Contents:Remove()
-            --         Menu.OpenTab.Tasks()
-            --         Menu.ActiveTab = "Tasks"
+                    Menu.MenuFrame.LowerPanel.Contents:Remove()
+                    Menu.OpenTab.Tasks()
+                    Menu.ActiveTab = "Tasks"
 
-            --         Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, nil)
+                    Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, nil)
 
-            --     end)
+                end)
 
-            -- end
+            end
 
         -- SKILLS
 
@@ -11175,7 +11175,7 @@ function Menu.OpenTab.Tasks()
 
                 for taskName, taskInstance in pairs(playerTasks) do
 
-                    local info = EFGMTASKS[taskName]
+                    local taskInfo = EFGMTASKS[taskName]
 
                     local taskButton = taskListScroller:Add("DButton")
                     taskButton:SetHeight(EFGM.MenuScale(110))
@@ -11187,7 +11187,7 @@ function Menu.OpenTab.Tasks()
 
                     function taskButton:Paint(w, h)
 
-                        surface.SetMaterial(info.uibackground or genericTaskBG)
+                        surface.SetMaterial(taskInfo.uibackground or genericTaskBG)
                         surface.SetDrawColor(Color(255, 255, 255, 255))
                         surface.DrawTexturedRect(0, 0, w, h)
 
@@ -11207,7 +11207,7 @@ function Menu.OpenTab.Tasks()
                         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
                         surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
 
-                        draw.SimpleTextOutlined(string.upper(info.name), "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(7), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                        draw.SimpleTextOutlined(string.upper(taskInfo.name), "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(7), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
                         draw.SimpleTextOutlined("[" .. string.upper(TASKSTATUSSTRING[playerTasks[taskName].status]) .. "]", "PuristaBold24", w - EFGM.MenuScale(5), EFGM.MenuScale(7), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
@@ -11380,7 +11380,7 @@ function Menu.OpenTab.Tasks()
                     surface.SetDrawColor(Color(255, 255, 255, 155))
                     surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
 
-                    draw.SimpleTextOutlined("INCOMING TRANSMISSION FROM " .. string.upper(taskInfo.traderName), "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                    draw.SimpleTextOutlined(taskInfo.messageOverride or "INCOMING TRANSMISSION FROM " .. string.upper(taskInfo.traderName), "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
                 end
 
@@ -11467,9 +11467,9 @@ function Menu.OpenTab.Tasks()
                     draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
                 end
 
-                for objIndex, objType in ipairs(taskInfo.objectiveTypes) do
+                for objIndex, objInfo in ipairs(taskInfo.objectives) do
                     
-                    local curProgress, maxProgress = GetProgressNumbers(playerTasks[taskName].progress[objIndex], taskInfo.objectives[objIndex], objType)
+                    local curProgress, maxProgress = playerTasks[taskName].progress[objIndex] + playerTasks[taskName].tempProgress[objIndex], objInfo.count or 1
 
                     local objective = objectiveScroller:Add("DPanel")
                     objective:Dock(TOP)
@@ -11484,11 +11484,11 @@ function Menu.OpenTab.Tasks()
                         surface.SetDrawColor(Color(155, 155, 155, 10))
                         surface.DrawRect(0, 0, w, h)
 
-                        local objText = GetObjectiveText(taskInfo.objectives[objIndex], objType)
+                        local objText = GetObjectiveText(objInfo)
 
                         draw.SimpleTextOutlined(objText, "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(6), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
-                        if playerTasks[taskName].status == TASKSTATUS.AcceptPending or playerTasks[taskName].status == TASKSTATUS.Declined then
+                        if playerTasks[taskName].status == TASKSTATUS.AcceptPending then
 
                             surface.SetFont("PuristaBold24")
                             progressText = "0/" .. comma_value(maxProgress)
@@ -11523,16 +11523,18 @@ function Menu.OpenTab.Tasks()
 
                     end
 
-                    if curProgress != maxProgress && objType == OBJECTIVE.Pay && playerTasks[taskName].status == TASKSTATUS.InProgress && ply:CompareStatus(0) then
+                    if curProgress != maxProgress && objInfo.type == OBJECTIVE.Pay && playerTasks[taskName].status == TASKSTATUS.InProgress && ply:CompareStatus(0) then
                         
+                        local payAmount = math.Clamp(maxProgress - curProgress, 0, LocalPlayer:GetNWInt("Money", 0))
+
                         local payButton = vgui.Create("DButton", objective)
                         payButton:SetSize(EFGM.MenuScale(120), EFGM.MenuScale(25))
                         payButton:Center()
                         payButton:AlignLeft(EFGM.MenuScale(520))
-                        payButton:SetText("Pay")
+                        payButton:SetText("Pay "..payAmount.."₽")
                         function payButton:DoClick()
 
-                            RunConsoleCommand("efgm_task_pay", taskName, maxProgress - curProgress)
+                            RunConsoleCommand("efgm_task_pay", taskName, payAmount)
                             RunConsoleCommand("efgm_task_requestall")
                             taskDisplay:Clear()
 
@@ -11553,84 +11555,59 @@ function Menu.OpenTab.Tasks()
 
 end
 
-function GetObjectiveText(obj, objType)
+function GetObjectiveText(obj)
 
-    if objType == OBJECTIVE.Kill then
-        if obj[2] != nil then
-            return "Eliminate PMC's at "..MAPNAMES[obj[2]]
+    if obj.type == OBJECTIVE.Kill then
+        if obj.info != nil then
+            return "Eliminate PMC's at "..MAPNAMES[obj.info]
         else
             return "Eliminate PMC's across Garkov"
         end
     end
 
 
-    if objType == OBJECTIVE.Extract then
-        if obj[3] != nil then
-            return "Extract from " .. MAPNAMES[obj[2]] .. " through " .. obj[4]
-        elseif obj[2] != nil then
-            return "Extract from " .. MAPNAMES[obj[2]]
+    if obj.type == OBJECTIVE.Extract then
+        if obj.subInfo != nil then
+            return "Extract from " .. MAPNAMES[obj.info] .. " through " .. obj.subInfoDisplay
+        elseif obj.info != nil then
+            return "Extract from " .. MAPNAMES[obj.info]
         else
             return "Extract from any map"
         end
     end
 
-    if objType == OBJECTIVE.GiveItem then
-        if obj[3] != nil then
-            return "Hand over found in raid " .. EFGMITEMS[obj[2]].fullName
+    if obj.type == OBJECTIVE.GiveItem then
+        if obj.subInfo != nil then
+            return "Hand over found in raid " .. EFGMITEMS[obj.info].fullName
         else
-            return "Hand over " .. EFGMITEMS[obj[2]].fullName
+            return "Hand over " .. EFGMITEMS[obj.info].fullName
         end
 
     end
 
-    if objType == OBJECTIVE.Pay then
-        if obj != 1 then
-            return "Pay " .. comma_value(obj) .. " roubles"
+    if obj.type == OBJECTIVE.Pay then
+        if obj.count != 1 then
+            return "Pay " .. comma_value(obj.count) .. " roubles"
         else
             return "Pay a singular rouble..."
         end
     end
 
-    if objType == OBJECTIVE.QuestItem then
-        return "Retrieve " .. EFGMQUESTITEM[obj].name
+    if obj.type == OBJECTIVE.QuestItem then
+        return "Retrieve " .. EFGMQUESTITEM[obj.subInfo].name
     end
 
-    if objType == OBJECTIVE.VisitArea then
-        return "Scout out " .. obj[3] .. " at " .. MAPNAMES[obj[1]]
+    if obj.type == OBJECTIVE.VisitArea then
+        return "Scout out " .. obj.subInfoDisplay .. " at " .. MAPNAMES[obj.info]
     end
 
-    return "Counting or not counting OBJECTIVE[" .. objType .. "]?"
+    return "Counting or not counting OBJECTIVE[" .. obj.type .. "]?"
 
 end
 
 function GetProgressNumbers(progress, obj, objType)
 
-    if objType == OBJECTIVE.Kill then
-        return progress, obj[1]
-    end
-
-
-    if objType == OBJECTIVE.Extract then
-        return progress, obj[1]
-    end
-
-    if objType == OBJECTIVE.GiveItem then
-        return progress, obj[1]
-    end
-
-    if objType == OBJECTIVE.Pay then
-        return progress, obj
-    end
-
-    if objType == OBJECTIVE.QuestItem then
-        return progress, 1
-    end
-
-    if objType == OBJECTIVE.VisitArea then
-        return progress, 1
-    end
-
-    return "Counting or not counting OBJECTIVE["..objType.."]?"
+    return progress, obj.count or 1
 
 end
 

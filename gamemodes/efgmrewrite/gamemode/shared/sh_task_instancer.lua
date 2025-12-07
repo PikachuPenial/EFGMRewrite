@@ -8,9 +8,8 @@ TASKSTATUS.CompletePending = 4 -- for when the task is technically complete but 
 TASKSTATUSSTRING = {}
 TASKSTATUSSTRING[1] = "In Progress"
 TASKSTATUSSTRING[2] = "Completed"
-TASKSTATUSSTRING[3] = "Declined"
-TASKSTATUSSTRING[4] = "Accept Pending"
-TASKSTATUSSTRING[5] = "Completion Pending"
+TASKSTATUSSTRING[3] = "Accept Pending"
+TASKSTATUSSTRING[4] = "Completion Pending"
 
 TASK = {}
 

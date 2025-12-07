@@ -18,16 +18,18 @@ function ENT:Draw()
 
     for taskName, taskInstance in pairs(playerTasks) do
         
-        local taskInfo = EFGMTASKS[taskName]
+        if taskInstance.status == TASKSTATUS.InProgress then
 
-        for objIndex, objType in ipairs(taskInfo.objectiveTypes) do
+            local taskInfo = EFGMTASKS[taskName]
 
-            if objType == OBJECTIVE.QuestItem and taskInfo.objectives[objIndex] == self.Item and taskInstance.progress[objIndex] == 0 then
+            for objIndex, objInfo in ipairs(taskInfo.objectives) do
 
-	            self:DrawModel()
+                if objInfo.type == OBJECTIVE.QuestItem and objInfo.subInfo == self.Item and taskInstance.progress[objIndex] + taskInstance.tempProgress[objIndex] == 0 then
 
-                return
+                    self:DrawModel()
 
+                end
+                
             end
             
         end

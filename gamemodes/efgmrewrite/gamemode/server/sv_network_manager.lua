@@ -431,10 +431,10 @@ function SetupPlayerData(ply)
 
     -- tasks (WIP)
 
-    -- ply.tasks = {}
-    -- ply.questItems = {}
+    ply.tasks = {}
+    ply.questItems = {}
 
-    -- UpdateTasks(ply)
+    UpdateTasks(ply)
 
     net.Start("PlayerNetworkStash", false)
     net.WriteString(stashString)
