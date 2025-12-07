@@ -807,30 +807,30 @@ function Menu:Initialize(openTo, container)
 
             end
 
-            function tasksIcon:DoClick()
+            -- function tasksIcon:DoClick()
 
-                if Menu.ActiveTab == "Tasks" then return end
+            --     if Menu.ActiveTab == "Tasks" then return end
 
-                if Menu.ActiveTab == "Match" then
+            --     if Menu.ActiveTab == "Match" then
 
-                    net.Start("RemovePlayerSquadRF")
-                    net.SendToServer()
+            --         net.Start("RemovePlayerSquadRF")
+            --         net.SendToServer()
 
-                end
+            --     end
 
-                surface.PlaySound("ui/element_select.wav")
+            --     surface.PlaySound("ui/element_select.wav")
 
-                Menu.MenuFrame.LowerPanel.Contents:AlphaTo(0, 0.05, 0, function()
+            --     Menu.MenuFrame.LowerPanel.Contents:AlphaTo(0, 0.05, 0, function()
 
-                    Menu.MenuFrame.LowerPanel.Contents:Remove()
-                    Menu.OpenTab.Tasks()
-                    Menu.ActiveTab = "Tasks"
+            --         Menu.MenuFrame.LowerPanel.Contents:Remove()
+            --         Menu.OpenTab.Tasks()
+            --         Menu.ActiveTab = "Tasks"
 
-                    Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, nil)
+            --         Menu.MenuFrame.LowerPanel.Contents:AlphaTo(255, 0.05, 0, nil)
 
-                end)
+            --     end)
 
-            end
+            -- end
 
         -- SKILLS
 

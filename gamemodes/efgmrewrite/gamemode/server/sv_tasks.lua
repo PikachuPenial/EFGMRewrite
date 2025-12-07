@@ -9,447 +9,444 @@ util.AddNetworkString("TaskSendAll")
 
 util.AddNetworkString("SendNotification")
 
--- Task shit
+-- -- Task shit
 
-function CheckTaskCompletion(ply, taskName)
+-- function CheckTaskCompletion(ply, taskName)
 
-    PrintTable(ply.tasks)
+--     PrintTable(ply.tasks)
 
-    local info = EFGMTASKS[taskName or nil]
+--     local info = EFGMTASKS[taskName or nil]
 
-    if info == nil or table.IsEmpty(ply.tasks) or ply.tasks[taskName] == nil or ply.tasks[taskName].status != TASKSTATUS.InProgress then return end
+--     if info == nil or table.IsEmpty(ply.tasks) or ply.tasks[taskName] == nil or ply.tasks[taskName].status != TASKSTATUS.InProgress then return end
 
-    for objIndex, objType in ipairs(info.objectiveTypes) do
+--     for objIndex, objType in ipairs(info.objectiveTypes) do
 
-        -- PrintTable(info)
+--         -- PrintTable(info)
 
-        if (objType == OBJECTIVE.Pay) && info.objectives[objIndex] > ply.tasks[taskName].progress[objIndex] then
+--         if (objType == OBJECTIVE.Pay) && info.objectives[objIndex] > ply.tasks[taskName].progress[objIndex] then
 
-            print("progression "..objIndex.." ain't complete yet")
+--             print("progression "..objIndex.." ain't complete yet")
 
-            return
+--             return
 
-        elseif (objType == OBJECTIVE.Extract or objType == OBJECTIVE.GiveItem or objType == OBJECTIVE.Kill) && info.objectives[objIndex][1] > ply.tasks[taskName].progress[objIndex] then
+--         elseif (objType == OBJECTIVE.Extract or objType == OBJECTIVE.GiveItem or objType == OBJECTIVE.Kill) && info.objectives[objIndex][1] > ply.tasks[taskName].progress[objIndex] then
 
-            print(info.objectives[objIndex][1])
-            print(ply.tasks[taskName].progress[objIndex])
+--             print(info.objectives[objIndex][1])
+--             print(ply.tasks[taskName].progress[objIndex])
 
-            print("progression "..objIndex.." ain't complete yet")
+--             print("progression "..objIndex.." ain't complete yet")
 
-            return
+--             return
 
-        elseif (objType == OBJECTIVE.QuestItem && ply.questItems[info.objectives[objIndex]] == nil) then
+--         elseif (objType == OBJECTIVE.QuestItem && ply.questItems[info.objectives[objIndex]] == nil) then
 
-            print("progression "..objIndex.." ain't complete yet")
+--             print("progression "..objIndex.." ain't complete yet")
 
-            return
+--             return
 
-        end
+--         end
 
-    end
+--     end
 
-    hook.Run("efgm_task_"..TASKSTATUS.CompletePending, ply, taskName)
+--     hook.Run("efgm_task_"..TASKSTATUS.CompletePending, ply, taskName)
 
-    ply.tasks[taskName].status = TASKSTATUS.CompletePending
-    print("Completed task "..info.name)
+--     ply.tasks[taskName].status = TASKSTATUS.CompletePending
+--     print("Completed task "..info.name)
 
-    UpdateTasks(ply)
+--     UpdateTasks(ply)
 
-    PrintTable(ply.tasks)
+--     PrintTable(ply.tasks)
 
-    net.Start("SendNotification", false)
-    net.WriteString("Task " .. info.name .. " finished, completion pending!")
-    net.WriteString("icons/task_finished_icon.png")
-    net.WriteString("taskfinished.wav")
-    net.Send(ply)
+--     net.Start("SendNotification", false)
+--     net.WriteString("Task " .. info.name .. " finished, completion pending!")
+--     net.WriteString("icons/task_finished_icon.png")
+--     net.WriteString("taskfinished.wav")
+--     net.Send(ply)
 
-end
+-- end
 
-function UpdateTasks(ply)
+-- function UpdateTasks(ply)
 
-    for taskName, taskInfo in pairs(EFGMTASKS) do
+--     for taskName, taskInfo in pairs(EFGMTASKS) do
 
-        if taskInfo.requirements == nil then -- no requirements
+--         if taskInfo.requirements == nil then -- no requirements
 
-            AssignTask(ply, taskName)
+--             AssignTask(ply, taskName)
 
-        else
+--         else
 
-            local doAssignTask = true
+--             local doAssignTask = true
 
-            for reqIndex, reqType in ipairs(taskInfo.requirementTypes) do
+--             for reqIndex, reqType in ipairs(taskInfo.requirementTypes) do
 
-                if reqType == REQUIREMENT.QuestCompletion and (table.IsEmpty(ply.tasks) or ply.tasks[taskInfo.requirements[reqIndex]] == nil or ply.tasks[taskInfo.requirements[reqIndex]].status != TASKSTATUS.Complete) then
+--                 if reqType == REQUIREMENT.QuestCompletion and (table.IsEmpty(ply.tasks) or ply.tasks[taskInfo.requirements[reqIndex]] == nil or ply.tasks[taskInfo.requirements[reqIndex]].status != TASKSTATUS.Complete) then
 
-                    doAssignTask = false
+--                     doAssignTask = false
 
-                elseif reqType == REQUIREMENT.PlayerStat and ply:GetNWInt(taskInfo.requirements[reqIndex][2], 1) < taskInfo.requirements[reqIndex][1] then
+--                 elseif reqType == REQUIREMENT.PlayerStat and ply:GetNWInt(taskInfo.requirements[reqIndex][2], 1) < taskInfo.requirements[reqIndex][1] then
 
-                    doAssignTask = false
+--                     doAssignTask = false
 
-                end
+--                 end
 
-                -- TODO: Other requirement types like skill
+--                 -- TODO: Other requirement types like skill
 
-            end
+--             end
 
-            if doAssignTask then AssignTask(ply, taskName) end
+--             if doAssignTask then AssignTask(ply, taskName) end
 
-        end
+--         end
 
-    end
+--     end
 
-end
+-- end
 
-function AssignTask(ply, taskName, status, progress)
+-- function AssignTask(ply, taskName, status, progress)
 
-    if !table.IsEmpty( ply.tasks ) and ply.tasks[taskName] != nil then return end
+--     if !table.IsEmpty( ply.tasks ) and ply.tasks[taskName] != nil then return end
 
-    ply.tasks[taskName] = TASK.Instantiate(taskName, status, progress)
+--     ply.tasks[taskName] = TASK.Instantiate(taskName, status, progress)
 
-end
+-- end
 
-function CompleteTask(ply, taskName)
+-- function CompleteTask(ply, taskName)
 
-    -- already verified that task is pending completion
+--     -- already verified that task is pending completion
 
-    ply.tasks[taskName].status = TASKSTATUS.Complete
+--     ply.tasks[taskName].status = TASKSTATUS.Complete
 
-    info = EFGMTASKS[taskName]
+--     info = EFGMTASKS[taskName]
 
-    for rewardIndex, rewardType in ipairs(info.rewardTypes) do
+--     for rewardIndex, rewardType in ipairs(info.rewardTypes) do
 
-        if rewardType == REWARD.PlayerStat && info.rewards[rewardIndex][2] == "Experience" then
+--         if rewardType == REWARD.PlayerStat && info.rewards[rewardIndex][2] == "Experience" then
 
-            local exp = info.rewards[rewardIndex][1]
+--             local exp = info.rewards[rewardIndex][1]
 
-            print(exp)
+--             print(exp)
 
-            ply:SetNWInt("Experience", ply:GetNWInt("Experience", 0) + exp)
+--             ply:SetNWInt("Experience", ply:GetNWInt("Experience", 0) + exp)
 
-            local curExp = ply:GetNWInt("Experience")
-            local curLvl = ply:GetNWInt("Level")
+--             local curExp = ply:GetNWInt("Experience")
+--             local curLvl = ply:GetNWInt("Level")
 
-            while (curExp >= ply:GetNWInt("ExperienceToNextLevel")) do
+--             while (curExp >= ply:GetNWInt("ExperienceToNextLevel")) do
 
-                print(ply:GetNWInt("Level"))
+--                 print(ply:GetNWInt("Level"))
 
-                curExp = curExp - ply:GetNWInt("ExperienceToNextLevel")
-                ply:SetNWInt("Level", curLvl + 1)
-                ply:SetNWInt("Experience", curExp)
+--                 curExp = curExp - ply:GetNWInt("ExperienceToNextLevel")
+--                 ply:SetNWInt("Level", curLvl + 1)
+--                 ply:SetNWInt("Experience", curExp)
 
-                for k, v in ipairs(levelArray) do
+--                 for k, v in ipairs(levelArray) do
 
-                    if (curLvl + 1) == k then ply:SetNWInt("ExperienceToNextLevel", v) end
+--                     if (curLvl + 1) == k then ply:SetNWInt("ExperienceToNextLevel", v) end
 
-                end
+--                 end
 
-            end
+--             end
 
-        elseif rewardType == REWARD.PlayerStat && info.rewards[rewardIndex][2] != "Experience" then
+--         elseif rewardType == REWARD.PlayerStat && info.rewards[rewardIndex][2] != "Experience" then
 
-            ply:SetNWInt(info.rewards[rewardIndex][2], ply:GetNWInt(info.rewards[rewardIndex][2]) + info.rewards[rewardIndex][1])
+--             ply:SetNWInt(info.rewards[rewardIndex][2], ply:GetNWInt(info.rewards[rewardIndex][2]) + info.rewards[rewardIndex][1])
 
-        end
+--         end
 
-    end
+--     end
 
-    net.Start("SendNotification", false)
-    net.WriteString("Completed task " .. info.name .. "!")
-    net.WriteString("icons/task_complete_icon.png")
-    net.WriteString("taskcomplete.wav")
-    net.Send(ply)
+--     net.Start("SendNotification", false)
+--     net.WriteString("Completed task " .. info.name .. "!")
+--     net.WriteString("icons/task_complete_icon.png")
+--     net.WriteString("taskcomplete.wav")
+--     net.Send(ply)
 
-    UpdateTasks(ply)
+--     UpdateTasks(ply)
 
-end
+-- end
 
-local function TaskObjectiveComplete(ply, taskName)
+-- local function TaskObjectiveComplete(ply, taskName)
 
-    net.Start("SendNotification", false)
-    net.WriteString("Objective for " .. EFGMTASKS[taskName].name .. " completed!")
-    net.WriteString("icons/task_add_icon.png")
-    net.WriteString("storytask_started.wav")
-    net.Send(ply)
+--     net.Start("SendNotification", false)
+--     net.WriteString("Objective for " .. EFGMTASKS[taskName].name .. " completed!")
+--     net.WriteString("icons/task_add_icon.png")
+--     net.WriteString("storytask_started.wav")
+--     net.Send(ply)
 
-    CheckTaskCompletion(ply, taskName)
+--     CheckTaskCompletion(ply, taskName)
 
-end
+-- end
 
--- Progression hooks
 
-hook.Add("PlayerDeath", "TaskKill", function(victim, inflictor, attacker)
+-- -- TODO: FINISH THIS
+-- function TaskProgressObjective(ply, progressObjType, count, info, subInfo, taskName)
 
-    if victim:IsPlayer() then
+--     if !ply:IsPlayer() or table.IsEmpty(ply.tasks) then return end
 
-        victim.questItems = {}
+--     if taskName != nil then -- for pay / give item tasks
 
-    end
+--         return
+        
+--     end
 
-    if !attacker:IsPlayer() or table.IsEmpty(attacker.tasks) or victim == attacker or victim:CompareStatus(0) then return end
+--     for taskName, taskInstance in pairs(ply.tasks) do
 
-    for taskName, taskInstance in pairs(attacker.tasks) do
+--         if taskInstance.status == TASKSTATUS.InProgress then
 
-        if taskInstance.status == TASKSTATUS.InProgress then
+--             local taskInfo = EFGMTASKS[taskName]
 
-            local info = EFGMTASKS[taskName]
+--             for objIndex, objInfo in ipairs(taskInfo.objectives) do
 
-            for objIndex, objType in ipairs(info.objectiveTypes) do
+--                 if objInfo.type == progressObjType && (objInfo.info == nil or objInfo.info == info) && (objInfo.subInfo == nil or objInfo.subInfo == subInfo) then
 
-                if objType == OBJECTIVE.Kill && attacker.tasks[taskName].progress[objIndex] < info.objectives[objIndex][1] then
+--                     if objInfo.whenToSave == SAVEON.Progress then
+                        
 
-                    attacker.tasks[taskName].progress[objIndex] = taskInstance.progress[objIndex] + 1
 
-                    TaskObjectiveComplete(ply, taskName)
+--                     end
 
-                end
+--                 end
 
-            end
+--             end
 
-        end
+--         end
 
-    end
+--     end
 
-end)
+-- end
 
-hook.Add("PlayerExtraction", "TaskExtract", function(ply, extractTime, isGuranteed, internalName)
+-- local function TaskWipeTempObjectives(ply)
 
-    if table.IsEmpty(ply.tasks) then return end
+--     ply:PrintMessage(HUD_PRINTTALK, "TODO: Make wiping temp objectives work")
 
-    for taskName, taskInstance in pairs(ply.tasks) do
+-- end
 
-        if taskInstance.status == TASKSTATUS.InProgress then
+-- -- Progression hooks
 
-            local info = EFGMTASKS[taskName]
+-- hook.Add("PlayerDeath", "TaskKill", function(victim, inflictor, attacker)
 
-            for objIndex, objType in ipairs(info.objectiveTypes) do
+--     if victim:IsPlayer() then
 
-                if objType == OBJECTIVE.Extract && ply.tasks[taskName].progress[objIndex] < info.objectives[objIndex][1] then
+--         TaskWipeTempObjectives(victim)
 
-                    if info.objectives[objIndex][3] != nil then -- extract specified
+--     end
 
-                        if info.objectives[objIndex][3] == internalName then
-                            ply.tasks[taskName].progress[objIndex] = taskInstance.progress[objIndex] + 1
-                            TaskObjectiveComplete(ply, taskName)
-                        end
+--     if victim == attacker or victim:CompareStatus(0) then return end
 
-                    elseif info.objectives[objIndex][2] != nil then -- map specified
+--     -- TODO: Add support for areas later
+--     TaskProgressObjective(ply, OBJECTIVE.Kill, 1, game.GetMap())
 
-                        if info.objectives[objIndex][2] == game.GetMap() then
-                            ply.tasks[taskName].progress[objIndex] = taskInstance.progress[objIndex] + 1
-                            TaskObjectiveComplete(ply, taskName)
-                        end
+-- end)
 
-                    else -- extract in general
-                        ply.tasks[taskName].progress[objIndex] = taskInstance.progress[objIndex] + 1
-                        TaskObjectiveComplete(ply, taskName)
-                    end
+-- hook.Add("PlayerExtraction", "TaskExtract", function(ply, extractTime, isGuranteed, internalName)
 
-                elseif objType == OBJECTIVE.QuestItem && ply.questItems[info.objectives[objIndex]] == true  && ply.tasks[taskName].progress[objIndex] == 0 then
+--     if table.IsEmpty(ply.tasks) then return end
 
-                    ply.tasks[taskName].progress[objIndex] = 1
+--     for taskName, taskInstance in pairs(ply.tasks) do
 
-                    ply.questItems[info.objectives[objIndex]] = nil
+--         if taskInstance.status == TASKSTATUS.InProgress then
 
-                    TaskObjectiveComplete(ply, taskName)
+--             local info = EFGMTASKS[taskName]
 
-                end
+--             for objIndex, objType in ipairs(info.objectiveTypes) do
 
-            end
+--                 if objType == OBJECTIVE.Extract && ply.tasks[taskName].progress[objIndex] < info.objectives[objIndex][1] then
 
-        end
+--                     if info.objectives[objIndex][3] != nil then -- extract specified
 
-    end
+--                         if info.objectives[objIndex][3] == internalName then
+--                             ply.tasks[taskName].progress[objIndex] = taskInstance.progress[objIndex] + 1
+--                             TaskObjectiveComplete(ply, taskName)
+--                         end
 
-end)
+--                     elseif info.objectives[objIndex][2] != nil then -- map specified
 
-hook.Add("TaskQuestItemPickup", "TaskAddQuestItem", function(ply, item)
+--                         if info.objectives[objIndex][2] == game.GetMap() then
+--                             ply.tasks[taskName].progress[objIndex] = taskInstance.progress[objIndex] + 1
+--                             TaskObjectiveComplete(ply, taskName)
+--                         end
 
-    net.Start("SendNotification", false)
-    net.WriteString(string.NiceName(item) .. " picked up, proceed to extract.")
-    net.WriteString("icons/inventory_icon.png")
-    net.WriteString("subtaskcomplete.wav")
-    net.Send(ply)
+--                     else -- extract in general
+--                         ply.tasks[taskName].progress[objIndex] = taskInstance.progress[objIndex] + 1
+--                         TaskObjectiveComplete(ply, taskName)
+--                     end
 
-    ply.questItems[item] = true
+--                 elseif objType == OBJECTIVE.QuestItem && ply.questItems[info.objectives[objIndex]] == true  && ply.tasks[taskName].progress[objIndex] == 0 then
 
-end)
+--                     ply.tasks[taskName].progress[objIndex] = 1
 
-hook.Add("TaskAreaVisited", "TaskAddVisitedArea", function(ply, areaName)
+--                     ply.questItems[info.objectives[objIndex]] = nil
 
-    if table.IsEmpty(ply.tasks) then return end
+--                     TaskObjectiveComplete(ply, taskName)
 
-    for taskName, taskInstance in pairs(ply.tasks) do
+--                 end
 
-        if taskInstance.status == TASKSTATUS.InProgress then
+--             end
 
-            local info = EFGMTASKS[taskName]
+--         end
 
-            for objIndex, objType in ipairs(info.objectiveTypes) do
+--     end
 
-                if objType == OBJECTIVE.VisitArea && info.objectives[objIndex][2] == areaName && ply.tasks[taskName].progress[objIndex] == 0 then
+-- end)
 
-                    ply.tasks[taskName].progress[objIndex] = 1
+-- hook.Add("TaskQuestItemPickup", "TaskAddQuestItem", function(ply, item)
 
-                    TaskObjectiveComplete(ply, taskName)
+--     net.Start("SendNotification", false)
+--     net.WriteString(string.NiceName(item) .. " picked up, proceed to extract.")
+--     net.WriteString("icons/inventory_icon.png")
+--     net.WriteString("subtaskcomplete.wav")
+--     net.Send(ply)
 
-                end
+--     ply.questItems[item] = true
 
-            end
+-- end)
 
-        end
+-- hook.Add("TaskAreaVisited", "TaskAddVisitedArea", function(ply, areaName)
 
-    end
+--     if table.IsEmpty(ply.tasks) then return end
 
-end)
+--     for taskName, taskInstance in pairs(ply.tasks) do
 
--- TODO: Make this accept items and like, yk, check them
+--         if taskInstance.status == TASKSTATUS.InProgress then
 
-net.Receive("TaskGiveItem", function(len, ply)
+--             local info = EFGMTASKS[taskName]
 
-    if ply:GetNWInt("PlayerRaidStatus", 0) != 0 then return end
+--             for objIndex, objType in ipairs(info.objectiveTypes) do
 
-    local taskName = net.ReadString()
-    local itemIndex = net.ReadUInt(32)
+--                 if objType == OBJECTIVE.VisitArea && info.objectives[objIndex][2] == areaName && ply.tasks[taskName].progress[objIndex] == 0 then
 
-    local info = EFGMTASKS[taskName]
+--                     ply.tasks[taskName].progress[objIndex] = 1
 
-    if info == nil or table.IsEmpty(ply.tasks) or ply.tasks[taskName] == nil or ply.tasks[taskName].status != TASKSTATUS.InProgress then return end
+--                     TaskObjectiveComplete(ply, taskName)
 
-    for objIndex, objType in ipairs(info.objectiveTypes) do
+--                 end
 
-        if objType == OBJECTIVE.GiveItem then
+--             end
 
-            if info.objectives[objIndex][3] == true then -- item has to be FIR
+--         end
 
-                ply.tasks[taskName].progress[objIndex] = math.Clamp( ply.tasks[taskName].progress[objIndex] + 1, 0, info.objectives[objIndex][1])
+--     end
 
-            else
+-- end)
 
-                ply.tasks[taskName].progress[objIndex] = math.Clamp( ply.tasks[taskName].progress[objIndex] + 1, 0, info.objectives[objIndex][1])
+-- -- TODO: Make this accept items and like, yk, check them
 
-            end
+-- net.Receive("TaskGiveItem", function(len, ply)
 
-            print("Task objective 'Give Item' is incomplete!")
+--     if ply:GetNWInt("PlayerRaidStatus", 0) != 0 then return end
 
-            CheckTaskCompletion(ply, task)
+--     local taskName = net.ReadString()
+--     local itemIndex = net.ReadUInt(32)
 
-            return
+--     local info = EFGMTASKS[taskName]
 
-        end
+--     if info == nil or table.IsEmpty(ply.tasks) or ply.tasks[taskName] == nil or ply.tasks[taskName].status != TASKSTATUS.InProgress then return end
 
-    end
+--     for objIndex, objType in ipairs(info.objectiveTypes) do
 
-end)
+--         if objType == OBJECTIVE.GiveItem then
 
-net.Receive("TaskPay", function(len, ply)
+--             if info.objectives[objIndex][3] == true then -- item has to be FIR
 
-    if ply:GetNWInt("PlayerRaidStatus", 0) != 0 then return end
+--                 ply.tasks[taskName].progress[objIndex] = math.Clamp( ply.tasks[taskName].progress[objIndex] + 1, 0, info.objectives[objIndex][1])
 
-    local taskName = net.ReadString()
-    local amount = net.ReadUInt(32)
+--             else
 
-    local info = EFGMTASKS[taskName]
+--                 ply.tasks[taskName].progress[objIndex] = math.Clamp( ply.tasks[taskName].progress[objIndex] + 1, 0, info.objectives[objIndex][1])
 
-    if info == nil or table.IsEmpty(ply.tasks) or ply.tasks[taskName] == nil or ply.tasks[taskName].status != TASKSTATUS.InProgress then return end
+--             end
 
-    for objIndex, objType in ipairs(info.objectiveTypes) do
+--             print("Task objective 'Give Item' is incomplete!")
 
-        if objType == OBJECTIVE.Pay && ply.tasks[taskName].progress[objIndex] < info.objectives[objIndex] then
+--             CheckTaskCompletion(ply, task)
 
-            local moneyToPay = math.Clamp(amount, 0, ply:GetNWInt("Money", 0))
-            moneyToPay = math.Clamp(amount, 0, info.objectives[objIndex] - ply.tasks[taskName].progress[objIndex])
+--             return
 
-            print(moneyToPay)
+--         end
 
-            ply:SetNWInt("Money", ply:GetNWInt("Money", 0) - moneyToPay)
-            ply.tasks[taskName].progress[objIndex] = ply.tasks[taskName].progress[objIndex] + moneyToPay
+--     end
 
-            if ply.tasks[taskName].progress[objIndex] >= info.objectives[objIndex] then
-                TaskObjectiveComplete(ply, taskName)
-            end
+-- end)
 
-            return
+-- net.Receive("TaskPay", function(len, ply)
 
-        end
+--     if ply:GetNWInt("PlayerRaidStatus", 0) != 0 then return end
 
-    end
+--     local taskName = net.ReadString()
+--     local amount = net.ReadUInt(32)
 
+--     local info = EFGMTASKS[taskName]
 
-end)
+--     if info == nil or table.IsEmpty(ply.tasks) or ply.tasks[taskName] == nil or ply.tasks[taskName].status != TASKSTATUS.InProgress then return end
 
-net.Receive("TaskAccept", function(len, ply)
+--     for objIndex, objType in ipairs(info.objectiveTypes) do
 
-    local taskName = net.ReadString()
+--         if objType == OBJECTIVE.Pay && ply.tasks[taskName].progress[objIndex] < info.objectives[objIndex] then
 
-    if table.IsEmpty(ply.tasks) or ply.tasks[taskName] == nil or ply.tasks[taskName].status != TASKSTATUS.AcceptPending then return end
+--             local moneyToPay = math.Clamp(amount, 0, ply:GetNWInt("Money", 0))
+--             moneyToPay = math.Clamp(amount, 0, info.objectives[objIndex] - ply.tasks[taskName].progress[objIndex])
 
-    ply.tasks[taskName].status = TASKSTATUS.InProgress
+--             print(moneyToPay)
 
-    net.Start("SendNotification", false)
-    net.WriteString("Task " .. EFGMTASKS[taskName].name .. " accepted!")
-    net.WriteString("icons/task_add_icon.png")
-    net.WriteString("storytask_started.wav")
-    net.Send(ply)
+--             ply:SetNWInt("Money", ply:GetNWInt("Money", 0) - moneyToPay)
+--             ply.tasks[taskName].progress[objIndex] = ply.tasks[taskName].progress[objIndex] + moneyToPay
 
-end)
+--             if ply.tasks[taskName].progress[objIndex] >= info.objectives[objIndex] then
+--                 TaskObjectiveComplete(ply, taskName)
+--             end
 
-net.Receive("TaskTryComplete", function(len, ply)
+--             return
 
-    local taskName = net.ReadString()
+--         end
 
-    if table.IsEmpty(ply.tasks) or ply.tasks[taskName] == nil or ply.tasks[taskName].status != TASKSTATUS.CompletePending then return end
+--     end
 
-    CompleteTask(ply, taskName)
 
-end)
+-- end)
 
-net.Receive("TaskRequestAll", function(len, ply)
+-- net.Receive("TaskAccept", function(len, ply)
 
-    local playerTasks = ply.tasks
+--     local taskName = net.ReadString()
 
-    net.Start("TaskSendAll")
-    net.WriteTable(playerTasks) -- if I add so many tasks that I need to compress them and send them as strings I'm killing myself
-    net.Send(ply)
+--     if table.IsEmpty(ply.tasks) or ply.tasks[taskName] == nil or ply.tasks[taskName].status != TASKSTATUS.AcceptPending then return end
 
-end)
+--     ply.tasks[taskName].status = TASKSTATUS.InProgress
 
--- Debugging
+--     net.Start("SendNotification", false)
+--     net.WriteString("Task " .. EFGMTASKS[taskName].name .. " accepted!")
+--     net.WriteString("icons/task_add_icon.png")
+--     net.WriteString("storytask_started.wav")
+--     net.Send(ply)
 
-if GetConVar("efgm_derivesbox"):GetInt() == 1 then
+-- end)
 
-    hook.Add("OnNPCKilled", "TaskKill", function(victim, attacker, inflictor)
+-- net.Receive("TaskTryComplete", function(len, ply)
 
-        if victim:IsPlayer() then
+--     local taskName = net.ReadString()
 
-            victim.questItems = {}
+--     if table.IsEmpty(ply.tasks) or ply.tasks[taskName] == nil or ply.tasks[taskName].status != TASKSTATUS.CompletePending then return end
 
-        end
+--     CompleteTask(ply, taskName)
 
-        if !attacker:IsPlayer() or table.IsEmpty(attacker.tasks) then return end
+-- end)
 
-        for taskName, taskInstance in pairs(attacker.tasks) do
+-- net.Receive("TaskRequestAll", function(len, ply)
 
-            if taskInstance.status == TASKSTATUS.InProgress then
+--     local playerTasks = ply.tasks
 
-                local info = EFGMTASKS[taskName]
+--     net.Start("TaskSendAll")
+--     net.WriteTable(playerTasks) -- if I add so many tasks that I need to compress them and send them as strings I'm killing myself
+--     net.Send(ply)
 
-                for objIndex, objType in ipairs(info.objectiveTypes) do
+-- end)
 
-                    if objType == OBJECTIVE.Kill then
+-- -- Debugging
 
-                        attacker.tasks[taskName].progress[objIndex] = math.Clamp( taskInstance.progress[objIndex] + 1, 0, info.objectives[objIndex][1])
+-- if GetConVar("efgm_derivesbox"):GetInt() == 1 then
 
-                        CheckTaskCompletion(attacker, taskName)
+--     hook.Add("OnNPCKilled", "TaskKill", function(victim, attacker, inflictor)
 
-                    end
+--         attacker:PrintMessage(HUD_PRINTTALK, "TODO: Update npc kill logic")
 
-                end
+--     end)
 
-            end
-
-        end
-
-    end)
-
-end
+-- end

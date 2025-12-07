@@ -2,9 +2,8 @@
 TASKSTATUS = {}
 TASKSTATUS.InProgress = 1
 TASKSTATUS.Complete = 2
-TASKSTATUS.Declined = 3 -- wouldnt it be funny if people could just opt out of the fucking task line lmao
-TASKSTATUS.AcceptPending = 4
-TASKSTATUS.CompletePending = 5 -- for when the task is technically complete but player needs to claim they rewards
+TASKSTATUS.AcceptPending = 3
+TASKSTATUS.CompletePending = 4 -- for when the task is technically complete but player needs to claim they rewards
 
 TASKSTATUSSTRING = {}
 TASKSTATUSSTRING[1] = "In Progress"
@@ -15,7 +14,7 @@ TASKSTATUSSTRING[5] = "Completion Pending"
 
 TASK = {}
 
-function TASK.Instantiate(name, status, progress)
+function TASK.Instantiate(name, status, progress, tempProgress)
 
     if name == nil then return nil end
 
@@ -38,6 +37,22 @@ function TASK.Instantiate(name, status, progress)
     else
 
         task.progress = progress
+
+    end
+
+    task.tempProgress = {}
+
+    if tempProgress == nil then
+
+        for k, v in ipairs(info.objectives) do
+
+            task.tempProgress[k] = 0
+
+        end
+
+    else
+
+        task.tempProgress = tempProgress
 
     end
 
