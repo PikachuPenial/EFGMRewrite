@@ -207,15 +207,11 @@ function EquipItemFromInventory(itemIndex, equipSlot, primaryPref)
 
             playerWeaponSlots[equipSlot][1] = item
 
-            Menu.ReloadInventory()
-
             net.Start("PlayerInventoryEquipItem", false)
                 net.WriteUInt(itemIndex, 16)
                 net.WriteUInt(equipSlot, 4)
                 net.WriteUInt(1, 16)
             net.SendToServer()
-
-            Menu.ReloadInventory()
 
             return true
 
@@ -223,15 +219,11 @@ function EquipItemFromInventory(itemIndex, equipSlot, primaryPref)
 
             playerWeaponSlots[equipSlot][2] = item
 
-            Menu.ReloadInventory()
-
             net.Start("PlayerInventoryEquipItem", false)
                 net.WriteUInt(itemIndex, 16)
                 net.WriteUInt(equipSlot, 4)
                 net.WriteUInt(2, 16)
             net.SendToServer()
-
-            Menu.ReloadInventory()
 
             return true
 
@@ -245,15 +237,11 @@ function EquipItemFromInventory(itemIndex, equipSlot, primaryPref)
 
                 playerWeaponSlots[equipSlot][k] = item
 
-                Menu.ReloadInventory()
-
                 net.Start("PlayerInventoryEquipItem", false)
                     net.WriteUInt(itemIndex, 16)
                     net.WriteUInt(equipSlot, 4)
                     net.WriteUInt(k, 16)
                 net.SendToServer()
-
-                Menu.ReloadInventory()
 
                 return true
 
@@ -275,14 +263,10 @@ function UnEquipItemFromInventory(equipID, equipSlot)
 
     table.Empty(playerWeaponSlots[equipID][equipSlot])
 
-    Menu.ReloadSlots()
-
     net.Start("PlayerInventoryUnEquipItem", false)
         net.WriteUInt(equipID, 4)
         net.WriteUInt(equipSlot, 4)
     net.SendToServer()
-
-    Menu.ReloadSlots()
 
 end
 
@@ -293,8 +277,6 @@ function DropEquippedItem(equipID, equipSlot)
     if table.IsEmpty(item) then return end
 
     table.Empty(playerWeaponSlots[equipID][equipSlot])
-
-    Menu.ReloadSlots()
 
     net.Start("PlayerInventoryDropEquippedItem", false)
         net.WriteUInt(equipID, 4)

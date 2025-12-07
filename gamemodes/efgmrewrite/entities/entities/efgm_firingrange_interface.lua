@@ -40,6 +40,12 @@ function ENT:AcceptInput(name, ply, caller, data)
             ReloadInventory(ply)
             ply:SetNWBool("InRange", true)
 
+            net.Start("SendNotification", false)
+            net.WriteString("Entered Firing Range")
+            net.WriteString("icons/range_icon.png")
+            net.WriteString("range_enter.wav")
+            net.Send(ply)
+
         else
 
             for k, v in ipairs(ply:GetWeapons()) do
@@ -50,6 +56,12 @@ function ENT:AcceptInput(name, ply, caller, data)
             end
 
             ply:SetNWBool("InRange", false)
+
+            net.Start("SendNotification", false)
+            net.WriteString("Left Firing Range")
+            net.WriteString("icons/range_icon.png")
+            net.WriteString("range_leave.wav")
+            net.Send(ply)
 
         end
 

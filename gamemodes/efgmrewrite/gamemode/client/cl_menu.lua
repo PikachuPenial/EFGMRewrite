@@ -214,7 +214,7 @@ function Menu:Initialize(openTo, container)
     roubleIcon.OnCursorEntered = function(s)
 
         x, y = Menu.MouseX, Menu.MouseY
-        surface.PlaySound("ui/element_hover.wav")
+        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
         if x <= (ScrW() / 2) then sideH = true else sideH = false end
         if y <= (ScrH() / 2) then sideV = true else sideV = false end
@@ -296,7 +296,7 @@ function Menu:Initialize(openTo, container)
     levelIcon.OnCursorEntered = function(s)
 
         x, y = Menu.MouseX, Menu.MouseY
-        surface.PlaySound("ui/element_hover.wav")
+        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
         if x <= (ScrW() / 2) then sideH = true else sideH = false end
         if y <= (ScrH() / 2) then sideV = true else sideV = false end
@@ -508,7 +508,7 @@ function Menu:Initialize(openTo, container)
             statsIcon.OnCursorEntered = function(s)
 
                 statsTab:SizeTo(EFGM.MenuScale(46) + statsTextSize, statsTab:GetTall(), 0.15, 0, 0.5)
-                surface.PlaySound("ui/element_hover.wav")
+                surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
             end
 
@@ -578,7 +578,7 @@ function Menu:Initialize(openTo, container)
             matchIcon.OnCursorEntered = function(s)
 
                 matchTab:SizeTo(EFGM.MenuScale(46) + matchTextSize, matchTab:GetTall(), 0.15, 0, 0.5)
-                surface.PlaySound("ui/element_hover.wav")
+                surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
             end
 
@@ -648,7 +648,7 @@ function Menu:Initialize(openTo, container)
             inventoryIcon.OnCursorEntered = function(s)
 
                 inventoryTab:SizeTo(EFGM.MenuScale(46) + inventoryTextSize, inventoryTab:GetTall(), 0.15, 0, 0.5)
-                surface.PlaySound("ui/element_hover.wav")
+                surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
             end
 
@@ -720,7 +720,7 @@ function Menu:Initialize(openTo, container)
             marketIcon.OnCursorEntered = function(s)
 
                 marketTab:SizeTo(EFGM.MenuScale(46) + marketTextSize, marketTab:GetTall(), 0.15, 0, 0.5)
-                surface.PlaySound("ui/element_hover.wav")
+                surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
             end
 
@@ -797,7 +797,7 @@ function Menu:Initialize(openTo, container)
             tasksIcon.OnCursorEntered = function(s)
 
                 tasksTab:SizeTo(EFGM.MenuScale(46) + tasksTextSize, tasksTab:GetTall(), 0.15, 0, 0.5)
-                surface.PlaySound("ui/element_hover.wav")
+                surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
             end
 
@@ -868,7 +868,7 @@ function Menu:Initialize(openTo, container)
             skillsIcon.OnCursorEntered = function(s)
 
                 skillsTab:SizeTo(EFGM.MenuScale(46) + skillsTextSize, skillsTab:GetTall(), 0.15, 0, 0.5)
-                surface.PlaySound("ui/element_hover.wav")
+                surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
             end
 
@@ -939,7 +939,7 @@ function Menu:Initialize(openTo, container)
             intelIcon.OnCursorEntered = function(s)
 
                 intelTab:SizeTo(EFGM.MenuScale(46) + intelTextSize, intelTab:GetTall(), 0.15, 0, 0.5)
-                surface.PlaySound("ui/element_hover.wav")
+                surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
             end
 
@@ -1010,7 +1010,7 @@ function Menu:Initialize(openTo, container)
             achievementsIcon.OnCursorEntered = function(s)
 
                 achievementsTab:SizeTo(EFGM.MenuScale(46) + achievementsTextSize, achievementsTab:GetTall(), 0.15, 0, 0.5)
-                surface.PlaySound("ui/element_hover.wav")
+                surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
             end
 
@@ -1081,7 +1081,7 @@ function Menu:Initialize(openTo, container)
             settingsIcon.OnCursorEntered = function(s)
 
                 settingsTab:SizeTo(EFGM.MenuScale(46) + settingsTextSize, settingsTab:GetTall(), 0.15, 0, 0.5)
-                surface.PlaySound("ui/element_hover.wav")
+                surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
             end
 
@@ -1629,7 +1629,7 @@ function Menu.InspectItem(item, data)
 
     itemInfoButton.OnCursorEntered = function(s)
 
-        surface.PlaySound("ui/element_hover.wav")
+        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
     end
 
@@ -1653,7 +1653,7 @@ function Menu.InspectItem(item, data)
 
     itemWikiButton.OnCursorEntered = function(s)
 
-        surface.PlaySound("ui/element_hover.wav")
+        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
     end
 
@@ -1714,7 +1714,7 @@ function Menu.InspectItem(item, data)
 
     closeButton.OnCursorEntered = function(s)
 
-        surface.PlaySound("ui/element_hover.wav")
+        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
     end
 
@@ -1974,7 +1974,7 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
 
     yesButton.OnCursorEntered = function(s)
 
-        surface.PlaySound("ui/element_hover.wav")
+        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
     end
 
@@ -2010,7 +2010,7 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
 
     noButton.OnCursorEntered = function(s)
 
-        surface.PlaySound("ui/element_hover.wav")
+        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
     end
 
@@ -2066,13 +2066,13 @@ function Menu.ConfirmSell(item, data, key)
 
     if maxTransactionCount <= 1 and GetConVar("efgm_menu_sellprompt_single"):GetInt() == 0 then
 
-        surface.PlaySound("ui/element_select.wav")
+        surface.PlaySound("ui/success.wav")
         SellItem(item, maxTransactionCount, key)
         return
 
     elseif maxTransactionCount > 1 and GetConVar("efgm_menu_sellprompt_stacked"):GetInt() == 0 then
 
-        surface.PlaySound("ui/element_select.wav")
+        surface.PlaySound("ui/success.wav")
         SellItem(item, maxTransactionCount, key)
         return
 
@@ -2232,7 +2232,7 @@ function Menu.ConfirmSell(item, data, key)
 
     yesButton.OnCursorEntered = function(s)
 
-        surface.PlaySound("ui/element_hover.wav")
+        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
     end
 
@@ -2254,7 +2254,7 @@ function Menu.ConfirmSell(item, data, key)
 
     noButton.OnCursorEntered = function(s)
 
-        surface.PlaySound("ui/element_hover.wav")
+        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
     end
 
@@ -2402,7 +2402,7 @@ function Menu.ConfirmSplit(item, data, key, inv)
 
     yesButton.OnCursorEntered = function(s)
 
-        surface.PlaySound("ui/element_hover.wav")
+        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
     end
 
@@ -2424,7 +2424,7 @@ function Menu.ConfirmSplit(item, data, key, inv)
 
     noButton.OnCursorEntered = function(s)
 
-        surface.PlaySound("ui/element_hover.wav")
+        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
     end
 
@@ -2446,6 +2446,7 @@ function Menu.ConfirmDelete(item, key, inv, eID, eSlot)
 
     if GetConVar("efgm_menu_deleteprompt"):GetInt() == 0 then
 
+        surface.PlaySound("ui/element_select.wav")
         DeleteFromInventory(inv, item, key, eID, eSlot)
         return
 
@@ -2550,7 +2551,7 @@ function Menu.ConfirmDelete(item, key, inv, eID, eSlot)
 
     yesButton.OnCursorEntered = function(s)
 
-        surface.PlaySound("ui/element_hover.wav")
+        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
     end
 
@@ -2572,7 +2573,7 @@ function Menu.ConfirmDelete(item, key, inv, eID, eSlot)
 
     noButton.OnCursorEntered = function(s)
 
-        surface.PlaySound("ui/element_hover.wav")
+        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
     end
 
@@ -2709,7 +2710,7 @@ function Menu.ConfirmTag(item, key, inv, eID, eSlot)
 
     yesButton.OnCursorEntered = function(s)
 
-        surface.PlaySound("ui/element_hover.wav")
+        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
     end
 
@@ -2717,7 +2718,7 @@ function Menu.ConfirmTag(item, key, inv, eID, eSlot)
 
         if tagString == "" then return end
 
-        surface.PlaySound("ui/element_select.wav")
+        surface.PlaySound("ui/element_tag.wav")
         confirmPanel:AlphaTo(0, 0.1, 0, function() confirmPanel:Remove() end)
         TagFromInventory(tagString, inv, item, key, eID, eSlot)
 
@@ -2725,7 +2726,7 @@ function Menu.ConfirmTag(item, key, inv, eID, eSlot)
 
     noButton.OnCursorEntered = function(s)
 
-        surface.PlaySound("ui/element_hover.wav")
+        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
     end
 
@@ -2941,7 +2942,7 @@ function Menu.ConfirmPreset(atts, presetName, presetID, closeMenu)
 
     yesButton.OnCursorEntered = function(s)
 
-        surface.PlaySound("ui/element_hover.wav")
+        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
     end
 
@@ -2979,7 +2980,7 @@ function Menu.ConfirmPreset(atts, presetName, presetID, closeMenu)
 
     noButton.OnCursorEntered = function(s)
 
-        surface.PlaySound("ui/element_hover.wav")
+        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
     end
 
@@ -3081,7 +3082,7 @@ function Menu.ReloadInventory()
 
         end
 
-        if Menu.Player:CompareStatus(0) and table.IsEmpty(Menu.Container) then item:Droppable("stash") end
+        if Menu.Player:CompareStatus(0) and (IsValid(Menu.Container) and table.IsEmpty(Menu.Container)) then item:Droppable("stash") end
 
         function item:Paint(w, h)
 
@@ -3225,7 +3226,7 @@ function Menu.ReloadInventory()
 
             itemInspectButton.OnCursorEntered = function(s)
 
-                surface.PlaySound("ui/element_hover.wav")
+                surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
             end
 
@@ -3267,7 +3268,7 @@ function Menu.ReloadInventory()
 
                 itemStashButton.OnCursorEntered = function(s)
 
-                    surface.PlaySound("ui/element_hover.wav")
+                    surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                 end
 
@@ -3293,7 +3294,7 @@ function Menu.ReloadInventory()
 
                 itemEquipButton.OnCursorEntered = function(s)
 
-                    surface.PlaySound("ui/element_hover.wav")
+                    surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                 end
 
@@ -3319,13 +3320,12 @@ function Menu.ReloadInventory()
 
                 itemBuyAmmoButton.OnCursorEntered = function(s)
 
-                    surface.PlaySound("ui/element_hover.wav")
+                    surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                 end
 
                 function itemBuyAmmoButton:DoClick()
 
-                    surface.PlaySound("ui/element_select.wav")
                     contextMenu:Remove()
 
                     Menu.ConfirmPurchase(i.ammoID, "inv", false)
@@ -3343,7 +3343,7 @@ function Menu.ReloadInventory()
 
                     itemSetTagButton.OnCursorEntered = function(s)
 
-                        surface.PlaySound("ui/element_hover.wav")
+                        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                     end
 
@@ -3371,7 +3371,7 @@ function Menu.ReloadInventory()
 
                 itemConsumeButton.OnCursorEntered = function(s)
 
-                    surface.PlaySound("ui/element_hover.wav")
+                    surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                 end
 
@@ -3396,7 +3396,7 @@ function Menu.ReloadInventory()
 
                 itemSplitButton.OnCursorEntered = function(s)
 
-                    surface.PlaySound("ui/element_hover.wav")
+                    surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                 end
 
@@ -3420,7 +3420,7 @@ function Menu.ReloadInventory()
 
                 itemDropButton.OnCursorEntered = function(s)
 
-                    surface.PlaySound("ui/element_hover.wav")
+                    surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                 end
 
@@ -3445,13 +3445,12 @@ function Menu.ReloadInventory()
 
                 itemDeleteButton.OnCursorEntered = function(s)
 
-                    surface.PlaySound("ui/element_hover.wav")
+                    surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                 end
 
                 function itemDeleteButton:DoClick()
 
-                    surface.PlaySound("ui/element_select.wav")
                     Menu.ConfirmDelete(v.name, v.id, "inv", 0, 0)
                     contextMenu:Remove()
 
@@ -3657,7 +3656,7 @@ function Menu.ReloadSlots()
 
             itemInspectButton.OnCursorEntered = function(s)
 
-                surface.PlaySound("ui/element_hover.wav")
+                surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
             end
 
@@ -3680,7 +3679,7 @@ function Menu.ReloadSlots()
 
                 itemStashButton.OnCursorEntered = function(s)
 
-                    surface.PlaySound("ui/element_hover.wav")
+                    surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                 end
 
@@ -3702,7 +3701,7 @@ function Menu.ReloadSlots()
 
             itemUnequipButton.OnCursorEntered = function(s)
 
-                surface.PlaySound("ui/element_hover.wav")
+                surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
             end
 
@@ -3726,13 +3725,12 @@ function Menu.ReloadSlots()
 
                 itemBuyAmmoButton.OnCursorEntered = function(s)
 
-                    surface.PlaySound("ui/element_hover.wav")
+                    surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                 end
 
                 function itemBuyAmmoButton:DoClick()
 
-                    surface.PlaySound("ui/element_select.wav")
                     contextMenu:Remove()
 
                     Menu.ConfirmPurchase(i.ammoID, "inv", false)
@@ -3748,7 +3746,7 @@ function Menu.ReloadSlots()
 
                     itemSetTagButton.OnCursorEntered = function(s)
 
-                        surface.PlaySound("ui/element_hover.wav")
+                        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                     end
 
@@ -3772,7 +3770,7 @@ function Menu.ReloadSlots()
 
             itemDropButton.OnCursorEntered = function(s)
 
-                surface.PlaySound("ui/element_hover.wav")
+                surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
             end
 
@@ -3796,13 +3794,12 @@ function Menu.ReloadSlots()
 
                 itemDeleteButton.OnCursorEntered = function(s)
 
-                    surface.PlaySound("ui/element_hover.wav")
+                    surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                 end
 
                 function itemDeleteButton:DoClick()
 
-                    surface.PlaySound("ui/element_select.wav")
                     Menu.ConfirmDelete(playerWeaponSlots[1][1].name, 0, "equipped", primaryItem.SLOTID, primaryItem.SLOT)
                     contextMenu:Remove()
 
@@ -4007,7 +4004,7 @@ function Menu.ReloadSlots()
 
             itemInspectButton.OnCursorEntered = function(s)
 
-                surface.PlaySound("ui/element_hover.wav")
+                surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
             end
 
@@ -4030,7 +4027,7 @@ function Menu.ReloadSlots()
 
                 itemStashButton.OnCursorEntered = function(s)
 
-                    surface.PlaySound("ui/element_hover.wav")
+                    surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                 end
 
@@ -4052,7 +4049,7 @@ function Menu.ReloadSlots()
 
             itemUnequipButton.OnCursorEntered = function(s)
 
-                surface.PlaySound("ui/element_hover.wav")
+                surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
             end
 
@@ -4075,13 +4072,12 @@ function Menu.ReloadSlots()
 
                 itemBuyAmmoButton.OnCursorEntered = function(s)
 
-                    surface.PlaySound("ui/element_hover.wav")
+                    surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                 end
 
                 function itemBuyAmmoButton:DoClick()
 
-                    surface.PlaySound("ui/element_select.wav")
                     contextMenu:Remove()
 
                     Menu.ConfirmPurchase(i.ammoID, "inv", false)
@@ -4097,7 +4093,7 @@ function Menu.ReloadSlots()
 
                     itemSetTagButton.OnCursorEntered = function(s)
 
-                        surface.PlaySound("ui/element_hover.wav")
+                        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                     end
 
@@ -4121,7 +4117,7 @@ function Menu.ReloadSlots()
 
             itemDropButton.OnCursorEntered = function(s)
 
-                surface.PlaySound("ui/element_hover.wav")
+                surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
             end
 
@@ -4145,13 +4141,12 @@ function Menu.ReloadSlots()
 
                 itemDeleteButton.OnCursorEntered = function(s)
 
-                    surface.PlaySound("ui/element_hover.wav")
+                    surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                 end
 
                 function itemDeleteButton:DoClick()
 
-                    surface.PlaySound("ui/element_select.wav")
                     Menu.ConfirmDelete(playerWeaponSlots[1][2].name, 0, "equipped", secondaryItem.SLOTID, secondaryItem.SLOT)
                     contextMenu:Remove()
 
@@ -4357,7 +4352,7 @@ function Menu.ReloadSlots()
 
             itemInspectButton.OnCursorEntered = function(s)
 
-                surface.PlaySound("ui/element_hover.wav")
+                surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
             end
 
@@ -4380,7 +4375,7 @@ function Menu.ReloadSlots()
 
                 itemStashButton.OnCursorEntered = function(s)
 
-                    surface.PlaySound("ui/element_hover.wav")
+                    surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                 end
 
@@ -4402,7 +4397,7 @@ function Menu.ReloadSlots()
 
             itemUnequipButton.OnCursorEntered = function(s)
 
-                surface.PlaySound("ui/element_hover.wav")
+                surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
             end
 
@@ -4425,13 +4420,12 @@ function Menu.ReloadSlots()
 
                 itemBuyAmmoButton.OnCursorEntered = function(s)
 
-                    surface.PlaySound("ui/element_hover.wav")
+                    surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                 end
 
                 function itemBuyAmmoButton:DoClick()
 
-                    surface.PlaySound("ui/element_select.wav")
                     contextMenu:Remove()
 
                     Menu.ConfirmPurchase(i.ammoID, "inv", false)
@@ -4447,7 +4441,7 @@ function Menu.ReloadSlots()
 
                     itemSetTagButton.OnCursorEntered = function(s)
 
-                        surface.PlaySound("ui/element_hover.wav")
+                        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                     end
 
@@ -4471,7 +4465,7 @@ function Menu.ReloadSlots()
 
             itemDropButton.OnCursorEntered = function(s)
 
-                surface.PlaySound("ui/element_hover.wav")
+                surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
             end
 
@@ -4495,13 +4489,12 @@ function Menu.ReloadSlots()
 
                 itemDeleteButton.OnCursorEntered = function(s)
 
-                    surface.PlaySound("ui/element_hover.wav")
+                    surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                 end
 
                 function itemDeleteButton:DoClick()
 
-                    surface.PlaySound("ui/element_select.wav")
                     Menu.ConfirmDelete(playerWeaponSlots[2][1].name, 0, "equipped", holsterItem.SLOTID, holsterItem.SLOT)
                     contextMenu:Remove()
 
@@ -4670,7 +4663,7 @@ function Menu.ReloadSlots()
 
             itemInspectButton.OnCursorEntered = function(s)
 
-                surface.PlaySound("ui/element_hover.wav")
+                surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
             end
 
@@ -4693,7 +4686,7 @@ function Menu.ReloadSlots()
 
                 itemStashButton.OnCursorEntered = function(s)
 
-                    surface.PlaySound("ui/element_hover.wav")
+                    surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                 end
 
@@ -4715,7 +4708,7 @@ function Menu.ReloadSlots()
 
             itemUnequipButton.OnCursorEntered = function(s)
 
-                surface.PlaySound("ui/element_hover.wav")
+                surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
             end
 
@@ -4737,7 +4730,7 @@ function Menu.ReloadSlots()
 
                 itemSetTagButton.OnCursorEntered = function(s)
 
-                    surface.PlaySound("ui/element_hover.wav")
+                    surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                 end
 
@@ -4759,7 +4752,7 @@ function Menu.ReloadSlots()
 
             itemDropButton.OnCursorEntered = function(s)
 
-                surface.PlaySound("ui/element_hover.wav")
+                surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
             end
 
@@ -4783,13 +4776,12 @@ function Menu.ReloadSlots()
 
                 itemDeleteButton.OnCursorEntered = function(s)
 
-                    surface.PlaySound("ui/element_hover.wav")
+                    surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                 end
 
                 function itemDeleteButton:DoClick()
 
-                    surface.PlaySound("ui/element_select.wav")
                     Menu.ConfirmDelete(playerWeaponSlots[3][1].name, 0, "equipped", meleeItem.SLOTID, meleeItem.SLOT)
                     contextMenu:Remove()
 
@@ -4950,7 +4942,7 @@ function Menu.ReloadSlots()
 
             itemInspectButton.OnCursorEntered = function(s)
 
-                surface.PlaySound("ui/element_hover.wav")
+                surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
             end
 
@@ -4973,7 +4965,7 @@ function Menu.ReloadSlots()
 
                 itemStashButton.OnCursorEntered = function(s)
 
-                    surface.PlaySound("ui/element_hover.wav")
+                    surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                 end
 
@@ -4995,7 +4987,7 @@ function Menu.ReloadSlots()
 
             itemUnequipButton.OnCursorEntered = function(s)
 
-                surface.PlaySound("ui/element_hover.wav")
+                surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
             end
 
@@ -5015,7 +5007,7 @@ function Menu.ReloadSlots()
 
             itemDropButton.OnCursorEntered = function(s)
 
-                surface.PlaySound("ui/element_hover.wav")
+                surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
             end
 
@@ -5039,13 +5031,12 @@ function Menu.ReloadSlots()
 
                 itemDeleteButton.OnCursorEntered = function(s)
 
-                    surface.PlaySound("ui/element_hover.wav")
+                    surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                 end
 
                 function itemDeleteButton:DoClick()
 
-                    surface.PlaySound("ui/element_select.wav")
                     Menu.ConfirmDelete(playerWeaponSlots[4][1].name, 0, "equipped", nadeItem.SLOTID, nadeItem.SLOT)
                     contextMenu:Remove()
 
@@ -5366,7 +5357,7 @@ function Menu.ReloadStash()
 
             itemInspectButton.OnCursorEntered = function(s)
 
-                surface.PlaySound("ui/element_hover.wav")
+                surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
             end
 
@@ -5385,7 +5376,7 @@ function Menu.ReloadStash()
 
             itemTakeButton.OnCursorEntered = function(s)
 
-                surface.PlaySound("ui/element_hover.wav")
+                surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
             end
 
@@ -5422,7 +5413,7 @@ function Menu.ReloadStash()
 
                 itemEquipButton.OnCursorEntered = function(s)
 
-                    surface.PlaySound("ui/element_hover.wav")
+                    surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                 end
 
@@ -5447,13 +5438,12 @@ function Menu.ReloadStash()
 
                 itemBuyAmmoButton.OnCursorEntered = function(s)
 
-                    surface.PlaySound("ui/element_hover.wav")
+                    surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                 end
 
                 function itemBuyAmmoButton:DoClick()
 
-                    surface.PlaySound("ui/element_select.wav")
                     contextMenu:Remove()
 
                     Menu.ConfirmPurchase(i.ammoID, "stash", false)
@@ -5471,7 +5461,7 @@ function Menu.ReloadStash()
 
                     itemSetTagButton.OnCursorEntered = function(s)
 
-                        surface.PlaySound("ui/element_hover.wav")
+                        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                     end
 
@@ -5499,7 +5489,7 @@ function Menu.ReloadStash()
 
                 itemSplitButton.OnCursorEntered = function(s)
 
-                    surface.PlaySound("ui/element_hover.wav")
+                    surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                 end
 
@@ -5520,13 +5510,13 @@ function Menu.ReloadStash()
 
             itemPinButton.OnCursorEntered = function(s)
 
-                surface.PlaySound("ui/element_hover.wav")
+                surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
             end
 
             function itemPinButton:DoClick()
 
-                surface.PlaySound("ui/element_select.wav")
+                if v.data.pin == 1 then surface.PlaySound("ui/element_unpinned.wav") else surface.PlaySound("ui/element_pin.wav") end
                 PinItemFromStash(v.id)
                 contextMenu:Remove()
 
@@ -5543,13 +5533,12 @@ function Menu.ReloadStash()
 
                 itemDeleteButton.OnCursorEntered = function(s)
 
-                    surface.PlaySound("ui/element_hover.wav")
+                    surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                 end
 
                 function itemDeleteButton:DoClick()
 
-                    surface.PlaySound("ui/element_select.wav")
                     Menu.ConfirmDelete(v.name, v.id, "stash", 0, 0)
                     contextMenu:Remove()
 
@@ -5843,7 +5832,7 @@ function Menu.ReloadMarketStash()
 
             itemInspectButton.OnCursorEntered = function(s)
 
-                surface.PlaySound("ui/element_hover.wav")
+                surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
             end
 
@@ -5862,7 +5851,7 @@ function Menu.ReloadMarketStash()
 
             itemSellButton.OnCursorEntered = function(s)
 
-                surface.PlaySound("ui/element_hover.wav")
+                surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
             end
 
@@ -6109,7 +6098,7 @@ function Menu.ReloadContainer()
 
             itemInspectButton.OnCursorEntered = function(s)
 
-                surface.PlaySound("ui/element_hover.wav")
+                surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
             end
 
@@ -6138,7 +6127,7 @@ function Menu.ReloadContainer()
 
                 itemLootButton.OnCursorEntered = function(s)
 
-                    surface.PlaySound("ui/element_hover.wav")
+                    surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                 end
 
@@ -6662,13 +6651,13 @@ function Menu.OpenTab.Inventory(container)
 
         unloadButton.OnCursorEntered = function(s)
 
-            surface.PlaySound("ui/element_hover.wav")
+            surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
         end
 
         function unloadButton:DoClick()
 
-            surface.PlaySound("ui/element_select.wav")
+            surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
 
             UnequipAll()
 
@@ -6776,7 +6765,7 @@ function Menu.OpenTab.Inventory(container)
     if Menu.Player:CompareStatus(0) then
 
         surface.SetFont("PuristaBold24")
-        unloadText = "UNLOAD"
+        unloadText = "STASH ALL"
         unloadTextSize = surface.GetTextSize(unloadText)
         unloadButtonSize = unloadTextSize + EFGM.MenuScale(10)
 
@@ -6802,13 +6791,13 @@ function Menu.OpenTab.Inventory(container)
 
         unloadButton.OnCursorEntered = function(s)
 
-            surface.PlaySound("ui/element_hover.wav")
+            surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
         end
 
         function unloadButton:DoClick()
 
-            surface.PlaySound("ui/element_select.wav")
+            surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
 
             UnloadInventoryToStash()
 
@@ -6870,7 +6859,7 @@ function Menu.OpenTab.Inventory(container)
 
     searchButton.OnCursorEntered = function(s)
 
-        surface.PlaySound("ui/element_hover.wav")
+        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
     end
 
@@ -7204,7 +7193,7 @@ function Menu.OpenTab.Inventory(container)
 
     stashSearchButton.OnCursorEntered = function(s)
 
-        surface.PlaySound("ui/element_hover.wav")
+        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
     end
 
@@ -7434,7 +7423,7 @@ function Menu.OpenTab.Market()
 
     marketStashSearchButton.OnCursorEntered = function(s)
 
-        surface.PlaySound("ui/element_hover.wav")
+        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
     end
 
@@ -7583,7 +7572,7 @@ function Menu.OpenTab.Market()
 
     lastPageButton.OnCursorEntered = function(s)
 
-        surface.PlaySound("ui/element_hover.wav")
+        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
     end
 
@@ -7603,7 +7592,7 @@ function Menu.OpenTab.Market()
 
     nextPageButton.OnCursorEntered = function(s)
 
-        surface.PlaySound("ui/element_hover.wav")
+        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
     end
 
@@ -7660,7 +7649,7 @@ function Menu.OpenTab.Market()
 
     marketSortByButton.OnCursorEntered = function(s)
 
-        surface.PlaySound("ui/element_hover.wav")
+        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
     end
 
@@ -7673,7 +7662,7 @@ function Menu.OpenTab.Market()
 
     marketSortWithButton.OnCursorEntered = function(s)
 
-        surface.PlaySound("ui/element_hover.wav")
+        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
     end
 
@@ -7686,7 +7675,7 @@ function Menu.OpenTab.Market()
 
     marketShowUnlockButton.OnCursorEntered = function(s)
 
-        surface.PlaySound("ui/element_hover.wav")
+        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
     end
 
@@ -8034,7 +8023,7 @@ function Menu.OpenTab.Market()
 
                     itemInspectButton.OnCursorEntered = function(s)
 
-                        surface.PlaySound("ui/element_hover.wav")
+                        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                     end
 
@@ -8055,7 +8044,7 @@ function Menu.OpenTab.Market()
 
                     itemFavoriteButton.OnCursorEntered = function(s)
 
-                        surface.PlaySound("ui/element_hover.wav")
+                        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                     end
 
@@ -8091,7 +8080,7 @@ function Menu.OpenTab.Market()
 
                         itemBuyButton.OnCursorEntered = function(s)
 
-                            surface.PlaySound("ui/element_hover.wav")
+                            surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                         end
 
@@ -8428,7 +8417,7 @@ function Menu.OpenTab.Market()
 
         function category:OnCursorEntered()
 
-            surface.PlaySound("ui/element_hover.wav")
+            surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
         end
 
@@ -8611,7 +8600,7 @@ function Menu.OpenTab.Intel()
 
                     function subEntry:OnCursorEntered()
 
-                        surface.PlaySound("ui/element_hover.wav")
+                        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                     end
 
@@ -9049,7 +9038,7 @@ function Menu.OpenTab.Match()
 
         squadCreateButton.OnCursorEntered = function(s)
 
-            surface.PlaySound("ui/element_hover.wav")
+            surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
         end
 
@@ -9149,7 +9138,7 @@ function Menu.OpenTab.Match()
                 squadEntry.OnCursorEntered = function(s)
 
                     x, y = Menu.MouseX, Menu.MouseY
-                    surface.PlaySound("ui/element_hover.wav")
+                    surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                     if x <= (ScrW() / 2) then sideH = true else sideH = false end
                     if y <= (ScrH() / 2) then sideV = true else sideV = false end
@@ -9387,7 +9376,7 @@ function Menu.OpenTab.Match()
 
                 function currentSquadPasswordButton:OnCursorEntered()
 
-                    surface.PlaySound("ui/element_hover.wav")
+                    surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                 end
 
@@ -9496,7 +9485,7 @@ function Menu.OpenTab.Match()
                     transferToMember.OnCursorEntered = function(s)
 
                         x, y = Menu.MouseX, Menu.MouseY
-                        surface.PlaySound("ui/element_hover.wav")
+                        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                         if x <= (ScrW() / 2) then sideH = true else sideH = false end
                         if y <= (ScrH() / 2) then sideV = true else sideV = false end
@@ -9589,7 +9578,7 @@ function Menu.OpenTab.Match()
                     kickMember.OnCursorEntered = function(s)
 
                         x, y = Menu.MouseX, Menu.MouseY
-                        surface.PlaySound("ui/element_hover.wav")
+                        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                         if x <= (ScrW() / 2) then sideH = true else sideH = false end
                         if y <= (ScrH() / 2) then sideV = true else sideV = false end
@@ -9715,7 +9704,7 @@ function Menu.OpenTab.Match()
 
             function currentSquadLeaveButton:OnCursorEntered()
 
-                surface.PlaySound("ui/element_hover.wav")
+                surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
             end
 
@@ -9909,7 +9898,7 @@ function Menu.OpenTab.Stats()
 
     leaderboardSelectButton.OnCursorEntered = function(s)
 
-        surface.PlaySound("ui/element_hover.wav")
+        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
     end
 
@@ -10079,7 +10068,7 @@ function Menu.OpenTab.Skills()
         skillItem.OnCursorEntered = function(s)
 
             x, y = Menu.MouseX, Menu.MouseY
-            surface.PlaySound("ui/element_hover.wav")
+            surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
             if x <= (ScrW() / 2) then sideH = true else sideH = false end
             if y <= (ScrH() / 2) then sideV = true else sideV = false end
@@ -11216,7 +11205,7 @@ function Menu.OpenTab.Tasks()
 
                     taskButton.OnCursorEntered = function(s)
 
-                        surface.PlaySound("ui/element_hover.wav")
+                        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                     end
 
@@ -11297,7 +11286,7 @@ function Menu.OpenTab.Tasks()
 
                     acceptButton.OnCursorEntered = function(s)
 
-                        surface.PlaySound("ui/element_hover.wav")
+                        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                     end
 
@@ -11340,7 +11329,7 @@ function Menu.OpenTab.Tasks()
 
                     completeButton.OnCursorEntered = function(s)
 
-                        surface.PlaySound("ui/element_hover.wav")
+                        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
                     end
 

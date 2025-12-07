@@ -144,7 +144,13 @@ util.AddNetworkString("SendNotification")
 
 --                 end
 
---             end
+                -- net.Start("SendNotification", false)
+                -- net.WriteString("You have leveled up!")
+                -- net.WriteString("icons/increase_icon.png")
+                -- net.WriteString("achivement_earned.wav")
+                -- net.Send(ply)
+
+            -- end
 
 --         elseif rewardType == REWARD.PlayerStat && info.rewards[rewardIndex][2] != "Experience" then
 

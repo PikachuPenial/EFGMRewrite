@@ -304,6 +304,7 @@ net.Receive("PlayerInventoryEquipItem", function(len, ply)
 
     end
 
+    ReloadSlots(ply)
     ReloadInventory(ply)
 
 end)
@@ -367,6 +368,7 @@ net.Receive("PlayerInventoryUnEquipItem", function(len, ply)
     net.Send(ply)
 
     ReloadInventory(ply)
+    ReloadSlots(ply)
 
 end)
 

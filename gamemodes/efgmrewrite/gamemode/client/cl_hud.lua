@@ -1427,6 +1427,8 @@ function CreateNotification(text, icon, snd)
 
     local panel = GetHUDPanel()
     if Menu.MenuFrame != nil and Menu.MenuFrame:IsActive() == true then panel = Menu.MenuFrame end
+    if ExtractPopup != nil and ExtractPopup:IsValid() then panel = ExtractPopup end
+    if DeathPopup != nil and DeathPopup:IsValid() then panel = DeathPopup end
 
     surface.SetFont("BenderNotification")
     local tw = surface.GetTextSize(text) + EFGM.ScreenScale(45)
@@ -1442,13 +1444,16 @@ function CreateNotification(text, icon, snd)
     notif:AlphaTo(0, 0.2, 4, nil)
     notif:MoveTo(ScrW() / 2 - (tw / 2), ScrH(), 0.25, 4, 1, function() notif:Remove() end)
 
-    notif:MoveToBack()
+    notif:MoveToFront()
 
     if snd then surface.PlaySound(snd) end
 
-    notif.Paint = function(self2, w, h)
+    notif.Paint = function(s, w, h)
+        BlurPanel(s, EFGM.MenuScale(3))
         surface.SetDrawColor(0, 0, 0, 200)
         surface.DrawRect(0, 0, w, h)
+        surface.SetDrawColor(255, 255, 255, 155)
+        surface.DrawRect(0, 0, w, EFGM.ScreenScale(1))
         surface.SetDrawColor(255, 255, 255, 255)
         surface.SetMaterial(icon)
         surface.DrawTexturedRect(EFGM.ScreenScale(2), 0, h, h)

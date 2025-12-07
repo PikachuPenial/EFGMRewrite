@@ -107,7 +107,11 @@ function ENT:AcceptInput(name, ply, caller, data)
         if ply:CompareStatus(0) or !ply:CompareSpawnGroup(self.ExtractGroup) then return end
 
         if self.IsDisabled then
-            ply:PrintMessage( HUD_PRINTCENTER, self.DisabledMessage )
+			net.Start("SendNotification", false)
+            net.WriteString(self.DisabledMessage)
+            net.WriteString("icons/extract_disabled_icon.png")
+            net.WriteString("ui/squad_leave.wav")
+            net.Send(ply)
         else
             self:StartExtract(ply)
         end
@@ -121,7 +125,11 @@ function ENT:AcceptInput(name, ply, caller, data)
         if ply:CompareStatus(0) or !ply:CompareSpawnGroup(self.ExtractGroup) then return end
 
         if self.IsDisabled then
-            ply:PrintMessage( HUD_PRINTCENTER, self.DisabledMessage )
+			net.Start("SendNotification", false)
+            net.WriteString(self.DisabledMessage)
+            net.WriteString("icons/extract_disabled_icon.png")
+            net.WriteString("ui/squad_leave.wav")
+            net.Send(ply)
         else
             self:Extract(ply)
         end

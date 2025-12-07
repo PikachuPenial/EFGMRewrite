@@ -373,6 +373,12 @@ function ApplyPlayerExperience(ply, mult)
 
 		end
 
+		net.Start("SendNotification", false)
+		net.WriteString("You have leveled up!")
+		net.WriteString("icons/increase_icon.png")
+		net.WriteString("achivement_earned.wav")
+		net.Send(ply)
+
 	end
 
 	ply:SetNWFloat("ExperienceTime", 0)

@@ -128,7 +128,12 @@ if SERVER then
 
         for k, v in pairs(SQUADS[squad].MEMBERS) do
             if v == ply then return end
-            v:ChatPrint(ply:GetName() .. " has joined your squad!")
+
+            net.Start("SendNotification", false)
+            net.WriteString(ply:GetName() .. " has joined your squad!")
+            net.WriteString("icons/squad_joined_icon.png")
+            net.WriteString("ui/squad_joined.wav")
+            net.Send(v)
         end
     end)
 
@@ -156,7 +161,11 @@ if SERVER then
         NetworkSquadInfoToClients()
 
         for k, v in pairs(SQUADS[squad].MEMBERS) do
-            v:ChatPrint(ply:GetName() .. " has left your squad!")
+            net.Start("SendNotification", false)
+            net.WriteString(ply:GetName() .. " has left your squad!")
+            net.WriteString("icons/squad_leave_icon.png")
+            net.WriteString("ui/squad_leave.wav")
+            net.Send(v)
         end
     end)
 
@@ -173,9 +182,17 @@ if SERVER then
             if string.lower(v:GetName()) == string.lower(newOwner) then
                 ReplaceSquadOwner(v, squad)
                 newOwnerEnt = v
-                v:ChatPrint("You are now the squad owner!")
+                net.Start("SendNotification", false)
+                net.WriteString("You are now the squad owner!")
+                net.WriteString("icons/squad_owner_icon.png")
+                net.WriteString("ui/squad_ownership.wav")
+                net.Send(v)
             elseif v != ply then
-                v:ChatPrint("Squad ownership transfered to " .. newOwner .. "!")
+                net.Start("SendNotification", false)
+                net.WriteString("Squad ownership transfered to " .. newOwner .. "!")
+                net.WriteString("icons/squad_owner_icon.png")
+                net.WriteString("ui/squad_ownership.wav")
+                net.Send(v)
             end
         end
 
@@ -196,7 +213,12 @@ if SERVER then
                 table.RemoveByValue(SQUADS[squad].MEMBERS, v)
                 v:SetNW2String("PlayerInSquad", "nil")
                 v:SetNW2String("TeamChatChannel", "nil")
-                v:ChatPrint("You have been kicked from your squad!")
+
+                net.Start("SendNotification", false)
+                net.WriteString("You have been kicked from your squad!")
+                net.WriteString("icons/squad_kicked_icon.png")
+                net.WriteString("ui/squad_leave.wav")
+                net.Send(v)
             end
         end
 
@@ -213,7 +235,11 @@ if SERVER then
 
         for k, v in pairs(SQUADS[squad].MEMBERS) do
             if v != ply then
-                v:ChatPrint("Your squad has been disbanded!")
+                net.Start("SendNotification", false)
+                net.WriteString("Your squad has been disbanded!")
+                net.WriteString("icons/squad_disband_icon.png")
+                net.WriteString("ui/squad_disband.wav")
+                net.Send(v)
             end
         end
 
