@@ -177,15 +177,15 @@ util.AddNetworkString("SendNotification")
 -- end
 
 
--- -- TODO: FINISH THIS
+-- TODO: FINISH THIS
 -- function TaskProgressObjective(ply, progressObjType, count, info, subInfo, taskName)
 
 --     if !ply:IsPlayer() or table.IsEmpty(ply.tasks) then return end
 
---     if taskName != nil then -- for pay / give item tasks
-
---         return
+--     if progressObjType == OBJECTIVE.Pay or progressObjType == OBJECTIVE.GiveItem && taskName != nil then
         
+--         return
+
 --     end
 
 --     for taskName, taskInstance in pairs(ply.tasks) do
@@ -196,11 +196,33 @@ util.AddNetworkString("SendNotification")
 
 --             for objIndex, objInfo in ipairs(taskInfo.objectives) do
 
---                 if objInfo.type == progressObjType && (objInfo.info == nil or objInfo.info == info) && (objInfo.subInfo == nil or objInfo.subInfo == subInfo) then
+--                 if objInfo.type == progressObjType && (objInfo.info == nil or objInfo.info == info) && (objInfo.subInfo == nil or objInfo.subInfo == subInfo) && taskInstance.progress[objIndex] + taskInstance.tempProgress[objIndex] < objInfo.count then
 
 --                     if objInfo.whenToSave == SAVEON.Progress then
                         
+--                         if taskInstance.progress[objIndex] + count < objInfo.count then
 
+--                             ply.tasks[taskName].progress[objIndex] = taskInstance.progress[objIndex] + count
+
+--                         elseif taskInstance.progress[objIndex] + count == objInfo.count
+
+--                             ply.tasks[taskName].progress[objIndex] = objInfo.count
+
+--                             TaskObjectiveComplete(ply, taskName)
+                            
+--                         end
+
+--                     else
+
+--                         if taskInstance.progress[objIndex] + taskInstance.tempProgress[objIndex] + count < objInfo.count then
+
+--                             ply.tasks[taskName].tempProgress[objIndex] = taskInstance.tempProgress[objIndex] + count
+
+--                         elseif taskInstance.progress[objIndex] + taskInstance.tempProgress[objIndex] + count == objInfo.count
+
+--                             ply.tasks[taskName].tempProgress[objIndex] = objInfo.count - ply.tasks[taskName].progress[objIndex]
+
+--                         end
 
 --                     end
 

@@ -120,6 +120,7 @@ SAVEON.TaskComplete = 4
 --         local obj = {}
 
 --         obj.type = OBJECTIVE.QuestItem
+--         obj.count = 1
 --         obj.info = itemName
 --         obj.subInfo = mapName
 --         obj.whenToSave = SAVEON.Extract
