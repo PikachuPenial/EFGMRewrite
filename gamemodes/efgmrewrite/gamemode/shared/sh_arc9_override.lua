@@ -414,6 +414,112 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
         self:SetLoadedRounds(0)
     end
 
+    function SWEP:PrimaryAttack()
+        if self.NotAWeapon then return end
+
+        local owner = self:GetOwner()
+
+        if owner:IsNPC() then
+            self:NPC_PrimaryAttack()
+            return
+        end
+
+        if self:GetProcessedValue("Throwable", true) then
+            return
+        end
+
+        if self:GetProcessedValue("PrimaryBash", true) then
+            return
+        end
+
+        if self:GetProcessedValue("UBGLInsteadOfSights", true) then
+            self:ToggleUBGL(false)
+        end
+
+        if self:GetSafe() then
+            self:ToggleSafety(false)
+            self:SetNeedTriggerPress(true)
+            return
+        end
+
+        if self:GetNeedTriggerPress() then return end
+
+        if self:GetNeedsCycle() then return end
+
+
+        if self:GetCustomize() then return end
+
+        if self:GetProcessedValue("Bash", true) and owner:KeyDown(IN_USE) and !self:GetInSights() then
+            if self:GetIsSprinting() and !self.ShootWhileSprint then return end
+            self:MeleeAttack()
+            self:SetNeedTriggerPress(true)
+            return
+        end
+
+        if self:SprintLock() then return end
+
+        if self:GetOwner():GetNWBool("InRange", false) == false and self:GetOwner():CompareStatus(0) then return end
+
+        local nthShot = self:GetNthShot()
+
+        if self:HasAmmoInClip() then
+            if self:GetProcessedValue("TriggerDelay") then
+                local primedAttack = self:GetPrimedAttack()
+                local time = CurTime()
+
+                if self:GetBurstCount() == 0 and !primedAttack and !self:StillWaiting() then
+                    self:SetTriggerDelay(time + self:GetProcessedValue("TriggerDelayTime"))
+                    local isEmpty = self:Clip1() == self:GetProcessedValue( "AmmoPerShot")
+                    local anim = "trigger"
+
+                    if self:GetProcessedValue("Akimbo", true) then
+                        if self:GetProcessedValue( "AkimboBoth", true) then
+                            anim = "trigger_both"
+                        elseif nthShot % 2 == 0 then
+                            anim = "trigger_right"
+                        else
+                            anim = "trigger_left"
+                        end
+                    end
+
+                    if self:GetProcessedValue("TriggerStartFireAnim", true) then
+                            if self:GetProcessedValue("Akimbo", true) then
+                                if self:GetProcessedValue( "AkimboBoth", true) then
+                                    anim = "fire_both"
+                                elseif nthShot % 2 == 0 then
+                                    anim = "fire_right"
+                                else
+                                    anim = "fire_left"
+                                end
+                            else anim = "fire"
+                        end
+                    end
+                    if self:HasAnimation(anim .. "_empty", true) and isEmpty then
+                        anim = anim .. "_empty"
+                    end
+                    self:PlayAnimation(anim)
+                    self:SetPrimedAttack(true)
+                    return
+                elseif primedAttack and (self:GetTriggerDelay() <= time and (!self:GetProcessedValue( "TriggerDelayReleaseToFire", true) or !owner:KeyDown(IN_ATTACK))) then
+                    self:SetPrimedAttack(false)
+                end
+            end
+        elseif !self:GetProcessedValue("TriggerDelay") or !self:GetProcessedValue( "TriggerDelayReleaseToFire", true) or !owner:KeyDown(IN_ATTACK) then
+            self:SetPrimedAttack(false)
+        end
+
+        if self:GetReloading() then
+            self:SetEndReload(true)
+        end
+
+        self:DoPrimaryAttack()
+
+        if self.RecentMelee then
+            self.RecentMelee = nil
+        end
+
+    end
+
     if CLIENT then
 
         local flaremat = Material("effects/arc9_lensflare", "mips smooth")
