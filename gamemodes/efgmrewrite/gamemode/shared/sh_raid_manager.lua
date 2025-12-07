@@ -78,9 +78,6 @@ if SERVER then
             if GetGlobalInt("RaidStatus") != raidStatus.ACTIVE then print("raid isnt active") return end
             if #plys > 4 then print("too many fucking people in your team dumbass") return end
 
-            local spawn = GetValidRaidSpawn(status)
-            local allSpawns = spawn.Spawns
-
             table.removeKey(SQUADS, squad)
             NetworkSquadInfoToClients()
 
@@ -98,6 +95,8 @@ if SERVER then
                     v:Freeze(true)
 
                     timer.Create("Spawn" .. v:SteamID64(), 1, 1, function()
+                        local spawn = GetValidRaidSpawn(status)
+                        local allSpawns = spawn.Spawns
                         v:Teleport(allSpawns[k]:GetPos(), allSpawns[k]:GetAngles(), Vector(0, 0, 0))
                         v:Freeze(false)
 

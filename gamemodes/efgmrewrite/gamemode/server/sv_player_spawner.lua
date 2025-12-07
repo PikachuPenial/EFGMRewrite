@@ -4,30 +4,41 @@
 
 hook.Add("IsSpawnpointSuitable", "CheckSpawnPoint", function(ply, spawnpointent, bMakeSuitable)
 	local pos = spawnpointent:GetPos()
+    local name = spawnpointent:GetName()
 
-	local entities = ents.FindInBox(pos + Vector(-2048, -2048, -2048), pos + Vector(2048, 2048, 2048))
+    local checkScale = 1280
+    if name == "info_player_start" then checkScale = 48 end
+
+	local entities = ents.FindInBox(pos + Vector(checkScale * -1, checkScale * -1, checkScale * -1), pos + Vector(checkScale, checkScale, checkScale))
 	local entsBlocking = 0
 
-	for _, v in ipairs(entities) do
-		if (v:IsPlayer() and v:Alive()) then
-			entsBlocking = entsBlocking + 1
-		end
-	end
+    if name == "info_player_start" then
+        for _, v in ipairs(entities) do
+            if v:IsPlayer() and v:CompareStatus(0) then
+                entsBlocking = entsBlocking + 1
+            end
+        end
+    else
+        for _, v in ipairs(entities) do
+            if v:IsPlayer() and !v:CompareStatus(0) then
+                entsBlocking = entsBlocking + 1
+            end
+        end
+    end
 
 	if (entsBlocking > 0) then return false end
 	return true
 end )
 
-local spawns
-
 function BetterRandom(haystack) -- this is literally never used ever
     return haystack[math.random(#haystack)]
 end
 
+-- raid
 function GetValidRaidSpawn(status) -- status: 0 = lobby, 1 = pmc, 2 = scav (assuming 1)
     if status == 0 then return nil end
 
-    spawns = ents.FindByClass("efgm_raid_spawn")
+    local spawns = ents.FindByClass("efgm_raid_spawn")
 
     if status == 1 then
 
@@ -44,7 +55,7 @@ function GetValidRaidSpawn(status) -- status: 0 = lobby, 1 = pmc, 2 = scav (assu
         for i = 0, size do
             local randomSpawn = math.random(#pmcSpawns)
 
-            if (hook.Call("IsSpawnpointSuitable", GAMEMODE, ply, pmcSpawns[randomSpawn], i == size)) then
+            if (hook.Call("IsSpawnpointSuitable", GAMEMODE, ply, pmcSpawns[randomSpawn], false)) then
                 return pmcSpawns[randomSpawn]
             end
         end
@@ -67,7 +78,7 @@ function GetValidRaidSpawn(status) -- status: 0 = lobby, 1 = pmc, 2 = scav (assu
         for i = 0, size do
             local randomSpawn = math.random(#scavSpawns)
 
-            if (hook.Call("IsSpawnpointSuitable", GAMEMODE, ply, scavSpawns[randomSpawn], i == size)) then
+            if (hook.Call("IsSpawnpointSuitable", GAMEMODE, ply, scavSpawns[randomSpawn], false)) then
                 return scavSpawns[randomSpawn]
             end
         end
@@ -75,4 +86,23 @@ function GetValidRaidSpawn(status) -- status: 0 = lobby, 1 = pmc, 2 = scav (assu
         local randomSpawn = math.random(#scavSpawns)
         return scavSpawns[randomSpawn]
     end
+end
+
+-- hideout
+function GM:PlayerSelectSpawn(ply)
+
+	local spawns = ents.FindByClass("info_player_start")
+	local size = table.Count(spawns)
+
+	for i = 0, size do
+		local randomSpawn = math.random(#spawns)
+
+		if (hook.Call("IsSpawnpointSuitable", GAMEMODE, ply, spawns[randomSpawn], false)) then
+			return spawns[randomSpawn]
+		end
+	end
+
+	local randomSpawn = math.random(#spawns)
+	return spawns[randomSpawn]
+
 end
