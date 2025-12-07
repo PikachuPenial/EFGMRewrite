@@ -12,6 +12,23 @@ Menu.Player = LocalPlayer()
 Menu.IsOpen = false
 Menu.PerferredShopDestination = nil
 
+local holdtypes = {
+    "idle_revolver",
+    "idle_dual",
+    "idle_rpg",
+    "idle_passive",
+    "idle_slam",
+    "idle_camera",
+    "idle_grenade",
+    "idle_melee2",
+    "idle_knife",
+    "idle_magic",
+    "pose_standing_01",
+    "pose_standing_02",
+    "pose_standing_03",
+    "pose_standing_04"
+}
+
 local plyItems = {}
 local plyStashItems = {}
 local marketPlyStashItems = {}
@@ -6255,11 +6272,12 @@ function Menu.OpenTab.Inventory(container)
 
     playerModel.Entity:SetPos(Vector(-108, -1, -63))
     playerModel.Entity:SetAngles(Angle(0, 20, 0))
+    playerModel.Entity:ResetSequence(table.Random(holdtypes))
 
     function playerModel:LayoutEntity(Entity)
 
         if !IsValid(Entity) then return end
-        playerModel:RunAnimation()
+        -- playerModel:RunAnimation()
 
     end
 

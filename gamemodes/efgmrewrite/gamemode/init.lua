@@ -399,7 +399,8 @@ hook.Add("PlayerCanPickupWeapon", "InventoryWeaponPickup", function(ply, wep)
 	local data = {}
 
 	local atts = table.Copy(wep.Attachments)
-	local str = GenerateAttachString(atts)
+	local str
+	if atts then str = GenerateAttachString(atts) end
 	data.att = str
 
 	data.count = 1
