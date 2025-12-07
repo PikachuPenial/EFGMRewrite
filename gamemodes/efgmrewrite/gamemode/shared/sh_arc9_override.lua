@@ -416,6 +416,132 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
 
     if CLIENT then
 
+        local flaremat = Material("effects/arc9_lensflare", "mips smooth")
+        local badcolor = Color(255, 255, 255)
+        local arc9_allflash = GetConVar("arc9_allflash")
+
+        function SWEP:CreateFlashlights()
+            self:KillFlashlights()
+            self.Flashlights = {}
+
+            local total_lights = 0
+            local lp = LocalPlayer()
+            nvgon = checknvg(self)
+
+            for _, k in ipairs(self:GetSubSlotList()) do
+                if !k.Installed then continue end
+                local atttbl = self:GetFinalAttTable(k)
+
+                if atttbl.Flashlight then
+                    local newlight = {
+                        slottbl = k,
+                        light = ProjectedTexture(),
+                        col = atttbl.FlashlightColor or color_white,
+                        br = atttbl.FlashlightBrightness or 3,
+                        qca = atttbl.FlashlightAttachment,
+                        nodotter = atttbl.Flashlight360
+                    }
+
+                    if nvgon and atttbl.FlashlightIR then
+                        newlight.col = irflashcolor
+                        newlight.br = 1
+                    end
+
+                    total_lights = total_lights + 1
+
+                    local l = newlight.light
+                    if !IsValid(l) then continue end
+
+                    table.insert(self.Flashlights, newlight)
+
+                    l:SetFOV(atttbl.FlashlightFOV or 50)
+
+
+                    l:SetFarZ(atttbl.FlashlightDistance or 1024)
+                    -- l:SetNearZ(4)
+                    l:SetNearZ(0) -- setting to 4 when drawing to prevent flicker (position here is undefined)
+
+                    l:SetQuadraticAttenuation(100)
+
+                    l:SetColor(atttbl.FlashlightColor or color_white)
+                    l:SetTexture(atttbl.FlashlightMaterial or "effects/flashlight001")
+                    l:SetBrightness(atttbl.FlashlightBrightness or 3)
+
+                    if nvgon and atttbl.FlashlightIR then
+                        l:SetFOV((atttbl.FlashlightFOV or 50) * 1.5)
+                        l:SetFarZ(2048)
+                        l:SetColor(irflashcolor)
+                        -- l:SetTexture(atttbl.FlashlightMaterial or "effects/flashlight001")
+                        l:SetBrightness(1)
+                    end
+
+                    l:SetEnableShadows(false)
+                    l:Update()
+
+                    local g_light = {
+                        Weapon = self,
+                        ProjectedTexture = l
+                    }
+
+                    table.insert(ARC9.FlashlightPile, g_light)
+                end
+            end
+
+            if total_lights > 1 or (arc9_allflash:GetBool() and self:GetOwner() != lp) then -- you are a madman
+                for i, k in ipairs(self.Flashlights) do
+                    if k.light:IsValid() then k.light:SetEnableShadows(false) end
+                end
+            end
+        end
+
+        function SWEP:DrawLightFlare(pos, ang, col, size, vm, nodotter, dir) -- mostly tacrp
+            col = col or badcolor
+            size = size * 4 or 4
+
+            local lp, owner = LocalPlayer(), self:GetOwner()
+            if !vm and owner == lp and !lp:ShouldDrawLocalPlayer() then return end
+
+            dir = dir or ang:Forward()
+
+            local dot = -dir:Dot(EyeAngles():Forward())
+            local dot2 = dir:Dot((EyePos() - pos):GetNormalized())
+            dot = (dot + dot2) / 2
+
+            if nodotter then dot, dot2 = 1, 1 end
+
+            if dot < 0 then return end
+
+            local diff = EyePos() - pos
+
+            dot = dot ^ 4
+            local tr = util.QuickTrace(pos, diff, {owner, lp, lp:GetViewEntity()})
+            local s = math.Clamp(1 - diff:Length() / 700, 0, 1) ^ 1 * dot * 500 * math.Rand(0.95, 1.05) * size
+
+            local rtt = render.GetRenderTarget()
+            if rtt and rtt:GetName() == "_rt_waterreflection" then tr.Fraction = 1 end -- mirror fix
+
+            if vm or tr.Fraction == 1 then
+                s = ScreenScale(s)
+                local toscreen = pos:ToScreen()
+                cam.Start2D()
+                    surface.SetMaterial(flaremat)
+                    surface.SetDrawColor(col, 128)
+                    surface.DrawTexturedRect(toscreen.x - s / 2, toscreen.y - s / 2, s, s)
+                cam.End2D()
+
+                if !vm and size > 0.1 then
+                    local rad = 128 * size * dot2
+                    col.a = 50 + size * 205
+
+                    pos = pos + ang:Forward() * 2
+                    pos = pos + diff:GetNormalized() * (2 + 14 * size)
+
+                    render.SetMaterial(flaremat)
+                    render.DrawSprite(pos, rad, rad, col)
+                end
+            end
+        end
+
         local arc9_atts_nocustomize = GetConVar("arc9_atts_nocustomize")
         local arc9_autosave = GetConVar("arc9_autosave")
 
