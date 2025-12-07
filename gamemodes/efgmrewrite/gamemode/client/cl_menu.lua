@@ -9884,9 +9884,9 @@ function Menu.OpenTab.Stats()
 
         if selectedBoardName == text then return end
 
-        -- net.Start("GrabLeaderboardData")
-        -- net.WriteString(data)
-        -- net.SendToServer()
+        net.Start("GrabLeaderboardData")
+        net.WriteString(data)
+        net.SendToServer()
 
         selectedBoardName = text
 
@@ -9907,20 +9907,12 @@ function Menu.OpenTab.Stats()
         surface.PlaySound("ui/element_select.wav")
 
         local boardSelection = DermaMenu()
-        boardSelection:AddOption("Level", function() selectBoard("Level", "Level") end)
-        boardSelection:AddOption("Money Earned", function() selectBoard("Money Earned", "MoneyEarned") end)
-        boardSelection:AddOption("Money Spent", function() selectBoard("Money Spent", "MoneySpent") end)
-        boardSelection:AddOption("Time Played", function() selectBoard("Time Played", "Time") end)
-        boardSelection:AddOption("Stash Value", function() selectBoard("Stash Value", "StashValue") end)
-        boardSelection:AddOption("Kills", function() selectBoard("Kills", "Kills") end)
-        boardSelection:AddOption("Deaths", function() selectBoard("Deaths", "Deaths") end)
-        boardSelection:AddOption("Damage Dealt", function() selectBoard("Damage Dealt", "DamageDealt") end)
-        boardSelection:AddOption("Damage Recieved", function() selectBoard("Damage Recieved", "DamageRecieved") end)
-        boardSelection:AddOption("Damage Healed", function() selectBoard("Damage Healed", "DamageHealed") end)
-        boardSelection:AddOption("Shots Fired", function() selectBoard("Shots Fired", "ShotsFired") end)
-        boardSelection:AddOption("Shots Hit", function() selectBoard("Shots Hit", "ShotsHit") end)
-        boardSelection:AddOption("Raids Played", function() selectBoard("Raids Played", "RaidsPlayed") end)
-        boardSelection:AddOption("Extractions", function() selectBoard("Extractions", "Extractions") end)
+
+        for text, board in pairs(LEADERBOARDS) do
+
+            boardSelection:AddOption(text, function() selectBoard(text, board) end)
+
+        end
 
         boardSelection:Open()
 
@@ -9943,11 +9935,11 @@ function Menu.OpenTab.Stats()
 
         for k, v in ipairs(selectedBoard) do
 
-            -- local color = MenuAlias.whiteColor
-            -- if v.SteamName == Menu.Player:GetName() then color = yColor end
-            -- draw.SimpleTextOutlined(k, "Purista18", EFGM.MenuScale(5), EFGM.MenuScale(25) + ((k - 1) * EFGM.MenuScale(20)), color, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-            -- draw.SimpleTextOutlined(string.sub(v.SteamName, 1, 21), "Purista18", EFGM.MenuScale(25), EFGM.MenuScale(25) + ((k - 1) * EFGM.MenuScale(20)), color, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-            -- draw.SimpleTextOutlined(v.Value, "Purista18", w - EFGM.MenuScale(5), EFGM.MenuScale(25) + ((k - 1) * EFGM.MenuScale(20)), color, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            local color = MenuAlias.whiteColor
+            if v.SteamName == Menu.Player:GetName() then color = yColor end
+            draw.SimpleTextOutlined(k, "Purista18", EFGM.MenuScale(5), EFGM.MenuScale(25) + ((k - 1) * EFGM.MenuScale(20)), color, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            draw.SimpleTextOutlined(string.sub(v.SteamName, 1, 21), "Purista18", EFGM.MenuScale(25), EFGM.MenuScale(25) + ((k - 1) * EFGM.MenuScale(20)), color, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            draw.SimpleTextOutlined(v.Value, "Purista18", w - EFGM.MenuScale(5), EFGM.MenuScale(25) + ((k - 1) * EFGM.MenuScale(20)), color, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
         end
 

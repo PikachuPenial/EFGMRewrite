@@ -1,0 +1,52 @@
+LEADERBOARDS = {
+    ["Level"] = "Level",
+    ["Money Earned"] = "MoneyEarned",
+    ["Money Spent"] = "MoneySpent",
+    ["Time Played"] = "Time",
+    ["Stash Value"] = "StashValue",
+    ["Kills"] = "Kills",
+    ["Deaths"] = "Deaths",
+    ["Damage Dealt"] = "DamageDealt",
+    ["Damage Recieved"] = "DamageRecieved",
+    ["Damage Healed"] = "DamageHealed",
+    ["Shots Fired"] = "ShotsFired",
+    ["Shots Hit"] = "ShotsHit",
+    ["Raids Played"] = "RaidsPlayed",
+    ["Extractions"] = "Extractions"
+}
+
+if SERVER then
+
+    util.AddNetworkString("GrabLeaderboardData")
+    util.AddNetworkString("SendLeaderboardData")
+
+    local LEADERBOARDSTRINGS = {}
+
+    hook.Add("InitPostEntity", "LeaderboardInit", function()
+
+        for text, board in pairs(LEADERBOARDS) do
+
+            local str = util.TableToJSON(sql.Query("SELECT SteamID, SteamName, Value FROM EFGMPlayerData64 WHERE Key = " .. SQLStr(board) .. " ORDER BY Value + 0 DESC LIMIT 100;"))
+
+            str = util.Compress(str)
+            str = util.Base64Encode(str, true)
+
+            LEADERBOARDSTRINGS[board] = str
+
+        end
+
+    end)
+
+    net.Receive("GrabLeaderboardData", function(len, ply)
+
+        local key = net.ReadString()
+
+        local str = LEADERBOARDSTRINGS[key]
+
+        net.Start("SendLeaderboardData", true)
+        net.WriteString(str)
+        net.Send(ply)
+
+    end )
+
+end
