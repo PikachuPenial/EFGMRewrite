@@ -275,7 +275,7 @@ EFGMTASKS["civs1"] = {
         NewObjective.Extract(1, "efgm_concrete_rw", "extract_helicopter", "USEC Helicopter"),
         NewObjective.Extract(1, "efgm_concrete_rw", "extract_manhole", "Sewer Manhole"),
         NewObjective.Extract(1, "efgm_concrete_rw", "extract_railway", "Railway to Belmont"),
-        NewObjective.Kill(15, "efgm_concrete_rw")
+        NewObjective.Kill(5, "efgm_concrete_rw")
     },
 
     rewards = {
@@ -303,19 +303,16 @@ EFGMTASKS["civs2"] = {
     traderName = "Soldier",
     traderIcon = Material("traders/soldier.png", "smooth"),
 
-    
     requirements = {
         NewRequirement.PlayerStat(13, "Level"),
         NewRequirement.QuestCompletion("civs1")
     },
 
-    objectiveTypes = {OBJECTIVE.Pay, OBJECTIVE.QuestItem},
     objectives = {
-        NewObjective.Pay(250000),
+        NewObjective.Kill(15, "efgm_concrete_rw"),
         NewObjective.QuestItem("briefcase", "efgm_concrete_rw")
     },
 
-    rewardTypes = { REWARD.PlayerStat},
     rewards = {
         NewReward.PlayerStat(15000, "Experience")
     },
