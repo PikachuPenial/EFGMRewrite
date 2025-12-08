@@ -451,6 +451,10 @@ function SetupPlayerData(ply)
 	-- stash/inventory
 	InitializeNetworkInt(ply, query, "StashMax", 1000)
 
+	-- leaderboard specific variables, do not need to be saved
+	ply:SetNWFloat("KDRatio", math.Round(ply:GetNWInt("Kills") / math.max(ply:GetNWInt("Deaths"), 1), 3))
+	ply:SetNWInt("")
+
 	for k, v in ipairs(levelArray) do
 
 		if ply:GetNWInt("Level") == k and v != "max" then ply:SetNWInt("ExperienceToNextLevel", v) end
@@ -500,9 +504,8 @@ function SetupPlayerData(ply)
 	net.WriteString(equippedString)
     net.Send(ply)
 
+	-- task system already networks on its own, change if you want idrc
 	UpdateTasks(ply)
-
-    -- task system already networks on its own, change if you want idrc
 
 end
 
@@ -518,43 +521,43 @@ function SavePlayerData(ply)
 
 	sql.Begin()
 
-    -- stats
-    UninitializeNetworkBool(ply, query, "FreshWipe")
-    UninitializeNetworkInt(ply, query, "Level")
-    UninitializeNetworkInt(ply, query, "Experience")
+	-- stats
+	UninitializeNetworkBool(ply, query, "FreshWipe")
+	UninitializeNetworkInt(ply, query, "Level")
+	UninitializeNetworkInt(ply, query, "Experience")
 	UninitializeNetworkInt(ply, query, "Money")
 	UninitializeNetworkInt(ply, query, "MoneyEarned")
 	UninitializeNetworkInt(ply, query, "MoneySpent")
 	UninitializeNetworkInt(ply, query, "Time")
-    UninitializeNetworkInt(ply, query, "StashValue")
+	UninitializeNetworkInt(ply, query, "StashValue")
 
-    -- combat
+	-- combat
 	UninitializeNetworkInt(ply, query, "Kills")
 	UninitializeNetworkInt(ply, query, "Deaths")
-    UninitializeNetworkInt(ply, query, "Suicides")
+	UninitializeNetworkInt(ply, query, "Suicides")
 	UninitializeNetworkInt(ply, query, "DamageDealt")
 	UninitializeNetworkInt(ply, query, "DamageRecieved")
 	UninitializeNetworkInt(ply, query, "HealthHealed")
 	UninitializeNetworkInt(ply, query, "ShotsFired")
 	UninitializeNetworkInt(ply, query, "ShotsHit")
-    UninitializeNetworkInt(ply, query, "Headshots")
-    UninitializeNetworkInt(ply, query, "FarthestKill")
+	UninitializeNetworkInt(ply, query, "Headshots")
+	UninitializeNetworkInt(ply, query, "FarthestKill")
 
-    -- raids
+	-- raids
 	UninitializeNetworkInt(ply, query, "Extractions")
 	UninitializeNetworkInt(ply, query, "Quits")
 	UninitializeNetworkInt(ply, query, "RaidsPlayed")
 
-    -- streaks
-    UninitializeNetworkInt(ply, query, "CurrentKillStreak")
-    UninitializeNetworkInt(ply, query, "BestKillStreak")
-    UninitializeNetworkInt(ply, query, "CurrentExtractionStreak")
-    UninitializeNetworkInt(ply, query, "BestExtractionStreak")
+	-- streaks
+	UninitializeNetworkInt(ply, query, "CurrentKillStreak")
+	UninitializeNetworkInt(ply, query, "BestKillStreak")
+	UninitializeNetworkInt(ply, query, "CurrentExtractionStreak")
+	UninitializeNetworkInt(ply, query, "BestExtractionStreak")
 
-    -- stash/inventory
+	-- stash/inventory
 	UninitializeNetworkInt(ply, query, "StashMax")
 
-    UninitializeStashString(ply, query)
+	UninitializeStashString(ply, query)
 	UninitializeInventoryString(ply, query)
 	UninitializeEquippedString(ply, query)
 	UninitializeTaskString(ply, query)
@@ -574,22 +577,34 @@ end
 
 hook.Add("PlayerInitialSpawn", "PlayerInitializeStats", function(ply)
 
-    SetupPlayerData(ply)
+	SetupPlayerData(ply)
 
 end)
 
 hook.Add("PlayerDisconnected", "PlayerUninitializeStats", function(ply)
 
-    ply:SetNWBool("FreshWipe", false)
+	ply:SetNWBool("FreshWipe", false)
 
-    if !ply:CompareStatus(0) then
+	if !ply:CompareStatus(0) then
 
-        ply:SetNWInt("Quits", ply:GetNWInt("Quits", 0) + 1)
+		UnequipAll(ply)
 
-		-- wipe inventory if leaving WHILE in a raid
+		if !table.IsEmpty(ply.inventory) then
+
+			local backpack = ents.Create("efgm_backpack")
+			backpack:SetPos(ply:GetPos() + Vector(0, 0, 64))
+			backpack:Spawn()
+			backpack:Activate()
+			backpack:SetBagData(ply.inventory, ply:GetName() .. "'s Corpse")
+
+		end
+
+		ply:SetNWInt("Quits", ply:GetNWInt("Quits", 0) + 1)
+
+		-- wipe inventory and drop backpack if leaving WHILE in a raid
 		ReinstantiateInventory(ply)
 
-    end
+	end
 
 	UnequipAllFirearms(ply)
 
@@ -609,15 +624,6 @@ hook.Add("ShutDown", "ServerUninitializeStats", function(ply)
 	for k, v in ipairs(player.GetHumans()) do
 
 		v:SetNWBool("FreshWipe", false)
-
-		if !v:CompareStatus(0) then
-
-        	v:SetNWInt("Quits", v:GetNWInt("Quits", 0) + 1)
-
-			-- wipe inventory if leaving WHILE in a raid
-			ReinstantiateInventory(v)
-
-    	end
 
 		UnequipAllFirearms(v)
 

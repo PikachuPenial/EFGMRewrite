@@ -7041,7 +7041,7 @@ function Menu.OpenTab.Inventory(container)
             surface.SetDrawColor(Color(155, 155, 155, 10))
             surface.DrawRect(0, 0, w, h)
 
-            draw.SimpleTextOutlined(container.name, "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            draw.SimpleTextOutlined(string.upper(container.name), "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
         end
 
@@ -9898,9 +9898,6 @@ function Menu.OpenTab.Stats()
     statsTbl.BestKillStreak = comma_value(Menu.Player:GetNWInt("BestKillStreak"))
     statsTbl.CurrentExtractionStreak = comma_value(Menu.Player:GetNWInt("CurrentExtractionStreak"))
     statsTbl.BestExtractionStreak = comma_value(Menu.Player:GetNWInt("BestExtractionStreak"))
-
-    statsTbl.KD = math.Round(Menu.Player:GetNWInt("Kills") / math.max(Menu.Player:GetNWInt("Deaths"), 1), 3)
-    statsTbl.SurvivalRate = math.Round((Menu.Player:GetNWInt("Extractions") / Menu.Player:GetNWInt("RaidsPlayed")) * 100) .. "%"
 
     for k, v in SortedPairs(statsTbl) do
 
