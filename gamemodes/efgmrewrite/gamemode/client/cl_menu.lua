@@ -11557,7 +11557,10 @@ function Menu.OpenTab.Tasks()
 
                 for objIndex, objInfo in ipairs(taskInfo.objectives) do
                     
-                    local curProgress, maxProgress = playerTasks[taskName].progress[objIndex] + playerTasks[taskName].tempProgress[objIndex], objInfo.count or 1
+                    local curProgress = playerTasks[taskName].progress[objIndex]
+                    local curTempProgress = playerTasks[taskName].tempProgress[objIndex]
+                    local curProgressTotal = curProgress + curTempProgress
+                    local maxProgress = objInfo.count or 1
 
                     local objective = objectiveScroller:Add("DPanel")
                     objective:Dock(TOP)
@@ -11586,8 +11589,15 @@ function Menu.OpenTab.Tasks()
                         else
 
                             surface.SetFont("PuristaBold24")
-                            progressText = comma_value(curProgress) .. "/" .. comma_value(maxProgress)
+                            progressText = comma_value(curProgressTotal) .. "/" .. comma_value(maxProgress)
                             progressTextSize = surface.GetTextSize(progressText)
+
+                            if curTempProgress > 0 then
+
+                                surface.SetDrawColor(Color(202, 20, 20, 255))
+                                surface.DrawRect(w - EFGM.MenuScale(410), EFGM.MenuScale(5), math.Remap(curProgressTotal, 0, maxProgress, 0, EFGM.MenuScale(400) - progressTextSize), h - EFGM.MenuScale(10))
+                            
+                            end
 
                             surface.SetDrawColor(Color(80, 80, 80, 255))
                             surface.DrawRect(w - EFGM.MenuScale(410), EFGM.MenuScale(5), math.Remap(curProgress, 0, maxProgress, 0, EFGM.MenuScale(400) - progressTextSize), h - EFGM.MenuScale(10))

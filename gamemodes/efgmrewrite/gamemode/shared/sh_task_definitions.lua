@@ -340,3 +340,23 @@ EFGMTASKS["paytest"] = {
     uibackground = Material("taskbg/concrete/general.jpg", "smooth")
 
 }
+
+EFGMTASKS["qitest"] = {
+
+    name = "testing quest items",
+    description = "i hate fuckin lua",
+    messageOverride = "I FUCKING HATE LUA",
+    traderIcon = Material("traders/generic.png", "smooth"),
+
+    objectives = {
+        NewObjective.QuestItem("briefcase", "efgm_concrete_rw")
+    },
+
+    rewards = {
+        NewReward.PlayerStat(10000, "Experience"),
+        NewReward.PlayerStat(300000, "Money")
+    },
+
+    uibackground = Material("taskbg/concrete/general.jpg", "smooth")
+
+}
