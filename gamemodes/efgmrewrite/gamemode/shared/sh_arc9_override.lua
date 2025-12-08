@@ -831,23 +831,27 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
 
                 local efgmPresetCost = 0
 
-                for att, attc in pairs(newcount) do
-                    local atttbl = ARC9.GetAttTable(att)
+                if !newcount then
 
-                    if !atttbl then continue end -- doesnt exist, bc some default EFT presets have things that we remove in efgm
-                    if atttbl.Free then continue end
-                    if !EFGMITEMS["arc9_att_" .. att] then return end -- the item doesnt exist in EFGM, no preset for you!
-                    if AmountInInventory(playerInventory, "arc9_att_" .. att) > 0 then continue end -- we already have this in our inventory
-                    if !EFGMITEMS["arc9_att_" .. att].canPurchase then return end
+                    for att, attc in pairs(newcount) do
+                        local atttbl = ARC9.GetAttTable(att)
 
-                    local has = oldcount[att] or 0
-                    local need = attc
+                        if !atttbl then continue end -- doesnt exist, bc some default EFT presets have things that we remove in efgm
+                        if atttbl.Free then continue end
+                        if !EFGMITEMS["arc9_att_" .. att] then return end -- the item doesnt exist in EFGM, no preset for you!
+                        if AmountInInventory(playerInventory, "arc9_att_" .. att) > 0 then continue end -- we already have this in our inventory
+                        if !EFGMITEMS["arc9_att_" .. att].canPurchase then return end
 
-                    if has < need then
-                        local diff = need - has
-                        neededAtts["arc9_att_" .. att] = diff
-                        efgmPresetCost = efgmPresetCost + (EFGMITEMS["arc9_att_" .. att].value * diff)
+                        local has = oldcount[att] or 0
+                        local need = attc
+
+                        if has < need then
+                            local diff = need - has
+                            neededAtts["arc9_att_" .. att] = diff
+                            efgmPresetCost = efgmPresetCost + (EFGMITEMS["arc9_att_" .. att].value * diff)
+                        end
                     end
+
                 end
 
                 local presetbtn = vgui.Create("DButton", presetscroller)
