@@ -3273,6 +3273,7 @@ function Menu.ReloadInventory()
             actions.consumable = i.equipType == EQUIPTYPE.Consumable
             actions.deletable = Menu.Player:CompareStatus(0)
             actions.ammoBuyable = Menu.Player:CompareStatus(0) and i.ammoID
+            actions.taggable = Menu.Player:CompareStatus(0) and v.data.tag == nil and (actions.ammoBuyable or i.equipSlot == WEAPONSLOTS.MELEE.ID)
 
             if actions.stashable then
 
@@ -3349,29 +3350,29 @@ function Menu.ReloadInventory()
 
                 end
 
-                if v.data.tag == nil then
+            end
 
-                    contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
+            if actions.taggable then
 
-                    local itemSetTagButton = vgui.Create("DButton", contextMenu)
-                    itemSetTagButton:Dock(TOP)
-                    itemSetTagButton:SetSize(0, EFGM.MenuScale(25))
-                    itemSetTagButton:SetText("SET TAG")
+                contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
 
-                    itemSetTagButton.OnCursorEntered = function(s)
+                local itemSetTagButton = vgui.Create("DButton", contextMenu)
+                itemSetTagButton:Dock(TOP)
+                itemSetTagButton:SetSize(0, EFGM.MenuScale(25))
+                itemSetTagButton:SetText("SET TAG")
 
-                        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
+                itemSetTagButton.OnCursorEntered = function(s)
 
-                    end
+                    surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
-                    function itemSetTagButton:DoClick()
+                end
 
-                        surface.PlaySound("ui/element_select.wav")
-                        contextMenu:Remove()
+                function itemSetTagButton:DoClick()
 
-                        Menu.ConfirmTag(v.name, v.id, "inv", 0, 0)
+                    surface.PlaySound("ui/element_select.wav")
+                    contextMenu:Remove()
 
-                    end
+                    Menu.ConfirmTag(v.name, v.id, "inv", 0, 0)
 
                 end
 
@@ -5418,6 +5419,7 @@ function Menu.ReloadStash()
             actions.splittable = i.stackSize > 1 and v.data.count > 1
             actions.consumable = i.equipType == EQUIPTYPE.Consumable
             actions.ammoBuyable = Menu.Player:CompareStatus(0) and i.ammoID
+            actions.taggable = Menu.Player:CompareStatus(0) and v.data.tag == nil and (actions.ammoBuyable or i.equipSlot == WEAPONSLOTS.MELEE.ID)
 
             if actions.equipable then
 
@@ -5467,29 +5469,29 @@ function Menu.ReloadStash()
 
                 end
 
-                if v.data.tag == nil then
+            end
 
-                    contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
+            if actions.taggable then
 
-                    local itemSetTagButton = vgui.Create("DButton", contextMenu)
-                    itemSetTagButton:Dock(TOP)
-                    itemSetTagButton:SetSize(0, EFGM.MenuScale(25))
-                    itemSetTagButton:SetText("SET TAG")
+                contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
 
-                    itemSetTagButton.OnCursorEntered = function(s)
+                local itemSetTagButton = vgui.Create("DButton", contextMenu)
+                itemSetTagButton:Dock(TOP)
+                itemSetTagButton:SetSize(0, EFGM.MenuScale(25))
+                itemSetTagButton:SetText("SET TAG")
 
-                        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
+                itemSetTagButton.OnCursorEntered = function(s)
 
-                    end
+                    surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
-                    function itemSetTagButton:DoClick()
+                end
 
-                        surface.PlaySound("ui/element_select.wav")
-                        contextMenu:Remove()
+                function itemSetTagButton:DoClick()
 
-                        Menu.ConfirmTag(v.name, v.id, "stash", 0, 0)
+                    surface.PlaySound("ui/element_select.wav")
+                    contextMenu:Remove()
 
-                    end
+                    Menu.ConfirmTag(v.name, v.id, "stash", 0, 0)
 
                 end
 
