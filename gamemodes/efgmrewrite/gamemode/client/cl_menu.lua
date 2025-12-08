@@ -6238,7 +6238,6 @@ function Menu.OpenTab.Inventory(container)
     end
 
     local playerModel = vgui.Create("DModelPanel", playerPanel)
-    playerModel:SetAlpha(0)
     playerModel:Dock(FILL)
     playerModel:SetMouseInputEnabled(false)
     playerModel:SetFOV(26)
@@ -6248,7 +6247,9 @@ function Menu.OpenTab.Inventory(container)
     playerModel:SetDirectionalLight(BOX_LEFT, Color(80, 160, 255, 255))
     playerModel:SetAnimated(true)
     playerModel:SetModel(Menu.Player:GetModel())
-    playerModel:AlphaTo(255, 0.1, 0, nil)
+
+    local seq = playerModel.Entity:LookupSequence(table.Random(holdtypes))
+    playerModel.Entity:SetSequence(seq)
 
     local groups = GetEntityGroups(Menu.Player, override)
 
@@ -6273,13 +6274,11 @@ function Menu.OpenTab.Inventory(container)
 	end
 
     playerModel.Entity:SetPos(Vector(-108, -1, -63))
-    playerModel.Entity:SetAngles(Angle(0, 20, 0))
-    playerModel.Entity:ResetSequence(table.Random(holdtypes))
+    playerModel.Entity:SetAngles(Angle(0, math.random(0, 40), 0))
 
     function playerModel:LayoutEntity(Entity)
 
         if !IsValid(Entity) then return end
-        -- playerModel:RunAnimation()
 
     end
 

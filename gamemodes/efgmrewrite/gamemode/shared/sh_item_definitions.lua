@@ -2990,6 +2990,27 @@ EFGMITEMS = {}
         ["canPurchase"] = false
     }
 
+    EFGMITEMS["arc9_eft_melee_hultafors"] = {
+        ["fullName"] = "Superfors DB 2020 Dead Blow Hammer",
+        ["displayName"] = "Dead Blow",
+        ["displayType"] = "Melee",
+        ["weight"] = 8.4,
+        ["value"] = 3000000,
+        ["levelReq"] = 48,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["equipSlot"] = WEAPONSLOTS.MELEE.ID,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/melee/deadblow.png", "smooth"),
+
+        ["sizeX"] = 4,
+        ["sizeY"] = 1,
+
+        ["lootWeight"] = 25,
+
+        ["canPurchase"] = false
+    }
+
     EFGMITEMS["arc9_eft_melee_fulcrum"] = {
         ["fullName"] = "ER FULCRUM BAYONET",
         ["displayName"] = "ER BAYONET",
@@ -3104,6 +3125,25 @@ EFGMITEMS = {}
 
         ["sizeX"] = 1,
         ["sizeY"] = 3,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["arc9_eft_melee_scythe"] = {
+        ["fullName"] = "Old Hand Scythe",
+        ["displayName"] = "Scythe",
+        ["displayType"] = "Melee",
+        ["weight"] = 3.9,
+        ["value"] = 3500000,
+        ["levelReq"] = 48,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["equipSlot"] = WEAPONSLOTS.MELEE.ID,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/melee/scythe.png", "smooth"),
+
+        ["sizeX"] = 4,
+        ["sizeY"] = 2,
 
         ["canPurchase"] = false
     }
