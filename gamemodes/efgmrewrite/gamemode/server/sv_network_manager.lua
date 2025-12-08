@@ -451,10 +451,6 @@ function SetupPlayerData(ply)
 	-- stash/inventory
 	InitializeNetworkInt(ply, query, "StashMax", 1000)
 
-	-- leaderboard specific variables, do not need to be saved
-	ply:SetNWFloat("KDRatio", math.Round(ply:GetNWInt("Kills") / math.max(ply:GetNWInt("Deaths"), 1), 3))
-	ply:SetNWInt("")
-
 	for k, v in ipairs(levelArray) do
 
 		if ply:GetNWInt("Level") == k and v != "max" then ply:SetNWInt("ExperienceToNextLevel", v) end
