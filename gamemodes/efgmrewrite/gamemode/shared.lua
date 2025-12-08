@@ -18,6 +18,7 @@ if CLIENT then
     CreateClientConVar("efgm_menu_deleteprompt", 1, true, true, "Adjust if a confirmation prompt appears when deleting an item", 0, 1)
     CreateClientConVar("efgm_menu_sellprompt_single", 1, true, true, "Adjust if a confirmation prompt appears when selling a single item", 0, 1)
     CreateClientConVar("efgm_menu_sellprompt_stacked", 1, true, true, "Adjust if a confirmation prompt appears when selling a single item", 0, 1)
+    CreateClientConVar("efgm_menu_doubleclick_consume", 0, true, true, "Adjust if double clicking an item will consume it instead of inspecting it", 0, 1)
     CreateClientConVar("efgm_visuals_highqualimpactfx", 1, true, true, "Adjust the quality of the bullets impact effects", 0, 1)
     CreateClientConVar("efgm_visuals_headbob", 1, true, true, "Adjust the bobbing motion of the players view while moving", 0, 1)
     CreateClientConVar("efgm_visuals_lensflare", 1, true, true, "Adjust the lens flare when looking near or directly at the sun", 0, 1)
@@ -265,7 +266,7 @@ function GetAttachmentListFromCode(str)
 
     for i = 0, #cleanAttTbl do
         if !cleanAttTbl[i] then continue end
-        cleanAttStr = cleanAttStr .. i .. ": " .. "\t" .. EFGMITEMS["arc9_att_" .. cleanAttTbl[i]].fullName .. ", ₽" .. comma_value(EFGMITEMS["arc9_att_" .. cleanAttTbl[i]].value) .. "\n"
+        cleanAttStr = cleanAttStr .. i .. ": " .. "\t" .. EFGMITEMS["arc9_att_" .. cleanAttTbl[i]].fullName .. ", " .. EFGMITEMS["arc9_att_" .. cleanAttTbl[i]].weight .. "kg, ₽" .. comma_value(EFGMITEMS["arc9_att_" .. cleanAttTbl[i]].value) .. "\n"
     end
 
     return cleanAttStr

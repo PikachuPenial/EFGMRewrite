@@ -165,7 +165,7 @@ EFGMTASKS = {}
 -- wip tasks to spruce up playtesting maybe
 -- for the record i havent wrote a story since like third grade and that shit was ass
 EFGMTASKS["connections"] = {
-    
+
     name = "Connections",
     description = "Hey, soldier. I don't think I've seen you before. What do you want? Guns? Ammunition? Vodka? "..
     "Oh, I should've guessed, you want to escape the city. Well, I can't say I can help you there, but I might know a guy who knows a guy. "..
@@ -174,7 +174,7 @@ EFGMTASKS["connections"] = {
     "there the other day, and I gotta make sure it doesn't happen again. I want you to scout out some vantage points around the location... "..
     "say, the top of the hotel, and the roof of the workshop. You know, that white building up north, with the bigass awning at the front. "..
     "While you're at it, get rid of some of the locals, let's say five of them. Let's see you get that done, then we can talk about connections.",
-    
+
     traderName = "Bartender",
     traderIcon = Material("traders/generic.png", "smooth"),
 
@@ -185,7 +185,7 @@ EFGMTASKS["connections"] = {
     objectives = {
         NewObjective.VisitArea("efgm_concrete_rw", "qa_hotel_roof", "Hotel Roof"),
         NewObjective.VisitArea("efgm_concrete_rw", "qa_workshop_roof", "Workshop Roof"),
-        NewObjective.Kill(5, "efgm_concrete_rw")
+        NewObjective.Kill(3, "efgm_concrete_rw")
     },
 
     rewards = {

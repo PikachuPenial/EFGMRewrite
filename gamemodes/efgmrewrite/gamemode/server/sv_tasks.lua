@@ -11,9 +11,18 @@ util.AddNetworkString("SendNotification")
 
 -- Task shit
 
+function UpdateTaskString(ply)
+
+    local taskStr = util.TableToJSON(ply.tasks)
+    taskStr = util.Compress(taskStr)
+    taskStr = util.Base64Encode(taskStr, true)
+    ply.taskStr = taskStr
+
+end
+
 function CheckTaskCompletion(ply, taskName)
 
-    PrintTable(ply.tasks)
+    -- PrintTable(ply.tasks)
 
     local taskInfo = EFGMTASKS[taskName or nil]
 
@@ -25,7 +34,7 @@ function CheckTaskCompletion(ply, taskName)
 
     end
 
-    hook.Run("efgm_task_"..TASKSTATUS.CompletePending, ply, taskName)
+    hook.Run("efgm_task_" .. TASKSTATUS.CompletePending, ply, taskName)
 
     ply.tasks[taskName].status = TASKSTATUS.CompletePending
 
@@ -377,5 +386,13 @@ if GetConVar("efgm_derivesbox"):GetInt() == 1 then
         TaskProgressObjective(attacker, OBJECTIVE.Kill, 1, game.GetMap())
 
     end)
+
+    function PrintTaskString(ply)
+
+        UpdateTaskString(ply)
+        print(ply.taskStr)
+
+    end
+    concommand.Add("efgm_debug_printtaskstring", function(ply, cmd, args) PrintEquippedString(ply) end)
 
 end

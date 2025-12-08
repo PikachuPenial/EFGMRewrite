@@ -29,7 +29,7 @@ net.Receive("PlayerMarketPurchaseItem", function(len, ply)
         for _, a in ipairs(atts) do
 
             local att = EFGMITEMS[a]
-            if att == nil then return end
+            if att == nil then continue end
 
             cost = cost + att.value
 
@@ -95,7 +95,7 @@ net.Receive("PlayerMarketPurchaseItemToInventory", function(len, ply)
         for _, a in ipairs(atts) do
 
             local att = EFGMITEMS[a]
-            if att == nil then return end
+            if att == nil then continue end
 
             cost = cost + att.value
 
@@ -207,7 +207,7 @@ net.Receive("PlayerMarketSellItem", function(len, ply)
             for _, a in ipairs(atts) do
 
                 local att = EFGMITEMS[a]
-                if att == nil then return end
+                if att == nil then continue end
 
                 cost = cost + math.floor(att.value * sellMultiplier)
 

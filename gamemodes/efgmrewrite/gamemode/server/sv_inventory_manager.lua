@@ -81,6 +81,22 @@ function AddItemToInventory(ply, name, type, data)
 
     AddWeightToPlayer(ply, name, data.count)
 
+    if data.att then
+
+        local atts = GetPrefixedAttachmentListFromCode(data.att)
+        if !atts then return end
+
+        for _, a in ipairs(atts) do
+
+            local att = EFGMITEMS[a]
+            if att == nil then continue end
+
+            AddWeightToPlayer(ply, a, 1)
+
+        end
+
+    end
+
 end
 
 function UpdateItemFromInventory(ply, index, data)
@@ -113,7 +129,27 @@ function DeleteItemFromInventory(ply, index, isEquipped)
 
     local item = ply.inventory[index]
 
-    if !isEquipped then RemoveWeightFromPlayer(ply, item.name, item.data.count) end
+    if !isEquipped then
+
+        RemoveWeightFromPlayer(ply, item.name, item.data.count)
+
+        if item.data.att then
+
+            local atts = GetPrefixedAttachmentListFromCode(item.data.att)
+            if !atts then return end
+
+            for _, a in ipairs(atts) do
+
+                local att = EFGMITEMS[a]
+                if att == nil then continue end
+
+                RemoveWeightFromPlayer(ply, a, 1)
+
+            end
+
+        end
+
+    end
 
     table.remove(ply.inventory, index)
 
@@ -276,6 +312,22 @@ net.Receive("PlayerInventoryDropItem", function(len, ply)
 
     table.remove(ply.inventory, itemIndex)
     RemoveWeightFromPlayer(ply, item.name, item.data.count)
+
+    if item.data.att then
+
+        local atts = GetPrefixedAttachmentListFromCode(item.data.att)
+        if !atts then return end
+
+        for _, a in ipairs(atts) do
+
+            local att = EFGMITEMS[a]
+            if att == nil then continue end
+
+            RemoveWeightFromPlayer(ply, a, 1)
+
+        end
+
+    end
 
 end)
 
@@ -534,23 +586,51 @@ function MatchWithEquippedAndUpdate(ply, itemName, attsTbl)
 
         for k, v in pairs(ply.weaponSlots[i]) do
 
-            if !table.IsEmpty(v) then
+            if table.IsEmpty(v) then continue end
 
-                if v.name == itemName then
+            if v.name == itemName then
 
-                    local atts = table.Copy(attsTbl)
-                    local str = GenerateAttachString(atts)
-                    v.data.att = str
+                local oldAtts = v.data.att
 
-                    net.Start("PlayerInventoryUpdateEquipped", false)
-                    net.WriteTable(v.data)
-                    net.WriteUInt(i, 16)
-                    net.WriteUInt(k, 16)
-                    net.Send(ply)
+                local atts = table.Copy(attsTbl)
+                local str = GenerateAttachString(atts)
+                v.data.att = str
 
-                    return
+                if oldAtts != str then
+
+                    local oldAttsTbl = GetPrefixedAttachmentListFromCode(oldAtts)
+                    if !oldAttsTbl then return end
+
+                    for _, a in ipairs(oldAttsTbl) do
+
+                        local att = EFGMITEMS[a]
+                        if att == nil then continue end
+
+                        RemoveWeightFromPlayer(ply, a, 1)
+
+                    end
+
+                    local newAttsTbl = GetPrefixedAttachmentListFromCode(str)
+                    if !newAttsTbl then return end
+
+                    for _, a in ipairs(newAttsTbl) do
+
+                        local att = EFGMITEMS[a]
+                        if att == nil then continue end
+
+                        AddWeightToPlayer(ply, a, 1)
+
+                    end
 
                 end
+
+                net.Start("PlayerInventoryUpdateEquipped", false)
+                net.WriteTable(v.data)
+                net.WriteUInt(i, 16)
+                net.WriteUInt(k, 16)
+                net.Send(ply)
+
+                return
 
             end
 
@@ -591,6 +671,22 @@ net.Receive("PlayerInventoryDropEquippedItem", function(len, ply)
     end
 
     RemoveWeightFromPlayer(ply, item.name, item.data.count)
+
+    if item.data.att then
+
+        local atts = GetPrefixedAttachmentListFromCode(item.data.att)
+        if !atts then return end
+
+        for _, a in ipairs(atts) do
+
+            local att = EFGMITEMS[a]
+            if att == nil then continue end
+
+            RemoveWeightFromPlayer(ply, a, 1)
+
+        end
+
+    end
 
 end)
 
@@ -738,6 +834,22 @@ net.Receive("PlayerInventoryDelete", function(len, ply)
 
         RemoveWeightFromPlayer(ply, item.name, item.data.count)
 
+        if item.data.att then
+
+            local atts = GetPrefixedAttachmentListFromCode(item.data.att)
+            if !atts then return end
+
+            for _, a in ipairs(atts) do
+
+                local att = EFGMITEMS[a]
+                if att == nil then continue end
+
+                RemoveWeightFromPlayer(ply, a, 1)
+
+            end
+
+        end
+
         table.remove(ply.inventory, key)
 
         net.Start("PlayerInventoryDeleteItem", false)
@@ -776,6 +888,22 @@ net.Receive("PlayerInventoryDelete", function(len, ply)
         net.Send(ply)
 
         RemoveWeightFromPlayer(ply, item.name, item.data.count)
+
+        if item.data.att then
+
+            local atts = GetPrefixedAttachmentListFromCode(item.data.att)
+            if !atts then return end
+
+            for _, a in ipairs(atts) do
+
+                local att = EFGMITEMS[a]
+                if att == nil then continue end
+
+                RemoveWeightFromPlayer(ply, a, 1)
+
+            end
+
+        end
 
         return true
 
@@ -905,7 +1033,23 @@ function CalculateInventoryWeight(ply)
         local def = EFGMITEMS[v.name]
         local count = v.data.count or 1
 
-        newWeight = math.Round(def.weight * count, 2) + newWeight
+        newWeight = newWeight + math.Round(def.weight * count, 2)
+
+        if v.data.att then
+
+            local atts = GetPrefixedAttachmentListFromCode(v.data.att)
+            if !atts then return end
+
+            for _, a in ipairs(atts) do
+
+                local att = EFGMITEMS[a]
+                if att == nil then continue end
+
+                newWeight = newWeight + math.Round(att.weight, 2)
+
+            end
+
+        end
 
     end
 
@@ -913,12 +1057,26 @@ function CalculateInventoryWeight(ply)
 
         for k, v in pairs(ply.weaponSlots[i]) do
 
-            if !table.IsEmpty(v) then
+            if table.IsEmpty(v) then continue end
 
-                local def = EFGMITEMS[v.name]
-                local count = v.data.count or 1
+            local def = EFGMITEMS[v.name]
+            local count = v.data.count or 1
 
-                newWeight = math.Round(def.weight * count, 2) + newWeight
+            newWeight = newWeight + math.Round(def.weight * count, 2)
+
+            if v.data.att then
+
+                local atts = GetPrefixedAttachmentListFromCode(v.data.att)
+                if !atts then return end
+
+                for _, a in ipairs(atts) do
+
+                    local att = EFGMITEMS[a]
+                    if att == nil then continue end
+
+                    newWeight = newWeight + math.Round(att.weight, 2)
+
+                end
 
             end
 

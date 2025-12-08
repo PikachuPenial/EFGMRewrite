@@ -149,19 +149,21 @@ end
 
 function InitializeTaskString(ply, query, value)
 
-	if query == "new" then return tostring(value) end
+	if query == "new" then ply.taskStr = tostring(value) return tostring(value) end
 
 	for k, v in ipairs(query) do
 
 		if v.Key == "Tasks" then
 
+			ply.taskStr = tostring(v.Value)
 			return tostring(v.Value)
 
 		end
 
 	end
 
-    return tostring(value)
+	ply.taskStr = tostring(value)
+	return tostring(value)
 
 end
 
@@ -240,17 +242,17 @@ function UninitializeNetworkString(ply, query, key, valueOverride)
 
 	local id64 = ply:SteamID64()
 	local name = ply:Name()
-    local value = ""
+	local value = ""
 
-    if valueOverride == nil then
+	if valueOverride == nil then
 
 	    value = tostring(ply:GetNWString(key))
 
-    else
+	else
 
-	    value = tostring(valueOverride)
+		value = tostring(valueOverride)
 
-    end
+	end
 
 	if query == "new" then tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr(key) .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), " return end
 
@@ -369,16 +371,21 @@ function UninitializeEquippedString(ply, query, valueOverride)
 
 end
 
-function UninitializeTaskString(ply, query)
+function UninitializeTaskString(ply, query, valueOverride)
 
 	local id64 = ply:SteamID64()
 	local name = ply:Name()
     local value = ""
 
-    local taskStr = util.TableToJSON(ply.tasks)
-    taskStr = util.Compress(taskStr)
-    taskStr = util.Base64Encode(taskStr, true)
-    value = tostring(ply.taskStr)
+	if valueOverride == nil then
+
+	    value = tostring(ply.taskStr)
+
+    else
+
+	    value = tostring(valueOverride)
+
+    end
 
 	if query == "new" then tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr("Tasks") .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), " return end
 
@@ -475,15 +482,11 @@ function SetupPlayerData(ply)
 
 	end
 
-	CalculateInventoryWeight(ply)
-
-    -- tasks (WIP)
-
-    local taskString = InitializeTaskString(ply, query, "")
+    local taskString = InitializeTaskString(ply, query, "XQAAAQAjAAAAAAAAAAAt6BNFkAUIuVjl8lDUNYAA")
     ply.tasks = DecodeStash(ply, taskString)
     if ply.tasks == nil then ply.tasks = {} end
-    UpdateTasks(ply)
 
+	CalculateInventoryWeight(ply)
 
     net.Start("PlayerNetworkStash", false)
     net.WriteString(stashString)
@@ -496,6 +499,8 @@ function SetupPlayerData(ply)
 	net.Start("PlayerNetworkEquipped", false)
 	net.WriteString(equippedString)
     net.Send(ply)
+
+	UpdateTasks(ply)
 
     -- task system already networks on its own, change if you want idrc
 
@@ -591,6 +596,7 @@ hook.Add("PlayerDisconnected", "PlayerUninitializeStats", function(ply)
 	UpdateStashString(ply)
 	UpdateInventoryString(ply)
 	UpdateEquippedString(ply)
+	UpdateTaskString(ply)
 
 	CalculateStashValue(ply)
 
@@ -606,7 +612,7 @@ hook.Add("ShutDown", "ServerUninitializeStats", function(ply)
 
 		if !v:CompareStatus(0) then
 
-        v:SetNWInt("Quits", v:GetNWInt("Quits", 0) + 1)
+        	v:SetNWInt("Quits", v:GetNWInt("Quits", 0) + 1)
 
 			-- wipe inventory if leaving WHILE in a raid
 			ReinstantiateInventory(v)
@@ -618,6 +624,7 @@ hook.Add("ShutDown", "ServerUninitializeStats", function(ply)
 		UpdateStashString(v)
 		UpdateInventoryString(v)
 		UpdateEquippedString(v)
+		UpdateTaskString(v)
 
 		CalculateStashValue(v)
 

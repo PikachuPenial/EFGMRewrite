@@ -278,6 +278,22 @@ net.Receive("PlayerStashAddItemFromEquipped", function(len, ply)
 
     RemoveWeightFromPlayer(ply, item.name, item.data.count)
 
+    if item.data.att then
+
+        local atts = GetPrefixedAttachmentListFromCode(item.data.att)
+        if !atts then return end
+
+        for _, a in ipairs(atts) do
+
+            local att = EFGMITEMS[a]
+            if att == nil then continue end
+
+            RemoveWeightFromPlayer(ply, a, 1)
+
+        end
+
+    end
+
     AddItemToStash(ply, item.name, item.type, item.data)
 
     ReloadStash(ply)
@@ -353,6 +369,22 @@ net.Receive("PlayerStashEquipItem", function(len, ply)
         DeleteItemFromStash(ply, itemIndex)
         ply.weaponSlots[equipSlot][equipSubSlot] = item
         AddWeightToPlayer(ply, item.name, item.data.count)
+
+        if item.data.att then
+
+            local atts = GetPrefixedAttachmentListFromCode(item.data.att)
+            if !atts then return end
+
+            for _, a in ipairs(atts) do
+
+                local att = EFGMITEMS[a]
+                if att == nil then continue end
+
+                AddWeightToPlayer(ply, a, 1)
+
+            end
+
+        end
 
         equipWeaponName = item.name
         GiveWepWithPresetFromCode(ply, item.name, item.data.att)
@@ -462,7 +494,7 @@ function CalculateStashValue(ply)
             for _, a in ipairs(atts) do
 
                 local att = EFGMITEMS[a]
-                if att == nil then return end
+                if att == nil then continue end
 
                 value = value + att.value
 

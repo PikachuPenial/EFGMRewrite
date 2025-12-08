@@ -103,8 +103,6 @@ function Menu:Initialize(openTo, container)
     self.Unblur = false
     self.Closing = false
 
-    RunConsoleCommand("efgm_task_requestall")
-
     function menuFrame:Paint(w, h)
 
         surface.SetDrawColor(0, 0, 0, 240)
@@ -828,6 +826,8 @@ function Menu:Initialize(openTo, container)
 
                 if Menu.ActiveTab == "Tasks" then return end
 
+                RunConsoleCommand("efgm_task_requestall")
+
                 if Menu.ActiveTab == "Match" then
 
                     net.Start("RemovePlayerSquadRF")
@@ -1174,6 +1174,7 @@ function Menu.InspectItem(item, data)
     local itemNameSize = surface.GetTextSize(itemNameText)
 
     local value = i.value
+    local weight = i.weight
 
     if data and data.att then
 
@@ -1183,16 +1184,17 @@ function Menu.InspectItem(item, data)
         for _, a in ipairs(atts) do
 
             local att = EFGMITEMS[a]
-            if att == nil then return end
+            if att == nil then continue end
 
             value = value + att.value
+            weight = weight + att.weight
 
         end
 
     end
 
     surface.SetFont("PuristaBold18")
-    local itemDescText = string.upper(i.displayType) .. " / " .. string.upper(i.weight) .. "KG" .. " / ₽" .. string.upper(comma_value(value))
+    local itemDescText = string.upper(i.displayType) .. " / " .. string.upper(weight) .. "KG" .. " / ₽" .. string.upper(comma_value(value))
     if i.canPurchase == true or i.canPurchase == nil then itemDescText = itemDescText .. " / LEVEL " .. string.upper(i.levelReq) end
     local itemDescSize = surface.GetTextSize(itemDescText)
 
@@ -1510,7 +1512,6 @@ function Menu.InspectItem(item, data)
 
             wikiContentText:AppendText("\n")
 
-            local caliber = ARC9:GetPhrase(wep["Trivia"]["eft_trivia_cal2"]) or nil
             local firemodes = wep["Firemodes"] or nil
             local damageMax = math.Round(wep["DamageMax"]) or nil
             local damageMin = math.Round(wep["DamageMin"]) or nil
@@ -1518,23 +1519,22 @@ function Menu.InspectItem(item, data)
             local range = math.Round(wep["RangeMax"] * 0.0254) or nil
             local velocity = math.Round((wep["PhysBulletMuzzleVelocity"] * 0.0254) * 1.2) or nil
 
-            local recoilMult = math.Round(wep["Recoil"]) or 1
+            local recoilMult = math.Round(wep["Recoil"], 2) or 1
+            local visualRecoilMult = math.Round(wep["VisualRecoil"], 2) or 1
             local recoilUp = math.Round(wep["RecoilUp"] * recoilMult, 2) or nil
             local recoilUpRand = math.Round(wep["RecoilRandomUp"] * recoilMult, 2) or nil
             local recoilSide = math.Round(wep["RecoilSide"] * recoilMult, 2) or nil
             local recoilSideRand = math.Round(wep["RecoilRandomSide"] * recoilMult, 2) or nil
+            local visualRecoilUp = math.Round(wep["VisualRecoilUp"] * visualRecoilMult, 2) or nil
+            local visualRecoilSide = math.Round(wep["VisualRecoilSide"] * visualRecoilMult, 2) or nil
+            local visualRecoilDamping = math.Round(wep["VisualRecoilDampingConst"], 2) or nil
+            local recoilRecovery = math.Round(wep["RecoilAutoControl"], 2) or nil
             local accuracy = math.Round(wep["Spread"] * 360 * 60 / 10, 2)
             local ergo = wep["EFTErgo"] or nil
 
             local manufacturer = ARC9:GetPhrase(wep["Trivia"]["eft_trivia_manuf1"]) or nil
             local country = ARC9:GetPhrase(wep["Trivia"]["eft_trivia_country4"]) or nil
             local year = wep["Trivia"]["eft_trivia_year5"] or nil
-
-            if caliber then
-
-                wikiContentText:AppendText("CALIBER: " ..  caliber .. "\n")
-
-            end
 
             if firemodes then
 
@@ -1597,6 +1597,30 @@ function Menu.InspectItem(item, data)
             if recoilSide and recoilSideRand then
 
                 wikiContentText:AppendText("HORIZONTAL RECOIL: " .. recoilSide .. " + " .. recoilSideRand .. "°" .. "\n")
+
+            end
+
+            if visualRecoilUp then
+
+                wikiContentText:AppendText("VISUAL VERTICAL RECOIL: " .. visualRecoilUp .. "\n")
+
+            end
+
+            if visualRecoilSide then
+
+                wikiContentText:AppendText("VISUAL HORIZONTAL RECOIL: " .. visualRecoilSide .. "\n")
+
+            end
+
+            if visualRecoilDamping then
+
+                wikiContentText:AppendText("VISUAL RECOIL DAMPING: " .. visualRecoilDamping .. "\n")
+
+            end
+
+            if recoilRecovery then
+
+                wikiContentText:AppendText("RECOIL RECOVERY: " .. recoilRecovery .. "\n")
 
             end
 
@@ -2071,7 +2095,7 @@ function Menu.ConfirmSell(item, data, key)
         for _, a in ipairs(atts) do
 
             local att = EFGMITEMS[a]
-            if att == nil then return end
+            if att == nil then continue end
 
             transactionCost = transactionCost + math.floor(att.value * sellMultiplier)
 
@@ -2223,7 +2247,7 @@ function Menu.ConfirmSell(item, data, key)
                 for _, a in ipairs(atts) do
 
                     local att = EFGMITEMS[a]
-                    if att == nil then return end
+                    if att == nil then continue end
 
                     transactionCost = transactionCost + math.floor(att.value * sellMultiplier)
 
@@ -3183,6 +3207,14 @@ function Menu.ReloadInventory()
 
         function item:DoDoubleClick()
 
+            if GetConVar("efgm_menu_doubleclick_consume"):GetInt() == 1 and Menu.Player:CompareStatus(0) and i.equipType == EQUIPTYPE.Consumable then
+
+                ConsumeItemFromInventory(v.id)
+                surface.PlaySound("ui/element_consume.wav")
+                return
+
+            end
+
             Menu.InspectItem(v.name, v.data)
             surface.PlaySound("ui/element_select.wav")
 
@@ -3270,7 +3302,7 @@ function Menu.ReloadInventory()
             actions.stashable = Menu.Player:CompareStatus(0) and table.IsEmpty(Menu.Container)
             actions.equipable = i.equipType == EQUIPTYPE.Weapon
             actions.splittable = i.stackSize > 1 and v.data.count > 1
-            actions.consumable = i.equipType == EQUIPTYPE.Consumable
+            actions.consumable = Menu.Player:CompareStatus(0) and i.equipType == EQUIPTYPE.Consumable
             actions.deletable = Menu.Player:CompareStatus(0)
             actions.ammoBuyable = Menu.Player:CompareStatus(0) and i.ammoID
             actions.taggable = Menu.Player:CompareStatus(0) and v.data.tag == nil and (actions.ammoBuyable or i.equipSlot == WEAPONSLOTS.MELEE.ID)
@@ -3395,7 +3427,7 @@ function Menu.ReloadInventory()
 
                 function itemConsumeButton:DoClick()
 
-                    surface.PlaySound("ui/element_select.wav")
+                    surface.PlaySound("ui/element_consume.wav")
                     ConsumeItemFromInventory(v.id)
                     contextMenu:Remove()
 
@@ -5202,7 +5234,7 @@ function Menu.ReloadStash()
                 for _, a in ipairs(atts) do
 
                     local att = EFGMITEMS[a]
-                    if att == nil then return end
+                    if att == nil then continue end
 
                     stashValue = stashValue + att.value
 
@@ -5690,7 +5722,7 @@ function Menu.ReloadMarketStash()
                 for _, a in ipairs(atts) do
 
                     local att = EFGMITEMS[a]
-                    if att == nil then return end
+                    if att == nil then continue end
 
                     stashValue = stashValue + att.value
                     itemValue = itemValue + math.floor(att.value * sellMultiplier)
@@ -8195,7 +8227,7 @@ function Menu.OpenTab.Market()
                         for _, a in ipairs(atts) do
 
                             local att = EFGMITEMS[a]
-                            if att == nil then return end
+                            if att == nil then continue end
 
                             entry.value = entry.value + att.value
 
@@ -10861,6 +10893,20 @@ function Menu.OpenTab.Settings()
     menuScalingMethod.OnSelect = function(self, value)
         RunConsoleCommand("efgm_menu_scalingmethod", value - 1)
     end
+
+    local menuDoubleConsumePanel = vgui.Create("DPanel", interface)
+    menuDoubleConsumePanel:Dock(TOP)
+    menuDoubleConsumePanel:SetSize(0, EFGM.MenuScale(50))
+    function menuDoubleConsumePanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Consume Item On Double Click", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local menuDoubleConsume = vgui.Create("DCheckBox", menuDoubleConsumePanel)
+    menuDoubleConsume:SetPos(EFGM.MenuScale(152), EFGM.MenuScale(30))
+    menuDoubleConsume:SetConVar("efgm_menu_doubleclick_consume")
+    menuDoubleConsume:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
 
     local menuDeletePromptPanel = vgui.Create("DPanel", interface)
     menuDeletePromptPanel:Dock(TOP)
