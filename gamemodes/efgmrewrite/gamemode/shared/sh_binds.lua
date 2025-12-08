@@ -19,6 +19,38 @@ if CLIENT then
     CreateClientConVar("efgm_bind_equip_utility", KEY_G, true, true, "Determines the keybind that equips your grenade")
 end
 
+-- toggle crouch
+local function CreateToggleDuckHook()
+
+    hook.Add("PlayerBindPress", "ToggleDuck", function(ply, bind, pressed)
+
+        if (GetConVar("efgm_controls_toggleduck"):GetBool() == false) then hook.Remove("PlayerBindPress", "ToggleDuck") return end
+
+        if string.find(bind, "+duck") and ply:Crouching() == false then
+
+            ply:ConCommand("+duck")
+
+        elseif string.find(bind, "+duck") and ply:Crouching() == true then
+
+            ply:ConCommand("-duck")
+
+        end
+
+    end)
+
+end
+
+CreateToggleDuckHook()
+
+-- remove toggle crouch hook when not enabled
+cvars.AddChangeCallback("efgm_controls_toggleduck", function(convar_name, value_old, value_new)
+
+    if value_new == "1" then CreateToggleDuckHook() else hook.Remove("PlayerBindPress", "ToggleDuck") end
+
+end)
+
+hook.Add("PlayerSpawn", "UnduckOnSpawn", function(ply) ply:ConCommand("-duck") end)
+
 hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
 
     if CLIENT then

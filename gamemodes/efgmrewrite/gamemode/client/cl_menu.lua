@@ -1784,7 +1784,7 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
     if plyMoney < i.value then surface.PlaySound("ui/element_deselect.wav") return end
     if plyLevel < (i.levelReq or 1) then surface.PlaySound("ui/element_deselect.wav") return end
 
-    local maxTransactionCountMult = math.min(10, ply:GetNWInt("StashMax", 150) - ply:GetNWInt("StashCount", 0))
+    local maxTransactionCountMult = math.min(10, Menu.Player:GetNWInt("StashMax", 150) - Menu.Player:GetNWInt("StashCount", 0))
     local maxTransactionCount = math.Clamp(math.floor(plyMoney / i.value), 1, i.stackSize * maxTransactionCountMult)
     if i.stackSize == 1 then maxTransactionCount = 1 end
 
@@ -3584,7 +3584,7 @@ function Menu.ReloadSlots()
         if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18" tagFont = "PuristaBold14" tagH = EFGM.MenuScale(12)
         else nameFont = "PuristaBold14" tagFont = "PuristaBold10" tagH = EFGM.MenuScale(10) end
 
-        local wep = ply:GetWeapon(playerWeaponSlots[1][1].name)
+        local wep = Menu.Player:GetWeapon(playerWeaponSlots[1][1].name)
         local clip = 0
         local clipMax = 0
         local mag = ""
@@ -3932,7 +3932,7 @@ function Menu.ReloadSlots()
         if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18" tagFont = "PuristaBold14" tagH = EFGM.MenuScale(12)
         else nameFont = "PuristaBold14" tagFont = "PuristaBold10" tagH = EFGM.MenuScale(10) end
 
-        local wep = ply:GetWeapon(playerWeaponSlots[1][2].name)
+        local wep = Menu.Player:GetWeapon(playerWeaponSlots[1][2].name)
         local clip = 0
         local clipMax = 0
         local mag = ""
@@ -4280,7 +4280,7 @@ function Menu.ReloadSlots()
         if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18" tagFont = "PuristaBold14" tagH = EFGM.MenuScale(12)
         else nameFont = "PuristaBold14" tagFont = "PuristaBold10" tagH = EFGM.MenuScale(10) end
 
-        local wep = ply:GetWeapon(playerWeaponSlots[2][1].name)
+        local wep = Menu.Player:GetWeapon(playerWeaponSlots[2][1].name)
         local clip = 0
         local clipMax = 0
         local mag = ""
@@ -10412,6 +10412,20 @@ function Menu.OpenTab.Settings()
 
     -- gameplay
 
+    local toggleCrouchPanel = vgui.Create("DPanel", gameplay)
+    toggleCrouchPanel:Dock(TOP)
+    toggleCrouchPanel:SetSize(0, EFGM.MenuScale(50))
+    function toggleCrouchPanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Toggle Crouching", "Purista18", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+    end
+
+    local toggleCrouch = vgui.Create("DCheckBox", toggleCrouchPanel)
+    toggleCrouch:SetPos(EFGM.MenuScale(152), EFGM.MenuScale(30))
+    toggleCrouch:SetConVar("efgm_controls_toggleduck")
+    toggleCrouch:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+
     local toggleADSPanel = vgui.Create("DPanel", gameplay)
     toggleADSPanel:Dock(TOP)
     toggleADSPanel:SetSize(0, EFGM.MenuScale(50))
@@ -11155,11 +11169,7 @@ function Menu.OpenTab.Settings()
 
 end
 
-local selectedTask = ""
-
 function Menu.OpenTab.Tasks()
-
-    selectedTask = ""
 
     local contents = vgui.Create("DPanel", Menu.MenuFrame.LowerPanel)
     contents:Dock(FILL)
@@ -11321,7 +11331,7 @@ function Menu.OpenTab.Tasks()
 
             -- Accept Button
 
-                if playerTasks[taskName].status == TASKSTATUS.AcceptPending and ply:CompareStatus(0) then
+                if playerTasks[taskName].status == TASKSTATUS.AcceptPending and Menu.Player:CompareStatus(0) then
 
                     local acceptButton = vgui.Create("DButton", taskDisplay)
                     acceptButton:Dock(TOP)
@@ -11364,7 +11374,7 @@ function Menu.OpenTab.Tasks()
 
             -- Complete button
 
-                if playerTasks[taskName].status == TASKSTATUS.CompletePending and ply:CompareStatus(0) then
+                if playerTasks[taskName].status == TASKSTATUS.CompletePending and Menu.Player:CompareStatus(0) then
 
                     local completeButton = vgui.Create("DButton", taskDisplay)
                     completeButton:Dock(TOP)
@@ -11570,7 +11580,7 @@ function Menu.OpenTab.Tasks()
 
                     end
 
-                    if curProgress != maxProgress && objInfo.type == OBJECTIVE.Pay && playerTasks[taskName].status == TASKSTATUS.InProgress && ply:CompareStatus(0) then
+                    if curProgress != maxProgress and objInfo.type == OBJECTIVE.Pay and playerTasks[taskName].status == TASKSTATUS.InProgress && Menu.Player:CompareStatus(0) then
                         
                         local payAmount = math.Clamp(maxProgress - curProgress, 0, LocalPlayer:GetNWInt("Money", 0))
 
