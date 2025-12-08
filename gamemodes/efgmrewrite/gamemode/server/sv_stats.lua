@@ -76,7 +76,7 @@ hook.Add("EntityTakeDamage", "DamageUpdateStats", function(ply, damageInfo)
     if !attacker:IsPlayer() then return end
     if attacker == ply then return end
 
-    local damageAmount = damageInfo:GetDamage()
+    local damageAmount = math.Round(damageInfo:GetDamage())
 
     if damageAmount > 0 then
 
