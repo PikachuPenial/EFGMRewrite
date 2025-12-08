@@ -226,10 +226,10 @@ EFGMTASKS["shooter"] = {
 }
 
 EFGMTASKS["restock"] = {
-    
+
     name = "Restocking",
     description = "[Description Here] The body armor plates are in the locked armory room in the workshop, check your map. They'll look like a briefcase because I haven't modeled them yet.",
-    
+
     traderName = "Bartender",
     traderIcon = Material("traders/generic.png", "smooth"),
 
@@ -239,7 +239,7 @@ EFGMTASKS["restock"] = {
     },
 
     objectives = {
-        NewObjective.Kill(5)
+        NewObjective.Kill(5),
         NewObjective.QuestItem("plates", "efgm_concrete_rw")
     },
 
@@ -253,7 +253,7 @@ EFGMTASKS["restock"] = {
 }
 
 EFGMTASKS["civs1"] = {
-    
+
     name = "Civilians - Part 1",
     description = "Greetings, operator. I am Aleksei, a PMC like yourself, and I have a request for you. "..
     "Earlier, as I was scouting out the southern parts of the city for an associate, I came across a few civilians in a bombed out building, "..
