@@ -1827,23 +1827,23 @@ function HUDInspectItem(item, data, panel)
             wikiContentText:AppendText("\n")
 
             local firemodes = wep["Firemodes"] or nil
-            local damageMax = math.Round(wep["DamageMax"]) or nil
-            local damageMin = math.Round(wep["DamageMin"]) or nil
-            local rpm = math.Round(wep["RPM"]) or nil
-            local range = math.Round(wep["RangeMax"] * 0.0254) or nil
-            local velocity = math.Round((wep["PhysBulletMuzzleVelocity"] * 0.0254) * 1.2) or nil
+            local damageMax = math.Round(wep["DamageMax"] or 0) or nil
+            local damageMin = math.Round(wep["DamageMin"] or 0) or nil
+            local rpm = math.Round(wep["RPM"] or 0) or nil
+            local range = math.Round((wep["RangeMax"] or 0) * 0.0254) or nil
+            local velocity = math.Round(((wep["PhysBulletMuzzleVelocity"] or 0) * 0.0254) * 1.2) or nil
 
-            local recoilMult = math.Round(wep["Recoil"], 2) or 1
-            local visualRecoilMult = math.Round(wep["VisualRecoil"], 2) or 1
-            local recoilUp = math.Round(wep["RecoilUp"] * recoilMult, 2) or nil
-            local recoilUpRand = math.Round(wep["RecoilRandomUp"] * recoilMult, 2) or nil
-            local recoilSide = math.Round(wep["RecoilSide"] * recoilMult, 2) or nil
-            local recoilSideRand = math.Round(wep["RecoilRandomSide"] * recoilMult, 2) or nil
-            local visualRecoilUp = math.Round(wep["VisualRecoilUp"] * visualRecoilMult, 2) or nil
-            local visualRecoilSide = math.Round(wep["VisualRecoilSide"] * visualRecoilMult, 2) or nil
-            local visualRecoilDamping = math.Round(wep["VisualRecoilDampingConst"], 2) or nil
+            local recoilMult = math.Round(wep["Recoil"] or 1, 2) or 1
+            local visualRecoilMult = math.Round(wep["VisualRecoil"] or 1, 2) or 1
+            local recoilUp = math.Round((wep["RecoilUp"] or 0) * recoilMult, 2) or nil
+            local recoilUpRand = math.Round((wep["RecoilRandomUp"] or 0) * recoilMult, 2) or nil
+            local recoilSide = math.Round((wep["RecoilSide"] or 0) * recoilMult, 2) or nil
+            local recoilSideRand = math.Round((wep["RecoilRandomSide"] or 0) * recoilMult, 2) or nil
+            local visualRecoilUp = math.Round((wep["VisualRecoilUp"] or 0) * visualRecoilMult, 2) or nil
+            local visualRecoilSide = math.Round((wep["VisualRecoilSide"] or 0) * visualRecoilMult, 2) or nil
+            local visualRecoilDamping = math.Round(wep["VisualRecoilDampingConst"] or 0, 2) or nil
             local recoilRecovery = math.Round(wep["RecoilAutoControl"], 2) or nil
-            local accuracy = math.Round(wep["Spread"] * 360 * 60 / 10, 2)
+            local accuracy = math.Round((wep["Spread"] or 0) * 360 * 60 / 10, 2)
             local ergo = wep["EFTErgo"] or nil
 
             local manufacturer = ARC9:GetPhrase(wep["Trivia"]["eft_trivia_manuf1"]) or nil

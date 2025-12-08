@@ -41,7 +41,7 @@ if SERVER then
 
         local key = net.ReadString()
 
-        local str = LEADERBOARDSTRINGS[key]
+        local str = LEADERBOARDSTRINGS[key] or ""
 
         net.Start("SendLeaderboardData", true)
         net.WriteString(str)

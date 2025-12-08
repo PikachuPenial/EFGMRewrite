@@ -1513,23 +1513,23 @@ function Menu.InspectItem(item, data)
             wikiContentText:AppendText("\n")
 
             local firemodes = wep["Firemodes"] or nil
-            local damageMax = math.Round(wep["DamageMax"]) or nil
-            local damageMin = math.Round(wep["DamageMin"]) or nil
-            local rpm = math.Round(wep["RPM"]) or nil
-            local range = math.Round(wep["RangeMax"] * 0.0254) or nil
-            local velocity = math.Round((wep["PhysBulletMuzzleVelocity"] * 0.0254) * 1.2) or nil
+            local damageMax = math.Round(wep["DamageMax"] or 0) or nil
+            local damageMin = math.Round(wep["DamageMin"] or 0) or nil
+            local rpm = math.Round(wep["RPM"] or 0) or nil
+            local range = math.Round((wep["RangeMax"] or 0) * 0.0254) or nil
+            local velocity = math.Round(((wep["PhysBulletMuzzleVelocity"] or 0) * 0.0254) * 1.2) or nil
 
-            local recoilMult = math.Round(wep["Recoil"], 2) or 1
-            local visualRecoilMult = math.Round(wep["VisualRecoil"], 2) or 1
-            local recoilUp = math.Round(wep["RecoilUp"] * recoilMult, 2) or nil
-            local recoilUpRand = math.Round(wep["RecoilRandomUp"] * recoilMult, 2) or nil
-            local recoilSide = math.Round(wep["RecoilSide"] * recoilMult, 2) or nil
-            local recoilSideRand = math.Round(wep["RecoilRandomSide"] * recoilMult, 2) or nil
-            local visualRecoilUp = math.Round(wep["VisualRecoilUp"] * visualRecoilMult, 2) or nil
-            local visualRecoilSide = math.Round(wep["VisualRecoilSide"] * visualRecoilMult, 2) or nil
-            local visualRecoilDamping = math.Round(wep["VisualRecoilDampingConst"], 2) or nil
+            local recoilMult = math.Round(wep["Recoil"] or 1, 2) or 1
+            local visualRecoilMult = math.Round(wep["VisualRecoil"] or 1, 2) or 1
+            local recoilUp = math.Round((wep["RecoilUp"] or 0) * recoilMult, 2) or nil
+            local recoilUpRand = math.Round((wep["RecoilRandomUp"] or 0) * recoilMult, 2) or nil
+            local recoilSide = math.Round((wep["RecoilSide"] or 0) * recoilMult, 2) or nil
+            local recoilSideRand = math.Round((wep["RecoilRandomSide"] or 0) * recoilMult, 2) or nil
+            local visualRecoilUp = math.Round((wep["VisualRecoilUp"] or 0) * visualRecoilMult, 2) or nil
+            local visualRecoilSide = math.Round((wep["VisualRecoilSide"] or 0) * visualRecoilMult, 2) or nil
+            local visualRecoilDamping = math.Round(wep["VisualRecoilDampingConst"] or 0, 2) or nil
             local recoilRecovery = math.Round(wep["RecoilAutoControl"], 2) or nil
-            local accuracy = math.Round(wep["Spread"] * 360 * 60 / 10, 2)
+            local accuracy = math.Round((wep["Spread"] or 0) * 360 * 60 / 10, 2)
             local ergo = wep["EFTErgo"] or nil
 
             local manufacturer = ARC9:GetPhrase(wep["Trivia"]["eft_trivia_manuf1"]) or nil
@@ -9873,44 +9873,47 @@ function Menu.OpenTab.Stats()
     local statsTbl = {}
 
     statsTbl.Level = Menu.Player:GetNWInt("Level")
-    statsTbl.Experience = Menu.Player:GetNWInt("Experience")
-    statsTbl.MoneyEarned = Menu.Player:GetNWInt("MoneyEarned")
-    statsTbl.MoneySpent = Menu.Player:GetNWInt("MoneySpent")
-    statsTbl.Time = Menu.Player:GetNWInt("Time")
-    statsTbl.StashValue = Menu.Player:GetNWInt("StashValue")
+    statsTbl.Experience = comma_value(Menu.Player:GetNWInt("Experience"))
+    statsTbl.MoneyEarned = "₽" .. comma_value(Menu.Player:GetNWInt("MoneyEarned"))
+    statsTbl.MoneySpent = "₽" .. comma_value(Menu.Player:GetNWInt("MoneySpent"))
+    statsTbl.Time = comma_value(Menu.Player:GetNWInt("Time")) .. "s"
+    statsTbl.StashValue = "₽" .. comma_value(Menu.Player:GetNWInt("StashValue"))
 
-    statsTbl.Kills = Menu.Player:GetNWInt("Kills")
-    statsTbl.Deaths = Menu.Player:GetNWInt("Deaths")
-    statsTbl.Suicides = Menu.Player:GetNWInt("Suicides")
-    statsTbl.DamageDealt = Menu.Player:GetNWInt("DamageDealt")
-    statsTbl.DamageRecieved = Menu.Player:GetNWInt("DamageRecieved")
-    statsTbl.DamageHealed = Menu.Player:GetNWInt("DamageHealed")
-    statsTbl.ShotsFired = Menu.Player:GetNWInt("ShotsFired")
-    statsTbl.ShotsHit = Menu.Player:GetNWInt("ShotsHit")
-    statsTbl.Headshots = Menu.Player:GetNWInt("Headshots")
-    statsTbl.FarthestKill = Menu.Player:GetNWInt("FarthestKill")
+    statsTbl.Kills = comma_value(Menu.Player:GetNWInt("Kills"))
+    statsTbl.Deaths = comma_value(Menu.Player:GetNWInt("Deaths"))
+    statsTbl.Suicides = comma_value(Menu.Player:GetNWInt("Suicides"))
+    statsTbl.DamageDealt = comma_value(math.Round(Menu.Player:GetNWInt("DamageDealt")))
+    statsTbl.DamageRecieved = comma_value(math.Round(Menu.Player:GetNWInt("DamageRecieved")))
+    statsTbl.DamageHealed = comma_value(math.Round(Menu.Player:GetNWInt("DamageHealed")))
+    statsTbl.ShotsFired = comma_value(Menu.Player:GetNWInt("ShotsFired"))
+    statsTbl.ShotsHit = comma_value(Menu.Player:GetNWInt("ShotsHit"))
+    statsTbl.Headshots = comma_value(Menu.Player:GetNWInt("Headshots"))
+    statsTbl.FarthestKill = comma_value(Menu.Player:GetNWInt("FarthestKill"))
 
-    statsTbl.Extractions = Menu.Player:GetNWInt("Extractions")
-    statsTbl.Quits = Menu.Player:GetNWInt("Quits")
-    statsTbl.RaidsPlayed = Menu.Player:GetNWInt("RaidsPlayed")
+    statsTbl.Extractions = comma_value(Menu.Player:GetNWInt("Extractions"))
+    statsTbl.Quits = comma_value(Menu.Player:GetNWInt("Quits"))
+    statsTbl.RaidsPlayed = comma_value(Menu.Player:GetNWInt("RaidsPlayed"))
 
-    statsTbl.CurrentKillStreak = Menu.Player:GetNWInt("CurrentKillStreak")
-    statsTbl.BestKillStreak = Menu.Player:GetNWInt("BestKillStreak")
-    statsTbl.CurrentExtractionStreak = Menu.Player:GetNWInt("CurrentExtractionStreak")
-    statsTbl.BestExtractionStreak = Menu.Player:GetNWInt("BestExtractionStreak")
+    statsTbl.CurrentKillStreak = comma_value(Menu.Player:GetNWInt("CurrentKillStreak"))
+    statsTbl.BestKillStreak = comma_value(Menu.Player:GetNWInt("BestKillStreak"))
+    statsTbl.CurrentExtractionStreak = comma_value(Menu.Player:GetNWInt("CurrentExtractionStreak"))
+    statsTbl.BestExtractionStreak = comma_value(Menu.Player:GetNWInt("BestExtractionStreak"))
+
+    statsTbl.KD = math.Round(Menu.Player:GetNWInt("Kills") / math.max(Menu.Player:GetNWInt("Deaths"), 1), 3)
+    statsTbl.SurvivalRate = math.Round((Menu.Player:GetNWInt("Extractions") / Menu.Player:GetNWInt("RaidsPlayed")) * 100) .. "%"
 
     for k, v in SortedPairs(statsTbl) do
 
         local statEntry = vgui.Create("DPanel", importantStats)
         statEntry:Dock(TOP)
-        statEntry:SetSize(0, EFGM.MenuScale(20))
+        statEntry:SetSize(0, EFGM.MenuScale(18))
         function statEntry:Paint(w, h)
 
             surface.SetDrawColor(MenuAlias.transparent)
             surface.DrawRect(0, 0, w, h)
 
             draw.SimpleTextOutlined(k .. "", "Purista18", EFGM.MenuScale(5), 0, MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-            draw.SimpleTextOutlined(math.Round(v), "Purista18", w - EFGM.MenuScale(5), 0, MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+            draw.SimpleTextOutlined(v, "Purista18", w - EFGM.MenuScale(5), 0, MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
         end
 
@@ -9959,7 +9962,7 @@ function Menu.OpenTab.Stats()
 
         local boardSelection = DermaMenu()
 
-        for text, board in pairs(LEADERBOARDS) do
+        for text, board in SortedPairs(LEADERBOARDS) do
 
             boardSelection:AddOption(text, function() selectBoard(text, board) end)
 
@@ -9982,7 +9985,7 @@ function Menu.OpenTab.Stats()
 
         if selectedBoard == nil then return end
 
-        draw.SimpleTextOutlined(string.upper(selectedBoardName), "PuristaBold22", w / 2, EFGM.MenuScale(5), color, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined(string.upper(selectedBoardName), "PuristaBold22", w / 2, EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
         for k, v in ipairs(selectedBoard) do
 
@@ -9990,7 +9993,21 @@ function Menu.OpenTab.Stats()
             if v.SteamName == Menu.Player:GetName() then color = yColor end
             draw.SimpleTextOutlined(k, "Purista18", EFGM.MenuScale(5), EFGM.MenuScale(25) + ((k - 1) * EFGM.MenuScale(20)), color, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
             draw.SimpleTextOutlined(string.sub(v.SteamName, 1, 21), "Purista18", EFGM.MenuScale(25), EFGM.MenuScale(25) + ((k - 1) * EFGM.MenuScale(20)), color, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-            draw.SimpleTextOutlined(v.Value, "Purista18", w - EFGM.MenuScale(5), EFGM.MenuScale(25) + ((k - 1) * EFGM.MenuScale(20)), color, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            --asdofiauhasdofiauashydafasdifa
+            if selectedBoardName == "Money Earned" or selectedBoardName == "Money Spent" or selectedBoardName == "Stash Value" then
+
+                draw.SimpleTextOutlined("₽" .. comma_value(v.Value), "Purista18", w - EFGM.MenuScale(5), EFGM.MenuScale(25) + ((k - 1) * EFGM.MenuScale(20)), color, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            elseif selectedBoardName == "Time" then
+
+                draw.SimpleTextOutlined(comma_value(v.Value) .. "s", "Purista18", w - EFGM.MenuScale(5), EFGM.MenuScale(25) + ((k - 1) * EFGM.MenuScale(20)), color, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            else
+
+                draw.SimpleTextOutlined(comma_value(v.Value), "Purista18", w - EFGM.MenuScale(5), EFGM.MenuScale(25) + ((k - 1) * EFGM.MenuScale(20)), color, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            end
 
         end
 
