@@ -287,6 +287,27 @@ EFGMITEMS = {}
         ["defAtts"] = "XQAAAQCQAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8ONwzg/QXs7OyJFuxzQi6LzMsFSvNU1yACpZwRaPs5EodvVwyjcJT3XwS6d+9+4ug91/qR+ermrEClJty912QBtqdui+PMzm1CjpMD8XFPO1LEU1e/FMACiOW77NtOuUxG6WPaO5xD1SVFY7X6TTXF+F+vOmlZGLw+ctKeMR7iEGa1XR3kWcFnWoV0jvNOMOE3RclEYd+ufnPfFELtEqyWGZbV3InaGrO/j5uE"
     }
 
+    EFGMITEMS["arc9_eft_aek971"] = {
+        ["fullName"] = "AEK-971 5.45x45 assault rifle",
+        ["displayName"] = "AEK-971",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 3.3,
+        ["value"] = 151000,
+        ["levelReq"] = 35,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/weapons/aek971.png", "smooth"),
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2,
+
+        ["caliber"] = "5.45x39",
+        ["ammoID"] = "efgm_ammo_545x39",
+        ["defAtts"] = "XQAAAQCfAQAAAAAAAAA9iIIiM7hMNz0dhIkbkvLjTdSR5gRNNIHH3iMgsLQ2HQpM1u5keOo9nkOEi25RcVCGAHvoza8JVSPxJOoz87ZabXFqV0UoVT3eh5eQVRbP7ahsz3JIHY1pHyv74F5aAF2/ZK7/FplqgBwynL7V+II74WXNSKksipmw+Xwum5Hr4J/AZe5edaeEkUENBibdsuO9eoDCO1FY68scPqqr4lAEMR/sqUSxAA=="
+    }
+
     EFGMITEMS["arc9_eft_ak101"] = {
         ["fullName"] = "Kalashnikov AK-101 5.56x45 assault rifle",
         ["displayName"] = "AK-101",
@@ -537,6 +558,27 @@ EFGMITEMS = {}
         ["caliber"] = "5.45x39",
         ["ammoID"] = "efgm_ammo_545x39",
         ["defAtts"] = "XQAAAQDaAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LcWZNz742AnWnBW5VFLsMbYkg5JCtgcCZFQzZvKB7kdZlb7hYagJ7xTPFZ2McEz65077s8B+FWvzBE8FH3UO1VnwHvhCXw7ua73XK/ipwVxqxGmfGuH6rK0r8VL632B6ztnI8PKNABt3A2EItiEhsYVqkVySGPj2sdgNrDFN6ojMeJ2C0knLtyPiBB1fHZ0rAgFPuOvPzMd1jAA=="
+    }
+
+    EFGMITEMS["arc9_eft_an94"] = {
+        ["fullName"] = "AN-94 5.45x45 assault rifle",
+        ["displayName"] = "AN-94",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 3,
+        ["value"] = 82500,
+        ["levelReq"] = 13,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/weapons/an94.png", "smooth"),
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2,
+
+        ["caliber"] = "5.45x39",
+        ["ammoID"] = "efgm_ammo_545x39",
+        ["defAtts"] = "XQAAAQBDAQAAAAAAAAA9iIIiM7hMNz0dhIkbkvLjTdSR5gRNNIHH3iMmwXKHiTIjWV8SKVgpVgINXcNRf+a7fNmxl4D9sXf/AvHBRC15m0D6J5s+jyZ+HlDt8yVZ3XbOtM6M4Zj519ZrmW7OQOhvIpGKj7VQyWqLDPYq7sIO28+FzG+Qo/6E0w2750XKKIiaHkOYD3jQF/QJR1bagBpC4+CvAA=="
     }
 
     EFGMITEMS["arc9_eft_asval"] = {
@@ -954,6 +996,27 @@ EFGMITEMS = {}
     }
 
     -- light machine guns
+    EFGMITEMS["arc9_eft_m249"] = {
+        ["fullName"] = "M249 SAW 5.56x45 light machine gun",
+        ["displayName"] = "M249 SAW",
+        ["displayType"] = "Light Machine Gun",
+        ["weight"] = 7.7,
+        ["value"] = 249995,
+        ["levelReq"] = 33,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/weapons/m249.png", "smooth"),
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2,
+
+        ["caliber"] = "5.56x45",
+        ["ammoID"] = "efgm_ammo_556x45",
+        ["defAtts"] = "XQAAAQCHAQAAAAAAAAA9iIIiM7hMNz0dhIkbkvLjTdSR5gRNNIHH3iMsoRz+yL9kOdEqJeLavTwezUAEDoM+p9GvXx6woPy+Q/2yd3GqqyA1W+Mbk5bPXi69/vnB+d2vU2eE0sGaK94iwqGmTIYr6JU/Oa7jOtp4mW8Yy0Dub4i20Mp0/P7AQ189juExNbjXpNGxRruHsT2mSrm/QqP2cGVcOcQRKvPnGz8="
+    }
+
     EFGMITEMS["arc9_eft_m60e4"] = {
         ["fullName"] = "U.S. Ordnance M60E4 7.62x51 light machine gun",
         ["displayName"] = "M60E4",
