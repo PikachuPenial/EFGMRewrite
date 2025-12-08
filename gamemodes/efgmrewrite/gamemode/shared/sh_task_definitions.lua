@@ -167,7 +167,7 @@ EFGMTASKS = {}
 EFGMTASKS["connections"] = {
     
     name = "Connections",
-    description = "Hey, soldier. I don't think I've seen you before. What do you want? Guns? Ammunition? A truckload of vodka? "..
+    description = "Hey, soldier. I don't think I've seen you before. What do you want? Guns? Ammunition? Vodka? "..
     "Oh, I should've guessed, you want to escape the city. Well, I can't say I can help you there, but I might know a guy who knows a guy. "..
     "You're not gonna get any names out of me yet, though, I don't trust you. How about this? I have a job that needs doing, and I have some "..
     "roubles burning a hole in my pocket. You're familiar with that Concrete place, right? South of the capital? I had some guys get ambushed "..
@@ -191,6 +191,61 @@ EFGMTASKS["connections"] = {
     rewards = {
         NewReward.PlayerStat(10000, "Experience"),
         NewReward.PlayerStat(50000, "Money")
+    },
+
+    uibackground = Material("taskbg/concrete/general.jpg", "smooth")
+
+}
+
+EFGMTASKS["shooter"] = {
+    
+    name = "The Garkov Shooter",
+    description = "[description here]",
+    
+    traderName = "Bartender",
+    traderIcon = Material("traders/generic.png", "smooth"),
+
+    requirements = {
+        NewRequirement.PlayerStat(2, "Level"),
+        NewRequirement.QuestCompletion("connections")
+    },
+
+    objectives = {
+        NewObjective.Kill(30, "efgm_concrete_rw"),
+        NewObjective.Kill(30, "efgm_belmont_rw"),
+        NewObjective.Kill(30, "efgm_factory_rw")
+    },
+
+    rewards = {
+        NewReward.PlayerStat(50000, "Experience"),
+        NewReward.PlayerStat(5000000, "Money")
+    },
+
+    uibackground = Material("taskbg/concrete/general.jpg", "smooth")
+
+}
+
+EFGMTASKS["restock"] = {
+    
+    name = "Restocking",
+    description = "[Description Here] The body armor plates are in the locked armory room in the workshop, check your map. They'll look like a briefcase because I haven't modeled them yet.",
+    
+    traderName = "Bartender",
+    traderIcon = Material("traders/generic.png", "smooth"),
+
+    requirements = {
+        NewRequirement.PlayerStat(5, "Level"),
+        NewRequirement.QuestCompletion("connections")
+    },
+
+    objectives = {
+        NewObjective.Kill(5)
+        NewObjective.QuestItem("plates", "efgm_concrete_rw")
+    },
+
+    rewards = {
+        NewReward.PlayerStat(10000, "Experience"),
+        NewReward.PlayerStat(300000, "Money")
     },
 
     uibackground = Material("taskbg/concrete/general.jpg", "smooth")
@@ -257,28 +312,6 @@ EFGMTASKS["civs2"] = {
     objectiveTypes = {OBJECTIVE.Pay, OBJECTIVE.QuestItem},
     objectives = {
         NewObjective.Pay(250000),
-        NewObjective.QuestItem("briefcase", "efgm_concrete_rw")
-    },
-
-    rewardTypes = { REWARD.PlayerStat},
-    rewards = {
-        NewReward.PlayerStat(15000, "Experience")
-    },
-
-    uibackground = Material("taskbg/concrete/outdoors.jpg", "smooth")
-
-}
-
-EFGMTASKS["test"] = {
-    
-    name = "oh boy back to fucking testing",
-    description = "kys",
-    
-    traderName = "Porty",
-    traderIcon = Material("traders/generic.png", "smooth"),
-
-    objectiveTypes = {OBJECTIVE.QuestItem},
-    objectives = {
         NewObjective.QuestItem("briefcase", "efgm_concrete_rw")
     },
 

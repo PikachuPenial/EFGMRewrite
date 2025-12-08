@@ -200,7 +200,7 @@ function TaskProgressObjective(ply, progressObjType, count, info, subInfo, taskN
                             if progressObjType == OBJECTIVE.QuestItem then
 
                                 net.Start("SendNotification", false)
-                                net.WriteString(string.NiceName(subInfo) .. " picked up, and will be lost on death!")
+                                net.WriteString(EFGMQUESTITEM[subInfo].name .. " picked up, and will be lost on death!")
                                 net.WriteString("icons/inventory_icon.png")
                                 net.WriteString("subtaskcomplete.wav")
                                 net.Send(ply)
