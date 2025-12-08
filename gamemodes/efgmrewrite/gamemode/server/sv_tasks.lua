@@ -168,7 +168,39 @@ function TaskProgressObjective(ply, progressObjType, count, info, subInfo, taskN
     -- handling specific objectives
     if (progressObjType == OBJECTIVE.Pay or progressObjType == OBJECTIVE.GiveItem) && taskName != nil then
         
-        return
+        local taskInfo = EFGMTASKS[taskName]
+
+        for objIndex, objInfo in ipairs(taskInfo.objectives) do
+            
+            if objInfo.type == progressObjType && (objInfo.info == nil or objInfo.info == info) && (objInfo.subInfo == nil or objInfo.subInfo == subInfo) && ply.tasks[taskName].progress[objIndex] < objInfo.count then
+
+                if ply.tasks[taskName].progress[objIndex] + count < objInfo.count then
+
+                    ply.tasks[taskName].progress[objIndex] = ply.tasks[taskName].progress[objIndex] + count
+
+                    if progressObjType == OBJECTIVE.Pay then
+                        
+                        ply:SetNWInt("Money", ply:GetNWInt("Money", 0) - count)
+
+                    end
+
+                elseif ply.tasks[taskName].progress[objIndex] + count == objInfo.count then
+
+                    ply.tasks[taskName].progress[objIndex] = objInfo.count
+
+                    if progressObjType == OBJECTIVE.Pay then
+                        
+                        ply:SetNWInt("Money", ply:GetNWInt("Money", 0) - count)
+
+                    end
+
+                    TaskObjectiveComplete(ply, taskName)
+                    
+                end
+
+            end
+
+        end
 
     end
 
@@ -229,6 +261,7 @@ function TaskProgressObjective(ply, progressObjType, count, info, subInfo, taskN
     end
 
 end
+
 
 local function TaskWipeTempObjectives(ply)
 
@@ -329,6 +362,8 @@ net.Receive("TaskPay", function(len, ply)
 
     local taskName = net.ReadString()
     local amount = net.ReadUInt(32)
+
+    if ply:GetNWInt("Money", 0) < amount then return end
 
     TaskProgressObjective(ply, OBJECTIVE.Pay, amount, nil, nil, taskName)
 

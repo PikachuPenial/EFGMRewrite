@@ -11613,7 +11613,7 @@ function Menu.OpenTab.Tasks()
 
                     if curProgress != maxProgress and objInfo.type == OBJECTIVE.Pay and playerTasks[taskName].status == TASKSTATUS.InProgress && Menu.Player:CompareStatus(0) then
                         
-                        local payAmount = math.Clamp(maxProgress - curProgress, 0, LocalPlayer:GetNWInt("Money", 0))
+                        local payAmount = math.Clamp(maxProgress - curProgress, 0, LocalPlayer():GetNWInt("Money", 0))
 
                         local payButton = vgui.Create("DButton", objective)
                         payButton:SetSize(EFGM.MenuScale(120), EFGM.MenuScale(25))
