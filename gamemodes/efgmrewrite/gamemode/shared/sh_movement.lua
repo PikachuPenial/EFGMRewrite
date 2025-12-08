@@ -97,7 +97,7 @@ hook.Add("SetupMove", "Leaning", function(ply, mv, cmd)
 
     local speed = leanSpeed * math.min(1, 1 - math.min(maxLossSway, math.Round(math.max(0, ply:GetNWFloat("InventoryWeight", 0.00) - underweightLimit) * 0.0109, 2)))
 
-    if !cmd:KeyDown(IN_SPEED) then
+    if !ply:IsSprinting() then
         if leaning_left then fraction = Lerp(FrameTime() * 5 * speed + FrameTime(), fraction, -1) end
         if leaning_right then fraction = Lerp(FrameTime() * 5 * speed + FrameTime(), fraction, 1) end
         if !leaning_left and !leaning_right then fraction = Lerp(FrameTime() * 5 * speed + FrameTime(), fraction, 0) end

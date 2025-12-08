@@ -19,6 +19,7 @@ util.AddNetworkString("PlayerInventorySplit")
 util.AddNetworkString("PlayerInventoryDelete")
 util.AddNetworkString("PlayerInventoryTag")
 util.AddNetworkString("PlayerInventoryConsumeGrenade")
+util.AddNetworkString("PlayerInventoryFixDesyncCL")
 util.AddNetworkString("efgm_sendpreset")
 
 function ReinstantiateInventory(ply)
@@ -1238,6 +1239,26 @@ hook.Add("PlayerSpawn", "GiveEquippedItemsOnSpawn", function(ply)
         end
 
     end
+
+end)
+
+net.Receive("PlayerInventoryFixDesyncCL", function(len, ply)
+
+    UpdateStashString(ply)
+	UpdateInventoryString(ply)
+	UpdateEquippedString(ply)
+
+    net.Start("PlayerNetworkStash", false)
+    net.WriteString(stashString)
+    net.Send(ply)
+
+    net.Start("PlayerNetworkInventory", false)
+    net.WriteString(inventoryString)
+    net.Send(ply)
+
+    net.Start("PlayerNetworkEquipped", false)
+    net.WriteString(equippedString)
+    net.Send(ply)
 
 end)
 

@@ -11181,6 +11181,23 @@ function Menu.OpenTab.Settings()
         RunConsoleCommand("efgm_privacy_invites", value - 1)
     end
 
+    -- misc
+    local fixInvDesync = vgui.Create("DButton", misc)
+    fixInvDesync:Dock(TOP)
+    fixInvDesync:SetText("FIX INVENTORY DESYNC")
+
+    function fixInvDesync:DoClick()
+
+        if timer.Exists(Menu.Player:SteamID() .. "desyncCD") then surface.PlaySound("ui/element_deselect.wav") return end
+
+        surface.PlaySound("ui/element_select.wav")
+        net.Start("RemovePlayerSquadRF")
+        net.SendToServer()
+
+        timer.Create(Menu.Player:SteamID() .. "desyncCD", 60, 1, function() end)
+
+    end
+
 end
 
 function Menu.OpenTab.Tasks()
