@@ -19,11 +19,15 @@ hook.Add("PlayerDeath", "DeathUpdateStats", function(victim, weapon, attacker)
 
     -- update victim's stats (cringe lootcel)
     victim:SetNWInt("Deaths", victim:GetNWInt("Deaths") + 1)
+    victim:SetNWInt("CurrentKillStreak", 0)
+    victim:SetNWInt("CurrentExtractionStreak", 0)
 
     -- update attacker stats (based and alivepilled)
-    if attacker == victim then return end
+    if attacker == victim then victim:SetNWInt("Suicides", victim:GetNWInt("Suicides") + 1) return end
 
     attacker:SetNWInt("Kills", attacker:GetNWInt("Kills") + 1)
+    attacker:SetNWInt("CurrentKillStreak", attacker:GetNWInt("CurrentKillStreak") + 1)
+    if attacker:GetNWInt("CurrentKillStreak") >= attacker:GetNWInt("BestKillStreak") then attacker:SetNWInt("BestKillStreak", attacker:GetNWInt("CurrentKillStreak")) end
 
 end)
 
@@ -57,5 +61,7 @@ end)
 hook.Add("PlayerExtraction", "ExtractUpdateStats", function(ply, time, isGuranteed)
 
     ply:SetNWInt("Extractions", ply:GetNWInt("Extractions") + 1)
+    ply:SetNWInt("CurrentExtractionStreak", ply:GetNWInt("CurrentExtractionStreak") + 1)
+    if ply:GetNWInt("CurrentExtractionStreak") >= ply:GetNWInt("BestExtractionStreak") then ply:SetNWInt("BestExtractionStreak", ply:GetNWInt("CurrentExtractionStreak")) end
 
 end)

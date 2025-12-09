@@ -605,6 +605,7 @@ hook.Add("PlayerDisconnected", "PlayerUninitializeStats", function(ply)
 		end
 
 		ply:SetNWInt("Quits", ply:GetNWInt("Quits", 0) + 1)
+		ply:SetNWInt("CurrentExtractionStreak", 0)
 
 		-- wipe inventory and drop backpack if leaving WHILE in a raid
 		ReinstantiateInventory(ply)
