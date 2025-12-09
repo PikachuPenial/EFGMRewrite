@@ -3109,6 +3109,10 @@ function Menu.ReloadInventory()
 
             return EFGMITEMS[a.name].displayName < EFGMITEMS[b.name].displayName
 
+        elseif (a.data.tag or "") != (b.data.tag or "") then
+
+            return (a.data.tag or "") > (b.data.tag or "")
+
         else
 
             if a.data.durability and b.data.durability then
@@ -3133,7 +3137,7 @@ function Menu.ReloadInventory()
 
         if itemSearchText then itemSearch = itemSearchText end
 
-        if itemSearch != "" and itemSearch != nil and !(string.find((i.fullName and i.fullName or i.displayName):lower(), itemSearch)) then continue end
+        if itemSearch != "" and itemSearch != nil and !(string.find((i.fullName and i.fullName or i.displayName):lower(), itemSearch) or string.find((v.data.tag or ""):lower(), itemSearch) or string.find((v.data.owner or ""):lower(), itemSearch)) then continue end
 
         local item = playerItems:Add("DButton")
         item:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
@@ -5204,6 +5208,10 @@ function Menu.ReloadStash()
 
             return EFGMITEMS[a.name].displayName < EFGMITEMS[b.name].displayName
 
+        elseif (a.data.tag or "") != (b.data.tag or "") then
+
+            return (a.data.tag or "") > (b.data.tag or "")
+
         else
 
             if a.data.durability and b.data.durability then
@@ -5228,7 +5236,7 @@ function Menu.ReloadStash()
 
         if stashItemSearchText then itemSearch = stashItemSearchText end
 
-        if itemSearch != "" and itemSearch != nil and !(string.find((i.fullName and i.fullName or i.displayName):lower(), itemSearch)) then continue end
+        if itemSearch != "" and itemSearch != nil and !(string.find((i.fullName and i.fullName or i.displayName):lower(), itemSearch) or string.find((v.data.tag or ""):lower(), itemSearch) or string.find((v.data.owner or ""):lower(), itemSearch)) then continue end
 
         if i.consumableType != "heal" and i.consumableType != "key" then
 
@@ -5712,7 +5720,7 @@ function Menu.ReloadMarketStash()
 
         if marketStashItemSearchText then itemSearch = marketStashItemSearchText end
 
-        if itemSearch != "" and itemSearch != nil and !(string.find((i.fullName and i.fullName or i.displayName):lower(), itemSearch)) then continue end
+        if itemSearch != "" and itemSearch != nil and !(string.find((i.fullName and i.fullName or i.displayName):lower(), itemSearch) or string.find((v.data.tag or ""):lower(), itemSearch) or string.find((v.data.owner or ""):lower(), itemSearch)) then continue end
 
         local itemValue
 
@@ -5997,6 +6005,10 @@ function Menu.ReloadContainer()
         elseif EFGMITEMS[a.name].displayName != EFGMITEMS[b.name].displayName then
 
             return EFGMITEMS[a.name].displayName < EFGMITEMS[b.name].displayName
+
+        elseif (a.data.tag or "") != (b.data.tag or "") then
+
+            return (a.data.tag or "") > (b.data.tag or "")
 
         else
 
