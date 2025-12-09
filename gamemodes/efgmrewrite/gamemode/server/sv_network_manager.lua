@@ -22,7 +22,7 @@ function InitializeNetworkBool(ply, query, key, value)
 	end
 
 	ply:SetNWBool(key, tobool(value))
-    return tobool(value)
+	return tobool(value)
 
 end
 
@@ -42,7 +42,7 @@ function InitializeNetworkInt(ply, query, key, value)
 	end
 
 	ply:SetNWInt(key, tonumber(value))
-    return tonumber(value)
+	return tonumber(value)
 
 end
 
@@ -82,7 +82,7 @@ function InitializeNetworkString(ply, query, key, value)
 	end
 
 	ply:SetNWString(key, tostring(value))
-    return tostring(value)
+	return tostring(value)
 
 end
 
@@ -103,7 +103,7 @@ function InitializeStashString(ply, query, value)
 	end
 
 	ply.stashStr = tostring(value)
-    return tostring(value)
+	return tostring(value)
 
 end
 
@@ -123,7 +123,7 @@ function InitializeInventoryString(ply, query, value)
 	end
 
 	ply.invStr = tostring(value)
-    return tostring(value)
+	return tostring(value)
 
 end
 
@@ -143,7 +143,7 @@ function InitializeEquippedString(ply, query, value)
 	end
 
 	ply.equStr = tostring(value)
-    return tostring(value)
+	return tostring(value)
 
 end
 
@@ -172,7 +172,7 @@ end
 function UninitializeNetworkBool(ply, query, key)
 
 	local id64 = ply:SteamID64()
-	local name = ply:Name()
+	local name = ply:Nick()
 	local value = tobool(ply:GetNWBool(key))
 
 	if query == "new" then tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr(key) .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), " return end
@@ -195,7 +195,7 @@ end
 function UninitializeNetworkInt(ply, query, key)
 
 	local id64 = ply:SteamID64()
-	local name = ply:Name()
+	local name = ply:Nick()
 	local value = tonumber(ply:GetNWInt(key))
 
 	if query == "new" then tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr(key) .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), " return end
@@ -218,7 +218,7 @@ end
 function UninitializeNetworkFloat(ply, query, key)
 
 	local id64 = ply:SteamID64()
-	local name = ply:Name()
+	local name = ply:Nick()
 	local value = tonumber(ply:GetNWFloat(key))
 
 	if query == "new" then tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr(key) .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), " return end
@@ -241,7 +241,7 @@ end
 function UninitializeNetworkString(ply, query, key, valueOverride)
 
 	local id64 = ply:SteamID64()
-	local name = ply:Name()
+	local name = ply:Nick()
 	local value = ""
 
 	if valueOverride == nil then
@@ -275,18 +275,18 @@ end
 function UninitializeStashString(ply, query, valueOverride)
 
 	local id64 = ply:SteamID64()
-	local name = ply:Name()
-    local value = ""
+	local name = ply:Nick()
+	local value = ""
 
-    if valueOverride == nil then
+	if valueOverride == nil then
 
 	    value = tostring(ply.stashStr)
 
-    else
+	else
 
 	    value = tostring(valueOverride)
 
-    end
+	end
 
 	if query == "new" then tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr("Stash") .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), " return end
 
@@ -308,18 +308,18 @@ end
 function UninitializeInventoryString(ply, query, valueOverride)
 
 	local id64 = ply:SteamID64()
-	local name = ply:Name()
-    local value = ""
+	local name = ply:Nick()
+	local value = ""
 
-    if valueOverride == nil then
+	if valueOverride == nil then
 
 	    value = tostring(ply.invStr)
 
-    else
+	else
 
 	    value = tostring(valueOverride)
 
-    end
+	end
 
 	if query == "new" then tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr("Inventory") .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), " return end
 
@@ -341,18 +341,18 @@ end
 function UninitializeEquippedString(ply, query, valueOverride)
 
 	local id64 = ply:SteamID64()
-	local name = ply:Name()
-    local value = ""
+	local name = ply:Nick()
+	local value = ""
 
-    if valueOverride == nil then
+	if valueOverride == nil then
 
 	    value = tostring(ply.equStr)
 
-    else
+	else
 
 	    value = tostring(valueOverride)
 
-    end
+	end
 
 	if query == "new" then tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr("Equipped") .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), " return end
 
@@ -374,18 +374,18 @@ end
 function UninitializeTaskString(ply, query, valueOverride)
 
 	local id64 = ply:SteamID64()
-	local name = ply:Name()
-    local value = ""
+	local name = ply:Nick()
+	local value = ""
 
 	if valueOverride == nil then
 
 	    value = tostring(ply.taskStr)
 
-    else
+	else
 
 	    value = tostring(valueOverride)
 
-    end
+	end
 
 	if query == "new" then tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr("Tasks") .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), " return end
 
@@ -415,40 +415,40 @@ function SetupPlayerData(ply)
 	local query = sql.Query("SELECT Key, Value FROM EFGMPlayerData64 WHERE SteamID = " .. id64 .. ";")
 	if query == nil then query = "new" end
 
-    -- stats
-    InitializeNetworkBool(ply, query, "FreshWipe", true) -- false if player has logged on once this wipe
-    InitializeNetworkInt(ply, query, "Level", 1)
-    InitializeNetworkInt(ply, query, "Experience", 0)
+	-- stats
+	InitializeNetworkBool(ply, query, "FreshWipe", true) -- false if player has logged on once this wipe
+	InitializeNetworkInt(ply, query, "Level", 1)
+	InitializeNetworkInt(ply, query, "Experience", 0)
 	InitializeNetworkInt(ply, query, "Money", 100000000)
 	InitializeNetworkInt(ply, query, "MoneyEarned", 0) -- all money earned
 	InitializeNetworkInt(ply, query, "MoneySpent", 0) -- all money spent (money would just be MoneyEarned - MoneySpent)
 	InitializeNetworkInt(ply, query, "Time", 0) -- playtime in minutes
-    InitializeNetworkInt(ply, query, "StashValue", 0) -- value of all items in stash
+	InitializeNetworkInt(ply, query, "StashValue", 0) -- value of all items in stash
 	InitializeNetworkInt(ply, query, "ItemsLooted", 0)
 	InitializeNetworkInt(ply, query, "ContainersLooted", 0)
 
-    -- combat
+	-- combat
 	InitializeNetworkInt(ply, query, "Kills", 0)
 	InitializeNetworkInt(ply, query, "Deaths", 0)
-    InitializeNetworkInt(ply, query, "Suicides", 0)
+	InitializeNetworkInt(ply, query, "Suicides", 0)
 	InitializeNetworkInt(ply, query, "DamageDealt", 0)
 	InitializeNetworkInt(ply, query, "DamageRecieved", 0)
 	InitializeNetworkInt(ply, query, "HealthHealed", 0)
 	InitializeNetworkInt(ply, query, "ShotsFired", 0)
 	InitializeNetworkInt(ply, query, "ShotsHit", 0)
-    InitializeNetworkInt(ply, query, "Headshots", 0)
-    InitializeNetworkInt(ply, query, "FarthestKill", 0)
+	InitializeNetworkInt(ply, query, "Headshots", 0)
+	InitializeNetworkInt(ply, query, "FarthestKill", 0)
 
-    -- raids
+	-- raids
 	InitializeNetworkInt(ply, query, "Extractions", 0)
 	InitializeNetworkInt(ply, query, "Quits", 0)
 	InitializeNetworkInt(ply, query, "RaidsPlayed", 0) -- the amount of full raids played, counted if you join before the first minute and stay until the raid ends
 
-    -- streaks
-    InitializeNetworkInt(ply, query, "CurrentKillStreak", 0)
-    InitializeNetworkInt(ply, query, "BestKillStreak", 0)
-    InitializeNetworkInt(ply, query, "CurrentExtractionStreak", 0)
-    InitializeNetworkInt(ply, query, "BestExtractionStreak", 0)
+	-- streaks
+	InitializeNetworkInt(ply, query, "CurrentKillStreak", 0)
+	InitializeNetworkInt(ply, query, "BestKillStreak", 0)
+	InitializeNetworkInt(ply, query, "CurrentExtractionStreak", 0)
+	InitializeNetworkInt(ply, query, "BestExtractionStreak", 0)
 
 	-- stash/inventory
 	InitializeNetworkInt(ply, query, "StashMax", 1000)
@@ -459,8 +459,8 @@ function SetupPlayerData(ply)
 
 	end
 
-    -- stash
-    local stashString = InitializeStashString(ply, query, "XQAAAQB5EwAAAAAAAAAtnsBHRAlDnI+0YKoytE2yTNKO521sKGQuGNJPYpMWvBCnQ/h3Lcka+bVKJDfhDb2tn/Ggb+eNIqA+lldFfh5j+xEUo43j77yROnvLPm/qzBhal3NSosKSsf2tVnFBM7vxqT0fxBnQiO83hv38gFBHxSqM56ONgnVWjub9OMPNaz7BE7h7CQvLOLtyyjLEEHBL/uQOkvaWStfLJP40NHU6hJDlHL+2X69FHYOQ5wFDkgfgJIeTzveRNs0SICR34TixyGykniPe6DxM4F8Cq/jXpr+tJ0FnHZ3xuHJf7xH4YRo14ivFObewHJVR3JScJLniGU1w3yX7sUx9R2S1nxa7Qjy1DHpNmYyXuwsVkMpn/ZCCFivvBtezcfGsyIOWdyA6WU6C0goIw1vOP0jE+2vTKIPnkVjT0GBtRGgnrsbjRSLfN314E1xZPLSPiL/3RL0YT44uPXNkNdmFpSim3xAMwfyYtTUq7ENtpnl9/zbrdH2lKWlCVqJw+Z6TKEeFUkzdTmY7Q5Xp9Qj1rMXBBmvhTRcDWlzA5nTzEP9ftnAUrHQ1tLhZPzma8hmuGIxKHuuTc7JUon+S6CDUTWGPiRepU7iLs9cRKXaD3bhlHDw/kMYFD6D6ahqGRy+ArleWWVp7qZsKZV+hxAGkddi5iQeBE8VE8PZnWlW+DuLHemimUzpoPyVT/8rWHvtDqyJQmLK4I3vdkVz9CDC8PcVOgZwyNQuxMAU8N/+3F5afkC0O9oxg0nfyPUyjIID3iniShYTdjLUFDSZUjdpiwIyoO60CvqRhElBcbuNznibdYHWdKLUidWmmUEgKjFF9oYc2SIQGrF0BFRNzC1S853hG8lOHqNcC4ypotJi1Y+aJNuyvTCAT2UAAMas9jwbXJzwx6+osgEITzjiCEOnM+d7Kk/6++YL9wnHsjMoEXZpy+gjuVoUsC1dokeYaCCoLovt9gAtK4C87qaF3XhkwCoJHmBiPk72xqROH9yJolPAab7lXAmfK64L1Q4KMPcrSnK1QrmmFJ0On4h90q99T/k5rNM15TAIhwEouBOAinHSpqCP1VQVp77e6BwY+igjFnSK7D1oQOhT+jjCdl8rIZpg8r9KkkGuCrq607WxRjE+C1uZlgO+nmX8LQZaOVaOcOfob5AYVHCGGXTKhdy+FwZcQQbRt/be8UWrhlAbghqflbujxhKqhncsN2Rqxdpo7KipC672d9vn5Fd9p1rs8AfD8oZhqhgn8XDZy1NKHs9cKO57BiI/lcqoUSaUQ14g3PdEgYsPkhHaX5mlcnumiMj/QbZs3DFYW6bjPdrhro9+r/kYcd+9WriMafYe8khUMJdWivprYDhRAJ86sWHwoe1EfDadJqUxM5wA=")
+	-- stash
+	local stashString = InitializeStashString(ply, query, "XQAAAQB5EwAAAAAAAAAtnsBHRAlDnI+0YKoytE2yTNKO521sKGQuGNJPYpMWvBCnQ/h3Lcka+bVKJDfhDb2tn/Ggb+eNIqA+lldFfh5j+xEUo43j77yROnvLPm/qzBhal3NSosKSsf2tVnFBM7vxqT0fxBnQiO83hv38gFBHxSqM56ONgnVWjub9OMPNaz7BE7h7CQvLOLtyyjLEEHBL/uQOkvaWStfLJP40NHU6hJDlHL+2X69FHYOQ5wFDkgfgJIeTzveRNs0SICR34TixyGykniPe6DxM4F8Cq/jXpr+tJ0FnHZ3xuHJf7xH4YRo14ivFObewHJVR3JScJLniGU1w3yX7sUx9R2S1nxa7Qjy1DHpNmYyXuwsVkMpn/ZCCFivvBtezcfGsyIOWdyA6WU6C0goIw1vOP0jE+2vTKIPnkVjT0GBtRGgnrsbjRSLfN314E1xZPLSPiL/3RL0YT44uPXNkNdmFpSim3xAMwfyYtTUq7ENtpnl9/zbrdH2lKWlCVqJw+Z6TKEeFUkzdTmY7Q5Xp9Qj1rMXBBmvhTRcDWlzA5nTzEP9ftnAUrHQ1tLhZPzma8hmuGIxKHuuTc7JUon+S6CDUTWGPiRepU7iLs9cRKXaD3bhlHDw/kMYFD6D6ahqGRy+ArleWWVp7qZsKZV+hxAGkddi5iQeBE8VE8PZnWlW+DuLHemimUzpoPyVT/8rWHvtDqyJQmLK4I3vdkVz9CDC8PcVOgZwyNQuxMAU8N/+3F5afkC0O9oxg0nfyPUyjIID3iniShYTdjLUFDSZUjdpiwIyoO60CvqRhElBcbuNznibdYHWdKLUidWmmUEgKjFF9oYc2SIQGrF0BFRNzC1S853hG8lOHqNcC4ypotJi1Y+aJNuyvTCAT2UAAMas9jwbXJzwx6+osgEITzjiCEOnM+d7Kk/6++YL9wnHsjMoEXZpy+gjuVoUsC1dokeYaCCoLovt9gAtK4C87qaF3XhkwCoJHmBiPk72xqROH9yJolPAab7lXAmfK64L1Q4KMPcrSnK1QrmmFJ0On4h90q99T/k5rNM15TAIhwEouBOAinHSpqCP1VQVp77e6BwY+igjFnSK7D1oQOhT+jjCdl8rIZpg8r9KkkGuCrq607WxRjE+C1uZlgO+nmX8LQZaOVaOcOfob5AYVHCGGXTKhdy+FwZcQQbRt/be8UWrhlAbghqflbujxhKqhncsN2Rqxdpo7KipC672d9vn5Fd9p1rs8AfD8oZhqhgn8XDZy1NKHs9cKO57BiI/lcqoUSaUQ14g3PdEgYsPkhHaX5mlcnumiMj/QbZs3DFYW6bjPdrhro9+r/kYcd+9WriMafYe8khUMJdWivprYDhRAJ86sWHwoe1EfDadJqUxM5wA=")
 	ply.stash = DecodeStash(ply, stashString)
 	if ply.stash == nil then ply.stash = {} end
 	ply:SetNWInt("StashCount", #ply.stash)
@@ -484,23 +484,23 @@ function SetupPlayerData(ply)
 
 	end
 
-    local taskString = InitializeTaskString(ply, query, "XQAAAQAjAAAAAAAAAAAt6BNFkAUIuVjl8lDUNYAA")
-    ply.tasks = DecodeStash(ply, taskString)
-    if ply.tasks == nil then ply.tasks = {} end
+	local taskString = InitializeTaskString(ply, query, "XQAAAQAjAAAAAAAAAAAt6BNFkAUIuVjl8lDUNYAA")
+	ply.tasks = DecodeStash(ply, taskString)
+	if ply.tasks == nil then ply.tasks = {} end
 
 	CalculateInventoryWeight(ply)
 
-    net.Start("PlayerNetworkStash", false)
-    net.WriteString(stashString)
-    net.Send(ply)
+	net.Start("PlayerNetworkStash", false)
+	net.WriteString(stashString)
+	net.Send(ply)
 
 	net.Start("PlayerNetworkInventory", false)
 	net.WriteString(inventoryString)
-    net.Send(ply)
+	net.Send(ply)
 
 	net.Start("PlayerNetworkEquipped", false)
 	net.WriteString(equippedString)
-    net.Send(ply)
+	net.Send(ply)
 
 	-- task system already networks on its own, change if you want idrc
 	UpdateTasks(ply)
@@ -566,7 +566,12 @@ function SavePlayerData(ply)
 	tempCMD = tempCMD .. "ELSE Value END WHERE SteamID = " .. id64 .. ";"
 
 	if tempNewCMD != "INSERT INTO EFGMPlayerData64 (SteamID, Key, Value, SteamName) VALU;" then sql.Query(tempNewCMD) end
-	if tempCMD != "UPDATE EFGMPlayerData64 SET Value = CASE Key ELSE Value END WHERE SteamID = " .. id64 .. ";" then sql.Query(tempCMD) end
+	if tempCMD != "UPDATE EFGMPlayerData64 SET Value = CASE Key ELSE Value END WHERE SteamID = " .. id64 .. ";" then
+
+		sql.Query(tempCMD)
+		sql.Query("UPDATE EFGMPlayerData64 SET SteamName = " .. SQLStr(ply:Nick()) .. " WHERE SteamID = " .. id64 .. ";")
+
+	end
 
 	sql.Commit()
 
@@ -639,3 +644,9 @@ hook.Add("ShutDown", "ServerUninitializeStats", function(ply)
 	end
 
 end)
+
+if GetConVar("efgm_derivesbox"):GetInt() == 1 then
+
+	concommand.Add("efgm_debug_forcesave", function(ply, cmd, args) SavePlayerData(ply) end)
+
+end
