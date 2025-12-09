@@ -152,7 +152,7 @@ local function TaskObjectiveComplete(ply, taskName)
     net.Start("SendNotification", false)
     net.WriteString("Objective for " .. EFGMTASKS[taskName].name .. " completed!")
     net.WriteString("icons/task_add_icon.png")
-    net.WriteString("storytask_started.wav")
+    net.WriteString("subtaskcomplete.wav")
     net.Send(ply)
 
     CheckTaskCompletion(ply, taskName)

@@ -114,6 +114,27 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 
 		UnequipAll(victim) -- unload all equipped items into inventory, helps clean this all up
 
+		local tagData = {}
+		tagData.count = 1
+		tagData.owner = victim:GetName()
+		tagData.tag = victim:GetNWInt("Level", 0)
+		tagData.tagLevel = victim:GetNWInt("Level", 0)
+
+		if !IsValid(attacker) or victim == attacker or !attacker:IsPlayer() then
+
+			tagData.tagCauseOfDeath = "Suicide"
+
+		else
+
+			tagData.tagCauseOfDeath = inflictor:GetClass() or attacker:GetActiveWeapon():GetClass()
+			tagData.tagWoundOrigin = victim:LastHitGroup()
+			tagData.tagKiller = attacker:GetName()
+
+		end
+
+		local item = ITEM.Instantiate("efgm_tag_default", EQUIPTYPE.None, tagData)
+		table.insert(victim.inventory, item)
+
 		if !table.IsEmpty(victim.inventory) then
 
 			local backpack = ents.Create("efgm_backpack")

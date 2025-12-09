@@ -8063,6 +8063,25 @@ EFGMITEMS = {}
         ["canPurchase"] = false
     }
 
+    -- dog tags
+    EFGMITEMS["efgm_tag_default"] = {
+        ["fullName"] = "Dogtag",
+        ["displayName"] = "Dogtag",
+        ["displayType"] = "Tag",
+        ["weight"] = 0.05,
+        ["value"] = 1000,
+        ["equipType"] = EQUIPTYPE.None,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/tags/default.png", "smooth"),
+        ["iconColor"] = Color(33, 43, 48, 155),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
+    }
+
 sellMultiplier = 0.5
 
 -- types:

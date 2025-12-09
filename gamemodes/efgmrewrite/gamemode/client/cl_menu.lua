@@ -1393,7 +1393,7 @@ function Menu.InspectItem(item, data)
 
         end
 
-        if data.tag then
+        if data.tag and !data.tagLevel then
 
             infoContentText:AppendText("NAME TAG: " .. data.tag .. "\n")
 
@@ -1402,6 +1402,35 @@ function Menu.InspectItem(item, data)
         if data.att then
 
             infoContentText:AppendText("ATTACHMENTS: \n" .. GetAttachmentListFromCode(data.att) .. "\n")
+
+        end
+
+        -- dog tag specific
+
+        if data.tagLevel then
+
+            infoContentText:AppendText("LEVEL: " .. data.tagLevel .. "\n")
+
+        end
+
+        if data.tagKiller then
+
+            infoContentText:AppendText("KILLED BY: " .. data.tagKiller .. "\n")
+
+        end
+
+        if data.tagCauseOfDeath then
+
+            local def = EFGMITEMS[data.tagCauseOfDeath]
+            local cause = "Unknown"
+            if data.tagCauseOfDeath == "Suicide" then cause = "Suicide" elseif def then cause = def.fullName .. " (" .. def.displayName .. ")" end
+            infoContentText:AppendText("CAUSE OF DEATH: " .. cause .. "\n")
+
+        end
+
+        if data.tagWoundOrigin and data.tagWoundOrigin != 0 and HITGROUPS[data.tagWoundOrigin] != nil then
+
+            infoContentText:AppendText("WOUND: " .. HITGROUPS[data.tagWoundOrigin] .. "\n")
 
         end
 

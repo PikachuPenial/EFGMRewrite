@@ -166,7 +166,7 @@ function FlowItemToInventory(ply, name, type, data)
 
     local def = EFGMITEMS[name]
     local stackSize = def.stackSize
-    local amount = tonumber(data.count)
+    local amount = tonumber(data.count) or 1
 
     if stackSize == 1 then -- items that can't stack do not need to flow (but they do need to be created multiple times lol!)
 
