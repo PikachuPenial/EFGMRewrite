@@ -303,6 +303,8 @@ EFGMITEMS = {}
         ["sizeX"] = 5,
         ["sizeY"] = 2,
 
+        ["lootWeight"] = 75,
+
         ["caliber"] = "5.45x39",
         ["ammoID"] = "efgm_ammo_545x39",
         ["defAtts"] = "XQAAAQCfAQAAAAAAAAA9iIIiM7hMNz0dhIkbkvLjTdSR5gRNNIHH3iMgsLQ2HQpM1u5keOo9nkOEi25RcVCGAHvoza8JVSPxJOoz87ZabXFqV0UoVT3eh5eQVRbP7ahsz3JIHY1pHyv74F5aAF2/ZK7/FplqgBwynL7V+II74WXNSKksipmw+Xwum5Hr4J/AZe5edaeEkUENBibdsuO9eoDCO1FY68scPqqr4lAEMR/sqUSxAA=="
@@ -1011,6 +1013,8 @@ EFGMITEMS = {}
 
         ["sizeX"] = 5,
         ["sizeY"] = 2,
+
+        ["lootWeight"] = 75,
 
         ["caliber"] = "5.56x45",
         ["ammoID"] = "efgm_ammo_556x45",
@@ -3517,6 +3521,26 @@ EFGMITEMS = {}
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_anm14"] = {
+        ["fullName"] = "AN-M14 Incendiary",
+        ["displayName"] = "AN-M14",
+        ["displayType"] = "Grenade",
+        ["weight"] = 0.2,
+        ["value"] = 58500,
+        ["levelReq"] = 20,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["equipSlot"] = WEAPONSLOTS.GRENADE.ID,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/grenades/anm14.png", "smooth"),
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false,
+        ["lootWeight"] = 75
     }
 
     -- specials
