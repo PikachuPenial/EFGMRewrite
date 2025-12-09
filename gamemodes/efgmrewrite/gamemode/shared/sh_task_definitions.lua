@@ -263,7 +263,7 @@ EFGMTASKS["civs1"] = {
     "extraction routes, and to dispatch any threats you come across while doing so. In the meantime, I will stay with the family, and make sure no "..
     "harm comes their way. Good luck, and let me know when it is done.",
     
-    traderName = "Soldier",
+    traderName = "Aleksei",
     traderIcon = Material("traders/soldier.png", "smooth"),
 
     requirements = {
@@ -300,7 +300,7 @@ EFGMTASKS["civs2"] = {
     "that old car dealership. It contains documents and other items of importance to the family, so it must be "..
     "returned to them prior to our expedition. Here is my location; please return shortly.",
     
-    traderName = "Soldier",
+    traderName = "Aleksei",
     traderIcon = Material("traders/soldier.png", "smooth"),
 
     requirements = {

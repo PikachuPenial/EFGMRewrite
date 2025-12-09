@@ -484,7 +484,7 @@ function SetupPlayerData(ply)
 
 	end
 
-	local taskString = InitializeTaskString(ply, query, "XQAAAQAjAAAAAAAAAAAt6BNFkAUIuVjl8lDUNYAA")
+	local taskString = InitializeTaskString(ply, query, "")
 	ply.tasks = DecodeStash(ply, taskString)
 	if ply.tasks == nil then ply.tasks = {} end
 
