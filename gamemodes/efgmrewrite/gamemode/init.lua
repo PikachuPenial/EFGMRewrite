@@ -188,7 +188,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	end
 
 	local rawDistance = victim:GetPos():Distance(attacker:GetPos())
-	local distance = math.Round(rawDistance * 0.01905) -- convert hammer units to meters
+	local distance = units_to_meters(rawDistance) -- convert hammer units to meters
 
 	local xpMult = 0.5
 

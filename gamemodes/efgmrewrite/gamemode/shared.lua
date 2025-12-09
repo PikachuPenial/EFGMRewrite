@@ -83,6 +83,12 @@ function format_seconds(s)
 
 end
 
+function units_to_meters(u)
+
+    return math.Round(u * 0.01905)
+
+end
+
 -- necessary functions to sync attachments cleanly between inventories
 function PruneUnnecessaryAttachmentDataRecursive(tbl)
 

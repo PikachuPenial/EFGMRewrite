@@ -18,16 +18,22 @@ end
 hook.Add("PlayerDeath", "DeathUpdateStats", function(victim, weapon, attacker)
 
     -- update victim's stats (cringe lootcel)
-    victim:SetNWInt("Deaths", victim:GetNWInt("Deaths") + 1)
+    victim:SetNWInt("Deaths", victim:GetNWInt("Deaths", 0) + 1)
     victim:SetNWInt("CurrentKillStreak", 0)
     victim:SetNWInt("CurrentExtractionStreak", 0)
 
     -- update attacker stats (based and alivepilled)
-    if attacker == victim then victim:SetNWInt("Suicides", victim:GetNWInt("Suicides") + 1) return end
+    if !IsValid(attacker) or victim == attacker or !attacker:IsPlayer() then victim:SetNWInt("Suicides", victim:GetNWInt("Suicides", 0) + 1) return end
 
-    attacker:SetNWInt("Kills", attacker:GetNWInt("Kills") + 1)
-    attacker:SetNWInt("CurrentKillStreak", attacker:GetNWInt("CurrentKillStreak") + 1)
-    if attacker:GetNWInt("CurrentKillStreak") >= attacker:GetNWInt("BestKillStreak") then attacker:SetNWInt("BestKillStreak", attacker:GetNWInt("CurrentKillStreak")) end
+    attacker:SetNWInt("Kills", attacker:GetNWInt("Kills", 0) + 1)
+    attacker:SetNWInt("CurrentKillStreak", attacker:GetNWInt("CurrentKillStreak", 0) + 1)
+    if attacker:GetNWInt("CurrentKillStreak", 0) >= attacker:GetNWInt("BestKillStreak", 0) then attacker:SetNWInt("BestKillStreak", attacker:GetNWInt("CurrentKillStreak", 0)) end
+
+    if victim:LastHitGroup() == HITGROUP_HEAD then attacker:SetNWInt("Headshots", attacker:GetNWInt("Headshots", 0) + 1) end
+
+    local rawDistance = victim:GetPos():Distance(attacker:GetPos())
+    local distance = units_to_meters(rawDistance)
+    if distance >= attacker:GetNWInt("FarthestKill", 0) then attacker:SetNWInt("FarthestKill", distance) end
 
 end)
 
