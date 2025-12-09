@@ -7,7 +7,7 @@ hook.Add("IsSpawnpointSuitable", "CheckSpawnPoint", function(ply, spawnpointent,
     local name = spawnpointent:GetName()
 
     local checkScale = 1280
-    if name == "info_player_start" then checkScale = 48 end
+    if name == "info_player_start" then checkScale = 64 end
 
 	local entities = ents.FindInBox(pos + Vector(checkScale * -1, checkScale * -1, checkScale * -1), pos + Vector(checkScale, checkScale, checkScale))
 	local entsBlocking = 0
