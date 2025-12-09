@@ -41,6 +41,12 @@ if SERVER then
             timer.Create("RaidTimerDecrement", 1, 0, DecrementTimer)
 
             hook.Run("StartedRaid")
+
+            net.Start("SendNotification")
+            net.WriteString("The raid has begun!")
+            net.WriteString("icons/door_icon.png")
+            net.WriteString("round_start.wav")
+            net.Broadcast()
         end
 
         function RAID:EndRaid()
@@ -66,7 +72,13 @@ if SERVER then
             timer.Adjust("RaidTimerDecrement", 1, self.VoteTime) -- fuck you timer.Adjust
 
             net.Start("VoteableMaps")
-                net.WriteTable(self.MapPool)
+            net.WriteTable(self.MapPool)
+            net.Broadcast()
+
+            net.Start("SendNotification")
+            net.WriteString("The raid has ended!")
+            net.WriteString("icons/door_icon.png")
+            net.WriteString("round_warning.wav")
             net.Broadcast()
 
             for k, v in ipairs(player.GetHumans()) do
@@ -263,6 +275,40 @@ if SERVER then
             if tobool(spawnBool) == true then
                 RAID:SpawnPlayers(plys, playerStatus.PMC, plySquad)
             end
+        end)
+
+        hook.Add("RaidTimerTick", "RaidTimeNotifications", function(time)
+
+            if time == 600 then
+
+                net.Start("SendNotification")
+                net.WriteString("Exfils close in 10 minutes!")
+                net.WriteString("icons/door_icon.png")
+                net.WriteString("round_warning.wav")
+                net.Broadcast()
+
+            end
+
+            if time == 300 then
+
+                net.Start("SendNotification")
+                net.WriteString("Exfils close in 5 minutes!")
+                net.WriteString("icons/door_icon.png")
+                net.WriteString("round_warning.wav")
+                net.Broadcast()
+
+            end
+
+            if time == 60 then
+
+                net.Start("SendNotification")
+                net.WriteString("Exfils close in 60 seconds!")
+                net.WriteString("icons/door_icon.png")
+                net.WriteString("round_warning.wav")
+                net.Broadcast()
+
+            end
+
         end)
     --}
 

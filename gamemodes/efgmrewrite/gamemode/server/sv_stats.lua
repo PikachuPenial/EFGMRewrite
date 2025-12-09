@@ -1,46 +1,6 @@
 -- skill systems go here
 Stats = {}
 
-function Stats.GetAll(ply)
-
-    local tbl = {}
-
-    -- stats
-    tbl["FreshWipe"] = ply:GetNWBool("FreshWipe")
-    tbl["Level"] = ply:GetNWInt("Level")
-    tbl["Experience"] = ply:GetNWInt("Experience")
-    tbl["MoneyEarned"] = ply:GetNWInt("MoneyEarned")
-    tbl["MoneySpent"] = ply:GetNWInt("MoneySpent")
-    tbl["Time"] = ply:GetNWInt("Time")
-    tbl["StashValue"] = ply:GetNWInt("StashValue")
-
-    -- combat
-    tbl["Kills"] = ply:GetNWInt("Kills")
-    tbl["Deaths"] = ply:GetNWInt("Deaths")
-    tbl["Suicides"] = ply:GetNWInt("Suicides")
-    tbl["DamageDealt"] = ply:GetNWInt("DamageDealt")
-    tbl["DamageRecieved"] = ply:GetNWInt("DamageRecieved")
-    tbl["HealthHealed"] = ply:GetNWInt("HealthHealed")
-    tbl["ShotsFired"] = ply:GetNWInt("ShotsFired")
-    tbl["ShotsHit"] = ply:GetNWInt("ShotsHit")
-    tbl["Headshots"] = ply:GetNWInt("Headshots")
-    tbl["FarthestKill"] = ply:GetNWInt("FarthestKill")
-
-    -- raids
-    tbl["Extractions"] = ply:GetNWInt("Extractions")
-    tbl["Quits"] = ply:GetNWInt("Quits")
-    tbl["RaidsPlayed"] = ply:GetNWInt("RaidsPlayed")
-
-    -- streaks
-    tbl["CurrentKillStreak"] = ply:GetNWInt("CurrentKillStreak")
-    tbl["BestKillStreak"] = ply:GetNWInt("BestKillStreak")
-    tbl["CurrentExtractionStreak"] = ply:GetNWInt("CurrentExtractionStreak")
-    tbl["BestExtractionStreak"] = ply:GetNWInt("BestExtractionStreak")
-
-    return tbl
-
-end
-
 function ResetRaidStats(ply)
 
     ply:SetNWInt("RaidDamageDealt", 0)

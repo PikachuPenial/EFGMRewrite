@@ -12,7 +12,11 @@ LEADERBOARDS = {
     ["Shots Fired"] = "ShotsFired",
     ["Shots Hit"] = "ShotsHit",
     ["Raids Played"] = "RaidsPlayed",
-    ["Extractions"] = "Extractions"
+    ["Extractions"] = "Extractions",
+    ["Best Extraction Streak"] = "BestExtractionStreak",
+    ["Best Kill Streak"] = "BestKillStreak",
+    ["Items Looted"] = "ItemsLooted",
+    ["Containers Opened"] = "ContainersLooted"
 }
 
 if SERVER then

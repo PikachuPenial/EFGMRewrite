@@ -5,7 +5,7 @@ end)
 
 local function RenderRaidTime(ply)
     -- time logic
-    local raidTime = string.FormattedTime(GetGlobalInt("RaidTimeLeft", 0), "%2i:%02i")
+    local raidTime = string.FormattedTime(GetGlobalInt("RaidTimeLeft", 0), "%02i:%02i")
     local raidStatus = GetGlobalInt("RaidStatus", 0)
 
     local raidStatusTbl = {

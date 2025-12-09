@@ -9860,7 +9860,7 @@ function Menu.OpenTab.Stats()
 
     local importantStats = vgui.Create("DPanel", stats)
     importantStats:Dock(TOP)
-    importantStats:SetSize(0, EFGM.MenuScale(460))
+    importantStats:SetSize(0, EFGM.MenuScale(485))
     importantStats.Paint = function(s, w, h)
 
         surface.SetDrawColor(MenuAlias.transparent)
@@ -9872,38 +9872,44 @@ function Menu.OpenTab.Stats()
 
     local statsTbl = {}
 
-    statsTbl.Level = Menu.Player:GetNWInt("Level")
-    statsTbl.Experience = comma_value(Menu.Player:GetNWInt("Experience"))
-    statsTbl.MoneyEarned = "₽" .. comma_value(Menu.Player:GetNWInt("MoneyEarned"))
-    statsTbl.MoneySpent = "₽" .. comma_value(Menu.Player:GetNWInt("MoneySpent"))
-    statsTbl.Time = comma_value(Menu.Player:GetNWInt("Time")) .. "s"
-    statsTbl.StashValue = "₽" .. comma_value(Menu.Player:GetNWInt("StashValue"))
+    statsTbl["Level"] = Menu.Player:GetNWInt("Level")
+    statsTbl["Experience"] = comma_value(Menu.Player:GetNWInt("Experience"))
+    statsTbl["Money Earned"] = "₽" .. comma_value(Menu.Player:GetNWInt("MoneyEarned"))
+    statsTbl["Money Spent"] = "₽" .. comma_value(Menu.Player:GetNWInt("MoneySpent"))
+    statsTbl["Time"] = format_seconds(Menu.Player:GetNWInt("Time"))
+    statsTbl["Stash Value"] = "₽" .. comma_value(Menu.Player:GetNWInt("StashValue"))
+    statsTbl["Items Looted"] = comma_value(Menu.Player:GetNWInt("ItemsLooted"))
+    statsTbl["Containers Opened"] = comma_value(Menu.Player:GetNWInt("ContainersLooted"))
 
-    statsTbl.Kills = comma_value(Menu.Player:GetNWInt("Kills"))
-    statsTbl.Deaths = comma_value(Menu.Player:GetNWInt("Deaths"))
-    statsTbl.Suicides = comma_value(Menu.Player:GetNWInt("Suicides"))
-    statsTbl.DamageDealt = comma_value(math.Round(Menu.Player:GetNWInt("DamageDealt")))
-    statsTbl.DamageRecieved = comma_value(math.Round(Menu.Player:GetNWInt("DamageRecieved")))
-    statsTbl.HealthHealed = comma_value(math.Round(Menu.Player:GetNWInt("HealthHealed")))
-    statsTbl.ShotsFired = comma_value(Menu.Player:GetNWInt("ShotsFired"))
-    statsTbl.ShotsHit = comma_value(Menu.Player:GetNWInt("ShotsHit"))
-    statsTbl.Headshots = comma_value(Menu.Player:GetNWInt("Headshots"))
-    statsTbl.FarthestKill = comma_value(Menu.Player:GetNWInt("FarthestKill"))
+    statsTbl["Kills"] = comma_value(Menu.Player:GetNWInt("Kills"))
+    statsTbl["Deaths"] = comma_value(Menu.Player:GetNWInt("Deaths"))
+    statsTbl["Suicides"] = comma_value(Menu.Player:GetNWInt("Suicides"))
+    statsTbl["Damage Dealt"] = comma_value(math.Round(Menu.Player:GetNWInt("DamageDealt")))
+    statsTbl["Damage Received"] = comma_value(math.Round(Menu.Player:GetNWInt("DamageRecieved")))
+    statsTbl["Health Healed"] = comma_value(math.Round(Menu.Player:GetNWInt("HealthHealed")))
+    statsTbl["Shots Fired"] = comma_value(Menu.Player:GetNWInt("ShotsFired"))
+    statsTbl["Shots Hit"] = comma_value(Menu.Player:GetNWInt("ShotsHit"))
+    statsTbl["Headshots"] = comma_value(Menu.Player:GetNWInt("Headshots"))
+    statsTbl["Farthest Kill"] = comma_value(Menu.Player:GetNWInt("FarthestKill"))
 
-    statsTbl.Extractions = comma_value(Menu.Player:GetNWInt("Extractions"))
-    statsTbl.Quits = comma_value(Menu.Player:GetNWInt("Quits"))
-    statsTbl.RaidsPlayed = comma_value(Menu.Player:GetNWInt("RaidsPlayed"))
+    statsTbl["Extractions"] = comma_value(Menu.Player:GetNWInt("Extractions"))
+    statsTbl["Quits"] = comma_value(Menu.Player:GetNWInt("Quits"))
+    statsTbl["Raids Played"] = comma_value(Menu.Player:GetNWInt("RaidsPlayed"))
 
-    statsTbl.CurrentKillStreak = comma_value(Menu.Player:GetNWInt("CurrentKillStreak"))
-    statsTbl.BestKillStreak = comma_value(Menu.Player:GetNWInt("BestKillStreak"))
-    statsTbl.CurrentExtractionStreak = comma_value(Menu.Player:GetNWInt("CurrentExtractionStreak"))
-    statsTbl.BestExtractionStreak = comma_value(Menu.Player:GetNWInt("BestExtractionStreak"))
+    statsTbl["Current Kill Streak"] = comma_value(Menu.Player:GetNWInt("CurrentKillStreak"))
+    statsTbl["Best Kill Streak"] = comma_value(Menu.Player:GetNWInt("BestKillStreak"))
+    statsTbl["Current Extraction Streak"] = comma_value(Menu.Player:GetNWInt("CurrentExtractionStreak"))
+    statsTbl["Best Extraction Streak"] = comma_value(Menu.Player:GetNWInt("BestExtractionStreak"))
+
+    statsTbl["K/D Ratio"] = math.Round(Menu.Player:GetNWInt("Kills") / math.min(Menu.Player:GetNWInt("Deaths"), 1), 3)
+    statsTbl["Survival Rate"] = math.Round(Menu.Player:GetNWInt("Extractions") / Menu.Player:GetNWInt("RaidsPlayed") * 100) .. "%"
+    statsTbl["Accuracy"] = math.Round(Menu.Player:GetNWInt("ShotsHit") / Menu.Player:GetNWInt("ShotsFired") * 100) .. "%"
 
     for k, v in SortedPairs(statsTbl) do
 
         local statEntry = vgui.Create("DPanel", importantStats)
         statEntry:Dock(TOP)
-        statEntry:SetSize(0, EFGM.MenuScale(18))
+        statEntry:SetSize(0, EFGM.MenuScale(17))
         function statEntry:Paint(w, h)
 
             surface.SetDrawColor(MenuAlias.transparent)

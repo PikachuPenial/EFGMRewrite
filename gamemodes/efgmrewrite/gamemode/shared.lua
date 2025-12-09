@@ -73,6 +73,16 @@ function comma_value(amount)
 
 end
 
+function format_seconds(s)
+
+    local hours = math.floor(s / 3600)
+    local minutes = math.floor((s % 3600) / 60)
+    local seconds = s % 60
+
+    return string.format("%2d:%02d:%02d", hours, minutes, seconds)
+
+end
+
 -- necessary functions to sync attachments cleanly between inventories
 function PruneUnnecessaryAttachmentDataRecursive(tbl)
 

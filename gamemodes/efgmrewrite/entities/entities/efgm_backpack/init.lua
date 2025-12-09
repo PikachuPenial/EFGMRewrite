@@ -53,6 +53,7 @@ function ENT:Use(activator)
 
 	if self.PlayersSearched[activator:SteamID64()] == activator:GetNWInt("Level", 0) then return end
 
+	activator:SetNWInt("ContainersLooted", activator:GetNWInt("ContainersLooted") + 1)
 	activator:SetNWInt("RaidContainersLooted", activator:GetNWInt("RaidContainersLooted") + 1)
 
 	for k, v in pairs(self.Inventory) do
