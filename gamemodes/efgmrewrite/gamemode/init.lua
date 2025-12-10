@@ -42,6 +42,7 @@ function GM:Initialize()
 	RunConsoleCommand("sv_airaccelerate", "1") 		-- what is a titanmod?
 	RunConsoleCommand("mp_falldamage", "1") 		-- what is a titanmod? part two, electric boogaloo
 	RunConsoleCommand("mp_show_voice_icons", "0") 	-- disable vc icons over heads
+	RunConsoleCommand("decalfrequency", "1")
 
 end
 
@@ -304,6 +305,12 @@ hook.Add("PlayerCanHearPlayersVoice", "ProxVOIP", function(listener,talker)
 		return true, true
 
 	end
+
+end )
+
+hook.Add("PlayerSpray", "PlayerSpraying", function(ply)
+
+	return false
 
 end )
 

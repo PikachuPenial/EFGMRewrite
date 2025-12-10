@@ -21,7 +21,7 @@ end
 
 -- players current weapon and ammo
 local function RenderPlayerWeapon(ply)
-    local wep = LocalPlayer():GetActiveWeapon()
+    local wep = ply:GetActiveWeapon()
     if wep == NULL then return end
 
     local name = wep:GetPrintName()
@@ -319,12 +319,18 @@ function RenderPlayerInfo(ply, ent)
     local nameTextSize = surface.GetTextSize(name) + EFGM.ScreenScale(20)
 
     surface.SetDrawColor(Colors.hudBackground)
-    surface.DrawRect(ScrW() / 2 - (nameTextSize / 2), ScrH() - EFGM.ScreenScale(100), nameTextSize, EFGM.ScreenScale(80))
+    surface.DrawRect(ScrW() / 2 - (nameTextSize / 2), ScrH() - EFGM.ScreenScale(80), nameTextSize, EFGM.ScreenScale(60))
 
     surface.SetDrawColor(Color(255, 255, 255, 155))
-    surface.DrawRect(ScrW() / 2 - (nameTextSize / 2), ScrH() - EFGM.ScreenScale(100), nameTextSize, EFGM.MenuScale(1))
+    surface.DrawRect(ScrW() / 2 - (nameTextSize / 2), ScrH() - EFGM.ScreenScale(80), nameTextSize, EFGM.MenuScale(1))
 
-    draw.DrawText(name, "BenderExfilTimer", ScrW() / 2, ScrH() - EFGM.ScreenScale(100), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+    draw.DrawText(name, "BenderExfilTimer", ScrW() / 2, ScrH() - EFGM.ScreenScale(80), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+end
+
+local function RenderVOIPIndicator()
+    surface.SetDrawColor(175, 255, 0)
+    surface.SetMaterial(Mats.voipIcon)
+    surface.DrawTexturedRect(EFGM.ScreenScale(121), ScrH() - EFGM.ScreenScale(90), EFGM.ScreenScale(60), EFGM.ScreenScale(60))
 end
 
 local function DrawHUD()
@@ -2272,7 +2278,15 @@ hook.Add("HUDShouldDraw", "HideDefaultHud", HideHud)
 hook.Add("ScoreboardShow", "DisableHL2Scoreboard", function() return true end )
 
 -- hide voice chat panels
-hook.Add("PlayerStartVoice", "ImageOnVoice", function() return false end)
+hook.Add("PlayerStartVoice", "ImageOnVoice", function(voipPly)
+    if ply != voipPly then return true end
+    hook.Add("HUDPaint", "VoiceIndicator", RenderVOIPIndicator)
+    return true
+end)
+
+hook.Add("PlayerEndVoice", "ImageOnVoice", function()
+    hook.Remove("HUDPaint", "VoiceIndicator")
+end)
 
 net.Receive("VoteableMaps", function(len)
 
