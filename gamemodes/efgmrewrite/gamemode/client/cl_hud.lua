@@ -2323,9 +2323,9 @@ net.Receive("VoteableMaps", function(len)
 
         VotePopup:AlphaTo(255, 0.2, 0, nil)
 
-        local belmontIcon = Material("maps/icon_efgm_belmont_rw.png")
-        local concreteIcon = Material("maps/icon_efgm_concrete_rw.png")
-        local factoryIcon = Material("maps/icon_efgm_factory_rw.png")
+        local belmontIcon = Material("maps/icon_efgm_belmont_rw_" .. math.random(1, 5) .. ".png")
+        local concreteIcon = Material("maps/icon_efgm_concrete_rw_" .. math.random(1, 5) .. ".png")
+        local factoryIcon = Material("maps/icon_efgm_factory_rw_" .. math.random(1, 5) .. ".png")
 
         local belmontButton = vgui.Create("DButton", VotePopup)
         belmontButton:SetSize(EFGM.MenuScale(500), EFGM.MenuScale(500))
