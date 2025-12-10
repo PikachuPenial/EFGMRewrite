@@ -104,7 +104,7 @@ function CompleteTask(ply, taskName)
 
     for rewardIndex, rewardInfo in ipairs(taskInfo.rewards) do
 
-        if rewardInfo.type == REWARD.PlayerStat && rewardInfo.info == "Experience" then
+        if rewardInfo.type == REWARD.PlayerStat and rewardInfo.info == "Experience" then
 
             local exp = rewardInfo.count
 

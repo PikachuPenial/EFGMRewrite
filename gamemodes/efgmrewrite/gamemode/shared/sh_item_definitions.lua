@@ -1,3 +1,12 @@
+ICONCOLORS = {}
+
+ICONCOLORS.Yellow = Color(52, 53, 36, 155)
+ICONCOLORS.Red = Color(41, 33, 26, 155)
+ICONCOLORS.Green = Color(31, 38, 26, 155)
+ICONCOLORS.Blue = Color(33, 43, 48, 155)
+ICONCOLORS.Purple = Color(45, 37, 48, 155)
+ICONCOLORS.Brown = Color(54, 35, 32, 155)
+
 EQUIPTYPE = {}
 EQUIPTYPE.Weapon = 1
 EQUIPTYPE.Ammunition = 2
@@ -3595,7 +3604,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
         ["icon"] = Material("items/ammo/762x25.png", "smooth"),
-        ["iconColor"] = Color(52, 53, 36, 155),
+        ["iconColor"] = ICONCOLORS.Yellow,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -3612,7 +3621,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
         ["icon"] = Material("items/ammo/9x18.png", "smooth"),
-        ["iconColor"] = Color(52, 53, 36, 155),
+        ["iconColor"] = ICONCOLORS.Yellow,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -3629,7 +3638,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
         ["icon"] = Material("items/ammo/9x19.png", "smooth"),
-        ["iconColor"] = Color(52, 53, 36, 155),
+        ["iconColor"] = ICONCOLORS.Yellow,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -3646,7 +3655,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
         ["icon"] = Material("items/ammo/9x21.png", "smooth"),
-        ["iconColor"] = Color(52, 53, 36, 155),
+        ["iconColor"] = ICONCOLORS.Yellow,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -3663,7 +3672,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
         ["icon"] = Material("items/ammo/357.png", "smooth"),
-        ["iconColor"] = Color(52, 53, 36, 155),
+        ["iconColor"] = ICONCOLORS.Yellow,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -3680,7 +3689,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
         ["icon"] = Material("items/ammo/45.png", "smooth"),
-        ["iconColor"] = Color(52, 53, 36, 155),
+        ["iconColor"] = ICONCOLORS.Yellow,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -3697,7 +3706,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
         ["icon"] = Material("items/ammo/50ae.png", "smooth"),
-        ["iconColor"] = Color(52, 53, 36, 155),
+        ["iconColor"] = ICONCOLORS.Yellow,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -3714,7 +3723,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 20,
         ["icon"] = Material("items/ammo/20x1.png", "smooth"),
-        ["iconColor"] = Color(52, 53, 36, 155),
+        ["iconColor"] = ICONCOLORS.Yellow,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -3732,7 +3741,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
         ["icon"] = Material("items/ammo/46x30.png", "smooth"),
-        ["iconColor"] = Color(52, 53, 36, 155),
+        ["iconColor"] = ICONCOLORS.Yellow,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -3749,7 +3758,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
         ["icon"] = Material("items/ammo/57x28.png", "smooth"),
-        ["iconColor"] = Color(52, 53, 36, 155),
+        ["iconColor"] = ICONCOLORS.Yellow,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -3767,7 +3776,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
         ["icon"] = Material("items/ammo/545x39.png", "smooth"),
-        ["iconColor"] = Color(52, 53, 36, 155),
+        ["iconColor"] = ICONCOLORS.Yellow,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -3784,7 +3793,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
         ["icon"] = Material("items/ammo/556x45.png", "smooth"),
-        ["iconColor"] = Color(52, 53, 36, 155),
+        ["iconColor"] = ICONCOLORS.Yellow,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -3801,7 +3810,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 40,
         ["icon"] = Material("items/ammo/68x51.png", "smooth"),
-        ["iconColor"] = Color(52, 53, 36, 155),
+        ["iconColor"] = ICONCOLORS.Yellow,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -3818,7 +3827,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
         ["icon"] = Material("items/ammo/300.png", "smooth"),
-        ["iconColor"] = Color(52, 53, 36, 155),
+        ["iconColor"] = ICONCOLORS.Yellow,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -3835,7 +3844,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
         ["icon"] = Material("items/ammo/762x39.png", "smooth"),
-        ["iconColor"] = Color(52, 53, 36, 155),
+        ["iconColor"] = ICONCOLORS.Yellow,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -3852,7 +3861,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 40,
         ["icon"] = Material("items/ammo/762x51.png", "smooth"),
-        ["iconColor"] = Color(52, 53, 36, 155),
+        ["iconColor"] = ICONCOLORS.Yellow,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -3869,7 +3878,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 40,
         ["icon"] = Material("items/ammo/762x54.png", "smooth"),
-        ["iconColor"] = Color(52, 53, 36, 155),
+        ["iconColor"] = ICONCOLORS.Yellow,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -3886,7 +3895,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 40,
         ["icon"] = Material("items/ammo/338.png", "smooth"),
-        ["iconColor"] = Color(52, 53, 36, 155),
+        ["iconColor"] = ICONCOLORS.Yellow,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -3903,7 +3912,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
         ["icon"] = Material("items/ammo/9x39.png", "smooth"),
-        ["iconColor"] = Color(52, 53, 36, 155),
+        ["iconColor"] = ICONCOLORS.Yellow,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -3920,7 +3929,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
         ["icon"] = Material("items/ammo/366.png", "smooth"),
-        ["iconColor"] = Color(52, 53, 36, 155),
+        ["iconColor"] = ICONCOLORS.Yellow,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -3937,7 +3946,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 40,
         ["icon"] = Material("items/ammo/127x55.png", "smooth"),
-        ["iconColor"] = Color(52, 53, 36, 155),
+        ["iconColor"] = ICONCOLORS.Yellow,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -3954,7 +3963,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 20,
         ["icon"] = Material("items/ammo/50bmg.png", "smooth"),
-        ["iconColor"] = Color(52, 53, 36, 155),
+        ["iconColor"] = ICONCOLORS.Yellow,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -3972,7 +3981,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 20,
         ["icon"] = Material("items/ammo/12gauge.png", "smooth"),
-        ["iconColor"] = Color(52, 53, 36, 155),
+        ["iconColor"] = ICONCOLORS.Yellow,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -3989,7 +3998,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 20,
         ["icon"] = Material("items/ammo/20gauge.png", "smooth"),
-        ["iconColor"] = Color(52, 53, 36, 155),
+        ["iconColor"] = ICONCOLORS.Yellow,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -4006,7 +4015,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 20,
         ["icon"] = Material("items/ammo/4gauge.png", "smooth"),
-        ["iconColor"] = Color(52, 53, 36, 155),
+        ["iconColor"] = ICONCOLORS.Yellow,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -4024,10 +4033,12 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/ammo/40x46.png", "smooth"),
-        ["iconColor"] = Color(52, 53, 36, 155),
+        ["iconColor"] = ICONCOLORS.Yellow,
 
         ["sizeX"] = 1,
-        ["sizeY"] = 1
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
     }
 
     EFGMITEMS["efgm_ammo_40x53"] = {
@@ -4041,10 +4052,12 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/ammo/40x53.png", "smooth"),
-        ["iconColor"] = Color(52, 53, 36, 155),
+        ["iconColor"] = ICONCOLORS.Yellow,
 
         ["sizeX"] = 1,
-        ["sizeY"] = 1
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
     }
 
     EFGMITEMS["efgm_ammo_725"] = {
@@ -4058,10 +4071,12 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/ammo/725.png", "smooth"),
-        ["iconColor"] = Color(52, 53, 36, 155),
+        ["iconColor"] = ICONCOLORS.Yellow,
 
         ["sizeX"] = 2,
-        ["sizeY"] = 1
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
     }
 
     -- flare cartirdges
@@ -4076,10 +4091,10 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/ammo/26x75.png", "smooth"),
-        ["iconColor"] = Color(52, 53, 36, 155),
+        ["iconColor"] = ICONCOLORS.Yellow,
 
         ["sizeX"] = 1,
-        ["sizeY"] = 1
+        ["sizeY"] = 1,
     }
 
 -- MEDICAL
@@ -4097,7 +4112,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/meds/ai2.png", "smooth"),
-        ["iconColor"] = Color(41, 33, 26, 155),
+        ["iconColor"] = ICONCOLORS.Red,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -4116,7 +4131,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/meds/car.png", "smooth"),
-        ["iconColor"] = Color(41, 33, 26, 155),
+        ["iconColor"] = ICONCOLORS.Red,
 
         ["sizeX"] = 2,
         ["sizeY"] = 1
@@ -4135,7 +4150,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/meds/ifak.png", "smooth"),
-        ["iconColor"] = Color(41, 33, 26, 155),
+        ["iconColor"] = ICONCOLORS.Red,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -4154,7 +4169,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/meds/salewa.png", "smooth"),
-        ["iconColor"] = Color(41, 33, 26, 155),
+        ["iconColor"] = ICONCOLORS.Red,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2
@@ -4173,7 +4188,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/meds/afak.png", "smooth"),
-        ["iconColor"] = Color(41, 33, 26, 155),
+        ["iconColor"] = ICONCOLORS.Red,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
@@ -4192,7 +4207,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/meds/grizzly.png", "smooth"),
-        ["iconColor"] = Color(41, 33, 26, 155),
+        ["iconColor"] = ICONCOLORS.Red,
 
         ["sizeX"] = 2,
         ["sizeY"] = 2,
@@ -4214,7 +4229,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/keys/civil.png", "smooth"),
-        ["iconColor"] = Color(31, 38, 26, 155),
+        ["iconColor"] = ICONCOLORS.Green,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -4234,7 +4249,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/keys/industrial.png", "smooth"),
-        ["iconColor"] = Color(31, 38, 26, 155),
+        ["iconColor"] = ICONCOLORS.Green,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -4254,7 +4269,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/keys/industrial_marked.png", "smooth"),
-        ["iconColor"] = Color(31, 38, 26, 155),
+        ["iconColor"] = ICONCOLORS.Green,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -4275,7 +4290,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/keys/dorm.png", "smooth"),
-        ["iconColor"] = Color(31, 38, 26, 155),
+        ["iconColor"] = ICONCOLORS.Green,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -4295,7 +4310,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/keys/industrial.png", "smooth"),
-        ["iconColor"] = Color(31, 38, 26, 155),
+        ["iconColor"] = ICONCOLORS.Green,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -4315,7 +4330,7 @@ EFGMITEMS = {}
     --     ["appearInInventory"] = true,
     --     ["stackSize"] = 1,
     --     ["icon"] = Material("items/keys/keycard_green.png", "smooth"),
-    --     ["iconColor"] = Color(31, 38, 26, 155),
+    --     ["iconColor"] = ICONCOLORS.Green,
 
     --     ["sizeX"] = 1,
     --     ["sizeY"] = 1,
@@ -4335,7 +4350,7 @@ EFGMITEMS = {}
     --     ["appearInInventory"] = true,
     --     ["stackSize"] = 1,
     --     ["icon"] = Material("items/keys/keycard_dark_red.png", "smooth"),
-    --     ["iconColor"] = Color(31, 38, 26, 155),
+    --     ["iconColor"] = ICONCOLORS.Green,
 
     --     ["sizeX"] = 1,
     --     ["sizeY"] = 1,
@@ -4354,7 +4369,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/keys/keycard_pink.png", "smooth"),
-        ["iconColor"] = Color(31, 38, 26, 155),
+        ["iconColor"] = ICONCOLORS.Green,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -4374,7 +4389,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/keys/industrial.png", "smooth"),
-        ["iconColor"] = Color(31, 38, 26, 155),
+        ["iconColor"] = ICONCOLORS.Green,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -4394,7 +4409,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/keys/civil_belmont.png", "smooth"),
-        ["iconColor"] = Color(31, 38, 26, 155),
+        ["iconColor"] = ICONCOLORS.Green,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -4414,7 +4429,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/keys/civil_belmont.png", "smooth"),
-        ["iconColor"] = Color(31, 38, 26, 155),
+        ["iconColor"] = ICONCOLORS.Green,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -4433,7 +4448,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/fireklean.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -4451,7 +4466,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/aabattery.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -4469,7 +4484,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/mcc.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 2,
         ["sizeY"] = 2,
@@ -4504,7 +4519,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/thermometer.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
@@ -4522,7 +4537,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/teapot.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
@@ -4540,7 +4555,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/vase.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 2,
         ["sizeY"] = 2,
@@ -4558,7 +4573,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/apollo.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -4576,7 +4591,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/aquapeps.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -4594,7 +4609,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/aramid.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 2,
         ["sizeY"] = 1,
@@ -4612,7 +4627,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/awl.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -4630,7 +4645,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/axel.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
@@ -4648,7 +4663,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/bearbuddy.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 2,
         ["sizeY"] = 2,
@@ -4666,7 +4681,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/bearfigurine.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
@@ -4684,7 +4699,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/bakeezy.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
@@ -4702,7 +4717,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/book.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
@@ -4720,7 +4735,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/bolts.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -4738,7 +4753,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/vitamins.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -4756,7 +4771,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/h2o2.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -4774,7 +4789,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/nacl.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -4792,7 +4807,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/brokengpx.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -4810,7 +4825,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/brokengphone.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -4828,7 +4843,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/brokenlcd.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
@@ -4846,7 +4861,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/lion.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 3,
         ["sizeY"] = 2,
@@ -4864,7 +4879,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/bulbex.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
@@ -4882,7 +4897,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/wires.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -4900,7 +4915,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/cpufan.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -4918,7 +4933,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/drlupos.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -4936,7 +4951,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/majaica.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -4954,7 +4969,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/ratcola.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -4972,7 +4987,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/thermite.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -5007,7 +5022,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/superwater.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 2,
         ["sizeY"] = 2,
@@ -5025,7 +5040,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/caps.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -5043,7 +5058,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/carbattery.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 3,
         ["sizeY"] = 2,
@@ -5061,7 +5076,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/cat.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 3,
@@ -5079,7 +5094,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/prokill.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -5097,7 +5112,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/chainlet.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -5115,7 +5130,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/ornament.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -5133,7 +5148,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/matches.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -5168,7 +5183,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/mtape.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -5186,7 +5201,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/cordura.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 2,
         ["sizeY"] = 1,
@@ -5204,7 +5219,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/hose.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 2,
         ["sizeY"] = 1,
@@ -5222,7 +5237,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/crickent.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -5240,7 +5255,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/cultistfigurine.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
@@ -5258,7 +5273,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/cyclon.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 2,
         ["sizeY"] = 1,
@@ -5276,7 +5291,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/dbattery.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -5294,7 +5309,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/dvd.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 2,
         ["sizeY"] = 1,
@@ -5312,7 +5327,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/hdd.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 2,
         ["sizeY"] = 1,
@@ -5330,7 +5345,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/beardoil.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -5348,7 +5363,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/dedmorozfigurine.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
@@ -5366,7 +5381,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/diary.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
@@ -5384,7 +5399,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/syringe.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -5402,7 +5417,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/dfuel.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -5420,7 +5435,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/ducttape.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -5438,7 +5453,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/drill.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 2,
         ["sizeY"] = 2,
@@ -5456,7 +5471,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/motor.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 2,
         ["sizeY"] = 2,
@@ -5474,7 +5489,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/ec.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -5492,7 +5507,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/eslamp.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -5510,7 +5525,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/fuel.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 2,
         ["sizeY"] = 2,
@@ -5528,7 +5543,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/fp100.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 3,
         ["sizeY"] = 3,
@@ -5546,7 +5561,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/gpsa.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -5564,7 +5579,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/fscdr.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -5582,7 +5597,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/landfscdr.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
@@ -5600,7 +5615,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/fleece.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 2,
         ["sizeY"] = 1,
@@ -5618,7 +5633,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/fcond.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
@@ -5636,7 +5651,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/ewunit.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
@@ -5654,7 +5669,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/gasan.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
@@ -5672,7 +5687,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/filter.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 2,
         ["sizeY"] = 1,
@@ -5690,7 +5705,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/gmcount.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
@@ -5708,7 +5723,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/skull.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -5726,7 +5741,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/1gphone.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -5744,7 +5759,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/egg.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -5762,7 +5777,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/goldchain.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -5780,7 +5795,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/rooster.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 2,
         ["sizeY"] = 2,
@@ -5798,7 +5813,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/gpu.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 2,
         ["sizeY"] = 1,
@@ -5816,7 +5831,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/greenbat.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -5834,7 +5849,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/eagle.png", "smooth"),
-        ["iconColor"] = Color(31, 38, 26, 155),
+        ["iconColor"] = ICONCOLORS.Green,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
@@ -5852,7 +5867,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/hawk.png", "smooth"),
-        ["iconColor"] = Color(54, 35, 32, 155),
+        ["iconColor"] = ICONCOLORS.Brown,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
@@ -5870,7 +5885,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/kite.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
@@ -5888,7 +5903,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/handdrill.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 3,
         ["sizeY"] = 2,
@@ -5906,7 +5921,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/horse.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
@@ -5924,7 +5939,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/hmatches.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -5942,7 +5957,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/inseq.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
@@ -5960,7 +5975,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/tape.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -5978,7 +5993,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/intelligence.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 2,
         ["sizeY"] = 1,
@@ -5996,7 +6011,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/iridium.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -6014,7 +6029,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/pickles.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
@@ -6032,7 +6047,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/kek.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -6050,7 +6065,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/kosa.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 3,
         ["sizeY"] = 2,
@@ -6068,7 +6083,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/ledx.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -6086,7 +6101,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/multitool.png", "smooth"),
-        ["iconColor"] = Color(54, 35, 32, 155),
+        ["iconColor"] = ICONCOLORS.Brown,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -6104,7 +6119,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/bulb.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -6122,7 +6137,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/bulb.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -6140,7 +6155,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/lootlord.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 2,
         ["sizeY"] = 2,
@@ -6158,7 +6173,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/magnet.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -6176,7 +6191,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/malboro.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -6194,7 +6209,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/bloodset.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -6212,7 +6227,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/medtools.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -6230,7 +6245,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/mscissors.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
@@ -6248,7 +6263,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/metalfuel.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 2,
         ["sizeY"] = 3,
@@ -6266,7 +6281,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/mparts.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -6284,7 +6299,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/mb.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -6302,7 +6317,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/sgc10.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 2,
         ["sizeY"] = 1,
@@ -6320,7 +6335,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/mcable.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 2,
         ["sizeY"] = 1,
@@ -6338,7 +6353,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/mcb.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -6356,7 +6371,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/mtube.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -6374,7 +6389,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/mfd.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -6392,7 +6407,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/mgt.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
@@ -6410,7 +6425,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/pfilter.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -6428,7 +6443,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/nixxor.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -6446,7 +6461,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/nippers.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -6464,7 +6479,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/ofz.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
@@ -6482,7 +6497,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/firesteel.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -6500,7 +6515,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/oscope.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -6569,7 +6584,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/cpu.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -6621,7 +6636,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/nails.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -6639,7 +6654,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/screws.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -6657,7 +6672,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/sodium.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -6675,7 +6690,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/paracord.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 2,
         ["sizeY"] = 1,
@@ -6693,7 +6708,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/relay.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -6711,7 +6726,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/aesa.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 2,
         ["sizeY"] = 2,
@@ -6729,7 +6744,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/btc.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -6747,7 +6762,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/plexiglass.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -6765,7 +6780,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/meds.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -6783,7 +6798,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/pgw.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
@@ -6801,7 +6816,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/pliers.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -6819,7 +6834,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/elite.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -6837,7 +6852,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/powerbank.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -6855,7 +6870,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/defib.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -6873,7 +6888,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/cord.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 2,
         ["sizeY"] = 1,
@@ -6891,7 +6906,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/psu.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 2,
         ["sizeY"] = 2,
@@ -6909,7 +6924,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/pass.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
@@ -6927,7 +6942,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/pgauge.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 2,
         ["sizeY"] = 1,
@@ -6945,7 +6960,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/pcb.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -6980,7 +6995,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/propane.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 2,
         ["sizeY"] = 2,
@@ -6998,7 +7013,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/ram.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -7016,7 +7031,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/helix.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -7034,7 +7049,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/ratchet.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
@@ -7052,7 +7067,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/raven.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
@@ -7070,7 +7085,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/rbatt.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -7105,7 +7120,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/ripstop.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 2,
         ["sizeY"] = 1,
@@ -7123,7 +7138,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/roler.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -7141,7 +7156,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/rpliers.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -7159,7 +7174,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/sas.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -7177,7 +7192,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/ssd.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -7212,7 +7227,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/nuts.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -7230,7 +7245,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/screwdriver.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -7248,7 +7263,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/flashdrive.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -7266,7 +7281,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/smt.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -7284,7 +7299,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/master.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 2,
         ["sizeY"] = 2,
@@ -7302,7 +7317,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/sewingkit.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -7320,7 +7335,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/shus.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 3,
@@ -7338,7 +7353,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/tube.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -7356,7 +7371,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/badge.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -7374,7 +7389,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/slimdiary.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -7426,7 +7441,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/splug.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -7444,7 +7459,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/strike.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -7462,7 +7477,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/survl.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -7480,7 +7495,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/tplug.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -7498,7 +7513,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/tp200.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -7516,7 +7531,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/tp200.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -7534,7 +7549,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/tamatthi.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
@@ -7552,7 +7567,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/manual.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
@@ -7570,7 +7585,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/folders.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
@@ -7588,7 +7603,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/tetriz.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
@@ -7623,7 +7638,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/toolset.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 2,
         ["sizeY"] = 2,
@@ -7641,7 +7656,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/maps.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 2,
         ["sizeY"] = 1,
@@ -7659,7 +7674,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/poxeram.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -7677,7 +7692,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/rfidr.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -7695,7 +7710,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/usb.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -7713,7 +7728,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/usb.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -7731,7 +7746,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/usecfigurine.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
@@ -7749,7 +7764,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/fuze.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -7767,7 +7782,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/uvlamp.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -7785,7 +7800,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/vpx.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -7803,7 +7818,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/veritas.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -7821,7 +7836,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/viibiin.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 2,
         ["sizeY"] = 1,
@@ -7839,7 +7854,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/virtex.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -7857,7 +7872,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/wd40100.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -7875,7 +7890,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/wd40400.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
@@ -7893,7 +7908,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/waterfilter.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
@@ -7911,7 +7926,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/weaponparts.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 2,
         ["sizeY"] = 1,
@@ -7929,7 +7944,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/wilston.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -7947,7 +7962,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/clock.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 2,
         ["sizeY"] = 2,
@@ -7965,7 +7980,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/lcd.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 2,
@@ -7983,7 +7998,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/wrench.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -8001,7 +8016,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/xeno.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 3,
@@ -8019,7 +8034,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/zibbo.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -8037,7 +8052,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/tankbattery.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 4,
         ["sizeY"] = 2,
@@ -8055,7 +8070,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/barter/tea.png", "smooth"),
-        ["iconColor"] = Color(45, 37, 48, 155),
+        ["iconColor"] = ICONCOLORS.Purple,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
@@ -8074,7 +8089,7 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/tags/default.png", "smooth"),
-        ["iconColor"] = Color(33, 43, 48, 155),
+        ["iconColor"] = ICONCOLORS.Blue,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,

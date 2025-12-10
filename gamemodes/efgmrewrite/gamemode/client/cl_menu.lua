@@ -3252,7 +3252,7 @@ function Menu.ReloadInventory()
 
         function item:Paint(w, h)
 
-            surface.SetDrawColor(Colors.itemBackgroundColor)
+            if !self:IsHovered() then surface.SetDrawColor(Colors.itemBackgroundColor) else surface.SetDrawColor(Colors.itemBackgroundColorHovered) end
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
             surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -3701,7 +3701,7 @@ function Menu.ReloadSlots()
 
         function primaryItem:Paint(w, h)
 
-            surface.SetDrawColor(Colors.itemBackgroundColor)
+            if !self:IsHovered() then surface.SetDrawColor(Colors.itemBackgroundColor) else surface.SetDrawColor(Colors.itemBackgroundColorHovered) end
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
             surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -4066,7 +4066,7 @@ function Menu.ReloadSlots()
 
         function secondaryItem:Paint(w, h)
 
-            surface.SetDrawColor(Colors.itemBackgroundColor)
+            if !self:IsHovered() then surface.SetDrawColor(Colors.itemBackgroundColor) else surface.SetDrawColor(Colors.itemBackgroundColorHovered) end
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
             surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -4431,7 +4431,7 @@ function Menu.ReloadSlots()
 
         function holsterItem:Paint(w, h)
 
-            surface.SetDrawColor(Colors.itemBackgroundColor)
+            if !self:IsHovered() then surface.SetDrawColor(Colors.itemBackgroundColor) else surface.SetDrawColor(Colors.itemBackgroundColorHovered) end
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
             surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -4796,7 +4796,7 @@ function Menu.ReloadSlots()
 
         function meleeItem:Paint(w, h)
 
-            surface.SetDrawColor(Colors.itemBackgroundColor)
+            if !self:IsHovered() then surface.SetDrawColor(Colors.itemBackgroundColor) else surface.SetDrawColor(Colors.itemBackgroundColorHovered) end
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
             surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -5091,7 +5091,7 @@ function Menu.ReloadSlots()
 
         function nadeItem:Paint(w, h)
 
-            surface.SetDrawColor(Colors.itemBackgroundColor)
+            if !self:IsHovered() then surface.SetDrawColor(Colors.itemBackgroundColor) else surface.SetDrawColor(Colors.itemBackgroundColorHovered) end
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
             surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -5459,7 +5459,7 @@ function Menu.ReloadStash()
 
         function item:Paint(w, h)
 
-            surface.SetDrawColor(Colors.itemBackgroundColor)
+            if !self:IsHovered() then surface.SetDrawColor(Colors.itemBackgroundColor) else surface.SetDrawColor(Colors.itemBackgroundColorHovered) end
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
             surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -5962,7 +5962,7 @@ function Menu.ReloadMarketStash()
         function item:Paint(w, h)
 
             costColor = Colors.whiteColor
-            surface.SetDrawColor(Colors.itemBackgroundColor)
+            if !self:IsHovered() then surface.SetDrawColor(Colors.itemBackgroundColor) else surface.SetDrawColor(Colors.itemBackgroundColorHovered) end
 
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
             surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
@@ -6249,7 +6249,7 @@ function Menu.ReloadContainer()
 
         function item:Paint(w, h)
 
-            surface.SetDrawColor(Colors.itemBackgroundColor)
+            if !self:IsHovered() then surface.SetDrawColor(Colors.itemBackgroundColor) else surface.SetDrawColor(Colors.itemBackgroundColorHovered) end
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
             surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -8164,7 +8164,8 @@ function Menu.OpenTab.Market()
                     surface.SetDrawColor(Colors.itemColor)
                     surface.DrawRect(0, 0, w, h)
 
-                    surface.SetDrawColor(Colors.itemBackgroundColor)
+                    if !self:IsHovered() then surface.SetDrawColor(Colors.itemBackgroundColor) else surface.SetDrawColor(Colors.itemBackgroundColorHovered) end
+
                     surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
                     surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
                     surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -11996,7 +11997,7 @@ function Menu.OpenTab.Tasks()
                 local objectivePanel = vgui.Create("DPanel", taskDisplay)
                 objectivePanel:Dock(TOP)
                 objectivePanel:DockMargin(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
-                objectivePanel:SetSize(0, EFGM.MenuScale(265))
+                objectivePanel:SetSize(0, EFGM.MenuScale(41))
 
                 local objectivePanelHeader = vgui.Create("DPanel", objectivePanel)
                 objectivePanelHeader:Dock(TOP)
@@ -12028,11 +12029,13 @@ function Menu.OpenTab.Tasks()
                 end
 
                 for objIndex, objInfo in ipairs(taskInfo.objectives) do
-                    
+
                     local curProgress = playerTasks[taskName].progress[objIndex]
                     local curTempProgress = playerTasks[taskName].tempProgress[objIndex]
                     local curProgressTotal = curProgress + curTempProgress
                     local maxProgress = objInfo.count or 1
+
+                    objectivePanel:SetTall(objectivePanel:GetTall() + EFGM.MenuScale(45))
 
                     local objective = objectiveScroller:Add("DPanel")
                     objective:Dock(TOP)
@@ -12042,12 +12045,12 @@ function Menu.OpenTab.Tasks()
                     local progressText
                     local progressTextSize
 
+                    local objText = GetObjectiveText(objInfo)
+
                     function objective:Paint(w, h)
 
                         surface.SetDrawColor(Colors.containerHeaderColor)
                         surface.DrawRect(0, 0, w, h)
-
-                        local objText = GetObjectiveText(objInfo)
 
                         draw.SimpleTextOutlined(objText, "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(6), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
@@ -12068,7 +12071,7 @@ function Menu.OpenTab.Tasks()
 
                                 surface.SetDrawColor(Color(202, 20, 20, 255))
                                 surface.DrawRect(w - EFGM.MenuScale(410), EFGM.MenuScale(5), math.Remap(curProgressTotal, 0, maxProgress, 0, EFGM.MenuScale(400) - progressTextSize), h - EFGM.MenuScale(10))
-                            
+
                             end
 
                             surface.SetDrawColor(Color(80, 80, 80, 255))
@@ -12094,7 +12097,7 @@ function Menu.OpenTab.Tasks()
                     end
 
                     if curProgress != maxProgress and objInfo.type == OBJECTIVE.Pay and playerTasks[taskName].status == TASKSTATUS.InProgress && Menu.Player:CompareStatus(0) then
-                        
+
                         local payAmount = math.Clamp(maxProgress - curProgress, 0, LocalPlayer():GetNWInt("Money", 0))
 
                         local payButton = vgui.Create("DButton", objective)
@@ -12114,6 +12117,77 @@ function Menu.OpenTab.Tasks()
                             end)
 
                         end
+
+                    end
+
+                end
+
+            -- Task Rewards
+
+                local rewardPanel = vgui.Create("DPanel", taskDisplay)
+                rewardPanel:Dock(TOP)
+                rewardPanel:DockMargin(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
+                rewardPanel:SetSize(0, EFGM.MenuScale(41))
+
+                local rewardPanelHeader = vgui.Create("DPanel", rewardPanel)
+                rewardPanelHeader:Dock(TOP)
+                rewardPanelHeader:SetSize(0, EFGM.MenuScale(36))
+                function rewardPanelHeader:Paint(w, h)
+
+                    surface.SetDrawColor(Colors.containerHeaderColor)
+                    surface.DrawRect(0, 0, w, h)
+
+                    surface.SetDrawColor(Colors.transparentWhiteColor)
+                    surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
+
+                    draw.SimpleTextOutlined("REWARDS", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+
+                end
+
+                local rewardScroller = vgui.Create("DScrollPanel", rewardPanel)
+                rewardScroller:Dock(FILL)
+                rewardScroller:DockMargin(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), 0)
+
+                local rewardBar = rewardScroller:GetVBar()
+                rewardBar:SetHideButtons(true)
+                rewardBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+                function rewardBar:Paint(w, h)
+                    draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Colors.scrollerColor)
+                end
+                function rewardBar.btnGrip:Paint(w, h)
+                    draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Colors.transparentWhiteColor)
+                end
+
+                for rewardIndex, rewardInfo in ipairs(taskInfo.rewards) do
+
+                    local amount = rewardInfo.count .. "x" or "1x"
+                    if amount == "1x" then amount = "" end
+
+                    rewardPanel:SetTall(rewardPanel:GetTall() + EFGM.MenuScale(45))
+
+                    local reward = rewardScroller:Add("DPanel")
+                    reward:Dock(TOP)
+                    reward:DockMargin(0, 0, 0, EFGM.MenuScale(5))
+                    reward:SetSize(0, EFGM.MenuScale(40))
+
+                    local rewardText = GetRewardText(rewardInfo)
+
+                    function reward:Paint(w, h)
+
+                        surface.SetDrawColor(Colors.containerHeaderColor)
+                        surface.DrawRect(0, 0, w, h)
+
+                        draw.SimpleTextOutlined(rewardText, "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(6), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+
+                    end
+
+                    function reward:PaintOver(w, h)
+
+                        surface.SetDrawColor(Colors.whiteBorderColor)
+                        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+                        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+                        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
 
                     end
 
@@ -12172,6 +12246,27 @@ function GetObjectiveText(obj)
     end
 
     return "Counting or not counting OBJECTIVE[" .. obj.type .. "]?"
+
+end
+
+function GetRewardText(reward)
+
+    local amount = comma_value(reward.count) .. "x" or "1x"
+    if amount == "1x" then amount = "" end
+
+    if reward.type == REWARD.PlayerStat then
+        return amount .. " " .. reward.info
+    end
+
+    if reward.type == REWARD.Item then
+        return amount .. " " .. reward.info
+    end
+
+    if reward.type == REWARD.MarketUnlock then
+        return "Unlock " .. reward.info .. " on the market"
+    end
+
+    return "Counting or not counting REWARD[" .. reward.type .. "]?"
 
 end
 

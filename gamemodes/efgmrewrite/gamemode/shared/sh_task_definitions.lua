@@ -20,7 +20,6 @@ REWARD.PlayerStat = 1
 REWARD.Item = 2
 REWARD.MarketUnlock = 3
 
-
 SAVEON = {}
 SAVEON.Progress = 1
 SAVEON.Extract = 2
