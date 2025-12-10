@@ -292,7 +292,7 @@ end)
 
 -- free look
 local limV = 35
-local limH = 65
+local limH = 80
 
 local freelooking = false
 
