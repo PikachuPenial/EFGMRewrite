@@ -105,7 +105,7 @@ function Menu:Initialize(openTo, container)
 
     function menuFrame:Paint(w, h)
 
-        surface.SetDrawColor(0, 0, 0, 240)
+        surface.SetDrawColor(MenuAlias.frameColor)
         surface.DrawRect(0, 0, ScrW(), ScrH())
 
         if self.Unblur then return end -- hide the blur when customizing certain settings and whatnot
@@ -193,7 +193,7 @@ function Menu:Initialize(openTo, container)
         draw.SimpleTextOutlined(roubles, "PuristaBold32", w - EFGM.MenuScale(26), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
         draw.SimpleTextOutlined(level, "PuristaBold32", w - roublesTextSize - EFGM.MenuScale(86), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
-        draw.DrawText("EFGM", "PuristaBold32", w / 2, EFGM.MenuScale(2), Color(255, 255, 255, 1), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+        draw.DrawText("EFGM", "PuristaBold32", w / 2, EFGM.MenuScale(2), MenuAlias.itemBackgroundColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 
     end
 
@@ -285,7 +285,7 @@ function Menu:Initialize(openTo, container)
             surface.SetDrawColor(Color(50, 100, 50, 255))
             surface.DrawRect(0, 0, w, EFGM.MenuScale(5))
 
-            surface.SetDrawColor(Color(255, 255, 255, 155))
+            surface.SetDrawColor(MenuAlias.transparentWhiteColor)
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
             surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -367,7 +367,7 @@ function Menu:Initialize(openTo, container)
             surface.SetDrawColor(Color(100, 100, 50))
             surface.DrawRect(0, 0, w, EFGM.MenuScale(5))
 
-            surface.SetDrawColor(Color(255, 255, 255, 155))
+            surface.SetDrawColor(MenuAlias.transparentWhiteColor)
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
             surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -381,7 +381,7 @@ function Menu:Initialize(openTo, container)
 
             draw.SimpleTextOutlined(Menu.Player:GetNWInt("Experience", 0) .. "/" .. Menu.Player:GetNWInt("ExperienceToNextLevel", 500), "PuristaBold16", EFGM.MenuScale(30), EFGM.MenuScale(57), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
-            surface.SetDrawColor(Color(255, 255, 255, 155))
+            surface.SetDrawColor(MenuAlias.transparentWhiteColor)
             surface.DrawRect(EFGM.MenuScale(5), EFGM.MenuScale(75), EFGM.MenuScale(505), EFGM.MenuScale(1))
             surface.DrawRect(EFGM.MenuScale(5), EFGM.MenuScale(84), EFGM.MenuScale(505), EFGM.MenuScale(1))
             surface.DrawRect(EFGM.MenuScale(5), EFGM.MenuScale(75), EFGM.MenuScale(1), EFGM.MenuScale(10))
@@ -1237,10 +1237,10 @@ function Menu.InspectItem(item, data)
         surface.SetDrawColor(Color(20, 20, 20, 205))
         surface.DrawRect(0, 0, w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
 
-        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.SetDrawColor(MenuAlias.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
         surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -1255,7 +1255,7 @@ function Menu.InspectItem(item, data)
 
         end
 
-        surface.SetDrawColor(255, 255, 255, 255)
+        surface.SetDrawColor(MenuAlias.pureWhiteColor)
         surface.SetMaterial(i.icon)
 
         -- panel width = 198, panel height = 216
@@ -1334,7 +1334,7 @@ function Menu.InspectItem(item, data)
                 surface.SetDrawColor(Color(55, 55, 55))
                 surface.DrawRect(0, 0, w, EFGM.MenuScale(5))
 
-                surface.SetDrawColor(Color(255, 255, 255, 155))
+                surface.SetDrawColor(MenuAlias.transparentWhiteColor)
                 surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
                 surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -1370,7 +1370,7 @@ function Menu.InspectItem(item, data)
         surface.SetDrawColor(Color(20, 20, 20, 205))
         surface.DrawRect(0, 0, w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.SetDrawColor(MenuAlias.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
         surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -1392,10 +1392,10 @@ function Menu.InspectItem(item, data)
 
         BlurPanel(s, EFGM.MenuScale(0))
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, infoTextSize + EFGM.MenuScale(10), h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, infoTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
 
         draw.SimpleTextOutlined(infoText, "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -1416,10 +1416,10 @@ function Menu.InspectItem(item, data)
 
         BlurPanel(s, EFGM.MenuScale(0))
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, wikiTextSize + EFGM.MenuScale(10), h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, wikiTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
 
         draw.SimpleTextOutlined(wikiText, "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -1862,15 +1862,14 @@ function Menu.InspectItem(item, data)
 
     end
 
-    local closeButtonIcon = Material("icons/close_icon.png")
     local closeButton = vgui.Create("DButton", inspectPanel)
     closeButton:SetSize(EFGM.MenuScale(32), EFGM.MenuScale(32))
     closeButton:SetPos(inspectPanel:GetWide() - EFGM.MenuScale(32), EFGM.MenuScale(5))
     closeButton:SetText("")
     closeButton.Paint = function(s, w, h)
 
-        surface.SetDrawColor(255, 255, 255, 255)
-        surface.SetMaterial(closeButtonIcon)
+        surface.SetDrawColor(MenuAlias.pureWhiteColor)
+        surface.SetMaterial(Mats.closeButtonIcon)
         surface.DrawTexturedRect(EFGM.MenuScale(0), EFGM.MenuScale(0), EFGM.MenuScale(32), EFGM.MenuScale(32))
 
     end
@@ -1950,10 +1949,10 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
         surface.SetDrawColor(Color(20, 20, 20, 205))
         surface.DrawRect(0, 0, w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
 
-        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.SetDrawColor(MenuAlias.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
         surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -2073,10 +2072,10 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
 
         BlurPanel(s, EFGM.MenuScale(0))
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, yesTextSize + EFGM.MenuScale(10), h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, yesTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
 
         draw.SimpleTextOutlined(yesText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -2098,10 +2097,10 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
 
         BlurPanel(s, EFGM.MenuScale(0))
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, noButtonSize + EFGM.MenuScale(10), h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, noButtonSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
 
         draw.SimpleTextOutlined(noText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -2271,10 +2270,10 @@ function Menu.ConfirmSell(item, data, key)
         surface.SetDrawColor(Color(20, 20, 20, 205))
         surface.DrawRect(0, 0, w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
 
-        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.SetDrawColor(MenuAlias.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
         surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -2305,10 +2304,10 @@ function Menu.ConfirmSell(item, data, key)
 
         BlurPanel(s, EFGM.MenuScale(0))
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, yesTextSize + EFGM.MenuScale(10), h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, yesTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
 
         draw.SimpleTextOutlined(yesText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -2330,10 +2329,10 @@ function Menu.ConfirmSell(item, data, key)
 
         BlurPanel(s, EFGM.MenuScale(0))
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, noButtonSize + EFGM.MenuScale(10), h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, noButtonSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
 
         draw.SimpleTextOutlined(noText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -2467,10 +2466,10 @@ function Menu.ConfirmSplit(item, data, key, inv)
         surface.SetDrawColor(Color(20, 20, 20, 205))
         surface.DrawRect(0, 0, w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
 
-        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.SetDrawColor(MenuAlias.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
         surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -2501,10 +2500,10 @@ function Menu.ConfirmSplit(item, data, key, inv)
 
         BlurPanel(s, EFGM.MenuScale(0))
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, yesTextSize + EFGM.MenuScale(10), h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, yesTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
 
         draw.SimpleTextOutlined(yesText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -2526,10 +2525,10 @@ function Menu.ConfirmSplit(item, data, key, inv)
 
         BlurPanel(s, EFGM.MenuScale(0))
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, noButtonSize + EFGM.MenuScale(10), h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, noButtonSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
 
         draw.SimpleTextOutlined(noText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -2643,10 +2642,10 @@ function Menu.ConfirmDelete(item, key, inv, eID, eSlot)
         surface.SetDrawColor(Color(20, 20, 20, 205))
         surface.DrawRect(0, 0, w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
 
-        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.SetDrawColor(MenuAlias.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
         surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -2677,10 +2676,10 @@ function Menu.ConfirmDelete(item, key, inv, eID, eSlot)
 
         BlurPanel(s, EFGM.MenuScale(0))
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, yesTextSize + EFGM.MenuScale(10), h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, yesTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
 
         draw.SimpleTextOutlined(yesText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -2702,10 +2701,10 @@ function Menu.ConfirmDelete(item, key, inv, eID, eSlot)
 
         BlurPanel(s, EFGM.MenuScale(0))
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, noButtonSize + EFGM.MenuScale(10), h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, noButtonSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
 
         draw.SimpleTextOutlined(noText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -2784,10 +2783,10 @@ function Menu.ConfirmTag(item, key, inv, eID, eSlot)
         surface.SetDrawColor(Color(20, 20, 20, 205))
         surface.DrawRect(0, 0, w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
 
-        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.SetDrawColor(MenuAlias.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
         surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -2820,10 +2819,10 @@ function Menu.ConfirmTag(item, key, inv, eID, eSlot)
 
         BlurPanel(s, EFGM.MenuScale(0))
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, yesTextSize + EFGM.MenuScale(10), h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, yesTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
 
         draw.SimpleTextOutlined(yesText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -2845,10 +2844,10 @@ function Menu.ConfirmTag(item, key, inv, eID, eSlot)
 
         BlurPanel(s, EFGM.MenuScale(0))
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, noButtonSize + EFGM.MenuScale(10), h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, noButtonSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
 
         draw.SimpleTextOutlined(noText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -3004,10 +3003,10 @@ function Menu.ConfirmPreset(atts, presetName, presetID, closeMenu)
         surface.SetDrawColor(Color(20, 20, 20, 205))
         surface.DrawRect(0, 0, w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
 
-        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.SetDrawColor(MenuAlias.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
         surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -3068,10 +3067,10 @@ function Menu.ConfirmPreset(atts, presetName, presetID, closeMenu)
 
         BlurPanel(s, EFGM.MenuScale(0))
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, yesTextSize + EFGM.MenuScale(10), h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, yesTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
 
         draw.SimpleTextOutlined(yesText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -3093,10 +3092,10 @@ function Menu.ConfirmPreset(atts, presetName, presetID, closeMenu)
 
         BlurPanel(s, EFGM.MenuScale(0))
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, noButtonSize + EFGM.MenuScale(10), h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, noButtonSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
 
         draw.SimpleTextOutlined(noText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -3253,16 +3252,16 @@ function Menu.ReloadInventory()
 
         function item:Paint(w, h)
 
-            surface.SetDrawColor(Color(255, 255, 255, 2))
+            surface.SetDrawColor(MenuAlias.itemBackgroundColor)
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
             surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
             surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
 
-            surface.SetDrawColor(i.iconColor or Color(5, 5, 5, 20))
+            surface.SetDrawColor(i.iconColor or MenuAlias.itemColor)
             surface.DrawRect(0, 0, w, h)
 
-            surface.SetDrawColor(255, 255, 255, 255)
+            surface.SetDrawColor(MenuAlias.pureWhiteColor)
             surface.SetMaterial(i.icon)
             surface.DrawTexturedRect(0, 0, w, h)
 
@@ -3313,7 +3312,7 @@ function Menu.ReloadInventory()
 
             if v.data.fir then
 
-                surface.SetDrawColor(255, 255, 255, 255)
+                surface.SetDrawColor(MenuAlias.pureWhiteColor)
                 surface.SetMaterial(Mats.firIcon)
 
                 if i.equipType == EQUIPTYPE.Ammunition or i.consumableType == "heal" or i.consumableType == "key" then
@@ -3385,10 +3384,10 @@ function Menu.ReloadInventory()
 
                 BlurPanel(s, EFGM.MenuScale(5))
 
-                surface.SetDrawColor(Color(5, 5, 5, 50))
+                surface.SetDrawColor(MenuAlias.contextBackgroundColor)
                 surface.DrawRect(0, 0, w, h)
 
-                surface.SetDrawColor(Color(255, 255, 255, 30))
+                surface.SetDrawColor(MenuAlias.contextBorder)
                 surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
                 surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -3702,16 +3701,16 @@ function Menu.ReloadSlots()
 
         function primaryItem:Paint(w, h)
 
-            surface.SetDrawColor(Color(255, 255, 255, 2))
+            surface.SetDrawColor(MenuAlias.itemBackgroundColor)
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
             surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
             surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
 
-            surface.SetDrawColor(i.iconColor or Color(5, 5, 5, 20))
+            surface.SetDrawColor(i.iconColor or MenuAlias.itemColor)
             surface.DrawRect(0, 0, w, h)
 
-            surface.SetDrawColor(255, 255, 255, 255)
+            surface.SetDrawColor(MenuAlias.pureWhiteColor)
             surface.SetMaterial(i.icon)
             surface.DrawTexturedRect(0, 0, w, h)
 
@@ -3776,7 +3775,7 @@ function Menu.ReloadSlots()
 
             if playerWeaponSlots[1][1].data and playerWeaponSlots[1][1].data.fir then
 
-                surface.SetDrawColor(255, 255, 255, 255)
+                surface.SetDrawColor(MenuAlias.pureWhiteColor)
                 surface.SetMaterial(Mats.firIcon)
 
                 if mag != "" then
@@ -3833,10 +3832,10 @@ function Menu.ReloadSlots()
 
                 BlurPanel(s, EFGM.MenuScale(5))
 
-                surface.SetDrawColor(Color(5, 5, 5, 50))
+                surface.SetDrawColor(MenuAlias.contextBackgroundColor)
                 surface.DrawRect(0, 0, w, h)
 
-                surface.SetDrawColor(Color(255, 255, 255, 30))
+                surface.SetDrawColor(MenuAlias.contextBorder)
                 surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
                 surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -4067,16 +4066,16 @@ function Menu.ReloadSlots()
 
         function secondaryItem:Paint(w, h)
 
-            surface.SetDrawColor(Color(255, 255, 255, 2))
+            surface.SetDrawColor(MenuAlias.itemBackgroundColor)
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
             surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
             surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
 
-            surface.SetDrawColor(i.iconColor or Color(5, 5, 5, 20))
+            surface.SetDrawColor(i.iconColor or MenuAlias.itemColor)
             surface.DrawRect(0, 0, w, h)
 
-            surface.SetDrawColor(255, 255, 255, 255)
+            surface.SetDrawColor(MenuAlias.pureWhiteColor)
             surface.SetMaterial(i.icon)
             surface.DrawTexturedRect(0, 0, w, h)
 
@@ -4141,7 +4140,7 @@ function Menu.ReloadSlots()
 
             if playerWeaponSlots[1][2].data and playerWeaponSlots[1][2].data.fir then
 
-                surface.SetDrawColor(255, 255, 255, 255)
+                surface.SetDrawColor(MenuAlias.pureWhiteColor)
                 surface.SetMaterial(Mats.firIcon)
 
                 if mag != "" then
@@ -4198,10 +4197,10 @@ function Menu.ReloadSlots()
 
                 BlurPanel(s, EFGM.MenuScale(5))
 
-                surface.SetDrawColor(Color(5, 5, 5, 50))
+                surface.SetDrawColor(MenuAlias.contextBackgroundColor)
                 surface.DrawRect(0, 0, w, h)
 
-                surface.SetDrawColor(Color(255, 255, 255, 30))
+                surface.SetDrawColor(MenuAlias.contextBorder)
                 surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
                 surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -4432,16 +4431,16 @@ function Menu.ReloadSlots()
 
         function holsterItem:Paint(w, h)
 
-            surface.SetDrawColor(Color(255, 255, 255, 2))
+            surface.SetDrawColor(MenuAlias.itemBackgroundColor)
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
             surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
             surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
 
-            surface.SetDrawColor(i.iconColor or Color(5, 5, 5, 20))
+            surface.SetDrawColor(i.iconColor or MenuAlias.itemColor)
             surface.DrawRect(0, 0, w, h)
 
-            surface.SetDrawColor(255, 255, 255, 255)
+            surface.SetDrawColor(MenuAlias.pureWhiteColor)
             surface.SetMaterial(i.icon)
             surface.DrawTexturedRect(0, 0, w, h)
 
@@ -4506,7 +4505,7 @@ function Menu.ReloadSlots()
 
             if playerWeaponSlots[2][1].data and playerWeaponSlots[2][1].data.fir then
 
-                surface.SetDrawColor(255, 255, 255, 255)
+                surface.SetDrawColor(MenuAlias.pureWhiteColor)
                 surface.SetMaterial(Mats.firIcon)
 
                 if mag != "" then
@@ -4563,10 +4562,10 @@ function Menu.ReloadSlots()
 
                 BlurPanel(s, EFGM.MenuScale(5))
 
-                surface.SetDrawColor(Color(5, 5, 5, 50))
+                surface.SetDrawColor(MenuAlias.contextBackgroundColor)
                 surface.DrawRect(0, 0, w, h)
 
-                surface.SetDrawColor(Color(255, 255, 255, 30))
+                surface.SetDrawColor(MenuAlias.contextBorder)
                 surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
                 surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -4797,16 +4796,16 @@ function Menu.ReloadSlots()
 
         function meleeItem:Paint(w, h)
 
-            surface.SetDrawColor(Color(255, 255, 255, 2))
+            surface.SetDrawColor(MenuAlias.itemBackgroundColor)
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
             surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
             surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
 
-            surface.SetDrawColor(i.iconColor or Color(5, 5, 5, 20))
+            surface.SetDrawColor(i.iconColor or MenuAlias.itemColor)
             surface.DrawRect(0, 0, w, h)
 
-            surface.SetDrawColor(255, 255, 255, 255)
+            surface.SetDrawColor(MenuAlias.pureWhiteColor)
             surface.SetMaterial(i.icon)
             surface.DrawTexturedRect(0, 0, w, h)
 
@@ -4834,7 +4833,7 @@ function Menu.ReloadSlots()
 
             if playerWeaponSlots[3][1].data and playerWeaponSlots[3][1].data.fir then
 
-                surface.SetDrawColor(255, 255, 255, 255)
+                surface.SetDrawColor(MenuAlias.pureWhiteColor)
                 surface.SetMaterial(Mats.firIcon)
                 surface.DrawTexturedRect(w - EFGM.MenuScale(16), h - EFGM.MenuScale(16), EFGM.MenuScale(14), EFGM.MenuScale(14))
 
@@ -4882,10 +4881,10 @@ function Menu.ReloadSlots()
 
                 BlurPanel(s, EFGM.MenuScale(5))
 
-                surface.SetDrawColor(Color(5, 5, 5, 50))
+                surface.SetDrawColor(MenuAlias.contextBackgroundColor)
                 surface.DrawRect(0, 0, w, h)
 
-                surface.SetDrawColor(Color(255, 255, 255, 30))
+                surface.SetDrawColor(MenuAlias.contextBorder)
                 surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
                 surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -5092,16 +5091,16 @@ function Menu.ReloadSlots()
 
         function nadeItem:Paint(w, h)
 
-            surface.SetDrawColor(Color(255, 255, 255, 2))
+            surface.SetDrawColor(MenuAlias.itemBackgroundColor)
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
             surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
             surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
 
-            surface.SetDrawColor(i.iconColor or Color(5, 5, 5, 20))
+            surface.SetDrawColor(i.iconColor or MenuAlias.itemColor)
             surface.DrawRect(0, 0, w, h)
 
-            surface.SetDrawColor(255, 255, 255, 255)
+            surface.SetDrawColor(MenuAlias.pureWhiteColor)
             surface.SetMaterial(i.icon)
             surface.DrawTexturedRect(0, 0, w, h)
 
@@ -5121,7 +5120,7 @@ function Menu.ReloadSlots()
 
             if playerWeaponSlots[4][1].data and playerWeaponSlots[4][1].data.fir then
 
-                surface.SetDrawColor(255, 255, 255, 255)
+                surface.SetDrawColor(MenuAlias.pureWhiteColor)
                 surface.SetMaterial(Mats.firIcon)
                 surface.DrawTexturedRect(w - EFGM.MenuScale(16), h - EFGM.MenuScale(16), EFGM.MenuScale(14), EFGM.MenuScale(14))
 
@@ -5169,10 +5168,10 @@ function Menu.ReloadSlots()
 
                 BlurPanel(s, EFGM.MenuScale(5))
 
-                surface.SetDrawColor(Color(5, 5, 5, 50))
+                surface.SetDrawColor(MenuAlias.contextBackgroundColor)
                 surface.DrawRect(0, 0, w, h)
 
-                surface.SetDrawColor(Color(255, 255, 255, 30))
+                surface.SetDrawColor(MenuAlias.contextBorder)
                 surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
                 surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -5458,20 +5457,18 @@ function Menu.ReloadStash()
 
         end
 
-        local pinIcon = Material("icons/pin_icon.png")
-
         function item:Paint(w, h)
 
-            surface.SetDrawColor(Color(255, 255, 255, 2))
+            surface.SetDrawColor(MenuAlias.itemBackgroundColor)
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
             surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
             surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
 
-            surface.SetDrawColor(i.iconColor or Color(5, 5, 5, 20))
+            surface.SetDrawColor(i.iconColor or MenuAlias.itemColor)
             surface.DrawRect(0, 0, w, h)
 
-            surface.SetDrawColor(255, 255, 255, 255)
+            surface.SetDrawColor(MenuAlias.pureWhiteColor)
             surface.SetMaterial(i.icon)
             surface.DrawTexturedRect(0, 0, w, h)
 
@@ -5524,8 +5521,8 @@ function Menu.ReloadStash()
 
             if v.data.pin == 1 then
 
-                surface.SetDrawColor(255, 255, 255, 255)
-                surface.SetMaterial(pinIcon)
+                surface.SetDrawColor(MenuAlias.pureWhiteColor)
+                surface.SetMaterial(Mats.pinIcon)
 
                 if i.equipType == EQUIPTYPE.Ammunition or i.consumableType == "heal" or i.consumableType == "key" then
 
@@ -5541,7 +5538,7 @@ function Menu.ReloadStash()
 
             if v.data.fir then
 
-                surface.SetDrawColor(255, 255, 255, 255)
+                surface.SetDrawColor(MenuAlias.pureWhiteColor)
                 surface.SetMaterial(Mats.firIcon)
 
                 local width, height = EFGM.MenuScale(17), EFGM.MenuScale(17)
@@ -5602,10 +5599,10 @@ function Menu.ReloadStash()
 
                 BlurPanel(s, EFGM.MenuScale(5))
 
-                surface.SetDrawColor(Color(5, 5, 5, 50))
+                surface.SetDrawColor(MenuAlias.contextBackgroundColor)
                 surface.DrawRect(0, 0, w, h)
 
-                surface.SetDrawColor(Color(255, 255, 255, 30))
+                surface.SetDrawColor(MenuAlias.contextBorder)
                 surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
                 surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -5960,24 +5957,22 @@ function Menu.ReloadMarketStash()
             end
 
         end
-
-        local pinIcon = Material("icons/pin_icon.png")
         local costColor
 
         function item:Paint(w, h)
 
             costColor = MenuAlias.whiteColor
-            surface.SetDrawColor(Color(255, 255, 255, 2))
+            surface.SetDrawColor(MenuAlias.itemBackgroundColor)
 
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
             surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
             surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
 
-            surface.SetDrawColor(i.iconColor or Color(5, 5, 5, 20))
+            surface.SetDrawColor(i.iconColor or MenuAlias.itemColor)
             surface.DrawRect(0, 0, w, h)
 
-            surface.SetDrawColor(255, 255, 255, 255)
+            surface.SetDrawColor(MenuAlias.pureWhiteColor)
             surface.SetMaterial(i.icon)
             surface.DrawTexturedRect(0, 0, w, h)
 
@@ -6030,8 +6025,8 @@ function Menu.ReloadMarketStash()
 
             if v.data.pin == 1 then
 
-                surface.SetDrawColor(255, 255, 255, 255)
-                surface.SetMaterial(pinIcon)
+                surface.SetDrawColor(MenuAlias.pureWhiteColor)
+                surface.SetMaterial(Mats.pinIcon)
 
                 if i.equipType == EQUIPTYPE.Ammunition or i.consumableType == "heal" or i.consumableType == "key" then
 
@@ -6047,7 +6042,7 @@ function Menu.ReloadMarketStash()
 
             if v.data.fir then
 
-                surface.SetDrawColor(255, 255, 255, 255)
+                surface.SetDrawColor(MenuAlias.pureWhiteColor)
                 surface.SetMaterial(Mats.firIcon)
 
                 local width, height = EFGM.MenuScale(17), EFGM.MenuScale(17)
@@ -6092,10 +6087,10 @@ function Menu.ReloadMarketStash()
 
                 BlurPanel(s, EFGM.MenuScale(5))
 
-                surface.SetDrawColor(Color(5, 5, 5, 50))
+                surface.SetDrawColor(MenuAlias.contextBackgroundColor)
                 surface.DrawRect(0, 0, w, h)
 
-                surface.SetDrawColor(Color(255, 255, 255, 30))
+                surface.SetDrawColor(MenuAlias.contextBorder)
                 surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
                 surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -6254,16 +6249,16 @@ function Menu.ReloadContainer()
 
         function item:Paint(w, h)
 
-            surface.SetDrawColor(Color(255, 255, 255, 2))
+            surface.SetDrawColor(MenuAlias.itemBackgroundColor)
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
             surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
             surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
 
-            surface.SetDrawColor(i.iconColor or Color(5, 5, 5, 20))
+            surface.SetDrawColor(i.iconColor or MenuAlias.itemColor)
             surface.DrawRect(0, 0, w, h)
 
-            surface.SetDrawColor(255, 255, 255, 255)
+            surface.SetDrawColor(MenuAlias.pureWhiteColor)
             surface.SetMaterial(i.icon)
             surface.DrawTexturedRect(0, 0, w, h)
 
@@ -6314,7 +6309,7 @@ function Menu.ReloadContainer()
 
             if v.data.fir then
 
-                surface.SetDrawColor(255, 255, 255, 255)
+                surface.SetDrawColor(MenuAlias.pureWhiteColor)
                 surface.SetMaterial(Mats.firIcon)
 
                 if i.equipType == EQUIPTYPE.Ammunition or i.consumableType == "heal" or i.consumableType == "key" then
@@ -6379,10 +6374,10 @@ function Menu.ReloadContainer()
 
                 BlurPanel(s, EFGM.MenuScale(5))
 
-                surface.SetDrawColor(Color(5, 5, 5, 50))
+                surface.SetDrawColor(MenuAlias.contextBackgroundColor)
                 surface.DrawRect(0, 0, w, h)
 
-                surface.SetDrawColor(Color(255, 255, 255, 30))
+                surface.SetDrawColor(MenuAlias.contextBorder)
                 surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
                 surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -6512,10 +6507,10 @@ function Menu.OpenTab.Inventory(container)
 
         BlurPanel(s, EFGM.MenuScale(10))
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
 
     end
@@ -6525,7 +6520,7 @@ function Menu.OpenTab.Inventory(container)
     playerText:SetSize(0, EFGM.MenuScale(36))
     function playerText:Paint(w, h)
 
-        surface.SetDrawColor(Color(155, 155, 155, 10))
+        surface.SetDrawColor(MenuAlias.containerHeaderColor)
         surface.DrawRect(0, 0, w, h)
 
         draw.SimpleTextOutlined(string.upper(Menu.Player:GetName()), "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -6538,8 +6533,8 @@ function Menu.OpenTab.Inventory(container)
     playerModel:SetFOV(26)
     playerModel:SetCamPos(Vector(10, 0, 0))
     playerModel:SetLookAt(Vector(-100, 0, -24))
-    playerModel:SetDirectionalLight(BOX_RIGHT, Color(255, 160, 80, 255))
-    playerModel:SetDirectionalLight(BOX_LEFT, Color(80, 160, 255, 255))
+    playerModel:SetDirectionalLight(BOX_RIGHT, MenuAlias.modelLeftColor)
+    playerModel:SetDirectionalLight(BOX_LEFT, MenuAlias.modelRightColor)
     playerModel:SetAnimated(true)
     playerModel:SetModel(Menu.Player:GetModel())
 
@@ -6552,21 +6547,21 @@ function Menu.OpenTab.Inventory(container)
 
         if groups.Bodygroups then
 
-			for k, v in pairs(groups.Bodygroups) do
+            for k, v in pairs(groups.Bodygroups) do
 
-				playerModel.Entity:SetBodygroup(k, v)
+                playerModel.Entity:SetBodygroup(k, v)
 
-			end
+            end
 
-		end
+        end
 
-		if groups.Skin then
+        if groups.Skin then
 
-			playerModel.Entity:SetSkin(groups.Skin)
+            playerModel.Entity:SetSkin(groups.Skin)
 
-		end
+        end
 
-	end
+    end
 
     playerModel.Entity:SetPos(Vector(-108, -1, -63))
     playerModel.Entity:SetAngles(Angle(0, math.random(0, 40), 0))
@@ -6582,7 +6577,7 @@ function Menu.OpenTab.Inventory(container)
     equipmentHolder:SetSize(EFGM.MenuScale(450), EFGM.MenuScale(850))
     function equipmentHolder:Paint(w, h)
 
-        surface.SetDrawColor(Color(0, 0, 0, 0))
+        surface.SetDrawColor(MenuAlias.transparent)
         surface.DrawRect(0, 0, w, h)
 
     end
@@ -6596,10 +6591,10 @@ function Menu.OpenTab.Inventory(container)
 
         BlurPanel(secondaryWeaponHolder, EFGM.MenuScale(3))
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.SetDrawColor(MenuAlias.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
         surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -6612,10 +6607,10 @@ function Menu.OpenTab.Inventory(container)
     secondaryWeaponText:SetPos(equipmentHolder:GetWide() - secondaryWeaponText:GetWide(), secondaryWeaponHolder:GetY() - EFGM.MenuScale(30))
     secondaryWeaponText.Paint = function(s, w, h)
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, EFGM.MenuScale(220), EFGM.MenuScale(2))
 
         draw.SimpleTextOutlined("SECONDARY", "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -6626,7 +6621,7 @@ function Menu.OpenTab.Inventory(container)
     secondaryWeaponIcon:SetPos(EFGM.MenuScale(25), EFGM.MenuScale(15))
     secondaryWeaponIcon:SetSize(EFGM.MenuScale(250), EFGM.MenuScale(80))
     secondaryWeaponIcon:SetImage("icons/inventory_primary_icon.png")
-    secondaryWeaponIcon:SetImageColor(Color(255, 255, 255, 10))
+    secondaryWeaponIcon:SetImageColor(MenuAlias.weaponSilhouetteColor)
 
     -- primary slot
     primaryWeaponHolder = vgui.Create("DPanel", equipmentHolder)
@@ -6637,10 +6632,10 @@ function Menu.OpenTab.Inventory(container)
 
         BlurPanel(primaryWeaponHolder, EFGM.MenuScale(3))
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.SetDrawColor(MenuAlias.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
         surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -6653,10 +6648,10 @@ function Menu.OpenTab.Inventory(container)
     primaryWeaponText:SetPos(equipmentHolder:GetWide() - primaryWeaponText:GetWide(), primaryWeaponHolder:GetY() - EFGM.MenuScale(30))
     primaryWeaponText.Paint = function(s, w, h)
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, EFGM.MenuScale(220), EFGM.MenuScale(2))
 
         draw.SimpleTextOutlined("PRIMARY", "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -6667,7 +6662,7 @@ function Menu.OpenTab.Inventory(container)
     primaryWeaponIcon:SetPos(EFGM.MenuScale(25), EFGM.MenuScale(15))
     primaryWeaponIcon:SetSize(EFGM.MenuScale(250), EFGM.MenuScale(80))
     primaryWeaponIcon:SetImage("icons/inventory_primary_icon.png")
-    primaryWeaponIcon:SetImageColor(Color(255, 255, 255, 10))
+    primaryWeaponIcon:SetImageColor(MenuAlias.weaponSilhouetteColor)
 
     -- holster slot
     holsterWeaponHolder = vgui.Create("DPanel", equipmentHolder)
@@ -6678,10 +6673,10 @@ function Menu.OpenTab.Inventory(container)
 
         BlurPanel(holsterWeaponHolder, EFGM.MenuScale(3))
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.SetDrawColor(MenuAlias.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
         surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -6694,10 +6689,10 @@ function Menu.OpenTab.Inventory(container)
     holsterWeaponText:SetPos(equipmentHolder:GetWide() - holsterWeaponText:GetWide(), holsterWeaponHolder:GetY() - EFGM.MenuScale(30))
     holsterWeaponText.Paint = function(s, w, h)
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, EFGM.MenuScale(220), EFGM.MenuScale(2))
 
         draw.SimpleTextOutlined("HOLSTER", "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -6708,7 +6703,7 @@ function Menu.OpenTab.Inventory(container)
     holsterWeaponIcon:SetPos(EFGM.MenuScale(27), EFGM.MenuScale(8))
     holsterWeaponIcon:SetSize(EFGM.MenuScale(60), EFGM.MenuScale(40))
     holsterWeaponIcon:SetImage("icons/inventory_holster_icon.png")
-    holsterWeaponIcon:SetImageColor(Color(255, 255, 255, 10))
+    holsterWeaponIcon:SetImageColor(MenuAlias.weaponSilhouetteColor)
 
     -- melee slot
     meleeWeaponHolder = vgui.Create("DPanel", equipmentHolder)
@@ -6719,10 +6714,10 @@ function Menu.OpenTab.Inventory(container)
 
         BlurPanel(meleeWeaponHolder, EFGM.MenuScale(3))
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.SetDrawColor(MenuAlias.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
         surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -6735,10 +6730,10 @@ function Menu.OpenTab.Inventory(container)
     meleeWeaponText:SetPos(equipmentHolder:GetWide() - meleeWeaponText:GetWide(), meleeWeaponHolder:GetY() - EFGM.MenuScale(30))
     meleeWeaponText.Paint = function(s, w, h)
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, EFGM.MenuScale(220), EFGM.MenuScale(2))
 
         draw.SimpleTextOutlined("MELEE", "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -6749,7 +6744,7 @@ function Menu.OpenTab.Inventory(container)
     meleeWeaponIcon:SetPos(EFGM.MenuScale(25), EFGM.MenuScale(8))
     meleeWeaponIcon:SetSize(EFGM.MenuScale(60), EFGM.MenuScale(40))
     meleeWeaponIcon:SetImage("icons/inventory_melee_icon.png")
-    meleeWeaponIcon:SetImageColor(Color(255, 255, 255, 10))
+    meleeWeaponIcon:SetImageColor(MenuAlias.weaponSilhouetteColor)
 
     -- nade slot
     nadeWeaponHolder = vgui.Create("DPanel", equipmentHolder)
@@ -6760,10 +6755,10 @@ function Menu.OpenTab.Inventory(container)
 
         BlurPanel(nadeWeaponHolder, EFGM.MenuScale(3))
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.SetDrawColor(MenuAlias.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
         surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -6776,10 +6771,10 @@ function Menu.OpenTab.Inventory(container)
     nadeWeaponText:SetPos(equipmentHolder:GetWide() - nadeWeaponText:GetWide(), nadeWeaponHolder:GetY() - EFGM.MenuScale(30))
     nadeWeaponText.Paint = function(s, w, h)
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, EFGM.MenuScale(220), EFGM.MenuScale(2))
 
         draw.SimpleTextOutlined("NADE", "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -6790,7 +6785,7 @@ function Menu.OpenTab.Inventory(container)
     nadeWeaponIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(0))
     nadeWeaponIcon:SetSize(EFGM.MenuScale(57), EFGM.MenuScale(57))
     nadeWeaponIcon:SetImage("icons/inventory_nade_icon.png")
-    nadeWeaponIcon:SetImageColor(Color(255, 255, 255, 10))
+    nadeWeaponIcon:SetImageColor(MenuAlias.weaponSilhouetteColor)
 
     Menu.ReloadSlots()
 
@@ -6904,10 +6899,10 @@ function Menu.OpenTab.Inventory(container)
     healthHolder:SetSize(EFGM.MenuScale(125), EFGM.MenuScale(55))
     function healthHolder:Paint(w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.SetDrawColor(MenuAlias.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
 
-        draw.SimpleTextOutlined(Menu.Player:Health() or "0", "PuristaBold50", EFGM.MenuScale(60), EFGM.MenuScale(1), Color(25, 255, 25), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+        draw.SimpleTextOutlined(Menu.Player:Health() or "0", "PuristaBold50", EFGM.MenuScale(60), EFGM.MenuScale(1), MenuAlias.healthGreenColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
     end
 
@@ -6916,10 +6911,10 @@ function Menu.OpenTab.Inventory(container)
     healthText:SetPos(EFGM.MenuScale(10), EFGM.MenuScale(865))
     healthText.Paint = function(s, w, h)
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, EFGM.MenuScale(220), EFGM.MenuScale(2))
 
         draw.SimpleTextOutlined("HEALTH", "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -6930,12 +6925,12 @@ function Menu.OpenTab.Inventory(container)
     healthIcon:SetPos(EFGM.MenuScale(1), EFGM.MenuScale(1))
     healthIcon:SetSize(EFGM.MenuScale(53), EFGM.MenuScale(53))
     healthIcon:SetImage("icons/health_icon.png")
-    healthIcon:SetImageColor(Color(25, 255, 25))
+    healthIcon:SetImageColor(MenuAlias.healthGreenColor)
 
     local factionIcon = vgui.Create("DImage", playerPanel)
     factionIcon:SetPos(EFGM.MenuScale(20), EFGM.MenuScale(50))
     factionIcon:SetSize(EFGM.MenuScale(115), EFGM.MenuScale(119))
-    factionIcon:SetImageColor(Color(255, 255, 255, 2))
+    factionIcon:SetImageColor(MenuAlias.itemBackgroundColor)
     if Menu.Player:GetModel() == "models/eft/pmcs/usec_extended_pm.mdl" then factionIcon:SetImage("icons/usec_icon.png") else factionIcon:SetImage("icons/bear_icon.png") end
 
     if Menu.Player:CompareStatus(0) then
@@ -6953,10 +6948,10 @@ function Menu.OpenTab.Inventory(container)
 
             BlurPanel(s, EFGM.MenuScale(0))
 
-            surface.SetDrawColor(Color(80, 80, 80, 10))
+            surface.SetDrawColor(MenuAlias.containerBackgroundColor)
             surface.DrawRect(0, 0, unloadTextSize + EFGM.MenuScale(10), h)
 
-            surface.SetDrawColor(Color(255, 255, 255, 155))
+            surface.SetDrawColor(MenuAlias.transparentWhiteColor)
             surface.DrawRect(0, 0, unloadTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
 
             draw.SimpleTextOutlined(unloadText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -6987,10 +6982,10 @@ function Menu.OpenTab.Inventory(container)
 
         BlurPanel(s, EFGM.MenuScale(10))
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
 
     end
@@ -7000,7 +6995,7 @@ function Menu.OpenTab.Inventory(container)
     inventoryText:SetSize(0, EFGM.MenuScale(36))
     function inventoryText:Paint(w, h)
 
-        surface.SetDrawColor(Color(155, 155, 155, 10))
+        surface.SetDrawColor(MenuAlias.containerHeaderColor)
         surface.DrawRect(0, 0, w, h)
 
         draw.SimpleTextOutlined("INVENTORY", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -7013,7 +7008,7 @@ function Menu.OpenTab.Inventory(container)
     itemsHolder:SetSize(0, 0)
     itemsHolder.Paint = function(s, w, h)
 
-        surface.SetDrawColor(Color(0, 0, 0, 0))
+        surface.SetDrawColor(MenuAlias.transparent)
         surface.DrawRect(0, 0, w, h)
 
     end
@@ -7036,30 +7031,30 @@ function Menu.OpenTab.Inventory(container)
 
         BlurPanel(s, EFGM.MenuScale(3))
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, weightTextSize + EFGM.MenuScale(220), h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, weightTextSize + EFGM.MenuScale(220), EFGM.MenuScale(2))
 
         draw.SimpleTextOutlined(weightText, "PuristaBold24", EFGM.MenuScale(215), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
         -- total weight capacity
-        surface.SetDrawColor(Color(0, 0, 0, 100))
+        surface.SetDrawColor(MenuAlias.transparentBlackColor)
         surface.DrawRect(EFGM.MenuScale(30), EFGM.MenuScale(7), EFGM.MenuScale(180), EFGM.MenuScale(16))
 
         -- used weight capacity
         if Menu.Player:GetNWFloat("InventoryWeight", 0.00) < 30 then
-            surface.SetDrawColor(Color(255, 255, 255, 225))
+            surface.SetDrawColor(MenuAlias.weightUnderColor)
         elseif Menu.Player:GetNWFloat("InventoryWeight", 0.00) >= 30 and Menu.Player:GetNWFloat("InventoryWeight", 0.00) < 85 then
-            surface.SetDrawColor(Color(255, 255, 0, 225))
+            surface.SetDrawColor(MenuAlias.weightWarningColor)
         elseif Menu.Player:GetNWFloat("InventoryWeight", 0.00) >= 85 then
-            surface.SetDrawColor(Color(255, 0, 0, 225))
+            surface.SetDrawColor(MenuAlias.weightMaxColor)
         end
 
         surface.DrawRect(EFGM.MenuScale(30), EFGM.MenuScale(7), math.min(EFGM.MenuScale((usedWeight / maxWeight) * 180), 180), EFGM.MenuScale(16))
 
-        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.SetDrawColor(MenuAlias.whiteBorderColor)
         surface.DrawRect(EFGM.MenuScale(30), EFGM.MenuScale(7), EFGM.MenuScale(180), EFGM.MenuScale(1))
         surface.DrawRect(EFGM.MenuScale(30), EFGM.MenuScale(23), EFGM.MenuScale(180), EFGM.MenuScale(1))
         surface.DrawRect(EFGM.MenuScale(30), EFGM.MenuScale(7), EFGM.MenuScale(1), EFGM.MenuScale(16))
@@ -7093,10 +7088,10 @@ function Menu.OpenTab.Inventory(container)
 
             BlurPanel(s, EFGM.MenuScale(0))
 
-            surface.SetDrawColor(Color(80, 80, 80, 10))
+            surface.SetDrawColor(MenuAlias.containerBackgroundColor)
             surface.DrawRect(0, 0, unloadTextSize + EFGM.MenuScale(10), h)
 
-            surface.SetDrawColor(Color(255, 255, 255, 155))
+            surface.SetDrawColor(MenuAlias.transparentWhiteColor)
             surface.DrawRect(0, 0, unloadTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
 
             draw.SimpleTextOutlined(unloadText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -7134,10 +7129,10 @@ function Menu.OpenTab.Inventory(container)
 
         BlurPanel(s, EFGM.MenuScale(0))
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, searchTextSize + EFGM.MenuScale(10), h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, searchTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
 
         draw.SimpleTextOutlined(searchText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -7208,10 +7203,10 @@ function Menu.OpenTab.Inventory(container)
 
         BlurPanel(playerItemsHolder, EFGM.MenuScale(3))
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.SetDrawColor(MenuAlias.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
         surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -7270,10 +7265,10 @@ function Menu.OpenTab.Inventory(container)
     playerItemsBar:SetHideButtons(true)
     playerItemsBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
     function playerItemsBar:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.scrollerColor)
     end
     function playerItemsBar.btnGrip:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.transparentWhiteColor)
     end
 
     Menu.ReloadInventory()
@@ -7288,10 +7283,10 @@ function Menu.OpenTab.Inventory(container)
 
             BlurPanel(s, EFGM.MenuScale(10))
 
-            surface.SetDrawColor(Color(80, 80, 80, 10))
+            surface.SetDrawColor(MenuAlias.containerBackgroundColor)
             surface.DrawRect(0, 0, w, h)
 
-            surface.SetDrawColor(Color(255, 255, 255, 155))
+            surface.SetDrawColor(MenuAlias.transparentWhiteColor)
             surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
 
         end
@@ -7301,7 +7296,7 @@ function Menu.OpenTab.Inventory(container)
         containerText:SetSize(0, EFGM.MenuScale(36))
         function containerText:Paint(w, h)
 
-            surface.SetDrawColor(Color(155, 155, 155, 10))
+            surface.SetDrawColor(MenuAlias.containerHeaderColor)
             surface.DrawRect(0, 0, w, h)
 
             draw.SimpleTextOutlined(string.upper(container.name), "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -7314,7 +7309,7 @@ function Menu.OpenTab.Inventory(container)
         containerHolder:SetSize(0, 0)
         containerHolder.Paint = function(s, w, h)
 
-            surface.SetDrawColor(Color(0, 0, 0, 0))
+            surface.SetDrawColor(MenuAlias.transparent)
             surface.DrawRect(0, 0, w, h)
 
         end
@@ -7326,10 +7321,10 @@ function Menu.OpenTab.Inventory(container)
 
             BlurPanel(containerItemsHolder, EFGM.MenuScale(3))
 
-            surface.SetDrawColor(Color(80, 80, 80, 10))
+            surface.SetDrawColor(MenuAlias.containerBackgroundColor)
             surface.DrawRect(0, 0, w, h)
 
-            surface.SetDrawColor(Color(255, 255, 255, 25))
+            surface.SetDrawColor(MenuAlias.whiteBorderColor)
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
             surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -7373,10 +7368,10 @@ function Menu.OpenTab.Inventory(container)
         containerItemsBar:SetHideButtons(true)
         containerItemsBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
         function containerItemsBar:Paint(w, h)
-            draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
+            draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.scrollerColor)
         end
         function containerItemsBar.btnGrip:Paint(w, h)
-            draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
+            draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.transparentWhiteColor)
         end
 
         Menu.ReloadContainer()
@@ -7395,10 +7390,10 @@ function Menu.OpenTab.Inventory(container)
 
         BlurPanel(s, EFGM.MenuScale(10))
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
 
     end
@@ -7409,7 +7404,7 @@ function Menu.OpenTab.Inventory(container)
     stashText:SetSize(0, EFGM.MenuScale(36))
     function stashText:Paint(w, h)
 
-        surface.SetDrawColor(Color(155, 155, 155, 10))
+        surface.SetDrawColor(MenuAlias.containerHeaderColor)
         surface.DrawRect(0, 0, w, h)
 
         draw.SimpleTextOutlined("STASH", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -7423,7 +7418,7 @@ function Menu.OpenTab.Inventory(container)
     stashHolder:SetSize(0, 0)
     stashHolder.Paint = function(s, w, h)
 
-        surface.SetDrawColor(Color(0, 0, 0, 0))
+        surface.SetDrawColor(MenuAlias.transparent)
         surface.DrawRect(0, 0, w, h)
 
     end
@@ -7443,10 +7438,10 @@ function Menu.OpenTab.Inventory(container)
 
         BlurPanel(s, EFGM.MenuScale(3))
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, valueTextSize + EFGM.MenuScale(10), h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, valueTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
 
         draw.SimpleTextOutlined(valueText, "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -7468,10 +7463,10 @@ function Menu.OpenTab.Inventory(container)
 
         BlurPanel(s, EFGM.MenuScale(0))
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, stashSearchTextSize + EFGM.MenuScale(10), h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, stashSearchTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
 
         draw.SimpleTextOutlined(stashSearchText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -7542,10 +7537,10 @@ function Menu.OpenTab.Inventory(container)
 
         BlurPanel(stashItemsHolder, EFGM.MenuScale(3))
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.SetDrawColor(MenuAlias.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
         surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -7592,10 +7587,10 @@ function Menu.OpenTab.Inventory(container)
     stashItemsBar:SetHideButtons(true)
     stashItemsBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
     function stashItemsBar:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.scrollerColor)
     end
     function stashItemsBar.btnGrip:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.transparentWhiteColor)
     end
 
     Menu.ReloadStash()
@@ -7625,10 +7620,10 @@ function Menu.OpenTab.Market()
 
         BlurPanel(s, EFGM.MenuScale(10))
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
 
     end
@@ -7639,7 +7634,7 @@ function Menu.OpenTab.Market()
     marketStashText:SetSize(0, EFGM.MenuScale(36))
     function marketStashText:Paint(w, h)
 
-        surface.SetDrawColor(Color(155, 155, 155, 10))
+        surface.SetDrawColor(MenuAlias.containerHeaderColor)
         surface.DrawRect(0, 0, w, h)
 
         draw.SimpleTextOutlined("STASH", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -7653,7 +7648,7 @@ function Menu.OpenTab.Market()
     marketStashHolder:SetSize(0, 0)
     marketStashHolder.Paint = function(s, w, h)
 
-        surface.SetDrawColor(Color(0, 0, 0, 0))
+        surface.SetDrawColor(MenuAlias.transparent)
         surface.DrawRect(0, 0, w, h)
 
     end
@@ -7673,10 +7668,10 @@ function Menu.OpenTab.Market()
 
         BlurPanel(s, EFGM.MenuScale(3))
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, valueTextSize + EFGM.MenuScale(10), h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, valueTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
 
         draw.SimpleTextOutlined(valueText, "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -7698,10 +7693,10 @@ function Menu.OpenTab.Market()
 
         BlurPanel(s, EFGM.MenuScale(0))
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, marketStashSearchTextSize + EFGM.MenuScale(10), h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, marketStashSearchTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
 
         draw.SimpleTextOutlined(marketStashSearchText, "PuristaBold24", w / 2, EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -7772,10 +7767,10 @@ function Menu.OpenTab.Market()
 
         BlurPanel(marketStashItemsHolder, EFGM.MenuScale(3))
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.SetDrawColor(MenuAlias.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
         surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -7800,10 +7795,10 @@ function Menu.OpenTab.Market()
     marketStashItemsBar:SetHideButtons(true)
     marketStashItemsBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
     function marketStashItemsBar:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.scrollerColor)
     end
     function marketStashItemsBar.btnGrip:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.transparentWhiteColor)
     end
 
     Menu.ReloadMarketStash()
@@ -7816,10 +7811,10 @@ function Menu.OpenTab.Market()
 
         BlurPanel(s, EFGM.MenuScale(10))
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
 
     end
@@ -7829,7 +7824,7 @@ function Menu.OpenTab.Market()
     marketText:SetSize(0, EFGM.MenuScale(36))
     function marketText:Paint(w, h)
 
-        surface.SetDrawColor(Color(155, 155, 155, 10))
+        surface.SetDrawColor(MenuAlias.containerHeaderColor)
         surface.DrawRect(0, 0, w, h)
 
         draw.SimpleTextOutlined("MARKET", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -7842,7 +7837,7 @@ function Menu.OpenTab.Market()
     marketHolder:SetSize(0, 0)
     marketHolder.Paint = function(s, w, h)
 
-        surface.SetDrawColor(Color(0, 0, 0, 0))
+        surface.SetDrawColor(MenuAlias.transparent)
         surface.DrawRect(0, 0, w, h)
 
     end
@@ -7861,25 +7856,24 @@ function Menu.OpenTab.Market()
 
         BlurPanel(s, EFGM.MenuScale(3))
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, pageTextSize + EFGM.MenuScale(54), h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
         surface.DrawRect(0, 0, pageTextSize + EFGM.MenuScale(54), EFGM.MenuScale(2))
 
         draw.SimpleTextOutlined(pageText, "PuristaBold24", EFGM.MenuScale(26), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
 
     end
 
-    local lastPageIcon = Material("icons/arrow_back_icon.png")
     local lastPageButton = vgui.Create("DButton", marketPageText)
     lastPageButton:SetPos(EFGM.MenuScale(0), EFGM.MenuScale(2))
     lastPageButton:SetSize(EFGM.MenuScale(26), EFGM.MenuScale(26))
     lastPageButton:SetText("")
     lastPageButton.Paint = function(s, w, h)
 
-        surface.SetDrawColor(255, 255, 255, 255)
-        surface.SetMaterial(lastPageIcon)
+        surface.SetDrawColor(MenuAlias.pureWhiteColor)
+        surface.SetMaterial(Mats.arrowBackIcon)
         surface.DrawTexturedRect(EFGM.MenuScale(3), EFGM.MenuScale(3), EFGM.MenuScale(20), EFGM.MenuScale(20))
 
     end
@@ -7890,7 +7884,6 @@ function Menu.OpenTab.Market()
 
     end
 
-    local nextPageIcon = Material("icons/arrow_forward_icon.png")
     local nextPageButton = vgui.Create("DButton", marketPageText)
     nextPageButton:SetPos(pageTextSize + EFGM.MenuScale(29), EFGM.MenuScale(2))
     nextPageButton:SetSize(EFGM.MenuScale(26), EFGM.MenuScale(26))
@@ -7898,8 +7891,8 @@ function Menu.OpenTab.Market()
     nextPageButton.Paint = function(s, w, h)
 
         s:SetX(pageTextSize + EFGM.MenuScale(29))
-        surface.SetDrawColor(255, 255, 255, 255)
-        surface.SetMaterial(nextPageIcon)
+        surface.SetDrawColor(MenuAlias.pureWhiteColor)
+        surface.SetMaterial(Mats.arrowForwardIcon)
         surface.DrawTexturedRect(EFGM.MenuScale(3), EFGM.MenuScale(3), EFGM.MenuScale(20), EFGM.MenuScale(20))
 
     end
@@ -7917,10 +7910,10 @@ function Menu.OpenTab.Market()
 
         BlurPanel(marketEntryHolder, EFGM.MenuScale(3))
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.SetDrawColor(MenuAlias.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
         surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -7938,10 +7931,10 @@ function Menu.OpenTab.Market()
 
     function marketCategoryHolder:Paint(w, h)
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.SetDrawColor(MenuAlias.whiteBorderColor)
         surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
 
     end
@@ -7995,17 +7988,17 @@ function Menu.OpenTab.Market()
 
     local marketCategoryEntryList = vgui.Create("DCategoryList", marketCategoryHolder)
     marketCategoryEntryList:Dock(FILL)
-    marketCategoryEntryList:SetBackgroundColor(Color(0, 0, 0, 0))
+    marketCategoryEntryList:SetBackgroundColor(MenuAlias.transparent)
     marketCategoryEntryList:GetVBar():SetSize(0, 0)
 
     local categoryBar = marketCategoryEntryList:GetVBar()
     categoryBar:SetHideButtons(true)
     categoryBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
     function categoryBar:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.scrollerColor)
     end
     function categoryBar.btnGrip:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.transparentWhiteColor)
     end
 
     -- market categories
@@ -8144,7 +8137,7 @@ function Menu.OpenTab.Market()
     marketItemHolder:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
     function marketItemHolder:Paint(w, h)
 
-        surface.SetDrawColor(Color(0, 0, 0, 0))
+        surface.SetDrawColor(MenuAlias.transparent)
         surface.DrawRect(0, 0, w, h)
 
     end
@@ -8168,16 +8161,16 @@ function Menu.OpenTab.Market()
 
                 function item:Paint(w, h)
 
-                    surface.SetDrawColor(Color(5, 5, 5, 20))
+                    surface.SetDrawColor(MenuAlias.itemColor)
                     surface.DrawRect(0, 0, w, h)
 
-                    surface.SetDrawColor(Color(255, 255, 255, 2))
+                    surface.SetDrawColor(MenuAlias.itemBackgroundColor)
                     surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
                     surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
                     surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
                     surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
 
-                    surface.SetDrawColor(255, 255, 255, 255)
+                    surface.SetDrawColor(MenuAlias.pureWhiteColor)
                     surface.SetMaterial(v.icon)
 
                     local originalWidth, originalHeight = EFGM.MenuScale(57 * v.sizeX), EFGM.MenuScale(57 * v.sizeY)
@@ -8222,21 +8215,16 @@ function Menu.OpenTab.Market()
                 local itemValueText = comma_value(value)
                 local itemValueTextSize = surface.GetTextSize(itemValueText)
 
-                local roubleIcon = Material("icons/rouble_icon.png")
-                local sellIcon = Material("icons/sell_icon.png")
-                local lockIcon = Material("icons/lock_icon.png")
-                local favoriteIcon = Material("icons/favorite_icon.png")
-
                 local plyLevel = Menu.Player:GetNWInt("Level", 1)
 
                 function item:PaintOver(w, h)
 
-                    surface.SetDrawColor(Color(5, 5, 5, 100))
+                    surface.SetDrawColor(MenuAlias.transparentBlackColor)
                     surface.DrawRect(EFGM.MenuScale(1), h - EFGM.MenuScale(31), w - EFGM.MenuScale(2), EFGM.MenuScale(30))
 
                     if v.canPurchase then
 
-                        surface.SetDrawColor(Color(80, 80, 80, 50))
+                        surface.SetDrawColor(MenuAlias.marketItemValueColor)
                         surface.DrawRect(w - countTextSize - EFGM.MenuScale(11), h - EFGM.MenuScale(46), countTextSize + EFGM.MenuScale(10), EFGM.MenuScale(15))
                         surface.DrawRect(EFGM.MenuScale(1), EFGM.MenuScale(17), levelTextSize + EFGM.MenuScale(8), EFGM.MenuScale(15))
 
@@ -8257,17 +8245,17 @@ function Menu.OpenTab.Market()
 
                     if EFGM.Favorites[v.id] then
 
-                        surface.SetDrawColor(255, 255, 255, 255)
-                        surface.SetMaterial(favoriteIcon)
+                        surface.SetDrawColor(MenuAlias.pureWhiteColor)
+                        surface.SetMaterial(Mats.favoriteIcon)
                         surface.DrawTexturedRect(w - EFGM.MenuScale(31), EFGM.MenuScale(1), EFGM.MenuScale(30), EFGM.MenuScale(30))
 
                     end
 
-                    surface.SetDrawColor(255, 255, 255, 255)
+                    surface.SetDrawColor(MenuAlias.pureWhiteColor)
 
-                    if !v.canPurchase then surface.SetMaterial(sellIcon) else
+                    if !v.canPurchase then surface.SetMaterial(Mats.sellIcon) else
 
-                        if plyLevel < v.level then surface.SetMaterial(lockIcon) else surface.SetMaterial(roubleIcon) end
+                        if plyLevel < v.level then surface.SetMaterial(Mats.lockIcon) else surface.SetMaterial(Mats.roubleIcon) end
 
                     end
 
@@ -8304,10 +8292,10 @@ function Menu.OpenTab.Market()
 
                         BlurPanel(s, EFGM.MenuScale(5))
 
-                        surface.SetDrawColor(Color(5, 5, 5, 50))
+                        surface.SetDrawColor(MenuAlias.contextBackgroundColor)
                         surface.DrawRect(0, 0, w, h)
 
-                        surface.SetDrawColor(Color(255, 255, 255, 30))
+                        surface.SetDrawColor(MenuAlias.contextBorder)
                         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
                         surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
                         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -8793,23 +8781,23 @@ function Menu.OpenTab.Intel()
     local mainEntryList = vgui.Create("DCategoryList", contents)
     mainEntryList:Dock(LEFT)
     mainEntryList:SetSize(EFGM.MenuScale(180), 0)
-    mainEntryList:SetBackgroundColor(Color(0, 0, 0, 0))
+    mainEntryList:SetBackgroundColor(MenuAlias.transparent)
     mainEntryList:GetVBar():SetSize(0, 0)
 
     local entryBar = mainEntryList:GetVBar()
     entryBar:SetHideButtons(true)
     entryBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
     function entryBar:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.scrollerColor)
     end
     function entryBar.btnGrip:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.transparentWhiteColor)
     end
 
     local subEntryPanel = vgui.Create("DPanel", contents)
     subEntryPanel:Dock(LEFT)
     subEntryPanel:SetSize(EFGM.MenuScale(180), 0)
-    subEntryPanel:SetBackgroundColor(Color(0, 0, 0, 0))
+    subEntryPanel:SetBackgroundColor(MenuAlias.transparent)
 
     local subEntryList = vgui.Create("DIconLayout", subEntryPanel)
     subEntryList:Dock(LEFT)
@@ -8819,7 +8807,7 @@ function Menu.OpenTab.Intel()
     local entryPanel = vgui.Create("DPanel", contents)
     entryPanel:Dock(FILL)
     function entryPanel:Paint(w, h)
-        surface.SetDrawColor(0, 0, 0, 0)
+        surface.SetDrawColor(MenuAlias.transparent)
         surface.DrawRect(0, 0, w, h)
     end
 
@@ -8979,10 +8967,10 @@ function Menu.OpenTab.Match()
         pmcPanelBar:SetHideButtons(true)
         pmcPanelBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
         function pmcPanelBar:Paint(w, h)
-            draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
+            draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.scrollerColor)
         end
         function pmcPanelBar.btnGrip:Paint(w, h)
-            draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
+            draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.transparentWhiteColor)
         end
 
         pmcList = vgui.Create("DListLayout", pmcPanel)
@@ -9006,9 +8994,9 @@ function Menu.OpenTab.Match()
                 if !IsValid(v) then return end
                 draw.SimpleTextOutlined(name, "Purista18", EFGM.MenuScale(50), EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
                 draw.SimpleTextOutlined(ping  .. "ms", "Purista18", w - EFGM.MenuScale(5), EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-                draw.SimpleTextOutlined(kills, "Purista18", EFGM.MenuScale(50), EFGM.MenuScale(25), Color(0, 255, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-                draw.SimpleTextOutlined(deaths, "Purista18", EFGM.MenuScale(85), EFGM.MenuScale(25), Color(255, 0, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
-                if !status then draw.SimpleTextOutlined("IN RAID", "Purista18", w - EFGM.MenuScale(5), EFGM.MenuScale(25), Color(255, 255, 0), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor) end
+                draw.SimpleTextOutlined(kills, "Purista18", EFGM.MenuScale(50), EFGM.MenuScale(25), MenuAlias.inRaidColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined(deaths, "Purista18", EFGM.MenuScale(85), EFGM.MenuScale(25), MenuAlias.deadColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                if !status then draw.SimpleTextOutlined("IN RAID", "Purista18", w - EFGM.MenuScale(5), EFGM.MenuScale(25), MenuAlias.neutralColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor) end
             end
 
             local pmcPFP = vgui.Create("AvatarImage", pmcEntry)
@@ -9105,14 +9093,14 @@ function Menu.OpenTab.Match()
     mapHolder:SetSize(EFGM.MenuScale(1210), EFGM.MenuScale(920))
     function mapHolder:Paint(w, h)
 
-        surface.SetDrawColor(Color(80, 80, 80, 10))
+        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
         surface.DrawRect(0, 0, w, h)
 
     end
 
     function mapHolder:PaintOver(w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 255))
+        surface.SetDrawColor(MenuAlias.pureWhiteColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
         surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -9164,7 +9152,7 @@ function Menu.OpenTab.Match()
         surface.SetDrawColor(Color(20, 20, 20, 155))
         surface.DrawRect(0, 0, w, h)
 
-        surface.SetDrawColor(Color(255, 255, 255, 25))
+        surface.SetDrawColor(MenuAlias.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
         surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -9390,10 +9378,10 @@ function Menu.OpenTab.Match()
         availableSquadsPanelBar:SetHideButtons(true)
         availableSquadsPanelBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
         function availableSquadsPanelBar:Paint(w, h)
-            draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
+            draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.scrollerColor)
         end
         function availableSquadsPanelBar.btnGrip:Paint(w, h)
-            draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
+            draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.transparentWhiteColor)
         end
 
         local availableSquadsList = vgui.Create("DListLayout", availableSquadsPanel)
@@ -9423,7 +9411,7 @@ function Menu.OpenTab.Match()
                 squadEntry.Paint = function(s, w, h)
 
                     if open then
-                        surface.SetDrawColor(Color(0, 0, 0, 100))
+                        surface.SetDrawColor(MenuAlias.transparentBlackColor)
                     else
                         surface.SetDrawColor(Color(50, 0, 0, 100))
                     end
@@ -9523,7 +9511,7 @@ function Menu.OpenTab.Match()
                         surface.SetDrawColor(Color(color.RED, color.GREEN, color.BLUE, 255))
                         surface.DrawRect(0, 0, w, EFGM.MenuScale(5))
 
-                        surface.SetDrawColor(Color(255, 255, 255, 155))
+                        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
                         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
                         surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
                         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -9550,7 +9538,7 @@ function Menu.OpenTab.Match()
 
                         if !open then
 
-                            draw.SimpleTextOutlined("SQUAD FULL!", "PuristaBold18", EFGM.MenuScale(5), h - EFGM.MenuScale(23), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(255, 0, 0, 255))
+                            draw.SimpleTextOutlined("SQUAD FULL!", "PuristaBold18", EFGM.MenuScale(5), h - EFGM.MenuScale(23), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.deadColor)
                             return
 
                         end
@@ -9660,7 +9648,7 @@ function Menu.OpenTab.Match()
                 surface.SetDrawColor(Color(color.RED, color.GREEN, color.BLUE, 255))
                 surface.DrawRect(0, 0, w, EFGM.MenuScale(5))
 
-                surface.SetDrawColor(Color(255, 255, 255, 155))
+                surface.SetDrawColor(MenuAlias.transparentWhiteColor)
                 surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
                 surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
@@ -9712,7 +9700,7 @@ function Menu.OpenTab.Match()
                 surface.SetDrawColor(Color(color.RED, color.GREEN, color.BLUE, 10))
                 surface.DrawRect(0, 0, w, h)
 
-                surface.SetDrawColor(Color(255, 255, 255, 155))
+                surface.SetDrawColor(MenuAlias.transparentWhiteColor)
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
                 surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
 
@@ -9853,7 +9841,7 @@ function Menu.OpenTab.Match()
                             surface.SetDrawColor(Color(25, 25, 25, 155))
                             surface.DrawRect(0, 0, w, h)
 
-                            surface.SetDrawColor(Color(255, 255, 255, 155))
+                            surface.SetDrawColor(MenuAlias.transparentWhiteColor)
                             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
                             surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
                             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -9946,7 +9934,7 @@ function Menu.OpenTab.Match()
                             surface.SetDrawColor(Color(25, 25, 25, 155))
                             surface.DrawRect(0, 0, w, h)
 
-                            surface.SetDrawColor(Color(255, 255, 255, 155))
+                            surface.SetDrawColor(MenuAlias.transparentWhiteColor)
                             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
                             surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
                             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -9988,7 +9976,7 @@ function Menu.OpenTab.Match()
                 surface.SetDrawColor(Color(color.RED, color.GREEN, color.BLUE, 10))
                 surface.DrawRect(0, 0, w, h)
 
-                surface.SetDrawColor(Color(255, 255, 255, 155))
+                surface.SetDrawColor(MenuAlias.transparentWhiteColor)
                 surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
                 surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
@@ -10115,10 +10103,10 @@ function Menu.OpenTab.Stats()
     statsBar:SetHideButtons(true)
     statsBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
     function statsBar:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.scrollerColor)
     end
     function statsBar.btnGrip:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.transparentWhiteColor)
     end
 
     local importantStats = vgui.Create("DPanel", stats)
@@ -10338,10 +10326,10 @@ function Menu.OpenTab.Skills()
     skillsBar:SetHideButtons(true)
     skillsBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
     function skillsBar:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.scrollerColor)
     end
     function skillsBar.btnGrip:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.transparentWhiteColor)
     end
 
     local skillsList = vgui.Create("DIconLayout", skills)
@@ -10455,7 +10443,7 @@ function Menu.OpenTab.Skills()
                 surface.SetDrawColor(skillTypeTbl[v1.Category])
                 surface.DrawRect(0, 0, w, EFGM.MenuScale(5))
 
-                surface.SetDrawColor(Color(255, 255, 255, 155))
+                surface.SetDrawColor(MenuAlias.transparentWhiteColor)
                 surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
                 surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -10525,10 +10513,10 @@ function Menu.OpenTab.Settings()
     gameplayBar:SetHideButtons(true)
     gameplayBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
     function gameplayBar:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.scrollerColor)
     end
     function gameplayBar.btnGrip:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.transparentWhiteColor)
     end
 
     local controls = vgui.Create("DScrollPanel", contents)
@@ -10557,10 +10545,10 @@ function Menu.OpenTab.Settings()
     controlsBar:SetHideButtons(true)
     controlsBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
     function controlsBar:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.scrollerColor)
     end
     function controlsBar.btnGrip:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.transparentWhiteColor)
     end
 
     local interface = vgui.Create("DScrollPanel", contents)
@@ -10589,10 +10577,10 @@ function Menu.OpenTab.Settings()
     interfaceBar:SetHideButtons(true)
     interfaceBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
     function interfaceBar:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.scrollerColor)
     end
     function interfaceBar.btnGrip:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.transparentWhiteColor)
     end
 
     local visuals = vgui.Create("DScrollPanel", contents)
@@ -10621,10 +10609,10 @@ function Menu.OpenTab.Settings()
     visualsBar:SetHideButtons(true)
     visualsBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
     function visualsBar:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.scrollerColor)
     end
     function visualsBar.btnGrip:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.transparentWhiteColor)
     end
 
     local account = vgui.Create("DScrollPanel", contents)
@@ -10653,10 +10641,10 @@ function Menu.OpenTab.Settings()
     accountBar:SetHideButtons(true)
     accountBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
     function accountBar:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.scrollerColor)
     end
     function accountBar.btnGrip:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.transparentWhiteColor)
     end
 
     local misc = vgui.Create("DScrollPanel", contents)
@@ -10685,10 +10673,10 @@ function Menu.OpenTab.Settings()
     miscBar:SetHideButtons(true)
     miscBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
     function miscBar:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.scrollerColor)
     end
     function miscBar.btnGrip:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
+        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.transparentWhiteColor)
     end
 
     -- settings go below
@@ -11491,10 +11479,10 @@ function Menu.OpenTab.Tasks()
 
             BlurPanel(s, EFGM.MenuScale(10))
 
-            surface.SetDrawColor(Color(80, 80, 80, 10))
+            surface.SetDrawColor(MenuAlias.containerBackgroundColor)
             surface.DrawRect(0, 0, w, h)
 
-            surface.SetDrawColor(Color(255, 255, 255, 155))
+            surface.SetDrawColor(MenuAlias.transparentWhiteColor)
             surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
 
         end
@@ -11508,7 +11496,7 @@ function Menu.OpenTab.Tasks()
             taskListHeader:SetSize(0, EFGM.MenuScale(36))
             function taskListHeader:Paint(w, h)
 
-                surface.SetDrawColor(Color(155, 155, 155, 10))
+                surface.SetDrawColor(MenuAlias.containerHeaderColor)
                 surface.DrawRect(0, 0, w, h)
 
                 draw.SimpleTextOutlined("TASKS", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -11522,10 +11510,10 @@ function Menu.OpenTab.Tasks()
             taskListBar:SetHideButtons(true)
             taskListBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
             function taskListBar:Paint(w, h)
-                draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
+                draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.scrollerColor)
             end
             function taskListBar.btnGrip:Paint(w, h)
-                draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
+                draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.transparentWhiteColor)
             end
 
             if !table.IsEmpty(playerTasks) then
@@ -11545,7 +11533,7 @@ function Menu.OpenTab.Tasks()
                     function taskButton:Paint(w, h)
 
                         surface.SetMaterial(taskInfo.uibackground or genericTaskBG)
-                        surface.SetDrawColor(Color(255, 255, 255, 255))
+                        surface.SetDrawColor(MenuAlias.pureWhiteColor)
                         surface.DrawTexturedRect(0, 0, w, h)
 
                     end
@@ -11555,10 +11543,10 @@ function Menu.OpenTab.Tasks()
                         surface.SetDrawColor(Color(0, 0, 0, 155))
                         surface.DrawRect(0, 0, w, EFGM.MenuScale(36))
 
-                        surface.SetDrawColor(Color(255, 255, 255, 155))
+                        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
                         surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
 
-                        surface.SetDrawColor(Color(255, 255, 255, 25))
+                        surface.SetDrawColor(MenuAlias.whiteBorderColor)
                         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
                         surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
                         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
@@ -11601,10 +11589,10 @@ function Menu.OpenTab.Tasks()
 
             BlurPanel(s, EFGM.MenuScale(10))
 
-            surface.SetDrawColor(Color(80, 80, 80, 10))
+            surface.SetDrawColor(MenuAlias.containerBackgroundColor)
             surface.DrawRect(0, 0, w, h)
 
-            surface.SetDrawColor(Color(255, 255, 255, 155))
+            surface.SetDrawColor(MenuAlias.transparentWhiteColor)
             surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
 
         end
@@ -11622,7 +11610,7 @@ function Menu.OpenTab.Tasks()
             taskDisplayHeader:SetSize(0, EFGM.MenuScale(36))
             function taskDisplayHeader:Paint(w, h)
 
-                surface.SetDrawColor(Color(155, 155, 155, 10))
+                surface.SetDrawColor(MenuAlias.containerHeaderColor)
                 surface.DrawRect(0, 0, w, h)
 
                 draw.SimpleTextOutlined(string.upper(taskInfo.name), "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -11641,10 +11629,10 @@ function Menu.OpenTab.Tasks()
 
                     function acceptButton:Paint(w, h)
 
-                        surface.SetDrawColor(Color(80, 80, 80, 10))
+                        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
                         surface.DrawRect(0, 0, w, h)
 
-                        surface.SetDrawColor(Color(255, 255, 255, 155))
+                        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
                         surface.DrawRect(0, 0, acceptButton:GetWide(), EFGM.MenuScale(2))
 
                         draw.SimpleTextOutlined("ACCEPT", "PuristaBold32", w / 2, EFGM.MenuScale(7), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -11684,10 +11672,10 @@ function Menu.OpenTab.Tasks()
 
                     function completeButton:Paint(w, h)
 
-                        surface.SetDrawColor(Color(80, 80, 80, 10))
+                        surface.SetDrawColor(MenuAlias.containerBackgroundColor)
                         surface.DrawRect(0, 0, w, h)
 
-                        surface.SetDrawColor(Color(255, 255, 255, 155))
+                        surface.SetDrawColor(MenuAlias.transparentWhiteColor)
                         surface.DrawRect(0, 0, completeButton:GetWide(), EFGM.MenuScale(2))
 
                         draw.SimpleTextOutlined("COMPLETE", "PuristaBold32", w / 2, EFGM.MenuScale(7), MenuAlias.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -11731,10 +11719,10 @@ function Menu.OpenTab.Tasks()
                 messagePanelHeader:SetSize(0, EFGM.MenuScale(36))
                 function messagePanelHeader:Paint(w, h)
 
-                    surface.SetDrawColor(Color(155, 155, 155, 10))
+                    surface.SetDrawColor(MenuAlias.containerHeaderColor)
                     surface.DrawRect(0, 0, w, h)
 
-                    surface.SetDrawColor(Color(255, 255, 255, 155))
+                    surface.SetDrawColor(MenuAlias.transparentWhiteColor)
                     surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
 
                     draw.SimpleTextOutlined(taskInfo.messageOverride or "INCOMING TRANSMISSION FROM " .. string.upper(taskInfo.traderName), "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -11749,14 +11737,14 @@ function Menu.OpenTab.Tasks()
                 function messageIcon:Paint(w, h)
 
                     surface.SetMaterial(taskInfo.traderIcon or genericTraderIcon)
-                    surface.SetDrawColor(Color(255, 255, 255, 255))
+                    surface.SetDrawColor(MenuAlias.pureWhiteColor)
                     surface.DrawTexturedRect(0, 0, EFGM.MenuScale(200), EFGM.MenuScale(200))
 
                 end
 
                 function messageIcon:PaintOver(w, h)
 
-                    surface.SetDrawColor(Color(255, 255, 255, 25))
+                    surface.SetDrawColor(MenuAlias.whiteBorderColor)
                     surface.DrawRect(0, 0, EFGM.MenuScale(200), EFGM.MenuScale(1))
                     surface.DrawRect(0, EFGM.MenuScale(200) - EFGM.MenuScale(1), EFGM.MenuScale(200), EFGM.MenuScale(1))
                     surface.DrawRect(0, 0, EFGM.MenuScale(1), EFGM.MenuScale(200))
@@ -11773,10 +11761,10 @@ function Menu.OpenTab.Tasks()
                 messageBar:SetHideButtons(true)
                 messageBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
                 function messageBar:Paint(w, h)
-                    draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
+                    draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.scrollerColor)
                 end
                 function messageBar.btnGrip:Paint(w, h)
-                    draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
+                    draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.transparentWhiteColor)
                 end
 
                 local messageTextPanel = vgui.Create("DPanel", messageScroller)
@@ -11800,10 +11788,10 @@ function Menu.OpenTab.Tasks()
                 objectivePanelHeader:SetSize(0, EFGM.MenuScale(36))
                 function objectivePanelHeader:Paint(w, h)
 
-                    surface.SetDrawColor(Color(155, 155, 155, 10))
+                    surface.SetDrawColor(MenuAlias.containerHeaderColor)
                     surface.DrawRect(0, 0, w, h)
 
-                    surface.SetDrawColor(Color(255, 255, 255, 155))
+                    surface.SetDrawColor(MenuAlias.transparentWhiteColor)
                     surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
 
                     draw.SimpleTextOutlined("OBJECTIVES", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
@@ -11818,10 +11806,10 @@ function Menu.OpenTab.Tasks()
                 objectiveBar:SetHideButtons(true)
                 objectiveBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
                 function objectiveBar:Paint(w, h)
-                    draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(0, 0, 0, 50))
+                    draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.scrollerColor)
                 end
                 function objectiveBar.btnGrip:Paint(w, h)
-                    draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Color(255, 255, 255, 155))
+                    draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), MenuAlias.transparentWhiteColor)
                 end
 
                 for objIndex, objInfo in ipairs(taskInfo.objectives) do
@@ -11841,7 +11829,7 @@ function Menu.OpenTab.Tasks()
 
                     function objective:Paint(w, h)
 
-                        surface.SetDrawColor(Color(155, 155, 155, 10))
+                        surface.SetDrawColor(MenuAlias.containerHeaderColor)
                         surface.DrawRect(0, 0, w, h)
 
                         local objText = GetObjectiveText(objInfo)
@@ -11882,7 +11870,7 @@ function Menu.OpenTab.Tasks()
 
                     function objective:PaintOver(w, h)
 
-                        surface.SetDrawColor(Color(255, 255, 255, 25))
+                        surface.SetDrawColor(MenuAlias.whiteBorderColor)
                         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
                         surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
                         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)

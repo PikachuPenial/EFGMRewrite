@@ -16,7 +16,7 @@ local function RenderRaidTime(ply)
 
     surface.SetDrawColor(raidStatusTbl[raidStatus])
     surface.DrawRect(ScrW() - EFGM.ScreenScale(120), EFGM.ScreenScale(20), EFGM.ScreenScale(100), EFGM.ScreenScale(36))
-    draw.DrawText(raidTime, "BenderExfilList", ScrW() - EFGM.ScreenScale(70), EFGM.ScreenScale(19), Color(255, 255, 255), TEXT_ALIGN_CENTER)
+    draw.DrawText(raidTime, "BenderExfilList", ScrW() - EFGM.ScreenScale(70), EFGM.ScreenScale(19), MenuAlias.whiteColor, TEXT_ALIGN_CENTER)
 end
 
 -- players current weapon and ammo
@@ -42,12 +42,12 @@ local function RenderPlayerWeapon(ply)
     local ammoTextSize = surface.GetTextSize(magstatus) + EFGM.ScreenScale(10)
 
     -- ammo
-    surface.SetDrawColor(0, 0, 0, 128)
+    surface.SetDrawColor(MenuAlias.hudBackground)
     surface.DrawRect(ScrW() - EFGM.ScreenScale(37) - ammoTextSize, ScrH() - EFGM.ScreenScale(75), ammoTextSize + EFGM.ScreenScale(17), EFGM.ScreenScale(35))
-    draw.DrawText(tostring(magstatus), "BenderAmmoCount", ScrW() - EFGM.ScreenScale(34), ScrH() - EFGM.ScreenScale(74), Color(255, 255, 255), TEXT_ALIGN_RIGHT)
+    draw.DrawText(tostring(magstatus), "BenderAmmoCount", ScrW() - EFGM.ScreenScale(34), ScrH() - EFGM.ScreenScale(74), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT)
 
     -- weapon name
-    draw.DrawText(name, "BenderWeaponName", ScrW() - EFGM.ScreenScale(20), ScrH() - EFGM.ScreenScale(40), Color(214, 214, 214), TEXT_ALIGN_RIGHT)
+    draw.DrawText(name, "BenderWeaponName", ScrW() - EFGM.ScreenScale(20), ScrH() - EFGM.ScreenScale(40), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT)
 end
 
 -- assorted overlays
@@ -70,7 +70,7 @@ local function RenderOverlays(ply)
 
     if blurAmount > 0 then
 
-        surface.SetDrawColor(255, 255, 255, 255)
+        surface.SetDrawColor(MenuAlias.pureWhiteColor)
         surface.SetMaterial(Material("pp/blurscreen"))
 
         for i = 1, 3 do
@@ -123,7 +123,7 @@ local function RenderPlayerStance(ply)
     end
 
     -- draw health
-    surface.SetDrawColor(255, 255, 255, 255)
+    surface.SetDrawColor(MenuAlias.pureWhiteColor)
     surface.SetMaterial(healthMat)
     surface.DrawTexturedRect(EFGM.ScreenScale(20), ScrH() - EFGM.ScreenScale(29), EFGM.ScreenScale(156), EFGM.ScreenScale(13))
     surface.SetDrawColor(255, 255, 255, healthAlpha)
@@ -207,7 +207,7 @@ function RenderExtracts(ply)
         if not ply:Alive() then return end
         if extractList == nil then return end
 
-        surface.SetDrawColor(0, 0, 0, 128)
+        surface.SetDrawColor(MenuAlias.hudBackground)
         surface.DrawRect(ScrW() - EFGM.ScreenScale(515), EFGM.ScreenScale(20), EFGM.ScreenScale(390), EFGM.ScreenScale(36))
         draw.SimpleTextOutlined("FIND AN EXTRACTION POINT", "BenderAmmoCount", ScrW() - EFGM.ScreenScale(320), EFGM.ScreenScale(21), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 100, 0, 128))
 
@@ -318,7 +318,7 @@ function RenderPlayerInfo(ply, ent)
     surface.SetFont("BenderExfilTimer")
     local nameTextSize = surface.GetTextSize(name) + EFGM.ScreenScale(20)
 
-    surface.SetDrawColor(0, 0, 0, 128)
+    surface.SetDrawColor(MenuAlias.hudBackground)
     surface.DrawRect(ScrW() / 2 - (nameTextSize / 2), ScrH() - EFGM.ScreenScale(100), nameTextSize, EFGM.ScreenScale(80))
 
     surface.SetDrawColor(Color(255, 255, 255, 155))
@@ -414,10 +414,10 @@ net.Receive("SendExtractionStatus", function()
             surface.SetDrawColor(120, 180, 40, 125)
             surface.DrawRect(w / 2 - EFGM.ScreenScale(125), h - EFGM.ScreenScale(300), EFGM.ScreenScale(250), EFGM.ScreenScale(80))
 
-            draw.DrawText("EXTRACTION IN", "BenderExfilList", w / 2, h - EFGM.ScreenScale(300), Color(0, 0, 0, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
-            draw.DrawText(string.format("%.1f", tostring(exitTimeLeft)), "BenderExfilTimer", w / 2, h - EFGM.ScreenScale(275), Color(0, 0, 0, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+            draw.DrawText("EXTRACTION IN", "BenderExfilList", w / 2, h - EFGM.ScreenScale(300), MenuAlias.blackColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+            draw.DrawText(string.format("%.1f", tostring(exitTimeLeft)), "BenderExfilTimer", w / 2, h - EFGM.ScreenScale(275), MenuAlias.blackColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 
-            surface.SetDrawColor(0, 0, 0, 128)
+            surface.SetDrawColor(MenuAlias.hudBackground)
             surface.DrawRect(w / 2 - EFGM.ScreenScale(125), h - EFGM.ScreenScale(215), EFGM.ScreenScale(250), EFGM.ScreenScale(5))
 
             surface.SetDrawColor(120, 180, 40, 125)
@@ -2176,7 +2176,6 @@ function HUDInspectItem(item, data, panel)
 
     end
 
-    local closeButtonIcon = Material("icons/close_icon.png")
     local closeButton = vgui.Create("DButton", inspectPanel)
     closeButton:SetSize(EFGM.MenuScale(32), EFGM.MenuScale(32))
     closeButton:SetPos(inspectPanel:GetWide() - EFGM.MenuScale(32), EFGM.MenuScale(5))
@@ -2184,7 +2183,7 @@ function HUDInspectItem(item, data, panel)
     closeButton.Paint = function(s, w, h)
 
         surface.SetDrawColor(255, 255, 255, 255)
-        surface.SetMaterial(closeButtonIcon)
+        surface.SetMaterial(Mats.closeButtonIcon)
         surface.DrawTexturedRect(EFGM.MenuScale(0), EFGM.MenuScale(0), EFGM.MenuScale(32), EFGM.MenuScale(32))
 
     end
