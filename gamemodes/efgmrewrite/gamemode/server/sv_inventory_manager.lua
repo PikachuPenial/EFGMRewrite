@@ -19,6 +19,7 @@ util.AddNetworkString("PlayerInventorySplit")
 util.AddNetworkString("PlayerInventoryDelete")
 util.AddNetworkString("PlayerInventoryTag")
 util.AddNetworkString("PlayerInventoryConsumeGrenade")
+util.AddNetworkString("PlayerInventoryClearFIR")
 util.AddNetworkString("PlayerInventoryFixDesyncCL")
 util.AddNetworkString("efgm_sendpreset")
 
@@ -1092,6 +1093,31 @@ function CalculateInventoryWeight(ply)
 
     ply:SetNWFloat("InventoryWeight", newWeight)
     return newWeight
+
+end
+
+function RemoveFIRFromInventory(ply)
+
+    for k, v in ipairs(ply.inventory) do
+
+        v.data.fir = nil
+
+    end
+
+    for i = 1, 5 do
+
+        for k, v in pairs(ply.weaponSlots[i]) do
+
+            if table.IsEmpty(v) then continue end
+
+            v.data.fir = nil
+
+        end
+
+    end
+
+    net.Start("PlayerInventoryClearFIR", false)
+    net.Send(ply)
 
 end
 

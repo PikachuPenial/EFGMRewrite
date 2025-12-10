@@ -1516,7 +1516,7 @@ function HUDInspectItem(item, data, panel)
 
     local panelWidth
     if iconSizeX >= itemNameSize then panelWidth = iconSizeX else panelWidth = itemNameSize end
-    if itemDescSize >= panelWidth then panelWidth = itemDescSize end
+    if itemDescSize + EFGM.MenuScale(8) >= panelWidth then panelWidth = itemDescSize + EFGM.MenuScale(8) end
 
     local originalWidth, originalHeight = EFGM.MenuScale(114 * i.sizeX), EFGM.MenuScale(114 * i.sizeY)
     local scaleFactor
@@ -1577,6 +1577,99 @@ function HUDInspectItem(item, data, panel)
         local y = inspectPanel:GetTall() / 2 - (newPanelHeight / 2)
 
         surface.DrawTexturedRect(x, y, newPanelWidth, newPanelHeight)
+
+    end
+
+    if data.fir then
+
+        local firIcon = vgui.Create("DImageButton", inspectPanel)
+        firIcon:SetPos(itemDescSize + EFGM.MenuScale(7), EFGM.MenuScale(29))
+        firIcon:SetSize(EFGM.MenuScale(12), EFGM.MenuScale(12))
+        firIcon:SetImage("icons/fir_icon.png")
+        firIcon:SetText("")
+        firIcon:SetDepressImage(false)
+
+        firIcon.OnCursorEntered = function(s)
+
+            x, y = Menu.MouseX, Menu.MouseY
+            surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
+
+            if x <= (ScrW() / 2) then sideH = true else sideH = false end
+            if y <= (ScrH() / 2) then sideV = true else sideV = false end
+
+            local function UpdatePopOutPos()
+
+                if sideH == true then
+
+                    firPopOut:SetX(math.Clamp(x + EFGM.MenuScale(15), EFGM.MenuScale(10), ScrW() - firPopOut:GetWide() - EFGM.MenuScale(10)))
+
+                else
+
+                    firPopOut:SetX(math.Clamp(x - firPopOut:GetWide() - EFGM.MenuScale(15), EFGM.MenuScale(10), ScrW() - firPopOut:GetWide() - EFGM.MenuScale(10)))
+
+                end
+
+                if sideV == true then
+
+                    firPopOut:SetY(math.Clamp(y + EFGM.MenuScale(15), EFGM.MenuScale(60), ScrH() - firPopOut:GetTall() - EFGM.MenuScale(20)))
+
+                else
+
+                    firPopOut:SetY(math.Clamp(y - firPopOut:GetTall() + EFGM.MenuScale(15), EFGM.MenuScale(60), ScrH() - firPopOut:GetTall() - EFGM.MenuScale(20)))
+
+                end
+
+            end
+
+            if IsValid(firPopOut) then firPopOut:Remove() end
+            firPopOut = vgui.Create("DPanel", Menu.MenuFrame)
+            firPopOut:SetSize(EFGM.MenuScale(455), EFGM.MenuScale(50))
+            UpdatePopOutPos()
+            firPopOut:AlphaTo(255, 0.1, 0, nil)
+            firPopOut:SetMouseInputEnabled(false)
+
+            firPopOut.Paint = function(s, w, h)
+
+                if !IsValid(s) then return end
+
+                BlurPanel(s, EFGM.MenuScale(3))
+
+                -- panel position follows mouse position
+                x, y = Menu.MouseX, Menu.MouseY
+
+                UpdatePopOutPos()
+
+                surface.SetDrawColor(Color(0, 0, 0, 205))
+                surface.DrawRect(0, 0, w, h)
+
+                surface.SetDrawColor(Color(55, 55, 55, 45))
+                surface.DrawRect(0, 0, w, h)
+
+                surface.SetDrawColor(Color(55, 55, 55))
+                surface.DrawRect(0, 0, w, EFGM.MenuScale(5))
+
+                surface.SetDrawColor(Color(255, 255, 255, 155))
+                surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+                surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+                surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                draw.SimpleTextOutlined("FOUND IN RAID", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined("This item will lose its 'found in raid' status if brought into another raid.", "Purista18", EFGM.MenuScale(5), EFGM.MenuScale(25), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            end
+
+        end
+
+        firIcon.OnCursorExited = function(s)
+
+            if IsValid(firPopOut) then
+
+                firPopOut:AlphaTo(0, 0.1, 0, function() firPopOut:Remove() end)
+
+            end
+
+        end
 
     end
 

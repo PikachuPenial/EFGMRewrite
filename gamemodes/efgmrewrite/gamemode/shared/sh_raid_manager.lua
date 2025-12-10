@@ -119,6 +119,7 @@ if SERVER then
                             v:SetNW2String("PlayerInSquad", "nil")
                             v:SetNW2String("TeamChatChannel", squad .. "_" .. curTime)
                             v:SetNWInt("RaidsPlayed", v:GetNWInt("RaidsPlayed") + 1)
+                            RemoveFIRFromInventory(v)
                             ResetRaidStats(v)
                         end)
                     end)

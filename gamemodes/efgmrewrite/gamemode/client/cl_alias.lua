@@ -18,3 +18,7 @@ MenuAlias.deadColor = 		Color(255, 50, 50, 255)	-- Gray what the fuck was i colo
 
 MenuAlias.margin = 		    math.Round( ScrH() * 0.01 )
 MenuAlias.margins =         {MenuAlias.margin, MenuAlias.margin, MenuAlias.margin, MenuAlias.margin} -- in DockMargin or DockPadding functions, use unpack( MenuAlias.margins ) which equates to "take these 4 values from this one argument"
+
+Mats = {}
+
+Mats.firIcon = Material("icons/fir_icon.png", "smooth")

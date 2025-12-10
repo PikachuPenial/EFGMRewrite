@@ -302,6 +302,31 @@ net.Receive("PlayerInventoryConsumeGrenade", function(len, ply)
 
 end )
 
+net.Receive("PlayerInventoryClearFIR", function(len, ply)
+
+    for k, v in ipairs(playerInventory) do
+
+        v.data.fir = nil
+
+    end
+
+    for i = 1, 5 do
+
+        for k, v in pairs(playerWeaponSlots[i]) do
+
+            if table.IsEmpty(v) then continue end
+
+            v.data.fir = nil
+
+        end
+
+    end
+
+    Menu.ReloadInventory()
+    Menu.ReloadSlots()
+
+end )
+
 net.Receive("efgm_sendpreset", function(len)
 
     local wpn = net.ReadEntity()

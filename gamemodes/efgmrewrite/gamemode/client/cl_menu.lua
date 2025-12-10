@@ -1202,7 +1202,7 @@ function Menu.InspectItem(item, data)
 
     local panelWidth
     if iconSizeX >= itemNameSize then panelWidth = iconSizeX else panelWidth = itemNameSize end
-    if itemDescSize >= panelWidth then panelWidth = itemDescSize end
+    if itemDescSize + EFGM.MenuScale(8) >= panelWidth then panelWidth = itemDescSize + EFGM.MenuScale(8) end
 
     local originalWidth, originalHeight = EFGM.MenuScale(114 * i.sizeX), EFGM.MenuScale(114 * i.sizeY)
     local scaleFactor
@@ -1263,6 +1263,99 @@ function Menu.InspectItem(item, data)
         local y = inspectPanel:GetTall() / 2 - (newPanelHeight / 2)
 
         surface.DrawTexturedRect(x, y, newPanelWidth, newPanelHeight)
+
+    end
+
+    if data.fir then
+
+        local firIcon = vgui.Create("DImageButton", inspectPanel)
+        firIcon:SetPos(itemDescSize + EFGM.MenuScale(7), EFGM.MenuScale(29))
+        firIcon:SetSize(EFGM.MenuScale(12), EFGM.MenuScale(12))
+        firIcon:SetImage("icons/fir_icon.png")
+        firIcon:SetText("")
+        firIcon:SetDepressImage(false)
+
+        firIcon.OnCursorEntered = function(s)
+
+            x, y = Menu.MouseX, Menu.MouseY
+            surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
+
+            if x <= (ScrW() / 2) then sideH = true else sideH = false end
+            if y <= (ScrH() / 2) then sideV = true else sideV = false end
+
+            local function UpdatePopOutPos()
+
+                if sideH == true then
+
+                    firPopOut:SetX(math.Clamp(x + EFGM.MenuScale(15), EFGM.MenuScale(10), ScrW() - firPopOut:GetWide() - EFGM.MenuScale(10)))
+
+                else
+
+                    firPopOut:SetX(math.Clamp(x - firPopOut:GetWide() - EFGM.MenuScale(15), EFGM.MenuScale(10), ScrW() - firPopOut:GetWide() - EFGM.MenuScale(10)))
+
+                end
+
+                if sideV == true then
+
+                    firPopOut:SetY(math.Clamp(y + EFGM.MenuScale(15), EFGM.MenuScale(60), ScrH() - firPopOut:GetTall() - EFGM.MenuScale(20)))
+
+                else
+
+                    firPopOut:SetY(math.Clamp(y - firPopOut:GetTall() + EFGM.MenuScale(15), EFGM.MenuScale(60), ScrH() - firPopOut:GetTall() - EFGM.MenuScale(20)))
+
+                end
+
+            end
+
+            if IsValid(firPopOut) then firPopOut:Remove() end
+            firPopOut = vgui.Create("DPanel", Menu.MenuFrame)
+            firPopOut:SetSize(EFGM.MenuScale(455), EFGM.MenuScale(50))
+            UpdatePopOutPos()
+            firPopOut:AlphaTo(255, 0.1, 0, nil)
+            firPopOut:SetMouseInputEnabled(false)
+
+            firPopOut.Paint = function(s, w, h)
+
+                if !IsValid(s) then return end
+
+                BlurPanel(s, EFGM.MenuScale(3))
+
+                -- panel position follows mouse position
+                x, y = Menu.MouseX, Menu.MouseY
+
+                UpdatePopOutPos()
+
+                surface.SetDrawColor(Color(0, 0, 0, 205))
+                surface.DrawRect(0, 0, w, h)
+
+                surface.SetDrawColor(Color(55, 55, 55, 45))
+                surface.DrawRect(0, 0, w, h)
+
+                surface.SetDrawColor(Color(55, 55, 55))
+                surface.DrawRect(0, 0, w, EFGM.MenuScale(5))
+
+                surface.SetDrawColor(Color(255, 255, 255, 155))
+                surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+                surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+                surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+                draw.SimpleTextOutlined("FOUND IN RAID", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(5), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+                draw.SimpleTextOutlined("This item will lose its 'found in raid' status if brought into another raid.", "Purista18", EFGM.MenuScale(5), EFGM.MenuScale(25), MenuAlias.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            end
+
+        end
+
+        firIcon.OnCursorExited = function(s)
+
+            if IsValid(firPopOut) then
+
+                firPopOut:AlphaTo(0, 0.1, 0, function() firPopOut:Remove() end)
+
+            end
+
+        end
 
     end
 
@@ -3218,6 +3311,23 @@ function Menu.ReloadInventory()
 
             end
 
+            if v.data.fir then
+
+                surface.SetDrawColor(255, 255, 255, 255)
+                surface.SetMaterial(Mats.firIcon)
+
+                if i.equipType == EQUIPTYPE.Ammunition or i.consumableType == "heal" or i.consumableType == "key" then
+
+                    surface.DrawTexturedRect(w - EFGM.MenuScale(17), h - EFGM.MenuScale(31), EFGM.MenuScale(14), EFGM.MenuScale(14))
+
+                else
+
+                    surface.DrawTexturedRect(w - EFGM.MenuScale(17), h - EFGM.MenuScale(17), EFGM.MenuScale(14), EFGM.MenuScale(14))
+
+                end
+
+            end
+
         end
 
         function item:DoClick()
@@ -3664,6 +3774,23 @@ function Menu.ReloadSlots()
 
             end
 
+            if playerWeaponSlots[1][1].data and playerWeaponSlots[1][1].data.fir then
+
+                surface.SetDrawColor(255, 255, 255, 255)
+                surface.SetMaterial(Mats.firIcon)
+
+                if mag != "" then
+
+                    surface.DrawTexturedRect(w - EFGM.MenuScale(16), h - EFGM.MenuScale(30), EFGM.MenuScale(14), EFGM.MenuScale(14))
+
+                else
+
+                    surface.DrawTexturedRect(w - EFGM.MenuScale(16), h - EFGM.MenuScale(16), EFGM.MenuScale(14), EFGM.MenuScale(14))
+
+                end
+
+            end
+
         end
 
         function primaryItem:DoClick()
@@ -4009,6 +4136,23 @@ function Menu.ReloadSlots()
             if mag != "" then
 
                 draw.SimpleTextOutlined(string.upper(mag), magFont, w - EFGM.MenuScale(3), h - magSizeY, MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            end
+
+            if playerWeaponSlots[1][2].data and playerWeaponSlots[1][2].data.fir then
+
+                surface.SetDrawColor(255, 255, 255, 255)
+                surface.SetMaterial(Mats.firIcon)
+
+                if mag != "" then
+
+                    surface.DrawTexturedRect(w - EFGM.MenuScale(16), h - EFGM.MenuScale(30), EFGM.MenuScale(14), EFGM.MenuScale(14))
+
+                else
+
+                    surface.DrawTexturedRect(w - EFGM.MenuScale(16), h - EFGM.MenuScale(16), EFGM.MenuScale(14), EFGM.MenuScale(14))
+
+                end
 
             end
 
@@ -4360,6 +4504,23 @@ function Menu.ReloadSlots()
 
             end
 
+            if playerWeaponSlots[2][1].data and playerWeaponSlots[2][1].data.fir then
+
+                surface.SetDrawColor(255, 255, 255, 255)
+                surface.SetMaterial(Mats.firIcon)
+
+                if mag != "" then
+
+                    surface.DrawTexturedRect(w - EFGM.MenuScale(16), h - EFGM.MenuScale(30), EFGM.MenuScale(14), EFGM.MenuScale(14))
+
+                else
+
+                    surface.DrawTexturedRect(w - EFGM.MenuScale(16), h - EFGM.MenuScale(16), EFGM.MenuScale(14), EFGM.MenuScale(14))
+
+                end
+
+            end
+
         end
 
         function holsterItem:DoClick()
@@ -4671,6 +4832,14 @@ function Menu.ReloadSlots()
 
             end
 
+            if playerWeaponSlots[3][1].data and playerWeaponSlots[3][1].data.fir then
+
+                surface.SetDrawColor(255, 255, 255, 255)
+                surface.SetMaterial(Mats.firIcon)
+                surface.DrawTexturedRect(w - EFGM.MenuScale(16), h - EFGM.MenuScale(16), EFGM.MenuScale(14), EFGM.MenuScale(14))
+
+            end
+
         end
 
         function meleeItem:DoClick()
@@ -4949,6 +5118,14 @@ function Menu.ReloadSlots()
         function nadeItem:PaintOver(w, h)
 
             draw.SimpleTextOutlined(i.displayName, nameFont, w - EFGM.MenuScale(3), EFGM.MenuScale(-1), MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            if playerWeaponSlots[4][1].data and playerWeaponSlots[4][1].data.fir then
+
+                surface.SetDrawColor(255, 255, 255, 255)
+                surface.SetMaterial(Mats.firIcon)
+                surface.DrawTexturedRect(w - EFGM.MenuScale(16), h - EFGM.MenuScale(16), EFGM.MenuScale(14), EFGM.MenuScale(14))
+
+            end
 
         end
 
@@ -5359,6 +5536,20 @@ function Menu.ReloadStash()
                     surface.DrawTexturedRect(w - EFGM.MenuScale(15), h - EFGM.MenuScale(18), EFGM.MenuScale(16), EFGM.MenuScale(16))
 
                 end
+
+            end
+
+            if v.data.fir then
+
+                surface.SetDrawColor(255, 255, 255, 255)
+                surface.SetMaterial(Mats.firIcon)
+
+                local width, height = EFGM.MenuScale(17), EFGM.MenuScale(17)
+
+                if v.data.pin == 1 then width = width + EFGM.MenuScale(10) end
+                if i.equipType == EQUIPTYPE.Ammunition or i.consumableType == "heal" or i.consumableType == "key" then height = height + EFGM.MenuScale(14) end
+
+                surface.DrawTexturedRect(w - width, h - height, EFGM.MenuScale(14), EFGM.MenuScale(14))
 
             end
 
@@ -5854,6 +6045,20 @@ function Menu.ReloadMarketStash()
 
             end
 
+            if v.data.fir then
+
+                surface.SetDrawColor(255, 255, 255, 255)
+                surface.SetMaterial(Mats.firIcon)
+
+                local width, height = EFGM.MenuScale(17), EFGM.MenuScale(17)
+
+                if v.data.pin == 1 then width = width + EFGM.MenuScale(10) end
+                if i.equipType == EQUIPTYPE.Ammunition or i.consumableType == "heal" or i.consumableType == "key" then height = height + EFGM.MenuScale(14) end
+
+                surface.DrawTexturedRect(w - width, h - height, EFGM.MenuScale(14), EFGM.MenuScale(14))
+
+            end
+
             if i.sizeX > 1 then draw.SimpleTextOutlined("₽" .. itemValue, "PuristaBold18", w / 2, h / 2 - EFGM.MenuScale(9), costColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
             else draw.SimpleTextOutlined("₽" .. itemValue, "PuristaBold14", w / 2, h / 2 - EFGM.MenuScale(7), costColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor) end
 
@@ -6104,6 +6309,23 @@ function Menu.ReloadContainer()
             if v.data.tag then
 
                 draw.SimpleTextOutlined(v.data.tag, tagFont, w - EFGM.MenuScale(3), tagH, MenuAlias.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, MenuAlias.blackColor)
+
+            end
+
+            if v.data.fir then
+
+                surface.SetDrawColor(255, 255, 255, 255)
+                surface.SetMaterial(Mats.firIcon)
+
+                if i.equipType == EQUIPTYPE.Ammunition or i.consumableType == "heal" or i.consumableType == "key" then
+
+                    surface.DrawTexturedRect(w - EFGM.MenuScale(17), h - EFGM.MenuScale(31), EFGM.MenuScale(14), EFGM.MenuScale(14))
+
+                else
+
+                    surface.DrawTexturedRect(w - EFGM.MenuScale(17), h - EFGM.MenuScale(17), EFGM.MenuScale(14), EFGM.MenuScale(14))
+
+                end
 
             end
 
