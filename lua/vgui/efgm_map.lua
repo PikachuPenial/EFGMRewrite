@@ -189,6 +189,9 @@ function PANEL:Paint(w, h)
     local previousPos = {}
     local startPos = {}
 
+    local totalLineColor = Color(202, 20, 20, 255)
+    local loadedLineColor = Color(71, 5, 5, 255)
+
     for k, v in pairs(RaidPositions) do
 
         local posX = (v.x * self.MapSizeX * self.Zoom) + self.PanOffset.x
@@ -196,7 +199,7 @@ function PANEL:Paint(w, h)
 
         if !table.IsEmpty(previousPos) then
 
-            local distance = math.sqrt((posX - previousPos.x)^2 + (posY - previousPos.y)^2)
+            local distance = math.sqrt((posX - previousPos.x) ^ 2 + (posY - previousPos.y) ^ 2)
 
             -- this line thickness thing took me like an hour to figure out with a pencil and paper, but shatgpt can lick my balls
             local normal = {x = (posX - previousPos.x) / distance * 1.5, y = (posY - previousPos.y) / distance * 1.5}
@@ -211,9 +214,9 @@ function PANEL:Paint(w, h)
 
             }
             if k / #RaidPositions <= progress then
-                surface.SetDrawColor(202, 20, 20, 255)
+                surface.SetDrawColor(totalLineColor)
             else
-                surface.SetDrawColor(71, 5, 5, 255)
+                surface.SetDrawColor(loadedLineColor)
             end
             draw.NoTexture()
             surface.DrawPoly(thickenedLine)
