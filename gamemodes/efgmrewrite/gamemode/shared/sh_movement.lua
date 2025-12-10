@@ -282,10 +282,10 @@ hook.Add("Move", "MovementWeight", function(ply, mv)
 
     local deduction = math.max(0, math.min(maxLossMove, math.Round(math.max(0, ply:GetNWFloat("InventoryWeight", 0.00) - underweightLimit) * 0.818, 2)))
 
-	ply:SetRunSpeed(220 - deduction)
-	ply:SetWalkSpeed(135 - deduction)
+    ply:SetRunSpeed(220 - deduction)
+    ply:SetWalkSpeed(135 - deduction)
     ply:SetLadderClimbSpeed(120 - deduction)
-	ply:SetSlowWalkSpeed(95 - deduction)
+    ply:SetSlowWalkSpeed(95 - deduction)
 
 end)
 
