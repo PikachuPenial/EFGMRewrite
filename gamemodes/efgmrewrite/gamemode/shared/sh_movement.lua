@@ -289,6 +289,7 @@ hook.Add("Move", "MovementWeight", function(ply, mv)
 
 end)
 
+local maxLossInertiaMult = 0.75
 hook.Add("SetupMove", "VBSetupMove", function(ply, mv, cmd)
     local vel = mv:GetVelocity():GetNormalized():Dot(ply:GetNW2Vector("VBLastDir"), vector_origin)
 
@@ -296,13 +297,15 @@ hook.Add("SetupMove", "VBSetupMove", function(ply, mv, cmd)
         SetInertia(ply, 0.06)
     end
 
+    local deductionMult = 1 - math.max(0, math.min(maxLossInertiaMult, math.Round(math.max(0, ply:GetNWFloat("InventoryWeight", 0.00) - underweightLimit) * 0.0136, 2)))
+
     if math.abs(cmd:GetForwardMove()) + math.abs(cmd:GetSideMove()) > 0 then
         local target = (cmd:KeyDown(IN_WALK) and 0.04) or math.min(1 - 0.15 + 0.25, 1)
         local target_speed = (cmd:KeyDown(IN_WALK) and 0.85) or 0.125
         local sprintmult = ((cmd:KeyDown(IN_SPEED) and ply:WaterLevel() < 1) and 3.5) or 1
-        SetInertia(ply, math.Approach(GetInertia(ply), target, FrameTime() * target_speed * sprintmult * 1.33))
+        SetInertia(ply, math.Approach(GetInertia(ply), target, (FrameTime() * target_speed * sprintmult * 1.33) * deductionMult))
     else
-        SetInertia(ply, math.Approach(GetInertia(ply), 0, FrameTime() * 4))
+        SetInertia(ply, math.Approach(GetInertia(ply), 0, FrameTime() * deductionMult))
     end
 
     local stept = ply:GetNW2Float("VMTime", 0) % 0.64

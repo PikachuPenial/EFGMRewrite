@@ -197,20 +197,16 @@ hook.Add("PlayerFootstep", "CustomFootstepVolume", function(ply, pos, foot, soun
 
     end
 
-    if ply:GetNW2Bool("DoStep", false) then
+    if !ply:GetNW2Bool("DoStep", false) then return true end
 
-        local fsVol = 1
-        local fsLvl = 80
-        if ply:Crouching() or ply:IsWalking() then fsVol = 0.25 fsLvl = 73 end
+    local fsVol = 1
+    local fsLvl = 80
+    if ply:Crouching() or ply:IsWalking() then fsVol = 0.25 fsLvl = 73 end
 
-        local soundLevel = math.Clamp(fsLvl, 73, 160)
+    local soundLevel = math.Clamp(fsLvl, 73, 160)
 
-        ply:EmitSound(sound, soundLevel, 100, math.min(fsVol, 1))
-        Raycast26(ply)
-
-        return true
-
-    end
+    ply:EmitSound(sound, soundLevel, 100, math.min(fsVol, 1))
+    Raycast26(ply)
 
     return true
 
