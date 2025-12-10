@@ -8143,7 +8143,7 @@ function Menu.OpenTab.Market()
     end
 
     local marketItems = vgui.Create("DIconLayout", marketItemHolder)
-    marketItems:Dock(FILL)
+    marketItems:Dock(TOP)
     marketItems:SetSpaceY(0)
     marketItems:SetSpaceX(0)
 
