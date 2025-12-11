@@ -37,6 +37,7 @@ hook.Add("StartCommand", "AdjustPlayerMovement", function(ply, cmd)
 
     if !ply:IsOnGround() then
         cmd:RemoveKey(IN_SPEED)
+        if ply:GetNW2Int("jump_count", 0) > 1 then cmd:RemoveKey(IN_DUCK) end
         if ply:Crouching() then
             cmd:AddKey(IN_DUCK)
             ply:SetCrouched(true)
@@ -58,15 +59,46 @@ hook.Add("StartCommand", "AdjustPlayerMovement", function(ply, cmd)
     end
 end)
 
--- jump viewpunch
+local jumpFatigueReset = 1.1
+local jumpFatigueMult = 0.825
+
+-- jump viewpunch and fatigue
 hook.Add("OnPlayerJump", "PlayerJump", function(ply, inWater, onFloater, speed)
-	ply:ViewPunch(Angle(-1, 0, 0))
+
+    local ct = CurTime()
+    local jumpCount = ply:GetNW2Int("jump_count", 1)
+
+    if ct - ply:GetNW2Float("last_jump", 0) < jumpFatigueReset then
+
+        jumpCount = jumpCount + 1
+
+    else
+
+        jumpCount = 1
+
+    end
+
+
+    ply:SetJumpPower(math.max(85, 140 * (jumpFatigueMult / jumpCount)))
+    ply:SetNW2Int("jump_count", jumpCount)
+    ply:SetNW2Float("last_jump", ct)
+
+    if jumpCount > 1 then timer.Create(ply:SteamID64() .. "jumpCD", 0.8, 1, function() end) end
+
+    timer.Create(ply:SteamID() .. "jumpReset", jumpFatigueReset, 1, function()
+
+        if !IsValid(ply) then return end
+        ply:SetJumpPower(140)
+        ply:SetNW2Int("jump_count", 1)
+
+    end)
+
+    ply:ViewPunch(Angle(-1, 0, 0))
+
 end)
 
 -- jump cooldown
 hook.Add("OnPlayerHitGround", "PlayerLand", function(ply, inWater, onFloater, speed)
-    timer.Create(ply:SteamID64() .. "jumpCD", 0.35, 1, function() end)
-
     if speed > 50 then
         local ang = Angle(math.floor(math.exp(speed / 256)))
         if ang:Unpack() > 45 then

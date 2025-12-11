@@ -223,9 +223,6 @@ end
 
 hook.Add("PlayerFootstep", "CustomFootstepVolume", function(ply, pos, foot, sound, volume)
 
-    -- if (game.SinglePlayer() and CLIENT) then return end
-    -- if (!game.SinglePlayer() and SERVER) then return end
-
     if !IsValid(ply) then return true end
 
     local step = "l"
@@ -248,14 +245,18 @@ hook.Add("PlayerFootstep", "CustomFootstepVolume", function(ply, pos, foot, soun
 
     local fsVol = 1
     local fsLvl = 80
-    if ply:Crouching() or ply:IsWalking() then fsVol = 0.25 fsLvl = 73 end
+
+    local vel = ply:GetVelocity()
+    local speed = vel:LengthSqr()
+
+    if ply:Crouching() or ply:IsWalking() or speed < 1 then fsVol = 0.25 fsLvl = 73 end
 
     local soundLevel = math.Clamp(fsLvl, 73, 160)
 
     ply:EmitSound(sound, soundLevel, 100, math.min(fsVol, 1))
     Raycast26(ply)
 
-    -- ply:SetNW2Bool("DoStep", false)
+    ply:SetNW2Bool("DoStep", false)
 
     return true
 
@@ -287,8 +288,6 @@ if SERVER then
         ply:EmitSound("mfw." .. footsteps_int[tr.MatType] .. "_land_" .. math.random(1,5)) 
 
     end)
-
-    --[[
 
     local SmallRatio = 10
     local BigRatio = 50
@@ -369,8 +368,6 @@ if SERVER then
         end
 
     end)
-
-    --]]
 
 end
 
