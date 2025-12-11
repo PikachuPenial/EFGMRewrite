@@ -8,6 +8,7 @@ function ENT:AcceptInput(name, ply, caller, data)
 
         local enteredRange = tobool(data)
 
+        if !IsValid(ply) then return end
         if !ply:Alive() then return end
 
         if enteredRange then
