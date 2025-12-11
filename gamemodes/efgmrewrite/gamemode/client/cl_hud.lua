@@ -48,8 +48,6 @@ local function RenderPlayerWeapon(ply)
 
     -- weapon name
     draw.DrawText(name, "BenderWeaponName", ScrW() - EFGM.ScreenScale(20), ScrH() - EFGM.ScreenScale(40), Colors.whiteColor, TEXT_ALIGN_RIGHT)
-
-    draw.DrawText(tostring(ply:GetJumpPower()), "BenderExfilList", ScrW() / 2, ScrH() - EFGM.ScreenScale(200), Colors.whiteColor, TEXT_ALIGN_CENTER)
 end
 
 -- assorted overlays

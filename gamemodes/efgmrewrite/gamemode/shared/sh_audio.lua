@@ -136,9 +136,9 @@ for i = 1, 6 do
     sound.Add( {
         name = "char_crouch_0" .. i,
         channel = CHAN_AUTO,
-        volume = 0.25,
+        volume = 0.15,
         level = 60,
-        pitch = 100,
+        pitch = 105,
         sound = "crouch/char_crouch_0" .. i .. ".wav"
     } )
 end
@@ -147,9 +147,9 @@ for i = 1, 6 do
     sound.Add( {
         name = "char_stand_0" .. i,
         channel = CHAN_AUTO,
-        volume = 0.25,
+        volume = 0.15,
         level = 60,
-        pitch = 100,
+        pitch = 105,
         sound = "standup/char_stand_0" .. i .. ".wav"
     } )
 end
