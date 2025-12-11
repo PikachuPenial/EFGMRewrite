@@ -1985,7 +1985,7 @@ EFGMITEMS = {}
         ["sizeY"] = 2,
 
         ["canPurchase"] = false,
-        ["lootWeight"] = 50,
+        ["lootWeight"] = 40,
 
         ["caliber"] = ".338",
         ["ammoID"] = "efgm_ammo_338",
@@ -2099,7 +2099,7 @@ EFGMITEMS = {}
         ["sizeX"] = 6,
         ["sizeY"] = 2,
 
-        ["lootWeight"] = 50,
+        ["lootWeight"] = 35,
 
         ["canPurchase"] = false,
 
@@ -2360,7 +2360,7 @@ EFGMITEMS = {}
         ["sizeY"] = 2,
 
         ["canPurchase"] = false,
-        ["lootWeight"] = 50,
+        ["lootWeight"] = 40,
 
         ["caliber"] = ".338",
         ["ammoID"] = "efgm_ammo_338",
