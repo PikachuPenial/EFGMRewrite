@@ -24,9 +24,10 @@ function AddItemToStash(ply, name, type, data)
 
     data.count = math.Clamp(tonumber(data.count) or 1, 1, def.stackSize)
 
-    if def.equipType == EQUIPTYPE.Weapon and !data.owner then
+    if def.equipType == EQUIPTYPE.Weapon and (!data.owner or !data.timestamp) then
 
         data.owner = ply:SteamID64()
+        data.timestamp = os.time()
 
     end
 

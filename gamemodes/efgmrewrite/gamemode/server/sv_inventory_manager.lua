@@ -65,9 +65,10 @@ function AddItemToInventory(ply, name, type, data)
 
     data.count = math.Clamp(tonumber(data.count) or 1, 1, def.stackSize)
 
-    if def.equipType == EQUIPTYPE.Weapon and !data.owner then
+    if def.equipType == EQUIPTYPE.Weapon and (!data.owner or !data.timestamp) then
 
         data.owner = ply:SteamID64()
+        data.timestamp = os.time()
 
     end
 
@@ -348,7 +349,12 @@ net.Receive("PlayerInventoryEquipItem", function(len, ply)
 
     if table.IsEmpty(ply.weaponSlots[equipSlot][equipSubSlot]) then
 
-        if !item.data.owner then item.data.owner = ply:SteamID64() end
+        if !item.data.owner or !item.data.timestamp then
+
+            item.data.owner = ply:SteamID64()
+            item.data.timestamp = os.time()
+
+        end
 
         DeleteItemFromInventory(ply, itemIndex, true)
         ply.weaponSlots[equipSlot][equipSubSlot] = item
@@ -748,9 +754,10 @@ net.Receive("PlayerInventoryLootItemFromContainer", function(len, ply)
 
     local def = EFGMITEMS[newItem.name]
 
-    if def.equipType == EQUIPTYPE.Weapon and !newItem.data.owner then
+    if def.equipType == EQUIPTYPE.Weapon and (!newItem.data.owner or !newItem.data.timestamp) then
 
         newItem.data.owner = ply:SteamID64()
+        newItem.timestamp = os.time()
 
     end
 

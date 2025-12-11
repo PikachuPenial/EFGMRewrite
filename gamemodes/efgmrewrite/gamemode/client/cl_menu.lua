@@ -1477,6 +1477,12 @@ function Menu.InspectItem(item, data)
 
         end
 
+        if data.timestamp then
+
+            infoContentText:AppendText("AQUIRED AT: " .. os.date("%x, %I:%M:%S %p", data.timestamp) .. "\n")
+
+        end
+
         if data.count != 0 and data.count != 1 and data.count != nil then
 
             infoContentText:AppendText("COUNT: " .. data.count .. "\n")
@@ -5914,7 +5920,6 @@ function Menu.ReloadMarketStash()
 
         local i = EFGMITEMS[v.name]
         if i == nil then return end
-
 
         local ownerName = nil
         if v.data.owner then steamworks.RequestPlayerInfo(v.data.owner, function(steamName) ownerName = steamName end) end

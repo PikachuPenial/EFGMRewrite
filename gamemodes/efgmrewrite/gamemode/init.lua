@@ -116,6 +116,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		local tagData = {}
 		tagData.count = 1
 		tagData.owner = victim:SteamID64()
+		tagData.timestamp = os.time()
 		tagData.tag = victim:GetNWInt("Level", 0)
 		tagData.tagLevel = victim:GetNWInt("Level", 0)
 
@@ -430,7 +431,8 @@ hook.Add("PlayerCanPickupWeapon", "InventoryWeaponPickup", function(ply, wep)
 	data.att = str
 
 	data.count = 1
-    data.owner = ply:SteamID64()
+	data.owner = ply:SteamID64()
+	data.timestamp = os.time()
 
 	tempEquipWeaponName = equipWeaponName
 	equipWeaponName = ""

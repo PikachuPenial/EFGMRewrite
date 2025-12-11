@@ -58,6 +58,7 @@ net.Receive("PlayerMarketPurchaseItem", function(len, ply)
     if def.equipType == EQUIPTYPE.Weapon then
 
         data.owner = ply:SteamID64()
+        data.timestamp = os.time()
 
     end
 
@@ -124,6 +125,7 @@ net.Receive("PlayerMarketPurchaseItemToInventory", function(len, ply)
     if def.equipType == EQUIPTYPE.Weapon then
 
         data.owner = ply:SteamID64()
+        data.timestamp = os.time()
 
     end
 
