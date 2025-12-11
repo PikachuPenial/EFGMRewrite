@@ -132,6 +132,50 @@ for i = 1, 5 do
     end
 end
 
+for i = 1, 6 do
+    sound.Add( {
+        name = "char_crouch_0" .. i,
+        channel = CHAN_AUTO,
+        volume = 0.25,
+        level = 60,
+        pitch = 100,
+        sound = "crouch/char_crouch_0" .. i .. ".wav"
+    } )
+end
+
+for i = 1, 6 do
+    sound.Add( {
+        name = "char_stand_0" .. i,
+        channel = CHAN_AUTO,
+        volume = 0.25,
+        level = 60,
+        pitch = 100,
+        sound = "standup/char_stand_0" .. i .. ".wav"
+    } )
+end
+
+for i = 1, 5 do
+    sound.Add( {
+        name = "rattle_" .. i,
+        channel = CHAN_AUTO,
+        volume = 0.2,
+        level = 80,
+        pitch = 100,
+        sound = "foley/rattle/longweapon_jam_rattle" .. i .. ".wav"
+    } )
+end
+
+for i = 1, 7 do
+    sound.Add( {
+        name = "rotate_" .. i,
+        channel = CHAN_AUTO,
+        volume = 0.2,
+        level = 80,
+        pitch = 100,
+        sound = "foley/rotate/char_foley_gear_shake_long_0" .. i .. ".wav"
+    } )
+end
+
 sound.Add( {
     name = "Player.FallDamage",
     channel = CHAN_AUTO,
@@ -179,6 +223,9 @@ end
 
 hook.Add("PlayerFootstep", "CustomFootstepVolume", function(ply, pos, foot, sound, volume)
 
+    if (game.SinglePlayer() and CLIENT) then return end
+    if (!game.SinglePlayer() and SERVER) then return end
+
     if !IsValid(ply) then return true end
 
     local step = "l"
@@ -208,6 +255,8 @@ hook.Add("PlayerFootstep", "CustomFootstepVolume", function(ply, pos, foot, soun
     ply:EmitSound(sound, soundLevel, 100, math.min(fsVol, 1))
     Raycast26(ply)
 
+    ply:SetNW2Bool("DoStep", false)
+
     return true
 
 end)
@@ -236,6 +285,86 @@ if SERVER then
         if (footsteps_int[tr.MatType] == nil) then return end
 
         ply:EmitSound("mfw." .. footsteps_int[tr.MatType] .. "_land_" .. math.random(1,5)) 
+
+    end)
+
+    local SmallRatio = 10
+    local BigRatio = 50
+    local RatioDelayCheck = 0.2
+
+    local function SmallTurn(ply)
+
+        if ply.NextSmallTurn <= CurTime() then
+
+            ply.NextSmallTurn = CurTime() + 0.9
+            ply:EmitSound("rattle_" .. math.random(1, 5), 80, math.random(95,105), 0.2, CHAN_AUTO)
+            ply:EmitSound("rotate_" .. math.random(1, 7), 80, math.random(95,105), 0.2, CHAN_AUTO)
+
+        end
+
+    end
+
+    local function BigTurn(ply)
+
+        if ply.NextBigTurn <= CurTime() then
+
+            ply:SetNW2Bool("DoStep", true)
+            ply:PlayStepSound(0.25)
+
+            timer.Simple(0.25,function()
+
+                ply:EmitSound("rattle_" .. math.random(1, 5), 85, math.random(95,105), 0.35, CHAN_AUTO)
+                ply:EmitSound("rotate_" .. math.random(1, 7), 85, math.random(95,105), 0.35, CHAN_AUTO)
+
+            end)
+
+            ply.NextBigTurn = CurTime() + 0.35
+
+        end
+
+    end
+
+    -- turning sounds
+    hook.Add("PlayerTick", "TurningSounds", function(ply, mv)
+
+        if !ply.TurnReady then
+
+            ply.NextTurn = CurTime()
+            ply.OldAng = 0
+            ply.CurrentAng = 0
+            ply.TurnReady = true
+            ply.NextBigTurn = CurTime()
+            ply.NextSmallTurn = CurTime()
+            return
+
+        end
+
+        if ply:GetMoveType() == MOVETYPE_NOCLIP then return end
+
+        ply.CurrentAng = mv:GetAbsMoveAngles().y
+
+        local vel = ply:GetVelocity():Length()
+
+        if ply.NextTurn <= CurTime() then
+            ply.NextTurn = CurTime() + RatioDelayCheck
+            if ply.OldAng != ply.CurrentAng then
+
+                local a1 = math.abs(ply.OldAng)
+                local a2 = math.abs(ply.CurrentAng)
+
+                if math.abs(a1 - a2) >= SmallRatio and vel < 1 then
+                    SmallTurn(ply)
+                end
+
+                if math.abs(a1 - a2) >= BigRatio and vel < 1 then
+                    BigTurn(ply)
+                end
+
+                ply.OldAng = mv:GetAbsMoveAngles().y
+
+            end
+
+        end
 
     end)
 

@@ -280,12 +280,24 @@ end)
 local maxLossMove = 45
 hook.Add("Move", "MovementWeight", function(ply, mv)
 
+    if !ply:Alive() then return end
+
     local deduction = math.max(0, math.min(maxLossMove, math.Round(math.max(0, ply:GetNWFloat("InventoryWeight", 0.00) - underweightLimit) * 0.818, 2)))
 
     ply:SetRunSpeed(220 - deduction)
     ply:SetWalkSpeed(135 - deduction)
     ply:SetLadderClimbSpeed(120 - deduction)
     ply:SetSlowWalkSpeed(95 - deduction)
+
+    if !ply:IsOnGround() then return end
+
+    if ply:KeyPressed(IN_DUCK) and !ply:Crouching() then
+        ply:EmitSound("char_crouch_0" .. math.random(1, 6), 60, math.random(95, 105), 0.25, CHAN_AUTO)
+    end
+
+    if ply:KeyReleased(IN_DUCK) and ply:IsFlagSet(FL_ANIMDUCKING) then
+        ply:EmitSound("char_stand_0" .. math.random(1, 6), 60, math.random(95, 105), 0.25, CHAN_AUTO)
+    end
 
 end)
 
