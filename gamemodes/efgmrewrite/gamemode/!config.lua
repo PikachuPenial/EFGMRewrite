@@ -163,6 +163,8 @@ if CLIENT then
     RunConsoleCommand("arc9_vm_cambob", "1")
     RunConsoleCommand("arc9_vm_cambobwalk", "1")
     RunConsoleCommand("arc9_vm_cambobintensity", "0.66")
+    RunConsoleCommand("arc9_vm_camrollstrength", "0.66")
+    RunConsoleCommand("arc9_vm_camstrength", "0.66")
 
     -- tpik
     RunConsoleCommand("arc9_tpik", "1")

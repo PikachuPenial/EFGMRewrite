@@ -1275,9 +1275,7 @@ net.Receive("PlayerInventoryFixDesyncCL", function(len, ply)
 	UpdateInventoryString(ply)
 	UpdateEquippedString(ply)
 
-    net.Start("PlayerNetworkStash", false)
-    net.WriteString(stashString)
-    net.Send(ply)
+    SendChunkedNet(ply, stashString, "PlayerNetworkStash")
 
     net.Start("PlayerNetworkInventory", false)
     net.WriteString(inventoryString)

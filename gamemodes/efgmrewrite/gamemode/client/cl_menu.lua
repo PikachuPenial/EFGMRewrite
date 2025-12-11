@@ -11549,6 +11549,20 @@ function Menu.OpenTab.Settings()
     lensFlare:SetConVar("efgm_visuals_lensflare")
     lensFlare:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
 
+    local vmLightingPanel = vgui.Create("DPanel", visuals)
+    vmLightingPanel:Dock(TOP)
+    vmLightingPanel:SetSize(0, EFGM.MenuScale(50))
+    function vmLightingPanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("High Quality Viewmodel Lighting", "Purista18", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+
+    end
+
+    local vmLighting = vgui.Create("DCheckBox", vmLightingPanel)
+    vmLighting:SetPos(EFGM.MenuScale(152), EFGM.MenuScale(30))
+    vmLighting:SetConVar("arc9_drawprojectedlights")
+    vmLighting:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+
     local impactFXPanel = vgui.Create("DPanel", visuals)
     impactFXPanel:Dock(TOP)
     impactFXPanel:SetSize(0, EFGM.MenuScale(50))
@@ -11655,8 +11669,21 @@ function Menu.OpenTab.Settings()
     end
 
     -- misc
+    local clearDecals = vgui.Create("DButton", misc)
+    clearDecals:Dock(TOP)
+    clearDecals:DockMargin(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), 0)
+    clearDecals:SetText("CLEAR ALL DECALS")
+
+    function clearDecals:DoClick()
+
+        surface.PlaySound("ui/element_select.wav")
+        RunConsoleCommand("r_cleardecals")
+
+    end
+
     local fixInvDesync = vgui.Create("DButton", misc)
     fixInvDesync:Dock(TOP)
+    fixInvDesync:DockMargin(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), 0)
     fixInvDesync:SetText("FIX INVENTORY DESYNC")
 
     function fixInvDesync:DoClick()
@@ -11664,7 +11691,7 @@ function Menu.OpenTab.Settings()
         if timer.Exists(Menu.Player:SteamID() .. "desyncCD") then surface.PlaySound("ui/element_deselect.wav") return end
 
         surface.PlaySound("ui/element_select.wav")
-        net.Start("RemovePlayerSquadRF")
+        net.Start("PlayerInventoryFixDesyncCL")
         net.SendToServer()
 
         timer.Create(Menu.Player:SteamID() .. "desyncCD", 60, 1, function() end)

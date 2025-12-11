@@ -1,5 +1,3 @@
-isArena = (GetConVar("efgm_arenamode"):GetInt() == 1) or false -- fixed it :D
-
 AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 include("shared.lua")
@@ -39,7 +37,7 @@ function GM:Initialize()
 
 	print("Escape From Garry's Mod Rewrite has been initialized on " .. game.GetMap())
 
-	RunConsoleCommand("sv_airaccelerate", "1") 		-- what is a titanmod?
+	RunConsoleCommand("sv_airaccelerate", "2") 		-- what is a titanmod?
 	RunConsoleCommand("mp_falldamage", "1") 		-- what is a titanmod? part two, electric boogaloo
 	RunConsoleCommand("mp_show_voice_icons", "0") 	-- disable vc icons over heads
 	RunConsoleCommand("decalfrequency", "1")
