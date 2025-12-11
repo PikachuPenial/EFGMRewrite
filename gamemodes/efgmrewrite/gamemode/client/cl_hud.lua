@@ -1513,6 +1513,9 @@ function HUDInspectItem(item, data, panel)
 
     end
 
+    local ownerName = nil
+    if data.owner then steamworks.RequestPlayerInfo(data.owner, function(steamName) ownerName = steamName end) end
+
     surface.SetFont("PuristaBold18")
     local itemDescText = string.upper(i.displayType) .. " / " .. string.upper(weight) .. "KG" .. " / ₽" .. string.upper(comma_value(value))
     if i.canPurchase == true or i.canPurchase == nil then itemDescText = itemDescText .. " / LEVEL " .. string.upper(i.levelReq) end
@@ -1788,9 +1791,9 @@ function HUDInspectItem(item, data, panel)
         infoContentText:SetVerticalScrollbarEnabled(true)
         infoContentText:InsertColorChange(255, 255, 255, 255)
 
-        if data.owner then
+        if ownerName then
 
-            infoContentText:AppendText("OWNER: " .. data.owner .. "\n")
+            infoContentText:AppendText("OWNER: " .. ownerName .. "\n")
 
         end
 

@@ -1193,6 +1193,9 @@ function Menu.InspectItem(item, data)
 
     end
 
+    local ownerName = nil
+    if data.owner then steamworks.RequestPlayerInfo(data.owner, function(steamName) ownerName = steamName end) end
+
     surface.SetFont("PuristaBold18")
     local itemDescText = string.upper(i.displayType) .. " / " .. string.upper(weight) .. "KG" .. " / ₽" .. string.upper(comma_value(value))
     if i.canPurchase == true or i.canPurchase == nil then itemDescText = itemDescText .. " / LEVEL " .. string.upper(i.levelReq) end
@@ -1468,9 +1471,9 @@ function Menu.InspectItem(item, data)
         infoContentText:SetVerticalScrollbarEnabled(true)
         infoContentText:InsertColorChange(255, 255, 255, 255)
 
-        if data.owner then
+        if ownerName then
 
-            infoContentText:AppendText("OWNER: " .. data.owner .. "\n")
+            infoContentText:AppendText("OWNER: " .. ownerName .. "\n")
 
         end
 
@@ -3227,9 +3230,12 @@ function Menu.ReloadInventory()
         local i = EFGMITEMS[v.name]
         if i == nil then return end
 
+        local ownerName = nil
+        if v.data.owner then steamworks.RequestPlayerInfo(v.data.owner, function(steamName) ownerName = steamName end) end
+
         if itemSearchText then itemSearch = itemSearchText end
 
-        if itemSearch != "" and itemSearch != nil and !(string.find((i.fullName and i.fullName or i.displayName):lower(), itemSearch) or string.find((v.data.tag or ""):lower(), itemSearch) or string.find((v.data.owner or ""):lower(), itemSearch)) then continue end
+        if itemSearch != "" and itemSearch != nil and !(string.find((i.fullName and i.fullName or i.displayName):lower(), itemSearch) or string.find((v.data.tag or ""):lower(), itemSearch) or string.find((ownerName or ""):lower(), itemSearch)) then continue end
 
         local item = playerItems:Add("DButton")
         item:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
@@ -5410,9 +5416,12 @@ function Menu.ReloadStash()
         local i = EFGMITEMS[v.name]
         if i == nil then return end
 
+        local ownerName = nil
+        if v.data.owner then steamworks.RequestPlayerInfo(v.data.owner, function(steamName) ownerName = steamName end) end
+
         if stashItemSearchText then itemSearch = stashItemSearchText end
 
-        if itemSearch != "" and itemSearch != nil and !(string.find((i.fullName and i.fullName or i.displayName):lower(), itemSearch) or string.find((v.data.tag or ""):lower(), itemSearch) or string.find((v.data.owner or ""):lower(), itemSearch)) then continue end
+        if itemSearch != "" and itemSearch != nil and !(string.find((i.fullName and i.fullName or i.displayName):lower(), itemSearch) or string.find((v.data.tag or ""):lower(), itemSearch) or string.find((ownerName or ""):lower(), itemSearch)) then continue end
 
         if i.consumableType != "heal" and i.consumableType != "key" then
 
@@ -5906,9 +5915,13 @@ function Menu.ReloadMarketStash()
         local i = EFGMITEMS[v.name]
         if i == nil then return end
 
+
+        local ownerName = nil
+        if v.data.owner then steamworks.RequestPlayerInfo(v.data.owner, function(steamName) ownerName = steamName end) end
+
         if marketStashItemSearchText then itemSearch = marketStashItemSearchText end
 
-        if itemSearch != "" and itemSearch != nil and !(string.find((i.fullName and i.fullName or i.displayName):lower(), itemSearch) or string.find((v.data.tag or ""):lower(), itemSearch) or string.find((v.data.owner or ""):lower(), itemSearch)) then continue end
+        if itemSearch != "" and itemSearch != nil and !(string.find((i.fullName and i.fullName or i.displayName):lower(), itemSearch) or string.find((v.data.tag or ""):lower(), itemSearch) or string.find((ownerName or ""):lower(), itemSearch)) then continue end
 
         local itemValue
 

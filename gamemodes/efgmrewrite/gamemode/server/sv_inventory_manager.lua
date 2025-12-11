@@ -67,7 +67,7 @@ function AddItemToInventory(ply, name, type, data)
 
     if def.equipType == EQUIPTYPE.Weapon and !data.owner then
 
-        data.owner = ply:GetName()
+        data.owner = ply:SteamID64()
 
     end
 
@@ -348,7 +348,7 @@ net.Receive("PlayerInventoryEquipItem", function(len, ply)
 
     if table.IsEmpty(ply.weaponSlots[equipSlot][equipSubSlot]) then
 
-        if !item.data.owner then item.data.owner = ply:GetName() end
+        if !item.data.owner then item.data.owner = ply:SteamID64() end
 
         DeleteItemFromInventory(ply, itemIndex, true)
         ply.weaponSlots[equipSlot][equipSubSlot] = item
@@ -750,7 +750,7 @@ net.Receive("PlayerInventoryLootItemFromContainer", function(len, ply)
 
     if def.equipType == EQUIPTYPE.Weapon and !newItem.data.owner then
 
-        newItem.data.owner = ply:GetName()
+        newItem.data.owner = ply:SteamID64()
 
     end
 

@@ -57,7 +57,7 @@ net.Receive("PlayerMarketPurchaseItem", function(len, ply)
 
     if def.equipType == EQUIPTYPE.Weapon then
 
-        data.owner = ply:GetName()
+        data.owner = ply:SteamID64()
 
     end
 
@@ -123,7 +123,7 @@ net.Receive("PlayerMarketPurchaseItemToInventory", function(len, ply)
 
     if def.equipType == EQUIPTYPE.Weapon then
 
-        data.owner = ply:GetName()
+        data.owner = ply:SteamID64()
 
     end
 

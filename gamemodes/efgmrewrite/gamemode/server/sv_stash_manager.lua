@@ -26,7 +26,7 @@ function AddItemToStash(ply, name, type, data)
 
     if def.equipType == EQUIPTYPE.Weapon and !data.owner then
 
-        data.owner = ply:GetName()
+        data.owner = ply:SteamID64()
 
     end
 
