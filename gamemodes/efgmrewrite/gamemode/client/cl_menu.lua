@@ -7039,6 +7039,7 @@ function Menu.OpenTab.Inventory(container)
     local maxWeight = 85
     local weightText = usedWeight .. " / " .. maxWeight .. "KG"
     local weightTextSize = surface.GetTextSize(weightText)
+    local weightColor
     itemsText.Paint = function(s, w, h)
 
         surface.SetFont("PuristaBold24")
@@ -7063,13 +7064,14 @@ function Menu.OpenTab.Inventory(container)
 
         -- used weight capacity
         if Menu.Player:GetNWFloat("InventoryWeight", 0.00) < 30 then
-            surface.SetDrawColor(Colors.weightUnderColor)
+            weightColor = Colors.weightUnderColor
         elseif Menu.Player:GetNWFloat("InventoryWeight", 0.00) >= 30 and Menu.Player:GetNWFloat("InventoryWeight", 0.00) < 85 then
-            surface.SetDrawColor(Colors.weightWarningColor)
+            weightColor = Colors.weightWarningColor
         elseif Menu.Player:GetNWFloat("InventoryWeight", 0.00) >= 85 then
-            surface.SetDrawColor(Colors.weightMaxColor)
+            weightColor = Colors.weightMaxColor
         end
 
+        surface.SetDrawColor(weightColor)
         surface.DrawRect(EFGM.MenuScale(30), EFGM.MenuScale(7), math.min(EFGM.MenuScale((usedWeight / maxWeight) * 180), 180), EFGM.MenuScale(16))
 
         surface.SetDrawColor(Colors.whiteBorderColor)
@@ -7080,10 +7082,124 @@ function Menu.OpenTab.Inventory(container)
 
     end
 
-    local weightIcon = vgui.Create("DImage", itemsHolder)
+    local weightIcon = vgui.Create("DImageButton", itemsHolder)
     weightIcon:SetPos(EFGM.MenuScale(0), EFGM.MenuScale(1))
     weightIcon:SetSize(EFGM.MenuScale(28), EFGM.MenuScale(28))
     weightIcon:SetImage("icons/weight_icon.png")
+    weightIcon:SetDepressImage(false)
+
+    weightIcon.OnCursorEntered = function(s)
+
+        x, y = Menu.MouseX, Menu.MouseY
+        surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
+
+        if x <= (ScrW() / 2) then sideH = true else sideH = false end
+        if y <= (ScrH() / 2) then sideV = true else sideV = false end
+
+        local function UpdatePopOutPos()
+
+            if sideH == true then
+
+                weightPopOut:SetX(math.Clamp(x + EFGM.MenuScale(15), EFGM.MenuScale(10), ScrW() - weightPopOut:GetWide() - EFGM.MenuScale(10)))
+
+            else
+
+                weightPopOut:SetX(math.Clamp(x - weightPopOut:GetWide() - EFGM.MenuScale(15), EFGM.MenuScale(10), ScrW() - weightPopOut:GetWide() - EFGM.MenuScale(10)))
+
+            end
+
+            if sideV == true then
+
+                weightPopOut:SetY(math.Clamp(y + EFGM.MenuScale(15), EFGM.MenuScale(60), ScrH() - weightPopOut:GetTall() - EFGM.MenuScale(20)))
+
+            else
+
+                weightPopOut:SetY(math.Clamp(y - weightPopOut:GetTall() + EFGM.MenuScale(15), EFGM.MenuScale(60), ScrH() - weightPopOut:GetTall() - EFGM.MenuScale(20)))
+
+            end
+
+        end
+
+        if IsValid(weightPopOut) then weightPopOut:Remove() end
+        weightPopOut = vgui.Create("DPanel", Menu.MenuFrame)
+        weightPopOut:SetSize(EFGM.MenuScale(560), EFGM.MenuScale(165))
+        UpdatePopOutPos()
+        weightPopOut:AlphaTo(255, 0.1, 0, nil)
+        weightPopOut:SetMouseInputEnabled(false)
+
+        local maxLossMove = 45
+        local maxLossInertia = 0.75
+        local maxLossADS = 3
+        local maxLossSway = 1.2
+        local maxLossLean = 0.6
+
+        weightPopOut.Paint = function(s, w, h)
+
+            if !IsValid(s) then return end
+
+            BlurPanel(s, EFGM.MenuScale(3))
+
+            -- panel position follows mouse position
+            x, y = Menu.MouseX, Menu.MouseY
+
+            UpdatePopOutPos()
+
+            surface.SetDrawColor(Color(0, 0, 0, 205))
+            surface.DrawRect(0, 0, w, h)
+
+            surface.SetDrawColor(Color(55, 55, 55, 45))
+            surface.DrawRect(0, 0, w, h)
+
+            surface.SetDrawColor(Color(55, 55, 55))
+            surface.DrawRect(0, 0, w, EFGM.MenuScale(5))
+
+            surface.SetDrawColor(Colors.transparentWhiteColor)
+            surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+            surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+
+            draw.SimpleTextOutlined("WEIGHT", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+            draw.SimpleTextOutlined("Your carry weight can begin to negatively affect your character if it goes unchecked.", "Purista18", EFGM.MenuScale(5), EFGM.MenuScale(25), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+
+            draw.SimpleTextOutlined("EFFECTS", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(50), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+            draw.SimpleTextOutlined("MOVEMENT SPEED: -" .. math.max(0, math.min(maxLossMove, math.Round(math.max(0, Menu.Player:GetNWFloat("InventoryWeight", 0.00) - underweightLimit) * 0.818, 2))) .. "u/s", "PuristaBold16", EFGM.MenuScale(5), EFGM.MenuScale(70), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+            draw.SimpleTextOutlined("MOVEMENT INERTIA: +" .. math.max(0, math.min(maxLossInertia, math.Round(math.max(0, Menu.Player:GetNWFloat("InventoryWeight", 0.00) - underweightLimit) * 0.0136, 2))) * 100 .. "%", "PuristaBold16", EFGM.MenuScale(5), EFGM.MenuScale(83), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+            draw.SimpleTextOutlined("AIM DOWN SIGHTS TIME: +" .. math.max(1, 1 + math.min(maxLossADS, math.Round((math.max(0, Menu.Player:GetNWFloat("InventoryWeight", 0.00) - underweightLimit) * 0.011) * 5, 2))) * 100 .. "%", "PuristaBold16", EFGM.MenuScale(5), EFGM.MenuScale(96), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+            draw.SimpleTextOutlined("WEAPON SWAY: +" .. math.max(1, 1 + math.min(maxLossSway, math.Round((math.max(0, Menu.Player:GetNWFloat("InventoryWeight", 0.00) - underweightLimit) * 0.011) * 2, 2))) * 100 .. "%", "PuristaBold16", EFGM.MenuScale(5), EFGM.MenuScale(109), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+            draw.SimpleTextOutlined("LEANING SPEED: -" .. 100 - math.min(1, 1 - math.min(maxLossLean, math.Round(math.max(0, Menu.Player:GetNWFloat("InventoryWeight", 0.00) - underweightLimit) * 0.0109, 2))) * 100 .. "%", "PuristaBold16", EFGM.MenuScale(5), EFGM.MenuScale(122), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+
+            surface.SetDrawColor(Colors.transparentWhiteColor)
+            surface.DrawRect(EFGM.MenuScale(5), EFGM.MenuScale(150), EFGM.MenuScale(550), EFGM.MenuScale(1))
+            surface.DrawRect(EFGM.MenuScale(5), EFGM.MenuScale(159), EFGM.MenuScale(550), EFGM.MenuScale(1))
+            surface.DrawRect(EFGM.MenuScale(5), EFGM.MenuScale(150), EFGM.MenuScale(1), EFGM.MenuScale(10))
+            surface.DrawRect(EFGM.MenuScale(554), EFGM.MenuScale(150), EFGM.MenuScale(1), EFGM.MenuScale(10))
+
+            surface.SetDrawColor(Color(255, 255, 0, 55))
+            surface.DrawRect(EFGM.MenuScale(202), EFGM.MenuScale(150), EFGM.MenuScale(10), EFGM.MenuScale(10))
+
+            surface.SetDrawColor(Color(255, 0, 0, 55))
+            surface.DrawRect(EFGM.MenuScale(545), EFGM.MenuScale(150), EFGM.MenuScale(10), EFGM.MenuScale(10))
+
+            surface.SetDrawColor(30, 30, 30, 125)
+            surface.DrawRect(EFGM.MenuScale(5), EFGM.MenuScale(150), EFGM.MenuScale(550), EFGM.MenuScale(10))
+
+            surface.SetDrawColor(weightColor)
+            surface.DrawRect(EFGM.MenuScale(5), EFGM.MenuScale(150), math.min(EFGM.MenuScale((usedWeight / maxWeight) * 550), 550), EFGM.MenuScale(10))
+
+        end
+
+    end
+
+    weightIcon.OnCursorExited = function(s)
+
+        if IsValid(weightPopOut) then
+
+            weightPopOut:AlphaTo(0, 0.1, 0, function() weightPopOut:Remove() end)
+
+        end
+
+    end
 
     local unloadText = ""
     local unloadTextSize = EFGM.MenuScale(-15)

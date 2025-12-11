@@ -113,7 +113,7 @@ end )
 local distance = 16
 local leanSpeed = 1.5
 local interp = 2
-local maxLossSway = 0.6
+local maxLossLean = 0.6
 
 local hull_size_5 = Vector(6.3, 6.3, 6.3)
 local hull_size_5_negative = Vector(-6.3, -6.3, -6.3)
@@ -127,7 +127,7 @@ hook.Add("SetupMove", "Leaning", function(ply, mv, cmd)
     local leaning_left = ply:GetNW2Bool("leaning_left")
     local leaning_right = ply:GetNW2Bool("leaning_right")
 
-    local speed = leanSpeed * math.min(1, 1 - math.min(maxLossSway, math.Round(math.max(0, ply:GetNWFloat("InventoryWeight", 0.00) - underweightLimit) * 0.0109, 2)))
+    local speed = leanSpeed * math.min(1, 1 - math.min(maxLossLean, math.Round(math.max(0, ply:GetNWFloat("InventoryWeight", 0.00) - underweightLimit) * 0.0109, 2)))
 
     if !ply:IsSprinting() then
         if leaning_left then fraction = Lerp(FrameTime() * 5 * speed + FrameTime(), fraction, -1) end
