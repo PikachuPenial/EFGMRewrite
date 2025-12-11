@@ -407,6 +407,38 @@ end
 util.AddNetworkString("PlayerNetworkStash")
 util.AddNetworkString("PlayerNetworkInventory")
 util.AddNetworkString("PlayerNetworkEquipped")
+util.AddNetworkString("SendLargeTableChunk")
+util.AddNetworkString("SendLargeTableComplete")
+
+function SplitNetByChunk(text, chunkSize)
+
+	local chunks = {}
+
+	for i = 1, #text, chunkSize do  chunks[#chunks + 1] = text:sub(i, i + chunkSize - 1) end
+
+	return chunks
+
+end
+
+function SendChunkedNet(ply, str, netStr)
+
+	local chunkSize = 61440 -- 60kb, limit is 64kb, to be safe
+	local chunks = SplitNetByChunk(str, chunkSize)
+	local chunkCount = #chunks
+	local uID = CurTime()
+
+	for i, c in ipairs(chunks) do
+
+        net.Start(netStr)
+        net.WriteFloat(uID)
+        net.WriteUInt(i, 16)
+        net.WriteUInt(chunkCount, 16)
+        net.WriteString(c)
+        net.Send(ply)
+
+    end
+
+end
 
 -- Yo the way this shit works is very cool, nice job pene
 function SetupPlayerData(ply)
@@ -490,9 +522,7 @@ function SetupPlayerData(ply)
 
 	CalculateInventoryWeight(ply)
 
-	net.Start("PlayerNetworkStash", false)
-	net.WriteString(stashString)
-	net.Send(ply)
+	SendChunkedNet(ply, stashString, "PlayerNetworkStash")
 
 	net.Start("PlayerNetworkInventory", false)
 	net.WriteString(inventoryString)

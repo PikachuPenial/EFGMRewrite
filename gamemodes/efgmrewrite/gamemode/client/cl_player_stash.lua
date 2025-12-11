@@ -1,7 +1,9 @@
 
-net.Receive("PlayerNetworkStash", function(len, ply)
+local chunkedStash = {}
 
-    local stashStr = net.ReadString()
+hook.Add("OnStashChunked", "NetworkStash", function(str, uID)
+
+    local stashStr = str
 
     stashStr = util.Base64Decode(stashStr)
     stashStr = util.Decompress(stashStr)
@@ -12,6 +14,45 @@ net.Receive("PlayerNetworkStash", function(len, ply)
 
     playerStash = stashTbl
     if playerStash == nil then playerStash = {} end
+
+end)
+
+net.Receive("PlayerNetworkStash", function(len, ply)
+
+    local uID = net.ReadFloat()
+    local index = net.ReadUInt(16)
+    local chunkCount = net.ReadUInt(16)
+    local chunk = net.ReadString()
+
+    if !chunkedStash[uID] then
+
+        chunkedStash[uID] = {
+
+            Chunks = {},
+            ReceivedCount = 0,
+            TotalCount = chunkCount
+
+        }
+
+    end
+
+    chunkedStash[uID].Chunks[index] = chunk
+    chunkedStash[uID].ReceivedCount = chunkedStash[uID].ReceivedCount + 1
+
+    if chunkedStash[uID].ReceivedCount == chunkedStash[uID].TotalCount then
+
+        local str = ""
+
+        for i = 1, chunkCount do
+
+            str = str .. chunkedStash[uID].Chunks[i]
+
+        end
+
+        hook.Run("OnStashChunked", str, uID)
+        chunkedStash[uID] = nil
+
+    end
 
 end )
 

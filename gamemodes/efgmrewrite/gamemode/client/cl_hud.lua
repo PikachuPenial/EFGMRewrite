@@ -924,7 +924,7 @@ net.Receive("CreateDeathInformation", function()
             if killedByWeapon != nil and killedByWeapon != "" then
 
                 local def = EFGMITEMS[killedByWeapon]
-                if table.IsEmpty(def) then return end
+                if def == nil then return end
 
                 local KilledWithButton = vgui.Create("DButton", KillerPanel)
                 KilledWithButton:SetPos(EFGM.MenuScale(5), EFGM.MenuScale(569))

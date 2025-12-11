@@ -291,13 +291,13 @@ hook.Add("Move", "MovementWeight", function(ply, mv)
 
     if !ply:IsOnGround() then return end
 
-    if ply:KeyPressed(IN_DUCK) and !ply:Crouching() then
-        ply:EmitSound("char_crouch_0" .. math.random(1, 6), 60, math.random(95, 105), 0.25, CHAN_AUTO)
-    end
+    -- if ply:KeyPressed(IN_DUCK) and !ply:Crouching() then
+        -- ply:EmitSound("char_crouch_0" .. math.random(1, 6), 60, math.random(95, 105), 0.25, CHAN_AUTO)
+    -- end
 
-    if ply:KeyReleased(IN_DUCK) and ply:IsFlagSet(FL_ANIMDUCKING) then
-        ply:EmitSound("char_stand_0" .. math.random(1, 6), 60, math.random(95, 105), 0.25, CHAN_AUTO)
-    end
+    -- if ply:KeyReleased(IN_DUCK) and ply:IsFlagSet(FL_ANIMDUCKING) then
+        -- ply:EmitSound("char_stand_0" .. math.random(1, 6), 60, math.random(95, 105), 0.25, CHAN_AUTO)
+    -- end
 
 end)
 

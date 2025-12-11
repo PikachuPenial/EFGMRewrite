@@ -3349,7 +3349,7 @@ function Menu.ReloadInventory()
 
         function item:DoDoubleClick()
 
-            if GetConVar("efgm_menu_doubleclick_consume"):GetInt() == 1 and Menu.Player:CompareStatus(0) and i.equipType == EQUIPTYPE.Consumable then
+            if GetConVar("efgm_menu_doubleclick_consume"):GetInt() == 1 and !Menu.Player:CompareStatus(0) and i.equipType == EQUIPTYPE.Consumable then
 
                 ConsumeItemFromInventory(v.id)
                 surface.PlaySound("ui/element_consume.wav")
@@ -3444,7 +3444,7 @@ function Menu.ReloadInventory()
             actions.stashable = Menu.Player:CompareStatus(0) and table.IsEmpty(Menu.Container)
             actions.equipable = i.equipType == EQUIPTYPE.Weapon
             actions.splittable = i.stackSize > 1 and v.data.count > 1
-            actions.consumable = Menu.Player:CompareStatus(0) and i.equipType == EQUIPTYPE.Consumable
+            actions.consumable = !Menu.Player:CompareStatus(0) and i.equipType == EQUIPTYPE.Consumable
             actions.deletable = Menu.Player:CompareStatus(0)
             actions.ammoBuyable = Menu.Player:CompareStatus(0) and i.ammoID
             actions.taggable = Menu.Player:CompareStatus(0) and v.data.tag == nil and (actions.ammoBuyable or i.equipSlot == WEAPONSLOTS.MELEE.ID)
@@ -11199,7 +11199,7 @@ function Menu.OpenTab.Settings()
     local customizeWeapon = vgui.Create("DBinder", customizeWeaponPanel)
     customizeWeapon:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(40))
     customizeWeapon:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
-    customizeWeapon:SetSelectedNumber(input.GetKeyCode(input.LookupBinding("+menu_context")))
+    customizeWeapon:SetSelectedNumber(input.GetKeyCode(input.LookupBinding("+menu_context") or 0))
     customizeWeapon:SetEnabled(false)
     customizeWeapon:SetTooltip(nil)
 
@@ -11216,7 +11216,7 @@ function Menu.OpenTab.Settings()
     local toggleTactical = vgui.Create("DBinder", toggleTacticalPanel)
     toggleTactical:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(40))
     toggleTactical:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
-    toggleTactical:SetSelectedNumber(input.GetKeyCode(input.LookupBinding("impulse 100")))
+    toggleTactical:SetSelectedNumber(input.GetKeyCode(input.LookupBinding("impulse 100") or 0))
     toggleTactical:SetEnabled(false)
     toggleTactical:SetTooltip(nil)
 
@@ -11233,7 +11233,7 @@ function Menu.OpenTab.Settings()
     local graduallyZoomInScope = vgui.Create("DBinder", graduallyZoomInScopePanel)
     graduallyZoomInScope:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(40))
     graduallyZoomInScope:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
-    graduallyZoomInScope:SetSelectedNumber(input.GetKeyCode(input.LookupBinding("invprev")))
+    graduallyZoomInScope:SetSelectedNumber(input.GetKeyCode(input.LookupBinding("invprev") or 0))
     graduallyZoomInScope:SetEnabled(false)
     graduallyZoomInScope:SetTooltip(nil)
 
@@ -11250,7 +11250,7 @@ function Menu.OpenTab.Settings()
     local graduallyZoomOutScope = vgui.Create("DBinder", graduallyZoomOutScopePanel)
     graduallyZoomOutScope:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(40))
     graduallyZoomOutScope:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
-    graduallyZoomOutScope:SetSelectedNumber(input.GetKeyCode(input.LookupBinding("invnext")))
+    graduallyZoomOutScope:SetSelectedNumber(input.GetKeyCode(input.LookupBinding("invnext") or 0))
     graduallyZoomOutScope:SetEnabled(false)
     graduallyZoomOutScope:SetTooltip(nil)
 
@@ -11267,7 +11267,7 @@ function Menu.OpenTab.Settings()
     local transmitVoice = vgui.Create("DBinder", transmitVoicePanel)
     transmitVoice:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(40))
     transmitVoice:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
-    transmitVoice:SetSelectedNumber(input.GetKeyCode(input.LookupBinding("+voicerecord")))
+    transmitVoice:SetSelectedNumber(input.GetKeyCode(input.LookupBinding("+voicerecord") or 0))
     transmitVoice:SetEnabled(false)
     transmitVoice:SetTooltip(nil)
 
@@ -11284,7 +11284,7 @@ function Menu.OpenTab.Settings()
     local sendTextAll = vgui.Create("DBinder", sendTextAllPanel)
     sendTextAll:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(40))
     sendTextAll:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
-    sendTextAll:SetSelectedNumber(input.GetKeyCode(input.LookupBinding("messagemode")))
+    sendTextAll:SetSelectedNumber(input.GetKeyCode(input.LookupBinding("messagemode") or 0))
     sendTextAll:SetEnabled(false)
     sendTextAll:SetTooltip(nil)
 
@@ -11301,7 +11301,7 @@ function Menu.OpenTab.Settings()
     local sendTextSquad = vgui.Create("DBinder", sendTextSquadPanel)
     sendTextSquad:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(40))
     sendTextSquad:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
-    sendTextSquad:SetSelectedNumber(input.GetKeyCode(input.LookupBinding("messagemode2")))
+    sendTextSquad:SetSelectedNumber(input.GetKeyCode(input.LookupBinding("messagemode2") or 0))
     sendTextSquad:SetEnabled(false)
     sendTextSquad:SetTooltip(nil)
 
@@ -11318,7 +11318,7 @@ function Menu.OpenTab.Settings()
     local applySpray = vgui.Create("DBinder", applySprayPanel)
     applySpray:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(40))
     applySpray:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
-    applySpray:SetSelectedNumber(input.GetKeyCode(input.LookupBinding("impulse 201")))
+    applySpray:SetSelectedNumber(input.GetKeyCode(input.LookupBinding("impulse 201") or 0))
     applySpray:SetEnabled(false)
     applySpray:SetTooltip(nil)
 
