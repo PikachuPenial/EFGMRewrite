@@ -125,7 +125,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 
 		else
 
-			tagData.tagCauseOfDeath = inflictor:GetClass() or attacker:GetActiveWeapon():GetClass()
+			tagData.tagCauseOfDeath = attacker:GetActiveWeapon():GetClass()
 			tagData.tagWoundOrigin = victim:LastHitGroup()
 			tagData.tagKiller = attacker:GetName()
 
