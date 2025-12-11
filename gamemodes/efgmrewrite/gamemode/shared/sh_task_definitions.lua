@@ -15,6 +15,19 @@ OBJECTIVE.Pay = 4
 OBJECTIVE.QuestItem = 5
 OBJECTIVE.VisitArea = 6
 
+OBJCONDITION = {}
+-- General conditions
+OBJCONDITION.Map = 1
+OBJCONDITION.Area = 2
+-- Kill Conditions
+OBJCONDITION.RangeMin = 3
+OBJCONDITION.RangeMax = 4
+OBJCONDITION.Headshot = 5
+OBJCONDITION.Weapon = 6
+-- GiveItem Conditions
+OBJCONDITION.Item = 7
+OBJCONDITION.FIR = 8
+
 REWARD = {}
 REWARD.PlayerStat = 1
 REWARD.Item = 2
@@ -140,6 +153,32 @@ SAVEON.TaskComplete = 4
         obj.whenToSave = whenToSave or SAVEON.Progress
 
         return obj
+
+    end
+
+-- Objective Conditions
+
+    NewCondition = {}
+
+    function NewCondition.RangeMin(rangeMeters)
+
+        local cond = {}
+
+        cond.type = OBJCONDITION.RangeMin
+        cond.count = rangeMeters
+
+        return cond
+
+    end
+
+    function NewCondition.RangeMax(rangeMeters)
+
+        local cond = {}
+        
+        cond.type = OBJCONDITION.RangeMax
+        cond.count = rangeMeters
+
+        return cond
 
     end
 
