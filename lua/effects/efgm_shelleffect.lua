@@ -120,7 +120,7 @@ function EFFECT:Init(data)
 
     self.Sounds = sounds or ARC9.ShellSoundsTable
 
-	self.SoundsVolume = soundsvolume or 1
+    self.SoundsVolume = soundsvolume or 1
 
     local pb_z = physbox.z
     local pb_y = physbox.y
@@ -174,41 +174,125 @@ function EFFECT:Init(data)
     end
 
     self.SpawnTime = CurTime()
+
+    self.DropSoundCount = 0
+    self.DropSoundNextPlay = 0
+end
+
+local OverrideToRealMaterial = {
+    ["grass"] = "soil", 
+    ["dirt"] = "soil", 
+    ["gravel"] = "soil", 
+    ["mud"] = "soil", 
+    ["snow"] = "soil",
+    ["carpet"] = "soil",
+    ["sand"] = "soil",
+    ["glass"] = "metal",
+    ["chainlink"] = "metal",
+    ["duct"] = "metal",
+    ["metal"] = "metal",
+    ["metalvent"] = "metal",
+    ["metalgrate"] = "metal",
+    ["wood"] = "wood",
+    ["wood_panel"] = "wood",
+    ["wood_crate"] = "wood",
+    ["rubber"] = "plastic",
+    ["plastic"] = "plastic",
+    ["default"] = false,
+    ["rock"] = false,
+    ["concrete"] = false,
+}
+
+local function GetMatName(mat)
+    if OverrideToRealMaterial[mat] then return OverrideToRealMaterial[mat] end
+    if string.find(mat, "plastic") then return "plastic" end
+    if string.find(mat, "wood") then return "wood" end
+    if string.find(mat, "metal") then return "metal" end
+    return false
+end
+
+local function ReplaceSound(soundd, surf)
+    local matname = GetMatName(util.GetSurfacePropName(surf))
+    
+    if matname then 
+        soundd = string.Replace(soundd, "concrete", matname)
+    end
+    
+    return soundd
+end
+
+function EFFECT:PlaySound(surf)
+    if self.DropSoundCount > 2 or self.DropSoundNextPlay > CurTime() then return end
+
+    self.DropSoundCount = self.DropSoundCount + 1
+    self.DropSoundNextPlay = CurTime() + 0.125
+
+    self:StopSound("Default.ImpactHard")
+
+    local soundtoplay = ReplaceSound(self.Sounds[math.random(#self.Sounds)], surf)
+    sound.Play(soundtoplay, self:GetPos(), 75, self.ShellPitch, self.SoundsVolume, CHAN_WEAPON)
 end
 
 function EFFECT:PhysicsCollide(colData)
+    local speed = colData.HitSpeed and colData.HitSpeed:Length()
+    if speed and speed > 140 then self:PlaySound(colData.TheirSurfaceProps) end
     if self.AlreadyPlayedSound then return end
+    
     local phys = self:GetPhysicsObject()
-    phys:SetVelocityInstantaneous(colData.HitNormal * -150)
-    self:StopSound("Default.ImpactHard")
+    -- phys:SetVelocityInstantaneous(colData.HitNormal * -150)
+    phys:AddVelocity(colData.HitNormal * -150)
 
     self.VMContext = false
     self:SetNoDraw(false)
-
-    sound.Play(self.Sounds[math.random(#self.Sounds)], self:GetPos(), 75, self.ShellPitch, self.SoundsVolume, CHAN_WEAPON)
+    
+    if !speed then self:PlaySound(colData.TheirSurfaceProps) end
 
     self.AlreadyPlayedSound = true
 end
 
 function EFFECT:Think()
-    local vel = self:GetVelocity():Length()
-    if vel > 20 then self.SpawnTime = CurTime() end
-    if vel < 5 and self.VMContext then self.VMContext = false self:SetNoDraw(false) end
+    local vel = self:GetVelocity()
+    local vellength = vel:Length()
+    local ct = CurTime()
+    if vellength > 20 then self.SpawnTime = ct end
+    if vellength < 5 and self.VMContext then self.VMContext = false self:SetNoDraw(false) end
 
     self:StopSound("Default.ScrapeRough")
 
-    if (self.SpawnTime + self.ShellTime) <= CurTime() then
+    if (self.SpawnTime + self.ShellTime) <= ct then
         if !IsValid(self) then return end
         self:SetRenderFX( kRenderFxFadeFast )
-        if (self.SpawnTime + self.ShellTime + 0.25) <= CurTime() then
+        if (self.SpawnTime + self.ShellTime + 0.25) <= ct then
             if !IsValid(self:GetPhysicsObject()) then return end
             self:GetPhysicsObject():EnableMotion(false)
-            if (self.SpawnTime + self.ShellTime + 0.5) <= CurTime() then
+            if (self.SpawnTime + self.ShellTime + 0.5) <= ct then
                 self:Remove()
                 return
             end
         end
     end
+
+    -- fake collisions
+    -- (for some reason effects collide only with brushes)
+    if !self.AlreadyPlayedSound and (self.NextPhysCheck or 0) < ct then
+        self.NextPhysCheck = ct + FrameTime() * 2
+        local poss = self:GetPos()
+        local tr = util.TraceLine({
+            start = poss,
+            endpos = poss + (vel * 0.05),
+            mask = MASK_PLAYERSOLID,
+            filter = LocalPlayer()
+        })
+
+        -- debugoverlay.Line(poss, tr.HitPos)
+        
+        if tr.Hit and tr.HitTexture == "**studio**" then
+            tr.HitNormal = tr.Normal * -2
+            tr.TheirSurfaceProps = tr.SurfaceProps
+            self:PhysicsCollide(tr)
+        end
+    end
+
     return true
 end
 

@@ -1335,14 +1335,14 @@ net.Receive("PlayerInventoryFixDesyncCL", function(len, ply)
 	UpdateInventoryString(ply)
 	UpdateEquippedString(ply)
 
-    SendChunkedNet(ply, stashString, "PlayerNetworkStash")
+    SendChunkedNet(ply, ply.stashStr, "PlayerNetworkStash")
 
     net.Start("PlayerNetworkInventory", false)
-    net.WriteString(inventoryString)
+    net.WriteString(ply.invStr)
     net.Send(ply)
 
     net.Start("PlayerNetworkEquipped", false)
-    net.WriteString(equippedString)
+    net.WriteString(ply.equStr)
     net.Send(ply)
 
 end)

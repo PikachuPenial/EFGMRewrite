@@ -11806,6 +11806,23 @@ function Menu.OpenTab.Settings()
     tpikAll:SetConVar("arc9_tpik_others")
     tpikAll:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
 
+    local ejectedShellLifePanel = vgui.Create("DPanel", visuals)
+    ejectedShellLifePanel:Dock(TOP)
+    ejectedShellLifePanel:SetSize(0, EFGM.MenuScale(50))
+    function ejectedShellLifePanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Ejected Bullet Casing Life Time", "Purista18", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+
+    end
+
+    local ejectedShellLife = vgui.Create("DNumSlider", ejectedShellLifePanel)
+    ejectedShellLife:SetPos(EFGM.MenuScale(35), EFGM.MenuScale(30))
+    ejectedShellLife:SetSize(EFGM.MenuScale(200), EFGM.MenuScale(15))
+    ejectedShellLife:SetConVar("arc9_eject_time")
+    ejectedShellLife:SetMin(0)
+    ejectedShellLife:SetMax(10)
+    ejectedShellLife:SetDecimals(0)
+
     local lodDistancePanel = vgui.Create("DPanel", visuals)
     lodDistancePanel:Dock(TOP)
     lodDistancePanel:SetSize(0, EFGM.MenuScale(50))
