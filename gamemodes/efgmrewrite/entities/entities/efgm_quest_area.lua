@@ -16,9 +16,10 @@ end
 function ENT:AcceptInput(name, ply, caller, data)
 
 	if name == "PlayerVisited" then
-        
-        hook.Run("TaskAreaVisited", ply, self.InternalName)
 
-    end
+		if !IsValid(ply) then return end
+		hook.Run("TaskAreaVisited", ply, self.InternalName)
+
+	end
 
 end

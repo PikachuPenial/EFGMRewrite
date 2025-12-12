@@ -104,7 +104,7 @@ function ENT:AcceptInput(name, ply, caller, data)
     end
 
     if name == "StartExtractingPlayer" && ply:IsPlayer() then
-        if ply:CompareStatus(0) or !ply:CompareSpawnGroup(self.ExtractGroup) then return end
+        if !IsValid(ply) or ply:CompareStatus(0) or !ply:CompareSpawnGroup(self.ExtractGroup) then return end
 
         if self.IsDisabled then
 			net.Start("SendNotification", false)
@@ -118,11 +118,11 @@ function ENT:AcceptInput(name, ply, caller, data)
     end
 
     if name == "StopExtractingPlayer" && !self.IsDisabled && ply:IsPlayer() then
-        if !ply:CompareStatus( 0 ) && ply:CompareSpawnGroup( self.ExtractGroup ) then self:StopExtract( ply ) end
+        if IsValid(ply) and !ply:CompareStatus(0) and ply:CompareSpawnGroup(self.ExtractGroup) then self:StopExtract(ply) end
     end
 
     if name == "InstantlyExtractPlayer" and !self.IsDisabled and ply:IsPlayer() then
-        if ply:CompareStatus(0) or !ply:CompareSpawnGroup(self.ExtractGroup) then return end
+        if !IsValid(ply) or ply:CompareStatus(0) or !ply:CompareSpawnGroup(self.ExtractGroup) then return end
 
         if self.IsDisabled then
 			net.Start("SendNotification", false)
@@ -144,6 +144,7 @@ function ENT:AcceptInput(name, ply, caller, data)
 end
 
 function ENT:StartExtract(ply)
+	if !IsValid(ply) then return end
 	if self.InstantExtract then self.Extract(ply) return end
 
 	net.Start("SendExtractionStatus")
@@ -165,6 +166,8 @@ function ENT:StartExtract(ply)
 end
 
 function ENT:StopExtract(ply)
+	if !IsValid(ply) then return end
+
 	net.Start("SendExtractionStatus")
 	net.WriteBool(false) -- false signals that the player left the extraction points boundaries
 	net.Send(ply)
@@ -180,6 +183,7 @@ function ENT:StopExtract(ply)
 end
 
 function ENT:Extract(ply)
+	if !IsValid(ply) then return end
     self:TriggerOutput("OnPlayerExtract", ply)
     hook.Run("PlayerExtraction", ply, self.ExtractTime, self.IsGuranteed, self.InternalName)
 end

@@ -39,8 +39,9 @@ function ENT:AcceptInput(name, ply, caller, data)
     end
 
     if name == "SetPlayerReadiness" then
-        local isReady = tobool(data)
+        if !IsValid(ply) then return end
 
+        local isReady = tobool(data)
         ply:SetNWBool("RaidReady", isReady)
 
         if isReady then
