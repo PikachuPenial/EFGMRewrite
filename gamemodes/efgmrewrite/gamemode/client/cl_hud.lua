@@ -461,7 +461,7 @@ net.Receive("PlayerRaidTransition", function()
 
 end )
 
-net.Receive("PlayerDeulTransition", function()
+net.Receive("PlayerDuelTransition", function()
 
     RaidTransition = vgui.Create("DPanel")
     RaidTransition:SetSize(ScrW(), ScrH())

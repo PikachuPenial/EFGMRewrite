@@ -1,42 +1,52 @@
 DUEL = {}
 
 local plyMeta = FindMetaTable("Player")
-if not plyMeta then Error("Could not find player table") return end
+if !plyMeta then Error("Could not find player table") return end
 
 if SERVER then
 
-    util.AddNetworkString("PlayerDeulTransition")
+    util.AddNetworkString("PlayerDuelTransition")
 
-    SetGlobalInt("DuelStatus", deulStatus.PENDING)
+    SetGlobalInt("DuelStatus", duelStatus.PENDING)
 
     function DUEL:StartRaid(ply1, ply2)
 
-        if GetGlobalInt("DuelStatus") != deulStatus.PENDING then return end
+        if GetGlobalInt("DuelStatus") != duelStatus.PENDING then return end
 
-        SetGlobalInt("DuelStatus", deulStatus.ACTIVE)
+        local spawns = RandomDuelSpawns()
+        if !spawns then return end -- no duel spawns available on the map
 
-        hook.Run("StartedDeul")
+        SetGlobalInt("DuelStatus", duelStatus.ACTIVE)
+
+        hook.Run("StartedDuel")
 
         local plys = {ply1, ply2}
 
-        net.Start("PlayerDeulTransition")
+        net.Start("PlayerDuelTransition")
         net.Send(plys)
 
-        for k, v in ipairs(plys) do
+        PrintTable(spawns)
+
+        for k, v in ipairs(plys) do -- there is literally no reason for this to have more than 2 players, so i will asssume that it is 2 players
 
             v:Freeze(true)
 
             timer.Create("Duel" .. v:SteamID64(), 1, 1, function()
-                local spawn = GetValidRaidSpawn(status)
-                local allSpawns = spawn.Spawns
-                v:Teleport(allSpawns[k]:GetPos(), allSpawns[k]:GetAngles(), Vector(0, 0, 0))
+
+                v:Teleport(spawns[k]:GetPos(), spawns[k]:GetAngles(), Vector(0, 0, 0))
                 v:Freeze(false)
 
-                timer.Simple(0.5, function()
+                timer.Simple(0.1, function()
 
-                    v:SetRaidStatus(playerStatus.DUEL)
-                    v:SetNWInt("DeulsPlayed", v:GetNWInt("DeulsPlayed") + 1)
+                    v:SetRaidStatus(playerStatus.DUEL, "")
+                    v:SetNWInt("DuelsPlayed", v:GetNWInt("DuelsPlayed") + 1)
                     ResetRaidStats(v) -- because im lazy and won't make a special death overview
+
+                end)
+
+                timer.Simple(1, function()
+
+                    v:GetNWInt("PlayerRaidStatus", 0)
 
                 end)
 
@@ -48,15 +58,15 @@ if SERVER then
 
     function DUEL:EndRaid(ply1, ply2)
 
-        if GetGlobalInt("DuelStatus") != deulStatus.ACTIVE then return end
+        if GetGlobalInt("DuelStatus") != duelStatus.ACTIVE then return end
 
-        SetGlobalInt("DuelStatus", deulStatus.PENDING)
+        SetGlobalInt("DuelStatus", duelStatus.PENDING)
 
-        hook.Run("EndedDeul")
+        hook.Run("EndedDuel")
 
     end
 
-    hook.Add("PlayerDisconnected", "DisconnectWhileInDeul", function(ply)
+    hook.Add("PlayerDisconnected", "DisconnectWhileInDuel", function(ply)
 
         if ply:CompareStatus(3) then
 

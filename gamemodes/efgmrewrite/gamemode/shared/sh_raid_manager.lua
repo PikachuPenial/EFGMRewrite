@@ -114,7 +114,7 @@ if SERVER then
                         v:Teleport(allSpawns[k]:GetPos(), allSpawns[k]:GetAngles(), Vector(0, 0, 0))
                         v:Freeze(false)
 
-                        timer.Simple(0.5, function() -- temporary invulnerability bc v:Lock() fucked shit
+                        timer.Simple(0.1, function() -- temporary invulnerability bc v:Lock() fucked shit
                             local curTime = math.Round(CurTime(), 0) -- once players spawn, we make their team chat channel more specific, this is so others can create squads of the same name and not conflict with anything
 
                             v:SetRaidStatus(status, spawn.SpawnGroup or "")

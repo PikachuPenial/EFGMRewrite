@@ -10302,8 +10302,8 @@ function Menu.OpenTab.Stats()
     statsTbl["Quits"] = comma_value(Menu.Player:GetNWInt("Quits"))
     statsTbl["Raids Played"] = comma_value(Menu.Player:GetNWInt("RaidsPlayed"))
 
-    statsTbl["Deuls Played"] = comma_value(Menu.Player:GetNWInt("DeulsPlayed"))
-    statsTbl["Deuls Won"] = comma_value(Menu.Player:GetNWInt("DeulsWon"))
+    statsTbl["Duels Played"] = comma_value(Menu.Player:GetNWInt("DuelsPlayed"))
+    statsTbl["Duels Won"] = comma_value(Menu.Player:GetNWInt("DuelsWon"))
 
     statsTbl["Current Kill Streak"] = comma_value(Menu.Player:GetNWInt("CurrentKillStreak"))
     statsTbl["Best Kill Streak"] = comma_value(Menu.Player:GetNWInt("BestKillStreak"))
@@ -10313,7 +10313,7 @@ function Menu.OpenTab.Stats()
     statsTbl["K/D Ratio"] = math.Round(Menu.Player:GetNWInt("Kills") / math.min(Menu.Player:GetNWInt("Deaths"), 1), 3)
     statsTbl["Survival Rate"] = math.Round(Menu.Player:GetNWInt("Extractions") / Menu.Player:GetNWInt("RaidsPlayed") * 100) .. "%"
     statsTbl["Accuracy"] = math.Round(Menu.Player:GetNWInt("ShotsHit") / Menu.Player:GetNWInt("ShotsFired") * 100) .. "%"
-    statsTbl["Deul Win Rate"] = math.Round(Menu.Player:GetNWInt("DeulsWon") / Menu.Player:GetNWInt("DeulsPlayed") * 100) .. "%"
+    statsTbl["Duels Win Rate"] = math.Round(Menu.Player:GetNWInt("DuelsWon") / Menu.Player:GetNWInt("DuelsPlayed") * 100) .. "%"
 
     for k, v in SortedPairs(statsTbl) do
 

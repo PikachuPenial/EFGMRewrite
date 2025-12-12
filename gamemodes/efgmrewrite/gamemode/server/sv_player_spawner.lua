@@ -106,3 +106,12 @@ function GM:PlayerSelectSpawn(ply)
 	return spawns[randomSpawn]
 
 end
+
+-- duels
+function RandomDuelSpawns()
+
+    local spawns = ents.FindByClass("efgm_duel_spawn")
+    table.Shuffle(spawns)
+    return spawns
+
+end

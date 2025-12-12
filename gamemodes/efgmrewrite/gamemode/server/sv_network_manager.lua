@@ -476,9 +476,9 @@ function SetupPlayerData(ply)
 	InitializeNetworkInt(ply, query, "Quits", 0)
 	InitializeNetworkInt(ply, query, "RaidsPlayed", 0) -- the amount of full raids played, counted if you join before the first minute and stay until the raid ends
 
-	-- deuls
-	InitializeNetworkInt(ply, query, "DeulsPlayed", 0)
-	InitializeNetworkInt(ply, query, "DeulsWon", 0)
+	-- duels
+	InitializeNetworkInt(ply, query, "DuelsPlayed", 0)
+	InitializeNetworkInt(ply, query, "DuelsWon", 0)
 
 	-- streaks
 	InitializeNetworkInt(ply, query, "CurrentKillStreak", 0)
@@ -582,9 +582,9 @@ function SavePlayerData(ply)
 	UninitializeNetworkInt(ply, query, "Quits")
 	UninitializeNetworkInt(ply, query, "RaidsPlayed")
 
-	-- deuls
-	UninitializeNetworkInt(ply, query, "DeulsPlayed")
-	UninitializeNetworkInt(ply, query, "DeulsWon")
+	-- duels
+	UninitializeNetworkInt(ply, query, "DuelsPlayed")
+	UninitializeNetworkInt(ply, query, "DuelsWon")
 
 	-- streaks
 	UninitializeNetworkInt(ply, query, "CurrentKillStreak")

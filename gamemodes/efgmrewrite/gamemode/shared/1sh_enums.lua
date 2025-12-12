@@ -15,32 +15,14 @@ raidStatus = {
     ENDED = 2
 }
 
--- deul status
-deulStatus = {
+-- duel status
+duelStatus = {
     PENDING = 0,
     ACTIVE = 1
 }
 
-cat = { -- theres a limit on 16 each but idc
-    Unknown = 1,
-    AR = 2,
-    LMG = 3,
-    DMR = 4,
-    Shotgun = 5,
-    SMG = 6,
-    Sniper = 7,
-    Pistol = 8,
-    Melee = 9,
-    Grenade = 10,
-    RPG = 11,
-
-    Main = 17,
-    Alt = 18
-}
-
 -- Tried to make shit adjustable, that way you could say fuck it and let everyone carry 100 grenades or knives or both or neither and it'd let them
 -- That could even be added with like convars and shit
-
 WEAPONSLOTS = {
     PRIMARY = { ID = 1, COUNT = 2},
     HOLSTER = { ID = 2, COUNT = 1},
@@ -58,12 +40,6 @@ HITGROUPS = {
     [6] = "LEFT LEG",
     [7] = "RIGHT LEG"
 }
-
-revCat = {}
-
-for k, v in pairs(cat) do
-    revCat[v] = k
-end
 
 models = {
     -- k == itemname, v == modelpath

@@ -156,11 +156,11 @@ function PANEL:Paint(w, h)
             local posY = (v.pos.y * self.MapSizeY * self.Zoom) + self.PanOffset.y
 
             surface.SetDrawColor(Colors.mapWhite)
-            surface.SetMaterial("icons/map/location_alt.png", "mips")
+            surface.SetMaterial(Mats.mapLocation)
             surface.DrawTexturedRect(posX - 32, posY - 32, 64, 64)
 
             draw.DrawText( v.name, "PuristaBold16", posX, posY - 48, Colors.mapLocation, TEXT_ALIGN_CENTER)
-            draw.DrawText( "Loot: " .. v.loot .. "/5", "PuristaBold12", posX, posY + 32, Colors.mapLocation, TEXT_ALIGN_CENTER)
+            draw.DrawText( "Loot: " .. v.loot .. "/5", "PuristaBold14", posX, posY + 32, Colors.mapLocation, TEXT_ALIGN_CENTER)
 
         end
 

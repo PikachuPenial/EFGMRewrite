@@ -113,6 +113,7 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
             if !ply:CompareStatus(0) and !ply:CompareStatus(3) then return end
 
             local ent = (ply:Alive() and ply:GetEyeTrace() or default_trace()).Entity
+            if !ent:IsPlayer() then return end
             if !IsValid(ent) then return end
 
             InvitePlayerToSquad(ply, ent)
@@ -127,6 +128,7 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
             if !ply:CompareStatus(0) and !ply:CompareStatus(3) then return end
 
             local ent = (ply:Alive() and ply:GetEyeTrace() or default_trace()).Entity
+            if !ent:IsPlayer() then return end
             if !IsValid(ent) then return end
 
             InvitePlayerToDuel(ply, ent)
