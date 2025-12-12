@@ -34,6 +34,7 @@ if SERVER then
 
         function RAID:StartRaid(raidTime)
             if GetGlobalInt("RaidStatus") != raidStatus.PENDING then return end
+            if player.GetCount() < 3 and GetConVar("efgm_derivesbox"):GetInt() == 0 and !game.SinglePlayer() then return end
 
             SetGlobalInt("RaidStatus", raidStatus.ACTIVE)
             SetGlobalInt("RaidTimeLeft", raidTime)
@@ -41,6 +42,7 @@ if SERVER then
             timer.Create("RaidTimerDecrement", 1, 0, DecrementTimer)
 
             hook.Run("StartedRaid")
+            SpawnAllLoot()
 
             net.Start("SendNotification")
             net.WriteString("The raid has begun!")

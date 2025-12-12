@@ -8244,7 +8244,6 @@ hook.Add("InitPostEntity", "AttsItemDef", function()
     end
 
     GenerateLootTables()
-    SpawnAllLoot()
 
 end)
 
