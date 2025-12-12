@@ -1,11 +1,12 @@
 -- lua enum approx because fuck me and fuck you (and fuck ttt because thats how im learning metatables, please refer to words 5 through 9)
 
 -- player status
+-- the DUEL enum here is just not fucking working, i can print it here and it shows, i can print it anywhere else and its fucking nil, its 6am, i dont want to find out why, fuck my retarded Garry's Mod life - penial
 playerStatus = {
     LOBBY = 0,
     PMC = 1,
     SCAV = 2,
-    DUEL = 3 -- i do not like putting this here one bit
+    DUEL = 3,
 }
 
 -- raid status

@@ -11867,11 +11867,11 @@ function Menu.OpenTab.Settings()
     invitePrivacy:SetPos(EFGM.MenuScale(100), EFGM.MenuScale(30))
     invitePrivacy:SetSize(EFGM.MenuScale(120), EFGM.MenuScale(20))
 
-    if GetConVar("efgm_privacy_invites"):GetInt() == 0 then
+    if GetConVar("efgm_privacy_invites_squad"):GetInt() == 0 then
         invitePrivacy:SetValue("None")
-    elseif GetConVar("efgm_privacy_invites"):GetInt() == 1 then
+    elseif GetConVar("efgm_privacy_invites_squad"):GetInt() == 1 then
         invitePrivacy:SetValue("Steam Friends")
-    elseif GetConVar("efgm_privacy_invites"):GetInt() == 2  then
+    elseif GetConVar("efgm_privacy_invites_squad"):GetInt() == 2  then
         invitePrivacy:SetValue("Everyone")
     end
 
@@ -11880,7 +11880,7 @@ function Menu.OpenTab.Settings()
     invitePrivacy:AddChoice("Everyone")
     invitePrivacy:SetSortItems(false)
     invitePrivacy.OnSelect = function(self, value)
-        RunConsoleCommand("efgm_privacy_invites", value - 1)
+        RunConsoleCommand("efgm_privacy_invites_squad", value - 1)
     end
 
     local duelPrivacyPanel = vgui.Create("DPanel", account)

@@ -2389,7 +2389,7 @@ hook.Add("PlayerBindPress", "ARC9_Binds", function(ply, bind, pressed, code)
 
         if bind == "+reload" then
 
-            if !ply:CompareStatus(0) and !ply:CompareStatus(3) then return end
+            if !ply:CompareStatus(0) then return end
 
             if wpn.CustomizeLastHovered and wpn.CustomizeLastHovered:IsHovered() then
                 local att = wpn.CustomizeLastHovered.att

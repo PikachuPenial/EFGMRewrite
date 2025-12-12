@@ -206,8 +206,12 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	net.WriteInt(victimHitgroup, 5)
 	net.Send(victim)
 
-	attacker:SetNWInt("ExperienceCombat", attacker:GetNWInt("ExperienceCombat") + 300)
-	attacker:SetNWInt("RaidKills", attacker:GetNWInt("RaidKills") + 1)
+	if !attacker:CompareStatus(0) and !attacker:CompareStatus(3) then
+
+		attacker:SetNWInt("ExperienceCombat", attacker:GetNWInt("ExperienceCombat") + 300)
+		attacker:SetNWInt("RaidKills", attacker:GetNWInt("RaidKills") + 1)
+
+	end
 
 	UnequipAllFirearms(victim)
 	ApplyPlayerExperience(victim, 0.5)

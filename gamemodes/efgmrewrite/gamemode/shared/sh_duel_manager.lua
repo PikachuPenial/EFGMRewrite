@@ -22,10 +22,10 @@ if SERVER then
 
         local plys = {ply1, ply2}
 
+        PrintTable(plys)
+
         net.Start("PlayerDuelTransition")
         net.Send(plys)
-
-        PrintTable(spawns)
 
         for k, v in ipairs(plys) do -- there is literally no reason for this to have more than 2 players, so i will asssume that it is 2 players
 
@@ -38,7 +38,7 @@ if SERVER then
 
                 timer.Simple(0.1, function()
 
-                    v:SetRaidStatus(playerStatus.DUEL, "")
+                    v:SetRaidStatus(3, "")
                     v:SetNWInt("DuelsPlayed", v:GetNWInt("DuelsPlayed") + 1)
                     ResetRaidStats(v) -- because im lazy and won't make a special death overview
 
