@@ -109,7 +109,7 @@ end)
 util.AddNetworkString("CreateDeathInformation")
 function GM:PlayerDeath(victim, inflictor, attacker)
 
-	if !victim:CompareStatus(0) then
+	if !victim:CompareStatus(0) and !victim:CompareStatus(3) then
 
 		UnequipAll(victim) -- unload all equipped items into inventory, helps clean this all up
 
@@ -151,7 +151,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 
 	else
 
-		-- to not show outdated information is suiciding in hideout
+		-- to not show outdated information if suiciding in hideout
 		ResetRaidStats(victim)
 
 	end
@@ -218,7 +218,7 @@ hook.Add("RaidTimerTick", "RaidTimeExperience", function(ply)
 
 	for k, v in ipairs(player.GetHumans()) do
 
-		if !v:CompareStatus(0) then
+		if !v:CompareStatus(0) and !v:CompareStatus(3) then
 
 			v:SetNWFloat("ExperienceTime", v:GetNWFloat("ExperienceTime") + 0.5)
 			v:SetNWInt("RaidTime", v:GetNWInt("RaidTime", 0) + 1)

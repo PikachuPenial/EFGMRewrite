@@ -15,6 +15,12 @@ raidStatus = {
     ENDED = 2
 }
 
+-- deul status
+deulStatus = {
+    PENDING = 0,
+    ACTIVE = 1
+}
+
 cat = { -- theres a limit on 16 each but idc
     Unknown = 1,
     AR = 2,

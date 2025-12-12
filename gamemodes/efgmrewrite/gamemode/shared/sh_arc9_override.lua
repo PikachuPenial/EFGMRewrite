@@ -1519,7 +1519,7 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
 
         local owner = self:GetOwner()
 
-        if SERVER and IsValid(owner) and owner:IsPlayer() and !owner:CompareStatus(0) then
+        if SERVER and IsValid(owner) and owner:IsPlayer() and !owner:CompareStatus(0) and !owner:CompareStatus(3) then
 
             owner:SetNWInt("ShotsFired", owner:GetNWInt("ShotsFired") + 1)
             owner:SetNWInt("RaidShotsFired", owner:GetNWInt("RaidShotsFired") + 1)
@@ -1734,7 +1734,7 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
         local traceEntity = tr.Entity
         local hitGroup = tr.HitGroup
 
-        if SERVER and IsValid(owner) and owner:IsPlayer() and traceEntity:IsPlayer() and !owner:CompareStatus(0) then
+        if SERVER and IsValid(owner) and owner:IsPlayer() and traceEntity:IsPlayer() and !owner:CompareStatus(0) and !owner:CompareStatus(3) then
 
             owner:SetNWInt("ShotsHit", owner:GetNWInt("ShotsHit") + 1)
             owner:SetNWInt("RaidShotsHit", owner:GetNWInt("RaidShotsHit") + 1)
@@ -2389,7 +2389,7 @@ hook.Add("PlayerBindPress", "ARC9_Binds", function(ply, bind, pressed, code)
 
         if bind == "+reload" then
 
-            if !ply:CompareStatus(0) then return end
+            if !ply:CompareStatus(0) and !ply:CompareStatus(3) then return end
 
             if wpn.CustomizeLastHovered and wpn.CustomizeLastHovered:IsHovered() then
                 local att = wpn.CustomizeLastHovered.att

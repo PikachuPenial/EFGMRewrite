@@ -765,7 +765,7 @@ net.Receive("PlayerInventoryLootItemFromContainer", function(len, ply)
 
     ReloadInventory(ply)
 
-    if !ply:CompareStatus(0) then
+    if !ply:CompareStatus(0) and !ply:CompareStatus(3) then
 
         ply:SetNWInt("ItemsLooted", ply:GetNWInt("ItemsLooted") + 1)
         ply:SetNWInt("RaidItemsLooted", ply:GetNWInt("RaidItemsLooted") + 1)

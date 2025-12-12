@@ -110,7 +110,7 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
         -- team inviting
         if button == ply:GetInfoNum("efgm_bind_teaminvite", KEY_F3) then
 
-            if !ply:CompareStatus(0) then return end
+            if !ply:CompareStatus(0) and !ply:CompareStatus(3) then return end
 
             local ent = (ply:Alive() and ply:GetEyeTrace() or default_trace()).Entity
             if !IsValid(ent) then return end
@@ -124,7 +124,7 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
         -- duel inviting
         if button == ply:GetInfoNum("efgm_bind_duelinvite", KEY_F4) then
 
-            if !ply:CompareStatus(0) then return end
+            if !ply:CompareStatus(0) and !ply:CompareStatus(3) then return end
 
             local ent = (ply:Alive() and ply:GetEyeTrace() or default_trace()).Entity
             if !IsValid(ent) then return end
@@ -138,7 +138,7 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
         -- accept invite
         if button == ply:GetInfoNum("efgm_bind_acceptinvite", KEY_F5) then
 
-            if !ply:CompareStatus(0) then return end
+            if !ply:CompareStatus(0) and !ply:CompareStatus(3) then return end
             AcceptInvite(ply)
 
             return
@@ -148,7 +148,7 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
         -- decline invite
         if button == ply:GetInfoNum("efgm_bind_declineinvite", KEY_F6) then
 
-            if !ply:CompareStatus(0) then return end
+            if !ply:CompareStatus(0) and !ply:CompareStatus(3) then return end
             DeclineInvite(ply)
 
             return

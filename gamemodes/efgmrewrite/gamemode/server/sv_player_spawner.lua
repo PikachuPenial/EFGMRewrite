@@ -20,7 +20,7 @@ hook.Add("IsSpawnpointSuitable", "CheckSpawnPoint", function(ply, spawnpointent,
         end
     else
         for _, v in ipairs(entities) do
-            if v:IsPlayer() and !v:CompareStatus(0) then
+            if v:IsPlayer() and !v:CompareStatus(0) and !v:CompareStatus(3) then
                 entsBlocking = entsBlocking + 1
             end
         end

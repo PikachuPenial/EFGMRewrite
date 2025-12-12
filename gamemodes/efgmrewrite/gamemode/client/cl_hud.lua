@@ -461,6 +461,40 @@ net.Receive("PlayerRaidTransition", function()
 
 end )
 
+net.Receive("PlayerDeulTransition", function()
+
+    RaidTransition = vgui.Create("DPanel")
+    RaidTransition:SetSize(ScrW(), ScrH())
+    RaidTransition:SetPos(0, 0)
+    RaidTransition:SetAlpha(0)
+    RaidTransition:MoveToFront()
+
+    RaidTransition.Paint = function(self, w, h)
+        if not RaidTransition:IsValid() then return end
+        BlurPanel(RaidTransition, EFGM.MenuScale(13))
+        BlurPanel(RaidTransition, EFGM.MenuScale(13))
+
+        surface.SetDrawColor(0, 0, 0, 255)
+        surface.DrawRect(0, 0, ScrW(), ScrH())
+    end
+
+    RaidTransition:AlphaTo(255, 0.5, 0, nil)
+    RaidTransition:AlphaTo(0, 0.35, 1, function() RaidTransition:Remove() end)
+
+    if Menu.MenuFrame == nil then return end
+    if Menu.MenuFrame:IsActive() != true then return end
+
+    Menu.Closing = true
+    Menu.MenuFrame:SetKeyboardInputEnabled(false)
+    Menu.MenuFrame:SetMouseInputEnabled(false)
+    Menu.IsOpen = false
+
+    Menu.MenuFrame:AlphaTo(0, 0.1, 0, function()
+        Menu.MenuFrame:Close()
+    end)
+
+end )
+
 net.Receive("SendExtractionStatus", function()
     local status = net.ReadBool()
 

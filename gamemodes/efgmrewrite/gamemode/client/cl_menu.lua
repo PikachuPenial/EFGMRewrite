@@ -10266,7 +10266,7 @@ function Menu.OpenTab.Stats()
 
     local importantStats = vgui.Create("DPanel", stats)
     importantStats:Dock(TOP)
-    importantStats:SetSize(0, EFGM.MenuScale(485))
+    importantStats:SetSize(0, EFGM.MenuScale(530))
     importantStats.Paint = function(s, w, h)
 
         surface.SetDrawColor(Colors.transparent)
@@ -10302,6 +10302,9 @@ function Menu.OpenTab.Stats()
     statsTbl["Quits"] = comma_value(Menu.Player:GetNWInt("Quits"))
     statsTbl["Raids Played"] = comma_value(Menu.Player:GetNWInt("RaidsPlayed"))
 
+    statsTbl["Deuls Played"] = comma_value(Menu.Player:GetNWInt("DeulsPlayed"))
+    statsTbl["Deuls Won"] = comma_value(Menu.Player:GetNWInt("DeulsWon"))
+
     statsTbl["Current Kill Streak"] = comma_value(Menu.Player:GetNWInt("CurrentKillStreak"))
     statsTbl["Best Kill Streak"] = comma_value(Menu.Player:GetNWInt("BestKillStreak"))
     statsTbl["Current Extraction Streak"] = comma_value(Menu.Player:GetNWInt("CurrentExtractionStreak"))
@@ -10310,6 +10313,7 @@ function Menu.OpenTab.Stats()
     statsTbl["K/D Ratio"] = math.Round(Menu.Player:GetNWInt("Kills") / math.min(Menu.Player:GetNWInt("Deaths"), 1), 3)
     statsTbl["Survival Rate"] = math.Round(Menu.Player:GetNWInt("Extractions") / Menu.Player:GetNWInt("RaidsPlayed") * 100) .. "%"
     statsTbl["Accuracy"] = math.Round(Menu.Player:GetNWInt("ShotsHit") / Menu.Player:GetNWInt("ShotsFired") * 100) .. "%"
+    statsTbl["Deul Win Rate"] = math.Round(Menu.Player:GetNWInt("DeulsWon") / Menu.Player:GetNWInt("DeulsPlayed") * 100) .. "%"
 
     for k, v in SortedPairs(statsTbl) do
 
@@ -12363,7 +12367,7 @@ function Menu.OpenTab.Tasks()
 
                     end
 
-                    if curProgress != maxProgress and objInfo.type == OBJECTIVE.Pay and playerTasks[taskName].status == TASKSTATUS.InProgress && Menu.Player:CompareStatus(0) then
+                    if curProgress != maxProgress and objInfo.type == OBJECTIVE.Pay and playerTasks[taskName].status == TASKSTATUS.InProgress and Menu.Player:CompareStatus(0) then
 
                         local payAmount = math.Clamp(maxProgress - curProgress, 0, LocalPlayer():GetNWInt("Money", 0))
 

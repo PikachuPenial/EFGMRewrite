@@ -337,6 +337,6 @@ end
 
 -- remove player from team chat channel on death if they were in a raid
 hook.Add("PlayerDeath", "ClearEffectOnDeath", function(ply)
-    if ply:CompareStatus(0) then return end
+    if ply:CompareStatus(0) or ply:CompareStatus(3) then return end
     ply:SetNW2String("TeamChatChannel", "nil")
 end)

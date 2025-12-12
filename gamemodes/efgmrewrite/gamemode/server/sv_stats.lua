@@ -17,6 +17,8 @@ end
 
 hook.Add("PlayerDeath", "DeathUpdateStats", function(victim, weapon, attacker)
 
+    if !victim:CompareStatus(0) then return end -- this was counting suicides in the hideout for the longest time oh my god
+
     -- update victim's stats (cringe lootcel)
     victim:SetNWInt("Deaths", victim:GetNWInt("Deaths", 0) + 1)
     victim:SetNWInt("CurrentKillStreak", 0)
@@ -40,6 +42,7 @@ end)
 hook.Add("EntityTakeDamage", "DamageUpdateStats", function(ply, damageInfo)
 
     if !ply:IsPlayer() then return end
+    if !ply:CompareStatus(0) then return end
 
     local attacker = damageInfo:GetAttacker()
 

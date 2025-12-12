@@ -34,7 +34,7 @@ if SERVER then
 
         function RAID:StartRaid(raidTime)
             if GetGlobalInt("RaidStatus") != raidStatus.PENDING then return end
-            if player.GetCount() < 3 and GetConVar("efgm_derivesbox"):GetInt() == 0 and !game.SinglePlayer() then return end
+            if #player.GetHumans() < 3 and GetConVar("efgm_derivesbox"):GetInt() == 0 and !game.SinglePlayer() then return end
 
             SetGlobalInt("RaidStatus", raidStatus.ACTIVE)
             SetGlobalInt("RaidTimeLeft", raidTime)
@@ -84,20 +84,20 @@ if SERVER then
             net.Broadcast()
 
             for k, v in ipairs(player.GetHumans()) do
-                if !v:CompareStatus(0) and !v:HasGodMode() then v:Kill() end
+                if !v:CompareStatus(0) and !v:CompareStatus(3) and !v:HasGodMode() then v:Kill() end
             end
         end
 
-        function RAID:SpawnPlayers(plys, status, squad) -- todo: make this support a sequential table of players up to a specified team limit
-            if GetGlobalInt("RaidStatus") != raidStatus.ACTIVE then print("raid isnt active") return end
+        function RAID:SpawnPlayers(plys, status, squad)
+            if GetGlobalInt("RaidStatus") != raidStatus.ACTIVE then return end
             if #plys > 4 then print("too many fucking people in your team dumbass") return end
 
-            table.removeKey(SQUADS, squad)
+            SQUADS[squad] = nil
             NetworkSquadInfoToClients()
 
             for k, v in ipairs(plys) do
                 if v:IsPlayer() then
-                    if !v:CompareStatus(0) then
+                    if !v:CompareStatus(0) and !v:CompareStatus(3) then
                         local status, spawnGroup = v:GetRaidStatus()
 
                         print("Player " .. v:GetName() .. " tried to enter the raid with status " .. status .. ", but they're probably fine to join anyway. If they aren't, tell the map maker to separate the lobby and the raid map, thanks.")
@@ -160,7 +160,7 @@ if SERVER then
         end
 
         function RAID.GetCurrentExtracts(ply)
-            if ply:CompareStatus(0) then return nil end
+            if ply:CompareStatus(0) or ply:CompareStatus(3) then return nil end
 
             local extracts = {}
 
