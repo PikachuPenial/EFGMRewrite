@@ -537,9 +537,7 @@ function WipeStash(ply)
     ply.stashStr = ""
 	ply.stash = {}
 
-    net.Start("PlayerNetworkStash", false)
-    net.WriteString("")
-    net.Send(ply)
+    SendChunkedNet(ply, ply.stashStr, "PlayerNetworkStash")
 
 end
 

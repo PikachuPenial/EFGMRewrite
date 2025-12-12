@@ -284,13 +284,13 @@ if game.SinglePlayer() then
 
             -- show compass
             if button == ply:GetInfoNum("efgm_bind_showcompass", KEY_M) then
-                RenderCompass(ply)
+                ply:SendLua("RenderCompass(ply)")
                 return
             end
 
             -- show raid information
             if button == ply:GetInfoNum("efgm_bind_raidinfo", KEY_O) then
-                RenderExtracts(ply)
+                ply:SendLua("RenderExtracts(ply)")
                 return
             end
 

@@ -1336,14 +1336,8 @@ net.Receive("PlayerInventoryFixDesyncCL", function(len, ply)
 	UpdateEquippedString(ply)
 
     SendChunkedNet(ply, ply.stashStr, "PlayerNetworkStash")
-
-    net.Start("PlayerNetworkInventory", false)
-    net.WriteString(ply.invStr)
-    net.Send(ply)
-
-    net.Start("PlayerNetworkEquipped", false)
-    net.WriteString(ply.equStr)
-    net.Send(ply)
+    SendChunkedNet(ply, ply.invStr, "PlayerNetworkInventory")
+    SendChunkedNet(ply, ply.equStr, "PlayerNetworkEquipped")
 
 end)
 
@@ -1388,11 +1382,9 @@ if GetConVar("efgm_derivesbox"):GetInt() == 1 then
         ply.invStr = ""
         ply.inventory = {}
 
-        net.Start("PlayerNetworkInventory", false)
-        net.WriteString("")
-        net.Send(ply)
+        SendChunkedNet(ply, ply.invStr, "PlayerNetworkInventory")
 
-        ply:SetNWFloat("InventoryWeight", 0.00)
+        CalculateInventoryWeight(ply)
 
     end
     concommand.Add("efgm_debug_wipeinventory", function(ply, cmd, args) WipeInventory(ply) end)

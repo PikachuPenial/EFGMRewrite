@@ -1,8 +1,10 @@
 
-net.Receive("PlayerNetworkInventory", function(len, ply)
+local chunkedInv = {}
+local chunkedEqu = {}
 
-    local inventoryStr = net.ReadString()
+hook.Add("OnInventoryChunked", "NetworkInventory", function(str, uID)
 
+    local inventoryStr = str
     inventoryStr = util.Base64Decode(inventoryStr)
     inventoryStr = util.Decompress(inventoryStr)
 
@@ -13,11 +15,11 @@ net.Receive("PlayerNetworkInventory", function(len, ply)
     playerInventory = inventoryTbl
     if playerInventory == nil then playerInventory = {} end
 
-end )
+end)
 
-net.Receive("PlayerNetworkEquipped", function(len, ply)
+hook.Add("OnEquippedChunked", "NetworkEquipped", function(str, uID)
 
-    local equippedStr = net.ReadString()
+    local equippedStr = str
 
     equippedStr = util.Base64Decode(equippedStr)
     equippedStr = util.Decompress(equippedStr)
@@ -46,6 +48,84 @@ net.Receive("PlayerNetworkEquipped", function(len, ply)
 
     playerEquippedSlot = 0
     playerEquippedSubSlot = 0
+
+end)
+
+net.Receive("PlayerNetworkInventory", function(len, ply)
+
+    local uID = net.ReadFloat()
+    local index = net.ReadUInt(16)
+    local chunkCount = net.ReadUInt(16)
+    local chunk = net.ReadString()
+
+    if !chunkedInv[uID] then
+
+        chunkedInv[uID] = {
+
+            Chunks = {},
+            ReceivedCount = 0,
+            TotalCount = chunkCount
+
+        }
+
+    end
+
+    chunkedInv[uID].Chunks[index] = chunk
+    chunkedInv[uID].ReceivedCount = chunkedInv[uID].ReceivedCount + 1
+
+    if chunkedInv[uID].ReceivedCount == chunkedInv[uID].TotalCount then
+
+        local str = ""
+
+        for i = 1, chunkCount do
+
+            str = str .. chunkedInv[uID].Chunks[i]
+
+        end
+
+        hook.Run("OnInventoryChunked", str, uID)
+        chunkedInv[uID] = nil
+
+    end
+
+end )
+
+net.Receive("PlayerNetworkEquipped", function(len, ply)
+
+    local uID = net.ReadFloat()
+    local index = net.ReadUInt(16)
+    local chunkCount = net.ReadUInt(16)
+    local chunk = net.ReadString()
+
+    if !chunkedEqu[uID] then
+
+        chunkedEqu[uID] = {
+
+            Chunks = {},
+            ReceivedCount = 0,
+            TotalCount = chunkCount
+
+        }
+
+    end
+
+    chunkedEqu[uID].Chunks[index] = chunk
+    chunkedEqu[uID].ReceivedCount = chunkedEqu[uID].ReceivedCount + 1
+
+    if chunkedEqu[uID].ReceivedCount == chunkedEqu[uID].TotalCount then
+
+        local str = ""
+
+        for i = 1, chunkCount do
+
+            str = str .. chunkedEqu[uID].Chunks[i]
+
+        end
+
+        hook.Run("OnEquippedChunked", str, uID)
+        chunkedEqu[uID] = nil
+
+    end
 
 end )
 

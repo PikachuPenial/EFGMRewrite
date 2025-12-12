@@ -527,14 +527,8 @@ function SetupPlayerData(ply)
 	CalculateInventoryWeight(ply)
 
 	SendChunkedNet(ply, stashString, "PlayerNetworkStash")
-
-	net.Start("PlayerNetworkInventory", false)
-	net.WriteString(inventoryString)
-	net.Send(ply)
-
-	net.Start("PlayerNetworkEquipped", false)
-	net.WriteString(equippedString)
-	net.Send(ply)
+	SendChunkedNet(ply, inventoryString, "PlayerNetworkInventory")
+	SendChunkedNet(ply, equippedString, "PlayerNetworkEquipped")
 
 	-- task system already networks on its own, change if you want idrc
 	UpdateTasks(ply)
