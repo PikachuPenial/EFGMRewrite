@@ -60,3 +60,13 @@ function TASK.Instantiate(name, status, progress, tempProgress)
     return task
 
 end
+
+if GetConVar("efgm_derivesbox"):GetInt() == 1 then
+
+    concommand.Add("efgm_debug_gettasks", function(ply, cmd, args)
+
+        PrintTable(ply.tasks)
+
+    end)
+
+end

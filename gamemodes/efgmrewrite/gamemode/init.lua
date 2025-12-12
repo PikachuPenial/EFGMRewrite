@@ -119,6 +119,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		tagData.timestamp = os.time()
 		tagData.tag = victim:GetNWInt("Level", 0)
 		tagData.tagLevel = victim:GetNWInt("Level", 0)
+		tagData.fir = true
 
 		if !IsValid(attacker) or victim == attacker or !attacker:IsPlayer() then
 
@@ -169,6 +170,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 
 		net.Start("CreateDeathInformation")
 		net.WriteFloat(xpMult)
+		if victim:CompareStatus(0) or victim:CompareStatus(3) then net.WriteInt(noRaidRespawnTime, 8) else net.WriteInt(respawnTime, 8) end
 		net.WriteInt(victim:GetNWInt("RaidTime", 0), 16)
 		net.WriteInt(math.Round(victim:GetNWFloat("ExperienceTime", 0)), 16)
 		net.WriteInt(victim:GetNWInt("ExperienceCombat", 0), 16)
@@ -176,6 +178,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		net.WriteInt(victim:GetNWInt("ExperienceLooting", 0), 16)
 		net.WriteInt(victim:GetNWInt("ExperienceBonus", 0), 16)
 		net.WriteEntity(victim)
+		net.WriteInt(0, 8)
 		net.WriteString("")
 		net.WriteInt(0, 16)
 		net.WriteInt(0, 5)
@@ -194,6 +197,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 
 	net.Start("CreateDeathInformation")
 	net.WriteFloat(xpMult)
+	if victim:CompareStatus(0) or victim:CompareStatus(3) then net.WriteInt(noRaidRespawnTime, 8) else net.WriteInt(respawnTime, 8) end
 	net.WriteInt(victim:GetNWInt("RaidTime", 0), 16)
 	net.WriteInt(math.Round(victim:GetNWFloat("ExperienceTime", 0)), 16)
 	net.WriteInt(victim:GetNWInt("ExperienceCombat", 0), 16)
@@ -201,6 +205,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	net.WriteInt(victim:GetNWInt("ExperienceLooting", 0), 16)
 	net.WriteInt(victim:GetNWInt("ExperienceBonus", 0), 16)
 	net.WriteEntity(attacker)
+	net.WriteInt(math.Clamp(attacker:Health(), 0, attacker:GetMaxHealth()), 8)
 	net.WriteString(attacker:GetActiveWeapon():GetClass())
 	net.WriteInt(distance, 16)
 	net.WriteInt(victimHitgroup, 5)
@@ -236,8 +241,9 @@ end)
 
 hook.Add("PostPlayerDeath", "PlayerRemoveRaid", function(ply)
 
-	-- respawn timer
-	timer.Create(ply:SteamID() .. "respawnTime", respawnTime, 1, function() end)
+	local time = respawnTime
+	if ply:CompareStatus(0) or ply:CompareStatus(3) then time = noRaidRespawnTime end
+	timer.Create(ply:SteamID() .. "respawnTime", time, 1, function() end)
 	ply:SetNWBool("RaidReady", false)
 
 end)

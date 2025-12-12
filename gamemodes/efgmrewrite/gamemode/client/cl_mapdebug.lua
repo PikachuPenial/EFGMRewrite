@@ -31,9 +31,9 @@
 
 -- If everything looks accurate, click the generate button
 
--- Then run "efgm_debug_drawalignedmap [window width] [window height]" and enter the map name just to check everything got aligned and saved properly
+-- Go to garrysmod/data/[map name]_mapreport_final.json, and save that data into sh_map_information.lua to use with the proper map system
 
--- Finally, go to garrysmod/data/[map name]_mapreport_final.json, and save that data into sh_map_information.lua to use with the proper map system
+-- Finally, start a new map/server and check the in game map, make sure everything is aligned properly
 
 local wsLandmark1Xa = 0
 local wsLandmark1Ya = 0
@@ -203,7 +203,7 @@ if GetConVar("efgm_derivesbox"):GetInt() == 1 then
                 draw.DrawText( v.name, "DermaDefault", (v.pos.x * factorX) + offsetX, (v.pos.y * factorY) + offsetY - 20, Color(252, 152, 2, 240), TEXT_ALIGN_CENTER )
 
             end
-            
+
             surface.SetDrawColor(Color(251, 255, 0))
             surface.DrawCircle(landmark1X:GetValue(), landmark1Y:GetValue(), 15)
             surface.DrawCircle(landmark1X:GetValue(), landmark1Y:GetValue(), 2)
@@ -211,112 +211,6 @@ if GetConVar("efgm_derivesbox"):GetInt() == 1 then
             surface.DrawCircle(landmark2X:GetValue(), landmark2Y:GetValue(), 15)
             surface.DrawCircle(landmark2X:GetValue(), landmark2Y:GetValue(), 2)
 
-        end
-
-    end)
-
-
-    concommand.Add("efgm_debug_drawalignedmap", function(ply, cmd, args)
-
-        local mapSizeX = tonumber( args[1] )
-        local mapSizeY = tonumber( args[2] )
-        local mapName = tostring( args[3] )
-
-        local mapFrame = vgui.Create("DFrame")
-        mapFrame:SetSize(mapSizeX, mapSizeY)
-        mapFrame:Center()
-        mapFrame:SetTitle("[DEBUG] Aligned Map View")
-        mapFrame:SetVisible(true)
-        mapFrame:SetDeleteOnClose(true)
-        mapFrame:MakePopup()
-
-        local mapNameEntry = vgui.Create("DTextEntry", mapFrame)
-        mapNameEntry:Dock(TOP)
-        mapNameEntry:SetPlaceholderText("Map Name Here")
-
-        local mapPanel = vgui.Create("DPanel", mapFrame)
-        -- Don't set it to fill, it fucks up the icon placement for some fucking reason
-        mapPanel:SetSize(mapSizeX, mapSizeY)
-        mapPanel:Dock(TOP)
-
-        local mapInfo = nil
-        local mapName = ""
-
-        function mapNameEntry:OnEnter()
-
-            mapName = mapNameEntry:GetValue()
-
-            if file.Read(mapNameEntry:GetValue().."_mapreport_final.json", "DATA") != nil then
-                mapInfo = util.JSONToTable( file.Read(mapNameEntry:GetValue().."_mapreport_final.json", "DATA"))
-            else
-                mapInfo = MAPINFO[mapName]
-            end
-
-        end
-
-        function mapPanel:Paint(w, h)
-
-            if mapInfo == nil then return end
-
-            surface.SetDrawColor(255, 255, 255, 255)
-            surface.SetMaterial(Material("maps/"..mapName..".png", "smooth"))
-            surface.DrawTexturedRect(0, 0, w, h)
-
-            surface.SetDrawColor(52, 124, 218, 240)
-            for k, v in pairs(mapInfo.spawns) do
-
-                local posX = v.pos.x * mapSizeX
-                local posY = v.pos.y * mapSizeY
-                surface.DrawCircle(posX, posY, (5 * mapSizeX) / 720 )
-
-                local text = "PMC Spawn"
-
-                if v.group != "" and v.group != nil then
-                    text = "PMC Spawn (".. string.NiceName( v.group ) ..")"
-                end
-
-                draw.DrawText( text, "DermaDefault", posX, posY - 20, Color(52, 124, 218, 240), TEXT_ALIGN_CENTER )
-
-            end
-
-            surface.SetDrawColor(19, 196, 34, 240)
-            for k, v in pairs(mapInfo.extracts) do
-
-                local posX = v.pos.x * mapSizeX
-                local posY = v.pos.y * mapSizeY
-                surface.DrawCircle(posX, posY, (10 * mapSizeX) / 720 )
-
-                local text = v.name
-
-                if v.group != "" and v.group != nil then
-                    text = v.name.." (".. string.NiceName( v.group ) ..")"
-                end
-
-                draw.DrawText( text, "DermaDefault", posX, posY - 22, Color(19, 196, 34, 240), TEXT_ALIGN_CENTER )
-
-            end
-
-            surface.SetDrawColor(202, 20, 20, 240)
-            for k, v in pairs(mapInfo.locations) do
-
-                local posX = v.pos.x * mapSizeX
-                local posY = v.pos.y * mapSizeY
-                surface.DrawCircle(posX, posY, (25 * mapSizeX) / 720  )
-                draw.DrawText( v.name, "DermaDefault", posX, posY - 8, Color(202, 20, 20, 240), TEXT_ALIGN_CENTER )
-                draw.DrawText( "Loot: " .. v.loot .. "/5", "DermaDefault", posX, posY + 8, Color(202, 20, 20, 240), TEXT_ALIGN_CENTER )
-
-            end
-
-            surface.SetDrawColor(252, 152, 2, 240)
-            for k, v in pairs(mapInfo.keys) do
-
-                local posX = v.pos.x * mapSizeX
-                local posY = v.pos.y * mapSizeY
-                surface.DrawCircle(posX, posY, (3 * mapSizeX) / 720  )
-                draw.DrawText( v.name, "DermaDefault", posX, posY - 32, Color(252, 152, 2, 240), TEXT_ALIGN_CENTER )
-
-            end
-            
         end
 
     end)

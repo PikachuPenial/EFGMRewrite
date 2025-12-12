@@ -26,7 +26,7 @@ end)
 
 concommand.Add("efgm_wipe_full", function(ply, cmd, args) -- full reset of everything, should only be used in testing environments or MAYBE on a major enough update
 
-    sql.Query("DROP TABLE EFGMPlayerData64; CREATE TABLE IF NOT EXISTS EFGMPlayerData64 ( SteamID INTEGER, Key TEXT, Value TEXT, SteamName TEXT);")
+    sql.Query("DROP TABLE EFGMPlayerData64; CREATE TABLE IF NOT EXISTS EFGMPlayerData64 ( SteamID INTEGER, Key TEXT, Value TEXT);")
 
     print("Did full wipe ig")
 

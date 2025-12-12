@@ -41,4 +41,16 @@ if GetConVar("efgm_derivesbox"):GetInt() == 1 then
 
     end)
 
+    concommand.Add("efgm_debug_getequipped", function(ply, cmd, args)
+
+        PrintTable(ply.weaponSlots)
+
+    end)
+
+    concommand.Add("efgm_debug_getstash", function(ply, cmd, args)
+
+        PrintTable(ply.stash)
+
+    end)
+
 end

@@ -22,8 +22,6 @@ end
 
 function CheckTaskCompletion(ply, taskName)
 
-    -- PrintTable(ply.tasks)
-
     local taskInfo = EFGMTASKS[taskName or nil]
 
     if taskInfo == nil or table.IsEmpty(ply.tasks) or ply.tasks[taskName] == nil or ply.tasks[taskName].status != TASKSTATUS.InProgress then return end

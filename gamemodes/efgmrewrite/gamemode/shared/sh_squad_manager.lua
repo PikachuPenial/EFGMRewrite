@@ -34,6 +34,12 @@ if SERVER then
         net.Send(NETWORKEDPLAYERS:GetPlayers())
     end
 
+    function NetworkSquadInfoToAllClients()
+        net.Start("SendSquadData", true)
+        net.WriteTable(SQUADS)
+        net.Broadcast()
+    end
+
     local function PlayerInSquad(ply)
         if ply:GetNW2String("PlayerInSquad", "nil") != "nil" then
             return true

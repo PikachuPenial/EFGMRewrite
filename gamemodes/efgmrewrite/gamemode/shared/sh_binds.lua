@@ -12,6 +12,7 @@ if CLIENT then
     CreateClientConVar("efgm_bind_toggleubgl", KEY_N, true, true, "Determines the keybind that toggles to and from your UBGL")
     CreateClientConVar("efgm_bind_teaminvite", KEY_F3, true, true, "Determines the keybind that invites someone to your team")
     CreateClientConVar("efgm_bind_duelinvite", KEY_F4, true, true, "Determines the keybind that invites someone to a duel")
+    CreateClientConVar("efgm_bind_viewprofile", KEY_P, true, true, "Determines the keybind that opens another players profile while looking at them")
     CreateClientConVar("efgm_bind_acceptinvite", KEY_F5, true, true, "Determines the keybind that accepts an invite")
     CreateClientConVar("efgm_bind_declineinvite", KEY_F6, true, true, "Determines the keybind that declines an invite")
     CreateClientConVar("efgm_bind_dropitem", KEY_DELETE, true, true, "Determines the keybind that drops the hovered item in the menu")
@@ -132,6 +133,21 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
             if !IsValid(ent) then return end
 
             InvitePlayerToDuel(ply, ent)
+
+            return
+
+        end
+
+        -- view profile
+        if button == ply:GetInfoNum("efgm_bind_viewprofile", KEY_P) then
+
+            if !ply:CompareStatus(0) and !ply:CompareStatus(3) then return end
+
+            local ent = (ply:Alive() and ply:GetEyeTrace() or default_trace()).Entity
+            if !ent:IsPlayer() then return end
+            if !IsValid(ent) then return end
+
+            CreateNotification("I do not work yet LOL!", Mats.dontEvenAsk, "ui/boo.wav")
 
             return
 

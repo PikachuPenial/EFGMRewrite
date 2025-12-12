@@ -59,6 +59,5 @@ end)
 net.Receive("TaskSendAll", function(len, ply)
 
     playerTasks = net.ReadTable()
-    PrintTable(playerTasks)
 
 end)

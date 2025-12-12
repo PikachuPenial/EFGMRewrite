@@ -11,10 +11,11 @@ if SERVER then
     SetGlobalInt("DuelStatus", duelStatus.PENDING)
 
     DUEL.Players = {}
+    DUEL.Allowed = true
 
     function DUEL:StartDuel(ply1, ply2)
 
-        if GetGlobalInt("DuelStatus") != duelStatus.PENDING then return end
+        if GetGlobalInt("DuelStatus") != duelStatus.PENDING or !DUEL.Allowed then return end
 
         local spawns = RandomDuelSpawns()
         if !spawns then return end -- no duel spawns available on the map
@@ -35,6 +36,7 @@ if SERVER then
         for k, v in ipairs(DUEL.Players) do -- there is literally no reason for this to have more than 2 players, so i will asssume that it is 2 players
 
             v:Freeze(true)
+            v:SetNWBool("RaidReady", false)
 
             UnequipAll(v)
             UpdateInventoryString(v)
@@ -108,6 +110,25 @@ if SERVER then
                 CalculateInventoryWeight(v)
 
             end)
+
+        end
+
+    end
+
+    -- in the case that a duel is running right before a map switch
+    function DUEL:CancelDuel()
+
+        if GetGlobalInt("DuelStatus") != duelStatus.ACTIVE then return end
+
+        hook.Run("CancelledDuel")
+
+        for k, v in ipairs(DUEL.Players) do
+
+            v:Kill()
+
+            ReinstantiateInventoryAfterDuel(v)
+            net.Start("PlayerReinstantiateInventoryAfterDuel", false)
+            net.Send(v)
 
         end
 
@@ -192,6 +213,13 @@ if SERVER then
         ReinstantiateInventoryAfterDuel(victim)
         net.Start("PlayerReinstantiateInventoryAfterDuel", false)
         net.Send(victim)
+
+    end)
+
+    hook.Add("EndedRaid", "EndDuelOnMapChange", function(time)
+
+        timer.Simple(time / 2, function() DUEL.Allowed = false end) -- disable any new duels
+        timer.Simple(time - 3, function() DUEL:CancelDuel() end)    -- force cancel current duel
 
     end)
 

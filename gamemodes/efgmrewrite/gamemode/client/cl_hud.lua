@@ -320,8 +320,9 @@ function RenderPlayerInfo(ply, ent)
 
     local squadBind = string.upper(input.GetKeyName(GetConVar("efgm_bind_teaminvite"):GetInt()) or "NONE")
     local duelBind = string.upper(input.GetKeyName(GetConVar("efgm_bind_duelinvite"):GetInt()) or "NONE")
+    local profileBind = string.upper(input.GetKeyName(GetConVar("efgm_bind_viewprofile"):GetInt()) or "NONE")
 
-    local inviteText = string.upper("[" .. squadBind .. "] INVITE TO SQUAD" .. "   " .. "[" .. duelBind .. "] INVITE TO DUEL")
+    local inviteText = string.upper("[" .. squadBind .. "] INVITE TO SQUAD" .. "   " .. "[" .. duelBind .. "] INVITE TO DUEL" .. "   " .. "[" .. profileBind .. "] VIEW PROFILE")
     surface.SetFont("Bender24")
     local inviteTextSize = surface.GetTextSize(inviteText) + EFGM.ScreenScale(10)
 
@@ -353,6 +354,8 @@ function RenderInvite(ply)
     invite:SetPos(0, 0)
     invite:SetAlpha(0)
     invite:MoveToFront()
+
+    surface.PlaySound("squad_ownership.wav")
 
     local time = CurTime() + 10
     local sentBy = Invites.invitedBy
@@ -550,6 +553,7 @@ net.Receive("CreateDeathInformation", function()
 
     local xpMult = net.ReadFloat()
 
+    local respawnTime = net.ReadInt(8)
     local timeInRaid = net.ReadInt(16)
 
     local statsTbl = {
@@ -573,6 +577,7 @@ net.Receive("CreateDeathInformation", function()
     local xpBonus = net.ReadInt(16)
 
     local killedBy = net.ReadEntity()
+    local killedByHealth = net.ReadInt(8)
     local killedByWeapon = net.ReadString()
     local killedFrom = net.ReadInt(16)
     local hitGroup = net.ReadInt(5)
@@ -925,6 +930,8 @@ net.Receive("CreateDeathInformation", function()
 
                 end
 
+                draw.SimpleTextOutlined(killedByHealth .. "HP", "PuristaBold24", EFGM.MenuScale(32), EFGM.MenuScale(93), Colors.healthGreenColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+
             end
 
             local killerPFP = vgui.Create("AvatarImage", KillerHolder)
@@ -938,12 +945,13 @@ net.Receive("CreateDeathInformation", function()
 
                 local profile = dropdown:AddOption("Open Steam Profile", function() gui.OpenURL("http://steamcommunity.com/profiles/" .. killedBy:SteamID64()) end)
                 profile:SetIcon("games/16/all.png")
+                local gameProfile = dropdown:AddOption("Open Game Profile", function() CreateNotification("I do not work yet LOL!", Mats.dontEvenAsk, "ui/boo.wav") end)
+                gameProfile:SetIcon("icon16/chart_bar.png")
 
                 dropdown:AddSpacer()
 
-                local copy = dropdown:AddSubMenu("Copy...")
-                copy:AddOption("Copy Name", function() SetClipboardText(killedBy:GetName()) end):SetIcon("icon16/cut.png")
-                copy:AddOption("Copy SteamID64", function() SetClipboardText(killedBy:SteamID64()) end):SetIcon("icon16/cut.png")
+                dropdown:AddOption("Copy Name", function() SetClipboardText(killedBy:GetName()) end):SetIcon("icon16/pencil_add.png")
+                dropdown:AddOption("Copy SteamID64", function() SetClipboardText(killedBy:SteamID64()) end):SetIcon("icon16/pencil_add.png")
 
                 if killedBy != ply then
 
@@ -977,6 +985,12 @@ net.Receive("CreateDeathInformation", function()
                 dropdown:Open()
 
             end
+
+            local healthIcon = vgui.Create("DImage", KillerHolder)
+            healthIcon:SetPos(EFGM.MenuScale(0), EFGM.MenuScale(90))
+            healthIcon:SetSize(EFGM.MenuScale(32), EFGM.MenuScale(32))
+            healthIcon:SetImage("icons/health_icon.png")
+            healthIcon:SetImageColor(Colors.healthGreenColor)
 
             local playerModel = vgui.Create("DModelPanel", KillerHolder)
             playerModel:SetAlpha(0)

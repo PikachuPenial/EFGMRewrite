@@ -2198,7 +2198,6 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
             if owner:GetNWBool("InRange", false) == false then
 
                 ConsumeGrenade(self:GetOwner())
-                timer.Simple(0.75, function() owner:ConCommand("lastinv") end)
 
             end
 

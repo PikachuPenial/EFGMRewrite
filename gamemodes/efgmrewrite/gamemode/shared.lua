@@ -89,6 +89,23 @@ function units_to_meters(u)
 
 end
 
+local charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+function generate_rand_string(l)
+
+    local str = ""
+
+    for i = 1, l do
+
+        local randIndex = math.random(1, #charset)
+        str = str .. string.sub(charset, randIndex, randIndex)
+
+    end
+
+    return str
+
+end
+
 -- necessary functions to sync attachments cleanly between inventories
 function PruneUnnecessaryAttachmentDataRecursive(tbl)
 

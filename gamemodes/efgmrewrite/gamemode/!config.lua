@@ -1,6 +1,6 @@
 -- variables
 respawnTime = 7
-duelRespawnTime = 3
+noRaidRespawnTime = 3
 underweightLimit = 30
 
 levelArray = {}
@@ -93,9 +93,21 @@ if SERVER then
     RunConsoleCommand("arc9_precache_sounds_onfirsttake", "0")
     RunConsoleCommand("arc9_precache_attsmodels_onfirsttake", "0")
     RunConsoleCommand("arc9_precache_wepmodels_onfirsttake", "0")
-    RunConsoleCommand("arc9_precache_allsounds_onstartup", "1")
-    RunConsoleCommand("arc9_precache_attsmodels_onstartup", "1")
-    RunConsoleCommand("arc9_precache_wepmodels_onstartup", "1")
+
+    if GetConVar("efgm_derivesbox"):GetInt() == 0 then
+
+        RunConsoleCommand("arc9_precache_allsounds_onstartup", "1")
+        RunConsoleCommand("arc9_precache_attsmodels_onstartup", "1")
+        RunConsoleCommand("arc9_precache_wepmodels_onstartup", "1")
+
+    else
+
+        -- faster map reload times <3
+        RunConsoleCommand("arc9_precache_allsounds_onstartup", "0")
+        RunConsoleCommand("arc9_precache_attsmodels_onstartup", "0")
+        RunConsoleCommand("arc9_precache_wepmodels_onstartup", "0")
+
+    end
 end
 
 -- variables for ARC9 multipliers and range, used for modifications that I will make directly in SWEPS

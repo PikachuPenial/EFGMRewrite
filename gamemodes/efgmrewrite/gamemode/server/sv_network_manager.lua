@@ -1,7 +1,7 @@
 -- Eat shit penial i stole your titanmod code save manager code
 -- As of 4/25/2025 at 4:08AM CST, porty can eat shit, as I have rewritten this code to match the new titanmod networking manager
 -- As of 11/1/2025 at 2:23PM CDT, ):
-hook.Add("Initialize", "InitPlayerNetworking", function() sql.Query("CREATE TABLE IF NOT EXISTS EFGMPlayerData64 ( SteamID INTEGER, Key TEXT, Value TEXT, SteamName TEXT);") end )
+hook.Add("Initialize", "InitPlayerNetworking", function() sql.Query("CREATE TABLE IF NOT EXISTS EFGMPlayerData64 (SteamID INTEGER, Key TEXT, Value TEXT);") end )
 
 local tempCMD = nil
 local tempNewCMD = nil
@@ -172,10 +172,9 @@ end
 function UninitializeNetworkBool(ply, query, key)
 
 	local id64 = ply:SteamID64()
-	local name = ply:Nick()
 	local value = tobool(ply:GetNWBool(key))
 
-	if query == "new" then tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr(key) .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), " return end
+	if query == "new" then tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr(key) .. ", " .. SQLStr(value) .. "), " return end
 
 	for k, v in ipairs(query) do
 
@@ -188,17 +187,16 @@ function UninitializeNetworkBool(ply, query, key)
 
 	end
 
-	tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr(key) .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), "
+	tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr(key) .. ", " .. SQLStr(value) .. "), "
 
 end
 
 function UninitializeNetworkInt(ply, query, key)
 
 	local id64 = ply:SteamID64()
-	local name = ply:Nick()
 	local value = tonumber(ply:GetNWInt(key))
 
-	if query == "new" then tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr(key) .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), " return end
+	if query == "new" then tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr(key) .. ", " .. SQLStr(value) .. "), " return end
 
 	for k, v in ipairs(query) do
 
@@ -211,17 +209,16 @@ function UninitializeNetworkInt(ply, query, key)
 
 	end
 
-	tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr(key) .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), "
+	tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr(key) .. ", " .. SQLStr(value) .. "), "
 
 end
 
 function UninitializeNetworkFloat(ply, query, key)
 
 	local id64 = ply:SteamID64()
-	local name = ply:Nick()
 	local value = tonumber(ply:GetNWFloat(key))
 
-	if query == "new" then tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr(key) .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), " return end
+	if query == "new" then tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr(key) .. ", " .. SQLStr(value) .. "), " return end
 
 	for k, v in ipairs(query) do
 
@@ -234,14 +231,13 @@ function UninitializeNetworkFloat(ply, query, key)
 
 	end
 
-	tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr(key) .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), "
+	tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr(key) .. ", " .. SQLStr(value) .. "), "
 
 end
 
 function UninitializeNetworkString(ply, query, key, valueOverride)
 
 	local id64 = ply:SteamID64()
-	local name = ply:Nick()
 	local value = ""
 
 	if valueOverride == nil then
@@ -254,7 +250,7 @@ function UninitializeNetworkString(ply, query, key, valueOverride)
 
 	end
 
-	if query == "new" then tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr(key) .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), " return end
+	if query == "new" then tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr(key) .. ", " .. SQLStr(value) .. "), " return end
 
 	for k, v in ipairs(query) do
 
@@ -267,7 +263,7 @@ function UninitializeNetworkString(ply, query, key, valueOverride)
 
 	end
 
-	tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr(key) .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), "
+	tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr(key) .. ", " .. SQLStr(value) .. "), "
 
 end
 
@@ -275,7 +271,6 @@ end
 function UninitializeStashString(ply, query, valueOverride)
 
 	local id64 = ply:SteamID64()
-	local name = ply:Nick()
 	local value = ""
 
 	if valueOverride == nil then
@@ -288,7 +283,7 @@ function UninitializeStashString(ply, query, valueOverride)
 
 	end
 
-	if query == "new" then tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr("Stash") .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), " return end
+	if query == "new" then tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr("Stash") .. ", " .. SQLStr(value) .. "), " return end
 
 	for k, v in ipairs(query) do
 
@@ -301,14 +296,13 @@ function UninitializeStashString(ply, query, valueOverride)
 
 	end
 
-	tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr("Stash") .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), "
+	tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr("Stash") .. ", " .. SQLStr(value) .. "), "
 
 end
 
 function UninitializeInventoryString(ply, query, valueOverride)
 
 	local id64 = ply:SteamID64()
-	local name = ply:Nick()
 	local value = ""
 
 	if valueOverride == nil then
@@ -321,7 +315,7 @@ function UninitializeInventoryString(ply, query, valueOverride)
 
 	end
 
-	if query == "new" then tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr("Inventory") .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), " return end
+	if query == "new" then tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr("Inventory") .. ", " .. SQLStr(value) .. "), " return end
 
 	for k, v in ipairs(query) do
 
@@ -334,14 +328,13 @@ function UninitializeInventoryString(ply, query, valueOverride)
 
 	end
 
-	tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr("Inventory") .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), "
+	tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr("Inventory") .. ", " .. SQLStr(value) .. "), "
 
 end
 
 function UninitializeEquippedString(ply, query, valueOverride)
 
 	local id64 = ply:SteamID64()
-	local name = ply:Nick()
 	local value = ""
 
 	if valueOverride == nil then
@@ -354,7 +347,7 @@ function UninitializeEquippedString(ply, query, valueOverride)
 
 	end
 
-	if query == "new" then tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr("Equipped") .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), " return end
+	if query == "new" then tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr("Equipped") .. ", " .. SQLStr(value) .. "), " return end
 
 	for k, v in ipairs(query) do
 
@@ -367,14 +360,13 @@ function UninitializeEquippedString(ply, query, valueOverride)
 
 	end
 
-	tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr("Equipped") .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), "
+	tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr("Equipped") .. ", " .. SQLStr(value) .. "), "
 
 end
 
 function UninitializeTaskString(ply, query, valueOverride)
 
 	local id64 = ply:SteamID64()
-	local name = ply:Nick()
 	local value = ""
 
 	if valueOverride == nil then
@@ -387,7 +379,7 @@ function UninitializeTaskString(ply, query, valueOverride)
 
 	end
 
-	if query == "new" then tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr("Tasks") .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), " return end
+	if query == "new" then tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr("Tasks") .. ", " .. SQLStr(value) .. "), " return end
 
 	for k, v in ipairs(query) do
 
@@ -400,7 +392,7 @@ function UninitializeTaskString(ply, query, valueOverride)
 
 	end
 
-	tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr("Tasks") .. ", " .. SQLStr(value) .. ", " .. SQLStr(name) .. "), "
+	tempNewCMD = tempNewCMD .. "(" .. SQLStr(id64) .. ", " .. SQLStr("Tasks") .. ", " .. SQLStr(value) .. "), "
 
 end
 
@@ -542,7 +534,7 @@ function SavePlayerData(ply)
 	local query = sql.Query("SELECT Key, Value FROM EFGMPlayerData64 WHERE SteamID = " .. id64 .. ";")
 	if query == nil then query = "new" end
 
-	tempNewCMD = "INSERT INTO EFGMPlayerData64 (SteamID, Key, Value, SteamName) VALUES"
+	tempNewCMD = "INSERT INTO EFGMPlayerData64 (SteamID, Key, Value) VALUES"
 	tempCMD = "UPDATE EFGMPlayerData64 SET Value = CASE Key "
 
 	sql.Begin()
@@ -597,11 +589,10 @@ function SavePlayerData(ply)
 	tempNewCMD = string.sub(tempNewCMD, 1, -3) .. ";"
 	tempCMD = tempCMD .. "ELSE Value END WHERE SteamID = " .. id64 .. ";"
 
-	if tempNewCMD != "INSERT INTO EFGMPlayerData64 (SteamID, Key, Value, SteamName) VALU;" then sql.Query(tempNewCMD) end
+	if tempNewCMD != "INSERT INTO EFGMPlayerData64 (SteamID, Key, Value) VALU;" then sql.Query(tempNewCMD) end
 	if tempCMD != "UPDATE EFGMPlayerData64 SET Value = CASE Key ELSE Value END WHERE SteamID = " .. id64 .. ";" then
 
 		sql.Query(tempCMD)
-		sql.Query("UPDATE EFGMPlayerData64 SET SteamName = " .. SQLStr(ply:Nick()) .. " WHERE SteamID = " .. id64 .. ";")
 
 	end
 

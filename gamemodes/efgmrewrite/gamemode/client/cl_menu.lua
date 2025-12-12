@@ -6917,10 +6917,16 @@ function Menu.OpenTab.Inventory(container)
     healthHolder:SetSize(EFGM.MenuScale(125), EFGM.MenuScale(55))
     function healthHolder:Paint(w, h)
 
+        surface.SetDrawColor(Colors.containerBackgroundColor)
+        surface.DrawRect(0, 0, w, h)
+
         surface.SetDrawColor(Colors.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
 
-        draw.SimpleTextOutlined(Menu.Player:Health() or "0", "PuristaBold50", EFGM.MenuScale(60), EFGM.MenuScale(1), Colors.healthGreenColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined(Menu.Player:Health() or "0", "PuristaBold50", w - EFGM.MenuScale(8), EFGM.MenuScale(0), Colors.healthGreenColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
     end
 
@@ -6940,7 +6946,7 @@ function Menu.OpenTab.Inventory(container)
     end
 
     local healthIcon = vgui.Create("DImage", healthHolder)
-    healthIcon:SetPos(EFGM.MenuScale(1), EFGM.MenuScale(1))
+    healthIcon:SetPos(EFGM.MenuScale(0), EFGM.MenuScale(0))
     healthIcon:SetSize(EFGM.MenuScale(53), EFGM.MenuScale(53))
     healthIcon:SetImage("icons/health_icon.png")
     healthIcon:SetImageColor(Colors.healthGreenColor)
@@ -9144,8 +9150,8 @@ function Menu.OpenTab.Match()
 
                 local profile = dropdown:AddOption("Open Steam Profile", function() gui.OpenURL("http://steamcommunity.com/profiles/" .. v:SteamID64()) end)
                 profile:SetIcon("games/16/all.png")
-
-                dropdown:AddSpacer()
+                local gameProfile = dropdown:AddOption("Open Game Profile", function() CreateNotification("I do not work yet LOL!", Mats.dontEvenAsk, "ui/boo.wav") end)
+                gameProfile:SetIcon("icon16/chart_bar.png")
 
                 if v != Menu.Player and status then
 
@@ -9158,9 +9164,10 @@ function Menu.OpenTab.Match()
 
                 end
 
-                local copy = dropdown:AddSubMenu("Copy...")
-                copy:AddOption("Copy Name", function() SetClipboardText(v:GetName()) end):SetIcon("icon16/cut.png")
-                copy:AddOption("Copy SteamID64", function() SetClipboardText(v:SteamID64()) end):SetIcon("icon16/cut.png")
+                dropdown:AddSpacer()
+
+                dropdown:AddOption("Copy Name", function() SetClipboardText(v:GetName()) end):SetIcon("icon16/pencil_add.png")
+                dropdown:AddOption("Copy SteamID64", function() SetClipboardText(v:SteamID64()) end):SetIcon("icon16/pencil_add.png")
 
                 if v != Menu.Player then
 
@@ -9766,6 +9773,7 @@ function Menu.OpenTab.Match()
 
         local function RenderCurrentSquad(array)
 
+            if array == nil then return end
             if squad == "nil" then return end
 
             local name = squad
@@ -9880,8 +9888,8 @@ function Menu.OpenTab.Match()
 
                     local profile = dropdown:AddOption("Open Steam Profile", function() gui.OpenURL("http://steamcommunity.com/profiles/" .. v:SteamID64()) end)
                     profile:SetIcon("games/16/all.png")
-
-                    dropdown:AddSpacer()
+                    local gameProfile = dropdown:AddOption("Open Game Profile", function() CreateNotification("I do not work yet LOL!", Mats.dontEvenAsk, "ui/boo.wav") end)
+                    gameProfile:SetIcon("icon16/chart_bar.png")
 
                     if v != Menu.Player and v:CompareStatus(0) then
 
@@ -9892,9 +9900,10 @@ function Menu.OpenTab.Match()
 
                     end
 
-                    local copy = dropdown:AddSubMenu("Copy...")
-                    copy:AddOption("Copy Name", function() SetClipboardText(v:GetName()) end):SetIcon("icon16/cut.png")
-                    copy:AddOption("Copy SteamID64", function() SetClipboardText(v:SteamID64()) end):SetIcon("icon16/cut.png")
+                    dropdown:AddSpacer()
+
+                    dropdown:AddOption("Copy Name", function() SetClipboardText(v:GetName()) end):SetIcon("icon16/pencil_add.png")
+                    dropdown:AddOption("Copy SteamID64", function() SetClipboardText(v:SteamID64()) end):SetIcon("icon16/pencil_add.png")
 
                     if v != Menu.Player then
 
@@ -10403,9 +10412,10 @@ function Menu.OpenTab.Stats()
         for k, v in ipairs(selectedBoard) do
 
             local color = Colors.whiteColor
-            if v.SteamName == Menu.Player:GetName() then color = yColor end
+            if v.SteamID == Menu.Player:SteamID64() then color = yColor end
+            if !v.Name then return end
             draw.SimpleTextOutlined(k, "Purista18", EFGM.MenuScale(5), EFGM.MenuScale(25) + ((k - 1) * EFGM.MenuScale(20)), color, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-            draw.SimpleTextOutlined(string.sub(v.SteamName, 1, 21), "Purista18", EFGM.MenuScale(25), EFGM.MenuScale(25) + ((k - 1) * EFGM.MenuScale(20)), color, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+            draw.SimpleTextOutlined(string.sub(v.Name, 1, 21), "Purista18", EFGM.MenuScale(25), EFGM.MenuScale(25) + ((k - 1) * EFGM.MenuScale(20)), color, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
             --asdofiauhasdofiauashydafasdifa
             if selectedBoardName == "Money Earned" or selectedBoardName == "Money Spent" or selectedBoardName == "Stash Value" then
@@ -10440,6 +10450,21 @@ function Menu.OpenTab.Stats()
         local tbl = util.JSONToTable(str)
 
         selectedBoard = tbl
+
+        if !selectedBoard then return end
+
+        for k, v in ipairs(selectedBoard) do
+
+            local name = ""
+            steamworks.RequestPlayerInfo(v.SteamID, function(steamName) name = steamName end)
+
+            timer.Simple(k * 0.01, function()
+
+                selectedBoard[k].Name = name
+
+            end)
+
+        end
 
     end )
 
@@ -11885,14 +11910,14 @@ function Menu.OpenTab.Settings()
     invitePrivacy:SetSize(EFGM.MenuScale(120), EFGM.MenuScale(20))
 
     if GetConVar("efgm_privacy_invites_squad"):GetInt() == 0 then
-        invitePrivacy:SetValue("None")
+        invitePrivacy:SetValue("Nobody")
     elseif GetConVar("efgm_privacy_invites_squad"):GetInt() == 1 then
         invitePrivacy:SetValue("Steam Friends")
     elseif GetConVar("efgm_privacy_invites_squad"):GetInt() == 2  then
         invitePrivacy:SetValue("Everyone")
     end
 
-    invitePrivacy:AddChoice("None")
+    invitePrivacy:AddChoice("Nobody")
     invitePrivacy:AddChoice("Steam Friends")
     invitePrivacy:AddChoice("Everyone")
     invitePrivacy:SetSortItems(false)
@@ -11914,14 +11939,14 @@ function Menu.OpenTab.Settings()
     duelPrivacy:SetSize(EFGM.MenuScale(120), EFGM.MenuScale(20))
 
     if GetConVar("efgm_privacy_invites_duel"):GetInt() == 0 then
-        duelPrivacy:SetValue("None")
+        duelPrivacy:SetValue("Nobody")
     elseif GetConVar("efgm_privacy_invites_duel"):GetInt() == 1 then
         duelPrivacy:SetValue("Steam Friends")
     elseif GetConVar("efgm_privacy_invites_duel"):GetInt() == 2  then
         duelPrivacy:SetValue("Everyone")
     end
 
-    duelPrivacy:AddChoice("None")
+    duelPrivacy:AddChoice("Nobody")
     duelPrivacy:AddChoice("Steam Friends")
     duelPrivacy:AddChoice("Everyone")
     duelPrivacy:SetSortItems(false)
