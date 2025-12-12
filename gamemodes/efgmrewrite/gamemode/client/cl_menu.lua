@@ -11879,6 +11879,35 @@ function Menu.OpenTab.Settings()
         RunConsoleCommand("efgm_privacy_invites", value - 1)
     end
 
+    local duelPrivacyPanel = vgui.Create("DPanel", account)
+    duelPrivacyPanel:Dock(TOP)
+    duelPrivacyPanel:SetSize(0, EFGM.MenuScale(55))
+    function duelPrivacyPanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Receive Duel Invites From", "Purista18", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+
+    end
+
+    local duelPrivacy = vgui.Create("DComboBox", duelPrivacyPanel)
+    duelPrivacy:SetPos(EFGM.MenuScale(100), EFGM.MenuScale(30))
+    duelPrivacy:SetSize(EFGM.MenuScale(120), EFGM.MenuScale(20))
+
+    if GetConVar("efgm_privacy_invites_duel"):GetInt() == 0 then
+        duelPrivacy:SetValue("None")
+    elseif GetConVar("efgm_privacy_invites_duel"):GetInt() == 1 then
+        duelPrivacy:SetValue("Steam Friends")
+    elseif GetConVar("efgm_privacy_invites_duel"):GetInt() == 2  then
+        duelPrivacy:SetValue("Everyone")
+    end
+
+    duelPrivacy:AddChoice("None")
+    duelPrivacy:AddChoice("Steam Friends")
+    duelPrivacy:AddChoice("Everyone")
+    duelPrivacy:SetSortItems(false)
+    duelPrivacy.OnSelect = function(self, value)
+        RunConsoleCommand("efgm_privacy_invites_duel", value - 1)
+    end
+
     -- misc
     local clearDecals = vgui.Create("DButton", misc)
     clearDecals:Dock(TOP)

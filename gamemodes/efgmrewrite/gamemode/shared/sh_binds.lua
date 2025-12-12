@@ -135,6 +135,26 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
 
         end
 
+        -- accept invite
+        if button == ply:GetInfoNum("efgm_bind_acceptinvite", KEY_F5) then
+
+            if !ply:CompareStatus(0) then return end
+            AcceptInvite(ply)
+
+            return
+
+        end
+
+        -- decline invite
+        if button == ply:GetInfoNum("efgm_bind_declineinvite", KEY_F6) then
+
+            if !ply:CompareStatus(0) then return end
+            DeclineInvite(ply)
+
+            return
+
+        end
+
         -- equip primary
         if button == ply:GetInfoNum("efgm_bind_equip_primary1", KEY_1) then
             ply:ConCommand("efgm_inventory_equip " .. WEAPONSLOTS.PRIMARY.ID .. " 1")

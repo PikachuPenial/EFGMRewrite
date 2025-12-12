@@ -354,13 +354,47 @@ function RenderInvite(ply)
     invite:SetAlpha(0)
     invite:MoveToFront()
 
+    local time = CurTime() + 10
+    local sentBy = Invites.invitedBy
+    local inviteType = Invites.invitedType
+
+    local text = ""
+    if inviteType == "squad" then
+
+        text = string.upper(sentBy:GetName() .. " invited you to join their squad!")
+
+    elseif inviteType == "duel" then
+
+        text = string.upper(sentBy:GetName() .. " wants to duel!")
+
+    end
+
+    surface.SetFont("BenderExfilTimer")
+    local textSize = surface.GetTextSize(text) + EFGM.ScreenScale(10)
+
+    local acceptBind = string.upper(input.GetKeyName(GetConVar("efgm_bind_acceptinvite"):GetInt()) or "NONE")
+    local declineBind = string.upper(input.GetKeyName(GetConVar("efgm_bind_declineinvite"):GetInt()) or "NONE")
+
+    local bindsText = string.upper("[" .. acceptBind .. "] ACCEPT" .. "   " .. "[" .. declineBind .. "] IGNORE")
+    surface.SetFont("Bender24")
+    local bindsTextSize = surface.GetTextSize(bindsText) + EFGM.ScreenScale(10)
+
     invite.Paint = function(self, w, h)
         if !ply:Alive() then return end
-        if Invites.invitedBy == nil or Invites.invitedType == nil then invite:Remove() return end
+        if !ply:CompareStatus(0) then return end
+        if Invites.invitedBy == nil or Invites.invitedType == nil then invite:AlphaTo(0, 0.1, 9.9, function() invite:Remove() end) return end
 
         surface.SetDrawColor(Colors.hudBackground)
-        surface.DrawRect(EFGM.ScreenScale(20), EFGM.ScreenScale(20), EFGM.ScreenScale(300), EFGM.ScreenScale(100))
-        draw.SimpleText(Invites.invitedBy:GetName(), "BenderAmmoCount", EFGM.ScreenScale(25), EFGM.ScreenScale(21), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+        surface.DrawRect(EFGM.ScreenScale(20), EFGM.ScreenScale(20), math.max(textSize, bindsTextSize), EFGM.ScreenScale(90))
+
+        surface.SetDrawColor(Colors.hudBackground)
+        surface.DrawRect(EFGM.ScreenScale(20), EFGM.ScreenScale(20), math.max(textSize, bindsTextSize), EFGM.MenuScale(1))
+
+        surface.SetDrawColor(Color(255, 255, 255, 155))
+        surface.DrawRect(EFGM.ScreenScale(20), EFGM.ScreenScale(20), ((time - CurTime()) / 10) * math.max(textSize, bindsTextSize), EFGM.MenuScale(1))
+
+        draw.SimpleText(text, "BenderExfilTimer", EFGM.ScreenScale(25), EFGM.ScreenScale(21), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+        draw.SimpleText(bindsText, "Bender24", EFGM.ScreenScale(25), EFGM.ScreenScale(81), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
     end
 
     invite:AlphaTo(255, 0.1, 0, nil)
@@ -369,8 +403,8 @@ end
 
 local function DrawHUD()
     ply = LocalPlayer()
-    if not ply:Alive() then RenderOverlays(ply) return end
-    if not enabled then return end
+    if !ply:Alive() then RenderOverlays(ply) return end
+    if !enabled then return end
 
     RenderRaidTime(ply)
     RenderPlayerWeapon(ply)
