@@ -75,7 +75,32 @@ function ReinstantiateInventory()
 
 end
 
+function ReinstantiateInventoryAfterDuel()
+
+    local equMelee = table.Copy(playerWeaponSlots[WEAPONSLOTS.MELEE.ID])
+
+    playerWeaponSlots = {}
+    for k, v in pairs(WEAPONSLOTS) do
+
+        playerWeaponSlots[v.ID] = {}
+
+        for i = 1, v.COUNT, 1 do
+
+            playerWeaponSlots[v.ID][i] = {}
+
+        end
+
+    end
+
+    if equMelee != nil then playerWeaponSlots[WEAPONSLOTS.MELEE.ID] = equMelee end
+
+    playerEquippedSlot = 0
+    playerEquippedSubSlot = 0
+
+end
+
 net.Receive("PlayerReinstantiateInventory", function(len, ply) ReinstantiateInventory() end)
+net.Receive("PlayerReinstantiateInventoryAfterDuel", function(len, ply) ReinstantiateInventoryAfterDuel() end)
 
 net.Receive("PlayerInventoryReload", function(len, ply)
 
@@ -183,6 +208,8 @@ end )
 
 function DropItemFromInventory(itemIndex)
 
+    if LocalPlayer():CompareStatus(3) then return end
+
     net.Start("PlayerInventoryDropItem", false)
     net.WriteUInt(itemIndex, 16)
     net.SendToServer()
@@ -194,6 +221,8 @@ end
 
 -- returns bool whether or not it could equip an item clientside (desync may be an issue since server could disagree and neither side would know)
 function EquipItemFromInventory(itemIndex, equipSlot, primaryPref)
+
+    if LocalPlayer():CompareStatus(3) then return end
 
     local item = playerInventory[itemIndex]
     if item == nil then return end
@@ -257,6 +286,8 @@ end
 
 function UnEquipItemFromInventory(equipID, equipSlot)
 
+    if LocalPlayer():CompareStatus(3) then return end
+
     local item = playerWeaponSlots[equipID][equipSlot]
 
     if table.IsEmpty(item) then return end
@@ -271,6 +302,8 @@ function UnEquipItemFromInventory(equipID, equipSlot)
 end
 
 function DropEquippedItem(equipID, equipSlot)
+
+    if LocalPlayer():CompareStatus(3) then return end
 
     local item = playerWeaponSlots[equipID][equipSlot]
 
@@ -321,6 +354,32 @@ net.Receive("PlayerInventoryClearFIR", function(len, ply)
         end
 
     end
+
+    Menu.ReloadInventory()
+    Menu.ReloadSlots()
+
+end )
+
+net.Receive("PlayerInventoryReloadForDuel", function(len, ply)
+
+    local primaryItem, secondaryItem
+
+    primaryItem = net.ReadTable()
+    secondaryItem = net.ReadTable()
+
+    local hasPrimary = false
+    local hasHolster = false
+
+    if primaryItem != nil and !table.IsEmpty(primaryItem) then hasPrimary = true playerWeaponSlots[1][1] = primaryItem end
+    if secondaryItem != nil and !table.IsEmpty(secondaryItem) then hasHolster = true playerWeaponSlots[2][1] = secondaryItem end
+
+    timer.Simple(0.2, function()
+
+        if hasPrimary and hasHolster then LocalPlayer():ConCommand("efgm_inventory_equip " .. WEAPONSLOTS.PRIMARY.ID)
+        elseif !hasPrimary and hasHolster then LocalPlayer():ConCommand("efgm_inventory_equip " .. WEAPONSLOTS.HOLSTER.ID)
+        end
+
+    end)
 
     Menu.ReloadInventory()
     Menu.ReloadSlots()

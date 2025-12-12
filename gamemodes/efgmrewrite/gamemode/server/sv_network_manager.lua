@@ -628,6 +628,7 @@ hook.Add("PlayerDisconnected", "PlayerUninitializeStats", function(ply)
 
 	ply:SetNWBool("FreshWipe", false)
 
+	-- in raid
 	if !ply:CompareStatus(0) and !ply:CompareStatus(3) then
 
 		UnequipAll(ply)
@@ -647,6 +648,15 @@ hook.Add("PlayerDisconnected", "PlayerUninitializeStats", function(ply)
 
 		-- wipe inventory and drop backpack if leaving WHILE in a raid
 		ReinstantiateInventory(ply)
+
+	end
+
+	-- in duel
+	if ply:CompareStatus(3) then
+
+		UnequipAll(ply)
+		ReinstantiateInventory(ply)
+		DUEL:EndDuel(ply)
 
 	end
 

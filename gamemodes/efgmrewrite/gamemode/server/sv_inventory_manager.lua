@@ -1,5 +1,6 @@
 
 util.AddNetworkString("PlayerReinstantiateInventory")
+util.AddNetworkString("PlayerReinstantiateInventoryAfterDuel")
 util.AddNetworkString("PlayerInventoryReload")
 util.AddNetworkString("PlayerSlotsReload")
 util.AddNetworkString("PlayerInventoryAddItem")
@@ -40,6 +41,47 @@ function ReinstantiateInventory(ply)
     end
 
     if equMelee != nil then ply.weaponSlots[WEAPONSLOTS.MELEE.ID] = equMelee end
+
+    CalculateInventoryWeight(ply)
+
+end
+
+function ReinstantiateInventoryAfterDuel(ply)
+
+    local equMelee = table.Copy(ply.weaponSlots[WEAPONSLOTS.MELEE.ID])
+
+    ply.weaponSlots = {}
+    ply.equStr = ""
+    for k, v in pairs(WEAPONSLOTS) do
+
+        ply.weaponSlots[v.ID] = {}
+        for i = 1, v.COUNT, 1 do ply.weaponSlots[v.ID][i] = {} end
+
+    end
+
+    if equMelee != nil then ply.weaponSlots[WEAPONSLOTS.MELEE.ID] = equMelee end
+
+    ply:StripWeapons()
+
+    ply.SpawnTimerVManip = CurTime() + 1 -- fuck off
+
+    for i = 1, 5 do
+
+        for k, v in pairs(ply.weaponSlots[i]) do
+
+            if !table.IsEmpty(v) then
+
+                local item = table.Copy(v)
+                if item == nil then return end
+
+                equipWeaponName = item.name
+                GiveWepWithPresetFromCode(ply, item.name, item.data.att)
+
+            end
+
+        end
+
+    end
 
     CalculateInventoryWeight(ply)
 
@@ -294,6 +336,8 @@ net.Receive("PlayerInventoryDropItem", function(len, ply)
     local itemIndex = net.ReadUInt(16)
     local item = ply.inventory[itemIndex]
 
+    if LocalPlayer():CompareStatus(3) then return end
+
     if table.IsEmpty(item) then return false end
 
     entity = ents.Create("efgm_dropped_item")
@@ -342,6 +386,8 @@ net.Receive("PlayerInventoryEquipItem", function(len, ply)
     equipSlot = net.ReadUInt(4)
     equipSubSlot = net.ReadUInt(16)
 
+    if ply:CompareStatus(3) then return end
+
     local item = ply.inventory[itemIndex]
     if item == nil then return end
 
@@ -373,6 +419,8 @@ net.Receive("PlayerInventoryUnEquipItem", function(len, ply)
 
     local equipID = net.ReadUInt(4)
     local equipSlot = net.ReadUInt(4)
+
+    if ply:CompareStatus(3) then return end
 
     local item = table.Copy(ply.weaponSlots[equipID][equipSlot])
 
@@ -510,6 +558,7 @@ end
 
 net.Receive("PlayerInventoryUnEquipAllCL", function(len, ply)
 
+    if ply:CompareStatus(3) then return end
     UnequipAll(ply)
 
 end)
@@ -652,6 +701,8 @@ net.Receive("PlayerInventoryDropEquippedItem", function(len, ply)
 
     local equipID = net.ReadUInt(4)
     local equipSlot = net.ReadUInt(4)
+
+    if ply:CompareStatus(3) then return end
 
     local item = table.Copy(ply.weaponSlots[equipID][equipSlot])
 
@@ -885,6 +936,8 @@ net.Receive("PlayerInventoryDelete", function(len, ply)
         return true
 
     elseif invType == "equipped" then
+
+        if ply:CompareStatus(3) then return end
 
         local item = table.Copy(ply.weaponSlots[equipID][equipSlot])
 

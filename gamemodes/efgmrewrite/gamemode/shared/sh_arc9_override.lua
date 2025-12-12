@@ -2344,19 +2344,8 @@ hook.Add("PlayerBindPress", "ARC9_Binds", function(ply, bind, pressed, code)
     if !wpn or !IsValid(wpn) or !wpn.ARC9 then return end
 
     if bind == "+menu_context" then
+        if LocalPlayer():CompareStatus(3) then return end
         if !wpn:GetInSights() and !LocalPlayer():KeyDown(IN_USE) then
-            -- if wpn:GetCustomize() then
-            --     surface.PlaySound("arc9/newui/ui_close.ogg")
-            --     net.Start("ARC9_togglecustomize")
-            --     net.WriteBool(false)
-            --     net.SendToServer()
-            --     -- wpn:DoIconCapture()
-            -- else
-            --     surface.PlaySound("arc9/newui/ui_open.ogg")
-            --     net.Start("ARC9_togglecustomize")
-            --     net.WriteBool(true)
-            --     net.SendToServer()
-            -- end
 
             ARC9.KeyPressed_Menu = pressed
 

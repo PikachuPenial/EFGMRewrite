@@ -27,7 +27,7 @@ net.Receive("PlayerAcceptInvite", function(len, ply)
 
     if inviteType == "duel" then
 
-        DUEL:StartRaid(ply, invitedPly)
+        DUEL:StartDuel(ply, invitedPly)
 
     end
 

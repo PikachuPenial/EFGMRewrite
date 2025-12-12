@@ -8184,6 +8184,87 @@ function GenerateLootTables()
 
 end
 
+function GenerateDuelLoadouts()
+
+    -- types:
+    -- 1 == assault rifles
+    -- 2 == submachine guns
+    -- 3 == light machine guns
+    -- 4 == sniper rifles
+    -- 5 == marksman rifles
+    -- 6 == assault carbines
+    -- 7 == shotguns
+    -- 8 == secondaries only
+    -- 9 == melees only
+
+    DUEL_PRIMARY = {}
+    DUEL_PRIMARY[1] = {}
+    DUEL_PRIMARY[2] = {}
+    DUEL_PRIMARY[3] = {}
+    DUEL_PRIMARY[4] = {}
+    DUEL_PRIMARY[5] = {}
+    DUEL_PRIMARY[6] = {}
+    DUEL_PRIMARY[7] = {}
+    DUEL_PRIMARY[8] = {}
+    DUEL_PRIMARY[9] = {}
+
+    DUEL_SECONDARY = {}
+    DUEL_SECONDARY[1] = {}
+
+    for k, v in pairs(EFGMITEMS) do
+
+        if v.displayType == "Assault Rifle" then
+
+            DUEL_PRIMARY[1][k] = v
+
+        end
+
+        if v.displayType == "Submachine Gun" then
+
+            DUEL_PRIMARY[2][k] = v
+
+        end
+
+        if v.displayType == "Light Machine Gun" then
+
+            DUEL_PRIMARY[3][k] = v
+
+        end
+
+        if v.displayType == "Sniper Rifle" then
+
+            DUEL_PRIMARY[4][k] = v
+
+        end
+
+        if v.displayType == "Marksman Rifle" then
+
+            DUEL_PRIMARY[5][k] = v
+
+        end
+
+        if v.displayType == "Assault Carbine" then
+
+            DUEL_PRIMARY[6][k] = v
+
+        end
+
+        if v.displayType == "Shotgun" and v.equipSlot != WEAPONSLOTS.HOLSTER.ID then
+
+            DUEL_PRIMARY[7][k] = v
+
+        end
+
+        if v.equipSlot == WEAPONSLOTS.HOLSTER.ID and v.displayName != "Blicky" and v.displayName != "R1500" then -- sorry guys no fucking blickies and rangefinders
+
+            DUEL_SECONDARY[1][k] = v
+
+        end
+
+    end
+
+end
+
 function SpawnAllLoot()
 
     if SERVER then
@@ -8244,6 +8325,7 @@ hook.Add("InitPostEntity", "AttsItemDef", function()
     end
 
     GenerateLootTables()
+    GenerateDuelLoadouts()
 
 end)
 
@@ -8278,5 +8360,6 @@ hook.Add("OnReloaded", "AttsItemDefReload", function()
     end
 
     GenerateLootTables()
+    GenerateDuelLoadouts()
 
 end)

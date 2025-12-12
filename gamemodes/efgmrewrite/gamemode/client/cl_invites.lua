@@ -9,6 +9,7 @@ end
 function InvitePlayerToDuel(ply, invitedPly)
 
     if CurTime() - lastInviteSentTime < 10 then CreateNotification("You can send invites again in " .. 10 - math.Round(CurTime() - lastInviteSentTime, 1) .. " seconds!", Mats.inviteErrorIcon, nil) return end
+    if GetGlobalInt("DuelStatus") != duelStatus.PENDING then CreateNotification("Another duel is already taking place, please wait for it to end!", Mats.inviteErrorIcon, nil) return end
     if !IsValid(invitedPly) then return end
     if Invites.invitedBy != nil or Invites.invitedType != nil then CreateNotification("Cannot send an invite while pending confirmation!", Mats.inviteErrorIcon, nil) return end
 

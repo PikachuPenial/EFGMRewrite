@@ -89,7 +89,27 @@ function GetValidRaidSpawn(status) -- status: 0 = lobby, 1 = pmc, 2 = scav (assu
 end
 
 -- hideout
+-- on a normal spawn
 function GM:PlayerSelectSpawn(ply)
+
+	local spawns = ents.FindByClass("info_player_start")
+	local size = table.Count(spawns)
+
+	for i = 0, size do
+		local randomSpawn = math.random(#spawns)
+
+		if (hook.Call("IsSpawnpointSuitable", GAMEMODE, ply, spawns[randomSpawn], false)) then
+			return spawns[randomSpawn]
+		end
+	end
+
+	local randomSpawn = math.random(#spawns)
+	return spawns[randomSpawn]
+
+end
+
+-- on extract (literally just a duplicate of the function above lololol!!1!)
+function GetValidHideoutSpawn()
 
 	local spawns = ents.FindByClass("info_player_start")
 	local size = table.Count(spawns)
