@@ -2213,8 +2213,10 @@ end
 
 -- ads vignette
 local adsProg
+local sharpenIntensity = 5
+local sharpenDistance = 1
 hook.Add("RenderScreenspaceEffects", "Vignette", function()
-    if !IsValid(ply) then ply = LocalPlayer() end
+    if !IsValid(ply) then ply = LocalPlayer() return end
     if !ply:Alive() then return end
 
     local weapon = ply:GetActiveWeapon()
@@ -2230,6 +2232,24 @@ hook.Add("RenderScreenspaceEffects", "Vignette", function()
     surface.SetDrawColor(255, 255, 255, 255)
 
     surface.DrawTexturedRect(0 - (ScrW() * mult), 0 - (ScrH() * mult), ScrW() * (1 + 2 * mult), ScrH() * (1 + 2 * mult))
+
+    local hp = ply:Health()
+    local maxHP = ply:GetMaxHealth()
+
+    if hp <= 0 or maxHP <= 0 then return end
+
+    -- sharpening begins at 25hp
+    local intensity = 1 - math.Clamp(hp / maxHP * 4, 0.66, 1)
+
+    if intensity > 0 then
+
+        local contrast = intensity * sharpenIntensity
+        local distance = intensity * sharpenDistance
+
+        DrawSharpen(contrast, distance)
+
+    end
+
 end)
 
 local function default_trace()
