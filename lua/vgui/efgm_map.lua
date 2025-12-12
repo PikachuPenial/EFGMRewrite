@@ -114,7 +114,7 @@ function PANEL:Paint(w, h)
 
     if self.OverheadImage == nil then return end
 
-    surface.SetDrawColor(255, 255, 255, 255)
+    surface.SetDrawColor(Colors.pureWhiteColor)
     surface.SetMaterial(self.OverheadImage)
     surface.DrawTexturedRect(0 + self.PanOffset.x, 0 + self.PanOffset.y, w * self.Zoom, h * self.Zoom)
 
@@ -122,59 +122,59 @@ function PANEL:Paint(w, h)
 
     if self.DrawFullInfo then
 
-        surface.SetDrawColor(52, 124, 218, 240)
+        surface.SetDrawColor(Colors.mapSpawn)
         for k, v in pairs(self.MapInfo.spawns) do
 
             local posX = (v.pos.x * self.MapSizeX * self.Zoom) + self.PanOffset.x
             local posY = (v.pos.y * self.MapSizeY * self.Zoom) + self.PanOffset.y
 
-            surface.SetDrawColor(255, 255, 255, 240)
-            surface.SetMaterial(Material("icons/map/pmc_spawn_alt.png", "mips"))
+            surface.SetDrawColor(Colors.mapWhite)
+            surface.SetMaterial(Mats.mapSpawn)
             surface.DrawTexturedRect(posX - 16, posY - 16, 32, 32)
 
         end
 
-        surface.SetDrawColor(19, 196, 34, 240)
+        surface.SetDrawColor(Colors.mapExtract)
         for k, v in pairs(self.MapInfo.extracts) do
 
             local posX = (v.pos.x * self.MapSizeX * self.Zoom) + self.PanOffset.x
             local posY = (v.pos.y * self.MapSizeY * self.Zoom) + self.PanOffset.y
 
-            surface.SetDrawColor(255, 255, 255, 240)
-            surface.SetMaterial(Material("icons/map/extract_full.png", "mips"))
+            surface.SetDrawColor(Colors.mapWhite)
+            surface.SetMaterial(Mats.mapExtract)
             surface.DrawTexturedRect(posX - 16, posY - 16, 32, 32)
 
             local text = v.name
-            draw.DrawText( text, "PuristaBold16", posX, posY - 36, Color(19, 196, 34, 240), TEXT_ALIGN_CENTER )
+            draw.DrawText(text, "PuristaBold16", posX, posY - 36, Colors.mapExtract, TEXT_ALIGN_CENTER)
 
         end
 
-        surface.SetDrawColor(202, 20, 20, 240)
+        surface.SetDrawColor(Colors.mapLocation)
         for k, v in pairs(self.MapInfo.locations) do
 
             local posX = (v.pos.x * self.MapSizeX * self.Zoom) + self.PanOffset.x
             local posY = (v.pos.y * self.MapSizeY * self.Zoom) + self.PanOffset.y
 
-            surface.SetDrawColor(255, 255, 255, 240)
-            surface.SetMaterial(Material("icons/map/location_alt.png", "mips"))
+            surface.SetDrawColor(Colors.mapWhite)
+            surface.SetMaterial("icons/map/location_alt.png", "mips")
             surface.DrawTexturedRect(posX - 32, posY - 32, 64, 64)
 
-            draw.DrawText( v.name, "PuristaBold16", posX, posY - 48, Color(202, 20, 20, 240), TEXT_ALIGN_CENTER )
-            draw.DrawText( "Loot: " .. v.loot .. "/5", "PuristaBold16", posX, posY + 32, Color(202, 20, 20, 240), TEXT_ALIGN_CENTER )
+            draw.DrawText( v.name, "PuristaBold16", posX, posY - 48, Colors.mapLocation, TEXT_ALIGN_CENTER)
+            draw.DrawText( "Loot: " .. v.loot .. "/5", "PuristaBold12", posX, posY + 32, Colors.mapLocation, TEXT_ALIGN_CENTER)
 
         end
 
-        surface.SetDrawColor(252, 152, 2, 240)
+        surface.SetDrawColor(Colors.mapKey)
         for k, v in pairs(self.MapInfo.keys) do
 
             local posX = (v.pos.x * self.MapSizeX * self.Zoom) + self.PanOffset.x
             local posY = (v.pos.y * self.MapSizeY * self.Zoom) + self.PanOffset.y
 
-            surface.SetDrawColor(255, 255, 255, 240)
-            surface.SetMaterial(Material("icons/map/key.png", "mips"))
+            surface.SetDrawColor(Colors.mapWhite)
+            surface.SetMaterial(Mats.mapKey)
             surface.DrawTexturedRect(posX - 16, posY - 16, 32, 32)
 
-            draw.DrawText( v.name, "PuristaBold16", posX, posY - 36, Color(252, 152, 2, 240), TEXT_ALIGN_CENTER )
+            draw.DrawText( v.name, "PuristaBold16", posX, posY - 36, Colors.mapKey, TEXT_ALIGN_CENTER )
 
         end
 
@@ -188,9 +188,6 @@ function PANEL:Paint(w, h)
 
     local previousPos = {}
     local startPos = {}
-
-    local totalLineColor = Color(202, 20, 20, 255)
-    local loadedLineColor = Color(71, 5, 5, 255)
 
     for k, v in pairs(RaidPositions) do
 
@@ -214,9 +211,9 @@ function PANEL:Paint(w, h)
 
             }
             if k / #RaidPositions <= progress then
-                surface.SetDrawColor(totalLineColor)
+                surface.SetDrawColor(Colors.mapOverviewLine)
             else
-                surface.SetDrawColor(loadedLineColor)
+                surface.SetDrawColor(Colors.mapOverviewLoadedLine)
             end
             draw.NoTexture()
             surface.DrawPoly(thickenedLine)
@@ -236,8 +233,8 @@ function PANEL:Paint(w, h)
         local posX = (DeathPosition.x * self.MapSizeX * self.Zoom) + self.PanOffset.x
         local posY = (DeathPosition.y * self.MapSizeY * self.Zoom) + self.PanOffset.y
 
-        surface.SetDrawColor(255, 255, 255, 240)
-        surface.SetMaterial(Material("icons/map/overview/death.png", "mips"))
+        surface.SetDrawColor(Colors.mapWhite)
+        surface.SetMaterial(Mats.mapOverviewDeath)
         surface.DrawTexturedRect(posX - 16, posY - 16, 32, 32)
 
     else
@@ -245,31 +242,31 @@ function PANEL:Paint(w, h)
         local posX = (RaidPositions[#RaidPositions].x * self.MapSizeX * self.Zoom) + self.PanOffset.x
         local posY = (RaidPositions[#RaidPositions].y * self.MapSizeY * self.Zoom) + self.PanOffset.y
 
-        surface.SetDrawColor(255, 255, 255, 240)
-        surface.SetMaterial(Material("icons/map/overview/extract.png", "mips"))
+        surface.SetDrawColor(Colors.mapWhite)
+        surface.SetMaterial(Mats.mapOverviewExtract)
         surface.DrawTexturedRect(posX - 16, posY - 16, 32, 32)
 
     end
 
 
-    surface.SetDrawColor(202, 20, 20)
+    surface.SetDrawColor(Colors.mapOverviewLine)
     for k, v in pairs(KillPositions) do
 
         local posX = (v.x * self.MapSizeX * self.Zoom) + self.PanOffset.x
         local posY = (v.y * self.MapSizeY * self.Zoom) + self.PanOffset.y
 
         if v.time / #RaidPositions <= progress then
-            surface.SetDrawColor(255, 255, 255, 240)
+            surface.SetDrawColor(Colors.mapWhite)
         else
-            surface.SetDrawColor(125, 125, 125, 240)
+            surface.SetDrawColor(Colors.mapOverviewUnloadedKill)
         end
-        surface.SetMaterial(Material("icons/map/overview/kill.png", "mips"))
+        surface.SetMaterial(Mats.mapOverviewKill)
         surface.DrawTexturedRect(posX - 16, posY - 16, 32, 32)
 
     end
 
-    surface.SetDrawColor(255, 255, 255, 240)
-    surface.SetMaterial(Material("icons/map/overview/spawn.png", "mips"))
+    surface.SetDrawColor(Colors.mapWhite)
+    surface.SetMaterial(Mats.mapOverviewSpawn)
     surface.DrawTexturedRect(startPos.x - 16, startPos.y - 26, 32, 32)
 
 end

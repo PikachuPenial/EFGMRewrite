@@ -10,7 +10,10 @@ if CLIENT then
     CreateClientConVar("efgm_bind_changefiremode", KEY_B, true, true, "Determines the keybind that toggles between available fire modes for your weapon")
     CreateClientConVar("efgm_bind_inspectweapon", KEY_I, true, true, "Determines the keybind that inspects your weapon")
     CreateClientConVar("efgm_bind_toggleubgl", KEY_N, true, true, "Determines the keybind that toggles to and from your UBGL")
-    CreateClientConVar("efgm_bind_teaminvite", KEY_PERIOD, true, true, "Determines the keybind that invites someone to your team, or accepts somebody else's team ivnite")
+    CreateClientConVar("efgm_bind_teaminvite", KEY_F3, true, true, "Determines the keybind that invites someone to your team")
+    CreateClientConVar("efgm_bind_duelinvite", KEY_F4, true, true, "Determines the keybind that invites someone to a duel")
+    CreateClientConVar("efgm_bind_acceptinvite", KEY_F5, true, true, "Determines the keybind that accepts an invite")
+    CreateClientConVar("efgm_bind_declineinvite", KEY_F6, true, true, "Determines the keybind that declines an invite")
     CreateClientConVar("efgm_bind_dropitem", KEY_DELETE, true, true, "Determines the keybind that drops the hovered item in the menu")
     CreateClientConVar("efgm_bind_deleteitem", KEY_DELETE, true, true, "Determines the keybind that deletes the hovered item in the menu")
 
@@ -18,7 +21,7 @@ if CLIENT then
     CreateClientConVar("efgm_bind_equip_primary2", KEY_2, true, true, "Determines the keybind that equips your second primary")
     CreateClientConVar("efgm_bind_equip_secondary", KEY_3, true, true, "Determines the keybind that equips your secondary")
     CreateClientConVar("efgm_bind_equip_melee", KEY_4, true, true, "Determines the keybind that equips your melee")
-    CreateClientConVar("efgm_bind_equip_utility", KEY_G, true, true, "Determines the keybind that equips your grenade")
+    CreateClientConVar("efgm_bind_equip_utility", KEY_5, true, true, "Determines the keybind that equips your grenade")
 end
 
 -- toggle crouch
@@ -56,6 +59,7 @@ hook.Add("PlayerSpawn", "UnduckOnSpawn", function(ply) ply:ConCommand("-duck") e
 hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
 
     if CLIENT then
+
         -- toggle menu
         if button == ply:GetInfoNum("efgm_bind_menu", KEY_TAB) then
             ply:ConCommand("efgm_gamemenu Stats")
@@ -103,10 +107,32 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
             return
         end
 
-        -- team inviting / accepting
-        if button == ply:GetInfoNum("efgm_bind_teaminvite", KEY_PERIOD) then
-            -- todo (CHOP CHOP @portanator)
+        -- team inviting
+        if button == ply:GetInfoNum("efgm_bind_teaminvite", KEY_F3) then
+
+            if !ply:CompareStatus(0) then return end
+
+            local ent = (ply:Alive() and ply:GetEyeTrace() or default_trace()).Entity
+            if !IsValid(ent) then return end
+
+            InvitePlayerToSquad(ply, ent)
+
             return
+
+        end
+
+        -- duel inviting
+        if button == ply:GetInfoNum("efgm_bind_duelinvite", KEY_F4) then
+
+            if !ply:CompareStatus(0) then return end
+
+            local ent = (ply:Alive() and ply:GetEyeTrace() or default_trace()).Entity
+            if !IsValid(ent) then return end
+
+            InvitePlayerToDuel(ply, ent)
+
+            return
+
         end
 
         -- equip primary
@@ -127,23 +153,17 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
         end
 
         -- equip melee
-        if button == ply:GetInfoNum("efgm_bind_equip_melee", KEY_V) then
+        if button == ply:GetInfoNum("efgm_bind_equip_melee", KEY_4) then
             ply:ConCommand("efgm_inventory_equip " .. WEAPONSLOTS.MELEE.ID)
             return
         end
 
         -- equip grenade
-        if button == ply:GetInfoNum("efgm_bind_equip_utility", KEY_4) then
+        if button == ply:GetInfoNum("efgm_bind_equip_utility", KEY_5) then
             ply:ConCommand("efgm_inventory_equip " .. WEAPONSLOTS.GRENADE.ID)
             return
         end
 
-        -- equip utility
-        -- if button == ply:GetInfoNum("efgm_bind_equip_utility", KEY_G) then
-        --     ply:ConCommand("efgm_inventory_equip "..WEAPONSLOTS.UTILITY.ID)
-        --     return
-        -- end
-        
     end
 
     -- SHARED (for networking/prediction)
@@ -175,7 +195,9 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
 end)
 
 hook.Add("PlayerButtonUp", "EFGMBindsUp", function(ply, button)
+
     if CLIENT then
+
         -- switching sights
         if button == ply:GetInfoNum("efgm_bind_changesight", MOUSE_MIDDLE) then
             ply:ConCommand("-arc9_switchsights")
@@ -231,6 +253,7 @@ if game.SinglePlayer() then
     hook.Add("PlayerButtonDown", "EFGMBindsSP", function(ply, button)
 
         if SERVER then
+
             -- toggle menu
             if button == ply:GetInfoNum("efgm_bind_menu", KEY_TAB) then
                 ply:ConCommand("efgm_gamemenu Stats")
@@ -239,13 +262,13 @@ if game.SinglePlayer() then
 
             -- show compass
             if button == ply:GetInfoNum("efgm_bind_showcompass", KEY_M) then
-                ply:SendLua("RenderCompass(ply)")
+                RenderCompass(ply)
                 return
             end
 
             -- show raid information
             if button == ply:GetInfoNum("efgm_bind_raidinfo", KEY_O) then
-                ply:SendLua("RenderExtracts(ply)")
+                RenderExtracts(ply)
                 return
             end
 
@@ -277,44 +300,39 @@ if game.SinglePlayer() then
                 ply:ConCommand("+arc9_ubgl")
                 return
             end
+
         end
 
         -- SHARED (for networking/prediction)
 
         -- equip primary
         if button == ply:GetInfoNum("efgm_bind_equip_primary1", KEY_1) then
-            ply:ConCommand("efgm_inventory_equip "..WEAPONSLOTS.PRIMARY.ID.." 1")
+            ply:ConCommand("efgm_inventory_equip " .. WEAPONSLOTS.PRIMARY.ID .. " 1")
             return
         end
 
         if button == ply:GetInfoNum("efgm_bind_equip_primary2", KEY_2) then
-            ply:ConCommand("efgm_inventory_equip "..WEAPONSLOTS.PRIMARY.ID.." 2")
+            ply:ConCommand("efgm_inventory_equip " .. WEAPONSLOTS.PRIMARY.ID .. " 2")
             return
         end
 
         -- equip holster
         if button == ply:GetInfoNum("efgm_bind_equip_secondary", KEY_3) then
-            ply:ConCommand("efgm_inventory_equip "..WEAPONSLOTS.HOLSTER.ID)
+            ply:ConCommand("efgm_inventory_equip " .. WEAPONSLOTS.HOLSTER.ID)
             return
         end
 
         -- equip melee
-        if button == ply:GetInfoNum("efgm_bind_equip_melee", KEY_V) then
-            ply:ConCommand("efgm_inventory_equip "..WEAPONSLOTS.MELEE.ID)
+        if button == ply:GetInfoNum("efgm_bind_equip_melee", KEY_4) then
+            ply:ConCommand("efgm_inventory_equip " .. WEAPONSLOTS.MELEE.ID)
             return
         end
 
         -- equip grenade
-        if button == ply:GetInfoNum("efgm_bind_equip_utility", KEY_4) then
-            ply:ConCommand("efgm_inventory_equip "..WEAPONSLOTS.GRENADE.ID)
+        if button == ply:GetInfoNum("efgm_bind_equip_utility", KEY_5) then
+            ply:ConCommand("efgm_inventory_equip " .. WEAPONSLOTS.GRENADE.ID)
             return
         end
-
-        -- equip utility
-        -- if button == ply:GetInfoNum("efgm_bind_equip_utility", KEY_G) then
-        --     ply:ConCommand("efgm_inventory_equip "..WEAPONSLOTS.UTILITY.ID)
-        --     return
-        -- end
 
         -- lean left
         if button == ply:GetInfoNum("efgm_bind_leanleft", KEY_Q) then
@@ -339,9 +357,11 @@ if game.SinglePlayer() then
             end
             return
         end
+
     end)
 
     hook.Add("PlayerButtonUp", "EFGMBindsUp", function(ply, button)
+
         if SERVER then
 
             -- switching sights
@@ -389,5 +409,7 @@ if game.SinglePlayer() then
             ply:SetNW2Var("leaning_right", false)
             return
         end
+
     end)
+
 end

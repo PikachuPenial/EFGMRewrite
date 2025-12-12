@@ -9143,9 +9143,20 @@ function Menu.OpenTab.Match()
                 local dropdown = DermaMenu()
 
                 local profile = dropdown:AddOption("Open Steam Profile", function() gui.OpenURL("http://steamcommunity.com/profiles/" .. v:SteamID64()) end)
-                profile:SetIcon("icon16/page_find.png")
+                profile:SetIcon("games/16/all.png")
 
                 dropdown:AddSpacer()
+
+                if v != Menu.Player and status then
+
+                    dropdown:AddSpacer()
+
+                    local inviteToSquad = dropdown:AddOption("Invite To Squad", function() InvitePlayerToSquad(ply, v) end)
+                    inviteToSquad:SetIcon("icon16/user_add.png")
+                    local inviteToDuel = dropdown:AddOption("Invite To Duel", function() InvitePlayerToDuel(ply, v) end)
+                    inviteToDuel:SetIcon("icon16/bomb.png")
+
+                end
 
                 local copy = dropdown:AddSubMenu("Copy...")
                 copy:AddOption("Copy Name", function() SetClipboardText(v:GetName()) end):SetIcon("icon16/cut.png")
@@ -9211,7 +9222,7 @@ function Menu.OpenTab.Match()
     end
 
     local mapRawName = game.GetMap()
-    local mapOverhead = Material("maps/" .. mapRawName .. ".png", "smooth")
+    local mapOverhead = Mats.curMapOverhad
 
     local mapSizeX = EFGM.MenuScale(1210)
     local mapSizeY = EFGM.MenuScale(1210)
@@ -9296,10 +9307,10 @@ function Menu.OpenTab.Match()
         draw.SimpleTextOutlined(mapNameText, "PuristaBold50", w / 2, 0, Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
         draw.SimpleTextOutlined("LEGEND", "PuristaBold24", w - EFGM.MenuScale(10), EFGM.MenuScale(50), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-        draw.SimpleTextOutlined("SPAWNS ■", "PuristaBold18", w - EFGM.MenuScale(10), EFGM.MenuScale(75), Color(52, 124, 218, 240), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-        draw.SimpleTextOutlined("EXTRACTS ■", "PuristaBold18", w - EFGM.MenuScale(10), EFGM.MenuScale(90), Color(19, 196, 34, 240), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-        draw.SimpleTextOutlined("POIs ■", "PuristaBold18", w - EFGM.MenuScale(10), EFGM.MenuScale(105), Color(202, 20, 20, 240), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-        draw.SimpleTextOutlined("KEYS ■", "PuristaBold18", w - EFGM.MenuScale(10), EFGM.MenuScale(120), Color(252, 152, 2, 240), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined("SPAWNS ■", "PuristaBold18", w - EFGM.MenuScale(10), EFGM.MenuScale(75), Colors.mapSpawn, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined("EXTRACTS ■", "PuristaBold18", w - EFGM.MenuScale(10), EFGM.MenuScale(90), Colors.mapExtract, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined("POIs ■", "PuristaBold18", w - EFGM.MenuScale(10), EFGM.MenuScale(105), Colors.mapLocation, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined("KEYS ■", "PuristaBold18", w - EFGM.MenuScale(10), EFGM.MenuScale(120), Colors.mapKey, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
     end
 
@@ -9868,9 +9879,18 @@ function Menu.OpenTab.Match()
                     local dropdown = DermaMenu()
 
                     local profile = dropdown:AddOption("Open Steam Profile", function() gui.OpenURL("http://steamcommunity.com/profiles/" .. v:SteamID64()) end)
-                    profile:SetIcon("icon16/page_find.png")
+                    profile:SetIcon("games/16/all.png")
 
                     dropdown:AddSpacer()
+
+                    if v != Menu.Player and v:CompareStatus(0) then
+
+                        dropdown:AddSpacer()
+
+                        local inviteToDuel = dropdown:AddOption("Invite To Duel", function() InvitePlayerToDuel(ply, v) end)
+                        inviteToDuel:SetIcon("icon16/bomb.png")
+
+                    end
 
                     local copy = dropdown:AddSubMenu("Copy...")
                     copy:AddOption("Copy Name", function() SetClipboardText(v:GetName()) end):SetIcon("icon16/cut.png")
@@ -11209,6 +11229,63 @@ function Menu.OpenTab.Settings()
     function teamInvite:OnChange(num)
 
         RunConsoleCommand("efgm_bind_teaminvite", teamInvite:GetSelectedNumber())
+
+    end
+
+    local duelInvitePanel = vgui.Create("DPanel", controls)
+    duelInvitePanel:Dock(TOP)
+    duelInvitePanel:SetSize(0, EFGM.MenuScale(55))
+    function duelInvitePanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Invite Player To Duel", "Purista18", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+
+    end
+
+    local duelInvite = vgui.Create("DBinder", duelInvitePanel)
+    duelInvite:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(30))
+    duelInvite:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
+    duelInvite:SetSelectedNumber(GetConVar("efgm_bind_duelinvite"):GetInt())
+    function duelInvite:OnChange(num)
+
+        RunConsoleCommand("efgm_bind_duelinvite", duelInvite:GetSelectedNumber())
+
+    end
+
+    local acceptInvitePanel = vgui.Create("DPanel", controls)
+    acceptInvitePanel:Dock(TOP)
+    acceptInvitePanel:SetSize(0, EFGM.MenuScale(55))
+    function acceptInvitePanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Accept Invite", "Purista18", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+
+    end
+
+    local acceptInvite = vgui.Create("DBinder", acceptInvitePanel)
+    acceptInvite:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(30))
+    acceptInvite:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
+    acceptInvite:SetSelectedNumber(GetConVar("efgm_bind_acceptinvite"):GetInt())
+    function acceptInvite:OnChange(num)
+
+        RunConsoleCommand("efgm_bind_acceptinvite", acceptInvite:GetSelectedNumber())
+
+    end
+
+    local declineInvitePanel = vgui.Create("DPanel", controls)
+    declineInvitePanel:Dock(TOP)
+    declineInvitePanel:SetSize(0, EFGM.MenuScale(55))
+    function declineInvitePanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Ignore Invite", "Purista18", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+
+    end
+
+    local declineInvite = vgui.Create("DBinder", declineInvitePanel)
+    declineInvite:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(30))
+    declineInvite:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
+    declineInvite:SetSelectedNumber(GetConVar("efgm_bind_declineinvite"):GetInt())
+    function declineInvite:OnChange(num)
+
+        RunConsoleCommand("efgm_bind_declineinvite", declineInvite:GetSelectedNumber())
 
     end
 

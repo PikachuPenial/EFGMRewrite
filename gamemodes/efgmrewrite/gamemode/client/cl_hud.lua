@@ -316,21 +316,55 @@ function RenderPlayerInfo(ply, ent)
 
     local name = string.upper(ent:Name())
     surface.SetFont("BenderExfilTimer")
-    local nameTextSize = surface.GetTextSize(name) + EFGM.ScreenScale(20)
+    local nameTextSize = surface.GetTextSize(name) + EFGM.ScreenScale(10)
+
+    local squadBind = string.upper(input.GetKeyName(GetConVar("efgm_bind_teaminvite"):GetInt()) or "NONE")
+    local duelBind = string.upper(input.GetKeyName(GetConVar("efgm_bind_duelinvite"):GetInt()) or "NONE")
+
+    local inviteText = string.upper("[" .. squadBind .. "] INVITE TO SQUAD" .. "   " .. "[" .. duelBind .. "] INVITE TO DUEL")
+    surface.SetFont("Bender24")
+    local inviteTextSize = surface.GetTextSize(inviteText) + EFGM.ScreenScale(10)
+
+    local infoSize = math.max(nameTextSize, inviteTextSize)
 
     surface.SetDrawColor(Colors.hudBackground)
-    surface.DrawRect(ScrW() / 2 - (nameTextSize / 2), ScrH() - EFGM.ScreenScale(80), nameTextSize, EFGM.ScreenScale(60))
+    surface.DrawRect(ScrW() / 2 - (infoSize / 2), ScrH() - EFGM.ScreenScale(110), infoSize, EFGM.ScreenScale(90))
 
     surface.SetDrawColor(Color(255, 255, 255, 155))
-    surface.DrawRect(ScrW() / 2 - (nameTextSize / 2), ScrH() - EFGM.ScreenScale(80), nameTextSize, EFGM.MenuScale(1))
+    surface.DrawRect(ScrW() / 2 - (infoSize / 2), ScrH() - EFGM.ScreenScale(110), infoSize, EFGM.MenuScale(1))
 
-    draw.DrawText(name, "BenderExfilTimer", ScrW() / 2, ScrH() - EFGM.ScreenScale(80), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+    draw.DrawText(name, "BenderExfilTimer", ScrW() / 2, ScrH() - EFGM.ScreenScale(110), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+
+    draw.DrawText(inviteText, "Bender24", ScrW() / 2, ScrH() - EFGM.ScreenScale(50), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 end
 
 local function RenderVOIPIndicator()
     surface.SetDrawColor(175, 255, 0)
     surface.SetMaterial(Mats.voipIcon)
     surface.DrawTexturedRect(EFGM.ScreenScale(121), ScrH() - EFGM.ScreenScale(90), EFGM.ScreenScale(60), EFGM.ScreenScale(60))
+end
+
+-- invites
+function RenderInvite(ply)
+    if IsValid(invite) then return end
+
+    invite = vgui.Create("DPanel")
+    invite:SetSize(ScrW(), ScrH())
+    invite:SetPos(0, 0)
+    invite:SetAlpha(0)
+    invite:MoveToFront()
+
+    invite.Paint = function(self, w, h)
+        if !ply:Alive() then return end
+        if Invites.invitedBy == nil or Invites.invitedType == nil then invite:Remove() return end
+
+        surface.SetDrawColor(Colors.hudBackground)
+        surface.DrawRect(EFGM.ScreenScale(20), EFGM.ScreenScale(20), EFGM.ScreenScale(300), EFGM.ScreenScale(100))
+        draw.SimpleText(Invites.invitedBy:GetName(), "BenderAmmoCount", EFGM.ScreenScale(25), EFGM.ScreenScale(21), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+    end
+
+    invite:AlphaTo(255, 0.1, 0, nil)
+    invite:AlphaTo(0, 0.1, 10, function() invite:Remove() end)
 end
 
 local function DrawHUD()
@@ -835,7 +869,7 @@ net.Receive("CreateDeathInformation", function()
                 local dropdown = DermaMenu()
 
                 local profile = dropdown:AddOption("Open Steam Profile", function() gui.OpenURL("http://steamcommunity.com/profiles/" .. killedBy:SteamID64()) end)
-                profile:SetIcon("icon16/page_find.png")
+                profile:SetIcon("games/16/all.png")
 
                 dropdown:AddSpacer()
 
@@ -1362,7 +1396,7 @@ net.Receive("CreateExtractionInformation", function()
         end
 
         local mapRawName = game.GetMap()
-        local mapOverhead = Material("maps/" .. mapRawName .. ".png", "smooth")
+        local mapOverhead = Mats.curMapOverhad
 
         local mapSizeX = EFGM.MenuScale(800)
         local mapSizeY = EFGM.MenuScale(800)

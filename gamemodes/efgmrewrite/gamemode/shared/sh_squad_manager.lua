@@ -72,7 +72,7 @@ if SERVER then
             v:SetNW2String("TeamChatChannel", "nil")
         end
 
-        table.removeKey(SQUADS, squad)
+        SQUADS[squad] = nil
     end
 
     net.Receive("AddPlayerSquadRF", function(len, ply)
