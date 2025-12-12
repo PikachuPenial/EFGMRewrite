@@ -58,7 +58,7 @@ if SERVER then
             SetGlobalInt("RaidTimeLeft", self.VoteTime)
 
             -- kill players in raid, idk what else
-            hook.Run("EndedRaid")
+            hook.Run("EndedRaid", RAID.VoteTime)
 
             -- thanks penal code
             if #player.GetHumans() == 0 then
