@@ -462,7 +462,7 @@ net.Receive("PlayerInventoryReloadForDuel", function(len, ply)
     if primaryItem != nil and !table.IsEmpty(primaryItem) then hasPrimary = true playerWeaponSlots[1][1] = primaryItem end
     if secondaryItem != nil and !table.IsEmpty(secondaryItem) then hasHolster = true playerWeaponSlots[2][1] = secondaryItem end
 
-    timer.Simple(0.2, function()
+    timer.Simple(0.5, function()
 
         if hasPrimary and hasHolster then LocalPlayer():ConCommand("efgm_inventory_equip " .. WEAPONSLOTS.PRIMARY.ID)
         elseif !hasPrimary and hasHolster then LocalPlayer():ConCommand("efgm_inventory_equip " .. WEAPONSLOTS.HOLSTER.ID)

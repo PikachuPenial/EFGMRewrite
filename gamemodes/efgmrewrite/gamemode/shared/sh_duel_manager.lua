@@ -7,6 +7,7 @@ if SERVER then
 
     util.AddNetworkString("PlayerDuelTransition")
     util.AddNetworkString("PlayerInventoryReloadForDuel")
+    util.AddNetworkString("PlayerReinstantiateInventoryAfterDuel")
 
     SetGlobalInt("DuelStatus", duelStatus.PENDING)
 
@@ -56,16 +57,14 @@ if SERVER then
 
                 v:SetNWFloat("InventoryWeight", 0)
                 v:Teleport(spawns[k]:GetPos(), spawns[k]:GetAngles(), Vector(0, 0, 0))
-                v:Freeze(false)
+                v:SetHealth(v:GetMaxHealth())
 
-                timer.Simple(0.1, function()
+                timer.Simple(1, function() v:Freeze(false) end)
 
-                    DUEL:ReloadLoadoutItems(v)
-                    v:SetRaidStatus(3, "")
-                    v:SetNWInt("DuelsPlayed", v:GetNWInt("DuelsPlayed") + 1)
-                    ResetRaidStats(v) -- because im lazy and won't make a special death overview
-
-                end)
+                DUEL:ReloadLoadoutItems(v)
+                v:SetRaidStatus(3, "")
+                v:SetNWInt("DuelsPlayed", v:GetNWInt("DuelsPlayed") + 1)
+                ResetRaidStats(v) -- because im lazy and won't make a special death overview
 
             end)
 
@@ -83,12 +82,27 @@ if SERVER then
 
         table.RemoveByValue(DUEL.Players, deadPly)
 
-        local randomSpawn = GetValidHideoutSpawn()
-
         net.Start("PlayerDuelTransition")
         net.Send(DUEL.Players)
 
         for k, v in ipairs(DUEL.Players) do -- should only be a single player, the winner of the duel
+
+            local lobbySpawns = ents.FindByClass("efgm_lobby_spawn") or {}
+
+            local possibleSpawns = {}
+
+            if table.IsEmpty(lobbySpawns) then error("no lobby spawns eat shit") return end
+
+            -- all this is done so that players spawn in random spots bc yeah it was really that important
+            for key, spawn in ipairs(lobbySpawns) do
+                if spawn:CanSpawn(v) then
+                    table.insert(possibleSpawns, spawn)
+                end
+            end
+
+            if #possibleSpawns == 0 then return end
+
+            local randomSpawn = BetterRandom(possibleSpawns)
 
             v:Lock()
 
@@ -189,7 +203,7 @@ if SERVER then
 
             return nil, secondaryItem
 
-        elseif num == 9 then return nil, nil end
+        end
 
     end
 
@@ -206,7 +220,7 @@ if SERVER then
 
     hook.Add("PlayerDeath", "EndDuelOnDeath", function(victim, weapon, attacker)
 
-        if !victim:CompareStatus(3) or !attacker:CompareStatus(3) then return end -- the player wasn't a part of the duel
+        if !victim:CompareStatus(3) then return end -- the player wasn't a part of the duel
 
         DUEL:EndDuel(victim)
 

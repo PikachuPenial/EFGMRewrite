@@ -639,7 +639,8 @@ hook.Add("PlayerDisconnected", "PlayerUninitializeStats", function(ply)
 	-- in duel
 	if ply:CompareStatus(3) then
 
-		ReinstantiateInventoryAfterDuel(v)
+		UnequipAll(ply)
+		ReinstantiateInventory(ply)
 		DUEL:EndDuel(ply)
 
 	end

@@ -209,7 +209,22 @@ if SERVER then
     --{ HOOKS
         util.AddNetworkString("CreateExtractionInformation")
         hook.Add("PlayerExtraction", "RaidExtract", function(ply, extractTime, isExtractGuranteed)
-            local randomSpawn = GetValidHideoutSpawn()
+            local lobbySpawns = ents.FindByClass("efgm_lobby_spawn") or {}
+
+            local possibleSpawns = {}
+
+            if table.IsEmpty(lobbySpawns) then error("no lobby spawns eat shit") return end
+
+            -- all this is done so that players spawn in random spots bc yeah it was really that important
+            for k, v in ipairs(lobbySpawns) do
+                if v:CanSpawn(ply) then
+                    table.insert(possibleSpawns, v)
+                end
+            end
+
+            if #possibleSpawns == 0 then return end
+
+            local randomSpawn = BetterRandom(possibleSpawns)
 
             net.Start("PlayerRaidTransition")
             net.Send(ply)

@@ -2076,6 +2076,8 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
             owner.ARC9QuickthrowPls = nil
             local QuicknadeBind = owner:KeyDown(IN_GRENADE1)
 
+            if owner:CompareStatus(0) then return end
+
             if self:GetSafe() and owner:KeyPressed(IN_ATTACK) then self:ToggleSafety(false) return end
 
             if IsValid(self:GetDetonatorEntity()) then

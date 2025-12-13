@@ -8195,7 +8195,6 @@ function GenerateDuelLoadouts()
     -- 6 == assault carbines
     -- 7 == shotguns
     -- 8 == secondaries only
-    -- 9 == melees only
 
     DUEL_PRIMARY = {}
     DUEL_PRIMARY[1] = {}
@@ -8206,7 +8205,6 @@ function GenerateDuelLoadouts()
     DUEL_PRIMARY[6] = {}
     DUEL_PRIMARY[7] = {}
     DUEL_PRIMARY[8] = {}
-    DUEL_PRIMARY[9] = {}
 
     DUEL_SECONDARY = {}
     DUEL_SECONDARY[1] = {}
