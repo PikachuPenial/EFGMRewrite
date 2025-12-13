@@ -39,8 +39,18 @@
 @PointClass base(Targetname) = efgm_firingrange_interface : "Firing Range Interface"
 [
 
-    //Inputs
+    // Inputs
     input SetPlayerInRange(bool) : "Tells the firing range system to mark as in the range."
+
+]
+
+@PointClass base(Targetname) = efgm_duel_interface : "Duel Interface"
+[
+
+    // Outputs
+    output OnDuelStart(void) : "Tells the duel interface that a duel has begun, only exists to cause changes on the map."
+
+    output OnDuelEnd(void) : "Tells the duel interface that a duel has ended, only exists to cause changes on the map."
 
 ]
 
