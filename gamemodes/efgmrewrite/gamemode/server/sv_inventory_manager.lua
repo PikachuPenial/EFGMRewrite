@@ -1,6 +1,5 @@
 
 util.AddNetworkString("PlayerReinstantiateInventory")
-util.AddNetworkString("PlayerReinstantiateInventoryAfterDuel")
 util.AddNetworkString("PlayerInventoryReload")
 util.AddNetworkString("PlayerSlotsReload")
 util.AddNetworkString("PlayerInventoryAddItem")
@@ -43,45 +42,6 @@ function ReinstantiateInventory(ply)
     if equMelee != nil then ply.weaponSlots[WEAPONSLOTS.MELEE.ID] = equMelee end
 
     CalculateInventoryWeight(ply)
-
-end
-
-function ReinstantiateInventoryAfterDuel(ply)
-
-    for i = 1, 5 do
-
-        if i == WEAPONSLOTS.MELEE.ID then continue end
-
-        for k, v in pairs(ply.weaponSlots[i]) do
-
-            if !table.IsEmpty(v) then
-
-                local item = table.Copy(v)
-                if item == nil then return end
-
-                ply:StripWeapon(item.name)
-
-            end
-
-        end
-
-    end
-
-    local equMelee = table.Copy(ply.weaponSlots[WEAPONSLOTS.MELEE.ID])
-
-    ply.weaponSlots = {}
-    ply.equStr = ""
-    for k, v in pairs(WEAPONSLOTS) do
-
-        ply.weaponSlots[v.ID] = {}
-        for i = 1, v.COUNT, 1 do ply.weaponSlots[v.ID][i] = {} end
-
-    end
-
-    if equMelee != nil then ply.weaponSlots[WEAPONSLOTS.MELEE.ID] = equMelee end
-
-    CalculateInventoryWeight(ply)
-    UpdateEquippedString(ply)
 
 end
 

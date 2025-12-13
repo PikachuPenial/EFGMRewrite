@@ -44,7 +44,7 @@ function ENT:AcceptInput(name, ply, caller, data)
 
             if keyWithLowestDura == 0 then return end
 
-            self:TriggerOutput( "OnHasKey", ply, data )
+            self:TriggerOutput("OnHasKey", ply, data)
 
             local item = ply.inventory[keyWithLowestDura]
             local durability = item.data.durability
@@ -58,7 +58,7 @@ function ENT:AcceptInput(name, ply, caller, data)
                 net.WriteUInt(keyWithLowestDura, 16)
                 net.Send(ply)
 
-                UpdateInventory(ply)
+                UpdateInventoryString(ply)
 
             else
 
@@ -68,7 +68,7 @@ function ENT:AcceptInput(name, ply, caller, data)
 
                 table.remove(ply.inventory, keyWithLowestDura)
 
-                UpdateInventory(ply)
+                UpdateInventoryString(ply)
                 RemoveWeightFromPlayer(ply, item.name, item.data.count)
 
             end

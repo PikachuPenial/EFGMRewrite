@@ -38,7 +38,7 @@ EFGMITEMS = {}
 
         ["caliber"] = "5.56x45",
         ["ammoID"] = "efgm_ammo_556x45",
-        ["defAtts"] = "XQAAAQCYAgAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8ONwzg/TnvSfVBqeGuIaSSp0lbXXmmwiKc+3qpTFQPm/3TEpRkNkliqewzXeK6KEow99gDpNekcBZLljEK1yteXPgcDvoY1gzY43rtGqP1p7jD5gej6NEa+QNcT8BXtXPmN5o2OkWkgurm/9AXyGT4En6CkA7mCMaVO2Yf9O7uShDeIXUNI/H0SBmpgNixBxQz+E/POyeEsbq2xrf7Aprms9YvCG5XWqysS0SdlwFcjFBYuYDbgf2u7nIW7LR3gi3thoSNvXHYQR/r2U6AF5oA"
+        ["defAtts"] = "XQAAAQCOAgAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8ONwzg/TnvSfVBqeGuIaSSp0lbXXmmwiKc+3qpTFQPm/3TEpRkNkliqewzXeK6KEow99gDpNekcBZLljEK1yteXPgcDvoY1gzY43rtGqP1p7jD5gej6NEa+QNcT8BXtXPmN5o2OkWkgurm/9AXyGT4En6CkA7mCMaVO2Yf9O7uShDeIXUNI/H0SBmpgNixBxQz+E/0uWDE5UIaP9BN26bE1xGemXO43rgNPGIOjvq9ftb9M37Yo7ZQ5zoYq34ipfXEhRIpOJESzA=="
     }
 
     EFGMITEMS["arc9_eft_vsk94"] = {
@@ -1789,7 +1789,7 @@ EFGMITEMS = {}
 
         ["caliber"] = "12/70",
         ["ammoID"] = "efgm_ammo_12gauge",
-        ["defAtts"] = "XQAAAQCiAAAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8NV9tY8mxdjo2DonfYbDKLCbCIbLM3cKUS2n/zqm05+D37Ngjxrrie0dZPauCRtFna98ClssC3lfqP05ddYiEK1HzEQOs1ep5BPFYtNON8YV4="
+        ["defAtts"] = "XQAAAQCFAAAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8NV9tY8mxdjo2DonfYbDKLCbCIbLM3cKUS2n/zqm05+D37Ngjxrrie0dZPauCRtFna98ClsfTrXDgm4SYU6WFi4y8Lhhc7uOLu6w=="
     }
 
     EFGMITEMS["arc9_eft_mr43"] = {
@@ -1810,7 +1810,7 @@ EFGMITEMS = {}
 
         ["caliber"] = "12/70",
         ["ammoID"] = "efgm_ammo_12gauge",
-        ["defAtts"] = "XQAAAQCsAAAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8NV9tY8mxdjo2DonfYuRH8meGEWV+yPXPsnXJtugMF/FY1SGQeBs3hw/sKrnsf0G5RjtwcTZ3klbiZR7YMsrSArUhco3zw5apV7ppTVolQCAA="
+        ["defAtts"] = "XQAAAQCYAAAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8NV9tY8mxdjo2DonfYuRH8meGEWV+yPXPsnXJtugMF/FY1SGQeBs3hw/sKrnsf0G5RjtwhndWjrRxVt/j+JZ6kyKzQG6lJyeUTkaA="
     }
 
     EFGMITEMS["arc9_eft_aa12"] = {
@@ -8127,7 +8127,7 @@ function GenerateLootTables()
     for k, v in pairs(EFGMITEMS) do
 
         -- generic loot pools
-        if !v.canSpawn then return end
+        if v.canSpawn == false then continue end
 
         -- excluded keys bc you can find them fucking everywhere
         if v.displayType != "Belmont Key" and v.displayType != "Concrete Key" and v.displayType != "Factory Key" and v.displayType != "Attachment" and v.displayType != "Accessory" and v.displayType != "Barrel" and v.displayType != "Cover" and v.displayType != "Gas Block" and v.displayType != "Handguard" and v.displayType != "Magazine" and v.displayType != "Mount" and v.displayType != "Pistol Grip" and v.displayType != "Receiver" and v.displayType != "Sight" and v.displayType != "Stock" then
@@ -8317,11 +8317,11 @@ hook.Add("InitPostEntity", "AttsItemDef", function()
             ["sizeY"] = v.SizeY or 1,
 
             ["levelReq"] = v.EFGMLvl or 1,
-            ["canPurchase"] = v.EFGMCanPurchase or true,
-            ["lootWeight"] = v.EFGMLootWeight or 100,
-            ["canSpawn"] = true
+            ["lootWeight"] = v.EFGMLootWeight or 100
 
         }
+
+        if v.EFGMCanPurchase == false then EFGMITEMS["arc9_att_" .. v.ShortName].canPurchase = false else EFGMITEMS["arc9_att_" .. v.ShortName].canPurchase = true end
 
     end
 
@@ -8353,11 +8353,11 @@ hook.Add("OnReloaded", "AttsItemDefReload", function()
             ["sizeY"] = v.SizeY or 1,
 
             ["levelReq"] = v.EFGMLvl or 1,
-            ["canPurchase"] = v.EFGMCanPurchase or true,
-            ["lootWeight"] = v.EFGMLootWeight or 100,
-            ["canSpawn"] = true
+            ["lootWeight"] = v.EFGMLootWeight or 100
 
         }
+
+        if v.EFGMCanPurchase == false then EFGMITEMS["arc9_att_" .. v.ShortName].canPurchase = false else EFGMITEMS["arc9_att_" .. v.ShortName].canPurchase = true end
 
     end
 

@@ -262,12 +262,6 @@ hook.Add("PlayerDeathSound", "RemoveDefaultDeathSound", function()
 
 end)
 
--- function GM:ScalePlayerDamage(target, hitgroup, dmginfo)
-
-	-- dmginfo:ScaleDamage(1)
-
--- end
-
 -- more lethal fall damage
 hook.Add("GetFallDamage", "FallDmgCalc", function(ply, speed)
 

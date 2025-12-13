@@ -35,14 +35,14 @@ function ENT:KeyValue(key, value)
 
 	if key == "OnRaidEnd" then
 		self:StoreOutput(key, value)
-	end
+    end
 
 end
 
 function ENT:Initialize()
 
     ent = self
-    
+
 end
 
 hook.Add("StartedRaid", "InterfaceRaidStart", function()

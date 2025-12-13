@@ -1,3 +1,7 @@
+HUD = {}
+
+HUD.InTransition = false
+
 local enabled = GetConVar("efgm_hud_enable")
 cvars.AddChangeCallback("efgm_hud_enable", function(convar_name, value_old, value_new)
     enabled = tobool(value_new)
@@ -355,7 +359,7 @@ function RenderInvite(ply)
     invite:SetAlpha(0)
     invite:MoveToFront()
 
-    surface.PlaySound("squad_ownership.wav")
+    surface.PlaySound("ui/squad_ownership.wav")
 
     local time = CurTime() + 10
     local sentBy = Invites.invitedBy
@@ -428,6 +432,8 @@ net.Receive("PlayerRaidTransition", function()
 
     end
 
+    HUD.InTransition = true
+
     RaidTransition = vgui.Create("DPanel")
     RaidTransition:SetSize(ScrW(), ScrH())
     RaidTransition:SetPos(0, 0)
@@ -444,7 +450,7 @@ net.Receive("PlayerRaidTransition", function()
     end
 
     RaidTransition:AlphaTo(255, 0.5, 0, nil)
-    RaidTransition:AlphaTo(0, 0.35, 1, function() RaidTransition:Remove() end)
+    RaidTransition:AlphaTo(0, 0.35, 1, function() HUD.InTransition = false RaidTransition:Remove() end)
 
     timer.Simple(2.5, function()
         RenderExtracts(ply)
@@ -466,6 +472,8 @@ end )
 
 net.Receive("PlayerDuelTransition", function()
 
+    HUD.InTransition = true
+
     RaidTransition = vgui.Create("DPanel")
     RaidTransition:SetSize(ScrW(), ScrH())
     RaidTransition:SetPos(0, 0)
@@ -482,7 +490,7 @@ net.Receive("PlayerDuelTransition", function()
     end
 
     RaidTransition:AlphaTo(255, 0.5, 0, nil)
-    RaidTransition:AlphaTo(0, 0.35, 1, function() RaidTransition:Remove() end)
+    RaidTransition:AlphaTo(0, 0.35, 1, function() HUD.InTransition = false RaidTransition:Remove() end)
 
     if Menu.MenuFrame == nil then return end
     if Menu.MenuFrame:IsActive() != true then return end
@@ -588,6 +596,8 @@ net.Receive("CreateDeathInformation", function()
     local totalXPRaw = xpTime + xpCombat + xpExploration + xpLooting + xpBonus
     local totalXPReal = math.Round(totalXPRaw * xpMult, 0)
 
+    local quote = QUOTES[math.random(1, #QUOTES)]
+
     timer.Simple(respawnTime, function()
 
         if IsValid(DeathPopup) then return end
@@ -611,6 +621,7 @@ net.Receive("CreateDeathInformation", function()
 
             draw.SimpleTextOutlined("KILLED IN ACTION", "PuristaBold64", w / 2, EFGM.MenuScale(35), Color(255, 0, 0, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.whiteColor)
             draw.SimpleTextOutlined(string.format("%02d:%02d", minutes, seconds) .. " TIME IN RAID", "PuristaBold22", w / 2, EFGM.MenuScale(90), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+            draw.SimpleTextOutlined(quote, "Purista18Italic", w / 2, EFGM.MenuScale(108), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
             DeathPopup.MouseX, DeathPopup.MouseY = DeathPopup:LocalCursorPos()
 
@@ -844,7 +855,7 @@ net.Receive("CreateDeathInformation", function()
 
         end
 
-        if ply != killedBy then
+        if ply != killedBy and IsValid(killedBy) and killedBy:IsPlayer() then
 
             AttackerPanel = vgui.Create("DPanel", DeathPopup)
             AttackerPanel:SetSize(EFGM.MenuScale(500), EFGM.MenuScale(800))

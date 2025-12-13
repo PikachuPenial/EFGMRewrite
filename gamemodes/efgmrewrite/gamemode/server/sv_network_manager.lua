@@ -577,6 +577,8 @@ function SavePlayerData(ply)
 	UninitializeNetworkInt(ply, query, "BestKillStreak")
 	UninitializeNetworkInt(ply, query, "CurrentExtractionStreak")
 	UninitializeNetworkInt(ply, query, "BestExtractionStreak")
+	UninitializeNetworkInt(ply, query, "CurrentDuelWinStreak")
+	UninitializeNetworkInt(ply, query, "BestDuelWinStreak")
 
 	-- stash/inventory
 	UninitializeNetworkInt(ply, query, "StashMax")
@@ -640,7 +642,7 @@ hook.Add("PlayerDisconnected", "PlayerUninitializeStats", function(ply)
 	if ply:CompareStatus(3) then
 
 		UnequipAll(ply)
-		ReinstantiateInventory(ply)
+		ReinstantiateInventoryAfterDuel(ply)
 		DUEL:EndDuel(ply)
 
 	end

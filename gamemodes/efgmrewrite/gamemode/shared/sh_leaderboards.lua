@@ -21,6 +21,7 @@ LEADERBOARDS = {
     ["Duels Won"] = "DuelsWon",
     ["Best Extraction Streak"] = "BestExtractionStreak",
     ["Best Kill Streak"] = "BestKillStreak",
+    ["Best Duel Win Streak"] = "BestDuelWinStreak",
     ["Items Looted"] = "ItemsLooted",
     ["Containers Opened"] = "ContainersLooted"
 }

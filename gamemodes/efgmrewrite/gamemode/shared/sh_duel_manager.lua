@@ -7,7 +7,6 @@ if SERVER then
 
     util.AddNetworkString("PlayerDuelTransition")
     util.AddNetworkString("PlayerInventoryReloadForDuel")
-    util.AddNetworkString("PlayerReinstantiateInventoryAfterDuel")
 
     SetGlobalInt("DuelStatus", duelStatus.PENDING)
 
@@ -42,6 +41,10 @@ if SERVER then
             UpdateInventoryString(v)
             UpdateEquippedString(v)
 
+            ReinstantiateInventoryForDuel(v)
+            net.Start("PlayerReinstantiateInventory", false)
+            net.Send(v)
+
             v:SetNWBool("InRange", true)
 
             timer.Create("Duel" .. v:SteamID64(), 1, 1, function()
@@ -49,16 +52,17 @@ if SERVER then
                 if primaryItem != nil then DUEL:EquipPrimary(v, primaryItem) end
                 if secondaryItem != nil then DUEL:EquipHolster(v, secondaryItem) end
 
+                CalculateInventoryWeight(v)
+
                 net.Start("PlayerInventoryReloadForDuel")
                 net.WriteTable(primaryItem or {})
                 net.WriteTable(secondaryItem or {})
                 net.Send(v)
 
-                v:SetNWFloat("InventoryWeight", 0)
                 v:Teleport(spawns[k]:GetPos(), spawns[k]:GetAngles(), Vector(0, 0, 0))
                 v:SetHealth(v:GetMaxHealth())
 
-                timer.Simple(1, function() v:Freeze(false) end)
+                timer.Simple(2, function() v:Freeze(false) end)
 
                 DUEL:ReloadLoadoutItems(v)
                 v:SetRaidStatus(3, "")
@@ -81,6 +85,8 @@ if SERVER then
 
         for k, v in ipairs(DUEL.Players) do v:SetNWBool("InRange", false) end
 
+        deadPly:SetNWInt("CurrentDuelWinStreak", 0)
+
         table.RemoveByValue(DUEL.Players, deadPly)
 
         net.Start("PlayerDuelTransition")
@@ -94,7 +100,6 @@ if SERVER then
 
             if table.IsEmpty(lobbySpawns) then error("no lobby spawns eat shit") return end
 
-            -- all this is done so that players spawn in random spots bc yeah it was really that important
             for key, spawn in ipairs(lobbySpawns) do
                 if spawn:CanSpawn(v) then
                     table.insert(possibleSpawns, spawn)
@@ -110,8 +115,6 @@ if SERVER then
             timer.Create("DuelWin" .. v:SteamID64(), 1, 1, function()
 
                 ReinstantiateInventoryAfterDuel(v)
-                net.Start("PlayerReinstantiateInventoryAfterDuel", false)
-                net.Send(v)
 
                 v:Teleport(randomSpawn:GetPos(), randomSpawn:GetAngles(), Vector(0, 0, 0))
                 v:SetHealth(v:GetMaxHealth())
@@ -119,10 +122,10 @@ if SERVER then
 
                 v:SetRaidStatus(0, "")
                 v:SetNWInt("DuelsWon", v:GetNWInt("DuelsWon") + 1)
+                v:SetNWInt("CurrentDuelWinStreak", v:GetNWInt("CurrentDuelWinStreak") + 1)
+                if v:GetNWInt("CurrentDuelWinStreak") >= v:GetNWInt("BestDuelWinStreak") then v:SetNWInt("BestDuelWinStreak", v:GetNWInt("CurrentDuelWinStreak")) end
 
                 v:UnLock()
-
-                CalculateInventoryWeight(v)
 
             end)
 
@@ -143,8 +146,6 @@ if SERVER then
             v:SetNWBool("InRange", false)
 
             ReinstantiateInventoryAfterDuel(v)
-            net.Start("PlayerReinstantiateInventoryAfterDuel", false)
-            net.Send(v)
 
         end
 
@@ -154,7 +155,6 @@ if SERVER then
     function DUEL:EquipPrimary(ply, item)
 
         ply.weaponSlots[1][1] = item
-
         GiveWepWithPresetFromCode(ply, item.name, item.data.att)
 
     end
@@ -162,7 +162,6 @@ if SERVER then
     function DUEL:EquipHolster(ply, item)
 
         ply.weaponSlots[2][1] = item
-
         GiveWepWithPresetFromCode(ply, item.name, item.data.att)
 
     end
@@ -222,11 +221,8 @@ if SERVER then
 
         if !victim:CompareStatus(3) then return end -- the player wasn't a part of the duel
 
-        DUEL:EndDuel(victim)
-
         ReinstantiateInventoryAfterDuel(victim)
-        net.Start("PlayerReinstantiateInventoryAfterDuel", false)
-        net.Send(victim)
+        DUEL:EndDuel(victim)
 
     end)
 
@@ -236,5 +232,90 @@ if SERVER then
         timer.Simple(time - 3, function() DUEL:CancelDuel() end)    -- force cancel current duel
 
     end)
+
+    function ReinstantiateInventoryForDuel(ply)
+
+        ply.inventory = {}
+
+        local equMelee = table.Copy(ply.weaponSlots[WEAPONSLOTS.MELEE.ID])
+
+        ply.weaponSlots = {}
+        for k, v in pairs(WEAPONSLOTS) do
+
+            ply.weaponSlots[v.ID] = {}
+            for i = 1, v.COUNT, 1 do ply.weaponSlots[v.ID][i] = {} end
+
+        end
+
+        if equMelee != nil then ply.weaponSlots[WEAPONSLOTS.MELEE.ID] = equMelee end
+
+        ply:StripWeapons()
+        CalculateInventoryWeight(ply)
+
+    end
+
+    function ReinstantiateInventoryAfterDuel(ply)
+
+        ply:StripWeapons()
+
+        ply.inventory = DecodeStash(ply, ply.invStr)
+        ply.weaponSlots = DecodeStash(ply, ply.equStr)
+
+        SendChunkedNet(ply, ply.invStr, "PlayerNetworkInventory")
+        SendChunkedNet(ply, ply.equStr, "PlayerNetworkEquipped")
+
+        if !ply:Alive() then return end
+
+        for i = 1, 5 do
+
+            for k, v in pairs(ply.weaponSlots[i]) do
+
+                if !table.IsEmpty(v) then
+
+                    local item = table.Copy(v)
+                    if item == nil then return end
+
+                    GiveWepWithPresetFromCode(ply, item.name, item.data.att)
+
+                end
+
+            end
+
+        end
+
+        CalculateInventoryWeight(ply)
+
+    end
+
+end
+
+if CLIENT then
+
+    net.Receive("PlayerInventoryReloadForDuel", function(len, ply)
+
+        local primaryItem, secondaryItem
+
+        primaryItem = net.ReadTable()
+        secondaryItem = net.ReadTable()
+
+        local hasPrimary = false
+        local hasHolster = false
+
+        if primaryItem != nil and !table.IsEmpty(primaryItem) then hasPrimary = true playerWeaponSlots[1][1] = primaryItem end
+        if secondaryItem != nil and !table.IsEmpty(secondaryItem) then hasHolster = true playerWeaponSlots[2][1] = secondaryItem end
+
+        if hasPrimary and hasHolster then
+
+            local weapon = LocalPlayer():GetWeapon(primaryItem.name)
+            if weapon != NULL then input.SelectWeapon(weapon) end
+
+        elseif !hasPrimary and hasHolster then
+
+            local weapon = LocalPlayer():GetWeapon(secondaryItem.name)
+            if weapon != NULL then input.SelectWeapon(weapon) end
+
+        end
+
+    end )
 
 end

@@ -2871,6 +2871,12 @@ function Menu.ConfirmTag(item, key, inv, eID, eSlot)
     tagInput:SetUpdateOnType(true)
     tagInput:RequestFocus()
 
+    function tagInput:AllowInput(char)
+
+        if char == "[" or char == "]" then return true end
+
+    end
+
     tagInput.Think = function(self)
 
         tagInput:SetX(confirmPanel:GetWide() / 2 - EFGM.MenuScale(80))
@@ -3210,9 +3216,9 @@ function Menu.ReloadInventory()
 
             return EFGMITEMS[a.name].displayName < EFGMITEMS[b.name].displayName
 
-        elseif (a.data.tag or "") != (b.data.tag or "") then
+        elseif (tostring(a.data.tag or "")) != (tostring(b.data.tag or "")) then
 
-            return (a.data.tag or "") > (b.data.tag or "")
+            return (tostring(a.data.tag or "")) < (tostring(b.data.tag or ""))
 
         else
 
@@ -5399,9 +5405,9 @@ function Menu.ReloadStash()
 
             return EFGMITEMS[a.name].displayName < EFGMITEMS[b.name].displayName
 
-        elseif (a.data.tag or "") != (b.data.tag or "") then
+        elseif (tostring(a.data.tag or "")) != (tostring(b.data.tag or "")) then
 
-            return (a.data.tag or "") > (b.data.tag or "") -- FIX THIS LOL
+            return (tostring(a.data.tag or "")) < (tostring(b.data.tag or ""))
 
         else
 
@@ -6227,9 +6233,9 @@ function Menu.ReloadContainer()
 
             return EFGMITEMS[a.name].displayName < EFGMITEMS[b.name].displayName
 
-        elseif (a.data.tag or "") != (b.data.tag or "") then
+        elseif (tostring(a.data.tag or "")) != (tostring(b.data.tag or "")) then
 
-            return (a.data.tag or "") > (b.data.tag or "")
+            return (tostring(a.data.tag or "")) < (tostring(b.data.tag or ""))
 
         else
 
@@ -7295,6 +7301,12 @@ function Menu.OpenTab.Inventory(container)
     searchBox:SetAlpha(0)
     searchBox:SetEditable(false)
 
+    function searchBox:AllowInput(char)
+
+        if char == "[" or char == "]" then return true end
+
+    end
+
     searchBox.Think = function(s)
 
         searchBox:SetWide(EFGM.MenuScale(593) - searchButton:GetX() - searchButton:GetWide())
@@ -7629,6 +7641,12 @@ function Menu.OpenTab.Inventory(container)
     stashSearchBox:SetAlpha(0)
     stashSearchBox:SetEditable(false)
 
+    function stashSearchBox:AllowInput(char)
+
+        if char == "[" or char == "]" then return true end
+
+    end
+
     stashSearchBox.Think = function(s)
 
         stashSearchBox:SetWide(EFGM.MenuScale(593) - stashSearchButton:GetX() - stashSearchButton:GetWide())
@@ -7858,6 +7876,12 @@ function Menu.OpenTab.Market()
     marketStashSearchBox:SetCursorColor(Colors.whiteColor)
     marketStashSearchBox:SetAlpha(0)
     marketStashSearchBox:SetEditable(false)
+
+    function marketStashSearchBox:AllowInput(char)
+
+        if char == "[" or char == "]" then return true end
+
+    end
 
     marketStashSearchBox.Think = function(s)
 
@@ -8090,6 +8114,12 @@ function Menu.OpenTab.Market()
     marketSearchBox:SetTextColor(Colors.whiteColor)
     marketSearchBox:SetCursorColor(Colors.whiteColor)
 
+    function marketSearchBox:AllowInput(char)
+
+        if char == "[" or char == "]" then return true end
+
+    end
+
     local sortBy = "name"
     local marketSortByButton = vgui.Create("DButton", marketCategoryHolder)
     marketSortByButton:Dock(TOP)
@@ -8294,7 +8324,7 @@ function Menu.OpenTab.Market()
 
         marketItems:Clear()
 
-        for k, v in pairs(marketTbl) do
+        for k, v in ipairs(marketTbl) do
 
             if k >= ((currentPage * 20) - 19) and k <= (currentPage * 20) then
 
@@ -8580,7 +8610,7 @@ function Menu.OpenTab.Market()
         totalPages = 0
         curItems = items
 
-        for k1, v1 in pairs(items) do
+        for k1, v1 in ipairs(items) do
 
             for k2, v2 in pairs(EFGMITEMS) do
 
@@ -8629,7 +8659,6 @@ function Menu.OpenTab.Market()
                         end
 
                     end
-
 
                     table.insert(marketTbl, entry)
 
@@ -10278,7 +10307,7 @@ function Menu.OpenTab.Stats()
 
     local importantStats = vgui.Create("DPanel", stats)
     importantStats:Dock(TOP)
-    importantStats:SetSize(0, EFGM.MenuScale(530))
+    importantStats:SetSize(0, EFGM.MenuScale(560))
     importantStats.Paint = function(s, w, h)
 
         surface.SetDrawColor(Colors.transparent)
@@ -10321,6 +10350,8 @@ function Menu.OpenTab.Stats()
     statsTbl["Best Kill Streak"] = comma_value(Menu.Player:GetNWInt("BestKillStreak"))
     statsTbl["Current Extraction Streak"] = comma_value(Menu.Player:GetNWInt("CurrentExtractionStreak"))
     statsTbl["Best Extraction Streak"] = comma_value(Menu.Player:GetNWInt("BestExtractionStreak"))
+    statsTbl["Current Duel Win Streak"] = comma_value(Menu.Player:GetNWInt("CurrentDuelWinStreak"))
+    statsTbl["Best Duel Win Streak"] = comma_value(Menu.Player:GetNWInt("BestDuelWinStreak"))
 
     statsTbl["K/D Ratio"] = math.Round(Menu.Player:GetNWInt("Kills") / math.min(Menu.Player:GetNWInt("Deaths"), 1), 3)
     statsTbl["Survival Rate"] = math.Round(Menu.Player:GetNWInt("Extractions") / Menu.Player:GetNWInt("RaidsPlayed") * 100) .. "%"
@@ -12597,6 +12628,7 @@ concommand.Add("efgm_gamemenu", function(ply, cmd, args)
     local tab = args[1] -- tab currently does jack
 
     if !ply:Alive() then return end
+    if HUD.InTransition then return end
 
     Menu:Open(tab)
     Menu.IsOpen = true
