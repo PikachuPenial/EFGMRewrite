@@ -80,6 +80,8 @@ if SERVER then
 
         hook.Run("EndedDuel")
 
+        for k, v in ipairs(DUEL.Players) do v:SetNWBool("InRange", false) end
+
         table.RemoveByValue(DUEL.Players, deadPly)
 
         net.Start("PlayerDuelTransition")
@@ -139,6 +141,7 @@ if SERVER then
         for k, v in ipairs(DUEL.Players) do
 
             v:Kill()
+            v:SetNWBool("InRange", false)
 
             ReinstantiateInventoryAfterDuel(v)
             net.Start("PlayerReinstantiateInventoryAfterDuel", false)
