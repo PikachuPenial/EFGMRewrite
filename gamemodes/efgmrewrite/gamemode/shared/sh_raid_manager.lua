@@ -12,6 +12,15 @@ local function DecrementTimer()
     hook.Run("RaidTimerTick", GetGlobalInt("RaidTimeLeft"))
 end
 
+hook.Add("OnReloaded", "ImprovedRaidDebugging", function()
+
+    SetGlobalInt("RaidTimeLeft", -1)
+    SetGlobalInt("RaidStatus", raidStatus.ACTIVE)
+
+    timer.Remove("RaidTimerDecrement")
+
+end)
+
 if SERVER then
     util.AddNetworkString("VoteableMaps")
     util.AddNetworkString("SendVote")
@@ -99,8 +108,12 @@ if SERVER then
                 if v:IsPlayer() then
                     if !v:CompareStatus(0) and !v:CompareStatus(3) then
                         local status, spawnGroup = v:GetRaidStatus()
+                        print("Player " .. v:GetName() .. " tried to enter the raid with status " .. status .. ", but they're probably fine to join anyway?")
+                    end
 
-                        print("Player " .. v:GetName() .. " tried to enter the raid with status " .. status .. ", but they're probably fine to join anyway. If they aren't, tell the map maker to separate the lobby and the raid map, thanks.")
+                    if v:CompareStatus(3) then
+                        local status, spawnGroup = v:GetRaidStatus()
+                        print("Player " .. v:GetName() .. " tried to enter the raid with status " .. status .. ", this means they are in a duel, this shouldn't be possible at all, let's not let them join!")
                     end
 
                     net.Start("PlayerRaidTransition")
@@ -351,4 +364,25 @@ end
 
 function plyMeta:CompareStatus(status) -- if player is in raid then status of 0 will return false
     return self:GetNWInt("PlayerRaidStatus", 0) == status
+end
+
+-- i love debugging commands omg
+if GetConVar("efgm_derivesbox"):GetInt() == 1 then
+
+    function ForceSpawnPlayer(ply)
+
+        ply:SetNWBool("RaidReady", true)
+        hook.Run("CheckRaidAddPlayers", ply)
+
+    end
+    concommand.Add("efgm_debug_spawn", function(ply, cmd, args) ForceSpawnPlayer(ply) end)
+
+    function ForceExtractPlayer(ply)
+
+        if ply:CompareStatus(0) then return end
+        hook.Run("PlayerExtraction", ply, 67, true, "imgonnaendit")
+
+    end
+    concommand.Add("efgm_debug_extract", function(ply, cmd, args) ForceExtractPlayer(ply) end)
+
 end
