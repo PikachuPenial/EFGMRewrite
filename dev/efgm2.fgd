@@ -21,10 +21,18 @@
     
     input SetPlayerReadiness(bool) : "Tells the raid system to mark a player as ready to join the raid."
 
+    input KillAllInRaid(integer) : "Applies a lethal amount of a given type of damage to everyone in raid."
+
     // Outputs
     output OnRaidStart(void) : "This fires when the raid starts. Useful for spawning shit in the map, enabling / disabling extracts, or doing other things."
 
     output OnRaidEnd(void) : "Fires when the raid ends. Useful for resetting the map, or doing similar types of utmost trollage."
+    
+    output OnTenMinutesLeft(void) : ""
+
+    output OnFiveMinutesLeft(void) : ""
+
+    output OnOneMinuteLeft(void) : ""
 
 ]
 

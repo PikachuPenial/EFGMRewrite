@@ -6,8 +6,11 @@ ENT.Base = "base_point"
 
 ENT.RaidTime = 0
 
+local ent
+
 -- Arbys (We have the meats™)
 function ENT:KeyValue(key, value)
+
     -- may add to this idk
 
 	if key == "raid_time" then
@@ -18,10 +21,53 @@ function ENT:KeyValue(key, value)
 		self:StoreOutput(key, value)
 	end
 
+	if key == "OnTenMinutesLeft" then
+		self:StoreOutput(key, value)
+	end
+
+	if key == "OnFiveMinutesLeft" then
+		self:StoreOutput(key, value)
+	end
+
+	if key == "OnOneMinuteLeft" then
+		self:StoreOutput(key, value)
+	end
+
 	if key == "OnRaidEnd" then
 		self:StoreOutput(key, value)
 	end
+
 end
+
+function ENT:Initialize()
+
+    ent = self
+    
+end
+
+hook.Add("StartedRaid", "InterfaceRaidStart", function()
+
+    ent:TriggerOutput( "OnRaidStart" )
+
+end)
+
+hook.Add("RaidTimerTick", "InterfaceRaidTimerTick", function(curRaidTime)
+
+    if curRaidTime == 600 then
+        ent:TriggerOutput( "OnTenMinutesLeft" )
+    elseif curRaidTime == 300 then
+        ent:TriggerOutput( "OnFiveMinutesLeft" )
+    elseif curRaidTime == 60 then
+        ent:TriggerOutput( "OnOneMinuteLeft" )
+    end
+
+end)
+
+hook.Add("EndedRaid", "InterfaceRaidEnd", function()
+
+    ent:TriggerOutput( "OnRaidEnd" )
+
+end)
 
 function ENT:AcceptInput(name, ply, caller, data)
     if name == "StartRaid" then
@@ -48,4 +94,5 @@ function ENT:AcceptInput(name, ply, caller, data)
             hook.Run("CheckRaidAddPlayers", ply)
         end
     end
+
 end
