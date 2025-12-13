@@ -247,7 +247,7 @@ net.Receive("PlayerStashAddItemFromEquipped", function(len, ply)
     end
 
     local def = EFGMITEMS[item.name]
-    if def.displayType != "Grenade" then
+    if wep != NULL and def.displayType != "Grenade" then
 
         local clip1 = wep:Clip1()
         local ammoDef = EFGMITEMS[wep.Ammo]

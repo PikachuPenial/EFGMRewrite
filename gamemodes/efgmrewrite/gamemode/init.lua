@@ -52,6 +52,7 @@ local allPMs = {"models/eft/pmcs/usec_extended_pm.mdl", "models/eft/pmcs/bear_ex
 function GM:PlayerSpawn(ply)
 
 	ply:SetRaidStatus(0, "") -- moving this in hopes that i wont 'fucking break the gamemode again goddamn it'
+	ply:SetNWBool("InRange", false) -- just in case
 
 	ply:SetGravity(.72)
 	ply:SetMaxHealth(100)
@@ -431,36 +432,7 @@ equipWeaponName = ""
 -- put weapons picked up into players inventory
 hook.Add("PlayerCanPickupWeapon", "InventoryWeaponPickup", function(ply, wep)
 
-	local wepClass = wep:GetClass()
-
-	local data = {}
-
-	local atts = table.Copy(wep.Attachments)
-	local str
-	if atts then str = GenerateAttachString(atts) end
-	data.att = str
-
-	data.count = 1
-	data.owner = ply:SteamID64()
-	data.timestamp = os.time()
-
-	tempEquipWeaponName = equipWeaponName
-	equipWeaponName = ""
-
-	if wepClass != tempEquipWeaponName then
-
-		AddItemToInventory(ply, wepClass, EQUIPTYPE.Weapon, data)
-		ReloadInventory(ply)
-
-		timer.Simple(0, function()
-
-			if IsValid(wep) then wep:Remove() end
-
-		end)
-
-    end
-
-	return wepClass == tempEquipWeaponName
+	return false
 
 end)
 

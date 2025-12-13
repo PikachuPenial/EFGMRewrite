@@ -3750,7 +3750,8 @@ function Menu.ReloadSlots()
 
         end
 
-        if clip >= clipMax * 0.9 then mag = "Full"
+        if clip == 0 then mag = "Empty"
+        elseif clip >= clipMax * 0.9 then mag = "Full"
         elseif clip >= clipMax * 0.8 then mag = "Nearly full"
         elseif clip >= clipMax * 0.4 then mag = "About half"
         elseif clip >= clipMax * 0.2 then mag = "Less than half"
@@ -4115,7 +4116,8 @@ function Menu.ReloadSlots()
 
         end
 
-        if clip >= clipMax * 0.9 then mag = "Full"
+        if clip == 0 then mag = "Empty"
+        elseif clip >= clipMax * 0.9 then mag = "Full"
         elseif clip >= clipMax * 0.8 then mag = "Nearly full"
         elseif clip >= clipMax * 0.4 then mag = "About half"
         elseif clip >= clipMax * 0.2 then mag = "Less than half"
@@ -4480,7 +4482,8 @@ function Menu.ReloadSlots()
 
         end
 
-        if clip >= clipMax * 0.9 then mag = "Full"
+        if clip == 0 then mag = "Empty"
+        elseif clip >= clipMax * 0.9 then mag = "Full"
         elseif clip >= clipMax * 0.8 then mag = "Nearly full"
         elseif clip >= clipMax * 0.4 then mag = "About half"
         elseif clip >= clipMax * 0.2 then mag = "Less than half"

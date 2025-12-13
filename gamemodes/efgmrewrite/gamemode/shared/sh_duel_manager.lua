@@ -30,8 +30,7 @@ if SERVER then
         net.Start("PlayerDuelTransition")
         net.Send(DUEL.Players)
 
-        local randLoadoutNum = math.random(1, 8)
-
+        local randLoadoutNum = math.random(1, #DUEL_PRIMARY)
         local primaryItem, secondaryItem = DUEL:GenerateLoadout(randLoadoutNum)
 
         for k, v in ipairs(DUEL.Players) do -- there is literally no reason for this to have more than 2 players, so i will asssume that it is 2 players

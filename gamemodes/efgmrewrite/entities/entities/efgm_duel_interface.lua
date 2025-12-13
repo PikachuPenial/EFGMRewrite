@@ -2,18 +2,32 @@
 ENT.Type = "point"
 ENT.Base = "base_point"
 
-function ENT:AcceptInput(name, ply, caller, data)
+function ENT:KeyValue(key, value)
 
-    if name == "DuelBegan" then
-
-
-
+    if key == "OnDuelStart" then
+        self:StoreOutput(key, value)
     end
 
-    if name == "DuelEnded" then
-
-
-
+    if key == "OnDuelEnd" then
+        self:StoreOutput(key, value)
     end
 
 end
+
+hook.Add("StartedDuel", "InterfaceDuelStart", function()
+
+    ent:TriggerOutput("OnDuelStart")
+
+end)
+
+hook.Add("EndedDuel", "InterfaceDuelEnd", function()
+
+    ent:TriggerOutput("OnDuelEnd")
+
+end)
+
+hook.Add("CancelledDuel", "InterfaceDuelCancel", function()
+
+    ent:TriggerOutput("OnDuelEnd")
+
+end)

@@ -437,7 +437,7 @@ net.Receive("PlayerInventoryUnEquipItem", function(len, ply)
     end
 
     local def = EFGMITEMS[item.name]
-    if def.displayType != "Grenade" then
+    if wep != NULL and def.displayType != "Grenade" then
 
         local clip1 = wep:Clip1()
         local ammoDef = EFGMITEMS[wep.Ammo]
@@ -505,7 +505,7 @@ function UnequipAll(ply)
                 end
 
                 local def = EFGMITEMS[item.name]
-                if def.displayType != "Grenade" then
+                if wep != NULL and def.displayType != "Grenade" then
 
                     local clip1 = wep:Clip1()
                     local ammoDef = EFGMITEMS[wep.Ammo]
@@ -588,7 +588,7 @@ function UnequipAllFirearms(ply)
                 end
 
                 local def = EFGMITEMS[item.name]
-                if def.displayType != "Grenade" then
+                if wep != NULL and def.displayType != "Grenade" then
 
                     local clip1 = wep:Clip1()
                     local ammoDef = EFGMITEMS[wep.Ammo]
