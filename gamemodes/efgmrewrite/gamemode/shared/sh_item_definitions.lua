@@ -8094,7 +8094,8 @@ EFGMITEMS = {}
         ["sizeX"] = 1,
         ["sizeY"] = 1,
 
-        ["canPurchase"] = false
+        ["canPurchase"] = false,
+        ["canSpawn"] = false
     }
 
 sellMultiplier = 0.5
@@ -8126,6 +8127,7 @@ function GenerateLootTables()
     for k, v in pairs(EFGMITEMS) do
 
         -- generic loot pools
+        if !v.canSpawn then return end
 
         -- excluded keys bc you can find them fucking everywhere
         if v.displayType != "Belmont Key" and v.displayType != "Concrete Key" and v.displayType != "Factory Key" and v.displayType != "Attachment" and v.displayType != "Accessory" and v.displayType != "Barrel" and v.displayType != "Cover" and v.displayType != "Gas Block" and v.displayType != "Handguard" and v.displayType != "Magazine" and v.displayType != "Mount" and v.displayType != "Pistol Grip" and v.displayType != "Receiver" and v.displayType != "Sight" and v.displayType != "Stock" then
@@ -8316,7 +8318,8 @@ hook.Add("InitPostEntity", "AttsItemDef", function()
 
             ["levelReq"] = v.EFGMLvl or 1,
             ["canPurchase"] = v.EFGMCanPurchase or true,
-            ["lootWeight"] = v.EFGMLootWeight or 100
+            ["lootWeight"] = v.EFGMLootWeight or 100,
+            ["canSpawn"] = true
 
         }
 
@@ -8351,7 +8354,8 @@ hook.Add("OnReloaded", "AttsItemDefReload", function()
 
             ["levelReq"] = v.EFGMLvl or 1,
             ["canPurchase"] = v.EFGMCanPurchase or true,
-            ["lootWeight"] = v.EFGMLootWeight or 100
+            ["lootWeight"] = v.EFGMLootWeight or 100,
+            ["canSpawn"] = true
 
         }
 

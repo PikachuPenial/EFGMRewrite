@@ -387,7 +387,6 @@ net.Receive("PlayerStashEquipItem", function(len, ply)
 
         end
 
-        equipWeaponName = item.name
         GiveWepWithPresetFromCode(ply, item.name, item.data.att)
 
         ReloadStash(ply)

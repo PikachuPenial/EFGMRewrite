@@ -403,7 +403,6 @@ net.Receive("PlayerInventoryEquipItem", function(len, ply)
         DeleteItemFromInventory(ply, itemIndex, true)
         ply.weaponSlots[equipSlot][equipSubSlot] = item
 
-        equipWeaponName = item.name
         GiveWepWithPresetFromCode(ply, item.name, item.data.att)
 
     end
@@ -1316,7 +1315,6 @@ hook.Add("PlayerSpawn", "GiveEquippedItemsOnSpawn", function(ply)
                 local item = table.Copy(v)
                 if item == nil then return end
 
-                equipWeaponName = item.name
                 GiveWepWithPresetFromCode(ply, item.name, item.data.att)
 
             end
@@ -1330,8 +1328,8 @@ end)
 net.Receive("PlayerInventoryFixDesyncCL", function(len, ply)
 
     UpdateStashString(ply)
-	UpdateInventoryString(ply)
-	UpdateEquippedString(ply)
+    UpdateInventoryString(ply)
+    UpdateEquippedString(ply)
 
     SendChunkedNet(ply, ply.stashStr, "PlayerNetworkStash")
     SendChunkedNet(ply, ply.invStr, "PlayerNetworkInventory")

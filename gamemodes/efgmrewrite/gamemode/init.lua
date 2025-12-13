@@ -427,18 +427,38 @@ function ApplyPlayerExperience(ply, mult)
 
 end
 
-equipWeaponName = ""
-
--- put weapons picked up into players inventory
-hook.Add("PlayerCanPickupWeapon", "InventoryWeaponPickup", function(ply, wep)
-
-	return false
-
-end)
-
 -- disable prop pickups
 hook.Add("AllowPlayerPickup", "DisablePickups", function(ply, ent)
 
 	return false
 
-end )
+end)
+
+-- dropped weapons shouldn't be possible as all dropped items use our custom system, but just in case
+hook.Add("PlayerCanPickupWeapon", "InventoryWeaponPickup", function(ply, weapon)
+
+	if (ply:HasWeapon(weapon:GetClass())) then return false end
+
+end)
+
+-- should be sandbox derive only
+hook.Add("PlayerGiveSWEP", "BlockPlayerSWEPs", function(ply, class, spawninfo)
+
+	if GetConVar("efgm_derivesbox"):GetInt() == 0 then return false end
+
+	if !EFGMITEMS[class] then return true end -- if sm1 wants a camera or something
+
+	local data = {}
+	data.att = EFGMITEMS[class].defAtts
+	data.count = 1
+	data.owner = ply:SteamID64()
+	data.timestamp = os.time()
+
+	AddItemToInventory(ply, class, EQUIPTYPE.Weapon, data)
+	ReloadInventory(ply)
+
+	return false
+
+end)
+
+hook.Add("PlayerSpawnSWEP", "SpawnBlockSWEPOnGround", function(ply, class, info) return false end)

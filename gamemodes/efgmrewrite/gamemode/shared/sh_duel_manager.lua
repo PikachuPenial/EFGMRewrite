@@ -155,7 +155,6 @@ if SERVER then
 
         ply.weaponSlots[1][1] = item
 
-        equipWeaponName = item.name
         GiveWepWithPresetFromCode(ply, item.name, item.data.att)
 
     end
@@ -164,7 +163,6 @@ if SERVER then
 
         ply.weaponSlots[2][1] = item
 
-        equipWeaponName = item.name
         GiveWepWithPresetFromCode(ply, item.name, item.data.att)
 
     end
