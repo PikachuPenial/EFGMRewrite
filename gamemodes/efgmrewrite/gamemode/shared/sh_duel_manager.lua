@@ -30,7 +30,7 @@ if SERVER then
         net.Start("PlayerDuelTransition")
         net.Send(DUEL.Players)
 
-        local randLoadoutNum = math.random(1, 9)
+        local randLoadoutNum = math.random(1, 8)
 
         local primaryItem, secondaryItem = DUEL:GenerateLoadout(randLoadoutNum)
 
