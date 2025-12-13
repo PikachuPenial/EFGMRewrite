@@ -334,7 +334,7 @@ net.Receive("PlayerInventoryDropItem", function(len, ply)
     local itemIndex = net.ReadUInt(16)
     local item = ply.inventory[itemIndex]
 
-    if LocalPlayer():CompareStatus(3) then return end
+    if ply:CompareStatus(3) then return end
 
     if table.IsEmpty(item) then return false end
 

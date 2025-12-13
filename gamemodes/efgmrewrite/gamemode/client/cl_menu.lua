@@ -5398,7 +5398,7 @@ function Menu.ReloadStash()
 
         elseif (a.data.tag or "") != (b.data.tag or "") then
 
-            return (a.data.tag or "") > (b.data.tag or "")
+            return (a.data.tag or "") > (b.data.tag or "") -- FIX THIS LOL
 
         else
 
