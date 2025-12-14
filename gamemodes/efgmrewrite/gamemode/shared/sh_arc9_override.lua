@@ -1874,6 +1874,19 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
             if SERVER and !sp then cfilter = soundtab.networktoeveryone and ARC9.EveryoneRecipientFilter end
 
             local owner = self:GetOwner()
+            if IsValid(owner) and owner:IsPlayer() and cfilter != nil then
+
+                if owner:CompareStatus(0) or owner:CompareStatus(3) then -- in the hideout/dueling
+
+                    cfilter = CRF[0]
+
+                elseif owner:CompareStatus(1) or owner:CompareStatus(2) then -- in a raid
+
+                    cfilter = CRF[1]
+
+                end
+
+            end
 
             entityEmitSound(self,
                 soundtab.sound,
