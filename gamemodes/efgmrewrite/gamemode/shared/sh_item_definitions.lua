@@ -6,6 +6,7 @@ ICONCOLORS.Green = Color(31, 38, 26, 155)
 ICONCOLORS.Blue = Color(33, 43, 48, 155)
 ICONCOLORS.Purple = Color(45, 37, 48, 155)
 ICONCOLORS.Brown = Color(54, 35, 32, 155)
+ICONCOLORS.White = Color(50, 50, 50, 155)
 
 EQUIPTYPE = {}
 EQUIPTYPE.Weapon = 1
@@ -3556,12 +3557,12 @@ EFGMITEMS = {}
     EFGMITEMS["arc9_eft_sp81"] = {
         ["fullName"] = "ZiD SP-81 26x75 signal pistol",
         ["displayName"] = "SP-81",
-        ["displayType"] = "Special",
+        ["displayType"] = "Pistol",
         ["weight"] = 0.6,
         ["value"] = 25000,
         ["levelReq"] = 10,
         ["equipType"] = EQUIPTYPE.Weapon,
-        ["equipSlot"] = WEAPONSLOTS.UTILITY.ID,
+        ["equipSlot"] = WEAPONSLOTS.HOLSTER.ID,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/special/sp81.png", "smooth"),
@@ -3589,6 +3590,132 @@ EFGMITEMS = {}
 
         ["sizeX"] = 1,
         ["sizeY"] = 1
+    }
+
+    EFGMITEMS["arc9_eft_rsp30_white"] = {
+        ["fullName"] = "ROP-30 (White)",
+        ["displayName"] = "White",
+        ["displayType"] = "Grenade",
+        ["weight"] = 0.2,
+        ["value"] = 12500,
+        ["levelReq"] = 1,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["equipSlot"] = WEAPONSLOTS.GRENADE.ID,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/special/rop_white.png", "smooth"),
+        ["iconColor"] = ICONCOLORS.White,
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 2,
+
+        ["canSpawn"] = false,
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["arc9_eft_rsp30_blue"] = {
+        ["fullName"] = "RSP-30 (Blue)",
+        ["displayName"] = "Blue",
+        ["displayType"] = "Grenade",
+        ["weight"] = 0.2,
+        ["value"] = 12500,
+        ["levelReq"] = 1,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["equipSlot"] = WEAPONSLOTS.GRENADE.ID,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/special/rsp_blue.png", "smooth"),
+        ["iconColor"] = ICONCOLORS.Blue,
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 2,
+
+        ["canSpawn"] = false,
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["arc9_eft_rsp30_firework"] = {
+        ["fullName"] = "RSP-30 (Firework)",
+        ["displayName"] = "Firework",
+        ["displayType"] = "Grenade",
+        ["weight"] = 0.2,
+        ["value"] = 12500,
+        ["levelReq"] = 1,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["equipSlot"] = WEAPONSLOTS.GRENADE.ID,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/special/rsp_firework.png", "smooth"),
+        ["iconColor"] = ICONCOLORS.Purple,
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 2,
+
+        ["canSpawn"] = false,
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["arc9_eft_rsp30_green"] = {
+        ["fullName"] = "RSP-30 (Green)",
+        ["displayName"] = "Green",
+        ["displayType"] = "Grenade",
+        ["weight"] = 0.2,
+        ["value"] = 75000,
+        ["levelReq"] = 1,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["equipSlot"] = WEAPONSLOTS.GRENADE.ID,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/special/rsp_green.png", "smooth"),
+        ["iconColor"] = ICONCOLORS.Green,
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 2,
+
+        ["canPurchase"] = false,
+        ["lootWeight"] = 25
+    }
+
+    EFGMITEMS["arc9_eft_rsp30_red"] = {
+        ["fullName"] = "RSP-30 (Red)",
+        ["displayName"] = "Red",
+        ["displayType"] = "Grenade",
+        ["weight"] = 0.2,
+        ["value"] = 12500,
+        ["levelReq"] = 1,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["equipSlot"] = WEAPONSLOTS.GRENADE.ID,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/special/rsp_red.png", "smooth"),
+        ["iconColor"] = ICONCOLORS.Red,
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 2,
+
+        ["canSpawn"] = false,
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["arc9_eft_rsp30_yellow"] = {
+        ["fullName"] = "RSP-30 (Yellow)",
+        ["displayName"] = "Yellow",
+        ["displayType"] = "Grenade",
+        ["weight"] = 0.2,
+        ["value"] = 12500,
+        ["levelReq"] = 1,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["equipSlot"] = WEAPONSLOTS.GRENADE.ID,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/special/rsp_red.png", "smooth"),
+        ["iconColor"] = ICONCOLORS.Yellow,
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 2,
+
+        ["canSpawn"] = false,
+        ["canPurchase"] = false
     }
 
 -- AMMUNITION
@@ -4377,8 +4504,8 @@ EFGMITEMS = {}
     }
 
     EFGMITEMS["efgm_keycard_tunnels"] = {
-        ["fullName"] = "Underground Tunnel Access Keycard",
-        ["displayName"] = "Tunnels",
+        ["fullName"] = "Suspicious Keycard With Brown Marking",
+        ["displayName"] = "Sus. B",
         ["displayType"] = "Concrete Key",
         ["weight"] = 0.2,
         ["value"] = 500000,

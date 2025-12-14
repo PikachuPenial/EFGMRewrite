@@ -32,6 +32,7 @@ local function RenderPlayerWeapon(ply)
     local ammo = wep:Clip1()
     local ammoMax = wep:GetMaxClip1()
     local magstatus
+    local status = nil
 
     -- calculate approx. ammo remaining
     if ammo >= ammoMax * 0.9 then magstatus = "Full"
@@ -46,9 +47,12 @@ local function RenderPlayerWeapon(ply)
     local ammoTextSize = surface.GetTextSize(magstatus) + EFGM.ScreenScale(10)
 
     -- ammo
+    local wepColor = Colors.whiteColor
+    if wep.Hook_RedPrintName then status = wep:RunHook("Hook_RedPrintName") end
+    if status then wepColor = Colors.deadColor end
     surface.SetDrawColor(Colors.hudBackground)
     surface.DrawRect(ScrW() - EFGM.ScreenScale(37) - ammoTextSize, ScrH() - EFGM.ScreenScale(75), ammoTextSize + EFGM.ScreenScale(17), EFGM.ScreenScale(35))
-    draw.DrawText(tostring(magstatus), "BenderAmmoCount", ScrW() - EFGM.ScreenScale(34), ScrH() - EFGM.ScreenScale(74), Colors.whiteColor, TEXT_ALIGN_RIGHT)
+    draw.DrawText(tostring(magstatus), "BenderAmmoCount", ScrW() - EFGM.ScreenScale(34), ScrH() - EFGM.ScreenScale(74), wepColor, TEXT_ALIGN_RIGHT)
 
     -- weapon name
     draw.DrawText(name, "BenderWeaponName", ScrW() - EFGM.ScreenScale(20), ScrH() - EFGM.ScreenScale(40), Colors.whiteColor, TEXT_ALIGN_RIGHT)

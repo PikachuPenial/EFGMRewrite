@@ -1,3 +1,41 @@
+if SERVER and !game.SinglePlayer() then
+
+    CRF = {}
+    CRF[0] = RecipientFilter() -- hideout
+    CRF[1] = RecipientFilter() -- in raid
+
+    function UpdateAudioFilter(ply, id)
+
+        if !IsValid(ply) then return end
+        RemovePlayerFromAllFilters(ply)
+
+        local f = 0
+        if id == 1 or id == 2 then f = 1 end
+
+        CRF[f]:AddPlayer(ply)
+
+    end
+
+    function RemovePlayerFromAllFilters(ply)
+
+        for index, filter in ipairs(CRF) do filter:RemovePlayer(ply) end
+
+    end
+
+    hook.Add("PlayerInitialSpawn", "AddToDefaultFilterOnConnect", function(ply)
+
+        CRF[0]:AddPlayer(ply)
+
+    end)
+
+    hook.Add("PlayerDisconnected", "RemoveFromFiltersOnDC", function(ply)
+
+        RemovePlayerFromAllFilters(ply)
+
+    end)
+
+end
+
 local footsteps_int =
 {
     [MAT_CONCRETE] = "concrete",

@@ -5139,6 +5139,12 @@ function Menu.ReloadSlots()
 
             draw.SimpleTextOutlined(i.displayName, nameFont, w - EFGM.MenuScale(3), EFGM.MenuScale(-1), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
+            if i.caliber then -- flares.
+
+                draw.SimpleTextOutlined(i.caliber, "PuristaBold18", EFGM.MenuScale(3), h - EFGM.MenuScale(19), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+
+            end
+
             if playerWeaponSlots[4][1].data and playerWeaponSlots[4][1].data.fir then
 
                 surface.SetDrawColor(Colors.pureWhiteColor)
@@ -5277,6 +5283,31 @@ function Menu.ReloadSlots()
                 UnEquipItemFromInventory(nadeItem.SLOTID, nadeItem.SLOT)
 
                 contextMenu:KillFocus()
+
+            end
+
+            if Menu.Player:CompareStatus(0) and i.ammoID then
+
+                contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
+
+                local itemBuyAmmoButton = vgui.Create("DButton", contextMenu)
+                itemBuyAmmoButton:Dock(TOP)
+                itemBuyAmmoButton:SetSize(0, EFGM.MenuScale(25))
+                itemBuyAmmoButton:SetText("BUY AMMO")
+
+                itemBuyAmmoButton.OnCursorEntered = function(s)
+
+                    surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
+
+                end
+
+                function itemBuyAmmoButton:DoClick()
+
+                    contextMenu:Remove()
+
+                    Menu.ConfirmPurchase(i.ammoID, "inv", false)
+
+                end
 
             end
 

@@ -1857,6 +1857,37 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
         self:SetUBGL(lastsecondary)
     end
 
+    local ENTITY = FindMetaTable("Entity")
+    local entityEmitSound = ENTITY.EmitSound
+
+    function SWEP:PlayTranslatedSound(soundtab)
+        soundtab = self:RunHook("HookP_TranslateSound", soundtab) or soundtab
+
+        if soundtab and soundtab.sound then
+            local pitch = soundtab.pitch
+
+            if istable(pitch) then
+                pitch = math.random(pitch[1], pitch[2])
+            end
+
+            local cfilter = nil
+            if SERVER and !sp then cfilter = soundtab.networktoeveryone and ARC9.EveryoneRecipientFilter end
+
+            local owner = self:GetOwner()
+
+            entityEmitSound(self,
+                soundtab.sound,
+                soundtab.level,
+                pitch,
+                soundtab.volume,
+                soundtab.channel,
+                soundtab.flags,
+                soundtab.dsp,
+                cfilter
+            )
+        end
+    end
+
     -- weapon sounds
     local lsstr = "ShootSound"
     local lsslr = "LayerSound"
@@ -2112,7 +2143,7 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
                 if self:GetGrenadeRecovering() then
                     if self:GetProcessedValue("Disposable", true) and !IsValid(self:GetDetonatorEntity()) and SERVER and owner:GetNWBool("InRange", false) == false then
                         self:Remove()
-                        owner:ConCommand("lastinv") -- switch to prev weapon
+                        -- owner:ConCommand("lastinv") -- switch to prev weapon
                     elseif self.WasThrownByBind then
                         self.WasThrownByBind = nil
                         self:Holster(owner:GetPreviousWeapon())
@@ -2152,6 +2183,9 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
                 self:SetGrenadeRecovering(true)
             end
         end
+    end
+
+    if class != "arc9_eft_rshg2" then
 
         function SWEP:ThrowGrenade(nttype, delaytime)
             delaytime = delaytime or 0
@@ -2199,7 +2233,7 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
 
             if owner:GetNWBool("InRange", false) == false then
 
-                ConsumeGrenade(self:GetOwner())
+                timer.Simple(delaytime, function() ConsumeGrenade(self:GetOwner()) end)
 
             end
 

@@ -388,14 +388,22 @@ net.Receive("PlayerInventoryConsumeGrenade", function(len, ply)
     table.Empty(playerWeaponSlots[4][1])
     Menu.ReloadSlots()
 
-    timer.Simple(0.5, function()
+    if !table.IsEmpty(playerWeaponSlots[1][1]) then
 
-        if !table.IsEmpty(playerWeaponSlots[1][1]) then LocalPlayer():ConCommand("efgm_inventory_equip " .. WEAPONSLOTS.PRIMARY.ID .. " 1")
-        elseif !table.IsEmpty(playerWeaponSlots[1][2]) then LocalPlayer():ConCommand("efgm_inventory_equip " .. WEAPONSLOTS.PRIMARY.ID .. " 2")
-        elseif !table.IsEmpty(playerWeaponSlots[2][1]) then LocalPlayer():ConCommand("efgm_inventory_equip " .. WEAPONSLOTS.HOLSTER.ID)
-        end
+        local weapon = LocalPlayer():GetWeapon(playerWeaponSlots[1][1].name)
+        if weapon != NULL then input.SelectWeapon(weapon) end
 
-    end)
+    elseif !table.IsEmpty(playerWeaponSlots[1][2]) then
+
+        local weapon = LocalPlayer():GetWeapon(playerWeaponSlots[1][2].name)
+        if weapon != NULL then input.SelectWeapon(weapon) end
+
+    elseif !table.IsEmpty(playerWeaponSlots[2][1]) then
+
+        local weapon = LocalPlayer():GetWeapon(playerWeaponSlots[2][1].name)
+        if weapon != NULL then input.SelectWeapon(weapon) end
+
+    end
 
 end)
 

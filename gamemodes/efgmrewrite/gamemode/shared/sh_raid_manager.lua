@@ -198,6 +198,9 @@ if SERVER then
 
             self:SetNWInt("PlayerRaidStatus", status)
             self:SetNWString("PlayerSpawnGroup", spawnGroup)
+
+            if game.SinglePlayer() then return end -- no audio filters in SP
+            UpdateAudioFilter(self, status)
         end
 
         function plyMeta:Teleport(position, angles, velocity)

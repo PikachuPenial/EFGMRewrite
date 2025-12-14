@@ -228,12 +228,29 @@ if SERVER then
 
     hook.Add("EndedRaid", "EndDuelOnMapChange", function(time)
 
-        timer.Simple(time / 2, function() DUEL.Allowed = false end) -- disable any new duels
+        timer.Simple(time / 4, function() DUEL.Allowed = false end) -- disable any new duels
         timer.Simple(time - 3, function() DUEL:CancelDuel() end)    -- force cancel current duel
 
     end)
 
     function ReinstantiateInventoryForDuel(ply)
+
+        for i = 1, 5 do
+
+            if i == WEAPONSLOTS.MELEE.ID then continue end
+
+            for k, v in pairs(ply.weaponSlots[i]) do
+
+                if !table.IsEmpty(v) then
+
+                    local item = table.Copy(v)
+                    ply:StripWeapon(item.name)
+
+                end
+
+            end
+
+        end
 
         ply.inventory = {}
 
@@ -249,14 +266,28 @@ if SERVER then
 
         if equMelee != nil then ply.weaponSlots[WEAPONSLOTS.MELEE.ID] = equMelee end
 
-        ply:StripWeapons()
         CalculateInventoryWeight(ply)
 
     end
 
     function ReinstantiateInventoryAfterDuel(ply)
 
-        ply:StripWeapons()
+        for i = 1, 5 do
+
+            if i == WEAPONSLOTS.MELEE.ID then continue end
+
+            for k, v in pairs(ply.weaponSlots[i]) do
+
+                if !table.IsEmpty(v) then
+
+                    local item = table.Copy(v)
+                    ply:StripWeapon(item.name)
+
+                end
+
+            end
+
+        end
 
         ply.inventory = DecodeStash(ply, ply.invStr)
         ply.weaponSlots = DecodeStash(ply, ply.equStr)
