@@ -2214,6 +2214,28 @@ EFGMITEMS = {}
         ["defAtts"] = "XQAAAQAPAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8NUfBrxG5/o6wCZICOBvnuThI2G4SXoY5YVE6djRZzT+hLefB8oK6y+WP73ZLPfot111L1Z8yv/Klzy9wOI8rA2th1khRAIQn3Zxm2dJNQkqO2nZexAlJLFGg30dKLB+fUGNNJBuFy1WcFa6ehPHnKQA=="
     }
 
+    EFGMITEMS["arc9_eft_mxlr"] = {
+        ["fullName"] = "Marlin MXLR .308 ME lever-action rifle",
+        ["displayName"] = "Marlin MXLR",
+        ["displayType"] = "Sniper Rifle",
+        ["weight"] = 3.0,
+        ["value"] = 70255,
+        ["levelReq"] = 17,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/weapons/mxlr.png", "smooth"),
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 1,
+
+        ["caliber"] = ".308 ME",
+        ["ammoID"] = "efgm_ammo_308",
+        ["defAtts"] = "XQAAAQBHAgAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8NWIc8JEM7NCCZf/J8JCP4tIuIEY6acQEF0OEtXkIjDhlEIYFnknGGhDLWgCcEIxWy+NaotQ9aQE4OnvMOHIti/qf01KaPR+MrgzE/mGQaQKXvABekpgeYPhV3ojrSGdbNdux8/sYI6VzNCf88FKhngQvROdgq+k3LbgZm2aYNtLIJ/xM09rrCFQ/DEv6TI0Xb+09FOr3mRUTb1j+cgbFA"
+
+    }
+
     EFGMITEMS["arc9_eft_rsass"] = {
         ["fullName"] = "Remington R11 RSASS 7.62x51 marksman rifle",
         ["displayName"] = "RSASS",
@@ -3996,7 +4018,7 @@ EFGMITEMS = {}
 
     EFGMITEMS["efgm_ammo_308"] = {
         ["fullName"] = ".308 Marlin Express",
-        ["displayName"] = ".308",
+        ["displayName"] = ".308 ME",
         ["displayType"] = "Ammunition",
         ["weight"] = 0.024,
         ["value"] = 510,

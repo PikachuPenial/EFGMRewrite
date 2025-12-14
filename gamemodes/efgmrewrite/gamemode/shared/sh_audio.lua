@@ -449,11 +449,13 @@ shotCaliber["efgm_ammo_68x51"] = {65, 6000, "bullet"}
 shotCaliber["efgm_ammo_762x25"] = {190, 3000, "bullet"}
 shotCaliber["efgm_ammo_762x39"] = {75, 6000, "bullet"}
 shotCaliber["efgm_ammo_762x51"] = {70, 7000, "bullet"}
+shotCaliber["efgm_ammo_308"] = {70, 7000, "bullet"}
 shotCaliber["efgm_ammo_762x54"] = {60, 7000, "bullet"}
 shotCaliber["efgm_ammo_9x18"] = {180, 3000, "bullet"}
 shotCaliber["efgm_ammo_9x19"] = {180, 3000, "bullet"}
 shotCaliber["efgm_ammo_9x21"] = {150, 4500, "bullet"}
 shotCaliber["efgm_ammo_9x39"] = {150, 2500, "bullet"}
+shotCaliber["efgm_ammo_93x64"] =  {30, 25000, "bullet"}
 
 if SERVER then
 
