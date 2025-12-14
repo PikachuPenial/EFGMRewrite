@@ -1,7 +1,11 @@
+local inviteCD = 0
 local lastInviteSentTime = 0
 local lastSquadInviteSentTime = 0
 
 function InvitePlayerToSquad(ply, invitedPly)
+
+    if CurTime() - inviteCD < 0.5 then return end
+    inviteCD = CurTime()
 
     if !IsValid(invitedPly) then return end
     if CurTime() - lastInviteSentTime < 10 then CreateNotification("You can send invites again in " .. 10 - math.Round(CurTime() - lastInviteSentTime, 1) .. " seconds!", Mats.inviteErrorIcon, "ui/error.wav") return end
@@ -54,6 +58,9 @@ function InvitePlayerToSquad(ply, invitedPly)
 end
 
 function InvitePlayerToDuel(ply, invitedPly)
+
+    if CurTime() - inviteCD < 0.5 then return end
+    inviteCD = CurTime()
 
     if !IsValid(invitedPly) then return end
     if CurTime() - lastInviteSentTime < 10 then CreateNotification("You can send invites again in " .. 10 - math.Round(CurTime() - lastInviteSentTime, 1) .. " seconds!", Mats.inviteErrorIcon, "ui/error.wav") return end

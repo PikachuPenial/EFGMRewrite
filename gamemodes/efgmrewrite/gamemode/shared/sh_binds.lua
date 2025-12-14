@@ -116,6 +116,7 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
             local ent = (ply:Alive() and ply:GetEyeTrace() or default_trace()).Entity
             if !ent:IsPlayer() then return end
             if !IsValid(ent) then return end
+            if !ent:CompareStatus(0) and !ent:CompareStatus(3) then return end
 
             InvitePlayerToSquad(ply, ent)
 
