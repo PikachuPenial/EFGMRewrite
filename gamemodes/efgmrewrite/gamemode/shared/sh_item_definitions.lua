@@ -1975,7 +1975,7 @@ EFGMITEMS = {}
         ["displayType"] = "Sniper Rifle",
         ["weight"] = 5.7,
         ["value"] = 270000,
-        ["levelReq"] = 43,
+        ["levelReq"] = 45,
         ["equipType"] = EQUIPTYPE.Weapon,
         ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
         ["appearInInventory"] = true,
@@ -2193,6 +2193,30 @@ EFGMITEMS = {}
         ["defAtts"] = "XQAAAQBTAwAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8ObRiu3tibt3IP5oBbAn23oHzYA8d1/1rQ/6F6KFMvcaM/pLh9ayXkhgZ14kGEirPqWpP/6dxSMYHyxausiP7ggK1p8DCF9BmSb4P3uaSQI9UKX1Tr7qt2eR2Yx9fs4nwR58vTFh2I8lu11HcNFQaAswMKFbD2SaXMhqfJwu83TYJB1+grgXPZyR68JdCcWX6U5YtKl8drOluEj1jijLNSQfwc9v06T2Nqcukz6M37sCCB3fHwFA=="
     }
 
+    EFGMITEMS["arc9_eft_tkpd"] = {
+        ["fullName"] = "TKPD 9.3x64 carbine",
+        ["displayName"] = "TKPD",
+        ["displayType"] = "Marksman Rifle",
+        ["weight"] = 5.9,
+        ["value"] = 415050,
+        ["levelReq"] = 48,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/weapons/tkpd.png", "smooth"),
+
+        ["sizeX"] = 6,
+        ["sizeY"] = 2,
+
+        ["canPurchase"] = false,
+        ["lootWeight"] = 30,
+
+        ["caliber"] = "9.3x64",
+        ["ammoID"] = "efgm_ammo_93x64",
+        ["defAtts"] = "XQAAAQCKAwAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8OcoBWPJpIn/7bo8AQ+FEnJ235Vu+Dl8j/rD2rEVZRgbQUIo//ohe5VRwVkj/Mj5yCITKA2R2eJ64C6s7en/Kqv1FWBUQKWDbdQ30wp/e+JMwerXq0yn82z3YNjs82vkTWMwDDzTulY+2i9e/4RUySzdgTaMjcFKR+ftqt9zYk/0hmib27RfdsrlAvdjaeN6rghzZk7PI+hL9mxNRa19ORDvOSCGM/kUEX6Paxw3MNjJTKJ7fAokVNOxd2ALU64BIpDz9aARQklmeGYmfsSj3YHIBYmz3ysABmKyFqffr2NaYs420UAA=="
+    }
+
     EFGMITEMS["arc9_eft_m700"] = {
         ["fullName"] = "Remington Model 700 7.62x51 bolt-action sniper rifle",
         ["displayName"] = "M700",
@@ -2372,7 +2396,7 @@ EFGMITEMS = {}
         ["displayType"] = "Sniper Rifle",
         ["weight"] = 6.7,
         ["value"] = 249500,
-        ["levelReq"] = 40,
+        ["levelReq"] = 48,
         ["equipType"] = EQUIPTYPE.Weapon,
         ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
         ["appearInInventory"] = true,
@@ -2383,7 +2407,7 @@ EFGMITEMS = {}
         ["sizeY"] = 2,
 
         ["canPurchase"] = false,
-        ["lootWeight"] = 40,
+        ["lootWeight"] = 35,
 
         ["caliber"] = ".338",
         ["ammoID"] = "efgm_ammo_338",
