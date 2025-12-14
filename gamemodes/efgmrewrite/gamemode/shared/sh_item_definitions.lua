@@ -4376,6 +4376,25 @@ EFGMITEMS = {}
         ["canPurchase"] = false
     }
 
+    EFGMITEMS["efgm_keycard_tunnels"] = {
+        ["fullName"] = "Underground Tunnel Access Keycard",
+        ["displayName"] = "Tunnels",
+        ["displayType"] = "Concrete Key",
+        ["weight"] = 0.2,
+        ["value"] = 500000,
+        ["equipType"] = EQUIPTYPE.None,
+        ["consumableType"] = "key",
+        ["consumableValue"] = 5,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/keys/keycard_brown.png", "smooth"),
+        ["iconColor"] = ICONCOLORS.Green,
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+        ["canPurchase"] = false
+    }
+
 
     EFGMITEMS["efgm_key_breakroom"] = {
         ["fullName"] = "Parking Garage Break Room Key",

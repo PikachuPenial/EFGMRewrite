@@ -1322,16 +1322,21 @@ if GetConVar("efgm_derivesbox"):GetInt() == 1 then
     end
     concommand.Add("efgm_debug_giveattachment", function(ply, cmd, args) GiveAttachment(ply) end)
 
-    function GiveItem(ply, name, type, count)
+    function GiveItem(ply, name, type)
 
         local data = {}
-        data.count = count
+        local def = EFGMITEMS[name]
+        if def.consumableType == "key" then
+
+            data.durability = def.consumableValue
+
+        end
 
         AddItemToInventory(ply, name, type, data)
         ReloadInventory(ply)
 
     end
-    concommand.Add("efgm_debug_giveitem", function(ply, cmd, args) GiveItem(ply, args[1], tonumber(args[2]), tonumber(args[3])) end)
+    concommand.Add("efgm_debug_giveitem", function(ply, cmd, args) GiveItem(ply, args[1], tonumber(args[2])) end)
 
     function WipeInventory(ply)
 

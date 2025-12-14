@@ -226,6 +226,11 @@
 
     output OnNotHasKey(void) : "Fires when the activator of CheckKey doesn't have the key."
 
+    spawnflags(flags) =
+    [
+        1 : "Show on Map" : 1
+    ]
+
 ]
 
 @PointClass base(Targetname) = efgm_location : "Location / POI"
