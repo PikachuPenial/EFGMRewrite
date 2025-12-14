@@ -4,17 +4,38 @@ ENT.Base = "base_point"
 -- These are defined by the entity in hammer
 
 ENT.KeyName = ""
+ENT.KeyLockTime = 0
 ENT.PlayersUsed = {}
 
+ENT.ShowOnMap = true
+ENT.AutoRelock = false
+
 function ENT:KeyValue(key, value)
+
 	if key == "keyName" then
 		self.KeyName = tostring(value)
 	end
 
+	if key == "keyRelockTime" then
+		self.KeyLockTime = tonumber(value)
+	end
 
 	if key == "OnHasKey" then
 		self:StoreOutput(key, value)
 	end
+
+	if key == "Lock" then
+		self:StoreOutput(key, value)
+	end
+
+end
+
+function ENT:Initialize()
+
+	local flags = tonumber(self:GetSpawnFlags())
+
+	self.ShowOnMap = bit.band(flags, 1) == 1
+	self.AutoRelock = bit.band(flags, 2) == 2
 
 end
 
@@ -75,6 +96,17 @@ function ENT:AcceptInput(name, ply, caller, data)
 
             -- so opening a double door or something doesn't take up two uses
             self.PlayersUsed[ply:SteamID64()] = true
+
+            if self.AutoRelock and self.KeyLockTime > 0 then
+
+                timer.Simple(self.KeyLockTime, function()
+
+                    self:TriggerOutput("Lock", ply, data)
+                    self.PlayersUsed = {}
+
+                end)
+
+            end
 
         end
 

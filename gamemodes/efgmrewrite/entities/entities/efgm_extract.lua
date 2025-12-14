@@ -13,6 +13,7 @@ ENT.Accessibility = 0
 ENT.IsDisabled = false
 ENT.IsGuranteed = true
 ENT.InstantExtract = false
+ENT.ShowOnMap = true
 
 function ENT:KeyValue(key, value)
 
@@ -56,12 +57,13 @@ end
 
 function ENT:Initialize()
 
-	local flags = tonumber( self:GetSpawnFlags() )
+	local flags = tonumber(self:GetSpawnFlags())
 
 	self.IsDisabled = bit.band(flags, 1) == 1
 	self.IsGuranteed = bit.band(flags, 2) == 2
 	self.InstantExtract = bit.band(flags, 4) == 4
-    
+	self.ShowOnMap = bit.band(flags, 8) == 8
+
 end
 
 function ENT:AcceptInput(name, ply, caller, data)

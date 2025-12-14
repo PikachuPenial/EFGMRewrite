@@ -4602,6 +4602,47 @@ EFGMITEMS = {}
         ["canPurchase"] = false
     }
 
+    EFGMITEMS["efgm_key_hotel_maintenance"] = {
+        ["fullName"] = "Hotel Marked Room Key",
+        ["displayName"] = "Hotel mrk.",
+        ["displayType"] = "Concrete Key",
+        ["weight"] = 0.2,
+        ["value"] = 1250000,
+        ["equipType"] = EQUIPTYPE.None,
+        ["consumableType"] = "key",
+        ["consumableValue"] = 5,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/keys/industrial_marked.png", "smooth"),
+        ["iconColor"] = ICONCOLORS.Green,
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false,
+        ["lootWeight"] = 25
+    }
+
+    EFGMITEMS["efgn_key_railway_checkpoint"] = {
+        ["fullName"] = "Hotel Marked Room Key",
+        ["displayName"] = "Hotel mrk.",
+        ["displayType"] = "Concrete Key",
+        ["weight"] = 0.2,
+        ["value"] = 1250000,
+        ["equipType"] = EQUIPTYPE.None,
+        ["consumableType"] = "key",
+        ["consumableValue"] = 5,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/keys/industrial_marked.png", "smooth"),
+        ["iconColor"] = ICONCOLORS.Green,
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false,
+        ["lootWeight"] = 25
+    }
 
     EFGMITEMS["efgm_key_breakroom"] = {
         ["fullName"] = "Parking Garage Break Room Key",

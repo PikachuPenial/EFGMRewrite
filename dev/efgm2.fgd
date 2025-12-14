@@ -165,8 +165,8 @@
         1 : "Start Disabled"            : 0
         2 : "Is Extract Guranteed"      : 1
         4 : "Instant Extract"           : 0
+        8 : "Show on Map"               : 1
     ]
-
 ]
 
 @PointClass base(Targetname, Angles, Origin) studio("models/efgm/low_crate02.mdl") = efgm_loot : "Spawns a customizable loot container."
@@ -218,6 +218,8 @@
     // Key Values
     keyName(string) : "Key Name" : "" : "Item name of a key. If the activator of this entity has this key, the entity will call the function."
 
+    keyRelockTime(integer) : "Relock Time" : 0 : "How long it takes to automatically close and relock the door if the 'Automatically Relock' flag is enabled."
+
     // Inputs
     input CheckKey(void) : "Checks whether player activator has the key named in the keyvalues. If they do, triggers OnHasKey output."
 
@@ -226,9 +228,12 @@
 
     output OnNotHasKey(void) : "Fires when the activator of CheckKey doesn't have the key."
 
+    output Lock(void) : "Fires when the relock time passes."
+
     spawnflags(flags) =
     [
         1 : "Show on Map" : 1
+        2 : "Automatically Relock" : 0
     ]
 
 ]
