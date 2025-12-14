@@ -683,7 +683,7 @@ EFGMITEMS = {}
 
     EFGMITEMS["arc9_eft_mdr"] = {
         ["fullName"] = "Desert Tech MDR 7.62x51 assault rifle",
-        ["displayName"] = "DT MDR .308",
+        ["displayName"] = "DT MDR 7.62",
         ["displayType"] = "Assault Rifle",
         ["weight"] = 4.4,
         ["value"] = 189000,
@@ -3994,6 +3994,23 @@ EFGMITEMS = {}
         ["sizeY"] = 1
     }
 
+    EFGMITEMS["efgm_ammo_308"] = {
+        ["fullName"] = ".308 Marlin Express",
+        ["displayName"] = ".308",
+        ["displayType"] = "Ammunition",
+        ["weight"] = 0.024,
+        ["value"] = 510,
+        ["levelReq"] = 1,
+        ["equipType"] = EQUIPTYPE.Ammunition,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 40,
+        ["icon"] = Material("items/ammo/308.png", "smooth"),
+        ["iconColor"] = ICONCOLORS.Yellow,
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
     EFGMITEMS["efgm_ammo_762x54"] = {
         ["fullName"] = "7.62x54mmR",
         ["displayName"] = "7.62x54",
@@ -4039,6 +4056,23 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
         ["icon"] = Material("items/ammo/9x39.png", "smooth"),
+        ["iconColor"] = ICONCOLORS.Yellow,
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1
+    }
+
+    EFGMITEMS["efgm_ammo_93x64"] = {
+        ["fullName"] = "9.3x64mm",
+        ["displayName"] = "9.3x64",
+        ["displayType"] = "Ammunition",
+        ["weight"] = 0.042,
+        ["value"] = 2200,
+        ["levelReq"] = 1,
+        ["equipType"] = EQUIPTYPE.Ammunition,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 40,
+        ["icon"] = Material("items/ammo/93x64.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
         ["sizeX"] = 1,
