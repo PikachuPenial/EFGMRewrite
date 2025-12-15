@@ -2246,7 +2246,7 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
 
             if owner:GetNWBool("InRange", false) == false then
 
-                timer.Simple(delaytime, function() ConsumeGrenade(self:GetOwner()) end)
+                timer.Simple(delaytime, function() ConsumeGrenade(self:GetOwner()) self:GetOwner():SetNWInt("RaidGrenadesThrown", self:GetOwner():GetNWInt("RaidGrenadesThrown") + 1) end)
 
             end
 

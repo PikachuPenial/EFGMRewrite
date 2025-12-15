@@ -90,9 +90,26 @@ net.Receive("PlayerReceiveInvite", function(len, ply)
 
     if IsValid(invite) then return end -- player already has a pending invite
 
-    Invites.invitedBy = net.ReadEntity()
-    Invites.invitedType = net.ReadString()
-    Invites.inviteData = net.ReadString()
+    local invitedBy = net.ReadEntity()
+    local invitedType = net.ReadString()
+    local invitedData = net.ReadString()
+
+    local friendship = invitedBy:GetFriendStatus() -- aww so cute
+
+    -- disabled
+    if invitedType == "squad" and GetConVar("efgm_privacy_invites_squad"):GetInt() == 0 then return end
+    if invitedType == "duel" and GetConVar("efgm_privacy_invites_duel"):GetInt() == 0 then return end
+
+    -- blocked
+    if GetConVar("efgm_privacy_invites_blocked"):GetInt() == 0 and friendship == "blocked" then return end
+
+    -- friends only
+    if invitedType == "squad" and GetConVar("efgm_privacy_invites_squad"):GetInt() == 1 and friendship != "friend" then return end
+    if invitedType == "duel" and GetConVar("efgm_privacy_invites_duel"):GetInt() == 1 and friendship != "friend" then return end
+
+    Invites.invitedBy = invitedBy
+    Invites.invitedType = invitedType
+    Invites.inviteData = invitedData
 
     RenderInvite(LocalPlayer())
 

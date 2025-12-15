@@ -11,6 +11,7 @@ Menu.MouseY = 0
 Menu.Player = LocalPlayer()
 Menu.IsOpen = false
 Menu.PerferredShopDestination = nil
+Menu.InitTime = CurTime()
 
 local holdtypes = {
     "idle_revolver",
@@ -99,7 +100,7 @@ function Menu:Initialize(openTo, container)
 
     menuFrame:AlphaTo(255, 0.2, 0, nil)
 
-    self.StartTime = SysTime()
+    self.InitTime = CurTime()
     self.Unblur = false
     self.Closing = false
 
@@ -1913,9 +1914,10 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
     -- can't afford one of the item
     if plyMoney < i.value then surface.PlaySound("ui/element_deselect.wav") return end
     if plyLevel < (i.levelReq or 1) then surface.PlaySound("ui/element_deselect.wav") return end
+    if marketLimits[item] == 0 then surface.PlaySound("ui/element_deselect.wav") return end
 
     local maxTransactionCountMult = math.min(10, Menu.Player:GetNWInt("StashMax", 150) - Menu.Player:GetNWInt("StashCount", 0))
-    local maxTransactionCount = math.Clamp(math.floor(plyMoney / i.value), 1, i.stackSize * maxTransactionCountMult)
+    local maxTransactionCount = math.Clamp(math.floor(plyMoney / i.value), 1, marketLimits[item] or (i.stackSize * maxTransactionCountMult))
     if i.stackSize == 1 then maxTransactionCount = 1 end
 
     surface.SetFont("PuristaBold24")
@@ -3347,11 +3349,17 @@ function Menu.ReloadInventory()
 
         end
 
+        item.OnCursorEntered = function(s)
+
+            surface.PlaySound("ui/inv_item_hover_" .. math.random(1, 3) .. ".wav")
+
+        end
+
         function item:DoClick()
 
             if input.IsKeyDown(KEY_LSHIFT) and (Menu.Player:CompareStatus(0) and table.IsEmpty(Menu.Container)) then
 
-                surface.PlaySound("ui/element_select.wav")
+                surface.PlaySound("ui/inv_item_tostash_" .. math.random(1, 7) .. ".wav")
                 StashItemFromInventory(v.id)
 
             end
@@ -3484,7 +3492,7 @@ function Menu.ReloadInventory()
 
                 function itemStashButton:DoClick()
 
-                    surface.PlaySound("ui/element_select.wav")
+                    surface.PlaySound("ui/inv_item_tostash_" .. math.random(1, 7) .. ".wav")
                     contextMenu:Remove()
 
                     StashItemFromInventory(v.id)
@@ -3811,6 +3819,12 @@ function Menu.ReloadSlots()
 
         end
 
+        primaryItem.OnCursorEntered = function(s)
+
+            surface.PlaySound("ui/inv_item_hover_" .. math.random(1, 3) .. ".wav")
+
+        end
+
         function primaryItem:DoClick()
 
             if input.IsKeyDown(KEY_LSHIFT) then
@@ -3913,7 +3927,7 @@ function Menu.ReloadSlots()
 
                 function itemStashButton:DoClick()
 
-                    surface.PlaySound("ui/element_select.wav")
+                    surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
                     contextMenu:Remove()
 
                     StashItemFromEquipped(primaryItem.SLOTID, primaryItem.SLOT)
@@ -4177,6 +4191,12 @@ function Menu.ReloadSlots()
 
         end
 
+        secondaryItem.OnCursorEntered = function(s)
+
+            surface.PlaySound("ui/inv_item_hover_" .. math.random(1, 3) .. ".wav")
+
+        end
+
         function secondaryItem:DoDoubleClick()
 
             Menu.InspectItem(playerWeaponSlots[1][2].name, playerWeaponSlots[1][2].data)
@@ -4279,7 +4299,7 @@ function Menu.ReloadSlots()
 
                 function itemStashButton:DoClick()
 
-                    surface.PlaySound("ui/element_select.wav")
+                    surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
                     contextMenu:Remove()
 
                     StashItemFromEquipped(secondaryItem.SLOTID, secondaryItem.SLOT)
@@ -4543,6 +4563,12 @@ function Menu.ReloadSlots()
 
         end
 
+        holsterItem.OnCursorEntered = function(s)
+
+            surface.PlaySound("ui/inv_item_hover_" .. math.random(1, 3) .. ".wav")
+
+        end
+
         function holsterItem:DoClick()
 
             if input.IsKeyDown(KEY_LSHIFT) then
@@ -4645,7 +4671,7 @@ function Menu.ReloadSlots()
 
                 function itemStashButton:DoClick()
 
-                    surface.PlaySound("ui/element_select.wav")
+                    surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
                     contextMenu:Remove()
 
                     StashItemFromEquipped(holsterItem.SLOTID, holsterItem.SLOT)
@@ -4862,6 +4888,12 @@ function Menu.ReloadSlots()
 
         end
 
+        meleeItem.OnCursorEntered = function(s)
+
+            surface.PlaySound("ui/inv_item_hover_" .. math.random(1, 3) .. ".wav")
+
+        end
+
         function meleeItem:DoClick()
 
             if input.IsKeyDown(KEY_LSHIFT) then
@@ -4964,7 +4996,7 @@ function Menu.ReloadSlots()
 
                 function itemStashButton:DoClick()
 
-                    surface.PlaySound("ui/element_select.wav")
+                    surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
                     contextMenu:Remove()
 
                     StashItemFromEquipped(meleeItem.SLOTID, meleeItem.SLOT)
@@ -5139,7 +5171,7 @@ function Menu.ReloadSlots()
 
             draw.SimpleTextOutlined(i.displayName, nameFont, w - EFGM.MenuScale(3), EFGM.MenuScale(-1), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
-            if i.caliber then -- flares.
+            if i.caliber then -- flares i guess?
 
                 draw.SimpleTextOutlined(i.caliber, "PuristaBold18", EFGM.MenuScale(3), h - EFGM.MenuScale(19), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
@@ -5152,6 +5184,12 @@ function Menu.ReloadSlots()
                 surface.DrawTexturedRect(w - EFGM.MenuScale(16), h - EFGM.MenuScale(16), EFGM.MenuScale(14), EFGM.MenuScale(14))
 
             end
+
+        end
+
+        nadeItem.OnCursorEntered = function(s)
+
+            surface.PlaySound("ui/inv_item_hover_" .. math.random(1, 3) .. ".wav")
 
         end
 
@@ -5257,7 +5295,7 @@ function Menu.ReloadSlots()
 
                 function itemStashButton:DoClick()
 
-                    surface.PlaySound("ui/element_select.wav")
+                    surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
                     contextMenu:Remove()
 
                     StashItemFromEquipped(nadeItem.SLOTID, nadeItem.SLOT)
@@ -5400,7 +5438,9 @@ end
 
 local stashItemSearchText = ""
 
-function Menu.ReloadStash()
+function Menu.ReloadStash(firstReload)
+
+    local initTime = Menu.InitTime
 
     Menu.ReloadMarketStash()
 
@@ -5456,28 +5496,7 @@ function Menu.ReloadStash()
 
     end)
 
-    -- stash item entry
-    for k, v in ipairs(plyStashItems) do
-
-        local i = EFGMITEMS[v.name]
-        if i == nil then return end
-
-        local ownerName = nil
-        if v.data.owner then steamworks.RequestPlayerInfo(v.data.owner, function(steamName) ownerName = steamName end) end
-
-        if stashItemSearchText then itemSearch = stashItemSearchText end
-
-        if itemSearch != "" and itemSearch != nil and !(string.find((i.fullName and i.fullName or i.displayName):lower(), itemSearch) or string.find((v.data.tag or ""):lower(), itemSearch) or string.find((ownerName or ""):lower(), itemSearch)) then continue end
-
-        if i.consumableType != "heal" and i.consumableType != "key" then
-
-            stashValue = stashValue + (i.value * math.Clamp(v.data.count, 1, i.stackSize))
-
-        else
-
-            stashValue = stashValue + math.floor(i.value * (v.data.durability / i.consumableValue))
-
-        end
+    local function LoadItem(i, v)
 
         local item = stashItems:Add("DButton")
         item:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
@@ -5493,22 +5512,6 @@ function Menu.ReloadStash()
             if item.SLOT == WEAPONSLOTS.HOLSTER.ID then item:Droppable("slot_holster") end
             if item.SLOT == WEAPONSLOTS.MELEE.ID then item:Droppable("slot_melee") end
             if item.SLOT == WEAPONSLOTS.GRENADE.ID then item:Droppable("slot_grenade") end
-
-            if v.data.att then
-
-                local atts = GetPrefixedAttachmentListFromCode(v.data.att)
-                if !atts then return end
-
-                for _, a in ipairs(atts) do
-
-                    local att = EFGMITEMS[a]
-                    if att == nil then continue end
-
-                    stashValue = stashValue + att.value
-
-                end
-
-            end
 
         end
 
@@ -5607,11 +5610,17 @@ function Menu.ReloadStash()
 
         end
 
+        item.OnCursorEntered = function(s)
+
+            surface.PlaySound("ui/inv_item_hover_" .. math.random(1, 3) .. ".wav")
+
+        end
+
         function item:DoClick()
 
             if input.IsKeyDown(KEY_LSHIFT) then
 
-                surface.PlaySound("ui/element_select.wav")
+                surface.PlaySound("ui/inv_item_toinv_" .. math.random(1, 7) .. ".wav")
                 TakeFromStashToInventory(v.id)
 
             end
@@ -5712,7 +5721,7 @@ function Menu.ReloadStash()
 
             function itemTakeButton:DoClick()
 
-                surface.PlaySound("ui/element_select.wav")
+                surface.PlaySound("ui/inv_item_toinv_" .. math.random(1, 7) .. ".wav")
                 TakeFromStashToInventory(v.id)
                 contextMenu:Remove()
 
@@ -5898,6 +5907,65 @@ function Menu.ReloadStash()
             end
 
         end
+
+    end
+
+    -- stash item entry
+    for k, v in ipairs(plyStashItems) do
+
+        local i = EFGMITEMS[v.name]
+        if i == nil then return end
+
+        local ownerName = nil
+        if v.data.owner then steamworks.RequestPlayerInfo(v.data.owner, function(steamName) ownerName = steamName end) end
+
+        if stashItemSearchText then itemSearch = stashItemSearchText end
+
+        if itemSearch != "" and itemSearch != nil and !(string.find((i.fullName and i.fullName or i.displayName):lower(), itemSearch) or string.find((v.data.tag or ""):lower(), itemSearch) or string.find((ownerName or ""):lower(), itemSearch)) then initTime = 0 continue end
+
+        if i.consumableType != "heal" and i.consumableType != "key" then
+
+            stashValue = stashValue + (i.value * math.Clamp(v.data.count, 1, i.stackSize))
+
+        else
+
+            stashValue = stashValue + math.floor(i.value * (v.data.durability / i.consumableValue))
+
+        end
+
+        if i.equipType == EQUIPTYPE.Weapon and v.data.att then
+
+            local atts = GetPrefixedAttachmentListFromCode(v.data.att)
+            if !atts then return end
+
+            for _, a in ipairs(atts) do
+
+                local att = EFGMITEMS[a]
+                if att == nil then continue end
+
+                stashValue = stashValue + att.value
+
+            end
+
+        end
+
+        --[[ TOO BUGGY LOL
+        if firstReload then
+
+            timer.Simple(k * 0.005, function()
+
+                if (initTime != Menu.InitTime) or itemSearch != "" then return end LoadItem(i, v)
+
+            end)
+
+        else
+
+            LoadItem(i, v)
+
+        end
+        --]]
+
+        LoadItem(i, v)
 
     end
 
@@ -6114,6 +6182,12 @@ function Menu.ReloadMarketStash()
 
             if i.sizeX > 1 then draw.SimpleTextOutlined("₽" .. itemValue, "PuristaBold18", w / 2, h / 2 - EFGM.MenuScale(9), costColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
             else draw.SimpleTextOutlined("₽" .. itemValue, "PuristaBold14", w / 2, h / 2 - EFGM.MenuScale(7), costColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor) end
+
+        end
+
+        item.OnCursorEntered = function(s)
+
+            surface.PlaySound("ui/inv_item_hover_" .. math.random(1, 3) .. ".wav")
 
         end
 
@@ -6384,11 +6458,17 @@ function Menu.ReloadContainer()
 
         end
 
+        item.OnCursorEntered = function(s)
+
+            surface.PlaySound("ui/inv_item_hover_" .. math.random(1, 3) .. ".wav")
+
+        end
+
         function item:DoClick()
 
             if input.IsKeyDown(KEY_LSHIFT) then
 
-                surface.PlaySound("ui/element_select.wav")
+                surface.PlaySound("ui/inv_item_toinv_" .. math.random(1, 7) .. ".wav")
 
                 table.remove(container.items, v.id)
 
@@ -6500,7 +6580,7 @@ function Menu.ReloadContainer()
 
                 function itemLootButton:DoClick()
 
-                    surface.PlaySound("ui/element_select.wav")
+                    surface.PlaySound("ui/inv_item_toinv_" .. math.random(1, 7) .. ".wav")
                     contextMenu:Remove()
 
                     table.remove(container.items, v.id)
@@ -7421,14 +7501,14 @@ function Menu.OpenTab.Inventory(container)
 
         if panels[1].ORIGIN == "stash" then
 
-            surface.PlaySound("ui/element_select.wav")
+            surface.PlaySound("ui/inv_item_toinv_" .. math.random(1, 7) .. ".wav")
             TakeFromStashToInventory(panels[1].ID)
 
         end
 
         if panels[1].ORIGIN == "container" then
 
-            surface.PlaySound("ui/element_select.wav")
+            surface.PlaySound("ui/inv_item_toinv_" .. math.random(1, 7) .. ".wav")
             table.remove(container.items, panels[1].ID)
 
             net.Start("PlayerInventoryLootItemFromContainer", false)
@@ -7754,7 +7834,7 @@ function Menu.OpenTab.Inventory(container)
 
         if panels[1].ORIGIN == "inventory" then
 
-            surface.PlaySound("ui/element_select.wav")
+            surface.PlaySound("ui/inv_item_tostash_" .. math.random(1, 7) .. ".wav")
 
             StashItemFromInventory(panels[1].ID)
 
@@ -7762,7 +7842,7 @@ function Menu.OpenTab.Inventory(container)
 
         if panels[1].ORIGIN == "equipped" then
 
-            surface.PlaySound("ui/element_select.wav")
+            surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
 
             StashItemFromEquipped(panels[1].SLOTID, panels[1].SLOT)
 
@@ -7785,7 +7865,7 @@ function Menu.OpenTab.Inventory(container)
         draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Colors.transparentWhiteColor)
     end
 
-    Menu.ReloadStash()
+    Menu.ReloadStash(true)
 
 end
 
@@ -8402,12 +8482,7 @@ function Menu.OpenTab.Market()
 
                 end
 
-                local countText
                 surface.SetFont("PuristaBold18")
-
-                if v.consumableValue then countText = v.consumableValue .. "/" .. v.consumableValue else countText = v.stack .. "x" end
-                local countTextSize = surface.GetTextSize(countText)
-
                 local levelText = "LEVEL " .. v.level
                 local levelTextSize = surface.GetTextSize(levelText)
 
@@ -8416,16 +8491,28 @@ function Menu.OpenTab.Market()
 
                 local value = v.value
 
-                surface.SetFont("PuristaBold22")
-                local itemValueText = comma_value(value)
-                local itemValueTextSize = surface.GetTextSize(itemValueText)
-
                 local plyLevel = Menu.Player:GetNWInt("Level", 1)
 
                 function item:PaintOver(w, h)
 
-                    surface.SetDrawColor(Colors.transparentBlackColor)
+                    if marketLimits[v.id] != 0 then surface.SetDrawColor(Colors.transparentBlackColor) else surface.SetDrawColor(Colors.marketItemOutOfStockColor) end
                     surface.DrawRect(EFGM.MenuScale(1), h - EFGM.MenuScale(31), w - EFGM.MenuScale(2), EFGM.MenuScale(30))
+
+                    local countText
+                    surface.SetFont("PuristaBold18")
+                    if v.consumableValue then countText = v.consumableValue .. "/" .. v.consumableValue else countText = v.stack .. "x" end
+                    if marketLimits[v.id] then
+
+                        if !v.consumableValue then countText = marketLimits[v.id] .. "x" else countText = marketLimits[v.id] .. "x" .. " " .. v.consumableValue .. "/" .. v.consumableValue end
+
+                    end
+                    local countTextSize = surface.GetTextSize(countText)
+                    if marketLimits[v.id] then countTextSize = countTextSize + EFGM.MenuScale(10) end
+
+                    surface.SetFont("PuristaBold22")
+                    local itemValueText
+                    if marketLimits[v.id] != 0 then itemValueText = comma_value(value) else itemValueText = "SOLD OUT" end
+                    local itemValueTextSize = surface.GetTextSize(itemValueText)
 
                     if v.canPurchase then
 
@@ -8440,6 +8527,7 @@ function Menu.OpenTab.Market()
 
                     if v.caliber then
 
+                        surface.SetDrawColor(Colors.marketItemValueColor)
                         surface.DrawRect(EFGM.MenuScale(1), h - EFGM.MenuScale(46), caliberTextSize + EFGM.MenuScale(10), EFGM.MenuScale(15))
                         draw.SimpleTextOutlined(caliberText, "PuristaBold18", EFGM.MenuScale(5), h - EFGM.MenuScale(49), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
@@ -8456,15 +8544,30 @@ function Menu.OpenTab.Market()
 
                     end
 
+                    if marketLimits[v.id] then
+
+                        surface.SetDrawColor(Colors.pureWhiteColor)
+                        surface.SetMaterial(Mats.restartIcon)
+                        surface.DrawTexturedRect(w - countTextSize - EFGM.MenuScale(11), h - EFGM.MenuScale(47), EFGM.MenuScale(16), EFGM.MenuScale(16))
+
+                    end
+
                     surface.SetDrawColor(Colors.pureWhiteColor)
 
                     if !v.canPurchase then surface.SetMaterial(Mats.sellIcon) else
 
                         if plyLevel < v.level then surface.SetMaterial(Mats.lockIcon) else surface.SetMaterial(Mats.roubleIcon) end
+                        if marketLimits[v.id] == 0 then surface.SetMaterial(Mats.noStockIcon) end
 
                     end
 
                     surface.DrawTexturedRect((w / 2) - EFGM.MenuScale(12) - (itemValueTextSize / 2), h - EFGM.MenuScale(27), EFGM.MenuScale(20), EFGM.MenuScale(20))
+
+                end
+
+                item.OnCursorEntered = function(s)
+
+                    surface.PlaySound("ui/inv_item_hover_" .. math.random(1, 3) .. ".wav")
 
                 end
 
@@ -8576,7 +8679,7 @@ function Menu.OpenTab.Market()
 
                     end
 
-                    if v.canPurchase and plyLevel >= v.level then
+                    if v.canPurchase and plyLevel >= v.level and marketLimits[v.id] != 0 then
 
                         contextMenu:SetTall(contextMenu:GetTall() + EFGM.MenuScale(25))
 
@@ -10338,7 +10441,7 @@ function Menu.OpenTab.Stats()
 
     local importantStats = vgui.Create("DPanel", stats)
     importantStats:Dock(TOP)
-    importantStats:SetSize(0, EFGM.MenuScale(560))
+    importantStats:SetSize(0, EFGM.MenuScale(580))
     importantStats.Paint = function(s, w, h)
 
         surface.SetDrawColor(Colors.transparent)
@@ -10358,6 +10461,7 @@ function Menu.OpenTab.Stats()
     statsTbl["Stash Value"] = "₽" .. comma_value(Menu.Player:GetNWInt("StashValue"))
     statsTbl["Items Looted"] = comma_value(Menu.Player:GetNWInt("ItemsLooted"))
     statsTbl["Containers Opened"] = comma_value(Menu.Player:GetNWInt("ContainersLooted"))
+    statsTbl["Keys Used"] = comma_value(Menu.Player:GetNWInt("KeysUsed"))
 
     statsTbl["Kills"] = comma_value(Menu.Player:GetNWInt("Kills"))
     statsTbl["Deaths"] = comma_value(Menu.Player:GetNWInt("Deaths"))
@@ -11508,6 +11612,23 @@ function Menu.OpenTab.Settings()
     customizeWeapon:SetEnabled(false)
     customizeWeapon:SetTooltip(nil)
 
+    local buyAttPanel = vgui.Create("DPanel", controls)
+    buyAttPanel:Dock(TOP)
+    buyAttPanel:SetSize(0, EFGM.MenuScale(65))
+    function buyAttPanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Purchase Hovered Attachment", "Purista18", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined("Keyboard > Combat > Reload weapon", "Purista14", w / 2, EFGM.MenuScale(20), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+
+    end
+
+    local buyAtt = vgui.Create("DBinder", buyAttPanel)
+    buyAtt:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(40))
+    buyAtt:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
+    buyAtt:SetSelectedNumber(input.GetKeyCode(input.LookupBinding("+reload") or 0))
+    buyAtt:SetEnabled(false)
+    buyAtt:SetTooltip(nil)
+
     local toggleTacticalPanel = vgui.Create("DPanel", controls)
     toggleTacticalPanel:Dock(TOP)
     toggleTacticalPanel:SetSize(0, EFGM.MenuScale(65))
@@ -12018,6 +12139,20 @@ function Menu.OpenTab.Settings()
     duelPrivacy.OnSelect = function(self, value)
         RunConsoleCommand("efgm_privacy_invites_duel", value - 1)
     end
+
+    local invitesBlockedPanel = vgui.Create("DPanel", account)
+    invitesBlockedPanel:Dock(TOP)
+    invitesBlockedPanel:SetSize(0, EFGM.MenuScale(50))
+    function invitesBlockedPanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Receive Invites From Blocked Players", "Purista18", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+
+    end
+
+    local invitesBlocked = vgui.Create("DCheckBox", invitesBlockedPanel)
+    invitesBlocked:SetPos(EFGM.MenuScale(152), EFGM.MenuScale(30))
+    invitesBlocked:SetConVar("efgm_privacy_invites_blocked")
+    invitesBlocked:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
 
     -- misc
     local clearDecals = vgui.Create("DButton", misc)

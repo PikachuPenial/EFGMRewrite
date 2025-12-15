@@ -576,9 +576,12 @@ net.Receive("CreateDeathInformation", function()
         ["HEALTH HEALED:"] = math.Round(ply:GetNWInt("RaidHealthHealed", 0)),
         ["ITEMS LOOTED:"] = ply:GetNWInt("RaidItemsLooted", 0),
         ["CONTAINERS OPENED:"] = ply:GetNWInt("RaidContainersLooted", 0),
+        ["KEYS USED:"] = ply:GetNWInt("RaidKeysUsed", 0),
         ["OPERATORS KILLED:"] = ply:GetNWInt("RaidKills", 0),
+        ["FARTHEST KILL:"] = ply:GetNWInt("RaidFarthestKill", 0),
         ["SHOTS FIRED:"] = ply:GetNWInt("RaidShotsFired", 0),
         ["SHOTS HIT:"] = ply:GetNWInt("RaidShotsHit", 0),
+        ["GRENADES THROWN:"] = ply:GetNWInt("RaidGrenadesThrown", 0)
     }
     table.SortByKey(statsTbl)
 

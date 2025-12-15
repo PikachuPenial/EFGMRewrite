@@ -41,11 +41,18 @@ end
 
 function ENT:AcceptInput(name, ply, caller, data)
 
-	if name == "CheckKey" then
+    PrintTable(self.PlayersUsed)
+
+    if name == "CheckKey" then
 
         if AmountInInventory(ply.inventory, self.KeyName) == 0 and self.PlayersUsed[ply:SteamID64()] == nil then
 
-            self:TriggerOutput( "OnNotHasKey", ply, data )
+            self:TriggerOutput("OnNotHasKey", ply, data)
+            net.Start("SendNotification", false)
+            net.WriteString("This door is locked!")
+            net.WriteString("icons/nokey_icon.png")
+            net.WriteString("ui/door_closed.wav")
+            net.Send(ply)
 
         else
 
@@ -66,6 +73,9 @@ function ENT:AcceptInput(name, ply, caller, data)
             if keyWithLowestDura == 0 then return end
 
             self:TriggerOutput("OnHasKey", ply, data)
+
+            ply:SetNWInt("KeysUsed", ply:GetNWInt("KeysUsed") + 1)
+            ply:SetNWInt("RaidKeysUsed", ply:GetNWInt("RaidKeysUsed") + 1)
 
             local item = ply.inventory[keyWithLowestDura]
             local durability = item.data.durability
@@ -98,6 +108,12 @@ function ENT:AcceptInput(name, ply, caller, data)
             self.PlayersUsed[ply:SteamID64()] = true
 
             if self.AutoRelock and self.KeyLockTime > 0 then
+
+                net.Start("SendNotification", false)
+                net.WriteString("This door will relock in " .. self.KeyLockTime .. "s !")
+                net.WriteString("icons/relock_icon.png")
+                net.WriteString("ui/door_opened.wav")
+                net.Send(ply)
 
                 timer.Simple(self.KeyLockTime, function()
 

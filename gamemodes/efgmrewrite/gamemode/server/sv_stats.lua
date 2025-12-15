@@ -9,9 +9,12 @@ function ResetRaidStats(ply)
     ply:SetNWInt("RaidHealthHealed", 0)
     ply:SetNWInt("RaidItemsLooted", 0)
     ply:SetNWInt("RaidContainersLooted", 0)
+    ply:SetNWInt("RaidKeysUsed", 0)
     ply:SetNWInt("RaidKills", 0)
+    ply:SetNWInt("RaidFarthestKill", 0)
     ply:SetNWInt("RaidShotsFired", 0)
     ply:SetNWInt("RaidShotsHit", 0)
+    ply:SetNWInt("RaidGrenadesThrown", 0)
 
 end
 
@@ -36,6 +39,7 @@ hook.Add("PlayerDeath", "DeathUpdateStats", function(victim, weapon, attacker)
     local rawDistance = victim:GetPos():Distance(attacker:GetPos())
     local distance = units_to_meters(rawDistance)
     if distance >= attacker:GetNWInt("FarthestKill", 0) then attacker:SetNWInt("FarthestKill", distance) end
+    if distance >= attacker:GetNWInt("RaidFarthestKill", 0) then attacker:SetNWInt("RaidFarthestKill", distance) end
 
 end)
 

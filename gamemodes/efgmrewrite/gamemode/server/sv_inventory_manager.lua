@@ -1299,29 +1299,6 @@ end)
 
 if GetConVar("efgm_derivesbox"):GetInt() == 1 then
 
-    function GiveAmmo(ply, count)
-
-        local ammo = "efgm_ammo_556x45"
-        local data = {}
-        data.count = count
-
-        FlowItemToInventory(ply, ammo, EQUIPTYPE.Ammunition, data)
-        ReloadInventory(ply)
-
-    end
-    concommand.Add("efgm_debug_giveammo", function(ply, cmd, args) GiveAmmo(ply, args[1]) end)
-
-    function GiveAttachment(ply)
-
-        local attachment = "arc9_att_eft_optic_boss"
-        local data = {}
-
-        AddItemToInventory(ply, attachment, EQUIPTYPE.Attachment, data)
-        ReloadInventory(ply)
-
-    end
-    concommand.Add("efgm_debug_giveattachment", function(ply, cmd, args) GiveAttachment(ply) end)
-
     function GiveItem(ply, name, type)
 
         local data = {}
@@ -1332,11 +1309,11 @@ if GetConVar("efgm_derivesbox"):GetInt() == 1 then
 
         end
 
-        AddItemToInventory(ply, name, type, data)
+        AddItemToInventory(ply, name, def.equipType, data)
         ReloadInventory(ply)
 
     end
-    concommand.Add("efgm_debug_giveitem", function(ply, cmd, args) GiveItem(ply, args[1], tonumber(args[2])) end)
+    concommand.Add("efgm_debug_giveitem", function(ply, cmd, args) GiveItem(ply, args[1]) end)
 
     function WipeInventory(ply)
 
@@ -1345,6 +1322,7 @@ if GetConVar("efgm_derivesbox"):GetInt() == 1 then
 
         SendChunkedNet(ply, ply.invStr, "PlayerNetworkInventory")
 
+        ReloadInventory(ply)
         CalculateInventoryWeight(ply)
 
     end

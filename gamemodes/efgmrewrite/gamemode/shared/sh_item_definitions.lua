@@ -3380,6 +3380,7 @@ EFGMITEMS = {}
         ["equipSlot"] = WEAPONSLOTS.GRENADE.ID,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
+        ["marketResetLimit"] = 5,
         ["icon"] = Material("items/grenades/m18.png", "smooth"),
 
         ["sizeX"] = 1,
@@ -3397,6 +3398,7 @@ EFGMITEMS = {}
         ["equipSlot"] = WEAPONSLOTS.GRENADE.ID,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
+        ["marketResetLimit"] = 5,
         ["icon"] = Material("items/grenades/m18y.png", "smooth"),
 
         ["sizeX"] = 1,
@@ -3431,6 +3433,7 @@ EFGMITEMS = {}
         ["equipSlot"] = WEAPONSLOTS.GRENADE.ID,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
+        ["marketResetLimit"] = 3,
         ["icon"] = Material("items/grenades/m7290.png", "smooth"),
 
         ["sizeX"] = 1,
@@ -3448,6 +3451,7 @@ EFGMITEMS = {}
         ["equipSlot"] = WEAPONSLOTS.GRENADE.ID,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
+        ["marketResetLimit"] = 5,
         ["icon"] = Material("items/grenades/rdg2b.png", "smooth"),
 
         ["sizeX"] = 1,
@@ -3573,6 +3577,7 @@ EFGMITEMS = {}
         ["equipSlot"] = WEAPONSLOTS.GRENADE.ID,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
+        ["marketResetLimit"] = 3,
         ["icon"] = Material("items/grenades/zarya.png", "smooth"),
 
         ["sizeX"] = 1,
@@ -3590,12 +3595,12 @@ EFGMITEMS = {}
         ["equipSlot"] = WEAPONSLOTS.GRENADE.ID,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
+        ["marketResetLimit"] = 2,
         ["icon"] = Material("items/grenades/anm14.png", "smooth"),
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
 
-        ["canPurchase"] = false,
         ["lootWeight"] = 75
     }
 
@@ -3776,6 +3781,7 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
+        ["marketResetLimit"] = 1200,
         ["icon"] = Material("items/ammo/762x25.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -3793,6 +3799,7 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
+        ["marketResetLimit"] = 1200,
         ["icon"] = Material("items/ammo/9x18.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -3810,6 +3817,7 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
+        ["marketResetLimit"] = 1200,
         ["icon"] = Material("items/ammo/9x19.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -3827,6 +3835,7 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
+        ["marketResetLimit"] = 600,
         ["icon"] = Material("items/ammo/9x21.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -3844,6 +3853,7 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
+        ["marketResetLimit"] = 600,
         ["icon"] = Material("items/ammo/357.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -3861,6 +3871,7 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
+        ["marketResetLimit"] = 600,
         ["icon"] = Material("items/ammo/45.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -3878,6 +3889,7 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
+        ["marketResetLimit"] = 600,
         ["icon"] = Material("items/ammo/50ae.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -3895,6 +3907,7 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 20,
+        ["marketResetLimit"] = 200,
         ["icon"] = Material("items/ammo/20x1.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -3913,6 +3926,7 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
+        ["marketResetLimit"] = 600,
         ["icon"] = Material("items/ammo/46x30.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -3930,6 +3944,7 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
+        ["marketResetLimit"] = 600,
         ["icon"] = Material("items/ammo/57x28.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -3948,6 +3963,7 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
+        ["marketResetLimit"] = 600,
         ["icon"] = Material("items/ammo/545x39.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -3965,6 +3981,7 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
+        ["marketResetLimit"] = 600,
         ["icon"] = Material("items/ammo/556x45.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -3982,6 +3999,7 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 40,
+        ["marketResetLimit"] = 400,
         ["icon"] = Material("items/ammo/68x51.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -3999,6 +4017,7 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
+        ["marketResetLimit"] = 600,
         ["icon"] = Material("items/ammo/300.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -4016,6 +4035,7 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
+        ["marketResetLimit"] = 600,
         ["icon"] = Material("items/ammo/762x39.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -4033,6 +4053,7 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 40,
+        ["marketResetLimit"] = 400,
         ["icon"] = Material("items/ammo/762x51.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -4050,6 +4071,7 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 40,
+        ["marketResetLimit"] = 400,
         ["icon"] = Material("items/ammo/308.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -4067,6 +4089,7 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 40,
+        ["marketResetLimit"] = 400,
         ["icon"] = Material("items/ammo/762x54.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -4084,6 +4107,7 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 40,
+        ["marketResetLimit"] = 100,
         ["icon"] = Material("items/ammo/338.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -4101,6 +4125,7 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
+        ["marketResetLimit"] = 600,
         ["icon"] = Material("items/ammo/9x39.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -4118,6 +4143,7 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 40,
+        ["marketResetLimit"] = 100,
         ["icon"] = Material("items/ammo/93x64.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -4135,6 +4161,7 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
+        ["marketResetLimit"] = 600,
         ["icon"] = Material("items/ammo/366.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -4152,6 +4179,7 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 40,
+        ["marketResetLimit"] = 400,
         ["icon"] = Material("items/ammo/127x55.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -4169,6 +4197,7 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 20,
+        ["marketResetLimit"] = 100,
         ["icon"] = Material("items/ammo/50bmg.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -4187,6 +4216,7 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 20,
+        ["marketResetLimit"] = 200,
         ["icon"] = Material("items/ammo/12gauge.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -4204,6 +4234,7 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 20,
+        ["marketResetLimit"] = 200,
         ["icon"] = Material("items/ammo/20gauge.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -4221,6 +4252,7 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 20,
+        ["marketResetLimit"] = 200,
         ["icon"] = Material("items/ammo/4gauge.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -4297,6 +4329,7 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
+        ["marketResetLimit"] = 10,
         ["icon"] = Material("items/ammo/26x75.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -4356,6 +4389,7 @@ EFGMITEMS = {}
         ["consumableValue"] = 120,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
+        ["marketResetLimit"] = 5,
         ["icon"] = Material("items/meds/ifak.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Red,
 
@@ -4375,6 +4409,7 @@ EFGMITEMS = {}
         ["consumableValue"] = 200,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
+        ["marketResetLimit"] = 3,
         ["icon"] = Material("items/meds/salewa.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Red,
 
@@ -4394,6 +4429,7 @@ EFGMITEMS = {}
         ["consumableValue"] = 320,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
+        ["marketResetLimit"] = 2,
         ["icon"] = Material("items/meds/afak.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Red,
 
@@ -4413,6 +4449,7 @@ EFGMITEMS = {}
         ["consumableValue"] = 480,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
+        ["marketResetLimit"] = 1,
         ["icon"] = Material("items/meds/grizzly.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Red,
 
@@ -4603,45 +4640,43 @@ EFGMITEMS = {}
     }
 
     EFGMITEMS["efgm_key_hotel_maintenance"] = {
-        ["fullName"] = "Hotel Marked Room Key",
-        ["displayName"] = "Hotel mrk.",
+        ["fullName"] = "Hotel Maintenance Key",
+        ["displayName"] = "Hotel maint.",
         ["displayType"] = "Concrete Key",
         ["weight"] = 0.2,
-        ["value"] = 1250000,
+        ["value"] = 100000,
         ["equipType"] = EQUIPTYPE.None,
         ["consumableType"] = "key",
         ["consumableValue"] = 5,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/keys/industrial_marked.png", "smooth"),
+        ["icon"] = Material("items/keys/checkpoint.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Green,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
 
-        ["canPurchase"] = false,
-        ["lootWeight"] = 25
+        ["canPurchase"] = false
     }
 
     EFGMITEMS["efgn_key_railway_checkpoint"] = {
-        ["fullName"] = "Hotel Marked Room Key",
-        ["displayName"] = "Hotel mrk.",
+        ["fullName"] = "Railway Checkpoint Key",
+        ["displayName"] = "Rail Chk.",
         ["displayType"] = "Concrete Key",
         ["weight"] = 0.2,
-        ["value"] = 1250000,
+        ["value"] = 100000,
         ["equipType"] = EQUIPTYPE.None,
         ["consumableType"] = "key",
         ["consumableValue"] = 5,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
-        ["icon"] = Material("items/keys/industrial_marked.png", "smooth"),
+        ["icon"] = Material("items/keys/checkpoint.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Green,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
 
-        ["canPurchase"] = false,
-        ["lootWeight"] = 25
+        ["canPurchase"] = false
     }
 
     EFGMITEMS["efgm_key_breakroom"] = {
@@ -8532,6 +8567,25 @@ function GenerateDuelLoadouts()
 
 end
 
+function GenerateMarketLimits()
+
+    MARKETLIMITS = {}
+
+    for k, v in pairs(EFGMITEMS) do
+
+        -- generic loot pools
+        if v.canPurchase == false then continue end
+
+        if v.marketResetLimit then
+
+            MARKETLIMITS[k] = v.marketResetLimit
+
+        end
+
+    end
+
+end
+
 function SpawnAllLoot()
 
     if SERVER then
@@ -8594,6 +8648,7 @@ hook.Add("InitPostEntity", "AttsItemDef", function()
 
     GenerateLootTables()
     GenerateDuelLoadouts()
+    GenerateMarketLimits()
 
 end)
 
@@ -8630,5 +8685,6 @@ hook.Add("OnReloaded", "AttsItemDefReload", function()
 
     GenerateLootTables()
     GenerateDuelLoadouts()
+    GenerateMarketLimits()
 
 end)

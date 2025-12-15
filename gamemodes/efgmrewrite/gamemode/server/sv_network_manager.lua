@@ -450,6 +450,7 @@ function SetupPlayerData(ply)
 	InitializeNetworkInt(ply, query, "StashValue", 0) -- value of all items in stash
 	InitializeNetworkInt(ply, query, "ItemsLooted", 0)
 	InitializeNetworkInt(ply, query, "ContainersLooted", 0)
+	InitializeNetworkInt(ply, query, "KeysUsed", 0)
 
 	-- combat
 	InitializeNetworkInt(ply, query, "Kills", 0)
@@ -479,7 +480,7 @@ function SetupPlayerData(ply)
 	InitializeNetworkInt(ply, query, "BestExtractionStreak", 0)
 
 	-- stash/inventory
-	InitializeNetworkInt(ply, query, "StashMax", 1000)
+	InitializeNetworkInt(ply, query, "StashMax", 1600)
 
 	for k, v in ipairs(levelArray) do
 
@@ -550,6 +551,7 @@ function SavePlayerData(ply)
 	UninitializeNetworkInt(ply, query, "StashValue")
 	UninitializeNetworkInt(ply, query, "ItemsLooted")
 	UninitializeNetworkInt(ply, query, "ContainersLooted")
+	UninitializeNetworkInt(ply, query, "KeysUsed")
 
 	-- combat
 	UninitializeNetworkInt(ply, query, "Kills")

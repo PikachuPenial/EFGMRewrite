@@ -10,7 +10,7 @@ if GetConVar("efgm_derivesbox"):GetInt() == 1 then
         mapReport.keys = {}
 
         for k, v in pairs(ents.FindByClass("efgm_raid_spawn")) do
-            
+
             mapReport.spawns[k] = {}
             mapReport.spawns[k].group = v.SpawnGroup
             local pos = v:GetPos()
@@ -19,7 +19,8 @@ if GetConVar("efgm_derivesbox"):GetInt() == 1 then
         end
 
         for k, v in pairs(ents.FindByClass("efgm_extract")) do
-            
+
+            if v.ShowOnMap == false then continue end
             mapReport.extracts[k] = {}
             mapReport.extracts[k].group = v.ExtractGroup
             mapReport.extracts[k].name = v.ExtractName
@@ -29,7 +30,8 @@ if GetConVar("efgm_derivesbox"):GetInt() == 1 then
         end
 
         for k, v in pairs(ents.FindByClass("efgm_key_checker")) do
-            
+
+            if v.ShowOnMap == false then continue end
             mapReport.keys[k] = {}
             mapReport.keys[k].name = EFGMITEMS[v.KeyName].fullName
             local pos = v:GetPos()
@@ -44,7 +46,7 @@ if GetConVar("efgm_derivesbox"):GetInt() == 1 then
             mapReport.locations[k].loot = v.LootRating
             local pos = v:GetPos()
             mapReport.locations[k].pos = {x = pos.x, y = pos.y}
-            
+
         end
 
         local json = util.TableToJSON(mapReport, tobool( args[2] ) or false)
@@ -80,6 +82,7 @@ if GetConVar("efgm_derivesbox"):GetInt() == 1 then
 
         for k, v in pairs(ents.FindByClass("efgm_extract")) do
             
+            if v.ShowOnMap == false then continue end
             mapReport.extracts[k] = {}
             mapReport.extracts[k].group = v.ExtractGroup
             mapReport.extracts[k].name = v.ExtractName
@@ -90,6 +93,7 @@ if GetConVar("efgm_derivesbox"):GetInt() == 1 then
 
         for k, v in pairs(ents.FindByClass("efgm_key_checker")) do
             
+            if v.ShowOnMap == false then continue end
             mapReport.keys[k] = {}
             mapReport.keys[k].name = EFGMITEMS[v.KeyName].fullName
             local pos = v:GetPos()

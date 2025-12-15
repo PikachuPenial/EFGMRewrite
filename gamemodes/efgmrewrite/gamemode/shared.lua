@@ -26,6 +26,7 @@ if CLIENT then
     CreateClientConVar("efgm_faction_preference", 0, true, true, "Determines the faction that your playermodel is based on (0 = None, 1 = USEC, 2 = BEAR)", 0, 2)
     CreateClientConVar("efgm_privacy_invites_squad", 2, true, true, "Determines who you receive squad invites from (2 = Everyone, 1 = Steam Friends, 0 = Nobody)", 0, 2)
     CreateClientConVar("efgm_privacy_invites_duel", 2, true, true, "Determines who you receive duel invites from (2 = Everyone, 1 = Steam Friends, 0 = Nobody)", 0, 2)
+    CreateClientConVar("efgm_privacy_invites_blocked", 0, true, true, "Determines if a player that you have blocked on steam can send you an invite", 0, 1)
 
 end
 

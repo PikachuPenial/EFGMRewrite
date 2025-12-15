@@ -7,17 +7,17 @@ ENT.EventDescription = ""
 function ENT:KeyValue(key, value)
 
     if key == "eventName" then
-		self.EventName = tostring(value)
-	end
+        self.EventName = tostring(value)
+    end
 
     if key == "eventDescription" then
-		self.EventDescription = tostring(value)
-	end
+        self.EventDescription = tostring(value)
+    end
 
     if key == "OnEventStart" then
-		self:StoreOutput(key, value)
-	end
-    
+        self:StoreOutput(key, value)
+    end
+
 end
 
 function ENT:AcceptInput(name, ply, caller, data)

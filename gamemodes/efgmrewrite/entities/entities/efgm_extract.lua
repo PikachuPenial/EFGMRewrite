@@ -64,6 +64,8 @@ function ENT:Initialize()
 	self.InstantExtract = bit.band(flags, 4) == 4
 	self.ShowOnMap = bit.band(flags, 8) == 8
 
+	print(flags)
+
 end
 
 function ENT:AcceptInput(name, ply, caller, data)

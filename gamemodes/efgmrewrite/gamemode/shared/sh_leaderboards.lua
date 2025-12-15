@@ -23,7 +23,8 @@ LEADERBOARDS = {
     ["Best Kill Streak"] = "BestKillStreak",
     ["Best Duel Win Streak"] = "BestDuelWinStreak",
     ["Items Looted"] = "ItemsLooted",
-    ["Containers Opened"] = "ContainersLooted"
+    ["Containers Opened"] = "ContainersLooted",
+    ["Keys Used"] = "KeysUsed"
 }
 
 if SERVER then

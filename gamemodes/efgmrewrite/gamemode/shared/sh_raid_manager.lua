@@ -12,15 +12,6 @@ local function DecrementTimer()
     hook.Run("RaidTimerTick", GetGlobalInt("RaidTimeLeft"))
 end
 
-hook.Add("OnReloaded", "ImprovedRaidDebugging", function()
-
-    SetGlobalInt("RaidTimeLeft", -1)
-    SetGlobalInt("RaidStatus", raidStatus.ACTIVE)
-
-    timer.Remove("RaidTimerDecrement")
-
-end)
-
 if SERVER then
     util.AddNetworkString("VoteableMaps")
     util.AddNetworkString("SendVote")
@@ -36,8 +27,11 @@ if SERVER then
 
     RAID.MapPool = {["efgm_belmont_rw"] = 0, ["efgm_concrete_rw"] = 0, ["efgm_factory_rw"] = 0} -- map, number of votes
 
-    SetGlobalInt("RaidTimeLeft", -1)
-    SetGlobalInt("RaidStatus", raidStatus.PENDING) -- uses sh_enums
+    if GetGlobalInt("RaidStatus") != raidStatus.ACTIVE then -- fuck you fuck you fuck you fuck you
+        SetGlobalInt("RaidTimeLeft", -1)
+        SetGlobalInt("RaidStatus", raidStatus.PENDING)
+        timer.Remove("RaidTimerDecrement")
+    end
 
     --{ RAID FUNCTIONS
 
@@ -182,8 +176,9 @@ if SERVER then
                     tbl.ExtractTime = v.ExtractTime
                     tbl.IsGuranteed = v.IsGuranteed
                     tbl.IsDisabled = v.IsDisabled
+                    tbl.ShowOnMap = v.ShowOnMap
 
-                    table.insert(extracts, tbl)
+                    if tbl.ShowOnMap then table.insert(extracts, tbl) end
                 end
             end
 

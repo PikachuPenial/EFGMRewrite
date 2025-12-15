@@ -31,8 +31,6 @@ end
 
 util.AddNetworkString("PlayerReinstantiateInventory")
 
-HostID = nil -- will be set if it's a p2p server (holy fucking shit i really didnt set it to nil)
-
 function GM:Initialize()
 
 	print("Escape From Garry's Mod Rewrite has been initialized on " .. game.GetMap())
@@ -99,13 +97,6 @@ function GM:PlayerSpawn(ply)
 	CalculateInventoryWeight(ply)
 
 end
-
-hook.Add("PlayerInitialSpawn", "InitFirstSpawn", function(ply)
-
-	if !ply:IsListenServerHost() then return end
-	HostID = tonumber(ply:SteamID64())
-
-end)
 
 util.AddNetworkString("CreateDeathInformation")
 function GM:PlayerDeath(victim, inflictor, attacker)
