@@ -1,5 +1,7 @@
 local chunkedMarket = {}
 
+hook.Add("OnReloaded", "MarketOnReload", function() marketLimits = {} end)
+
 hook.Add("OnMarketChunked", "NetworkMarket", function(str, uID)
 
     local marketStr = str

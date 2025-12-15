@@ -178,6 +178,16 @@ function Menu:Initialize(openTo, container)
     local level = Menu.Player:GetNWInt("Level", 1)
     local levelTextSize = surface.GetTextSize(level)
 
+    local time = string.FormattedTime(GetGlobalInt("RaidTimeLeft", 0), "%02i:%02i")
+    local timeTextSize = surface.GetTextSize(time)
+
+    local raidStatus = GetGlobalInt("RaidStatus", 0)
+    local raidStatusTbl = {
+        [0] = Colors.menuStatusPending,
+        [1] = Colors.whiteColor,
+        [2] = Colors.menuStatusEnded
+    }
+
     function tabParentPanel:Paint(w, h)
 
         surface.SetFont("PuristaBold32")
@@ -188,11 +198,17 @@ function Menu:Initialize(openTo, container)
         level = Menu.Player:GetNWInt("Level", 1)
         levelTextSize = surface.GetTextSize(level)
 
+        time = string.FormattedTime(GetGlobalInt("RaidTimeLeft", 0), "%02i:%02i")
+        timeTextSize = surface.GetTextSize(time)
+
+        raidStatus = GetGlobalInt("RaidStatus", 0)
+
         surface.SetDrawColor(Colors.transparent)
         surface.DrawRect(0, 0, w, h)
 
         draw.SimpleTextOutlined(roubles, "PuristaBold32", w - EFGM.MenuScale(26), EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
         draw.SimpleTextOutlined(level, "PuristaBold32", w - roublesTextSize - EFGM.MenuScale(86), EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined(time, "PuristaBold32", w - roublesTextSize - levelTextSize - EFGM.MenuScale(146), EFGM.MenuScale(2), raidStatusTbl[raidStatus], TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
         draw.DrawText("EFGM", "PuristaBold32", w / 2, EFGM.MenuScale(2), Colors.itemBackgroundColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 
@@ -212,6 +228,11 @@ function Menu:Initialize(openTo, container)
     levelIcon:SetImage("icons/level_icon.png")
     levelIcon:SetDepressImage(false)
 
+    local timeIcon = vgui.Create("DImage", self.MenuFrame.TabParentPanel)
+    timeIcon:SetPos(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(188) - roublesTextSize - levelTextSize - timeTextSize, EFGM.MenuScale(2))
+    timeIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
+    timeIcon:SetImage("icons/time_icon.png")
+
     local x, y = 0, 0
     local sideH, sideV
 
@@ -224,6 +245,12 @@ function Menu:Initialize(openTo, container)
     levelIcon.Think = function()
 
         levelIcon:SetX(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(127) - roublesTextSize - levelTextSize)
+
+    end
+
+    timeIcon.Think = function()
+
+        timeIcon:SetX(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(188) - roublesTextSize - levelTextSize - timeTextSize)
 
     end
 
@@ -1918,7 +1945,8 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
 
     local maxTransactionCountMult = math.min(10, Menu.Player:GetNWInt("StashMax", 150) - Menu.Player:GetNWInt("StashCount", 0))
     local maxTransactionCount = math.Clamp(math.floor(plyMoney / i.value), 1, marketLimits[item] or (i.stackSize * maxTransactionCountMult))
-    if i.stackSize == 1 then maxTransactionCount = 1 end
+
+    if i.equipSlot == WEAPONSLOTS.PRIMARY.ID or i.equipSlot == WEAPONSLOTS.HOLSTER.ID or i.equipSlot == WEAPONSLOTS.MELEE.ID or i.equipType == EQUIPTYPE.Attachment then maxTransactionCount = 1 end
 
     surface.SetFont("PuristaBold24")
     local confirmText = "Purchase " .. transactionCount .. "x " .. i.fullName .. " (" .. i.displayName .. ") for ₽" .. comma_value(transactionCost) .. "?"
@@ -1926,7 +1954,7 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
 
     local confirmPanelHeight = EFGM.MenuScale(110)
 
-    if i.stackSize > 1 and maxTransactionCount > 1 then confirmPanelHeight = EFGM.MenuScale(135) end
+    if maxTransactionCount > 1 and maxTransactionCount > 1 then confirmPanelHeight = EFGM.MenuScale(135) end
 
     surface.SetFont("PuristaBold16")
     local invText = "INVENTORY"

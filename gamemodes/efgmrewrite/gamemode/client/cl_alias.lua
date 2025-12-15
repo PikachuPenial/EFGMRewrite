@@ -18,6 +18,13 @@ Colors.outRaidColor = 	Color(255, 255, 255, 255)		-- Green
 Colors.deadColor = 		Color(255, 50, 50, 255)	-- Gray what the fuck was i colorblind
 Colors.neutralColor = 	Color(255, 255, 50, 255)
 
+Colors.statusPending =  Color(0, 75, 0, 128)
+Colors.statusActive =   Color(0, 0, 0, 128)
+Colors.statusEnded =    Color(75, 0, 0, 128)
+
+Colors.menuStatusPending =  Color(0, 255, 0, 255)
+Colors.menuStatusEnded =    Color(255, 0, 0, 255)
+
 Colors.hudBackground =   Color(0, 0, 0, 128)
 
 Colors.transparentWhiteColor = Color(255, 255, 255, 155)

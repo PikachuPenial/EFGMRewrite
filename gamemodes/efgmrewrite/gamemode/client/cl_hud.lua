@@ -13,9 +13,9 @@ local function RenderRaidTime(ply)
     local raidStatus = GetGlobalInt("RaidStatus", 0)
 
     local raidStatusTbl = {
-        [0] = Color(0, 75, 0, 128), -- raid pending
-        [1] = Color(0, 0, 0, 128), -- raid active
-        [2] = Color(75, 0, 0, 128)  -- raid ended
+        [0] = Colors.statusPending, -- raid pending
+        [1] = Colors.statusActive, -- raid active
+        [2] = Colors.statusEnded  -- raid ended
     }
 
     surface.SetDrawColor(raidStatusTbl[raidStatus])
