@@ -271,3 +271,17 @@
     input PlayerVisited(void)   :   "Activates a hook for any tasks with this area to recognize."
 
 ]
+
+@PointClass base(Targetname) = efgm_elevator_controller : "Elevator Controller"
+[
+    // Inputs
+    input AskGoToStart(void)           :   ""
+
+    input AskGoToEnd(void)           :   ""
+
+    // Outputs
+    output MoveToStart(void) : ""
+
+    output MoveToEnd(void) : ""
+
+]
