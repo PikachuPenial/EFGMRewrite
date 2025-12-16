@@ -502,7 +502,7 @@ if SERVER then
                 local style = shotCaliber[class][3] == "bullet" -- returns true if bullet, false if explosive
                 local volume = 1
 
-                if indoor then volume = 0.4 end
+                if indoor then volume = volume * 0.4 end
 
                 for i = 1, num do
 
@@ -544,7 +544,7 @@ if SERVER then
                 local style = shotCaliber[cal][3] == "bullet" -- returns true if bullet, false if explosive
                 local volume = 1
 
-                if indoor then volume = 0.4 end
+                if indoor then volume = volume * 0.4 end
 
                 for i = 1, num do
 

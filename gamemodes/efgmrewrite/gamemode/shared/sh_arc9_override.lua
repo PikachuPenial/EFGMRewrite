@@ -2094,6 +2094,12 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
                     bulletPitch = math.Clamp(math.Round(bulletPitch * 1.5), 0, 254)
                 end
 
+                if indoor > 0 then
+
+                    volume = volume * 0.4
+
+                end
+
                 for i = 1, self.Num do
                     if plyDistance >= 2500 and v != attacker then
                         net.Start("DistantGunAudio")
