@@ -187,7 +187,7 @@ if SERVER then
             local secondaryData = {}
             secondaryData.count = 1
             if secondaryDef.defAtts then secondaryData.att = secondaryDef.defAtts end
-            if secondaryDef.duelAtts then secondaryDef.att = secondaryDef.duelAtts[math.random(#secondaryDef.duelAtts)] end
+            if secondaryDef.duelAtts then secondaryData.att = secondaryDef.duelAtts[math.random(#secondaryDef.duelAtts)] end
             local secondaryItem = ITEM.Instantiate(secondaryItemKey, secondaryDef.equipType, secondaryData)
 
             return primaryItem, secondaryItem
@@ -200,7 +200,7 @@ if SERVER then
             local secondaryData = {}
             secondaryData.count = 1
             if secondaryDef.defAtts then secondaryData.att = secondaryDef.defAtts end
-            if secondaryDef.duelAtts then secondaryDef.att = secondaryDef.duelAtts[math.random(#secondaryDef.duelAtts)] end
+            if secondaryDef.duelAtts then secondaryData.att = secondaryDef.duelAtts[math.random(#secondaryDef.duelAtts)] end
             local secondaryItem = ITEM.Instantiate(secondaryItemKey, secondaryDef.equipType, secondaryData)
 
             return nil, secondaryItem
