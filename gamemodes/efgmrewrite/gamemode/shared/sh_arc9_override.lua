@@ -1,4 +1,6 @@
 hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
+    local sp = game.SinglePlayer()
+
     -- arc9 determines a player as sprinting if they are holding IN_SPEED, not when they are actually sprinting, breaking animations with EFGM's sprinting system
     function SWEP:GetIsSprintingCheck()
         local owner = self:GetOwner()
@@ -1630,13 +1632,13 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
 
         spread = math.Max(spread, 0)
 
-        local sp, sa = self:GetShootPos()
+        local spos, sa = self:GetShootPos()
 
         if IsValid(self:GetLockOnTarget()) and self:GetLockedOn() and self:GetProcessedValue("LockOnAutoaim", true) then
-            sa = (self:GetLockOnTarget():EyePos() - sp):Angle()
+            sa = (self:GetLockOnTarget():EyePos() - spos):Angle()
         end
 
-        self:DoProjectileAttack(sp, sa, spread)
+        self:DoProjectileAttack(spos, sa, spread)
 
         self:ApplyRecoil()
         self:DoVisualRecoil()
