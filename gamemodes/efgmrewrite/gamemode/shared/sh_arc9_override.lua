@@ -2073,10 +2073,14 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
         end
 
         if SERVER then
-            for k, v in pairs(player.GetAll()) do
-                local attacker = self:GetOwner()
+            self:StartLoop()
 
-                if attacker:CompareStatus(0) then return end
+            local attacker = self:GetOwner()
+            if attacker:CompareStatus(0) or attacker:CompareStatus(3) then return end
+
+            for k, v in pairs(player.GetHumans()) do
+                if v:CompareStatus(0) or v:CompareStatus(3) then return end
+                print(ammo)
                 if shotCaliber[ammo] == nil then return end
 
                 local shootPos = attacker:GetPos()
@@ -2105,8 +2109,6 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
                 end
             end
         end
-
-        self:StartLoop()
     end
 
     if class != "arc9_eft_rshg2" then
@@ -2242,12 +2244,6 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
             }
             self:RunHook("Hook_GrenadeThrown", override)
 
-            if owner:GetNWBool("InRange", false) == false then
-
-                timer.Simple(delaytime, function() ConsumeGrenade(self:GetOwner()) self:GetOwner():SetNWInt("RaidGrenadesThrown", self:GetOwner():GetNWInt("RaidGrenadesThrown") + 1) end)
-
-            end
-
             force = override.force or force
             delaytime = override.delay or delaytime
 
@@ -2340,6 +2336,8 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
                 end
 
                 self:RunHook("Hook_GrenadeCreated", nades)
+                ConsumeGrenade(owner)
+                owner:SetNWInt("RaidGrenadesThrown", owner:GetNWInt("RaidGrenadesThrown") + 1)
                 if owner:GetNWBool("InRange", false) == false then owner:StripWeapon(self.ClassName) end
             end)
 

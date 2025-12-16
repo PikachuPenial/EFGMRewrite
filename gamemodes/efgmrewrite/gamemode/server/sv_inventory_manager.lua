@@ -994,6 +994,7 @@ function ConsumeGrenade(ply)
     table.Empty(ply.weaponSlots[4][1])
 
     RemoveWeightFromPlayer(ply, item, 1)
+    ply:StripWeapon(item)
 
     net.Start("PlayerInventoryConsumeGrenade", false)
     net.Send(ply)
