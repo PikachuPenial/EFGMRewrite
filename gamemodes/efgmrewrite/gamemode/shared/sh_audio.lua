@@ -1,16 +1,16 @@
 if SERVER and !game.SinglePlayer() then
 
     CRF = {}
-    CRF[0] = RecipientFilter() -- hideout
-    CRF[1] = RecipientFilter() -- in raid
+    CRF[1] = RecipientFilter() -- hideout
+    CRF[2] = RecipientFilter() -- in raid
 
     function UpdateAudioFilter(ply, id)
 
         if !IsValid(ply) then return end
         RemovePlayerFromAllFilters(ply)
 
-        local f = 0
-        if id == 1 or id == 2 then f = 1 end
+        local f = 1
+        if id == 1 or id == 2 then f = 2 end
 
         CRF[f]:AddPlayer(ply)
 
@@ -18,13 +18,15 @@ if SERVER and !game.SinglePlayer() then
 
     function RemovePlayerFromAllFilters(ply)
 
-        for index, filter in ipairs(CRF) do filter:RemovePlayer(ply) end
+        for index, filter in ipairs(CRF) do
+            filter:RemovePlayer(ply)
+        end
 
     end
 
     hook.Add("PlayerInitialSpawn", "AddToDefaultFilterOnConnect", function(ply)
 
-        CRF[0]:AddPlayer(ply)
+        CRF[1]:AddPlayer(ply)
 
     end)
 

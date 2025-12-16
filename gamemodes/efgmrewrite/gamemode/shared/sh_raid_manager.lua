@@ -271,7 +271,7 @@ if SERVER then
         hook.Add("CheckRaidAddPlayers", "MaybeAddPeople", function(ply)
             local plySquad = ply:GetNW2String("PlayerInSquad", "nil")
 
-            if ply:GetActiveWeapon():Clip1() == 0 and ply:GetActiveWeapon():GetMaxClip1() != -1 then
+            if ply:GetActiveWeapon() != NULL and ply:GetActiveWeapon():Clip1() == 0 and ply:GetActiveWeapon():GetMaxClip1() != -1 then
 
                 net.Start("SendNotification", false)
                 net.WriteString("Can not enter a raid while your held weapon is not loaded!")
