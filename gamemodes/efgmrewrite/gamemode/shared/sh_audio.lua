@@ -429,39 +429,145 @@ boomSounds = {
 
 shotCaliber = {} -- pitch, threshold, style
 
--- weapons
+-- ammunition
+shotCaliber["efgm_ammo_300"] =      {75, 6000, "bullet"}
+shotCaliber["efgm_ammo_338"] =      {35, 20000, "bullet"}
+shotCaliber["efgm_ammo_357"] =      {180, 3000, "bullet"}
+shotCaliber["efgm_ammo_366"] =      {75, 6000, "bullet"}
+shotCaliber["efgm_ammo_45"] =       {180, 3000, "bullet"}
+shotCaliber["efgm_ammo_50ae"] =     {75, 6000, "bullet"}
+shotCaliber["efgm_ammo_50bmg"] =    {35, 20000, "bullet"}
+shotCaliber["efgm_ammo_127x55"] =   {55, 8000, "bullet"}
+shotCaliber["efgm_ammo_12gauge"] =  {140, 3000, "bullet"}
+shotCaliber["efgm_ammo_20gauge"] =  {140, 3000, "bullet"}
+shotCaliber["efgm_ammo_4gauge"] =   {120, 3000, "bullet"}
+shotCaliber["efgm_ammo_26x75"] =    {220, 3000, "bullet"}
+shotCaliber["efgm_ammo_46x30"] =    {110, 4500, "bullet"}
+shotCaliber["efgm_ammo_545x39"] =   {85, 6000, "bullet"}
+shotCaliber["efgm_ammo_556x45"] =   {85, 6000, "bullet"}
+shotCaliber["efgm_ammo_57x28"] =    {110, 4500, "bullet"}
+shotCaliber["efgm_ammo_68x51"] =    {65, 6000, "bullet"}
+shotCaliber["efgm_ammo_762x25"] =   {190, 3000, "bullet"}
+shotCaliber["efgm_ammo_762x39"] =   {75, 6000, "bullet"}
+shotCaliber["efgm_ammo_762x51"] =   {70, 7000, "bullet"}
+shotCaliber["efgm_ammo_308"] =      {70, 7000, "bullet"}
+shotCaliber["efgm_ammo_762x54"] =   {60, 7000, "bullet"}
+shotCaliber["efgm_ammo_9x18"] =     {180, 3000, "bullet"}
+shotCaliber["efgm_ammo_9x19"] =     {180, 3000, "bullet"}
+shotCaliber["efgm_ammo_9x21"] =     {150, 4500, "bullet"}
+shotCaliber["efgm_ammo_9x39"] =     {150, 2500, "bullet"}
+shotCaliber["efgm_ammo_93x64"] =    {30, 25000, "bullet"}
 
-shotCaliber["efgm_ammo_300"] =  {75, 6000, "bullet"}
-shotCaliber["efgm_ammo_338"] =  {35, 20000, "bullet"}
-shotCaliber["efgm_ammo_357"] =  {180, 3000, "bullet"}
-shotCaliber["efgm_ammo_366"] =  {75, 6000, "bullet"}
-shotCaliber["efgm_ammo_45"] =   {180, 3000, "bullet"}
-shotCaliber["efgm_ammo_50ae"] = {75, 6000, "bullet"}
-shotCaliber["efgm_ammo_50bmg"] = {35, 20000, "bullet"}
-shotCaliber["efgm_ammo_127x55"] = {55, 8000, "bullet"}
-shotCaliber["efgm_ammo_12gauge"] = {140, 3000, "bullet"}
-shotCaliber["efgm_ammo_20gauge"] = {140, 3000, "bullet"}
-shotCaliber["efgm_ammo_4gauge"] = {120, 3000, "bullet"}
-shotCaliber["efgm_ammo_26x75"] = {220, 3000, "bullet"}
-shotCaliber["efgm_ammo_46x30"] = {110, 4500, "bullet"}
-shotCaliber["efgm_ammo_545x39"] = {85, 6000, "bullet"}
-shotCaliber["efgm_ammo_556x45"] = {85, 6000, "bullet"}
-shotCaliber["efgm_ammo_57x28"] = {110, 4500, "bullet"}
-shotCaliber["efgm_ammo_68x51"] = {65, 6000, "bullet"}
-shotCaliber["efgm_ammo_762x25"] = {190, 3000, "bullet"}
-shotCaliber["efgm_ammo_762x39"] = {75, 6000, "bullet"}
-shotCaliber["efgm_ammo_762x51"] = {70, 7000, "bullet"}
-shotCaliber["efgm_ammo_308"] = {70, 7000, "bullet"}
-shotCaliber["efgm_ammo_762x54"] = {60, 7000, "bullet"}
-shotCaliber["efgm_ammo_9x18"] = {180, 3000, "bullet"}
-shotCaliber["efgm_ammo_9x19"] = {180, 3000, "bullet"}
-shotCaliber["efgm_ammo_9x21"] = {150, 4500, "bullet"}
-shotCaliber["efgm_ammo_9x39"] = {150, 2500, "bullet"}
-shotCaliber["efgm_ammo_93x64"] =  {30, 25000, "bullet"}
+-- entities
+shotCaliber["arc9_eft_grenade_f1"] =        {60, 8000, "boom"}
+shotCaliber["arc9_eft_grenade_m67"] =       {60, 8000, "boom"}
+shotCaliber["arc9_eft_grenade_rgd5"] =      {60, 8000, "boom"}
+shotCaliber["arc9_eft_grenade_rgn"] =       {80, 6000, "boom"}
+shotCaliber["arc9_eft_grenade_rgo"] =       {80, 6000, "boom"}
+shotCaliber["arc9_eft_grenade_v40"] =       {80, 6000, "boom"}
+shotCaliber["arc9_eft_grenade_vog17"] =     {70, 7000, "boom"}
+shotCaliber["arc9_eft_grenade_vog25"] =     {70, 7000, "boom"}
+shotCaliber["arc9_eft_40mm_m381_bang"] =    {60, 8000, "boom"}
+shotCaliber["arc9_eft_40mm_m433_bang"] =    {70, 7000, "boom"}
+shotCaliber["arc9_eft_grenade_725"] =       {50, 10000, "boom"}
+
+-- manually set
+shotCaliber["shrapnel"] =           {190, 3000, "bullet"}
+
+-- code for firearms can be found in sh_arc9_override, the serverside stuff below is for things like explosions or shrapnel
 
 if SERVER then
 
     util.AddNetworkString("DistantGunAudio")
+
+    function ManualDistantSound(type, num, indoor, ent, cal)
+
+        if type == 1 then -- entity based
+
+            local attacker = ent:GetOwner()
+            if !attacker:IsPlayer() then return end
+            if attacker:CompareStatus(0) or attacker:CompareStatus(3) then return end
+
+            for k, v in pairs(player.GetHumans()) do
+
+                if v:CompareStatus(0) or v:CompareStatus(3) then return end
+
+                local class = ent:GetClass()
+                if shotCaliber[class] == nil then return end
+
+                local shootPos = attacker:GetPos()
+                local plyDistance = attacker:GetPos():Distance(v:GetPos())
+                local bulletPitch = shotCaliber[class][1] or 100
+                local threshold = shotCaliber[class][2] or 6000
+                local style = shotCaliber[class][3] == "bullet" -- returns true if bullet, false if explosive
+                local volume = 1
+
+                if indoor then volume = 0.4 end
+
+                for i = 1, num do
+
+                    if plyDistance >= 2500 and v != attacker then
+
+                        net.Start("DistantGunAudio")
+                        net.WriteVector(shootPos)
+                        net.WriteFloat(plyDistance)
+                        net.WriteInt(bulletPitch, 9)
+                        net.WriteInt(threshold, 16)
+                        net.WriteFloat(volume)
+                        net.WriteBool(style)
+                        net.Send(v)
+
+                    end
+
+                end
+
+            end
+
+        else -- ammunition based
+
+            local attacker = ent:GetOwner()
+            if attacker == NULL then attacker = ent end -- failsafe
+            if !attacker:IsPlayer() then return end
+            if cal == nil then return end
+            if attacker:CompareStatus(0) or attacker:CompareStatus(3) then return end
+
+            for k, v in pairs(player.GetHumans()) do
+
+                if v:CompareStatus(0) or v:CompareStatus(3) then return end
+
+                if shotCaliber[cal] == nil then return end
+
+                local shootPos = attacker:GetPos()
+                local plyDistance = attacker:GetPos():Distance(v:GetPos())
+                local bulletPitch = shotCaliber[cal][1] or 100
+                local threshold = shotCaliber[cal][2] or 6000
+                local style = shotCaliber[cal][3] == "bullet" -- returns true if bullet, false if explosive
+                local volume = 1
+
+                if indoor then volume = 0.4 end
+
+                for i = 1, num do
+
+                    if plyDistance >= 2500 and v != attacker then
+
+                        net.Start("DistantGunAudio")
+                        net.WriteVector(shootPos)
+                        net.WriteFloat(plyDistance)
+                        net.WriteInt(bulletPitch, 9)
+                        net.WriteInt(threshold, 16)
+                        net.WriteFloat(volume)
+                        net.WriteBool(style)
+                        net.Send(v)
+
+                    end
+
+                end
+
+            end
+
+        end
+
+    end
 
 end
 

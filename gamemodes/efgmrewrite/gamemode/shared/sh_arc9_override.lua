@@ -2080,7 +2080,6 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
 
             for k, v in pairs(player.GetHumans()) do
                 if v:CompareStatus(0) or v:CompareStatus(3) then return end
-                print(ammo)
                 if shotCaliber[ammo] == nil then return end
 
                 local shootPos = attacker:GetPos()
