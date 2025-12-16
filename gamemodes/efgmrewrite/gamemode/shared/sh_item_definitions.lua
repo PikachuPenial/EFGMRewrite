@@ -1180,7 +1180,12 @@ EFGMITEMS = {}
 
         ["caliber"] = "9x19",
         ["ammoID"] = "efgm_ammo_9x19",
-        ["defAtts"] = "XQAAAQCDAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+VxqdivwEJTPh3E+VFN6tQFSEw8nl+xsNZHkUqRC+DuxEPE4Hmq2ZF39I5/fW7oBi14Z7pNIIvvvTcmGH8EPSRl1Mgu31LkWQpOtv6A9h6lrhDeArrse4Q9wLpJvvlZzE2wk3jB1y52JTzihtkZKJlfFjhCjnhAA=="
+        ["defAtts"] = "XQAAAQCDAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+VxqdivwEJTPh3E+VFN6tQFSEw8nl+xsNZHkUqRC+DuxEPE4Hmq2ZF39I5/fW7oBi14Z7pNIIvvvTcmGH8EPSRl1Mgu31LkWQpOtv6A9h6lrhDeArrse4Q9wLpJvvlZzE2wk3jB1y52JTzihtkZKJlfFjhCjnhAA==",
+        ["duelAtts"] = {
+            "XQAAAQCDAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+VxqdivwEJTPh3E+VFN6tQFSEw8nl+xsNZHkUqRC+DuxEPE4Hmq2ZF39I5/fW7oBi14Z7pNIIvvvTcmGH8EPSRl1Mgu31LkWQpOtv6A9h6lrhDeArrse4Q9wLpJvvlZzE2wk3jB1y52JTzihtkZKJlfFjhCjnhAA==",
+            "XQAAAQCYAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+VxqdivwEJTPh3E+VFN6tQFSEw8nl+xsNZHkUqRC993zXCzGjm0oiG3Rjnl1QVB49eYpgNoUdThJyUUxEQic/0JVWubBikJ1fuLdhZukqLMCl8PY8H8sGkZW0fBlMuPtmDkJWkvfAlN2nMSXXkGr4qT40apwirXwAjeEmCFABfhALQo6A=",
+            "XQAAAQAqAgAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+VxqdivwEJTPh3E+VFN6tQFSEw8nl+xsNZHkUqRC+DuxEPE4Hmq0GXD717X3lMkG6u0+fLX0B0eMHv/iIveLj0x7jtlNjDew6nM77x13+qBH6lj4atjNx3EJ/Yx3+2H/VaQPRGNdWR7Xg737+WMU+ZhTTyFpVWKamULXy81I0e8CCmgKoaZCDfr3M1xs6g0CEo8g2QOVz4xcFxG8sFafiHXbiri9cF"
+        }
     }
 
     EFGMITEMS["arc9_eft_pd20"] = {
@@ -1222,7 +1227,12 @@ EFGMITEMS = {}
 
         ["caliber"] = ".45",
         ["ammoID"] = "efgm_ammo_45",
-        ["defAtts"] = "XQAAAQAJAgAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+Vxqdiva/+T8TWXFyZ6L+YGhlUEFGCfP6ZxRzhhtO4thQe+Y8iks9vtbjX/1mlPDmp6O4OLhhuzMvFkTlrQfPfK3ivuCRfw5mF2t9J9NMfTJXBYIwDkT8TIZrYGTDnj2E5r2njE2qO1+VknMQZ+JwujYf7xqN5yt85euuFXh09YHiN3D6NJTg6xDdwtlRy"
+        ["defAtts"] = "XQAAAQAJAgAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+Vxqdiva/+T8TWXFyZ6L+YGhlUEFGCfP6ZxRzhhtO4thQe+Y8iks9vtbjX/1mlPDmp6O4OLhhuzMvFkTlrQfPfK3ivuCRfw5mF2t9J9NMfTJXBYIwDkT8TIZrYGTDnj2E5r2njE2qO1+VknMQZ+JwujYf7xqN5yt85euuFXh09YHiN3D6NJTg6xDdwtlRy",
+        ["duelAtts"] = {
+            "XQAAAQAJAgAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+Vxqdiva/+T8TWXFyZ6L+YGhlUEFGCfP6ZxRzhhtO4thQe+Y8iks9vtbjX/1mlPDmp6O4OLhhuzMvFkTlrQfPfK3ivuCRfw5mF2t9J9NMfTJXBYIwDkT8TIZrYGTDnj2E5r2njE2qO1+VknMQZ+JwujYf7xqN5yt85euuFXh09YHiN3D6NJTg6xDdwtlRy",
+            "XQAAAQCaAgAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+Vxqdiva/+T8TVGz12MZlTBvfFuwVHr2M0vIvxQabJdixi//02kBQ2+EBuBeF++RbzJP5/Kimjlpj0WHt6wHSEeQ9GGXxPj8sC7o66KlTUrATqvoU4JLPrS5S/ImiYYdu4xSSDiKMBhaRPM4J+RGpvLud8ETQ3ereN3ogsIRazM8IcdCNVYSUPueU0XP3uoRPgnnVf4REq8QrSyXt3hz+N3kAkbtzQ4IoXuVLM/YQJGbU5+FrB/wtIYYrxv6Qz5cPbCLEK",
+            "XQAAAQDfAgAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+Vxqdiva/+T8TWXFyZ6L+YGhlUEFGCfP6ZxRzhhtO4thQe+Y8iks9vtbjX/1mlPDmp6O4OLhhu0KMy3FIbaFBqaOPS25yqXkakfI/2IExWGkFSKeL5hsh40xpyagDGAbIwKNBjEUu+/LCSxN5MVPZirkaEJwtayNoFZWCB+GAwjv2Ep7UHix94RJqsHXIWl1j74UiunOF/zkmBMGFPM6jy9RjrdOI/QcQV0KSYHGS4oEhw3mbgck3JjIG7eYKmA8rx3f9l/nqJcJkgfGLpTHrCg8Gc"
+        }
     }
 
     EFGMITEMS["arc9_eft_m45"] = {
@@ -1243,7 +1253,12 @@ EFGMITEMS = {}
 
         ["caliber"] = ".45",
         ["ammoID"] = "efgm_ammo_45",
-        ["defAtts"] = "XQAAAQAJAgAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+Vxqdiva/+T8TVGz12MZlTBvfFuwVHr2M0vIvxQabJdixi//02kBQvQE1BNSe+/x4UWJGqsdu0r0fjAJV8uPf4/9yf+Oa6i2nzhe+E/pAfpR4BznYJwkvGIHjKA6KtHKxQIslWZOjXQ7OqGi4qZT5NtitnZJtizjAPZf/nSJs9PdJfcS2+CyOZXDohKl62quGEQuCnXlubjg=="
+        ["defAtts"] = "XQAAAQAJAgAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+Vxqdiva/+T8TVGz12MZlTBvfFuwVHr2M0vIvxQabJdixi//02kBQvQE1BNSe+/x4UWJGqsdu0r0fjAJV8uPf4/9yf+Oa6i2nzhe+E/pAfpR4BznYJwkvGIHjKA6KtHKxQIslWZOjXQ7OqGi4qZT5NtitnZJtizjAPZf/nSJs9PdJfcS2+CyOZXDohKl62quGEQuCnXlubjg==",
+        ["duelAtts"] = {
+            "XQAAAQAJAgAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+Vxqdiva/+T8TVGz12MZlTBvfFuwVHr2M0vIvxQabJdixi//02kBQvQE1BNSe+/x4UWJGqsdu0r0fjAJV8uPf4/9yf+Oa6i2nzhe+E/pAfpR4BznYJwkvGIHjKA6KtHKxQIslWZOjXQ7OqGi4qZT5NtitnZJtizjAPZf/nSJs9PdJfcS2+CyOZXDohKl62quGEQuCnXlubjg==",
+            "XQAAAQB9AgAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+Vxqdiva/+T8TWmHF0Cly6AHG2UUIhFPYlMHI0DjQP6V0b+4xigeU3VTb/5bQ+FeGA0phdsXP1JIh9xiGYLvByb0+MbjryPAyFwNuzmATxsCDTMa5iWdtkLDZ70/T9MtqpMyyjSeDSbZbtFXWEDtBrOy2LN++zQBOB81nS2QBOdLXMl/jR92zKW8NxCvuZhKMR+gOQjzTH28YpXTKagChKwi9e4+97Uiyq6WY3xSkHs+lsjUP9Fyqt+w==",
+            "XQAAAQB5AgAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+Vxqdiva/+T8TWXFyZ6L+YGhlUEFGCfP6ZxRzhhtO4thQe+Y8ihiiI0o/oPhY6VNYa4LvGUw/26WM1z2ZVqHk3i276s9oVv3+dIGmL1a8TJ2ppizDIzhfvfVlY6Li9ZM2sVSKpP+B4h87HX61h/tQTIaudSiJPFdiE2+j8UTCjEtpM/+uw0XBg8PUNzAy2KCCe5n9nXyeTS7541zqBv9IRsM/uCoGVJf42VFapvkDDA6OdjILGWYst9E7yUqo="
+        }
     }
 
     EFGMITEMS["arc9_eft_deagle_l5"] = {
@@ -1264,7 +1279,11 @@ EFGMITEMS = {}
 
         ["caliber"] = ".357",
         ["ammoID"] = "efgm_ammo_357",
-        ["defAtts"] = "XQAAAQCOAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+Vxqdivswh+weqM2t5ghOvIx8KkqejxKzgldfViMxjx46Znco6smBqgrvGL0O8YJT4T7wgJccpjUYf5269cqJMCf+ilpumoHK8Ntg1+FepHm5oovFm5h8yqEygpQHVjnZ4Nrbct08Y75391QU/Vr6NU6avpWOzXnBRQcQDAA=="
+        ["defAtts"] = "XQAAAQCOAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+Vxqdivswh+weqM2t5ghOvIx8KkqejxKzgldfViMxjx46Znco6smBqgrvGL0O8YJT4T7wgJccpjUYf5269cqJMCf+ilpumoHK8Ntg1+FepHm5oovFm5h8yqEygpQHVjnZ4Nrbct08Y75391QU/Vr6NU6avpWOzXnBRQcQDAA==",
+        ["duelAtts"] = {
+            "XQAAAQCOAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+Vxqdivswh+weqM2t5ghOvIx8KkqejxKzgldfViMxjx46Znco6smBqgrvGL0O8YJT4T7wgJccpjUYf5269cqJMCf+ilpumoHK8Ntg1+FepHm5oovFm5h8yqEygpQHVjnZ4Nrbct08Y75391QU/Vr6NU6avpWOzXnBRQcQDAA==",
+            "XQAAAQB7AQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+Vxqdivswh+weqM2t5ghOvIx8KkqejxKzgldfViMxjx46aRmVA4KVPT9l2HpLFQcAIH7+AHwimVGovQL6bd8bM1S2CeOuaqtK0YUbOg0uuWp6STRWrPn1Yl1JsAy4a66sJmFiC1bhfTImbznkDEzNBfgEXxv+NmbpTVAOB1wd7+VnQASk="
+        }
     }
 
     EFGMITEMS["arc9_eft_deagle_l6"] = {
@@ -1285,7 +1304,11 @@ EFGMITEMS = {}
 
         ["caliber"] = ".50 AE",
         ["ammoID"] = "efgm_ammo_50ae",
-        ["defAtts"] = "XQAAAQB1AQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+Vxqdivswh+weqM2t5jQa6lgmam1bVV9wqHc/InvQl2sKu4I6dhqSCkrPRwoNttNR6fAeglycM1HiUxpoKzGlKvMjh+VEul0WOs3iIX3F3hb8XZ41U/VsWr8dMwwBnCgT27aU36knR7GmGNHv/+DtzE7QVQtyLiTVcbSs2OW3jLLzqAA=="
+        ["defAtts"] = "XQAAAQB1AQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+Vxqdivswh+weqM2t5jQa6lgmam1bVV9wqHc/InvQl2sKu4I6dhqSCkrPRwoNttNR6fAeglycM1HiUxpoKzGlKvMjh+VEul0WOs3iIX3F3hb8XZ41U/VsWr8dMwwBnCgT27aU36knR7GmGNHv/+DtzE7QVQtyLiTVcbSs2OW3jLLzqAA==",
+        ["duelAtts"] = {
+            "XQAAAQB1AQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+Vxqdivswh+weqM2t5jQa6lgmam1bVV9wqHc/InvQl2sKu4I6dhqSCkrPRwoNttNR6fAeglycM1HiUxpoKzGlKvMjh+VEul0WOs3iIX3F3hb8XZ41U/VsWr8dMwwBnCgT27aU36knR7GmGNHv/+DtzE7QVQtyLiTVcbSs2OW3jLLzqAA==",
+            "XQAAAQCNAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+Vxqdivswh+weqM2t5jQa6lgmam1bVV9wqHc/InvQl2sKu4PMzSBInf/tPCmla/f5I0Az0GDK6UDgZAfcRWjUvikob8eZo123xxmWslzTN2EsV7ucaUasOKqw+HthhFvvilDBJC9G/keJ6H8LMR6mrziQ4fBKUAB/XRhlrObU9Qyf7wrqbflXPvhS1yk30F144N+HxQQ=="
+        }
     }
 
     EFGMITEMS["arc9_eft_deagle_xix"] = {
@@ -1306,7 +1329,11 @@ EFGMITEMS = {}
 
         ["caliber"] = ".50 AE",
         ["ammoID"] = "efgm_ammo_50ae",
-        ["defAtts"] = "XQAAAQBxAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+Vxqdivswh+weqM2xeCHfXrhUWtKNsXbe+5XDYmGj0t/koPy+Xq92uCt+K1b4FZ8g/hvjMTFuFnPQCMzIfl7bnx9LzZYJwze3ZyIDflOo/FE/iHGwU1UnEQfokAnehpB6GaY7U+lNnUOmYxuPR8miv/wQgfxpcx+Y="
+        ["defAtts"] = "XQAAAQBxAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+Vxqdivswh+weqM2xeCHfXrhUWtKNsXbe+5XDYmGj0t/koPy+Xq92uCt+K1b4FZ8g/hvjMTFuFnPQCMzIfl7bnx9LzZYJwze3ZyIDflOo/FE/iHGwU1UnEQfokAnehpB6GaY7U+lNnUOmYxuPR8miv/wQgfxpcx+Y=",
+        ["duelAtts"] = {
+            "XQAAAQBxAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+Vxqdivswh+weqM2xeCHfXrhUWtKNsXbe+5XDYmGj0t/koPy+Xq92uCt+K1b4FZ8g/hvjMTFuFnPQCMzIfl7bnx9LzZYJwze3ZyIDflOo/FE/iHGwU1UnEQfokAnehpB6GaY7U+lNnUOmYxuPR8miv/wQgfxpcx+Y=",
+            "XQAAAQC2AQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+Vxqdivswh+weqM2xeCHfXrhUWtKNsXbe+5XDYmGj0t/koPy+Xq92uCt+K1b4FZ8iXVJ3YOj7Vkd9zQDqEnEAp6t01+xSJJFpyndzCDrAp+dNtOlDVS/TmxVl4p8US6G/Jh1bXIymTnQ3z7LF/cMoq5QOBMmRbHLWOMlWrV5G+7+VtbBHLPl6I8IsVDT4lCA=="
+        }
     }
 
     EFGMITEMS["arc9_eft_fn57"] = {
@@ -1327,7 +1354,12 @@ EFGMITEMS = {}
 
         ["caliber"] = "5.7x28",
         ["ammoID"] = "efgm_ammo_57x28",
-        ["defAtts"] = "XQAAAQAMAQAAAAAAAAA9iIIiM7hMNz0dhIkbkvLjTdSR5gRNNIHH3iLx7t5wr3FFXY/9RrihzPm/gZGThPmW/5f0k3e4vh0z8FkTFaDqOgHBWJGFX3r6Fdlg/2RrXUciz4JBF5REP4W2XIDOp389OhAQn3eo0puY/4A="
+        ["defAtts"] = "XQAAAQAMAQAAAAAAAAA9iIIiM7hMNz0dhIkbkvLjTdSR5gRNNIHH3iLx7t5wr3FFXY/9RrihzPm/gZGThPmW/5f0k3e4vh0z8FkTFaDqOgHBWJGFX3r6Fdlg/2RrXUciz4JBF5REP4W2XIDOp389OhAQn3eo0puY/4A=",
+        ["duelAtts"] = {
+            "XQAAAQAMAQAAAAAAAAA9iIIiM7hMNz0dhIkbkvLjTdSR5gRNNIHH3iLx7t5wr3FFXY/9RrihzPm/gZGThPmW/5f0k3e4vh0z8FkTFaDqOgHBWJGFX3r6Fdlg/2RrXUciz4JBF5REP4W2XIDOp389OhAQn3eo0puY/4A=",
+            "XQAAAQAwAQAAAAAAAAA9iIIiM7hMNz0dhIkbkvLjTdSR5gRNNIHH3iLx7t5wr3FFXY/9RrihzPm/gZGThPmW/5f0k3e4vh0z8FkTFaDqOgR3lG59n1bzFCtCM2NN8vNZaNa+bgpRANNYWDqfkwFjR0CnfShs4lemJ+DUuoQrxW3Lg+QuiHzpXvYnYPBrH2I=",
+            "XQAAAQBiAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8EeEdm5bmiqTBRuzRxt+F8mWuW5pT78mO36a/rDlQkGjU+3hq3aegIneKy+1IKF2LMHngLd8aiNGBmm3jfEFmyHTxR095ynOre7GIqXni5HPynKnz4mPVd8Ah9NiuahxolfZyrqLxG4cvFIu2nqWLQJD45ZdWWk2USdu9qa6eyx4w="
+        }
     }
 
     EFGMITEMS["arc9_eft_glock17"] = {
@@ -1348,7 +1380,12 @@ EFGMITEMS = {}
 
         ["caliber"] = "9x19",
         ["ammoID"] = "efgm_ammo_9x19",
-        ["defAtts"] = "XQAAAQBCAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+Vxqdivt1xkDF9J/BRcigS9VhIYXZ5jzcY0QKC4UDg7zw2J4NcnLrn7qGmfbrcIn3ZOxTbRObyQ+TN50SFIJhk4W7/rr4DmKjva9hcJV4mRdtdDl5y7njjTqZ9/obcJWyBUMOHjtHNwFf6XAzu"
+        ["defAtts"] = "XQAAAQBCAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+Vxqdivt1xkDF9J/BRcigS9VhIYXZ5jzcY0QKC4UDg7zw2J4NcnLrn7qGmfbrcIn3ZOxTbRObyQ+TN50SFIJhk4W7/rr4DmKjva9hcJV4mRdtdDl5y7njjTqZ9/obcJWyBUMOHjtHNwFf6XAzu",
+        ["duelAtts"] = {
+            "XQAAAQBCAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+Vxqdivt1xkDF9J/BRcigS9VhIYXZ5jzcY0QKC4UDg7zw2J4NcnLrn7qGmfbrcIn3ZOxTbRObyQ+TN50SFIJhk4W7/rr4DmKjva9hcJV4mRdtdDl5y7njjTqZ9/obcJWyBUMOHjtHNwFf6XAzu",
+            "XQAAAQDgAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+Vxqdivt1xkDFpxgxCVMmCc6mHJmbxBPopDqtTtrLsjxvhXEI6Zo64/LFub3fTXw4gUpCcwOFTJ/wbZ4pp9vZUjiDZj+/PZkNkPeivhaTyTFuRqikHPEYWn8iJ+BZzD78Q9CyuyCyE7zK83YhQeb00Gws7rQcmrASCaS+0yahnhs8ANxDAGDG5yCF059z5h2WXeJfz2yrAU9dKTTZtpdbLvmR4ElqgAA==",
+            "XQAAAQBWAgAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+Vxqdivt1xkDFpxgxCVMmCc6mHJmbxBPopDqtTtrLsj5FW1ESGfIV4Y+Mxc9ze5q3p1kKw7fJ0OojkKMeQBEcE+uYSAs1ZRdIzDMz4N3jISLuNQIHKDn5Ow77gPvD9KDVwfNktJZ/SeYGLwyIm6ngZAAx7bTVTCLz9M4wlZ40quguafHYlMk3NHAMBK7QovwRNhQJZzFlngyvraCQZSFHg+P80+wdUXC5oxUUt1qRYkWEikcrAwurcArE7H29H5ahywA=="
+        }
     }
 
     EFGMITEMS["arc9_eft_glock18c"] = {
@@ -1369,7 +1406,12 @@ EFGMITEMS = {}
 
         ["caliber"] = "9x19",
         ["ammoID"] = "efgm_ammo_9x19",
-        ["defAtts"] = "XQAAAQAuAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+Vxqdivt1xk4SiRjwdbJ+RltR5p3e6xTPK4jcJw9qY6Bkjo4aprpMte/wKgyPzNA+TIK46D/sfb/qyPHGYEpI7eWlZZskfihX3L1xEWEH0uQhZ1CnIYjmkotENPSDug5CKHs0Ulr3f4g3lcmT07gA="
+        ["defAtts"] = "XQAAAQAuAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+Vxqdivt1xk4SiRjwdbJ+RltR5p3e6xTPK4jcJw9qY6Bkjo4aprpMte/wKgyPzNA+TIK46D/sfb/qyPHGYEpI7eWlZZskfihX3L1xEWEH0uQhZ1CnIYjmkotENPSDug5CKHs0Ulr3f4g3lcmT07gA=",
+        ["duelAtts"] = {
+            "XQAAAQAuAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+Vxqdivt1xk4SiRjwdbJ+RltR5p3e6xTPK4jcJw9qY6Bkjo4aprpMte/wKgyPzNA+TIK46D/sfb/qyPHGYEpI7eWlZZskfihX3L1xEWEH0uQhZ1CnIYjmkotENPSDug5CKHs0Ulr3f4g3lcmT07gA=",
+            "XQAAAQCGAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+Vxqdivt1xk4SiRjwdbJ+RltR5p3e6xTPK4jcJw9qY6Bkjo4aprpMte/wKgyPzNA+TIK4Y5dGpQtFuVW8VuP3xpwA4Ww8kjqEPKrUpeLUKo/SlRQJBQq4e94Ln/0aXyh/I4OTAKrcVqmi8jChOfoPajgNxEBRWa8RUgrP4WiPw6mMuAQUuht9k7EODUiNvNmQ=",
+            "XQAAAQB+AQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+Vxqdivt1xk4SiRjwdbJ+RltR5p3e6xTPK4jcJw9qY6Bkjo4aprpMte/wKgyPzNA+TIK4Y5av0O10DHf5UzU3fQ7hJXEjBwii2DH940sfjw0SAy8LeT4T5luQOGo+JD6VB+UZa+dFTCkIPCEKPU35q4l1DQDa66Oo39wWDeStdi5vG4wU1QfVdpQz6M4qHwgA="
+        }
     }
 
     EFGMITEMS["arc9_eft_glock19x"] = {
@@ -1390,7 +1432,11 @@ EFGMITEMS = {}
 
         ["caliber"] = "9x19",
         ["ammoID"] = "efgm_ammo_9x19",
-        ["defAtts"] = "XQAAAQAqAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+Vxqdivt1xlyTi2kEhSDJ0/hjFF+ZhmDnWCz/XusxgpHtc5BJM3wDICpGycXMrvH9E1L9NKRh70J5M7syVS/SO+SoYGiVU1WhrrhKYepHGjrFocqvFzPAhbv6IyvMcLkdzussozVm0VRU="
+        ["defAtts"] = "XQAAAQAqAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+Vxqdivt1xlyTi2kEhSDJ0/hjFF+ZhmDnWCz/XusxgpHtc5BJM3wDICpGycXMrvH9E1L9NKRh70J5M7syVS/SO+SoYGiVU1WhrrhKYepHGjrFocqvFzPAhbv6IyvMcLkdzussozVm0VRU=",
+        ["duelAtts"] = {
+            "XQAAAQAqAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+Vxqdivt1xlyTi2kEhSDJ0/hjFF+ZhmDnWCz/XusxgpHtc5BJM3wDICpGycXMrvH9E1L9NKRh70J5M7syVS/SO+SoYGiVU1WhrrhKYepHGjrFocqvFzPAhbv6IyvMcLkdzussozVm0VRU=",
+            "XQAAAQBBAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+Vxqdivt1xlyTi2kEhSDJ0/hjFF+ZhmDnWCz/XusxgpHtc5BJM3wDICpGycXMrvH8wa0M293Xh9xlbpHZ67MnZYKA240OlYhhYxsci8OBBQmlDyCWLfz0leu27UEg1kCv8c2W2wZ3qs0drEWtz/Rf4oT2TYOsb/f7YO8wA"
+        }
     }
 
     EFGMITEMS["arc9_eft_usp"] = {
@@ -1411,7 +1457,12 @@ EFGMITEMS = {}
 
         ["caliber"] = ".45",
         ["ammoID"] = "efgm_ammo_45",
-        ["defAtts"] = "XQAAAQCvAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+VxqdivzBHMTRxglFdvimLKcy1jyOrRsYPl3qRiyX4XvjyVJvyHklho+t8gVZExOXjbfMkt+e9MdetDvqhYhw4iEVFfHmEe4ABTlm9B4kQRHkUBMLkfXdinWNgD3hmkMtGlR4KynTRLT3yBnmgN2LpPMtWEaBY52V7UG6lgA=="
+        ["defAtts"] = "XQAAAQCvAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+VxqdivzBHMTRxglFdvimLKcy1jyOrRsYPl3qRiyX4XvjyVJvyHklho+t8gVZExOXjbfMkt+e9MdetDvqhYhw4iEVFfHmEe4ABTlm9B4kQRHkUBMLkfXdinWNgD3hmkMtGlR4KynTRLT3yBnmgN2LpPMtWEaBY52V7UG6lgA==",
+        ["duelAtts"] = {
+            "XQAAAQCvAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+VxqdivzBHMTRxglFdvimLKcy1jyOrRsYPl3qRiyX4XvjyVJvyHklho+t8gVZExOXjbfMkt+e9MdetDvqhYhw4iEVFfHmEe4ABTlm9B4kQRHkUBMLkfXdinWNgD3hmkMtGlR4KynTRLT3yBnmgN2LpPMtWEaBY52V7UG6lgA==",
+            "XQAAAQC0AgAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+VxqdivzBHMTR2TEtlOqQIs8UVemBdqRlN8srGGNpzS/0YO3wUlo4Yru6Js7l0h+dNl42m7wEjFYkHeFrELJh1fzTVi6VYmYyXwS6dXq+p5NEDRssUnQ78byLtVF2rasmfVR3Ncb6F+J9VYGcsok6wChT5A/eHrz+jP15DbpTPXi8T6lrIgVXO0YGegsAnCiX/nO3cYUeednfWz1OMslCnvaIEVYURSAoLO71T2RWT3K3Vc7sh/UrQ1efXwvwlkzYfwrPtp/GE2ng4cBQ=",
+            "XQAAAQD8AQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+VxqdivzBHMTRSlQg+APRZ8sqkax4RYs5p7Oih4r5NWOtIthU1rGG15I2j6iY/65K2eojQN1gVoIApID5L0LD7TZVQ2oTZgUmxcr3pwGhwIoXFml8WfWgsI6TgNCGUQo2rKLxom0N0YZvfIOkgJNIgaWu4Xo9d8YyO02K23TFWCMJSnqE2kHPwIeiXbnI3kubHWAA="
+        }
     }
 
     EFGMITEMS["arc9_eft_pl15"] = {
@@ -1432,7 +1483,11 @@ EFGMITEMS = {}
 
         ["caliber"] = "9x19",
         ["ammoID"] = "efgm_ammo_9x19",
-        ["defAtts"] = "XQAAAQAbAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+VxqdivxOSNEdVv0L37daJtxpkfSMuD7nd72zoac4KV1tNG0hnWlS9vugxfb2i5nikGPX/x7fgjwzzvtOLnl9U+WgreiAiqVOJ9kq/5obz9InMIAXOjbfPysfPs4rMWPK8DUOL"
+        ["defAtts"] = "XQAAAQAbAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+VxqdivxOSNEdVv0L37daJtxpkfSMuD7nd72zoac4KV1tNG0hnWlS9vugxfb2i5nikGPX/x7fgjwzzvtOLnl9U+WgreiAiqVOJ9kq/5obz9InMIAXOjbfPysfPs4rMWPK8DUOL",
+        ["duelAtts"] = {
+            "XQAAAQAbAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+VxqdivxOSNEdVv0L37daJtxpkfSMuD7nd72zoac4KV1tNG0hnWlS9vugxfb2i5nikGPX/x7fgjwzzvtOLnl9U+WgreiAiqVOJ9kq/5obz9InMIAXOjbfPysfPs4rMWPK8DUOL",
+            "XQAAAQBUAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+VxqdivxOSNEdV0u4UEBWX2AdVZQ4BakmQijfL7sTTm+wFn9M8fxO9HY5yvWlCbUa/H1V1VDh8lkLqIZa3AryyReTVNbLiScGgC9rOzQEPiY56Ohrx5HNDQGp8TQdVfuEjSwYbqphOdgh1/4tF2YyQlBYs3zcOO9IQS7hwD4Wh"
+        }
     }
 
     EFGMITEMS["arc9_eft_pm"] = {
@@ -1453,7 +1508,11 @@ EFGMITEMS = {}
 
         ["caliber"] = "9x18",
         ["ammoID"] = "efgm_ammo_9x18",
-        ["defAtts"] = "XQAAAQDfAAAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8N0MrcAX4ZC/nXwXwJMUX9VzIJ9eJoIzCxxdGJugl7TlFzel6UwwEdsDy/8G80rRx4/ISGjd3kGS6R64Nw6B+419FI8Iuegof64zUxQc/BQvc+KZA="
+        ["defAtts"] = "XQAAAQDfAAAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8N0MrcAX4ZC/nXwXwJMUX9VzIJ9eJoIzCxxdGJugl7TlFzel6UwwEdsDy/8G80rRx4/ISGjd3kGS6R64Nw6B+419FI8Iuegof64zUxQc/BQvc+KZA=",
+        ["duelAtts"] = {
+            "XQAAAQDfAAAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8N0MrcAX4ZC/nXwXwJMUX9VzIJ9eJoIzCxxdGJugl7TlFzel6UwwEdsDy/8G80rRx4/ISGjd3kGS6R64Nw6B+419FI8Iuegof64zUxQc/BQvc+KZA=",
+            "XQAAAQB0AQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8N0MrcAX4ZC/nXwXwJMUX9VzIJ9eJoIzCxxdGJdo2ufhTgcMM10pyhJR8ejQ4/BHWRr05Xrj5F5rlCasHL+WlmxqxhhWQg0TBtaQEd7lTntmzVQj4EXMFfp5F223sHNdigXnngUW+M9HmsGtOp89yarZaPiE7Zz9qJPVOozJxnqQug"
+        }
     }
 
     EFGMITEMS["arc9_eft_mp443"] = {
@@ -1474,7 +1533,11 @@ EFGMITEMS = {}
 
         ["caliber"] = "9x19",
         ["ammoID"] = "efgm_ammo_9x19",
-        ["defAtts"] = "XQAAAQCKAAAAAAAAAAA9iIIiM7hMNz0dhIkbkvLjTdSR5gRNNIHH3iMsviapv77xMa1x/jpy6bAjUW6sPbpwOYKac6uJtf5N1dKAFULp44UjPYFMBCK134yz1vswcmhn56o/AA=="
+        ["defAtts"] = "XQAAAQCKAAAAAAAAAAA9iIIiM7hMNz0dhIkbkvLjTdSR5gRNNIHH3iMsviapv77xMa1x/jpy6bAjUW6sPbpwOYKac6uJtf5N1dKAFULp44UjPYFMBCK134yz1vswcmhn56o/AA==",
+        ["duelAtts"] = {
+            "XQAAAQCKAAAAAAAAAAA9iIIiM7hMNz0dhIkbkvLjTdSR5gRNNIHH3iMsviapv77xMa1x/jpy6bAjUW6sPbpwOYKac6uJtf5N1dKAFULp44UjPYFMBCK134yz1vswcmhn56o/AA==",
+            "XQAAAQDrAAAAAAAAAAA9iIIiM7hMNz0dhIkbkvLjTdSR5gRNNIHH3iMsviapv77xMa1x/jpy6bAjUW6sPbpwOYKac6uJtf5P3hdFv6loQIet59iaTQLE2b7q/txw8i726Rg2g2mCmOqVGGnR783zDbIPAKSr1RCm7iyXecxw2YicC7zuGSJ7srM0hm38AA=="
+        }
     }
 
     EFGMITEMS["arc9_eft_pb"] = {
@@ -1495,7 +1558,11 @@ EFGMITEMS = {}
 
         ["caliber"] = "9x18",
         ["ammoID"] = "efgm_ammo_9x18",
-        ["defAtts"] = "XQAAAQCwAAAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8Nz6D0gX5ySkZNvQ9kVxN2oB2e+x5mololx5+0qIIQff+f9wIHQK6as1lei0/0i8/97/7VIpwTc/v8m0jOypdFCAMSb8RdVo4qB+kRFA=="
+        ["defAtts"] = "XQAAAQCwAAAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8Nz6D0gX5ySkZNvQ9kVxN2oB2e+x5mololx5+0qIIQff+f9wIHQK6as1lei0/0i8/97/7VIpwTc/v8m0jOypdFCAMSb8RdVo4qB+kRFA==",
+        ["duelAtts"] = {
+            "XQAAAQCwAAAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8Nz6D0gX5ySkZNvQ9kVxN2oB2e+x5mololx5+0qIIQff+f9wIHQK6as1lei0/0i8/97/7VIpwTc/v8m0jOypdFCAMSb8RdVo4qB+kRFA==",
+            "XQAAAQCxAAAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8Nz6D0gX5ySkZNvQ9kVxN2oB2e+x5mololx5+0qIIQff+f9wIHQK6as1lei0/0i8/975F2tjSq3ncrM7oVW9zIoitN6vIXyoxm0l4TrQA="
+        }
     }
 
     EFGMITEMS["arc9_eft_rsh12"] = {
@@ -1516,7 +1583,11 @@ EFGMITEMS = {}
 
         ["caliber"] = "12.7x55",
         ["ammoID"] = "efgm_ammo_127x55",
-        ["defAtts"] = "XQAAAQCSAAAAAAAAAAA9iIIiM7hMNz0dhJSTKmZ7v+v6J9rfJDxrK5jGCg9Ongj2ouH9rTzyEctbtT8fV//t2AQ2AZxawi8qmKMSgUzbkr8ItspwpeCSHI3kSOweFs81HRO3DZClNaakAA=="
+        ["defAtts"] = "XQAAAQCSAAAAAAAAAAA9iIIiM7hMNz0dhJSTKmZ7v+v6J9rfJDxrK5jGCg9Ongj2ouH9rTzyEctbtT8fV//t2AQ2AZxawi8qmKMSgUzbkr8ItspwpeCSHI3kSOweFs81HRO3DZClNaakAA==",
+        ["duelAtts"] = {
+            "XQAAAQCSAAAAAAAAAAA9iIIiM7hMNz0dhJSTKmZ7v+v6J9rfJDxrK5jGCg9Ongj2ouH9rTzyEctbtT8fV//t2AQ2AZxawi8qmKMSgUzbkr8ItspwpeCSHI3kSOweFs81HRO3DZClNaakAA==",
+            "XQAAAQAkAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8NV4/QsCrClhAsuCgVS8l5its18eN63xCobOvEHPEkbvX65EpSQLaHIVhih4Mdjz1lJP0LH6JEez/KjEIuil8NrwkDI+6DF9PGXGzxnVHBilwJcQdP9v0yrORkyZ14a9YvEF11AZfbn49eIKi/YqvlIi8cq1BBjvuUcgtXGScHgaV1"
+        }
     }
 
     EFGMITEMS["arc9_eft_p226r"] = {
@@ -1537,7 +1608,12 @@ EFGMITEMS = {}
 
         ["caliber"] = "9x19",
         ["ammoID"] = "efgm_ammo_9x19",
-        ["defAtts"] = "XQAAAQBMAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+VxqdivxKVF5T+C7zd3vec1rvrAoEdFGwNxOIARyiqMLUYwCcRpAng5F3a8P++FMOSod0D0BXl1e77r2cWTrbxmXSuPJVJXprMK9aBhNpA5UGQXVURYk9qsVNl6LiGhdn8PS8HDLdoOpE1cAfNLxO8yZs="
+        ["defAtts"] = "XQAAAQBMAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+VxqdivxKVF5T+C7zd3vec1rvrAoEdFGwNxOIARyiqMLUYwCcRpAng5F3a8P++FMOSod0D0BXl1e77r2cWTrbxmXSuPJVJXprMK9aBhNpA5UGQXVURYk9qsVNl6LiGhdn8PS8HDLdoOpE1cAfNLxO8yZs=",
+        ["duelAtts"] = {
+            "XQAAAQBMAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+VxqdivxKVF5T+C7zd3vec1rvrAoEdFGwNxOIARyiqMLUYwCcRpAng5F3a8P++FMOSod0D0BXl1e77r2cWTrbxmXSuPJVJXprMK9aBhNpA5UGQXVURYk9qsVNl6LiGhdn8PS8HDLdoOpE1cAfNLxO8yZs=",
+            "XQAAAQCIAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+VxqdivxKVF5T+H7ja5EdcpulhMKD2oQkcKvPK52DSF2Mijs4tmKtO45ZtMp6B7OVpSJ6ZKJOdVlr8lK+LY1Y9G9lH1sMQxL6msLsOTU+XoFeZS6rIuCXVJzEH+pDqnACpVuJwRM+2/bDxLRjYk4mQ4tRQc/dsQUMIhb+Tq/OzT6JUUgJOybtcPrhzpaOyiXdQ",
+            "XQAAAQDMAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LmM+VxqdivxKVF5T+H7ja5EdcpulhMKD2oQkcKvPK52DSF1eELwEg1scDqiuAJ30n4oQEtpXWWsudlT1YUpRWbvR5am7z/+E+6D82nzKyBBk2+CgjGelHLsJYIeX2ibg3h/i3fm8Ue4aLjqty4yE9Gz8ELPuQpAAW9elMRmhS6kbmorGhVB7DiJyirCHNb30XCFRIOWzu0IT5nl80RaMueVBMqjMeAA=="
+        }
     }
 
     EFGMITEMS["arc9_eft_sr1mp"] = {
@@ -1558,7 +1634,11 @@ EFGMITEMS = {}
 
         ["caliber"] = "9x21",
         ["ammoID"] = "efgm_ammo_9x21",
-        ["defAtts"] = "XQAAAQBXAAAAAAAAAAA9iIIiM7hMNz0dhIkbkvLjTdSR5gRNNIHH3iMsviZ+8MTSN7UCyyRm0aGA+jNdSGXjQWiRJbBIjQEMikyPT7J/h14DxwI6DqLvMGhtAA=="
+        ["defAtts"] = "XQAAAQBXAAAAAAAAAAA9iIIiM7hMNz0dhIkbkvLjTdSR5gRNNIHH3iMsviZ+8MTSN7UCyyRm0aGA+jNdSGXjQWiRJbBIjQEMikyPT7J/h14DxwI6DqLvMGhtAA==",
+        ["duelAtts"] = {
+            "XQAAAQBXAAAAAAAAAAA9iIIiM7hMNz0dhIkbkvLjTdSR5gRNNIHH3iMsviZ+8MTSN7UCyyRm0aGA+jNdSGXjQWiRJbBIjQEMikyPT7J/h14DxwI6DqLvMGhtAA==",
+            "XQAAAQBbAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8NV4/QsCrW0jf7dDYPzyaWPypBQdrOAHkcVLWt8WEHYm6VLC/saLIwfnJQ8fr/NEk+mh1wV5a/ltgaBsHWZZ2UMLnFG/cMm+SH3ergMDRo2nTx8UMKx9wCoMW7UCzhcHVj2+gOTrghfHXi2Xaw19Xt16tL60lg"
+        }
     }
 
     EFGMITEMS["arc9_eft_apb"] = {
@@ -1579,7 +1659,7 @@ EFGMITEMS = {}
 
         ["caliber"] = "9x18",
         ["ammoID"] = "efgm_ammo_9x18",
-        ["defAtts"] = "XQAAAQBBAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LceiiH+OYU8CKsAUrAdr/tENAyThefN6cDVAvNEE2F5mDkS3Rk1uREfnqeAx7q76URnhkxW9ezdHaZGJlkZD9FmCgkjjCQDJ1B0mOn3eT4vC72j3iq1TLR4PqnlLWvjo9JegVAA=="
+        ["defAtts"] = "XQAAAQBBAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LceiiH+OYU8CKsAUrAdr/tENAyThefN6cDVAvNEE2F5mDkS3Rk1uREfnqeAx7q76URnhkxW9ezdHaZGJlkZD9FmCgkjjCQDJ1B0mOn3eT4vC72j3iq1TLR4PqnlLWvjo9JegVAA==",
     }
 
     EFGMITEMS["arc9_eft_aps"] = {
@@ -1621,7 +1701,11 @@ EFGMITEMS = {}
 
         ["caliber"] = "7.62x25",
         ["ammoID"] = "efgm_ammo_762x25",
-        ["defAtts"] = "XQAAAQC/AAAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8Oc2p/mgB/xAKAv4zbPEDsMJKGrN0dVZcBOr2DjQYRbMT4MiiumWQx+UK95/Nvc39bwvVU1RkDteZAwlo0mn6ASN/g31UowrgJXSPvZCEto68A"
+        ["defAtts"] = "XQAAAQC/AAAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8Oc2p/mgB/xAKAv4zbPEDsMJKGrN0dVZcBOr2DjQYRbMT4MiiumWQx+UK95/Nvc39bwvVU1RkDteZAwlo0mn6ASN/g31UowrgJXSPvZCEto68A",
+        ["duelAtts"] = {
+            "XQAAAQC/AAAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8Oc2p/mgB/xAKAv4zbPEDsMJKGrN0dVZcBOr2DjQYRbMT4MiiumWQx+UK95/Nvc39bwvVU1RkDteZAwlo0mn6ASN/g31UowrgJXSPvZCEto68A",
+            "XQAAAQAqAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8Oc2p/mgB/xAKAv4zbPEDxyOZoJ58U8oki/2eQkt8Lzck2Kx2n8cnyybSAD6yICbRior8KjznzoqXiw41VmvxR4toZTQuT6doYQ2vCd/hOoi6nZJcI1TvsTyr/xrDFRS14qa+K7Z8b5n2lMAA="
+        }
     }
 
     EFGMITEMS["arc9_eft_cr200ds"] = {
@@ -1663,7 +1747,11 @@ EFGMITEMS = {}
 
         ["caliber"] = ".357",
         ["ammoID"] = "efgm_ammo_357",
-        ["defAtts"] = "XQAAAQD0AAAAAAAAAAA9iIIiM7hMNz0dhIkbkvLjTdSR5gRNNIHH3iMxyb1USyArYDmk731f5dmwXd1V2F4KB2PoMgWnJCTwClBVT2CAhNumNQnOhBgvFvtbRSBdDSX/JEhDflFLZp4RsgU48ZBAfbFtCxzD2A=="
+        ["defAtts"] = "XQAAAQD0AAAAAAAAAAA9iIIiM7hMNz0dhIkbkvLjTdSR5gRNNIHH3iMxyb1USyArYDmk731f5dmwXd1V2F4KB2PoMgWnJCTwClBVT2CAhNumNQnOhBgvFvtbRSBdDSX/JEhDflFLZp4RsgU48ZBAfbFtCxzD2A==",
+        ["duelAtts"] = {
+            "XQAAAQD0AAAAAAAAAAA9iIIiM7hMNz0dhIkbkvLjTdSR5gRNNIHH3iMxyb1USyArYDmk731f5dmwXd1V2F4KB2PoMgWnJCTwClBVT2CAhNumNQnOhBgvFvtbRSBdDSX/JEhDflFLZp4RsgU48ZBAfbFtCxzD2A==",
+            "XQAAAQCFAQAAAAAAAAA9iIIiM7hMNz0dhIkbkvLjTdSR5gRNNIHH3iMxyb1USyArYDmk731f5dmwXd1V2F4KB2PoMgWnJCTwClBVT2CAhNumNQnOhBgu/7FQ2ztjsGXlZAaPcWUFF9+/ao7A9doMqPeW0mMTn0pbP7RJxwnW6bVp9fYeLsGdptb+14wuerxIY+Q33w1Q9AcI/K7PUhJhgSmMJ9kLTnXRC7Lz0AA="
+        }
     }
 
     -- shotguns
@@ -1790,7 +1878,11 @@ EFGMITEMS = {}
 
         ["caliber"] = "12/70",
         ["ammoID"] = "efgm_ammo_12gauge",
-        ["defAtts"] = "XQAAAQCFAAAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8NV9tY8mxdjo2DonfYbDKLCbCIbLM3cKUS2n/zqm05+D37Ngjxrrie0dZPauCRtFna98ClsfTrXDgm4SYU6WFi4y8Lhhc7uOLu6w=="
+        ["defAtts"] = "XQAAAQCFAAAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8NV9tY8mxdjo2DonfYbDKLCbCIbLM3cKUS2n/zqm05+D37Ngjxrrie0dZPauCRtFna98ClsfTrXDgm4SYU6WFi4y8Lhhc7uOLu6w==",
+        ["duelAtts"] = {
+            "XQAAAQCFAAAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8NV9tY8mxdjo2DonfYbDKLCbCIbLM3cKUS2n/zqm05+D37Ngjxrrie0dZPauCRtFna98ClsfTrXDgm4SYU6WFi4y8Lhhc7uOLu6w==",
+            "XQAAAQCLAAAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8NV9tY8mxdjo2DonfYbDKLCbCIbLM3cKUS2n/zqm05+D37Ngjxrrie0dZPauCR2SmPy17Qfdy8/LlpSYG12E65z8SeuWgKfuz0qtXhahfo"
+        }
     }
 
     EFGMITEMS["arc9_eft_mr43"] = {
@@ -1990,7 +2082,11 @@ EFGMITEMS = {}
 
         ["caliber"] = ".338",
         ["ammoID"] = "efgm_ammo_338",
-        ["defAtts"] = "XQAAAQDhAwAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LcsYCbthEf9oFSoSxAkrJ5MHEtbkpwPQvQB1xFtCyk1QLE+imKyPumFPHpcXKuIe+j4b3sDvYqfe7IxMhskP2yHt/GS6VwCdLv1JnbWDvOkzqVT0vfDRHIIBDfbBCeWE8UAItC5RpezcbUMzJe3DEJiZN6RO2H0yuwdj5fc6uqC17vEP2AFNDhK/TKz9ahfIuuo8wZ77EN1GK2LnmvIDyXyP4GEUWCnMW227BnoYs50TuigRg/r1bitCvXeRVhepEt2M/Wg=="
+        ["defAtts"] = "XQAAAQDhAwAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LcsYCbthEf9oFSoSxAkrJ5MHEtbkpwPQvQB1xFtCyk1QLE+imKyPumFPHpcXKuIe+j4b3sDvYqfe7IxMhskP2yHt/GS6VwCdLv1JnbWDvOkzqVT0vfDRHIIBDfbBCeWE8UAItC5RpezcbUMzJe3DEJiZN6RO2H0yuwdj5fc6uqC17vEP2AFNDhK/TKz9ahfIuuo8wZ77EN1GK2LnmvIDyXyP4GEUWCnMW227BnoYs50TuigRg/r1bitCvXeRVhepEt2M/Wg==",
+        ["duelAtts"] = {
+            "XQAAAQASBAAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LcsYCbthEf9oFSoSxAkrJ5MHEtbkpwPQvQB1xFtCyk1QLE+imKyPumFPHpcXKuIe+j4b3sDvYqfe7IxMhskP2yHt/GS6VwCdLv1JnbWDvOkzqVT0vfDRHIIBDfbBCeWE8UAItC5RpezcbUMzJe28YU0xgjDFWbExm2u/gb9U/wevno60RRm+ZJBC5NZv+cR1z5nzlmvFbVzkYxg63fxY+NhWBlpjeWfSTIO++jiNhCifU6ensxTngEFH1RzN711tW8p/u2xq/rbSUd/eQ1VVbmK9u7TWI",
+            "XQAAAQA1BAAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8LcsYCbthEf9oFSoSxAkrJ5MHEtbkpwPQvQB1xFtCyk1QLE+imKyPumFPHpcXKuIe+j4b3sDvYqfe7IxMhskP2yHt/GS6VwCdLv1JnbWDvOkzqVT0vfDRHIIBDfbBCeWE8UAItC5RpezcbUMzJe3AFnpYnw44e0qAkoHrd3XzcghU9YIJPUs+hVRyiLOLFcklIZFFyRLGQw6s5UZkrPw3px8GAdz7kjHV6vRZWGLGYxEc9xXhEtAb7L7+0ZoSLMVq1VhvqhABAlru18JdFq9YZUAWzZkWralkREtaXGcQSYoRC1Ig="
+        }
     }
 
         EFGMITEMS["arc9_eft_ak50"] = {
@@ -2014,7 +2110,11 @@ EFGMITEMS = {}
 
         ["caliber"] = ".50 BMG",
         ["ammoID"] = "efgm_ammo_50bmg",
-        ["defAtts"] = "XQAAAQAJAgAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8MZPzvHDqVW9Zr+l1XqbTku0XrI40dVyapGHi+sNSHLbu8NvEE+5m/7y1Uc3pCqoaAsC9b1LCp3S5vzlKWdbSHnSMBTjM4TqruOeDpGWYwCaEEuqRZtK1OS0OmXLEYJEDTDufsiz9zMrLV4gApem0FhjHku3hIRvpAKQj03bppFtFbgk+LHUc9gyCB"
+        ["defAtts"] = "XQAAAQAJAgAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8MZPzvHDqVW9Zr+l1XqbTku0XrI40dVyapGHi+sNSHLbu8NvEE+5m/7y1Uc3pCqoaAsC9b1LCp3S5vzlKWdbSHnSMBTjM4TqruOeDpGWYwCaEEuqRZtK1OS0OmXLEYJEDTDufsiz9zMrLV4gApem0FhjHku3hIRvpAKQj03bppFtFbgk+LHUc9gyCB",
+        ["duelAtts"] = {
+            "XQAAAQA8AgAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8MZPzvHDqVW9Zr+l1XqbTku0XrI40dVyapGHi+sNSHLbu8NvEE+5m/7y1Uc3pCqoaAsC9b1LCp3S5Txn8NjJYH/6pQXKDLp6jucIbFAcmLjPE3b7aW6sgZznpX0Zh+SG1Rr8j5KkZwMJuDKYK3pxdQLGwisbbonodoVI57Hj8e6+1WOaQF7I/0GIzcd/8WZOMuv1EZeJqxu4k+vZ8/HW1/Qj1MTQ==",
+            "XQAAAQB3AgAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8MZPzvHDqVW9Zr+l1XqbTku0XrI40dVyapGHi+sNSHLbu8NvEE+5m/7y1Uc3pCqoaAsC9b1LCp3S5vismXf9ofdl7aRaqslHmhDr9zAlS9nSaPhuJy8YoAonhtSnNisGuBejm8wpU5RMbVC/KQLgeZu98Tz3zKZZySwH/Kl23HwjESn6xPeEtHtqdkppYkUP3hRGRL9Y/LVeD2sfyuQzh1KNDWPx0rHjr1t+00LwA="
+        }
     }
 
     EFGMITEMS["arc9_eft_g28"] = {
@@ -2081,7 +2181,11 @@ EFGMITEMS = {}
 
         ["caliber"] = "7.62x51",
         ["ammoID"] = "efgm_ammo_762x51",
-        ["defAtts"] = "XQAAAQCKAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8L6/0wnr/Jsa1p1kHyfvXikOJS7PNC7qaXt4+w3qSztc3+cFQrBWa+C57ISiJHQGQP8/jtqaT4Ps7YabTcGDFQZbKeE7+q+jP4p/y+1HWCJQ1+yUopZIsi7MgifhFwXRiugBfSx/+G1bRwBjHcYWTFVatptm2ErIrcX1G4pKoVaJpkjG4B///SSYIsBbVA"
+        ["defAtts"] = "XQAAAQCKAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8L6/0wnr/Jsa1p1kHyfvXikOJS7PNC7qaXt4+w3qSztc3+cFQrBWa+C57ISiJHQGQP8/jtqaT4Ps7YabTcGDFQZbKeE7+q+jP4p/y+1HWCJQ1+yUopZIsi7MgifhFwXRiugBfSx/+G1bRwBjHcYWTFVatptm2ErIrcX1G4pKoVaJpkjG4B///SSYIsBbVA",
+        ["duelAtts"] = {
+            "XQAAAQDPAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8L6/0wnr/Jsa1p1kHyfvXikOJS7PNC7qaXt4+w3qSztc3+cFQrBWa+C57ISiJHQGQP8/jtqaT4Ps7YabTcGDFQZbKeE7+q+jP4p/y+1HWCJQ1+yUopZIuaMnDKcnZKoVLngqtXvRkNPyVlatMYp+gYHnPxEGal4zfAfsgzGqmKTfrw3R8ukBglMW7cEQGM2ZJSlp71KpHPfpa4oA==",
+            "XQAAAQClAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8L6/0wnr/Jsa1p1kHyfvXkjj0kodlUtMYcOfYnzMc2iKb3U3KJo+nPdch/AoQfXnFzlhZIUZkdQpsvekFrKuvBvzK9y9SwRii201MeisQqiPc7TyU44/orrzuEEE1VAv2faZE5rDXlGe4vUVN7SpRe06jyWBmiAATzPw8r9/r+0SPprqOe6s87vZCTId6He2MoLTws8x2hRn892Ug5C77y"
+        }
     }
 
     EFGMITEMS["arc9_eft_mk18_mjolnir"] = {
@@ -2127,7 +2231,11 @@ EFGMITEMS = {}
 
         ["caliber"] = "7.62x54",
         ["ammoID"] = "efgm_ammo_762x54",
-        ["defAtts"] = "XQAAAQBmAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8NV4+pY+0XkZKHWxkZKCKF0+Ob5fNs3s5OFKWT+HASlx6CN4+PJGFPkL3i5sLLz+TOvImFE2UK7JKi1QOyK1JJP3tN/dQxofSuCMLUjYAvvlOko63tO1HwDkD4IoUYtSvcGXUy5gvrkEDaCMnpVA=="
+        ["defAtts"] = "XQAAAQBmAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8NV4+pY+0XkZKHWxkZKCKF0+Ob5fNs3s5OFKWT+HASlx6CN4+PJGFPkL3i5sLLz+TOvImFE2UK7JKi1QOyK1JJP3tN/dQxofSuCMLUjYAvvlOko63tO1HwDkD4IoUYtSvcGXUy5gvrkEDaCMnpVA==",
+        ["duelAtts"] = {
+            "XQAAAQBmAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8NV4+pY+0XkZKHWxkZKCKF0+Ob5fNs3s5OFKWT+HASlx6CN4+PJGFPkL3i5sLLz+TOvImFE2UK7JKi1QOyK1JJP3tN/dQxofSuCMLUjYAvvlOko63tO1HwDkD4IoUYtSvcGXUy5gvrkEDaCMnpVA==",
+            "XQAAAQAuAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8NV4+pY+0XkZKHWxkZKAhCBv+b5fNs3s5OFKWT+HASlx6CN4+PJGFPkFXYNn3M/60zKLcFSWviKJ88AbbHFhmcMHG3tbipY+cpN7b4esHToYHWGLFz8Clcb6tWZwWyE0xSv7aFkpv1XndujBJYsLQo3QKHYw=="
+        }
     }
 
     EFGMITEMS["arc9_eft_mosin_sniper"] = {
@@ -2148,7 +2256,11 @@ EFGMITEMS = {}
 
         ["caliber"] = "7.62x54",
         ["ammoID"] = "efgm_ammo_762x54",
-        ["defAtts"] = "XQAAAQBmAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8NV4+pY+0XkZKHWxkZKCKF0+Ob5fNs3s5OFKWT+HASlx6CN4+PJGFPkL3i5sLLz+TOvImFE2UK7JKi1QOyK1JJP3vegGGaON+2VPul/8++WqyUZNeaa6DChd06BdK8dCBUUYi/z5yiDWpIYeeA"
+        ["defAtts"] = "XQAAAQBmAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8NV4+pY+0XkZKHWxkZKCKF0+Ob5fNs3s5OFKWT+HASlx6CN4+PJGFPkL3i5sLLz+TOvImFE2UK7JKi1QOyK1JJP3vegGGaON+2VPul/8++WqyUZNeaa6DChd06BdK8dCBUUYi/z5yiDWpIYeeA",
+        ["duelAtts"] = {
+            "XQAAAQBmAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8NV4+pY+0XkZKHWxkZKCKF0+Ob5fNs3s5OFKWT+HASlx6CN4+PJGFPkL3i5sLLz+TOvImFE2UK7JKi1QOyK1JJP3vegGGaON+2VPul/8++WqyUZNeaa6DChd06BdK8dCBUUYi/z5yiDWpIYeeA",
+            "XQAAAQAFAgAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8NV4+pY+0XkZKHWxkZKCKF0+Ob5fNs3s5OFKWT+HASlx6CN4+PJGFPkL3i5sLLz+TOvImFE2UK7JKi1QOyK1JJP3vegGGaON+2VPul/8++Wqx9hst5jXl1HwfEXbZrtPBcOmFxktp4YaxyzxZh2WJ6on06Eml+fTHIL80GqdpACZhTYgTmBHnMXqqNTwES6svKBj8A"
+        }
     }
 
     EFGMITEMS["arc9_eft_mp18"] = {
@@ -2169,7 +2281,11 @@ EFGMITEMS = {}
 
         ["caliber"] = "7.62x54",
         ["ammoID"] = "efgm_ammo_762x54",
-        ["defAtts"] = "XQAAAQDiAAAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8NV6VfczERS4GZYjxV/r216Up0BZRyLU8Dd5/9fAAPNftYJczs1AaTA/zqPr5a6PhnJBEbni2Tbknz12sfUGtXzyYmLojKU77pXszKSY9zLBhn2yCAJujtDC+tQwW5S24WoA=="
+        ["defAtts"] = "XQAAAQDiAAAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8NV6VfczERS4GZYjxV/r216Up0BZRyLU8Dd5/9fAAPNftYJczs1AaTA/zqPr5a6PhnJBEbni2Tbknz12sfUGtXzyYmLojKU77pXszKSY9zLBhn2yCAJujtDC+tQwW5S24WoA==",
+        ["duelAtts"] = {
+            "XQAAAQDiAAAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8NV6VfczERS4GZYjxV/r216Up0BZRyLU8Dd5/9fAAPNftYJczs1AaTA/zqPr5a6PhnJBEbni2Tbknz12sfUGtXzyYmLojKU77pXszKSY9zLBhn2yCAJujtDC+tQwW5S24WoA==",
+            "XQAAAQAtAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8NV6VfczERS4GZYjxV/r216Up0BZRyLU8Dd5/9fAAPNftYJczs1AaTA/zqPr5a6PhnI3bQoFKvjgSDb9Fm8zNHDLagqBus0m14DQwEFR9Sa5mU26tT8EXUNpz0/PG+tzJisXNqVFQ6luRu1BAswGXlyBVXRT6CbGucj0Kg"
+        }
     }
 
     EFGMITEMS["arc9_eft_t5000"] = {
@@ -2190,7 +2306,11 @@ EFGMITEMS = {}
 
         ["caliber"] = "7.62x51",
         ["ammoID"] = "efgm_ammo_762x51",
-        ["defAtts"] = "XQAAAQBTAwAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8ObRiu3tibt3IP5oBbAn23oHzYA8d1/1rQ/6F6KFMvcaM/pLh9ayXkhgZ14kGEirPqWpP/6dxSMYHyxausiP7ggK1p8DCF9BmSb4P3uaSQI9UKX1Tr7qt2eR2Yx9fs4nwR58vTFh2I8lu11HcNFQaAswMKFbD2SaXMhqfJwu83TYJB1+grgXPZyR68JdCcWX6U5YtKl8drOluEj1jijLNSQfwc9v06T2Nqcukz6M37sCCB3fHwFA=="
+        ["defAtts"] = "XQAAAQBTAwAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8ObRiu3tibt3IP5oBbAn23oHzYA8d1/1rQ/6F6KFMvcaM/pLh9ayXkhgZ14kGEirPqWpP/6dxSMYHyxausiP7ggK1p8DCF9BmSb4P3uaSQI9UKX1Tr7qt2eR2Yx9fs4nwR58vTFh2I8lu11HcNFQaAswMKFbD2SaXMhqfJwu83TYJB1+grgXPZyR68JdCcWX6U5YtKl8drOluEj1jijLNSQfwc9v06T2Nqcukz6M37sCCB3fHwFA==",
+        ["duelAtts"] = {
+            "XQAAAQBtAwAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8ObRiu3tibt3IP5oBbAn23oHzYA8d1/1rQ/6F6KFMvcaM/pLh9ayXkhgZ14kGEirPqWpP/6dxSMYHyxausiP7ggK1p8DCF9BmSb4P3uaSQI9UKX1Tr7qt2eR2Yx9fs4nwR58vTFh2I8lu11HcNFQaAswMKFbD2SaXMhqfJwu83TYJB1+grgXPZyR68JdCcWX6U5YorP/zFWj109l4ESeq8tIUNxhI9oLWMYrTKyTbvKNqo/A0E43mthzK/jAXJvOICmHOW",
+            "XQAAAQCwAwAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8ObRiu3tibt3IP5oBbAn23oHzYA8d1/1rQ/6F6KFMvcaM/pLh9ayXkhgZ14kGEirPqWpP/6dxSMYHyxausiP7ggK1p8DCF9BmSb4P3uaSQI9UKX1Tr7qt2eR2Yx9fs4nwR58vTFh2I8lu11HcNFQaAswMKFbD2SaXMhqfJwu83TYJB1+grgXPZyR68JdCcWX6U5Ypuv3HSJsFgIOj2bXUHOGUrjl09sr74lM3rvQZaewyv797Xv2+KaR26yU3NG74bK6xFPJgxeDGlU6vDwxe8agFgu3lb5H4MjfpSqw=="
+        }
     }
 
     EFGMITEMS["arc9_eft_tkpd"] = {
@@ -2235,7 +2355,11 @@ EFGMITEMS = {}
 
         ["caliber"] = "7.62x51",
         ["ammoID"] = "efgm_ammo_762x51",
-        ["defAtts"] = "XQAAAQAPAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8NUfBrxG5/o6wCZICOBvnuThI2G4SXoY5YVE6djRZzT+hLefB8oK6y+WP73ZLPfot111L1Z8yv/Klzy9wOI8rA2th1khRAIQn3Zxm2dJNQkqO2nZexAlJLFGg30dKLB+fUGNNJBuFy1WcFa6ehPHnKQA=="
+        ["defAtts"] = "XQAAAQAPAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8NUfBrxG5/o6wCZICOBvnuThI2G4SXoY5YVE6djRZzT+hLefB8oK6y+WP73ZLPfot111L1Z8yv/Klzy9wOI8rA2th1khRAIQn3Zxm2dJNQkqO2nZexAlJLFGg30dKLB+fUGNNJBuFy1WcFa6ehPHnKQA==",
+        ["duelAtts"] = {
+            "XQAAAQCGAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8NUfBrxG5/o6wCZICOBwJh3caA0NMDX7fc7QgFE2i2HvW1MzZeJ+Mtr7E+NNkkA8zo/WNEH4/VVi0MZXTYpJ7lJW2YN8cI8/kqtTo4FXzsKRpLFnKi1HV7LTPpF60DBQ/OJvKNGOuSZKDERH+0OaXDR5uGYLPhGoF2H9ysli4PdA0IKvXNCyZUHO3qJw==",
+            "XQAAAQA/AgAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8NUfBrxG5/o6wCZICOBvnuThI2G4SXoY5YVE6djRZzT+hLefB8oK6y+WP73CXXAPU3DotmdZ7m/gDyLxdxw0L6FonLdpBPDEDM0x2n+s1rY6MtiVSwj2u8f2IBSsKeG47DMn2lBrftFQBp1Z+h1P6jZUjPnwGJfQYtKSpCqL5VKJMNbwQyajvHtoib652VNJDmBQAr9eDQSaWbRMpR4mgtfmY3yCH1a4YNYpxs0EcmptKDQxfTiQ=="
+        }
     }
 
     EFGMITEMS["arc9_eft_mxlr"] = {
@@ -2256,7 +2380,12 @@ EFGMITEMS = {}
 
         ["caliber"] = ".308 ME",
         ["ammoID"] = "efgm_ammo_308",
-        ["defAtts"] = "XQAAAQBHAgAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8NWIc8JEM7NCCZf/J8JCP4tIuIEY6acQEF0OEtXkIjDhlEIYFnknGGhDLWgCcEIxWy+NaotQ9aQE4OnvMOHIti/qf01KaPR+MrgzE/mGQaQKXvABekpgeYPhV3ojrSGdbNdux8/sYI6VzNCf88FKhngQvROdgq+k3LbgZm2aYNtLIJ/xM09rrCFQ/DEv6TI0Xb+09FOr3mRUTb1j+cgbFA"
+        ["defAtts"] = "XQAAAQBHAgAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8NWIc8JEM7NCCZf/J8JCP4tIuIEY6acQEF0OEtXkIjDhlEIYFnknGGhDLWgCcEIxWy+NaotQ9aQE4OnvMOHIti/qf01KaPR+MrgzE/mGQaQKXvABekpgeYPhV3ojrSGdbNdux8/sYI6VzNCf88FKhngQvROdgq+k3LbgZm2aYNtLIJ/xM09rrCFQ/DEv6TI0Xb+09FOr3mRUTb1j+cgbFA",
+        ["duelAtts"] = {
+            "XQAAAQBHAgAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8NWIc8JEM7NCCZf/J8JCP4tIuIEY6acQEF0OEtXkIjDhlEIYFnknGGhDLWgCcEIxWy+NaotQ9aQE4OnvMOHIti/qf01KaPR+MrgzE/mGQaQKXvABekpgeYPhV3ojrSGdbNdux8/sYI6VzNCf88FKhngQvROdgq+k3LbgZm2aYNtLIJ/xM09rrCFQ/DEv6TI0Xb+09FOr3mRUTb1j+cgbFA",
+            "XQAAAQCJAwAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8NWIc8JEM7NCCZf/J8JCP4tIuIEY6acQEF0OEtXkIjDhlEIYFnc8yyDAWiDOml/04arsO9YABx4sds7e4n6Qxx9Qc3NHGyBkPt9IFg+2S1BliHH4ZNCEoiBaKKsMPEAPxSaZgfTq8n1aM8OWBZ2vfcc5eoTr6Frj5GHZG1bOMCagLE7FRwq9SfU0rnredk6ZRwwLBKuLYB7IGY4PnMWn8zs888zBIo2JFpKbEnWYmnnjXo6Rpxlgq6ijLTbF9llaUErLOK3m6ewFSEU4cnEP6nNhNnvzzHA4WxiqeyNrkXg/ynT9bOumfCzX45usGzq+xXQA==",
+            "XQAAAQBFAwAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8NWIc8JEM7NCCZf/J8JCP4tIuIEY6acQEF0OEtXkIjDhlEIYFm7U37LgEeKM2RgawaPSw5HAb4QIyXLgLfS1mRVQ5Fm4t9dYfYUkkXZJwYjR2zEDB917w8nJwQ/gfA6lf7VW4IRSulRRRkwepyAB9R431RCEqITHtYGLhGUQwmkdE/ULRXjePvr8DFiGLy3Qq926INkwgnfNbcm3P9UMHlzkGmVeKN+4iQxt+v8vQR8Vy9HajvKRHRITY1R9oCjsMnLKy9lF1cyoGNCrNbAyAgXVIdwIS2ZjBYXO5AaOw="
+        }
 
     }
 
@@ -2322,7 +2451,11 @@ EFGMITEMS = {}
 
         ["caliber"] = "7.62x54",
         ["ammoID"] = "efgm_ammo_762x54",
-        ["defAtts"] = "XQAAAQBLAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8OSytTkJgaUnpNNGc+Gl6jVHV/uSNDf/kO4OHmIYepg0elfMCMxvyZU1WTuQFb/dnwV8M4PC6lSZdZMuezE7eF3HWlgqW7PFipSfyrVe9jbv03iHjENH3dhywatmAwUqycXPSurpMpqxJ3HYd+hhPLgZfgpR0jPJd5szGtky82jQ=="
+        ["defAtts"] = "XQAAAQBLAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8OSytTkJgaUnpNNGc+Gl6jVHV/uSNDf/kO4OHmIYepg0elfMCMxvyZU1WTuQFb/dnwV8M4PC6lSZdZMuezE7eF3HWlgqW7PFipSfyrVe9jbv03iHjENH3dhywatmAwUqycXPSurpMpqxJ3HYd+hhPLgZfgpR0jPJd5szGtky82jQ==",
+        ["duelAtts"] = {
+            "XQAAAQBLAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8OSytTkJgaUnpNNGc+Gl6jVHV/uSNDf/kO4OHmIYepg0elfMCMxvyZU1WTuQFb/dnwV8M4PC6lSZdZMuezE7eF3HWlgqW7PFipSfyrVe9jbv03iHjENH3dhywatmAwUqycXPSurpMpqxJ3HYd+hhPLgZfgpR0jPJd5szGtky82jQ==",
+            "XQAAAQASAwAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8OSytTkJgaUnpNNGc+Gl6jVHV/uSNDf/kO4OHmIYepg0elfMCMxvyZU1WV+lFnRB+RDjzwSyAc+CTN4y7lOuMrmFgOMS+FftrQcvhx20JAN6jXQr59JAKNsiK2ct/+QgFW8PQsDHCSOfVBPFCw551Kf4j44rSrwTgpXfcS1hofy+7Lo5ObgwgZqubmEtRvn1lH0s+uLMJRkKlkpecOcu88GSV6ssFKaS7fSs2NGqfMIztFIogLXPMSUuVq5nclB/1+e1gMGWoXEGGwPUOJ"
+        }
     }
 
     EFGMITEMS["arc9_eft_svds"] = {
@@ -2364,7 +2497,11 @@ EFGMITEMS = {}
 
         ["caliber"] = ".366",
         ["ammoID"] = "efgm_ammo_366",
-        ["defAtts"] = "XQAAAQBiAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8Ow/iPem4evSEh1ZVBQmKe6TaWo6POdajS5pypMmDY20hbHcZSWr7CxGfmXs85U87DKMtHcVIC0q5r3emPMZeQY6fJyMV2DpZXb0TEMuHcUwO1tU5prVUPsBo7HimY3Il6WrUtItPKOdFNc21rxdVWIB54CVOib0iEWQ=="
+        ["defAtts"] = "XQAAAQBiAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8Ow/iPem4evSEh1ZVBQmKe6TaWo6POdajS5pypMmDY20hbHcZSWr7CxGfmXs85U87DKMtHcVIC0q5r3emPMZeQY6fJyMV2DpZXb0TEMuHcUwO1tU5prVUPsBo7HimY3Il6WrUtItPKOdFNc21rxdVWIB54CVOib0iEWQ==",
+        ["duelAtts"] = {
+            "XQAAAQBiAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8Ow/iPem4evSEh1ZVBQmKe6TaWo6POdajS5pypMmDY20hbHcZSWr7CxGfmXs85U87DKMtHcVIC0q5r3emPMZeQY6fJyMV2DpZXb0TEMuHcUwO1tU5prVUPsBo7HimY3Il6WrUtItPKOdFNc21rxdVWIB54CVOib0iEWQ==",
+            "XQAAAQCWAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8Ow/iPem4evSEh1ZVBQmKe6TaWo6POdajS5pypMmDY20hbHcY2Sc/hpq2gNBS+1uIe9k6h/UNXBBq6SkbDUezh1RqqvPIV+TuCi1Bq8crhMv14wl0GedUsfxDeJ6I0m2FbbjmdT7nE7HY11x4JfnGrmiT6o/4beGRLuHDRdJ0NTL+WWI2X1GmEB+Q9o3Xcd+alhLxX/kFPV9yLLaLYIA=="
+        }
     }
 
     EFGMITEMS["arc9_eft_vss"] = {
@@ -2411,7 +2548,11 @@ EFGMITEMS = {}
 
         ["caliber"] = ".338",
         ["ammoID"] = "efgm_ammo_338",
-        ["defAtts"] = "XQAAAQD4AgAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8OSPUS50ueaV1GG+rPRo5+8m2Sm656FXjCbKUY7J6DBmUnL9FXWbbSS2BVCo31BNK4Bvrc6zYshs41G/Zc61xYlL+L4GI5NKRlP/Aa75K43e/UAnao6/4jXc0TuG5WT/TP851aNFst+XIAdAV99s+P2SyECbvjN8tB0TUBR9QTBY5YjsR11tMSKoEpUaLETGViO0j1zwi7Z4wTQqZYwgHBEj+eecA8ksrgWYkTCjvBcf1xAA=="
+        ["defAtts"] = "XQAAAQD4AgAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8OSPUS50ueaV1GG+rPRo5+8m2Sm656FXjCbKUY7J6DBmUnL9FXWbbSS2BVCo31BNK4Bvrc6zYshs41G/Zc61xYlL+L4GI5NKRlP/Aa75K43e/UAnao6/4jXc0TuG5WT/TP851aNFst+XIAdAV99s+P2SyECbvjN8tB0TUBR9QTBY5YjsR11tMSKoEpUaLETGViO0j1zwi7Z4wTQqZYwgHBEj+eecA8ksrgWYkTCjvBcf1xAA==",
+        ["duelAtts"] = {
+            "XQAAAQArAwAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8OSPUS50ueaV1GG+rPRo5+8m2Sm656FXjCbKUY7J6DBmUnL9FXWbbSS2BVCo31BNK4Bvrc6zYshs41G/Zc61xYlL+L4GI5NKRlP/Aa75K43e/UAnao6/4jXc0TuG5WT/TP851aNFst+XH/rnezZMf6ogXNjbU0FShfZbPc2CyNI3c/fcxO/pncPY4cJTQIPkl4nG9MXzjqp6zUiGkm0xEBpsFhdnkonlMI0yNHGJ/RuzDnLV47wsyaNZ3zTymjwKHp3sBZcT2ymbY=",
+            "XQAAAQBwAwAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8OSPUS50ueaV1GG+rPRo5+8m2Sm656FXjCbKUY7J6DBmUnL9FXWbbSS2BVCo31BMj0oBqGADFuRYHfmpivoXZpFkBuWDUDTTKFRjzxJJ/xwnEisZgseN1oOP0I+26+axiW8lJKwj0ZiD4mw8XecXbO69BKlnCLfvFD+QNEfLTwM8neYZq6zbekfR2Ql0LYB8mO8qCH6HTdJgIdX2Xvjc5AVvCz/i6kN2qGvDv5XkGUmMaNzk/Skkn40njldMTvpN64nxkuYWjySN526yoXjHudaEvhMuoA"
+        }
     }
 
     -- submachine guns
@@ -8619,7 +8760,7 @@ function GenerateDuelLoadouts()
 
         end
 
-        if v.equipSlot == WEAPONSLOTS.HOLSTER.ID and v.displayName != "Blicky" and v.displayName != "R1500" then -- sorry guys no fucking blickies and rangefinders
+        if v.equipSlot == WEAPONSLOTS.HOLSTER.ID and v.displayName != "Blicky" and v.displayName != "R1500" and v.displayName != "SP-81" then -- sorry guys no fucking blickies and rangefinders
 
             DUEL_SECONDARY[1][k] = v
 
