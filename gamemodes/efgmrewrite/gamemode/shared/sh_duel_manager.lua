@@ -172,32 +172,35 @@ if SERVER then
 
         if num < 8 then
 
-            local primaryItemVal, primaryItemKey = table.Random(DUEL_PRIMARY[num])
+            local _, primaryItemKey = table.Random(DUEL_PRIMARY[num])
             local primaryDef = EFGMITEMS[primaryItemKey]
 
             local primaryData = {}
             primaryData.count = 1
             if primaryDef.defAtts then primaryData.att = primaryDef.defAtts end
+            if primaryDef.duelAtts then primaryData.att = primaryDef.duelAtts[math.random(#primaryDef.duelAtts)] end
             local primaryItem = ITEM.Instantiate(primaryItemKey, primaryDef.equipType, primaryData)
 
-            local secondaryItemVal, secondaryItemKey = table.Random(DUEL_SECONDARY[1])
+            local _, secondaryItemKey = table.Random(DUEL_SECONDARY[1])
             local secondaryDef = EFGMITEMS[secondaryItemKey]
 
             local secondaryData = {}
             secondaryData.count = 1
             if secondaryDef.defAtts then secondaryData.att = secondaryDef.defAtts end
+            if secondaryDef.duelAtts then secondaryDef.att = secondaryDef.duelAtts[math.random(#secondaryDef.duelAtts)] end
             local secondaryItem = ITEM.Instantiate(secondaryItemKey, secondaryDef.equipType, secondaryData)
 
             return primaryItem, secondaryItem
 
         elseif num == 8 then
 
-            local secondaryItemVal, secondaryItemKey = table.Random(DUEL_SECONDARY[1])
+            local _, secondaryItemKey = table.Random(DUEL_SECONDARY[1])
             local secondaryDef = EFGMITEMS[secondaryItemKey]
 
             local secondaryData = {}
             secondaryData.count = 1
             if secondaryDef.defAtts then secondaryData.att = secondaryDef.defAtts end
+            if secondaryDef.duelAtts then secondaryDef.att = secondaryDef.duelAtts[math.random(#secondaryDef.duelAtts)] end
             local secondaryItem = ITEM.Instantiate(secondaryItemKey, secondaryDef.equipType, secondaryData)
 
             return nil, secondaryItem
