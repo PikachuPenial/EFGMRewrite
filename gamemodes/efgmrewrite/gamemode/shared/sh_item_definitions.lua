@@ -3094,7 +3094,7 @@ EFGMITEMS = {}
 
     EFGMITEMS["arc9_eft_melee_cultist"] = {
         ["fullName"] = "Cultist Knife",
-        ["displayName"] = "Knife",
+        ["displayName"] = "C. Knife",
         ["displayType"] = "Melee",
         ["weight"] = 0.2,
         ["value"] = 750000,
@@ -4636,12 +4636,13 @@ EFGMITEMS = {}
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
+
         ["canPurchase"] = false
     }
 
     EFGMITEMS["efgm_key_hotel_maintenance"] = {
         ["fullName"] = "Hotel Maintenance Key",
-        ["displayName"] = "Hotel maint.",
+        ["displayName"] = "Hotel mai.",
         ["displayType"] = "Concrete Key",
         ["weight"] = 0.2,
         ["value"] = 100000,
@@ -4731,6 +4732,67 @@ EFGMITEMS = {}
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
         ["icon"] = Material("items/keys/civil_belmont.png", "smooth"),
+        ["iconColor"] = ICONCOLORS.Green,
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_key_office_marked"] = {
+        ["fullName"] = "Office Marked Room Key",
+        ["displayName"] = "Office mrk.",
+        ["displayType"] = "Factory Key",
+        ["weight"] = 0.2,
+        ["value"] = 1450000,
+        ["equipType"] = EQUIPTYPE.None,
+        ["consumableType"] = "key",
+        ["consumableValue"] = 5,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/keys/bloody_marked.png", "smooth"),
+        ["iconColor"] = ICONCOLORS.Green,
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false,
+        ["lootWeight"] = 25
+    }
+
+    EFGMITEMS["efgm_key_servers"] = {
+        ["fullName"] = "Servers Key",
+        ["displayName"] = "Servers",
+        ["displayType"] = "Factory Key",
+        ["weight"] = 0.2,
+        ["value"] = 200000,
+        ["equipType"] = EQUIPTYPE.None,
+        ["consumableType"] = "key",
+        ["consumableValue"] = 5,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/keys/pumping.png", "smooth"),
+        ["iconColor"] = ICONCOLORS.Green,
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
+    }
+
+    EFGMITEMS["efgm_key_cellars"] = {
+        ["fullName"] = "Cellars Key",
+        ["displayName"] = "Cellars",
+        ["displayType"] = "Factory Key",
+        ["weight"] = 0.2,
+        ["value"] = 300000,
+        ["equipType"] = EQUIPTYPE.None,
+        ["consumableType"] = "key",
+        ["consumableValue"] = 5,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/keys/pumping.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Green,
 
         ["sizeX"] = 1,

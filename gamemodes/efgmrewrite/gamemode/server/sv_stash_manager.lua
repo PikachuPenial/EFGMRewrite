@@ -533,8 +533,8 @@ end
 
 function WipeStash(ply)
 
-    ply.stashStr = ""
 	ply.stash = {}
+    UpdateStashString(ply)
 
     SendChunkedNet(ply, ply.stashStr, "PlayerNetworkStash")
 

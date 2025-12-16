@@ -3279,10 +3279,51 @@ function Menu.ReloadInventory()
 
         if itemSearch != "" and itemSearch != nil and !(string.find((i.fullName and i.fullName or i.displayName):lower(), itemSearch) or string.find((v.data.tag or ""):lower(), itemSearch) or string.find((ownerName or ""):lower(), itemSearch)) then continue end
 
+        local value = i.value
+        local weight = i.weight
+
+        if v.data and v.data.att then
+
+            local atts = GetPrefixedAttachmentListFromCode(v.data.att)
+            if !atts then return end
+
+            for _, a in ipairs(atts) do
+
+                local att = EFGMITEMS[a]
+                if att == nil then continue end
+
+                value = value + att.value
+                weight = weight + att.weight
+
+            end
+
+        end
+
         local item = playerItems:Add("DButton")
         item:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
         item:SetText("")
         item:Droppable("items")
+
+        surface.SetFont("PuristaBold18")
+        local ttItemNameText = string.upper(i.fullName)
+        local ttItemNameSize = surface.GetTextSize(ttItemNameText)
+        surface.SetFont("PuristaBold14")
+        local ttDescText = string.upper(i.displayType) .. " / " .. string.upper(weight) .. "KG" .. " / ₽" .. string.upper(comma_value(value))
+        local ttDescTextSize = surface.GetTextSize(ttDescText)
+
+        local tt = vgui.Create("Panel")
+        tt:SetSize(math.max(ttItemNameSize, ttDescTextSize), EFGM.MenuScale(24))
+
+        tt.Paint = function(self, w, h)
+
+            draw.SimpleTextOutlined(ttItemNameText, "PuristaBold18", 0, EFGM.MenuScale(-5), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+            draw.SimpleTextOutlined(ttDescText, "PuristaBold14", 0, EFGM.MenuScale(10), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+
+        end
+
+        item:SetTooltipPanel(tt)
+        item:SetTooltipPanelOverride("EFGM_ItemTooltip")
+
         item.ID = v.id
         item.SLOT = i.equipSlot
         item.ORIGIN = "inventory"
@@ -3746,6 +3787,47 @@ function Menu.ReloadSlots()
         primaryItem:SetText("")
         primaryItem:Droppable("items")
         primaryItem:Droppable("slot_primary")
+
+        local value = i.value
+        local weight = i.weight
+
+        if playerWeaponSlots[1][1].data and playerWeaponSlots[1][1].data.att then
+
+            local atts = GetPrefixedAttachmentListFromCode(playerWeaponSlots[1][1].data.att)
+            if !atts then return end
+
+            for _, a in ipairs(atts) do
+
+                local att = EFGMITEMS[a]
+                if att == nil then continue end
+
+                value = value + att.value
+                weight = weight + att.weight
+
+            end
+
+        end
+
+        surface.SetFont("PuristaBold18")
+        local ttItemNameText = string.upper(i.fullName)
+        local ttItemNameSize = surface.GetTextSize(ttItemNameText)
+        surface.SetFont("PuristaBold14")
+        local ttDescText = string.upper(i.displayType) .. " / " .. string.upper(weight) .. "KG" .. " / ₽" .. string.upper(comma_value(value))
+        local ttDescTextSize = surface.GetTextSize(ttDescText)
+
+        local tt = vgui.Create("Panel")
+        tt:SetSize(math.max(ttItemNameSize, ttDescTextSize), EFGM.MenuScale(24))
+
+        tt.Paint = function(self, w, h)
+
+            draw.SimpleTextOutlined(ttItemNameText, "PuristaBold18", 0, EFGM.MenuScale(-5), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+            draw.SimpleTextOutlined(ttDescText, "PuristaBold14", 0, EFGM.MenuScale(10), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+
+        end
+
+        primaryItem:SetTooltipPanel(tt)
+        primaryItem:SetTooltipPanelOverride("EFGM_ItemTooltip")
+
         primaryItem.SLOTID = 1
         primaryItem.SLOT = 1
         primaryItem.ORIGIN = "equipped"
@@ -4118,6 +4200,47 @@ function Menu.ReloadSlots()
         secondaryItem:SetText("")
         secondaryItem:Droppable("items")
         secondaryItem:Droppable("slot_primary")
+
+        local value = i.value
+        local weight = i.weight
+
+        if playerWeaponSlots[1][2].data and playerWeaponSlots[1][2].data.att then
+
+            local atts = GetPrefixedAttachmentListFromCode(playerWeaponSlots[1][2].data.att)
+            if !atts then return end
+
+            for _, a in ipairs(atts) do
+
+                local att = EFGMITEMS[a]
+                if att == nil then continue end
+
+                value = value + att.value
+                weight = weight + att.weight
+
+            end
+
+        end
+
+        surface.SetFont("PuristaBold18")
+        local ttItemNameText = string.upper(i.fullName)
+        local ttItemNameSize = surface.GetTextSize(ttItemNameText)
+        surface.SetFont("PuristaBold14")
+        local ttDescText = string.upper(i.displayType) .. " / " .. string.upper(weight) .. "KG" .. " / ₽" .. string.upper(comma_value(value))
+        local ttDescTextSize = surface.GetTextSize(ttDescText)
+
+        local tt = vgui.Create("Panel")
+        tt:SetSize(math.max(ttItemNameSize, ttDescTextSize), EFGM.MenuScale(24))
+
+        tt.Paint = function(self, w, h)
+
+            draw.SimpleTextOutlined(ttItemNameText, "PuristaBold18", 0, EFGM.MenuScale(-5), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+            draw.SimpleTextOutlined(ttDescText, "PuristaBold14", 0, EFGM.MenuScale(10), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+
+        end
+
+        secondaryItem:SetTooltipPanel(tt)
+        secondaryItem:SetTooltipPanelOverride("EFGM_ItemTooltip")
+
         secondaryItem.SLOTID = 1
         secondaryItem.SLOT = 2
         secondaryItem.ORIGIN = "equipped"
@@ -4490,6 +4613,47 @@ function Menu.ReloadSlots()
         holsterItem:SetText("")
         holsterItem:Droppable("items")
         holsterItem:Droppable("slot_holster")
+
+        local value = i.value
+        local weight = i.weight
+
+        if playerWeaponSlots[2][1].data and playerWeaponSlots[2][1].data.att then
+
+            local atts = GetPrefixedAttachmentListFromCode(playerWeaponSlots[2][1].data.att)
+            if !atts then return end
+
+            for _, a in ipairs(atts) do
+
+                local att = EFGMITEMS[a]
+                if att == nil then continue end
+
+                value = value + att.value
+                weight = weight + att.weight
+
+            end
+
+        end
+
+        surface.SetFont("PuristaBold18")
+        local ttItemNameText = string.upper(i.fullName)
+        local ttItemNameSize = surface.GetTextSize(ttItemNameText)
+        surface.SetFont("PuristaBold14")
+        local ttDescText = string.upper(i.displayType) .. " / " .. string.upper(weight) .. "KG" .. " / ₽" .. string.upper(comma_value(value))
+        local ttDescTextSize = surface.GetTextSize(ttDescText)
+
+        local tt = vgui.Create("Panel")
+        tt:SetSize(math.max(ttItemNameSize, ttDescTextSize), EFGM.MenuScale(24))
+
+        tt.Paint = function(self, w, h)
+
+            draw.SimpleTextOutlined(ttItemNameText, "PuristaBold18", 0, EFGM.MenuScale(-5), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+            draw.SimpleTextOutlined(ttDescText, "PuristaBold14", 0, EFGM.MenuScale(10), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+
+        end
+
+        holsterItem:SetTooltipPanel(tt)
+        holsterItem:SetTooltipPanelOverride("EFGM_ItemTooltip")
+
         holsterItem.SLOTID = 2
         holsterItem.SLOT = 1
         holsterItem.ORIGIN = "equipped"
@@ -4862,6 +5026,30 @@ function Menu.ReloadSlots()
         meleeItem:SetText("")
         meleeItem:Droppable("items")
         meleeItem:Droppable("slot_melee")
+
+        local value = i.value
+        local weight = i.weight
+
+        surface.SetFont("PuristaBold18")
+        local ttItemNameText = string.upper(i.fullName)
+        local ttItemNameSize = surface.GetTextSize(ttItemNameText)
+        surface.SetFont("PuristaBold14")
+        local ttDescText = string.upper(i.displayType) .. " / " .. string.upper(weight) .. "KG" .. " / ₽" .. string.upper(comma_value(value))
+        local ttDescTextSize = surface.GetTextSize(ttDescText)
+
+        local tt = vgui.Create("Panel")
+        tt:SetSize(math.max(ttItemNameSize, ttDescTextSize), EFGM.MenuScale(24))
+
+        tt.Paint = function(self, w, h)
+
+            draw.SimpleTextOutlined(ttItemNameText, "PuristaBold18", 0, EFGM.MenuScale(-5), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+            draw.SimpleTextOutlined(ttDescText, "PuristaBold14", 0, EFGM.MenuScale(10), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+
+        end
+
+        meleeItem:SetTooltipPanel(tt)
+        meleeItem:SetTooltipPanelOverride("EFGM_ItemTooltip")
+
         meleeItem.SLOTID = 3
         meleeItem.SLOT = 1
         meleeItem.ORIGIN = "equipped"
@@ -5163,6 +5351,30 @@ function Menu.ReloadSlots()
         nadeItem:SetText("")
         nadeItem:Droppable("items")
         nadeItem:Droppable("slot_grenade")
+
+        local value = i.value
+        local weight = i.weight
+
+        surface.SetFont("PuristaBold18")
+        local ttItemNameText = string.upper(i.fullName)
+        local ttItemNameSize = surface.GetTextSize(ttItemNameText)
+        surface.SetFont("PuristaBold14")
+        local ttDescText = string.upper(i.displayType) .. " / " .. string.upper(weight) .. "KG" .. " / ₽" .. string.upper(comma_value(value))
+        local ttDescTextSize = surface.GetTextSize(ttDescText)
+
+        local tt = vgui.Create("Panel")
+        tt:SetSize(math.max(ttItemNameSize, ttDescTextSize), EFGM.MenuScale(24))
+
+        tt.Paint = function(self, w, h)
+
+            draw.SimpleTextOutlined(ttItemNameText, "PuristaBold18", 0, EFGM.MenuScale(-5), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+            draw.SimpleTextOutlined(ttDescText, "PuristaBold14", 0, EFGM.MenuScale(10), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+
+        end
+
+        nadeItem:SetTooltipPanel(tt)
+        nadeItem:SetTooltipPanelOverride("EFGM_ItemTooltip")
+
         nadeItem.SLOTID = 4
         nadeItem.SLOT = 1
         nadeItem.ORIGIN = "equipped"
@@ -5468,8 +5680,6 @@ local stashItemSearchText = ""
 
 function Menu.ReloadStash(firstReload)
 
-    local initTime = Menu.InitTime
-
     Menu.ReloadMarketStash()
 
     if !IsValid(stashItems) then return end
@@ -5530,6 +5740,47 @@ function Menu.ReloadStash(firstReload)
         item:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
         item:SetText("")
         item:Droppable("items")
+
+        local value = i.value
+        local weight = i.weight
+
+        if v.data and v.data.att then
+
+            local atts = GetPrefixedAttachmentListFromCode(v.data.att)
+            if !atts then return end
+
+            for _, a in ipairs(atts) do
+
+                local att = EFGMITEMS[a]
+                if att == nil then continue end
+
+                value = value + att.value
+                weight = weight + att.weight
+
+            end
+
+        end
+
+        surface.SetFont("PuristaBold18")
+        local ttItemNameText = string.upper(i.fullName)
+        local ttItemNameSize = surface.GetTextSize(ttItemNameText)
+        surface.SetFont("PuristaBold14")
+        local ttDescText = string.upper(i.displayType) .. " / " .. string.upper(weight) .. "KG" .. " / ₽" .. string.upper(comma_value(value))
+        local ttDescTextSize = surface.GetTextSize(ttDescText)
+
+        local tt = vgui.Create("Panel")
+        tt:SetSize(math.max(ttItemNameSize, ttDescTextSize), EFGM.MenuScale(24))
+
+        tt.Paint = function(self, w, h)
+
+            draw.SimpleTextOutlined(ttItemNameText, "PuristaBold18", 0, EFGM.MenuScale(-5), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+            draw.SimpleTextOutlined(ttDescText, "PuristaBold14", 0, EFGM.MenuScale(10), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+
+        end
+
+        item:SetTooltipPanel(tt)
+        item:SetTooltipPanelOverride("EFGM_ItemTooltip")
+
         item.ID = v.id
         item.SLOT = i.equipSlot
         item.ORIGIN = "stash"
@@ -6082,6 +6333,50 @@ function Menu.ReloadMarketStash()
         item:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
         item:SetText("")
         item:Droppable("items")
+
+        local value = i.value
+        local weight = i.weight
+
+        if v.data and v.data.att then
+
+            local atts = GetPrefixedAttachmentListFromCode(v.data.att)
+            if !atts then return end
+
+            for _, a in ipairs(atts) do
+
+                local att = EFGMITEMS[a]
+                if att == nil then continue end
+
+                value = value + att.value
+                weight = weight + att.weight
+
+                stashValue = stashValue + att.value
+                itemValue = itemValue + math.floor(att.value * sellMultiplier)
+
+            end
+
+        end
+
+        surface.SetFont("PuristaBold18")
+        local ttItemNameText = string.upper(i.fullName)
+        local ttItemNameSize = surface.GetTextSize(ttItemNameText)
+        surface.SetFont("PuristaBold14")
+        local ttDescText = string.upper(i.displayType) .. " / " .. string.upper(weight) .. "KG" .. " / ₽" .. string.upper(comma_value(value))
+        local ttDescTextSize = surface.GetTextSize(ttDescText)
+
+        local tt = vgui.Create("Panel")
+        tt:SetSize(math.max(ttItemNameSize, ttDescTextSize), EFGM.MenuScale(24))
+
+        tt.Paint = function(self, w, h)
+
+            draw.SimpleTextOutlined(ttItemNameText, "PuristaBold18", 0, EFGM.MenuScale(-5), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+            draw.SimpleTextOutlined(ttDescText, "PuristaBold14", 0, EFGM.MenuScale(10), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+
+        end
+
+        item:SetTooltipPanel(tt)
+        item:SetTooltipPanelOverride("EFGM_ItemTooltip")
+
         item.ID = v.id
         item.SLOT = i.equipSlot
         item.ORIGIN = "stash"
@@ -6093,24 +6388,8 @@ function Menu.ReloadMarketStash()
             if item.SLOT == WEAPONSLOTS.MELEE.ID then item:Droppable("slot_melee") end
             if item.SLOT == WEAPONSLOTS.GRENADE.ID then item:Droppable("slot_grenade") end
 
-            if v.data.att then
-
-                local atts = GetPrefixedAttachmentListFromCode(v.data.att)
-                if !atts then return end
-
-                for _, a in ipairs(atts) do
-
-                    local att = EFGMITEMS[a]
-                    if att == nil then continue end
-
-                    stashValue = stashValue + att.value
-                    itemValue = itemValue + math.floor(att.value * sellMultiplier)
-
-                end
-
-            end
-
         end
+
         local costColor
 
         function item:Paint(w, h)
@@ -6395,6 +6674,47 @@ function Menu.ReloadContainer()
         item:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
         item:SetText("")
         item:Droppable("items")
+
+        local value = i.value
+        local weight = i.weight
+
+        if v.data and v.data.att then
+
+            local atts = GetPrefixedAttachmentListFromCode(v.data.att)
+            if !atts then return end
+
+            for _, a in ipairs(atts) do
+
+                local att = EFGMITEMS[a]
+                if att == nil then continue end
+
+                value = value + att.value
+                weight = weight + att.weight
+
+            end
+
+        end
+
+        surface.SetFont("PuristaBold18")
+        local ttItemNameText = string.upper(i.fullName)
+        local ttItemNameSize = surface.GetTextSize(ttItemNameText)
+        surface.SetFont("PuristaBold14")
+        local ttDescText = string.upper(i.displayType) .. " / " .. string.upper(weight) .. "KG" .. " / ₽" .. string.upper(comma_value(value))
+        local ttDescTextSize = surface.GetTextSize(ttDescText)
+
+        local tt = vgui.Create("Panel")
+        tt:SetSize(math.max(ttItemNameSize, ttDescTextSize), EFGM.MenuScale(24))
+
+        tt.Paint = function(self, w, h)
+
+            draw.SimpleTextOutlined(ttItemNameText, "PuristaBold18", 0, EFGM.MenuScale(-5), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+            draw.SimpleTextOutlined(ttDescText, "PuristaBold14", 0, EFGM.MenuScale(10), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+
+        end
+
+        item:SetTooltipPanel(tt)
+        item:SetTooltipPanelOverride("EFGM_ItemTooltip")
+
         item.ID = v.id
         item.ORIGIN = "container"
 
@@ -8471,6 +8791,29 @@ function Menu.OpenTab.Market()
                 item:SetText("")
                 item:SetSize(EFGM.MenuScale(198), EFGM.MenuScale(216))
 
+                local value = v.value
+                local weight = v.weight
+
+                surface.SetFont("PuristaBold18")
+                local ttItemNameText = string.upper(v.fullName)
+                local ttItemNameSize = surface.GetTextSize(ttItemNameText)
+                surface.SetFont("PuristaBold14")
+                local ttDescText = string.upper(v.displayType) .. " / " .. string.upper(weight) .. "KG" .. " / ₽" .. string.upper(comma_value(value))
+                local ttDescTextSize = surface.GetTextSize(ttDescText)
+
+                local tt = vgui.Create("Panel")
+                tt:SetSize(math.max(ttItemNameSize, ttDescTextSize), EFGM.MenuScale(24))
+
+                tt.Paint = function(self, w, h)
+
+                    draw.SimpleTextOutlined(ttItemNameText, "PuristaBold18", 0, EFGM.MenuScale(-5), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+                    draw.SimpleTextOutlined(ttDescText, "PuristaBold14", 0, EFGM.MenuScale(10), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+
+                end
+
+                item:SetTooltipPanel(tt)
+                item:SetTooltipPanelOverride("EFGM_ItemTooltip")
+
                 function item:Paint(w, h)
 
                     surface.SetDrawColor(Colors.itemColor)
@@ -8516,8 +8859,6 @@ function Menu.OpenTab.Market()
 
                 local caliberText = v.caliber or ""
                 local caliberTextSize = surface.GetTextSize(caliberText)
-
-                local value = v.value
 
                 local plyLevel = Menu.Player:GetNWInt("Level", 1)
 
@@ -8791,9 +9132,12 @@ function Menu.OpenTab.Market()
 
                     local entry = {}
                     entry.name = v2.displayName
+                    entry.fullName = v2.fullName
+                    entry.displayType = v2.displayType
                     entry.id = k2
                     entry.icon = v2.icon
                     entry.value = v2.value or 1000
+                    entry.weight = v2.weight or 0.1
                     entry.level = v2.levelReq or 1
                     entry.equipType = v2.equipType
                     entry.consumableValue = v2.consumableValue
@@ -8817,6 +9161,7 @@ function Menu.OpenTab.Market()
                             if att == nil then continue end
 
                             entry.value = entry.value + att.value
+                            entry.weight = entry.weight + att.weight
 
                         end
 
@@ -9320,7 +9665,6 @@ function Menu.OpenTab.Match()
             local ping = v:Ping()
             local kills = v:Frags()
             local deaths = v:Deaths()
-            local status = v:CompareStatus(0)
 
             local pmcEntry = vgui.Create("DPanel", pmcList)
             pmcEntry:SetSize(pmcList:GetWide(), EFGM.MenuScale(50))
@@ -9331,7 +9675,7 @@ function Menu.OpenTab.Match()
                 draw.SimpleTextOutlined(ping  .. "ms", "Purista18", w - EFGM.MenuScale(5), EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
                 draw.SimpleTextOutlined(kills, "Purista18", EFGM.MenuScale(50), EFGM.MenuScale(25), Colors.inRaidColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
                 draw.SimpleTextOutlined(deaths, "Purista18", EFGM.MenuScale(85), EFGM.MenuScale(25), Colors.deadColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-                if !status then draw.SimpleTextOutlined("IN RAID", "Purista18", w - EFGM.MenuScale(5), EFGM.MenuScale(25), Colors.neutralColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor) end
+                if v:CompareStatus(1) or v:CompareStatus(2) then draw.SimpleTextOutlined("IN RAID", "Purista18", w - EFGM.MenuScale(5), EFGM.MenuScale(25), Colors.neutralColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor) elseif v:CompareStatus(3) then draw.SimpleTextOutlined("IN DUEL", "Purista18", w - EFGM.MenuScale(5), EFGM.MenuScale(25), Colors.deadColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor) end
             end
 
             local pmcPFP = vgui.Create("AvatarImage", pmcEntry)
@@ -9462,7 +9806,6 @@ function Menu.OpenTab.Match()
     local minZoom = math.max(xDiff, yDiff)
 
     if yDiff > xDiff and mapSizeX > mapSizeY then minZoom = math.min(xDiff, yDiff) end
-
 
     local map = vgui.Create("EFGM_Map", mapHolder)
     map:SetSize(mapSizeX, mapSizeY)
@@ -11192,6 +11535,37 @@ function Menu.OpenTab.Settings()
     musicVolume:SetMax(2)
     musicVolume:SetDecimals(2)
 
+    local infilNearEndPanel = vgui.Create("DPanel", gameplay)
+    infilNearEndPanel:Dock(TOP)
+    infilNearEndPanel:SetSize(0, EFGM.MenuScale(50))
+    function infilNearEndPanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Block Raid Infil Near Raid End", "Purista18", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+
+    end
+
+    local infilNearEnd = vgui.Create("DCheckBox", infilNearEndPanel)
+    infilNearEnd:SetPos(EFGM.MenuScale(152), EFGM.MenuScale(30))
+    infilNearEnd:SetConVar("efgm_infil_nearend")
+    infilNearEnd:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+
+    local infilNearEndThresholdPanel = vgui.Create("DPanel", gameplay)
+    infilNearEndThresholdPanel:Dock(TOP)
+    infilNearEndThresholdPanel:SetSize(0, EFGM.MenuScale(50))
+    function infilNearEndThresholdPanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Block Raid Infil Near Raid End Threshold", "Purista18", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+
+    end
+
+    local infilNearEndThreshold = vgui.Create("DNumSlider", infilNearEndThresholdPanel)
+    infilNearEndThreshold:SetPos(EFGM.MenuScale(35), EFGM.MenuScale(30))
+    infilNearEndThreshold:SetSize(EFGM.MenuScale(200), EFGM.MenuScale(15))
+    infilNearEndThreshold:SetConVar("efgm_infil_nearend_limit")
+    infilNearEndThreshold:SetMin(30)
+    infilNearEndThreshold:SetMax(180)
+    infilNearEndThreshold:SetDecimals(0)
+
     -- controls
 
     local adsSensPanel = vgui.Create("DPanel", controls)
@@ -12002,6 +12376,20 @@ function Menu.OpenTab.Settings()
     lensFlare:SetPos(EFGM.MenuScale(152), EFGM.MenuScale(30))
     lensFlare:SetConVar("efgm_visuals_lensflare")
     lensFlare:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+
+    local pmShadowPanel = vgui.Create("DPanel", visuals)
+    pmShadowPanel:Dock(TOP)
+    pmShadowPanel:SetSize(0, EFGM.MenuScale(50))
+    function pmShadowPanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Render Player Model Shadow", "Purista18", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+
+    end
+
+    local pmShadow = vgui.Create("DCheckBox", pmShadowPanel)
+    pmShadow:SetPos(EFGM.MenuScale(152), EFGM.MenuScale(30))
+    pmShadow:SetConVar("cl_drawownshadow")
+    pmShadow:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
 
     local vmLightingPanel = vgui.Create("DPanel", visuals)
     vmLightingPanel:Dock(TOP)

@@ -19,14 +19,12 @@ function NetworkMarketLimits(ply)
 
         end
 
-    else
-
-        local str = util.TableToJSON(PLYMARKETLIMITS[ply:SteamID64()])
-        str = util.Compress(str)
-        str = util.Base64Encode(str, true)
-        SendChunkedNet(ply, str, "PlayerNetworkMarket") -- chunking this in case some idiot creates a massive list of entries
-
     end
+
+    local str = util.TableToJSON(PLYMARKETLIMITS[ply:SteamID64()])
+    str = util.Compress(str)
+    str = util.Base64Encode(str, true)
+    SendChunkedNet(ply, str, "PlayerNetworkMarket") -- chunking this in case some idiot creates a massive list of entries
 
 end
 

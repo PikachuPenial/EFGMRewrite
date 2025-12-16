@@ -1317,12 +1317,11 @@ if GetConVar("efgm_derivesbox"):GetInt() == 1 then
 
     function WipeInventory(ply)
 
-        ply.invStr = ""
         ply.inventory = {}
+        UpdateInventoryString(ply)
 
         SendChunkedNet(ply, ply.invStr, "PlayerNetworkInventory")
 
-        ReloadInventory(ply)
         CalculateInventoryWeight(ply)
 
     end

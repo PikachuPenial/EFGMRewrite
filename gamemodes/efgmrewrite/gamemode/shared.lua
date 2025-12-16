@@ -11,7 +11,6 @@ if CLIENT then
     CreateClientConVar("efgm_musicvolume", 1, true, true, "Increase or lower the volume of the music", 0, 2)
     CreateClientConVar("efgm_hud_enable", 1, true, true, "Adjust the visibility of the user interface", 0, 1)
     CreateClientConVar("efgm_hud_scale", 1, true, true, "Adjust the scale for all user interface items", 0.5, 2)
-    CreateClientConVar("efgm_hud_compass_always", 0, true, true, "Adjust the behaviour of displaying the compass", 0, 1)
     CreateClientConVar("efgm_menu_parallax", 1, true, true, "Adjust the main menu parallax/jiggle when moving your cursor", 0, 1)
     CreateClientConVar("efgm_menu_scalingmethod", 0, true, true, "Adjust the method at which the menu positions itself after scaling", 0, 1)
     CreateClientConVar("efgm_menu_deleteprompt", 1, true, true, "Adjust if a confirmation prompt appears when deleting an item", 0, 1)
@@ -27,6 +26,8 @@ if CLIENT then
     CreateClientConVar("efgm_privacy_invites_squad", 2, true, true, "Determines who you receive squad invites from (2 = Everyone, 1 = Steam Friends, 0 = Nobody)", 0, 2)
     CreateClientConVar("efgm_privacy_invites_duel", 2, true, true, "Determines who you receive duel invites from (2 = Everyone, 1 = Steam Friends, 0 = Nobody)", 0, 2)
     CreateClientConVar("efgm_privacy_invites_blocked", 0, true, true, "Determines if a player that you have blocked on steam can send you an invite", 0, 1)
+    CreateClientConVar("efgm_infil_nearend_block", 1, true, true, "Determines if you are able to enter a raid when it is about to end", 0, 1)
+    CreateClientConVar("efgm_infil_nearend_limit", 60, true, true, "Determines the seconds remaining in the raid where you will no longer be able to enter said raid if near end infils are disabled", 30, 180)
 
 end
 
