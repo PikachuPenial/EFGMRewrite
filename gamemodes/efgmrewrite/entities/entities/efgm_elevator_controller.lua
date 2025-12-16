@@ -9,7 +9,7 @@ local elevatorStatus = {}
 elevatorStatus.Start = 0
 elevatorStatus.End = 1
 elevatorStatus.MovingToStart = 2
-elevatorStatus.MovingToEnd = 2
+elevatorStatus.MovingToEnd = 3
 
 local curStatus = elevatorStatus.Start
 local queuedOutput = nil
@@ -53,6 +53,12 @@ function ENT:AcceptInput(name, ply, caller, data)
             queuedOutput = "MoveToEnd"
 
         end
+
+    end
+
+    if name == "SetStatus" then
+        
+        curStatus = tonumber(data)
 
     end
 

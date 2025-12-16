@@ -279,6 +279,8 @@
 
     input AskGoToEnd(void)           :   ""
 
+    input SetStatus(integer)           :   ""
+
     // Outputs
     output MoveToStart(void) : ""
 
