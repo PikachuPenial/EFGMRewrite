@@ -113,6 +113,11 @@
     // you'd never guess, but it is basically just a glorified info_target lmao
 ]
 
+@PointClass base(Targetname, PlayerClass, Angles) studio("models/editor/playerstart.mdl") = efgm_duel_end_spawn : "Duel Spawn"
+[
+    // holy shit guess what
+]
+
 
 @PointClass base(Targetname) = efgm_extract : "Extract"
 [

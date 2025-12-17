@@ -47,8 +47,8 @@ if SERVER then
 
             v:SetNWBool("InRange", true)
 
-            if secondaryItem != nil then timer.Simple(0.25, function() DUEL:EquipHolster(v, secondaryItem) end) end
-            if primaryItem != nil then timer.Simple(0.5, function() DUEL:EquipPrimary(v, primaryItem) end) end
+            if secondaryItem != nil then timer.Simple(0.3, function() DUEL:EquipHolster(v, secondaryItem) end) end
+            if primaryItem != nil then timer.Simple(0.6, function() DUEL:EquipPrimary(v, primaryItem) end) end
 
             net.Start("PlayerInventoryReloadForDuel")
             net.WriteTable(primaryItem or {})
@@ -93,6 +93,7 @@ if SERVER then
         for k, v in ipairs(DUEL.Players) do -- should only be a single player, the winner of the duel
 
             local lobbySpawns = ents.FindByClass("efgm_lobby_spawn") or {}
+            if #ents.FindByClass("efgm_duel_end_spawn") != 0 then lobbySpawns = ents.FindByClass("efgm_duel_end_spawn") end
 
             local possibleSpawns = {}
 
