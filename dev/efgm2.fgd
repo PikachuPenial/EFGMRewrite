@@ -133,6 +133,8 @@
         2 : "Scav"
     ]
 
+    reqItem(string)       : "Required Item"                 : ""                                    : "The item that the player must have in their inventory to use this extract. Leave blank if no item is needed to use it."
+
     // Outputs
     output    OnPlayerExtract(void)     :   "Fires when a player extracts."
 

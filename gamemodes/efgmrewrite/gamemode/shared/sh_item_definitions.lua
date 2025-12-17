@@ -4010,7 +4010,7 @@ EFGMITEMS = {}
         ["sizeY"] = 2,
 
         ["canPurchase"] = false,
-        ["lootWeight"] = 25
+        ["lootWeight"] = 75
     }
 
     EFGMITEMS["arc9_eft_rsp30_red"] = {

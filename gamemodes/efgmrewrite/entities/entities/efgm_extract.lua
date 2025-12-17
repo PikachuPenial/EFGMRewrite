@@ -1,14 +1,13 @@
 ENT.Type = "point"
 ENT.Base = "base_point"
 
--- These are defined by the entity in hammer
-
 ENT.InternalName = ""
 ENT.ExtractTime = 10
 ENT.ExtractName = ""
 ENT.DisabledMessage = ""
 ENT.ExtractGroup = ""
 ENT.Accessibility = 0
+ENT.RequiredItem = ""
 
 ENT.IsDisabled = false
 ENT.IsGuranteed = true
@@ -40,6 +39,10 @@ function ENT:KeyValue(key, value)
 		self.Accessibility = tonumber(value)
 	end
 
+	if key == "reqItem" then
+		self.RequiredItem = value
+	end
+
 
 	if key == "OnPlayerExtract" then
 		self:StoreOutput(key, value)
@@ -63,8 +66,6 @@ function ENT:Initialize()
 	self.IsGuranteed = bit.band(flags, 2) == 2
 	self.InstantExtract = bit.band(flags, 4) == 4
 	self.ShowOnMap = bit.band(flags, 8) == 8
-
-	print(flags)
 
 end
 
@@ -90,46 +91,43 @@ function ENT:AcceptInput(name, ply, caller, data)
         else
             self:Fire( "DisableExtract", nil, 0, ply, caller )
             self:TriggerOutput( "OnExtractDisabled", ply, data )
-        end
-    end
+		end
+	end
 
-    if name == "StartExtractingPlayer" && ply:IsPlayer() then
-        if !IsValid(ply) or ply:CompareStatus(0) or !ply:CompareSpawnGroup(self.ExtractGroup) then return end
+	if name == "StartExtractingPlayer" && ply:IsPlayer() then
+		if !IsValid(ply) or ply:CompareStatus(0) or !ply:CompareSpawnGroup(self.ExtractGroup) then return end
 
-        if self.IsDisabled then
+		if self.IsDisabled then -- disabled
 			net.Start("SendNotification", false)
-            net.WriteString(self.DisabledMessage)
-            net.WriteString("icons/extract_disabled_icon.png")
-            net.WriteString("ui/squad_leave.wav")
-            net.Send(ply)
-        else
-            self:StartExtract(ply)
-        end
-    end
-
-    if name == "StopExtractingPlayer" && !self.IsDisabled && ply:IsPlayer() then
-        if IsValid(ply) and !ply:CompareStatus(0) and ply:CompareSpawnGroup(self.ExtractGroup) then self:StopExtract(ply) end
-    end
-
-    if name == "InstantlyExtractPlayer" and !self.IsDisabled and ply:IsPlayer() then
-        if !IsValid(ply) or ply:CompareStatus(0) or !ply:CompareSpawnGroup(self.ExtractGroup) then return end
-
-        if self.IsDisabled then
+			net.WriteString(self.DisabledMessage)
+			net.WriteString("icons/extract_disabled_icon.png")
+			net.WriteString("ui/squad_leave.wav")
+			net.Send(ply)
+		elseif self.RequiredItem != "" && !HasInInventory(ply.inventory, self.RequiredItem) then -- doesn't have req. item
 			net.Start("SendNotification", false)
-            net.WriteString(self.DisabledMessage)
-            net.WriteString("icons/extract_disabled_icon.png")
-            net.WriteString("ui/squad_leave.wav")
-            net.Send(ply)
-        else
-            self:Extract(ply)
-        end
-    end
+			net.WriteString("You are missing the required item! (" .. EFGMITEMS[self.RequiredItem].fullName .. ")")
+			net.WriteString("icons/extract_disabled_icon.png")
+			net.WriteString("ui/squad_leave.wav")
+			net.Send(ply)
+		else -- met all reqs.
+			self:StartExtract(ply)
+		end
+	end
 
-    if name == "InstantlyExtractPlayeIgnoreDisabled" and ply:IsPlayer() then
-        if ply:CompareStatus(0) or !ply:CompareSpawnGroup(self.ExtractGroup) then return end
+	if name == "StopExtractingPlayer" && !self.IsDisabled && ply:IsPlayer() then
+		if IsValid(ply) and !ply:CompareStatus(0) and ply:CompareSpawnGroup(self.ExtractGroup) then self:StopExtract(ply) end
+	end
 
-        self:Extract(ply)
-    end
+	if name == "InstantlyExtractPlayer" and !self.IsDisabled and ply:IsPlayer() then
+		if !IsValid(ply) or ply:CompareStatus(0) or !ply:CompareSpawnGroup(self.ExtractGroup) then return end
+		self:Extract(ply)
+	end
+
+	if name == "InstantlyExtractPlayeIgnoreDisabled" and ply:IsPlayer() then
+		if ply:CompareStatus(0) or !ply:CompareSpawnGroup(self.ExtractGroup) then return end
+
+		self:Extract(ply)
+	end
 
 end
 
@@ -174,6 +172,6 @@ end
 
 function ENT:Extract(ply)
 	if !IsValid(ply) then return end
-    self:TriggerOutput("OnPlayerExtract", ply)
-    hook.Run("PlayerExtraction", ply, self.ExtractTime, self.IsGuranteed, self.InternalName)
+	self:TriggerOutput("OnPlayerExtract", ply)
+	hook.Run("PlayerExtraction", ply, self.ExtractTime, self.IsGuranteed, self.InternalName)
 end
