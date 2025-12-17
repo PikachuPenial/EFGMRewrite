@@ -506,7 +506,7 @@ if SERVER then
 
                 for i = 1, num do
 
-                    if plyDistance >= 2500 and v != attacker then
+                    if plyDistance >= 2500 then
 
                         net.Start("DistantGunAudio")
                         net.WriteVector(shootPos)
@@ -548,7 +548,7 @@ if SERVER then
 
                 for i = 1, num do
 
-                    if plyDistance >= 2500 and v != attacker then
+                    if plyDistance >= 2500 then
 
                         net.Start("DistantGunAudio")
                         net.WriteVector(shootPos)
