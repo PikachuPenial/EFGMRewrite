@@ -3,7 +3,7 @@ ENT.Base = "base_point"
 
 function ENT:CanSpawn(ply)
     local pos = self:GetPos() -- Get the position of the PlayerSpawn entity
-    local mins, maxs = ply:GetHull() * 2 -- Get the bounding box of the player's hull
+    local mins, maxs = ply:GetHull() * 3 -- Get the bounding box of the player's hull
 
     local trace = util.TraceHull({
         start = pos,

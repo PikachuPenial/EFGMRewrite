@@ -7,6 +7,7 @@ if SERVER then
 
     util.AddNetworkString("PlayerDuelTransition")
     util.AddNetworkString("PlayerInventoryReloadForDuel")
+    util.AddNetworkString("PlayerInventoryEquipDuelItems")
 
     SetGlobalInt("DuelStatus", duelStatus.PENDING)
 
@@ -47,24 +48,24 @@ if SERVER then
 
             v:SetNWBool("InRange", true)
 
+            if primaryItem != nil then timer.Simple(0.25, function() DUEL:EquipPrimary(v, primaryItem) end) end
+            if secondaryItem != nil then timer.Simple(0.5, function() DUEL:EquipHolster(v, secondaryItem) end) end
+
+            net.Start("PlayerInventoryReloadForDuel")
+            net.WriteTable(primaryItem or {})
+            net.WriteTable(secondaryItem or {})
+            net.Send(v)
+
             timer.Create("Duel" .. v:SteamID64(), 1, 1, function()
 
-                if primaryItem != nil then DUEL:EquipPrimary(v, primaryItem) end
-                if secondaryItem != nil then DUEL:EquipHolster(v, secondaryItem) end
-
-                CalculateInventoryWeight(v)
-
-                net.Start("PlayerInventoryReloadForDuel")
-                net.WriteTable(primaryItem or {})
-                net.WriteTable(secondaryItem or {})
-                net.Send(v)
-
+                v:Freeze(false)
                 v:Teleport(spawns[k]:GetPos(), spawns[k]:GetAngles(), Vector(0, 0, 0))
                 v:SetHealth(v:GetMaxHealth())
 
-                timer.Simple(2, function() v:Freeze(false) end)
-
+                net.Start("PlayerInventoryEquipDuelItems")
+                net.Send(v)
                 DUEL:ReloadLoadoutItems(v)
+
                 v:SetRaidStatus(3, "")
                 v:SetNWInt("DuelsPlayed", v:GetNWInt("DuelsPlayed") + 1)
                 ResetRaidStats(v) -- because im lazy and won't make a special death overview
@@ -332,24 +333,31 @@ if CLIENT then
         primaryItem = net.ReadTable()
         secondaryItem = net.ReadTable()
 
+        if primaryItem != nil and !table.IsEmpty(primaryItem) then playerWeaponSlots[1][1] = primaryItem end
+        if secondaryItem != nil and !table.IsEmpty(secondaryItem) then playerWeaponSlots[2][1] = secondaryItem end
+
+    end )
+
+    net.Receive("PlayerInventoryEquipDuelItems", function(len, ply)
+
         local hasPrimary = false
         local hasHolster = false
 
-        if primaryItem != nil and !table.IsEmpty(primaryItem) then hasPrimary = true playerWeaponSlots[1][1] = primaryItem end
-        if secondaryItem != nil and !table.IsEmpty(secondaryItem) then hasHolster = true playerWeaponSlots[2][1] = secondaryItem end
+        if !table.IsEmpty(playerWeaponSlots[1][1]) then hasPrimary = true end
+        if !table.IsEmpty(playerWeaponSlots[2][1]) then hasHolster = true end
 
         if hasPrimary and hasHolster then
 
-            local weapon = LocalPlayer():GetWeapon(primaryItem.name)
+            local weapon = LocalPlayer():GetWeapon(playerWeaponSlots[1][1].name)
             if weapon != NULL then input.SelectWeapon(weapon) end
 
         elseif !hasPrimary and hasHolster then
 
-            local weapon = LocalPlayer():GetWeapon(secondaryItem.name)
+            local weapon = LocalPlayer():GetWeapon(playerWeaponSlots[2][1].name)
             if weapon != NULL then input.SelectWeapon(weapon) end
 
         end
 
-    end )
+    end)
 
 end

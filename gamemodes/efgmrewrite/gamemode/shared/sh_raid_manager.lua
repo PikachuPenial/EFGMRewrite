@@ -116,10 +116,10 @@ if SERVER then
                     v:Freeze(true)
 
                     timer.Create("Spawn" .. v:SteamID64(), 1, 1, function()
+                        v:Freeze(false)
                         local spawn = GetValidRaidSpawn(status)
                         local allSpawns = spawn.Spawns
                         v:Teleport(allSpawns[k]:GetPos(), allSpawns[k]:GetAngles(), Vector(0, 0, 0))
-                        v:Freeze(false)
 
                         local curTime = math.Round(CurTime(), 0) -- once players spawn, we make their team chat channel more specific, this is so others can create squads of the same name and not conflict with anything
                         v:SetRaidStatus(status, spawn.SpawnGroup or "")
