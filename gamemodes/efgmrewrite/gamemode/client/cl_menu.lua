@@ -11486,10 +11486,10 @@ function Menu.OpenTab.Settings()
     local acceptInvite = vgui.Create("DBinder", acceptInvitePanel)
     acceptInvite:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(30))
     acceptInvite:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
-    acceptInvite:SetSelectedNumber(GetConVar("efgm_bind_acceptinvite"):GetInt())
+    acceptInvite:SetSelectedNumber(GetConVar("efgm_bind_invites_accept"):GetInt())
     function acceptInvite:OnChange(num)
 
-        RunConsoleCommand("efgm_bind_acceptinvite", acceptInvite:GetSelectedNumber())
+        RunConsoleCommand("efgm_bind_invites_accept", acceptInvite:GetSelectedNumber())
 
     end
 
@@ -11505,10 +11505,10 @@ function Menu.OpenTab.Settings()
     local declineInvite = vgui.Create("DBinder", declineInvitePanel)
     declineInvite:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(30))
     declineInvite:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
-    declineInvite:SetSelectedNumber(GetConVar("efgm_bind_declineinvite"):GetInt())
+    declineInvite:SetSelectedNumber(GetConVar("efgm_bind_invites_decline"):GetInt())
     function declineInvite:OnChange(num)
 
-        RunConsoleCommand("efgm_bind_declineinvite", declineInvite:GetSelectedNumber())
+        RunConsoleCommand("efgm_bind_invites_decline", declineInvite:GetSelectedNumber())
 
     end
 

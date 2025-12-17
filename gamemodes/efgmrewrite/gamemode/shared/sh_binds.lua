@@ -13,8 +13,8 @@ if CLIENT then
     CreateClientConVar("efgm_bind_teaminvite", KEY_F3, true, true, "Determines the keybind that invites someone to your team")
     CreateClientConVar("efgm_bind_duelinvite", KEY_F4, true, true, "Determines the keybind that invites someone to a duel")
     CreateClientConVar("efgm_bind_viewprofile", KEY_P, true, true, "Determines the keybind that opens another players profile while looking at them")
-    CreateClientConVar("efgm_bind_acceptinvite", KEY_F5, true, true, "Determines the keybind that accepts an invite")
-    CreateClientConVar("efgm_bind_declineinvite", KEY_F6, true, true, "Determines the keybind that declines an invite")
+    CreateClientConVar("efgm_bind_invites_accept", KEY_F1, true, true, "Determines the keybind that accepts an invite")
+    CreateClientConVar("efgm_bind_invites_decline", KEY_F2, true, true, "Determines the keybind that declines an invite")
     CreateClientConVar("efgm_bind_dropitem", KEY_DELETE, true, true, "Determines the keybind that drops the hovered item in the menu")
     CreateClientConVar("efgm_bind_deleteitem", KEY_DELETE, true, true, "Determines the keybind that deletes the hovered item in the menu")
 
@@ -155,7 +155,7 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
         end
 
         -- accept invite
-        if button == ply:GetInfoNum("efgm_bind_acceptinvite", KEY_F5) then
+        if button == ply:GetInfoNum("efgm_bind_invites_accept", KEY_F3) then
 
             if !ply:CompareStatus(0) and !ply:CompareStatus(3) then return end
             AcceptInvite(ply)
@@ -165,7 +165,7 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
         end
 
         -- decline invite
-        if button == ply:GetInfoNum("efgm_bind_declineinvite", KEY_F6) then
+        if button == ply:GetInfoNum("efgm_bind_invites_decline", KEY_F4) then
 
             if !ply:CompareStatus(0) and !ply:CompareStatus(3) then return end
             DeclineInvite(ply)

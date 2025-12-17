@@ -117,7 +117,7 @@ if SERVER then
 
                     timer.Create("Spawn" .. v:SteamID64(), 1, 1, function()
                         v:Freeze(false)
-                        local spawn = GetValidRaidSpawn(status)
+                        local spawn = GetValidRaidSpawn(v, status)
                         local allSpawns = spawn.Spawns
                         v:Teleport(allSpawns[k]:GetPos(), allSpawns[k]:GetAngles(), Vector(0, 0, 0))
 

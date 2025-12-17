@@ -7,7 +7,6 @@ if SERVER then
 
     util.AddNetworkString("PlayerDuelTransition")
     util.AddNetworkString("PlayerInventoryReloadForDuel")
-    util.AddNetworkString("PlayerInventoryEquipDuelItems")
 
     SetGlobalInt("DuelStatus", duelStatus.PENDING)
 
@@ -48,8 +47,8 @@ if SERVER then
 
             v:SetNWBool("InRange", true)
 
-            if primaryItem != nil then timer.Simple(0.25, function() DUEL:EquipPrimary(v, primaryItem) end) end
-            if secondaryItem != nil then timer.Simple(0.5, function() DUEL:EquipHolster(v, secondaryItem) end) end
+            if secondaryItem != nil then timer.Simple(0.25, function() DUEL:EquipHolster(v, secondaryItem) end) end
+            if primaryItem != nil then timer.Simple(0.5, function() DUEL:EquipPrimary(v, primaryItem) end) end
 
             net.Start("PlayerInventoryReloadForDuel")
             net.WriteTable(primaryItem or {})
@@ -62,9 +61,7 @@ if SERVER then
                 v:Teleport(spawns[k]:GetPos(), spawns[k]:GetAngles(), Vector(0, 0, 0))
                 v:SetHealth(v:GetMaxHealth())
 
-                net.Start("PlayerInventoryEquipDuelItems")
-                net.Send(v)
-                DUEL:ReloadLoadoutItems(v)
+                timer.Simple(0.2, function() DUEL:ReloadLoadoutItems(v) end) -- ughhhhhhh
 
                 v:SetRaidStatus(3, "")
                 v:SetNWInt("DuelsPlayed", v:GetNWInt("DuelsPlayed") + 1)
@@ -157,6 +154,7 @@ if SERVER then
 
         ply.weaponSlots[1][1] = item
         GiveWepWithPresetFromCode(ply, item.name, item.data.att)
+        ply:SelectWeapon(item.name)
 
     end
 
@@ -164,6 +162,7 @@ if SERVER then
 
         ply.weaponSlots[2][1] = item
         GiveWepWithPresetFromCode(ply, item.name, item.data.att)
+        ply:SelectWeapon(item.name)
 
     end
 
@@ -337,27 +336,5 @@ if CLIENT then
         if secondaryItem != nil and !table.IsEmpty(secondaryItem) then playerWeaponSlots[2][1] = secondaryItem end
 
     end )
-
-    net.Receive("PlayerInventoryEquipDuelItems", function(len, ply)
-
-        local hasPrimary = false
-        local hasHolster = false
-
-        if !table.IsEmpty(playerWeaponSlots[1][1]) then hasPrimary = true end
-        if !table.IsEmpty(playerWeaponSlots[2][1]) then hasHolster = true end
-
-        if hasPrimary and hasHolster then
-
-            local weapon = LocalPlayer():GetWeapon(playerWeaponSlots[1][1].name)
-            if weapon != NULL then input.SelectWeapon(weapon) end
-
-        elseif !hasPrimary and hasHolster then
-
-            local weapon = LocalPlayer():GetWeapon(playerWeaponSlots[2][1].name)
-            if weapon != NULL then input.SelectWeapon(weapon) end
-
-        end
-
-    end)
 
 end

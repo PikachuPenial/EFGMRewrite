@@ -3,14 +3,17 @@
 -- yooo the fuckings on 1 and 2 lined up lets fucking goooooo
 
 hook.Add("IsSpawnpointSuitable", "CheckSpawnPoint", function(ply, spawnpointent, bMakeSuitable)
-	local pos = spawnpointent:GetPos()
+
+    local pos = spawnpointent:GetPos()
     local name = spawnpointent:GetName()
+
+    if name == "efgm_duel_spawn" then return true end -- surely this doesn't happen
 
     local checkScale = 1280
     if name == "info_player_start" then checkScale = 64 end
 
-	local entities = ents.FindInBox(pos + Vector(checkScale * -1, checkScale * -1, checkScale * -1), pos + Vector(checkScale, checkScale, checkScale))
-	local entsBlocking = 0
+    local entities = ents.FindInBox(pos + Vector(checkScale * -1, checkScale * -1, checkScale * -1), pos + Vector(checkScale, checkScale, checkScale))
+    local entsBlocking = 0
 
     if name == "info_player_start" then
         for _, v in ipairs(entities) do
@@ -26,16 +29,20 @@ hook.Add("IsSpawnpointSuitable", "CheckSpawnPoint", function(ply, spawnpointent,
         end
     end
 
-	if (entsBlocking > 0) then return false end
-	return true
+    if (entsBlocking > 0) then return false end
+    return true
+
 end )
 
 function BetterRandom(haystack) -- this is literally never used ever
+
     return haystack[math.random(#haystack)]
+
 end
 
 -- raid
-function GetValidRaidSpawn(status) -- status: 0 = lobby, 1 = pmc, 2 = scav (assuming 1)
+function GetValidRaidSpawn(ply, status) -- status: 0 = lobby, 1 = pmc, 2 = scav (assuming 1)
+
     if status == 0 then return nil end
 
     local spawns = ents.FindByClass("efgm_raid_spawn")
@@ -62,9 +69,11 @@ function GetValidRaidSpawn(status) -- status: 0 = lobby, 1 = pmc, 2 = scav (assu
 
         local randomSpawn = math.random(#pmcSpawns)
         return pmcSpawns[randomSpawn]
+
     end
 
     if status == 2 then
+
         local scavSpawns = {}
 
         for k, v in ipairs(spawns) do
@@ -85,45 +94,47 @@ function GetValidRaidSpawn(status) -- status: 0 = lobby, 1 = pmc, 2 = scav (assu
 
         local randomSpawn = math.random(#scavSpawns)
         return scavSpawns[randomSpawn]
+
     end
+
 end
 
 -- hideout
 -- on a normal spawn
 function GM:PlayerSelectSpawn(ply)
 
-	local spawns = ents.FindByClass("info_player_start")
-	local size = table.Count(spawns)
+    local spawns = ents.FindByClass("info_player_start")
+    local size = table.Count(spawns)
 
-	for i = 0, size do
-		local randomSpawn = math.random(#spawns)
+    for i = 0, size do
+        local randomSpawn = math.random(#spawns)
 
-		if (hook.Call("IsSpawnpointSuitable", GAMEMODE, ply, spawns[randomSpawn], false)) then
-			return spawns[randomSpawn]
-		end
-	end
+        if (hook.Call("IsSpawnpointSuitable", GAMEMODE, ply, spawns[randomSpawn], false)) then
+            return spawns[randomSpawn]
+        end
+    end
 
-	local randomSpawn = math.random(#spawns)
-	return spawns[randomSpawn]
+    local randomSpawn = math.random(#spawns)
+    return spawns[randomSpawn]
 
 end
 
 -- on extract (literally just a duplicate of the function above lololol!!1!)
-function GetValidHideoutSpawn()
+function GetValidHideoutSpawn(ply)
 
-	local spawns = ents.FindByClass("info_player_start")
-	local size = table.Count(spawns)
+    local spawns = ents.FindByClass("info_player_start")
+    local size = table.Count(spawns)
 
-	for i = 0, size do
-		local randomSpawn = math.random(#spawns)
+    for i = 0, size do
+        local randomSpawn = math.random(#spawns)
 
-		if (hook.Call("IsSpawnpointSuitable", GAMEMODE, ply, spawns[randomSpawn], false)) then
-			return spawns[randomSpawn]
-		end
-	end
+        if (hook.Call("IsSpawnpointSuitable", GAMEMODE, ply, spawns[randomSpawn], false)) then
+            return spawns[randomSpawn]
+        end
+    end
 
-	local randomSpawn = math.random(#spawns)
-	return spawns[randomSpawn]
+    local randomSpawn = math.random(#spawns)
+    return spawns[randomSpawn]
 
 end
 

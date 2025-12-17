@@ -319,8 +319,10 @@ function RenderCompass(ply)
 end
 
 function RenderPlayerInfo(ply, ent)
-    if !ent:IsPlayer() then return end
+    if not ent:IsPlayer() then return end
     if hook.Run("ShouldDrawTargetID", ent) == false then return end
+
+    local inHideout = ent:CompareStatus(0)
 
     local name = string.upper(ent:Name())
     surface.SetFont("BenderExfilTimer")
@@ -331,20 +333,24 @@ function RenderPlayerInfo(ply, ent)
     local profileBind = string.upper(input.GetKeyName(GetConVar("efgm_bind_viewprofile"):GetInt()) or "NONE")
 
     local inviteText = string.upper("[" .. squadBind .. "] INVITE TO SQUAD" .. "   " .. "[" .. duelBind .. "] INVITE TO DUEL" .. "   " .. "[" .. profileBind .. "] VIEW PROFILE")
+    if (CurTime() - Invites.lastInviteSentTime < 10) or Invites.invitedBy != nil or Invites.invitedType != nil then inviteText = string.upper("[" .. profileBind .. "] VIEW PROFILE") end
     surface.SetFont("Bender24")
     local inviteTextSize = surface.GetTextSize(inviteText) + EFGM.ScreenScale(10)
 
     local infoSize = math.max(nameTextSize, inviteTextSize)
+    local infoSizeY = EFGM.MenuScale(90)
+    if !inHideout then infoSize = nameTextSize infoSizeY = EFGM.MenuScale(65) end
 
     surface.SetDrawColor(Colors.hudBackground)
-    surface.DrawRect(ScrW() / 2 - (infoSize / 2), ScrH() - EFGM.ScreenScale(110), infoSize, EFGM.ScreenScale(90))
+    surface.DrawRect(ScrW() / 2 - (infoSize / 2), ScrH() - infoSizeY - EFGM.MenuScale(20), infoSize, infoSizeY)
 
     surface.SetDrawColor(Color(255, 255, 255, 155))
-    surface.DrawRect(ScrW() / 2 - (infoSize / 2), ScrH() - EFGM.ScreenScale(110), infoSize, EFGM.MenuScale(1))
+    surface.DrawRect(ScrW() / 2 - (infoSize / 2), ScrH() - infoSizeY - EFGM.MenuScale(20), infoSize, EFGM.MenuScale(1))
 
-    draw.DrawText(name, "BenderExfilTimer", ScrW() / 2, ScrH() - EFGM.ScreenScale(110), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+    draw.DrawText(name, "BenderExfilTimer", ScrW() / 2, ScrH() - infoSizeY - EFGM.MenuScale(20), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 
-    draw.DrawText(inviteText, "Bender24", ScrW() / 2, ScrH() - EFGM.ScreenScale(50), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+    if !inHideout then return end
+    draw.DrawText(inviteText, "Bender24", ScrW() / 2, ScrH() - infoSizeY + EFGM.MenuScale(40), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 end
 
 local function RenderVOIPIndicator()
@@ -383,8 +389,8 @@ function RenderInvite(ply)
     surface.SetFont("BenderExfilTimer")
     local textSize = surface.GetTextSize(text) + EFGM.ScreenScale(10)
 
-    local acceptBind = string.upper(input.GetKeyName(GetConVar("efgm_bind_acceptinvite"):GetInt()) or "NONE")
-    local declineBind = string.upper(input.GetKeyName(GetConVar("efgm_bind_declineinvite"):GetInt()) or "NONE")
+    local acceptBind = string.upper(input.GetKeyName(GetConVar("efgm_bind_invites_accept"):GetInt()) or "NONE")
+    local declineBind = string.upper(input.GetKeyName(GetConVar("efgm_bind_invites_decline"):GetInt()) or "NONE")
 
     local bindsText = string.upper("[" .. acceptBind .. "] ACCEPT" .. "   " .. "[" .. declineBind .. "] IGNORE")
     surface.SetFont("Bender24")

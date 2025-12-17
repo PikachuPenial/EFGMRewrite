@@ -49,6 +49,8 @@ function ENT:AcceptInput(name, ply, caller, data)
 
         else
 
+            if ply:CompareStatus(3) then return end
+
             for k, v in ipairs(ply:GetWeapons()) do
 
                 v:SetClip1(0)
