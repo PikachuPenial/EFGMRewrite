@@ -503,7 +503,7 @@ if SERVER then
 
                 end
 
-                local plyDistance =  shootPos:Distance(v:GetPos())
+                local plyDistance = shootPos:Distance(v:GetPos())
                 local bulletPitch = shotCaliber[class][1] or 100
                 local threshold = shotCaliber[class][2] or 6000
                 local style = shotCaliber[class][3] == "bullet" -- returns true if bullet, false if explosive

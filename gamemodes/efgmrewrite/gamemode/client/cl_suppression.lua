@@ -27,13 +27,13 @@ net.Receive("suppression_fire_event", function(len)
 
 	local distance_from_line, nearest_point, dist_along_the_line = util.DistanceToLine(tr.StartPos, tr.HitPos, LocalPlayer():GetPos())
 
-	if LocalPlayer():Alive() and nearest_point:Distance(LocalPlayer():GetPos()) < 100 then
+	if LocalPlayer():Alive() and EntitiesWithinBounds(nearest_point, LocalPlayer(), 100) then
 		effect_amount = math.Clamp(effect_amount + 0.08 * buildupspeed, 0, 1)
 		sound.Play("bul_snap/supersonic_snap_" .. math.random(1,18) .. ".wav", nearest_point, 75, 100, 1)
 		sound.Play("bul_flyby/subsonic_" .. math.random(1,27) .. ".wav", nearest_point, 75, 100, 1)
 
-        local angle = Angle(math.Rand(-1.5, 1.5) * (effect_amount * (viewpunch_intensity)), math.Rand(-1.5, 1.5) * (effect_amount * (viewpunch_intensity)), math.Rand(-1.5, 1.5) * (effect_amount * (viewpunch_intensity)))
-        Viewpunch(angle)
+		local angle = Angle(math.Rand(-1.5, 1.5) * (effect_amount * (viewpunch_intensity)), math.Rand(-1.5, 1.5) * (effect_amount * (viewpunch_intensity)), math.Rand(-1.5, 1.5) * (effect_amount * (viewpunch_intensity)))
+		Viewpunch(angle)
 	end
 end)
 

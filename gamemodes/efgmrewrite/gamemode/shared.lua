@@ -108,6 +108,20 @@ function generate_rand_string(l)
 
 end
 
+-- works with raw vectors too
+function EntitiesWithinBounds(ent1, ent2, dist)
+
+    local pos1
+    local pos2
+
+    if isentity(pos1) then pos1 = ent1:GetPos() else pos1 = ent1 end
+    if isentity(pos2) then pos2 = ent2:GetPos() else pos2 = ent2 end
+
+    local distSqr = dist * dist
+    return pos1:DistToSqr(pos2:GetPos()) < distSqr
+
+end
+
 -- necessary functions to sync attachments cleanly between inventories
 function PruneUnnecessaryAttachmentDataRecursive(tbl)
 

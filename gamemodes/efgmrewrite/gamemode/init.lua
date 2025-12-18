@@ -349,26 +349,6 @@ local function Regeneration()
 end
 hook.Add("Think", "HealthRegen", Regeneration)
 
--- light on bullet impact
--- hook.Add("EntityFireBullets", "BulletLight", function(Entity, Other)
-	-- if IsValid(Entity) then
-		-- local Trace = {}
-		-- Trace.start = Other.Src
-		-- Trace.endpos = Other.Src + (Other.Dir * 2147483647)
-		-- Trace.filter = Entity
-		-- local Result = util.TraceLine(Trace)
-
-		-- if Result.Hit then
-			-- local FireLight = ents.Create("light_dynamic")
-			-- FireLight:SetKeyValue("distance", 50)
-			-- FireLight:SetKeyValue("_light", 255 .. " " .. 200 .. " " .. math.random(120, 180))
-			-- FireLight:SetPos(Result.HitPos)
-			-- FireLight:Spawn()
-			-- FireLight:Fire("Kill", "", 0.075)
-		-- end
-	-- end
--- end)
-
 function ApplyPlayerExperience(ply, mult)
 
 	local exp = 0
