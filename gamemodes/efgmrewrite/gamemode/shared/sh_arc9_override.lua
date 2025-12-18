@@ -2097,9 +2097,7 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
                 end
 
                 if indoor > 0 then
-
                     volume = volume * 0.4
-
                 end
 
                 for i = 1, self.Num do

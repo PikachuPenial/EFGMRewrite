@@ -459,17 +459,17 @@ shotCaliber["efgm_ammo_9x39"] =     {150, 2500, "bullet"}
 shotCaliber["efgm_ammo_93x64"] =    {30, 25000, "bullet"}
 
 -- entities
-shotCaliber["arc9_eft_grenade_f1"] =        {60, 8000, "boom"}
-shotCaliber["arc9_eft_grenade_m67"] =       {60, 8000, "boom"}
-shotCaliber["arc9_eft_grenade_rgd5"] =      {60, 8000, "boom"}
-shotCaliber["arc9_eft_grenade_rgn"] =       {80, 6000, "boom"}
-shotCaliber["arc9_eft_grenade_rgo"] =       {80, 6000, "boom"}
-shotCaliber["arc9_eft_grenade_v40"] =       {80, 6000, "boom"}
-shotCaliber["arc9_eft_grenade_vog17"] =     {70, 7000, "boom"}
-shotCaliber["arc9_eft_grenade_vog25"] =     {70, 7000, "boom"}
-shotCaliber["arc9_eft_40mm_m381_bang"] =    {60, 8000, "boom"}
-shotCaliber["arc9_eft_40mm_m433_bang"] =    {70, 7000, "boom"}
-shotCaliber["arc9_eft_grenade_725"] =       {50, 10000, "boom"}
+shotCaliber["arc9_eft_grenade_f1"] =        {60, 10000, "boom"}
+shotCaliber["arc9_eft_grenade_m67"] =       {60, 10000, "boom"}
+shotCaliber["arc9_eft_grenade_rgd5"] =      {60, 10000, "boom"}
+shotCaliber["arc9_eft_grenade_rgn"] =       {80, 8000, "boom"}
+shotCaliber["arc9_eft_grenade_rgo"] =       {80, 8000, "boom"}
+shotCaliber["arc9_eft_grenade_v40"] =       {80, 8000, "boom"}
+shotCaliber["arc9_eft_grenade_vog17"] =     {70, 9000, "boom"}
+shotCaliber["arc9_eft_grenade_vog25"] =     {70, 9000, "boom"}
+shotCaliber["arc9_eft_40mm_m381_bang"] =    {60, 10000, "boom"}
+shotCaliber["arc9_eft_40mm_m433_bang"] =    {70, 9000, "boom"}
+shotCaliber["arc9_eft_grenade_725"] =       {50, 12000, "boom"}
 
 -- manually set
 shotCaliber["shrapnel"] =           {190, 3000, "bullet"}
@@ -480,7 +480,7 @@ if SERVER then
 
     util.AddNetworkString("DistantGunAudio")
 
-    function ManualDistantSound(type, num, indoor, ent, cal)
+    function ManualDistantSound(type, num, indoor, ent, cal, ext)
 
         if type == 1 then -- entity based
 
@@ -495,18 +495,28 @@ if SERVER then
                 local class = ent:GetClass()
                 if shotCaliber[class] == nil then return end
 
-                local shootPos = attacker:GetPos()
-                local plyDistance = attacker:GetPos():Distance(v:GetPos())
+                local shootPos = Vector(attacker:GetPos())
+
+                if ext.pos then
+
+                    shootPos = Vector(ext.pos)
+
+                end
+
+                local plyDistance =  shootPos:Distance(v:GetPos())
                 local bulletPitch = shotCaliber[class][1] or 100
                 local threshold = shotCaliber[class][2] or 6000
                 local style = shotCaliber[class][3] == "bullet" -- returns true if bullet, false if explosive
                 local volume = 1
 
+                local dist = 2500
+                if ext.dist then dist = ext.dist end
+
                 if indoor then volume = volume * 0.4 end
 
                 for i = 1, num do
 
-                    if plyDistance >= 2500 then
+                    if plyDistance >= dist then
 
                         net.Start("DistantGunAudio")
                         net.WriteVector(shootPos)
@@ -534,21 +544,30 @@ if SERVER then
             for k, v in pairs(player.GetHumans()) do
 
                 if v:CompareStatus(0) or v:CompareStatus(3) then return end
-
                 if shotCaliber[cal] == nil then return end
 
-                local shootPos = attacker:GetPos()
-                local plyDistance = attacker:GetPos():Distance(v:GetPos())
+                local shootPos = Vector(attacker:GetPos())
+
+                if ext.pos then
+
+                    shootPos = Vector(ext.pos)
+
+                end
+
+                local plyDistance =  shootPos:Distance(v:GetPos())
                 local bulletPitch = shotCaliber[cal][1] or 100
                 local threshold = shotCaliber[cal][2] or 6000
                 local style = shotCaliber[cal][3] == "bullet" -- returns true if bullet, false if explosive
                 local volume = 1
 
+                local dist = 2500
+                if ext.dist then dist = ext.dist end
+
                 if indoor then volume = volume * 0.4 end
 
                 for i = 1, num do
 
-                    if plyDistance >= 2500 then
+                    if plyDistance >= dist then
 
                         net.Start("DistantGunAudio")
                         net.WriteVector(shootPos)
