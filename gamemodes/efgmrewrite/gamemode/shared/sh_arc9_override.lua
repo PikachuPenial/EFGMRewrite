@@ -2118,6 +2118,36 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
         end
     end
 
+    function SWEP:RollJam()
+        if !self:GetProcessedValue("Malfunction", true) then return end
+        if self:Clip1() == 0 and self.MalfunctionNeverLastShoot then return end
+        if self:GetOwner():CompareStatus(3) then return end
+
+        local chance = 1 / self:GetProcessedValue("MalfunctionMeanShotsToFail")
+
+        if util.SharedRandom("arc9_jam", 0, 1000) / 1000 <= chance then
+            if self:GetProcessedValue("MalfunctionJam", true) then
+                self:SetJammed(true)
+            end
+
+            if self:GetProcessedValue("MalfunctionExitSights", true) then
+                self:ExitSights()
+            end
+            
+            self:PlayAnimation("jam", 1, true)
+            local soundtab1 = {
+                name = "jam",
+                sound = self:RandomChoice(self:GetProcessedValue("MalfunctionSound", true)),
+                channel = ARC9.CHAN_FIDDLE
+            }
+            self:PlayTranslatedSound(soundtab1)
+            self:SetNextPrimaryFire(CurTime() + self:GetProcessedValue("MalfunctionWait", true))
+            self:SetNeedsCycle(false)
+
+            return true
+        end
+    end
+
     if class != "arc9_eft_rshg2" then
 
         function SWEP:ThinkGrenade()
