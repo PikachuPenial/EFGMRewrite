@@ -4398,7 +4398,6 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
-        ["marketResetLimit"] = 1200,
         ["icon"] = Material("items/ammo/762x25.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -4416,7 +4415,6 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
-        ["marketResetLimit"] = 1200,
         ["icon"] = Material("items/ammo/9x18.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -4434,7 +4432,6 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
-        ["marketResetLimit"] = 1200,
         ["icon"] = Material("items/ammo/9x19.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -4470,7 +4467,6 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
-        ["marketResetLimit"] = 600,
         ["icon"] = Material("items/ammo/357.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -4488,7 +4484,6 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
-        ["marketResetLimit"] = 600,
         ["icon"] = Material("items/ammo/45.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -4506,7 +4501,6 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
-        ["marketResetLimit"] = 600,
         ["icon"] = Material("items/ammo/50ae.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -4524,7 +4518,6 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 20,
-        ["marketResetLimit"] = 200,
         ["icon"] = Material("items/ammo/20x1.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -4543,7 +4536,7 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
-        ["marketResetLimit"] = 600,
+        ["marketResetLimit"] = 900,
         ["icon"] = Material("items/ammo/46x30.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -4561,7 +4554,7 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 60,
-        ["marketResetLimit"] = 600,
+        ["marketResetLimit"] = 900,
         ["icon"] = Material("items/ammo/57x28.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -4833,7 +4826,6 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 20,
-        ["marketResetLimit"] = 200,
         ["icon"] = Material("items/ammo/12gauge.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -4851,7 +4843,6 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 20,
-        ["marketResetLimit"] = 200,
         ["icon"] = Material("items/ammo/20gauge.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
@@ -4869,7 +4860,7 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 20,
-        ["marketResetLimit"] = 200,
+        ["marketResetLimit"] = 80,
         ["icon"] = Material("items/ammo/4gauge.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
