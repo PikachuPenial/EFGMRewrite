@@ -47,7 +47,7 @@ if SERVER then
 
             v:SetNWBool("InRange", true)
 
-            if secondaryItem != nil then timer.Simple(0.3, function() DUEL:EquipHolster(v, secondaryItem) end) end
+            if secondaryItem != nil then timer.Simple(0.3, function() DUEL:EquipHolster(v, secondaryItem, primaryItem == nil) end) end
             if primaryItem != nil then timer.Simple(0.6, function() DUEL:EquipPrimary(v, primaryItem) end) end
 
             net.Start("PlayerInventoryReloadForDuel")
@@ -96,19 +96,9 @@ if SERVER then
             local lobbySpawns = ents.FindByClass("efgm_lobby_spawn") or {}
             if #ents.FindByClass("efgm_duel_end_spawn") != 0 then lobbySpawns = ents.FindByClass("efgm_duel_end_spawn") end
 
-            local possibleSpawns = {}
-
             if table.IsEmpty(lobbySpawns) then error("no lobby spawns eat shit") return end
 
-            for key, spawn in ipairs(lobbySpawns) do
-                if spawn:CanSpawn(v) then
-                    table.insert(possibleSpawns, spawn)
-                end
-            end
-
-            if #possibleSpawns == 0 then return end
-
-            local randomSpawn = BetterRandom(possibleSpawns)
+            local randomSpawn = BetterRandom(lobbySpawns)
 
             v:Lock()
 
@@ -160,11 +150,11 @@ if SERVER then
 
     end
 
-    function DUEL:EquipHolster(ply, item)
+    function DUEL:EquipHolster(ply, item, doEquip)
 
         ply.weaponSlots[2][1] = item
         GiveWepWithPresetFromCode(ply, item.name, item.data.att)
-        ply:SelectWeapon(item.name)
+        if doEquip then ply:SelectWeapon(item.name) end
 
     end
 

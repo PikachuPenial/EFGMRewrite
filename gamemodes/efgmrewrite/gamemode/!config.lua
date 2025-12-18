@@ -1,6 +1,6 @@
 -- variables
 respawnTime = 7
-noRaidRespawnTime = 3
+noRaidRespawnTime = 2
 underweightLimit = 30
 
 levelArray = {}

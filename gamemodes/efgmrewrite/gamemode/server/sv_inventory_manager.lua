@@ -344,8 +344,6 @@ net.Receive("PlayerInventoryEquipItem", function(len, ply)
     equipSlot = net.ReadUInt(4)
     equipSubSlot = net.ReadUInt(16)
 
-    if ply:CompareStatus(3) then return end
-
     local item = ply.inventory[itemIndex]
     if item == nil then return end
 
@@ -376,8 +374,6 @@ net.Receive("PlayerInventoryUnEquipItem", function(len, ply)
 
     local equipID = net.ReadUInt(4)
     local equipSlot = net.ReadUInt(4)
-
-    if ply:CompareStatus(3) then return end
 
     local item = table.Copy(ply.weaponSlots[equipID][equipSlot])
 
@@ -515,7 +511,6 @@ end
 
 net.Receive("PlayerInventoryUnEquipAllCL", function(len, ply)
 
-    if ply:CompareStatus(3) then return end
     UnequipAll(ply)
 
 end)
