@@ -3232,7 +3232,7 @@ function Menu.ReloadInventory()
 
     end
 
-    if table.IsEmpty(plyItems) then return end
+    if plyItems[1] == nil then return end
 
     table.sort(plyItems, function(a, b)
 
@@ -5484,7 +5484,7 @@ function Menu.ReloadStash(firstReload)
 
     end
 
-    if table.IsEmpty(plyStashItems) then return end
+    if plyStashItems[1] == nil then return end
 
     table.sort(plyStashItems, function(a, b)
 
@@ -5999,7 +5999,7 @@ function Menu.ReloadMarketStash()
 
     end
 
-    if table.IsEmpty(marketPlyStashItems) then return end
+    if marketPlyStashItems[1] == nil then return end
 
     table.sort(marketPlyStashItems, function(a, b)
 
@@ -6318,7 +6318,7 @@ function Menu.ReloadContainer()
 
     end
 
-    if table.IsEmpty(conItems) then return end
+    if conItems[1] == nil then return end
 
     table.sort(conItems, function(a, b)
 

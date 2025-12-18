@@ -2133,7 +2133,7 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
             if self:GetProcessedValue("MalfunctionExitSights", true) then
                 self:ExitSights()
             end
-            
+
             self:PlayAnimation("jam", 1, true)
             local soundtab1 = {
                 name = "jam",

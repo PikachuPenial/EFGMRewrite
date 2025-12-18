@@ -21,6 +21,10 @@ local function CreateFonts()
 
     surface.CreateFont("Purista18Italic", {font = "Purista", size = EFGM.MenuScale(18), weight = 550, antialias = true, italic = true, extended = true})
 
+    surface.CreateFont("BenderExfilTimerMenu", { font = "BenderBold", size = EFGM.MenuScale(60), weight = 550, antialias = true, extended = true })
+    surface.CreateFont("Bender24Menu", {font = "Bender", size = EFGM.MenuScale(24), weight = 550, antialias = true, extended = true})
+    surface.CreateFont("Bender18Menu", {font = "Bender", size = EFGM.MenuScale(18), weight = 550, antialias = true, extended = true})
+
     -- overwriting base derma fonts
     surface.CreateFont("DermaDefault", {font = "PuristaBold", size = EFGM.MenuScale(16), weight = 500, antialias = true, extended = true})
     surface.CreateFont("DermaDefaultBold", {font = "PuristaBold", size = EFGM.MenuScale(17), weight = 600, antialias = true, italic = false, extended = true})

@@ -178,7 +178,9 @@ if SERVER then
                     tbl.IsDisabled = v.IsDisabled
                     tbl.ShowOnMap = v.ShowOnMap
 
-                    if tbl.ShowOnMap then table.insert(extracts, tbl) end
+                    if !tbl.ShowOnMap then tbl.ExtractName = string.gsub(tbl.ExtractName, "[^ ]", "?") end
+
+                    table.insert(extracts, tbl)
                 end
             end
 

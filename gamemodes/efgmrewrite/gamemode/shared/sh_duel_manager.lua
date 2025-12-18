@@ -114,6 +114,7 @@ if SERVER then
         net.Send(winningPly)
 
         winningPly:GodEnable()
+        if winningPly:GetActiveWeapon() != NULL then winningPly:GetActiveWeapon():SetClip1(-1) end
 
         timer.Simple(0.5, function() winningPly:Freeze(true) end)
 
@@ -221,8 +222,12 @@ if SERVER then
 
         for k, v in ipairs(ply:GetWeapons()) do
 
-            v:SetClip1(v:GetMaxClip1())
-            v:SetClip2(v:GetMaxClip2())
+            timer.Simple(k * 0.25, function()
+
+                v:SetClip1(v:GetMaxClip1())
+                v:SetClip2(v:GetMaxClip2())
+
+            end)
 
         end
 
