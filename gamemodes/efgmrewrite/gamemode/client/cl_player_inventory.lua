@@ -277,8 +277,6 @@ end
 -- returns bool whether or not it could equip an item clientside (desync may be an issue since server could disagree and neither side would know)
 function EquipItemFromInventory(itemIndex, equipSlot, primaryPref)
 
-    if LocalPlayer():CompareStatus(3) then return end
-
     local item = playerInventory[itemIndex]
     if item == nil then return end
 
@@ -340,8 +338,6 @@ function EquipItemFromInventory(itemIndex, equipSlot, primaryPref)
 end
 
 function UnEquipItemFromInventory(equipID, equipSlot)
-
-    if LocalPlayer():CompareStatus(3) then return end
 
     local item = playerWeaponSlots[equipID][equipSlot]
 

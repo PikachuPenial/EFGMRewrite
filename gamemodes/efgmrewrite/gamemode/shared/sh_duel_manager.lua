@@ -83,6 +83,7 @@ if SERVER then
 
         for k, v in ipairs(DUEL.Players) do v:SetNWBool("InRange", false) end
 
+        if deadPly:GetNWInt("CurrentDuelWinStreak") >= deadPly:GetNWInt("BestDuelWinStreak") then deadPly:SetNWInt("BestDuelWinStreak", deadPly:GetNWInt("CurrentDuelWinStreak")) end
         deadPly:SetNWInt("CurrentDuelWinStreak", 0)
 
         table.RemoveByValue(DUEL.Players, deadPly)

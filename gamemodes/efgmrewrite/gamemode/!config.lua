@@ -48,7 +48,7 @@ if SERVER then
     RunConsoleCommand("arc9_eft_mult_explosive", "1")
 
     -- mechanics
-    RunConsoleCommand("arc9_infinite_ammo", "1")
+    RunConsoleCommand("arc9_infinite_ammo", "0")
     RunConsoleCommand("arc9_mult_defaultammo", "0")
     RunConsoleCommand("arc9_realrecoil", "1")
     RunConsoleCommand("arc9_mod_sway", "1")
@@ -87,7 +87,7 @@ if SERVER then
     RunConsoleCommand("arc9_atts_max", "100")
     RunConsoleCommand("arc9_atts_lock", "0")
     RunConsoleCommand("arc9_atts_loseondie", "1")
-    RunConsoleCommand("arc9_free_atts", "1")
+    RunConsoleCommand("arc9_free_atts", "0")
 
     -- caching
     RunConsoleCommand("arc9_precache_sounds_onfirsttake", "0")

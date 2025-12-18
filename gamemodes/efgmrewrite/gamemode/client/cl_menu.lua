@@ -11169,7 +11169,7 @@ function Menu.OpenTab.Settings()
 
     local infilNearEnd = vgui.Create("DCheckBox", infilNearEndPanel)
     infilNearEnd:SetPos(EFGM.MenuScale(152), EFGM.MenuScale(30))
-    infilNearEnd:SetConVar("efgm_infil_nearend")
+    infilNearEnd:SetConVar("efgm_infil_nearend_block")
     infilNearEnd:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
 
     local infilNearEndThresholdPanel = vgui.Create("DPanel", gameplay)
