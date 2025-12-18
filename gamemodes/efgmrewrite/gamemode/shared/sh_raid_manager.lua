@@ -77,7 +77,6 @@ if SERVER then
             timer.Adjust("RaidTimerDecrement", 1, self.VoteTime) -- fuck you timer.Adjust
 
             net.Start("VoteableMaps")
-            net.WriteTable(self.MapPool)
             net.Broadcast()
 
             net.Start("SendNotification")
@@ -99,37 +98,38 @@ if SERVER then
             NetworkSquadInfoToClients()
 
             for k, v in ipairs(plys) do
-                if v:IsPlayer() then
-                    if !v:CompareStatus(0) and !v:CompareStatus(3) then
-                        local status, spawnGroup = v:GetRaidStatus()
-                        print("Player " .. v:GetName() .. " tried to enter the raid with status " .. status .. ", but they're probably fine to join anyway?")
-                    end
+                if !v:IsPlayer() then return end
 
-                    if v:CompareStatus(3) then
-                        local status, spawnGroup = v:GetRaidStatus()
-                        print("Player " .. v:GetName() .. " tried to enter the raid with status " .. status .. ", this means they are in a duel, this shouldn't be possible at all, let's not let them join!")
-                    end
-
-                    net.Start("PlayerRaidTransition")
-                    net.Send(v)
-
-                    v:Freeze(true)
-
-                    timer.Create("Spawn" .. v:SteamID64(), 1, 1, function()
-                        v:Freeze(false)
-                        local spawn = GetValidRaidSpawn(v, status)
-                        local allSpawns = spawn.Spawns
-                        v:Teleport(allSpawns[k]:GetPos(), allSpawns[k]:GetAngles(), Vector(0, 0, 0))
-
-                        local curTime = math.Round(CurTime(), 0) -- once players spawn, we make their team chat channel more specific, this is so others can create squads of the same name and not conflict with anything
-                        v:SetRaidStatus(status, spawn.SpawnGroup or "")
-                        v:SetNW2String("PlayerInSquad", "nil")
-                        v:SetNW2String("TeamChatChannel", squad .. "_" .. curTime)
-                        v:SetNWInt("RaidsPlayed", v:GetNWInt("RaidsPlayed") + 1)
-                        RemoveFIRFromInventory(v)
-                        ResetRaidStats(v)
-                    end)
+                if !v:CompareStatus(0) and !v:CompareStatus(3) then
+                    local status, spawnGroup = v:GetRaidStatus()
+                    print("Player " .. v:GetName() .. " tried to enter the raid with status " .. status .. ", but they're probably fine to join anyway?")
                 end
+
+                if v:CompareStatus(3) then
+                    local status, spawnGroup = v:GetRaidStatus()
+                    print("Player " .. v:GetName() .. " tried to enter the raid with status " .. status .. ", this means they are in a duel, this shouldn't be possible at all, let's not let them join!")
+                    return
+                end
+
+                net.Start("PlayerRaidTransition")
+                net.Send(v)
+
+                v:Freeze(true)
+
+                timer.Create("Spawn" .. v:SteamID64(), 1, 1, function()
+                    v:Freeze(false)
+                    local spawn = GetValidRaidSpawn(v, status)
+                    local allSpawns = spawn.Spawns
+                    v:Teleport(allSpawns[k]:GetPos(), allSpawns[k]:GetAngles(), Vector(0, 0, 0))
+
+                    local curTime = math.Round(CurTime(), 0) -- once players spawn, we make their team chat channel more specific, this is so others can create squads of the same name and not conflict with anything
+                    v:SetRaidStatus(status, spawn.SpawnGroup or "")
+                    v:SetNW2String("PlayerInSquad", "nil")
+                    v:SetNW2String("TeamChatChannel", squad .. "_" .. curTime)
+                    v:SetNWInt("RaidsPlayed", v:GetNWInt("RaidsPlayed") + 1)
+                    RemoveFIRFromInventory(v)
+                    ResetRaidStats(v)
+                end)
             end
         end
 

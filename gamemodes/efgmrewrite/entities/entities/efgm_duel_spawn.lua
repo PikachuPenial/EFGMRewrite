@@ -1,4 +1,8 @@
 ENT.Type = "point"
 ENT.Base = "base_point"
 
--- yeah thats really it
+function ENT:CanSpawn(ply)
+
+    return true -- fuck OFF
+
+end

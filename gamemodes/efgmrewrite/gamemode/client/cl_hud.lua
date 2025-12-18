@@ -567,8 +567,6 @@ net.Receive("CreateDeathInformation", function()
 
     hook.Run("efgm_raid_exit", false)
 
-    surface.PlaySound("death_heartbeat.wav")
-
     local xpMult = net.ReadFloat()
 
     local respawnTime = net.ReadInt(8)
@@ -610,6 +608,8 @@ net.Receive("CreateDeathInformation", function()
     local totalXPReal = math.Round(totalXPRaw * xpMult, 0)
 
     local quote = QUOTES[math.random(1, #QUOTES)]
+
+    if respawnTime > noRaidRespawnTime then surface.PlaySound("death_heartbeat.wav") end
 
     timer.Simple(respawnTime, function()
 
@@ -685,7 +685,7 @@ net.Receive("CreateDeathInformation", function()
         end
 
         DeathPopup:AlphaTo(255, 0.2, 0, nil)
-        surface.PlaySound("extract_failed.wav")
+        if respawnTime > noRaidRespawnTime then surface.PlaySound("extract_failed.wav") end
 
         respawnButton = vgui.Create("DButton", DeathPopup)
         respawnButton:SetSize(EFGM.MenuScale(1020), EFGM.MenuScale(50))
@@ -2453,11 +2453,7 @@ end)
 
 net.Receive("VoteableMaps", function(len)
 
-    local tbl = net.ReadTable()
-
     timer.Simple(20, function()
-
-        local ply = LocalPlayer()
 
         if IsValid(VotePopup) then VotePopup:Remove() end
 

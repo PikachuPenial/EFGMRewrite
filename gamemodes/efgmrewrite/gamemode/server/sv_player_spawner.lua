@@ -7,7 +7,7 @@ hook.Add("IsSpawnpointSuitable", "CheckSpawnPoint", function(ply, spawnpointent,
     local pos = spawnpointent:GetPos()
     local name = spawnpointent:GetName()
 
-    if name == "efgm_duel_spawn" then return true end -- surely this doesn't happen
+    if name == "efgm_duel_spawn" or name == "efgm_duel_end_spawn" then return true end -- surely this doesn't happen
 
     local checkScale = 1280
     if name == "info_player_start" then checkScale = 64 end

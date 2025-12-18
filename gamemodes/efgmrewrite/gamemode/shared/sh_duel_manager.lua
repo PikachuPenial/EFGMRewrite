@@ -17,14 +17,15 @@ if SERVER then
 
         if GetGlobalInt("DuelStatus") != duelStatus.PENDING or !DUEL.Allowed then return end
 
+        DUEL.Players = {ply1, ply2}
+
         local spawns = RandomDuelSpawns()
-        if !spawns then return end -- no duel spawns available on the map
+        if !spawns then DUEL.Players = {} print("no duel spawns found, canceling raid") return end -- no duel spawns available on the map
+        if #spawns < #DUEL.Players then DUEL.Players = {} print("not enough duel spawns for the duel player count found, canceling raid") return end
 
         SetGlobalInt("DuelStatus", duelStatus.ACTIVE)
 
         hook.Run("StartedDuel")
-
-        DUEL.Players = {ply1, ply2}
 
         net.Start("PlayerDuelTransition")
         net.Send(DUEL.Players)
@@ -55,10 +56,11 @@ if SERVER then
             net.WriteTable(secondaryItem or {})
             net.Send(v)
 
+            timer.Simple(0.8 + (k * 0.1), function() v:Teleport(spawns[k]:GetPos(), spawns[k]:GetAngles(), Vector(0, 0, 0)) end)
+
             timer.Create("Duel" .. v:SteamID64(), 1, 1, function()
 
                 v:Freeze(false)
-                v:Teleport(spawns[k]:GetPos(), spawns[k]:GetAngles(), Vector(0, 0, 0))
                 v:SetHealth(v:GetMaxHealth())
 
                 timer.Simple(0.2, function() DUEL:ReloadLoadoutItems(v) end) -- ughhhhhhh
@@ -88,38 +90,50 @@ if SERVER then
 
         table.RemoveByValue(DUEL.Players, deadPly)
 
-        net.Start("PlayerDuelTransition")
-        net.Send(DUEL.Players)
+        local winningPly = DUEL.Players[1]
+        DUEL.Players = {}
 
-        for k, v in ipairs(DUEL.Players) do -- should only be a single player, the winner of the duel
+        local lobbySpawns = ents.FindByClass("efgm_lobby_spawn") or {}
+        local possibleSpawns = {}
+        if #ents.FindByClass("efgm_duel_end_spawn") != 0 then lobbySpawns = ents.FindByClass("efgm_duel_end_spawn") end
 
-            local lobbySpawns = ents.FindByClass("efgm_lobby_spawn") or {}
-            if #ents.FindByClass("efgm_duel_end_spawn") != 0 then lobbySpawns = ents.FindByClass("efgm_duel_end_spawn") end
+        if table.IsEmpty(lobbySpawns) then error("no lobby spawns eat shit") return end
 
-            if table.IsEmpty(lobbySpawns) then error("no lobby spawns eat shit") return end
+        for k, v in ipairs(lobbySpawns) do
 
-            local randomSpawn = BetterRandom(lobbySpawns)
-
-            v:Lock()
-
-            timer.Create("DuelWin" .. v:SteamID64(), 1, 1, function()
-
-                ReinstantiateInventoryAfterDuel(v)
-
-                v:Teleport(randomSpawn:GetPos(), randomSpawn:GetAngles(), Vector(0, 0, 0))
-                v:SetHealth(v:GetMaxHealth())
-                v:SendLua("RunConsoleCommand('r_cleardecals')")
-
-                v:SetRaidStatus(0, "")
-                v:SetNWInt("DuelsWon", v:GetNWInt("DuelsWon") + 1)
-                v:SetNWInt("CurrentDuelWinStreak", v:GetNWInt("CurrentDuelWinStreak") + 1)
-                if v:GetNWInt("CurrentDuelWinStreak") >= v:GetNWInt("BestDuelWinStreak") then v:SetNWInt("BestDuelWinStreak", v:GetNWInt("CurrentDuelWinStreak")) end
-
-                v:UnLock()
-
-            end)
+            if v:CanSpawn(winningPly) then table.insert(possibleSpawns, v) end
 
         end
+
+        local randomSpawn
+
+        if #possibleSpawns == 0 then randomSpawn = BetterRandom(lobbySpawns) end
+        randomSpawn = BetterRandom(possibleSpawns)
+
+        net.Start("PlayerDuelTransition")
+        net.Send(winningPly)
+
+        winningPly:GodEnable()
+
+        timer.Simple(0.5, function() winningPly:Freeze(true) end)
+
+        timer.Create("DuelWin" .. winningPly:SteamID64(), 1, 1, function()
+
+            ReinstantiateInventoryAfterDuel(winningPly)
+
+            winningPly:Teleport(randomSpawn:GetPos(), randomSpawn:GetAngles(), Vector(0, 0, 0))
+            winningPly:SetHealth(winningPly:GetMaxHealth())
+            winningPly:SendLua("RunConsoleCommand('r_cleardecals')")
+
+            winningPly:SetRaidStatus(0, "")
+            winningPly:SetNWInt("DuelsWon", winningPly:GetNWInt("DuelsWon") + 1)
+            winningPly:SetNWInt("CurrentDuelWinStreak", winningPly:GetNWInt("CurrentDuelWinStreak") + 1)
+            if winningPly:GetNWInt("CurrentDuelWinStreak") >= winningPly:GetNWInt("BestDuelWinStreak") then winningPly:SetNWInt("BestDuelWinStreak", winningPly:GetNWInt("CurrentDuelWinStreak")) end
+
+            winningPly:GodDisable()
+            winningPly:Freeze(false)
+
+        end)
 
     end
 
@@ -138,6 +152,8 @@ if SERVER then
             ReinstantiateInventoryAfterDuel(v)
 
         end
+
+        DUEL.Players = {}
 
     end
 
@@ -223,7 +239,7 @@ if SERVER then
 
     hook.Add("EndedRaid", "EndDuelOnMapChange", function(time)
 
-        timer.Simple(time / 4, function() DUEL.Allowed = false end) -- disable any new duels
+        timer.Simple(time - 15, function() DUEL.Allowed = false end) -- disable any new duels
         timer.Simple(time - 3, function() DUEL:CancelDuel() end)    -- force cancel current duel
 
     end)
