@@ -32,6 +32,7 @@ function ENT:AcceptInput(name, ply, caller, data)
 
         if curStatus == elevatorStatus.End then
 
+            curStatus = elevatorStatus.MovingToStart
             self:TriggerOutput( "MoveToStart", ply, data )
 
         elseif curStatus == elevatorStatus.MovingToEnd then
@@ -46,11 +47,14 @@ function ENT:AcceptInput(name, ply, caller, data)
         
         if curStatus == elevatorStatus.Start then
 
+            curStatus = elevatorStatus.MovingToEnd
             self:TriggerOutput( "MoveToEnd", ply, data )
 
         elseif curStatus == elevatorStatus.MovingToStart then
 
             queuedOutput = "MoveToEnd"
+
+            print("Queued elevator "..queuedOutput)
 
         end
 
@@ -60,26 +64,26 @@ function ENT:AcceptInput(name, ply, caller, data)
         
         curStatus = tonumber(data)
 
-    end
+        if queuedOutput == "MoveToStart" && curStatus == elevatorStatus.End then
 
-end
+            print(queuedOutput.." "..curStatus)
+            queuedOutput = nil
 
-function ENT:Think()
+            curStatus = elevatorStatus.MovingToStart
+            self:TriggerOutput( "MoveToStart", ply, data )
+            
+        end
 
-    if queuedOutput == "MoveToStart" && curStatus == elevatorStatus.End then
+        if queuedOutput == "MoveToEnd" && curStatus == elevatorStatus.Start then
 
-        self:TriggerOutput( "MoveToStart", ply, data )
+            print(queuedOutput.." "..curStatus)
+            queuedOutput = nil
 
-        queuedOutput = nil
-        
-    end
+            curStatus = elevatorStatus.MovingToEnd
+            self:TriggerOutput( "MoveToEnd", ply, data )
 
-    if queuedOutput == "MoveToEnd" && curStatus == elevatorStatus.Start then
+        end
 
-        self:TriggerOutput( "MoveToEnd", ply, data )
-
-        queuedOutput = nil
-        
     end
 
 end

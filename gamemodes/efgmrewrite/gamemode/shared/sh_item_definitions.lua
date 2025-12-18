@@ -5300,6 +5300,26 @@ EFGMITEMS = {}
 
         ["canPurchase"] = false
     }
+    
+    EFGMITEMS["efgm_keycard_bunker_exec"] = {
+        ["fullName"] = "Executive Access Keycard",
+        ["displayName"] = "Exec",
+        ["displayType"] = "Concrete Key",
+        ["weight"] = 0.2,
+        ["value"] = 5000000,
+        ["equipType"] = EQUIPTYPE.None,
+        ["consumableType"] = "key",
+        ["consumableValue"] = 5,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/keys/keycard_green.png", "smooth"), // temporary bc i dont feel like making a new icon rn
+        ["iconColor"] = ICONCOLORS.Green,
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false
+    }
 
     EFGMITEMS["efgm_key_breakroom"] = {
         ["fullName"] = "Parking Garage Break Room Key",
