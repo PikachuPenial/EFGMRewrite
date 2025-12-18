@@ -221,9 +221,9 @@ EFGMTASKS["connections"] = {
     },
 
     objectives = {
-        NewObjective.VisitArea("efgm_concrete_rw", "qa_hotel_roof", "Hotel Roof"),
-        NewObjective.VisitArea("efgm_concrete_rw", "qa_workshop_roof", "Workshop Roof"),
-        NewObjective.Kill(3, "efgm_concrete_rw")
+        NewObjective.VisitArea("efgm_concrete", "qa_hotel_roof", "Hotel Roof"),
+        NewObjective.VisitArea("efgm_concrete", "qa_workshop_roof", "Workshop Roof"),
+        NewObjective.Kill(3, "efgm_concrete")
     },
 
     rewards = {
@@ -249,9 +249,9 @@ EFGMTASKS["shooter"] = {
     },
 
     objectives = {
-        NewObjective.Kill(30, "efgm_concrete_rw"),
-        NewObjective.Kill(30, "efgm_belmont_rw"),
-        NewObjective.Kill(30, "efgm_factory_rw")
+        NewObjective.Kill(30, "efgm_concrete"),
+        NewObjective.Kill(30, "efgm_belmont"),
+        NewObjective.Kill(30, "efgm_factory")
     },
 
     rewards = {
@@ -278,7 +278,7 @@ EFGMTASKS["restock"] = {
 
     objectives = {
         NewObjective.Kill(5),
-        NewObjective.QuestItem("plates", "efgm_concrete_rw")
+        NewObjective.QuestItem("plates", "efgm_concrete")
     },
 
     rewards = {
@@ -309,10 +309,10 @@ EFGMTASKS["civs1"] = {
     },
 
     objectives = {
-        NewObjective.Extract(1, "efgm_concrete_rw", "extract_driver", "Getaway Driver"),
-        NewObjective.Extract(1, "efgm_concrete_rw", "extract_helicopter", "USEC Helicopter"),
-        NewObjective.Extract(1, "efgm_concrete_rw", "extract_manhole", "Sewer Manhole"),
-        NewObjective.Extract(1, "efgm_concrete_rw", "extract_railway", "Railway to Belmont"),
+        NewObjective.Extract(1, "efgm_concrete", "extract_driver", "Getaway Driver"),
+        NewObjective.Extract(1, "efgm_concrete", "extract_helicopter", "USEC Helicopter"),
+        NewObjective.Extract(1, "efgm_concrete", "extract_manhole", "Sewer Manhole"),
+        NewObjective.Extract(1, "efgm_concrete", "extract_railway", "Railway to Belmont"),
     },
 
     rewards = {
@@ -345,8 +345,8 @@ EFGMTASKS["civs2"] = {
     },
 
     objectives = {
-        NewObjective.Kill(10, "efgm_concrete_rw"),
-        NewObjective.QuestItem("briefcase", "efgm_concrete_rw")
+        NewObjective.Kill(10, "efgm_concrete"),
+        NewObjective.QuestItem("briefcase", "efgm_concrete")
     },
 
     rewards = {
@@ -386,7 +386,7 @@ EFGMTASKS["qitest"] = {
     traderIcon = Material("traders/generic.png", "smooth"),
 
     objectives = {
-        NewObjective.QuestItem("briefcase", "efgm_concrete_rw")
+        NewObjective.QuestItem("briefcase", "efgm_concrete")
     },
 
     rewards = {

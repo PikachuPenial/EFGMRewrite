@@ -25,7 +25,7 @@ if SERVER then
 
     RAID.VoteTime = 60
 
-    RAID.MapPool = {["efgm_belmont_rw"] = 0, ["efgm_concrete_rw"] = 0, ["efgm_factory_rw"] = 0} -- map, number of votes
+    RAID.MapPool = {["efgm_belmont"] = 0, ["efgm_concrete"] = 0, ["efgm_factory"] = 0} -- map, number of votes
 
     if GetGlobalInt("RaidStatus") != raidStatus.ACTIVE then -- fuck you fuck you fuck you fuck you
         SetGlobalInt("RaidTimeLeft", -1)
@@ -270,6 +270,17 @@ if SERVER then
 
         hook.Add("CheckRaidAddPlayers", "MaybeAddPeople", function(ply)
             local plySquad = ply:GetNW2String("PlayerInSquad", "nil")
+
+            if #ply:GetWeapons() == 0 then
+
+                net.Start("SendNotification", false)
+                net.WriteString("Can not enter a raid while having no equipped weapons!")
+                net.WriteString("icons/exclamation_icon.png")
+                net.WriteString("ui/squad_joined.wav")
+                net.Send(ply)
+                return
+
+            end
 
             if ply:GetActiveWeapon() != NULL and ply:GetActiveWeapon():Clip1() == 0 and ply:GetActiveWeapon():GetMaxClip1() != -1 then
 

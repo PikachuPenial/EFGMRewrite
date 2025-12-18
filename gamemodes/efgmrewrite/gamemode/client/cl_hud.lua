@@ -2500,9 +2500,9 @@ net.Receive("VoteableMaps", function(len)
 
         VotePopup:AlphaTo(255, 0.2, 0, nil)
 
-        local belmontIcon = Material("maps/icon_efgm_belmont_rw_" .. math.random(1, 5) .. ".png")
-        local concreteIcon = Material("maps/icon_efgm_concrete_rw_" .. math.random(1, 5) .. ".png")
-        local factoryIcon = Material("maps/icon_efgm_factory_rw_" .. math.random(1, 5) .. ".png")
+        local belmontIcon = Material("maps/icon_efgm_belmont_" .. math.random(1, 5) .. ".png")
+        local concreteIcon = Material("maps/icon_efgm_concrete_" .. math.random(1, 5) .. ".png")
+        local factoryIcon = Material("maps/icon_efgm_factory_" .. math.random(1, 5) .. ".png")
 
         local belmontButton = vgui.Create("DButton", VotePopup)
         belmontButton:SetSize(EFGM.MenuScale(500), EFGM.MenuScale(500))
@@ -2540,7 +2540,7 @@ net.Receive("VoteableMaps", function(len)
         function belmontButton:DoClick()
 
             surface.PlaySound("ui/element_select.wav")
-            RunConsoleCommand("efgm_vote", "efgm_belmont_rw")
+            RunConsoleCommand("efgm_vote", "efgm_belmont")
             VotePopup:AlphaTo(0, 0.1, 0, function() VotePopup:Remove() end)
 
         end
@@ -2581,7 +2581,7 @@ net.Receive("VoteableMaps", function(len)
         function concreteButton:DoClick()
 
             surface.PlaySound("ui/element_select.wav")
-            RunConsoleCommand("efgm_vote", "efgm_concrete_rw")
+            RunConsoleCommand("efgm_vote", "efgm_concrete")
             VotePopup:AlphaTo(0, 0.1, 0, function() VotePopup:Remove() end)
 
         end
@@ -2622,7 +2622,7 @@ net.Receive("VoteableMaps", function(len)
         function factoryButton:DoClick()
 
             surface.PlaySound("ui/element_select.wav")
-            RunConsoleCommand("efgm_vote", "efgm_factory_rw")
+            RunConsoleCommand("efgm_vote", "efgm_factory")
             VotePopup:AlphaTo(0, 0.1, 0, function() VotePopup:Remove() end)
 
         end

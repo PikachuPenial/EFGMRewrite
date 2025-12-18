@@ -8,7 +8,7 @@
 
 @PointClass base(Targetname) = efgm_raid_interface : "Raid System Interface"
 [
-    
+
     // Key Values
     raid_time(integer) : "Raid Time" : 1500 : "The time the raid lasts, in seconds."
 
@@ -27,7 +27,7 @@
     output OnRaidStart(void) : "This fires when the raid starts. Useful for spawning shit in the map, enabling / disabling extracts, or doing other things."
 
     output OnRaidEnd(void) : "Fires when the raid ends. Useful for resetting the map, or doing similar types of utmost trollage."
-    
+
     output OnTenMinutesLeft(void) : ""
 
     output OnFiveMinutesLeft(void) : ""
