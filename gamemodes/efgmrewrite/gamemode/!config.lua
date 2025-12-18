@@ -209,13 +209,23 @@ if CLIENT then
     RunConsoleCommand("arc9_font", "Bender")
 
     -- visuals
-    RunConsoleCommand("cl_new_impact_effects", GetConVar("efgm_visuals_highqualimpactfx"):GetString())
+    RunConsoleCommand("cl_new_impact_effects", GetConVar("efgm_visuals_highqualimpactfx"):GetInt())
 
     cvars.AddChangeCallback("efgm_visuals_highqualimpactfx", function(convar_name, value_old, value_new)
         if value_new == "1" then
             RunConsoleCommand("cl_new_impact_effects", "1")
         else
             RunConsoleCommand("cl_new_impact_effects", "0")
+        end
+    end)
+
+    RunConsoleCommand("cl_drawownshadow", GetConVar("efgm_visuals_selfshadow"):GetInt())
+
+    cvars.AddChangeCallback("efgm_visuals_selfshadow", function(convar_name, value_old, value_new)
+        if value_new == "1" then
+            RunConsoleCommand("cl_drawownshadow", "1")
+        else
+            RunConsoleCommand("cl_drawownshadow", "0")
         end
     end)
 end

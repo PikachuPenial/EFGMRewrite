@@ -20,6 +20,7 @@ if CLIENT then
     CreateClientConVar("efgm_visuals_highqualimpactfx", 1, true, true, "Adjust the quality of the bullets impact effects", 0, 1)
     CreateClientConVar("efgm_visuals_headbob", 1, true, true, "Adjust the bobbing motion of the players view while moving", 0, 1)
     CreateClientConVar("efgm_visuals_lensflare", 1, true, true, "Adjust the lens flare when looking near or directly at the sun", 0, 1)
+    CreateClientConVar("efgm_visuals_selfshadow", 1, true, true, "Adjust if your own players shadow renders", 0, 1)
     CreateClientConVar("efgm_controls_toggleduck", 0, true, true, "Adjust if player crouches are hold or toggle", 0, 1)
     CreateClientConVar("efgm_controls_togglelean", 1, true, true, "Adjust if player leans are hold or toggle", 0, 1)
     CreateClientConVar("efgm_faction_preference", 0, true, true, "Determines the faction that your playermodel is based on (0 = None, 1 = USEC, 2 = BEAR)", 0, 2)

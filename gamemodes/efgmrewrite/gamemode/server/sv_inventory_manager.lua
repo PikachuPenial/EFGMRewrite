@@ -751,6 +751,7 @@ net.Receive("PlayerInventoryLootItemFromContainer", function(len, ply)
     local container = net.ReadEntity()
     local index = net.ReadUInt(16)
 
+    if !ply:Alive() then return end
     if container == nil then return end
 
     local newItem = table.Copy(container.Inventory[index])

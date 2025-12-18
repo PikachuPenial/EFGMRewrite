@@ -2,7 +2,7 @@ HUD = {}
 
 HUD.InTransition = false
 
-local enabled = GetConVar("efgm_hud_enable")
+local enabled = GetConVar("efgm_hud_enable"):GetBool()
 cvars.AddChangeCallback("efgm_hud_enable", function(convar_name, value_old, value_new)
     enabled = tobool(value_new)
 end)

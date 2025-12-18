@@ -12,9 +12,9 @@ function InvitePlayerToSquad(ply, invitedPly)
     Invites.inviteCD = CurTime()
 
     if !IsValid(invitedPly) then return end
-    if CurTime() - Invites.lastInviteSentTime < 10 then CreateNotification("You can send invites again in " .. 10 - math.Round(CurTime() - Invites.lastInviteSentTime, 1) .. " seconds!", Mats.inviteErrorIcon, "ui/error.wav") return end
     if invitedPly:GetNW2String("PlayerInSquad", "nil") != "nil" then CreateNotification("This player is already in a squad!", Mats.inviteErrorIcon, "ui/error.wav") return end
     if !invitedPly:CompareStatus(0) then CreateNotification("This player is currently busy!", Mats.inviteErrorIcon, "ui/error.wav") return end
+    if CurTime() - Invites.lastInviteSentTime < 10 then CreateNotification("You can send invites again in " .. 10 - math.Round(CurTime() - Invites.lastInviteSentTime, 1) .. " seconds!", Mats.inviteErrorIcon, "ui/error.wav") return end
 
     -- local plySquad = ply:GetNW2String("PlayerInSquad", "nil")
 
@@ -66,10 +66,11 @@ function InvitePlayerToDuel(ply, invitedPly)
     Invites.inviteCD = CurTime()
 
     if !IsValid(invitedPly) then return end
-    if CurTime() - Invites.lastInviteSentTime < 10 then CreateNotification("You can send invites again in " .. 10 - math.Round(CurTime() - Invites.lastInviteSentTime, 1) .. " seconds!", Mats.inviteErrorIcon, "ui/error.wav") return end
     if GetGlobalInt("DuelStatus") != duelStatus.PENDING then CreateNotification("Another duel is already taking place, please wait for it to end!", Mats.inviteErrorIcon, "ui/error.wav") return end
-    if Invites.invitedBy != nil or Invites.invitedType != nil then CreateNotification("Cannot send an invite while pending confirmation!", Mats.inviteErrorIcon, "ui/error.wav") return end
+    if Invites.invitedType == "duel" and Invites.invitedBy == invitedPly then AcceptInvite(ply) return end
+    if CurTime() - Invites.lastInviteSentTime < 10 then CreateNotification("You can send invites again in " .. 10 - math.Round(CurTime() - Invites.lastInviteSentTime, 1) .. " seconds!", Mats.inviteErrorIcon, "ui/error.wav") return end
     if !invitedPly:CompareStatus(0) then CreateNotification("This player is currently busy!", Mats.inviteErrorIcon, "ui/error.wav") return end
+    if Invites.invitedBy != nil or Invites.invitedType != nil then CreateNotification("Cannot send an invite while pending confirmation!", Mats.inviteErrorIcon, "ui/error.wav") return end
 
     Invites.lastInviteSentTime = CurTime()
 

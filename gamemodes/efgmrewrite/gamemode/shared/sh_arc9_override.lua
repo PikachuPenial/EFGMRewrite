@@ -828,8 +828,8 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
                 local presetAtts = self:GetAttsFromPreset(preset)
                 local neededAtts = {}
 
-                local oldcount = self:CountAttsInTree(self.Attachments)
-                local newcount = self:CountAttsInTree(presetAtts)
+                local oldcount = self:CountAttsInTree(self.Attachments or {})
+                local newcount = self:CountAttsInTree(presetAtts or {})
 
                 local efgmPresetCost = 0
 
@@ -869,8 +869,8 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
                     presetAtts = self:GetAttsFromPreset(preset)
                     neededAtts = {}
 
-                    oldcount = self:CountAttsInTree(self.Attachments)
-                    newcount = self:CountAttsInTree(presetAtts)
+                    oldcount = self:CountAttsInTree(self.Attachments or {})
+                    newcount = self:CountAttsInTree(presetAtts or {})
 
                     efgmPresetCost = 0
 

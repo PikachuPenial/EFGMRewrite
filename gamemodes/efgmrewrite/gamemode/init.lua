@@ -93,6 +93,8 @@ function GM:PlayerSpawn(ply)
 	ply:SetCrouched(false)
 	ply:SetEnteringCrouch(false)
 	ply:SetExitingCrouch(false)
+	ply:SetNW2Var("leaning_left", false)
+	ply:SetNW2Var("leaning_right", false)
 	ply:SetNW2Bool("DoStep", false)
 	CalculateInventoryWeight(ply)
 

@@ -3224,11 +3224,39 @@ function Menu.ReloadInventory()
 
     for k, v in ipairs(playerInventory) do
 
+        local i = EFGMITEMS[v.name]
+        if i == nil then continue end
+
         plyItems[k] = {}
         plyItems[k].name = v.name
         plyItems[k].id = k
         plyItems[k].data = v.data
-        -- plyItems[k].type = v.type
+
+        if i.consumableType != "heal" and i.consumableType != "key" then
+
+            plyItems[k].value = (i.value * math.Clamp(v.data.count, 1, i.stackSize))
+
+        else
+
+            plyItems[k].value = math.floor(i.value * (v.data.durability / i.consumableValue))
+
+        end
+
+        if i.equipType == EQUIPTYPE.Weapon and v.data.att then
+
+            local atts = GetPrefixedAttachmentListFromCode(v.data.att)
+            if !atts then return end
+
+            for _, a in ipairs(atts) do
+
+                local att = EFGMITEMS[a]
+                if att == nil then continue end
+
+                plyItems[k].value = plyItems[k].value + att.value
+
+            end
+
+        end
 
     end
 
@@ -3258,6 +3286,10 @@ function Menu.ReloadInventory()
 
                 return a.data.count > b.data.count
 
+            elseif a.value and b.value then
+
+                return a.value > b.value
+
             end
 
         end
@@ -3268,7 +3300,7 @@ function Menu.ReloadInventory()
     for k, v in ipairs(plyItems) do
 
         local i = EFGMITEMS[v.name]
-        if i == nil then return end
+        if i == nil then continue end
 
         local ownerName = nil
         if v.data.owner then steamworks.RequestPlayerInfo(v.data.owner, function(steamName) ownerName = steamName end) end
@@ -5476,11 +5508,39 @@ function Menu.ReloadStash(firstReload)
 
     for k, v in ipairs(playerStash) do
 
+        local i = EFGMITEMS[v.name]
+        if i == nil then continue end
+
         plyStashItems[k] = {}
         plyStashItems[k].name = v.name
         plyStashItems[k].id = k
         plyStashItems[k].data = v.data
-        -- plyStashItems[k].type = v.type
+
+        if i.consumableType != "heal" and i.consumableType != "key" then
+
+            plyStashItems[k].value = (i.value * math.Clamp(v.data.count, 1, i.stackSize))
+
+        else
+
+            plyStashItems[k].value = math.floor(i.value * (v.data.durability / i.consumableValue))
+
+        end
+
+        if i.equipType == EQUIPTYPE.Weapon and v.data.att then
+
+            local atts = GetPrefixedAttachmentListFromCode(v.data.att)
+            if !atts then return end
+
+            for _, a in ipairs(atts) do
+
+                local att = EFGMITEMS[a]
+                if att == nil then continue end
+
+                plyStashItems[k].value = plyStashItems[k].value + att.value
+
+            end
+
+        end
 
     end
 
@@ -5513,6 +5573,10 @@ function Menu.ReloadStash(firstReload)
             elseif a.data.count and b.data.count then
 
                 return a.data.count > b.data.count
+
+            elseif a.value and b.value then
+
+                return a.value > b.value
 
             end
 
@@ -5938,7 +6002,7 @@ function Menu.ReloadStash(firstReload)
     for k, v in ipairs(plyStashItems) do
 
         local i = EFGMITEMS[v.name]
-        if i == nil then return end
+        if i == nil then continue end
 
         local ownerName = nil
         if v.data.owner then steamworks.RequestPlayerInfo(v.data.owner, function(steamName) ownerName = steamName end) end
@@ -5947,31 +6011,7 @@ function Menu.ReloadStash(firstReload)
 
         if itemSearch != "" and itemSearch != nil and !(string.find((i.fullName and i.fullName or i.displayName):lower(), itemSearch) or string.find((v.data.tag or ""):lower(), itemSearch) or string.find((ownerName or ""):lower(), itemSearch)) then continue end
 
-        if i.consumableType != "heal" and i.consumableType != "key" then
-
-            stashValue = stashValue + (i.value * math.Clamp(v.data.count, 1, i.stackSize))
-
-        else
-
-            stashValue = stashValue + math.floor(i.value * (v.data.durability / i.consumableValue))
-
-        end
-
-        if i.equipType == EQUIPTYPE.Weapon and v.data.att then
-
-            local atts = GetPrefixedAttachmentListFromCode(v.data.att)
-            if !atts then return end
-
-            for _, a in ipairs(atts) do
-
-                local att = EFGMITEMS[a]
-                if att == nil then continue end
-
-                stashValue = stashValue + att.value
-
-            end
-
-        end
+        stashValue = stashValue + v.value
 
         LoadItem(i, v)
 
@@ -5991,11 +6031,42 @@ function Menu.ReloadMarketStash()
 
     for k, v in ipairs(playerStash) do
 
+        local i = EFGMITEMS[v.name]
+        if i == nil then continue end
+
         marketPlyStashItems[k] = {}
         marketPlyStashItems[k].name = v.name
         marketPlyStashItems[k].id = k
         marketPlyStashItems[k].data = v.data
-        -- marketPlyStashItems[k].type = v.type
+
+        if i.consumableType != "heal" and i.consumableType != "key" then
+
+            stashValue = stashValue + (i.value * math.Clamp(v.data.count, 1, i.stackSize))
+            marketPlyStashItems[k].value = math.floor(i.value * sellMultiplier) * math.Clamp(v.data.count, 1, i.stackSize)
+
+        else
+
+            stashValue = stashValue + math.floor(i.value * (v.data.durability / i.consumableValue))
+            marketPlyStashItems[k].value = math.floor((i.value * sellMultiplier) * (v.data.durability / i.consumableValue))
+
+        end
+
+        if i.equipType == EQUIPTYPE.Weapon and v.data.att then
+
+            local atts = GetPrefixedAttachmentListFromCode(v.data.att)
+            if !atts then return end
+
+            for _, a in ipairs(atts) do
+
+                local att = EFGMITEMS[a]
+                if att == nil then continue end
+
+                stashValue = stashValue + att.value
+                marketPlyStashItems[k].value = marketPlyStashItems[k].value + math.floor(att.value * sellMultiplier)
+
+            end
+
+        end
 
     end
 
@@ -6025,6 +6096,10 @@ function Menu.ReloadMarketStash()
 
                 return a.data.count > b.data.count
 
+            elseif a.value and b.value then
+
+                return a.value > b.value
+
             end
 
         end
@@ -6035,7 +6110,7 @@ function Menu.ReloadMarketStash()
     for k, v in ipairs(marketPlyStashItems) do
 
         local i = EFGMITEMS[v.name]
-        if i == nil then return end
+        if i == nil then continue end
 
         local ownerName = nil
         if v.data.owner then steamworks.RequestPlayerInfo(v.data.owner, function(steamName) ownerName = steamName end) end
@@ -6044,19 +6119,7 @@ function Menu.ReloadMarketStash()
 
         if itemSearch != "" and itemSearch != nil and !(string.find((i.fullName and i.fullName or i.displayName):lower(), itemSearch) or string.find((v.data.tag or ""):lower(), itemSearch) or string.find((ownerName or ""):lower(), itemSearch)) then continue end
 
-        local itemValue
-
-        if i.consumableType != "heal" and i.consumableType != "key" then
-
-            stashValue = stashValue + (i.value * math.Clamp(v.data.count, 1, i.stackSize))
-            itemValue = math.floor(i.value * sellMultiplier) * math.Clamp(v.data.count, 1, i.stackSize)
-
-        else
-
-            stashValue = stashValue + math.floor(i.value * (v.data.durability / i.consumableValue))
-            itemValue = math.floor((i.value * sellMultiplier) * (v.data.durability / i.consumableValue))
-
-        end
+        local itemValue = v.value
 
         local item = marketStashItems:Add("DButton")
         item:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
@@ -6310,11 +6373,39 @@ function Menu.ReloadContainer()
     conItems = {}
     for k, v in ipairs(container.items) do
 
+        local i = EFGMITEMS[v.name]
+        if i == nil then continue end
+
         conItems[k] = {}
         conItems[k].name = v.name
         conItems[k].id = k
         conItems[k].data = v.data
-        -- conItems[k].type = v.type
+
+        if i.consumableType != "heal" and i.consumableType != "key" then
+
+            conItems[k].value = (i.value * math.Clamp(v.data.count, 1, i.stackSize))
+
+        else
+
+            conItems[k].value = math.floor(i.value * (v.data.durability / i.consumableValue))
+
+        end
+
+        if i.equipType == EQUIPTYPE.Weapon and v.data.att then
+
+            local atts = GetPrefixedAttachmentListFromCode(v.data.att)
+            if !atts then return end
+
+            for _, a in ipairs(atts) do
+
+                local att = EFGMITEMS[a]
+                if att == nil then continue end
+
+                conItems[k].value = conItems[k].value + att.value
+
+            end
+
+        end
 
     end
 
@@ -6344,6 +6435,10 @@ function Menu.ReloadContainer()
 
                 return a.data.count > b.data.count
 
+            elseif a.value and b.value then
+
+                return a.value > b.value
+
             end
 
         end
@@ -6353,7 +6448,7 @@ function Menu.ReloadContainer()
     for k, v in ipairs(conItems) do
 
         local i = EFGMITEMS[v.name]
-        if i == nil then return end
+        if i == nil then continue end
 
         local item = containerItems:Add("DButton")
         item:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
@@ -12011,7 +12106,7 @@ function Menu.OpenTab.Settings()
 
     local pmShadow = vgui.Create("DCheckBox", pmShadowPanel)
     pmShadow:SetPos(EFGM.MenuScale(152), EFGM.MenuScale(30))
-    pmShadow:SetConVar("cl_drawownshadow")
+    pmShadow:SetConVar("efgm_visuals_selfshadow")
     pmShadow:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
 
     local vmLightingPanel = vgui.Create("DPanel", visuals)

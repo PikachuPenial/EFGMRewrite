@@ -48,7 +48,10 @@ if SERVER then
 
             v:SetNWBool("InRange", true)
 
-            if secondaryItem != nil then timer.Simple(0.3, function() DUEL:EquipHolster(v, secondaryItem, primaryItem == nil) end) end
+            local holsterEquDelay = 0.3
+            if primaryItem == nil then holsterEquDelay = 0.6 end
+
+            if secondaryItem != nil then timer.Simple(holsterEquDelay, function() DUEL:EquipHolster(v, secondaryItem, primaryItem == nil) end) end
             if primaryItem != nil then timer.Simple(0.6, function() DUEL:EquipPrimary(v, primaryItem) end) end
 
             net.Start("PlayerInventoryReloadForDuel")
