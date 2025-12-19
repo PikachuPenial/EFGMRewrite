@@ -27,6 +27,9 @@ end
 
 -- disable crouch jumping because of animation abuse + dynamic crouch toggling
 hook.Add("StartCommand", "AdjustPlayerMovement", function(ply, cmd)
+    local mvtype = ply:GetMoveType()
+    if mvtype == MOVETYPE_NOCLIP then return end
+
     if cmd:KeyDown(IN_BACK) or (cmd:KeyDown(IN_MOVELEFT) or cmd:KeyDown(IN_MOVERIGHT)) and !cmd:KeyDown(IN_FORWARD) or cmd:KeyDown(IN_ATTACK2) then
         cmd:RemoveKey(IN_SPEED)
     end
@@ -78,7 +81,6 @@ hook.Add("OnPlayerJump", "PlayerJump", function(ply, inWater, onFloater, speed)
 
     end
 
-
     ply:SetJumpPower(math.max(85, 140 * (jumpFatigueMult / jumpCount)))
     ply:SetNW2Int("jump_count", jumpCount)
     ply:SetNW2Float("last_jump", ct)
@@ -119,6 +121,9 @@ local hull_size_5 = Vector(6.3, 6.3, 6.3)
 local hull_size_5_negative = Vector(-6.3, -6.3, -6.3)
 
 hook.Add("SetupMove", "Leaning", function(ply, mv, cmd)
+    local mvtype = ply:GetMoveType()
+    if mvtype == MOVETYPE_NOCLIP then return end
+
     local eyepos = ply:EyePos() - ply:GetNW2Vector("leaning_best_head_offset")
     local angles = cmd:GetViewAngles()
 
@@ -173,9 +178,9 @@ hook.Add("SetupMove", "Leaning", function(ply, mv, cmd)
 
         local delta = ply:GetNW2Vector("leaning_best_head_offset") - ply:GetNW2Vector("leaning_best_head_offset_last")
 
-		ply:SetCurrentViewOffset(ply:GetCurrentViewOffset() + delta)
-		ply:SetViewOffset(vector_up * ply:GetNW2Float("leaning_height") + best_offset)
-		ply:SetViewOffsetDucked(vector_up * ply:GetNW2Float("leaning_height_ducked") + best_offset)
+        ply:SetCurrentViewOffset(ply:GetCurrentViewOffset() + delta)
+        ply:SetViewOffset(vector_up * ply:GetNW2Float("leaning_height") + best_offset)
+        ply:SetViewOffsetDucked(vector_up * ply:GetNW2Float("leaning_height_ducked") + best_offset)
     else
         ply:SetNW2Float("leaning_height", ply:GetViewOffset().z)
         ply:SetNW2Float("leaning_height_ducked", ply:GetViewOffsetDucked().z)
@@ -335,6 +340,9 @@ end)
 
 local maxLossInertiaMult = 0.75
 hook.Add("SetupMove", "VBSetupMove", function(ply, mv, cmd)
+    local mvtype = ply:GetMoveType()
+    if mvtype == MOVETYPE_NOCLIP then return end
+
     local vel = mv:GetVelocity():GetNormalized():Dot(ply:GetNW2Vector("VBLastDir"), vector_origin)
 
     if ply:OnGround() and vel < ((mv:KeyDown(IN_SPEED) and 0.99) or 0.998) and vel > 0 then
@@ -399,7 +407,7 @@ hook.Add("SetupMove", "VBSetupMove", function(ply, mv, cmd)
 
     end
 
-    if math.abs(cmd:GetForwardMove()) + math.abs(cmd:GetSideMove()) == 0 and ply:OnGround() then
+    if math.abs(cmd:GetForwardMove()) + math.abs(cmd:GetSideMove()) == 0 and ply:OnGround() and ply:GetMoveType() == MOVETYPE_WALK then
         mv:SetVelocity(mv:GetVelocity() * 0.9)
     end
 

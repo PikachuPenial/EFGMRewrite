@@ -36,6 +36,7 @@ if SERVER then
         for k, v in ipairs(DUEL.Players) do -- there is literally no reason for this to have more than 2 players, so i will asssume that it is 2 players
 
             v:Freeze(true)
+            v:SetMoveType(MOVETYPE_NOCLIP)
             v:SetNWBool("RaidReady", false)
             v:SetNWBool("PlayerIsPMC", true)
 
@@ -60,11 +61,10 @@ if SERVER then
             net.WriteTable(secondaryItem or {})
             net.Send(v)
 
-            timer.Simple(0.8 + (k * 0.1), function() v:Teleport(spawns[k]:GetPos(), spawns[k]:GetAngles(), Vector(0, 0, 0)) end)
-
-            timer.Create("Duel" .. v:SteamID64(), 1, 1, function()
+            timer.Simple(1, function()
 
                 v:Freeze(false)
+                v:Teleport(spawns[k]:GetPos(), spawns[k]:GetAngles(), Vector(0, 0, 0))
                 v:SetHealth(v:GetMaxHealth())
 
                 timer.Simple(0.2, function() DUEL:ReloadLoadoutItems(v) end) -- ughhhhhhh
@@ -120,11 +120,14 @@ if SERVER then
         winningPly:GodEnable()
         if winningPly:GetActiveWeapon() != NULL then winningPly:GetActiveWeapon():SetClip1(-1) end
 
-        timer.Simple(0.5, function() winningPly:Freeze(true) end)
+        timer.Simple(0.5, function() winningPly:Freeze(true) winningPly:SetMoveType(MOVETYPE_NOCLIP) end)
 
-        timer.Create("DuelWin" .. winningPly:SteamID64(), 1, 1, function()
+        timer.Simple(1, function()
 
             ReinstantiateInventoryAfterDuel(winningPly)
+
+            winningPly:GodDisable()
+            winningPly:Freeze(false)
 
             winningPly:Teleport(randomSpawn:GetPos(), randomSpawn:GetAngles(), Vector(0, 0, 0))
             winningPly:SetHealth(winningPly:GetMaxHealth())
@@ -134,9 +137,6 @@ if SERVER then
             winningPly:SetNWInt("DuelsWon", winningPly:GetNWInt("DuelsWon") + 1)
             winningPly:SetNWInt("CurrentDuelWinStreak", winningPly:GetNWInt("CurrentDuelWinStreak") + 1)
             if winningPly:GetNWInt("CurrentDuelWinStreak") >= winningPly:GetNWInt("BestDuelWinStreak") then winningPly:SetNWInt("BestDuelWinStreak", winningPly:GetNWInt("CurrentDuelWinStreak")) end
-
-            winningPly:GodDisable()
-            winningPly:Freeze(false)
 
         end)
 

@@ -120,6 +120,7 @@ if SERVER then
                 net.Send(v)
 
                 v:Freeze(true)
+                v:SetMoveType(MOVETYPE_NOCLIP)
 
                 if status == playerStatus.SCAV then
                     timer.Create("ScavLoadout" .. v:SteamID64(), 0.5, 1, function() RAID:GenerateScavLoadout(v) end)
@@ -379,11 +380,10 @@ if SERVER then
         net.Receive("PlayerSwitchFactions", function(len, ply) ply:SetFaction() end)
 
         function plyMeta:Teleport(position, angles, velocity)
-            -- shortening the extract and raid manager logic lol, not necessary but fun ig idfk
-
             self:SetPos(position)
             self:SetEyeAngles(angles)
             self:SetLocalVelocity(velocity)
+            self:SetMoveType(MOVETYPE_WALK)
         end
 
         function plyMeta:GetRaidStatus()
@@ -418,6 +418,7 @@ if SERVER then
             net.Send(ply)
 
             ply:Lock()
+            ply:SetMoveType(MOVETYPE_NOCLIP)
 
             timer.Create("Extract" .. ply:SteamID64(), 1, 1, function()
                 ply:Teleport(randomSpawn:GetPos(), randomSpawn:GetAngles(), Vector(0, 0, 0))
