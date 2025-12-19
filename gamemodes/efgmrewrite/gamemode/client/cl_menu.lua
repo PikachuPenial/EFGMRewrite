@@ -179,6 +179,9 @@ function Menu:Initialize(openTo, container)
     local time = string.FormattedTime(GetGlobalInt("RaidTimeLeft", 0), "%02i:%02i")
     local timeTextSize = surface.GetTextSize(time)
 
+    local plyCount = #player.GetHumans()
+    local plyCountTextSize = surface.GetTextSize(plyCount)
+
     local raidStatus = GetGlobalInt("RaidStatus", 0)
     local raidStatusTbl = {
         [0] = Colors.menuStatusPending,
@@ -199,6 +202,9 @@ function Menu:Initialize(openTo, container)
         time = string.FormattedTime(GetGlobalInt("RaidTimeLeft", 0), "%02i:%02i")
         timeTextSize = surface.GetTextSize(time)
 
+        plyCount = #player.GetHumans()
+        plyCountTextSize = surface.GetTextSize(plyCount)
+
         raidStatus = GetGlobalInt("RaidStatus", 0)
 
         surface.SetDrawColor(Colors.transparent)
@@ -207,6 +213,7 @@ function Menu:Initialize(openTo, container)
         draw.SimpleTextOutlined(roubles, "PuristaBold32", w - EFGM.MenuScale(26), EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
         draw.SimpleTextOutlined(level, "PuristaBold32", w - roublesTextSize - EFGM.MenuScale(86), EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
         draw.SimpleTextOutlined(time, "PuristaBold32", w - roublesTextSize - levelTextSize - EFGM.MenuScale(146), EFGM.MenuScale(2), raidStatusTbl[raidStatus], TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined(plyCount, "PuristaBold32", w - roublesTextSize - levelTextSize - timeTextSize - EFGM.MenuScale(206), EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
         draw.DrawText("EFGM", "PuristaBold32", w / 2, EFGM.MenuScale(2), Colors.itemBackgroundColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 
@@ -231,6 +238,11 @@ function Menu:Initialize(openTo, container)
     timeIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
     timeIcon:SetImage("icons/time_icon.png")
 
+    local plyCountIcon = vgui.Create("DImage", self.MenuFrame.TabParentPanel)
+    plyCountIcon:SetPos(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(249) - roublesTextSize - levelTextSize - timeTextSize - plyCountTextSize, EFGM.MenuScale(2))
+    plyCountIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
+    plyCountIcon:SetImage("icons/population_icon.png")
+
     local x, y = 0, 0
     local sideH, sideV
 
@@ -249,6 +261,12 @@ function Menu:Initialize(openTo, container)
     timeIcon.Think = function()
 
         timeIcon:SetX(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(188) - roublesTextSize - levelTextSize - timeTextSize)
+
+    end
+
+    plyCountIcon.Think = function()
+
+        plyCountIcon:SetX(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(249) - roublesTextSize - levelTextSize - timeTextSize - plyCountTextSize)
 
     end
 
@@ -7606,6 +7624,18 @@ function Menu.OpenTab.Inventory(container)
         self.pnlCanvas:SetPos(0, offset)
         if !IsValid(contextMenu) then return end
         contextMenu:AlphaTo(0, 0.1, 0, function() contextMenu:Remove() hook.Remove("Think", "CheckIfContextMenuStillFocused") end)
+
+    end
+
+    function playerItemsHolder:PaintOver(w, h)
+
+        if ply:CompareFaction(false) then
+
+            surface.SetDrawColor(Colors.whiteBorderColor)
+            surface.SetMaterial(Mats.blockedIcon)
+            surface.DrawTexturedRect(w / 2 - EFGM.MenuScale(72), h / 2 - EFGM.MenuScale(116), EFGM.MenuScale(144), EFGM.MenuScale(144))
+
+        end
 
     end
 
