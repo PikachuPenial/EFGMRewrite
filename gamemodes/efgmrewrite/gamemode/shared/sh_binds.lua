@@ -59,7 +59,7 @@ hook.Add("PlayerSpawn", "UnduckOnSpawn", function(ply) ply:ConCommand("-duck") e
 
 hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
 
-    if CLIENT then
+    if CLIENT and IsFirstTimePredicted() then
 
         -- toggle menu
         if button == ply:GetInfoNum("efgm_bind_menu", KEY_TAB) then
@@ -235,7 +235,7 @@ end)
 
 hook.Add("PlayerButtonUp", "EFGMBindsUp", function(ply, button)
 
-    if CLIENT then
+    if CLIENT and IsFirstTimePredicted() then
 
         -- switching sights
         if button == ply:GetInfoNum("efgm_bind_changesight", MOUSE_MIDDLE) then
