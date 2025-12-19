@@ -37,6 +37,7 @@ if SERVER then
 
             v:Freeze(true)
             v:SetNWBool("RaidReady", false)
+            v:SetNWBool("PlayerIsPMC", true)
 
             UnequipAll(v)
             UpdateInventoryString(v)

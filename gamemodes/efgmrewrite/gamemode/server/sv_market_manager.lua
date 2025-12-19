@@ -106,6 +106,7 @@ end)
 net.Receive("PlayerMarketPurchaseItemToInventory", function(len, ply)
 
     if !ply:CompareStatus(0) then return false end
+    if ply:CompareFaction(false) then return false end
 
     local item = net.ReadString()
     local count = net.ReadUInt(16)
@@ -177,6 +178,7 @@ end)
 net.Receive("PlayerMarketPurchasePresetToInventory", function(len, ply)
 
     if !ply:CompareStatus(0) then return false end
+    if ply:CompareFaction(false) then return false end
 
     local presetAtts = net.ReadTable()
 

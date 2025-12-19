@@ -112,6 +112,7 @@ end
 function StashItemFromEquipped(equipID, equipSlot)
 
     if !ply:CompareStatus(0) then return end
+    if equipID != WEAPONSLOTS.MELEE.ID and ply:CompareFaction(false) then return end
 
     local item = playerWeaponSlots[equipID][equipSlot]
 
@@ -136,6 +137,7 @@ end
 function TakeFromStashToInventory(itemIndex)
 
     if !ply:CompareStatus(0) then return end
+    if ply:CompareFaction(false) then return end
 
     local item = playerStash[itemIndex]
     if item == nil then return end
@@ -149,6 +151,7 @@ end
 function EquipItemFromStash(itemIndex, equipSlot, primaryPref)
 
     if !ply:CompareStatus(0) then return end
+    if equipSlot != WEAPONSLOTS.MELEE.ID and ply:CompareFaction(false) then return end
 
     local item = playerStash[itemIndex]
     if item == nil then return end

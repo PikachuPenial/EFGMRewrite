@@ -19,6 +19,7 @@ if SERVER then
 
     util.AddNetworkString("SendExtractionStatus")
     util.AddNetworkString("PlayerRaidTransition")
+    util.AddNetworkString("PlayerSwitchFactions")
 
     util.AddNetworkString("GrabExtractList")
     util.AddNetworkString("SendExtractList")
@@ -101,20 +102,28 @@ if SERVER then
                 if !v:IsPlayer() then return end
 
                 if !v:CompareStatus(0) and !v:CompareStatus(3) then
-                    local status, spawnGroup = v:GetRaidStatus()
-                    print("Player " .. v:GetName() .. " tried to enter the raid with status " .. status .. ", but they're probably fine to join anyway?")
+                    local curStatus, spawnGroup = v:GetRaidStatus()
+                    print("Player " .. v:GetName() .. " tried to enter the raid with status " .. curStatus .. ", but they're probably fine to join anyway?")
                 end
 
                 if v:CompareStatus(3) then
-                    local status, spawnGroup = v:GetRaidStatus()
-                    print("Player " .. v:GetName() .. " tried to enter the raid with status " .. status .. ", this means they are in a duel, this shouldn't be possible at all, let's not let them join!")
+                    local curStatus, spawnGroup = v:GetRaidStatus()
+                    print("Player " .. v:GetName() .. " tried to enter the raid with status " .. curStatus .. ", this means they are in a duel, this shouldn't be possible at all, let's not let them join!")
                     return
+                end
+
+                if status == "nil" then -- automatically set status depending on players faction
+                    status = (v:CompareFaction(true) and playerStatus.PMC) or (v:CompareFaction(false) and playerStatus.SCAV)
                 end
 
                 net.Start("PlayerRaidTransition")
                 net.Send(v)
 
                 v:Freeze(true)
+
+                if status == playerStatus.SCAV then
+                    timer.Create("ScavLoadout" .. v:SteamID64(), 0.5, 1, function() RAID:GenerateScavLoadout(v) end)
+                end
 
                 timer.Create("Spawn" .. v:SteamID64(), 1, 1, function()
                     v:Freeze(false)
@@ -124,6 +133,7 @@ if SERVER then
 
                     local curTime = math.Round(CurTime(), 0) -- once players spawn, we make their team chat channel more specific, this is so others can create squads of the same name and not conflict with anything
                     v:SetRaidStatus(status, spawn.SpawnGroup or "")
+                    v:SetNWBool("PlayerIsPMC", true)
                     v:SetNW2String("PlayerInSquad", "nil")
                     v:SetNW2String("TeamChatChannel", squad .. "_" .. curTime)
                     v:SetNWInt("RaidsPlayed", v:GetNWInt("RaidsPlayed") + 1)
@@ -186,6 +196,156 @@ if SERVER then
 
             return extracts
         end
+
+        function RAID:GenerateScavLoadout(ply)
+
+            local _, weapon = table.Random(SCAV_WEAPONS)
+            local weaponDef = EFGMITEMS[weapon]
+
+            local weaponData = {}
+            weaponData.att = SCAV_WEAPONS[weapon].scavAtts[math.random(#SCAV_WEAPONS[weapon].scavAtts)]
+            weaponData.count = 1
+            weaponData.owner = ply:SteamID64()
+            weaponData.timestamp = os.time()
+
+            local weaponItem = ITEM.Instantiate(weapon, weaponDef.equipType, weaponData)
+            local weaponIndex = table.insert(ply.inventory, weaponItem)
+
+            net.Start("PlayerInventoryAddItem", false)
+            net.WriteString(weapon)
+            net.WriteUInt(weaponDef.equipType, 4)
+            net.WriteTable(weaponData)
+            net.WriteUInt(weaponIndex, 16)
+            net.Send(ply)
+
+            local _, med = table.Random(SCAV_MEDS)
+            local medDef = EFGMITEMS[med]
+
+            local medData = {}
+            medData.count = 1
+            medData.durability = math.random(SCAV_MEDS[med].duraMin, SCAV_MEDS[med].duraMax)
+
+            local medItem = ITEM.Instantiate(med, medDef.equipType, medData)
+            local medIndex = table.insert(ply.inventory, medItem)
+
+            net.Start("PlayerInventoryAddItem", false)
+            net.WriteString(med)
+            net.WriteUInt(medDef.equipType, 4)
+            net.WriteTable(medData)
+            net.WriteUInt(medIndex, 16)
+            net.Send(ply)
+
+            local nade = SCAV_NADES[math.random(#SCAV_NADES)]
+            local nadeDef = EFGMITEMS[nade]
+
+            local nadeData = {}
+            nadeData.count = 1
+            nadeData.owner = ply:SteamID64()
+            nadeData.timestamp = os.time()
+
+            local nadeItem = ITEM.Instantiate(nade, nadeDef.equipType, nadeData)
+            local nadeIndex = table.insert(ply.inventory, nadeItem)
+
+            net.Start("PlayerInventoryAddItem", false)
+            net.WriteString(nade)
+            net.WriteUInt(nadeDef.equipType, 4)
+            net.WriteTable(nadeData)
+            net.WriteUInt(nadeIndex, 16)
+            net.Send(ply)
+
+            local ammo = SCAV_WEAPONS[weapon].ammoID
+            local ammoDef = EFGMITEMS[ammo]
+
+            local ammoData = {}
+            ammoData.count = math.random(SCAV_WEAPONS[weapon].ammoMin, SCAV_WEAPONS[weapon].ammoMax)
+
+            local amount = tonumber(ammoData.count) or 1
+            local ammoStackSize = ammoDef.stackSize
+
+            local inv = {}
+
+            for k, v in ipairs(ply.inventory) do
+
+                inv[k] = {}
+                inv[k].name = v.name
+                inv[k].data = v.data
+                inv[k].id = k
+
+            end
+
+            table.sort(inv, function(a, b) return a.data.count > b.data.count end)
+
+            for k, v in ipairs(inv) do
+
+                if v.name == ammo and v.data.count != ammoStackSize and amount > 0 then
+
+                    local countToMax = ammoStackSize - v.data.count
+
+                    if amount >= countToMax then
+
+                        local newData = {}
+                        newData.count = ammoStackSize
+                        UpdateItemFromInventory(ply, v.id, newData)
+                        amount = amount - countToMax
+
+                    elseif amount < countToMax then
+
+                        local newData = {}
+                        newData.count = ply.inventory[v.id].data.count + amount
+                        UpdateItemFromInventory(ply, v.id, newData)
+                        amount = 0
+                        break
+
+                    end
+
+                end
+
+            end
+
+            -- if leftover after checking every similar item type
+            while amount > 0 do
+
+                if amount >= ammoStackSize then
+
+                    local newData = {}
+                    newData.count = ammoStackSize
+
+                    local ammoItem = ITEM.Instantiate(ammo, ammoDef.equipType, newData)
+                    local ammoIndex = table.insert(ply.inventory, ammoItem)
+
+                    net.Start("PlayerInventoryAddItem", false)
+                    net.WriteString(ammo)
+                    net.WriteUInt(ammoDef.equipType, 4)
+                    net.WriteTable(newData)
+                    net.WriteUInt(ammoIndex, 16)
+                    net.Send(ply)
+
+                    amount = amount - ammoStackSize
+
+                else
+
+                    local newData = {}
+                    newData.count = amount
+
+                    local ammoItem = ITEM.Instantiate(ammo, ammoDef.equipType, newData)
+                    local ammoIndex = table.insert(ply.inventory, ammoItem)
+
+                    net.Start("PlayerInventoryAddItem", false)
+                    net.WriteString(ammo)
+                    net.WriteUInt(ammoDef.equipType, 4)
+                    net.WriteTable(newData)
+                    net.WriteUInt(ammoIndex, 16)
+                    net.Send(ply)
+
+                    break
+
+                end
+
+            end
+
+            CalculateInventoryWeight(ply)
+
+        end
     --}
 
     --{ PLAYER FUNCTIONS
@@ -199,6 +359,24 @@ if SERVER then
             if game.SinglePlayer() then return end -- no audio filters in SP
             UpdateAudioFilter(self, status)
         end
+
+        function plyMeta:SetFaction(fac)
+            if !self:CompareStatus(0) then return end
+            fac = fac or !self:GetNWBool("PlayerIsPMC", true) -- switches if faction isn't specified
+
+            if fac == false then -- scav
+
+                UnequipAll(self)
+                StashAllFromInventory(self)
+
+            end
+
+            -- nothing PMC specific for now
+
+            self:SetNWBool("PlayerIsPMC", fac)
+        end
+
+        net.Receive("PlayerSwitchFactions", function(len, ply) ply:SetFaction() end)
 
         function plyMeta:Teleport(position, angles, velocity)
             -- shortening the extract and raid manager logic lol, not necessary but fun ig idfk
@@ -246,14 +424,13 @@ if SERVER then
                 ply:SetHealth(ply:GetMaxHealth()) -- heals the player to full so dumb shit like quitting and rejoining to get max hp doesn't happen
                 ply:SendLua("RunConsoleCommand('r_cleardecals')") -- clear decals for that extra 2 fps
 
-                ply:SetRaidStatus(0, "")
                 ply:SetNWBool("RaidReady", false)
 
                 ply:UnLock()
 
                 ply:SetNWInt("ExperienceBonus", ply:GetNWInt("ExperienceBonus") + 200)
 
-                local xpMult = 1
+                local xpMult = (ply:CompareStatus(2) and 0.5) or 1
 
                 net.Start("CreateExtractionInformation")
                 net.WriteFloat(xpMult)
@@ -266,14 +443,16 @@ if SERVER then
                 net.Send(ply)
 
                 ply:SetNWInt("RaidTime", 0)
-                ApplyPlayerExperience(ply, 1)
+                ApplyPlayerExperience(ply, xpMult)
+
+                ply:SetRaidStatus(0, "")
             end)
         end)
 
         hook.Add("CheckRaidAddPlayers", "MaybeAddPeople", function(ply)
             local plySquad = ply:GetNW2String("PlayerInSquad", "nil")
 
-            if #ply:GetWeapons() == 0 then
+            if #ply:GetWeapons() == 0 and ply:CompareFaction(true) then
 
                 net.Start("SendNotification", false)
                 net.WriteString("Can not enter a raid while having no equipped weapons!")
@@ -284,7 +463,7 @@ if SERVER then
 
             end
 
-            if ply:GetActiveWeapon() != NULL and ply:GetActiveWeapon():Clip1() == 0 and ply:GetActiveWeapon():GetMaxClip1() != -1 then
+            if ply:GetActiveWeapon() != NULL and ply:GetActiveWeapon():Clip1() == 0 and ply:GetActiveWeapon():GetMaxClip1() != -1 and ply:CompareFaction(true) then
 
                 net.Start("SendNotification", false)
                 net.WriteString("Can not enter a raid while your held weapon is not loaded!")
@@ -306,9 +485,9 @@ if SERVER then
 
             end
 
-            if plySquad == "nil" then RAID:SpawnPlayers({ply}, playerStatus.PMC, "nil") return end
+            if plySquad == "nil" then RAID:SpawnPlayers({ply}, "nil", "nil") return end
 
-            if table.Count(SQUADS[plySquad].MEMBERS) <= 1 then RAID:SpawnPlayers({ply}, playerStatus.PMC, plySquad) return end
+            if table.Count(SQUADS[plySquad].MEMBERS) <= 1 then RAID:SpawnPlayers({ply}, "nil", plySquad) return end
 
             local plys = {}
             local spawnBool = true
@@ -319,7 +498,7 @@ if SERVER then
             end
 
             if tobool(spawnBool) == true then
-                RAID:SpawnPlayers(plys, playerStatus.PMC, plySquad)
+                RAID:SpawnPlayers(plys, "nil", plySquad)
             end
         end)
 
@@ -355,6 +534,10 @@ if SERVER then
 
             end
 
+        end)
+
+        hook.Add("PlayerInitialSpawn", "SetToPMC", function(ply)
+            ply:SetNWBool("PlayerIsPMC", true)
         end)
     --}
 
@@ -394,6 +577,10 @@ end
 
 function plyMeta:CompareStatus(status) -- if player is in raid then status of 0 will return false
     return self:GetNWInt("PlayerRaidStatus", 0) == status
+end
+
+function plyMeta:CompareFaction(status) -- if player is a PMC then status of true will return true
+    return self:GetNWBool("PlayerIsPMC", true) == status
 end
 
 -- i love debugging commands omg

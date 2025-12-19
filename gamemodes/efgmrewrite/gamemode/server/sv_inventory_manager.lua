@@ -61,6 +61,9 @@ end
 
 function AddItemToInventory(ply, name, type, data)
 
+    if !ply:Alive() then return end
+    if (ply:CompareFaction(false) and ply:CompareStatus(0)) then return end
+
     local def = EFGMITEMS[name]
 
     data.count = math.Clamp(tonumber(data.count) or 1, 1, def.stackSize)
@@ -165,6 +168,9 @@ function DeleteItemFromInventory(ply, index, isEquipped)
 end
 
 function FlowItemToInventory(ply, name, type, data)
+
+    if !ply:Alive() then return end
+    if (ply:CompareFaction(false) and ply:CompareStatus(0)) then return end
 
     local def = EFGMITEMS[name]
     local stackSize = def.stackSize
@@ -375,6 +381,8 @@ net.Receive("PlayerInventoryUnEquipItem", function(len, ply)
     local equipID = net.ReadUInt(4)
     local equipSlot = net.ReadUInt(4)
 
+    if (ply:CompareFaction(false) and ply:CompareStatus(0)) then return end
+
     local item = table.Copy(ply.weaponSlots[equipID][equipSlot])
 
     if table.IsEmpty(item) then return end
@@ -434,6 +442,8 @@ net.Receive("PlayerInventoryUnEquipItem", function(len, ply)
 end)
 
 function UnequipAll(ply)
+
+    if (ply:CompareFaction(false) and ply:CompareStatus(0)) then return end
 
     for i = 1, 5 do
 
@@ -516,6 +526,8 @@ net.Receive("PlayerInventoryUnEquipAllCL", function(len, ply)
 end)
 
 function UnequipAllFirearms(ply)
+
+    if (ply:CompareFaction(false) and ply:CompareStatus(0)) then return end
 
     for i = 1, 5 do
 

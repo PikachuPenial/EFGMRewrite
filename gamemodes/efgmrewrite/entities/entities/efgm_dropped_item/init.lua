@@ -43,8 +43,18 @@ end
 function ENT:Use(activator)
 
 	self:Remove()
-    FlowItemToInventory(activator, self.ItemName, self.ItemType, self.ItemData)
-	ReloadInventory(activator)
+
+	if !(activator:CompareFaction(false) and activator:CompareStatus(0)) then
+
+		FlowItemToInventory(activator, self.ItemName, self.ItemType, self.ItemData)
+		ReloadInventory(activator)
+
+	else
+
+		FlowItemToStash(activator, self.ItemName, self.ItemType, self.ItemData)
+		ReloadStash(activator)
+
+	end
 
 end
 

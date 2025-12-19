@@ -160,7 +160,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	-- when a player suicides
 	if !IsValid(attacker) or victim == attacker or !attacker:IsPlayer() then
 
-		local xpMult = 0.5
+		local xpMult = (victim:CompareStatus(2) and 0.25) or 0.5
 
 		net.Start("CreateDeathInformation")
 		net.WriteFloat(xpMult)
@@ -179,7 +179,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		net.Send(victim)
 
 		UnequipAllFirearms(victim)
-		ApplyPlayerExperience(victim, 0.5)
+		ApplyPlayerExperience(victim, xpMult)
 		return
 
 	end
@@ -187,7 +187,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	local rawDistance = victim:GetPos():Distance(attacker:GetPos())
 	local distance = units_to_meters(rawDistance) -- convert hammer units to meters
 
-	local xpMult = 0.5
+	local xpMult = (victim:CompareStatus(2) and 0.25) or 0.5
 
 	net.Start("CreateDeathInformation")
 	net.WriteFloat(xpMult)
@@ -213,7 +213,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 	end
 
 	UnequipAllFirearms(victim)
-	ApplyPlayerExperience(victim, 0.5)
+	ApplyPlayerExperience(victim, xpMult)
 
 end
 

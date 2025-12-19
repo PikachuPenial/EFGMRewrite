@@ -1419,8 +1419,6 @@ function Menu.InspectItem(item, data)
 
         s:SetY(itemPullOutPanel:GetY() - EFGM.MenuScale(28))
 
-        BlurPanel(s, EFGM.MenuScale(0))
-
         surface.SetDrawColor(Colors.containerBackgroundColor)
         surface.DrawRect(0, 0, infoTextSize + EFGM.MenuScale(10), h)
 
@@ -1442,8 +1440,6 @@ function Menu.InspectItem(item, data)
     itemWikiButton.Paint = function(s, w, h)
 
         s:SetY(itemPullOutPanel:GetY() - EFGM.MenuScale(28))
-
-        BlurPanel(s, EFGM.MenuScale(0))
 
         surface.SetDrawColor(Colors.containerBackgroundColor)
         surface.DrawRect(0, 0, wikiTextSize + EFGM.MenuScale(10), h)
@@ -1961,7 +1957,7 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
     local stashText = "STASH"
     local stashTextSize = surface.GetTextSize(stashText)
 
-    local transactionDestination = sendTo or Menu.PerferredShopDestination or "stash"
+    local transactionDestination = (ply:CompareFaction(false) and "stash") or sendTo or Menu.PerferredShopDestination or "stash"
     Menu.PerferredShopDestination = transactionDestination
 
     surface.PlaySound("ui/market_select.wav")
@@ -2036,6 +2032,8 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
 
     end
 
+    if ply:CompareFaction(false) then sendToInventoryBox:SetEnabled(false) end
+
     local sendToStashBox = vgui.Create("DCheckBox", confirmPanel)
     sendToStashBox:SetPos(confirmPanel:GetWide() / 2 + EFGM.MenuScale(15), confirmPanelHeight - EFGM.MenuScale(60))
     sendToStashBox:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
@@ -2060,6 +2058,8 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
 
     function sendToInventoryBox:OnChange(bVal)
 
+        if ply:CompareFaction(false) then return end
+
         if (bVal) then
 
             sendToStashBox:SetChecked(false)
@@ -2077,6 +2077,15 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
     end
 
     function sendToStashBox:OnChange(bVal)
+
+        if ply:CompareFaction(false) then
+
+            sendToStashBox:SetChecked(true)
+            transactionDestination = "stash"
+            Menu.PerferredShopDestination = "stash"
+            return
+
+        end
 
         if (bVal) then
 
@@ -2107,8 +2116,6 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
 
         yesButton:SetX(confirmPanel:GetWide() / 2 - (yesButtonSize / 2) - EFGM.MenuScale(25))
 
-        BlurPanel(s, EFGM.MenuScale(0))
-
         surface.SetDrawColor(Colors.containerBackgroundColor)
         surface.DrawRect(0, 0, yesTextSize + EFGM.MenuScale(10), h)
 
@@ -2131,8 +2138,6 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
     noButton.Paint = function(s, w, h)
 
         noButton:SetX(confirmPanel:GetWide() / 2 - (noButtonSize / 2) + yesButton:GetWide() / 2 + EFGM.MenuScale(5))
-
-        BlurPanel(s, EFGM.MenuScale(0))
 
         surface.SetDrawColor(Colors.containerBackgroundColor)
         surface.DrawRect(0, 0, noButtonSize + EFGM.MenuScale(10), h)
@@ -2339,8 +2344,6 @@ function Menu.ConfirmSell(item, data, key)
 
         yesButton:SetX(confirmPanel:GetWide() / 2 - (yesButtonSize / 2) - EFGM.MenuScale(25))
 
-        BlurPanel(s, EFGM.MenuScale(0))
-
         surface.SetDrawColor(Colors.containerBackgroundColor)
         surface.DrawRect(0, 0, yesTextSize + EFGM.MenuScale(10), h)
 
@@ -2363,8 +2366,6 @@ function Menu.ConfirmSell(item, data, key)
     noButton.Paint = function(s, w, h)
 
         noButton:SetX(confirmPanel:GetWide() / 2 - (noButtonSize / 2) + yesButton:GetWide() / 2 + EFGM.MenuScale(5))
-
-        BlurPanel(s, EFGM.MenuScale(0))
 
         surface.SetDrawColor(Colors.containerBackgroundColor)
         surface.DrawRect(0, 0, noButtonSize + EFGM.MenuScale(10), h)
@@ -2535,8 +2536,6 @@ function Menu.ConfirmSplit(item, data, key, inv)
 
         yesButton:SetX(confirmPanel:GetWide() / 2 - (yesButtonSize / 2) - EFGM.MenuScale(25))
 
-        BlurPanel(s, EFGM.MenuScale(0))
-
         surface.SetDrawColor(Colors.containerBackgroundColor)
         surface.DrawRect(0, 0, yesTextSize + EFGM.MenuScale(10), h)
 
@@ -2559,8 +2558,6 @@ function Menu.ConfirmSplit(item, data, key, inv)
     noButton.Paint = function(s, w, h)
 
         noButton:SetX(confirmPanel:GetWide() / 2 - (noButtonSize / 2) + yesButton:GetWide() / 2 + EFGM.MenuScale(5))
-
-        BlurPanel(s, EFGM.MenuScale(0))
 
         surface.SetDrawColor(Colors.containerBackgroundColor)
         surface.DrawRect(0, 0, noButtonSize + EFGM.MenuScale(10), h)
@@ -2711,8 +2708,6 @@ function Menu.ConfirmDelete(item, key, inv, eID, eSlot)
 
         yesButton:SetX(confirmPanel:GetWide() / 2 - (yesButtonSize / 2) - EFGM.MenuScale(25))
 
-        BlurPanel(s, EFGM.MenuScale(0))
-
         surface.SetDrawColor(Colors.containerBackgroundColor)
         surface.DrawRect(0, 0, yesTextSize + EFGM.MenuScale(10), h)
 
@@ -2735,8 +2730,6 @@ function Menu.ConfirmDelete(item, key, inv, eID, eSlot)
     noButton.Paint = function(s, w, h)
 
         noButton:SetX(confirmPanel:GetWide() / 2 - (noButtonSize / 2) + yesButton:GetWide() / 2 + EFGM.MenuScale(5))
-
-        BlurPanel(s, EFGM.MenuScale(0))
 
         surface.SetDrawColor(Colors.containerBackgroundColor)
         surface.DrawRect(0, 0, noButtonSize + EFGM.MenuScale(10), h)
@@ -2854,8 +2847,6 @@ function Menu.ConfirmTag(item, key, inv, eID, eSlot)
 
         yesButton:SetX(confirmPanel:GetWide() / 2 - (yesButtonSize / 2) - EFGM.MenuScale(25))
 
-        BlurPanel(s, EFGM.MenuScale(0))
-
         surface.SetDrawColor(Colors.containerBackgroundColor)
         surface.DrawRect(0, 0, yesTextSize + EFGM.MenuScale(10), h)
 
@@ -2878,8 +2869,6 @@ function Menu.ConfirmTag(item, key, inv, eID, eSlot)
     noButton.Paint = function(s, w, h)
 
         noButton:SetX(confirmPanel:GetWide() / 2 - (noButtonSize / 2) + yesButton:GetWide() / 2 + EFGM.MenuScale(5))
-
-        BlurPanel(s, EFGM.MenuScale(0))
 
         surface.SetDrawColor(Colors.containerBackgroundColor)
         surface.DrawRect(0, 0, noButtonSize + EFGM.MenuScale(10), h)
@@ -3108,8 +3097,6 @@ function Menu.ConfirmPreset(atts, presetName, presetID, closeMenu)
 
         yesButton:SetX(confirmPanel:GetWide() / 2 - (yesButtonSize / 2) - EFGM.MenuScale(25))
 
-        BlurPanel(s, EFGM.MenuScale(0))
-
         surface.SetDrawColor(Colors.containerBackgroundColor)
         surface.DrawRect(0, 0, yesTextSize + EFGM.MenuScale(10), h)
 
@@ -3132,8 +3119,6 @@ function Menu.ConfirmPreset(atts, presetName, presetID, closeMenu)
     noButton.Paint = function(s, w, h)
 
         noButton:SetX(confirmPanel:GetWide() / 2 - (noButtonSize / 2) + yesButton:GetWide() / 2 + EFGM.MenuScale(5))
-
-        BlurPanel(s, EFGM.MenuScale(0))
 
         surface.SetDrawColor(Colors.containerBackgroundColor)
         surface.DrawRect(0, 0, noButtonSize + EFGM.MenuScale(10), h)
@@ -7177,8 +7162,6 @@ function Menu.OpenTab.Inventory(container)
         unloadButton:SetText("")
         unloadButton.Paint = function(s, w, h)
 
-            BlurPanel(s, EFGM.MenuScale(0))
-
             surface.SetDrawColor(Colors.containerBackgroundColor)
             surface.DrawRect(0, 0, unloadTextSize + EFGM.MenuScale(10), h)
 
@@ -7200,6 +7183,61 @@ function Menu.OpenTab.Inventory(container)
             surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
 
             UnequipAll()
+
+        end
+
+        surface.SetFont("PuristaBold24")
+        local factionText = "SWITCH TO SCAV"
+        local factionTextSize = surface.GetTextSize(factionText)
+        local factionButtonSize = factionTextSize + EFGM.MenuScale(10)
+
+        local factionButton = vgui.Create("DButton", playerPanel)
+        factionButton:SetPos(playerPanel:GetWide() - unloadButtonSize - factionTextSize - EFGM.MenuScale(25), EFGM.MenuScale(46))
+        factionButton:SetSize(factionButtonSize, EFGM.MenuScale(28))
+        factionButton:SetText("")
+        factionButton.Paint = function(s, w, h)
+
+            surface.SetFont("PuristaBold24")
+
+            if Menu.Player:CompareFaction(true) then
+
+                factionText = "SWITCH TO SCAV"
+                factionTextSize = surface.GetTextSize(factionText)
+                factionButtonSize = factionTextSize + EFGM.MenuScale(10)
+
+            else
+
+                factionText = "SWITCH TO PMC"
+                factionTextSize = surface.GetTextSize(factionText)
+                factionButtonSize = factionTextSize + EFGM.MenuScale(10)
+
+            end
+
+            factionButton:SetWide(factionButtonSize)
+            factionButton:SetX(playerPanel:GetWide() - unloadButtonSize - factionTextSize - EFGM.MenuScale(25))
+
+            surface.SetDrawColor(Colors.containerBackgroundColor)
+            surface.DrawRect(0, 0, factionTextSize + EFGM.MenuScale(10), h)
+
+            surface.SetDrawColor(Colors.transparentWhiteColor)
+            surface.DrawRect(0, 0, factionTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
+
+            draw.SimpleTextOutlined(factionText, "PuristaBold24", w / 2, EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+
+        end
+
+        factionButton.OnCursorEntered = function(s)
+
+            surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
+
+        end
+
+        function factionButton:DoClick()
+
+            surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
+
+            net.Start("PlayerSwitchFactions", false)
+            net.SendToServer()
 
         end
 
@@ -7433,8 +7471,6 @@ function Menu.OpenTab.Inventory(container)
 
             unloadButton:SetX(EFGM.MenuScale(225) + weightTextSize)
 
-            BlurPanel(s, EFGM.MenuScale(0))
-
             surface.SetDrawColor(Colors.containerBackgroundColor)
             surface.DrawRect(0, 0, unloadTextSize + EFGM.MenuScale(10), h)
 
@@ -7473,8 +7509,6 @@ function Menu.OpenTab.Inventory(container)
     searchButton.Paint = function(s, w, h)
 
         searchButton:SetX(EFGM.MenuScale(240) + weightTextSize + unloadTextSize)
-
-        BlurPanel(s, EFGM.MenuScale(0))
 
         surface.SetDrawColor(Colors.containerBackgroundColor)
         surface.DrawRect(0, 0, searchTextSize + EFGM.MenuScale(10), h)
@@ -7814,8 +7848,6 @@ function Menu.OpenTab.Inventory(container)
 
         stashSearchButton:SetX(EFGM.MenuScale(15) + valueTextSize)
 
-        BlurPanel(s, EFGM.MenuScale(0))
-
         surface.SetDrawColor(Colors.containerBackgroundColor)
         surface.DrawRect(0, 0, stashSearchTextSize + EFGM.MenuScale(10), h)
 
@@ -8049,8 +8081,6 @@ function Menu.OpenTab.Market()
     marketStashSearchButton.Paint = function(s, w, h)
 
         marketStashSearchButton:SetX(EFGM.MenuScale(15) + valueTextSize)
-
-        BlurPanel(s, EFGM.MenuScale(0))
 
         surface.SetDrawColor(Colors.containerBackgroundColor)
         surface.DrawRect(0, 0, marketStashSearchTextSize + EFGM.MenuScale(10), h)

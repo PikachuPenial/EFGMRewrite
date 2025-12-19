@@ -339,6 +339,8 @@ end
 
 function UnEquipItemFromInventory(equipID, equipSlot)
 
+    if (ply:CompareFaction(false) and ply:CompareStatus(0)) then return end
+
     local item = playerWeaponSlots[equipID][equipSlot]
 
     if table.IsEmpty(item) then return end

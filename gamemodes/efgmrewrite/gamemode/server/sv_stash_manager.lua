@@ -82,10 +82,11 @@ function FlowItemToStash(ply, name, type, data)
 
     local def = EFGMITEMS[name]
     local stackSize = def.stackSize
+    local amount = tonumber(data.count) or 1
 
     if stackSize == 1 then -- items that can't stack do not need to flow
 
-        for i = 1, data.count do
+        for i = 1, amount do
 
             AddItemToStash(ply, name, type, data)
 
@@ -95,7 +96,6 @@ function FlowItemToStash(ply, name, type, data)
 
     end
 
-    local amount = tonumber(data.count)
     local inv = {}
 
     for k, v in ipairs(ply.stash) do
@@ -230,6 +230,8 @@ net.Receive("PlayerStashAddItemFromEquipped", function(len, ply)
     local equipID = net.ReadUInt(4)
     local equipSlot = net.ReadUInt(4)
 
+    if equipID != WEAPONSLOTS.MELEE.ID and ply:CompareFaction(false) then return end
+
     local item = table.Copy(ply.weaponSlots[equipID][equipSlot])
 
     if table.IsEmpty(item) then return end
@@ -301,7 +303,7 @@ net.Receive("PlayerStashAddItemFromEquipped", function(len, ply)
 
 end)
 
-net.Receive("PlayerStashAddAllFromInventory", function(len, ply)
+function StashAllFromInventory(ply)
 
     if !ply:CompareStatus(0) then return end
 
@@ -327,11 +329,14 @@ net.Receive("PlayerStashAddAllFromInventory", function(len, ply)
     ReloadInventory(ply)
     ReloadStash(ply)
 
-end)
+end
+
+net.Receive("PlayerStashAddAllFromInventory", function(len, ply) StashAllFromInventory(ply) end)
 
 net.Receive("PlayerStashTakeItemToInventory", function(len, ply)
 
     if !ply:CompareStatus(0) then return end
+    if ply:CompareFaction(false) then return end
 
     local itemIndex = net.ReadUInt(16)
     local item = DeleteItemFromStash(ply, itemIndex)
@@ -360,6 +365,8 @@ net.Receive("PlayerStashEquipItem", function(len, ply)
 
     local item = ply.stash[itemIndex]
     if item == nil then return end
+
+    if equipSlot != WEAPONSLOTS.MELEE.ID and ply:CompareFaction(false) then return end
 
     item.data.pin = nil
 
