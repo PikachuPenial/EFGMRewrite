@@ -5150,7 +5150,7 @@ EFGMITEMS = {}
 
     EFGMITEMS["efgm_key_bigred_meeting"] = {
         ["fullName"] = "Big Red Meeting Room Key",
-        ["displayName"] = "Br. Meeting",
+        ["displayName"] = "B. Meeting",
         ["displayType"] = "Concrete Key",
         ["weight"] = 0.2,
         ["value"] = 200000,
@@ -5305,7 +5305,7 @@ EFGMITEMS = {}
 
         ["canPurchase"] = false
     }
-    
+
     EFGMITEMS["efgm_keycard_bunker_exec"] = {
         ["fullName"] = "Executive Access Keycard",
         ["displayName"] = "Exec",
@@ -5323,7 +5323,8 @@ EFGMITEMS = {}
         ["sizeX"] = 1,
         ["sizeY"] = 1,
 
-        ["canPurchase"] = false
+        ["canPurchase"] = false,
+        ["lootWeight"] = 20
     }
 
     EFGMITEMS["efgm_key_breakroom"] = {

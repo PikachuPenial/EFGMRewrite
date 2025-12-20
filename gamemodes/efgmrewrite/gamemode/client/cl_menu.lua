@@ -3267,17 +3267,27 @@ function Menu.ReloadInventory()
 
     table.sort(plyItems, function(a, b)
 
-        if (EFGMITEMS[a.name].sizeX * EFGMITEMS[a.name].sizeY) != (EFGMITEMS[b.name].sizeX * EFGMITEMS[b.name].sizeY) then
+        local a_def = EFGMITEMS[a.name]
+        local b_def = EFGMITEMS[b.name]
 
-            return (EFGMITEMS[a.name].sizeX * EFGMITEMS[a.name].sizeY) > (EFGMITEMS[b.name].sizeX * EFGMITEMS[b.name].sizeY)
+        if (a_def.sizeX * a_def.sizeY) != (b_def.sizeX * b_def.sizeY) then
 
-        elseif EFGMITEMS[a.name].displayName != EFGMITEMS[b.name].displayName then
+            return (a_def.sizeX * a_def.sizeY) > (b_def.sizeX * b_def.sizeY)
 
-            return EFGMITEMS[a.name].displayName < EFGMITEMS[b.name].displayName
+        elseif a_def.equipType != b_def.equipType then
 
-        elseif (tostring(a.data.tag or "")) != (tostring(b.data.tag or "")) then
+            return a_def.equipType < b_def.equipType
 
-            return (tostring(a.data.tag or "")) < (tostring(b.data.tag or ""))
+        elseif a_def.displayName != b_def.displayName then
+
+            return a_def.displayName < b_def.displayName
+
+        elseif a.data.tag != b.data.tag then
+
+            if !a.data.tag then return false end
+            if !b.data.tag then return true end
+
+            return (string.upper(tostring(a.data.tag))) < (string.upper(tostring(b.data.tag)))
 
         else
 
@@ -3285,7 +3295,7 @@ function Menu.ReloadInventory()
 
                 return a.data.durability > b.data.durability
 
-            elseif a.data.count and b.data.count then
+            elseif a.data.count > 1 and b.data.count > 1 then
 
                 return a.data.count > b.data.count
 
@@ -3396,7 +3406,7 @@ function Menu.ReloadInventory()
                 surface.SetDrawColor(Colors.pureWhiteColor)
                 surface.SetMaterial(Mats.firIcon)
 
-                if i.equipType == EQUIPTYPE.Ammunition or i.consumableType == "heal" or i.consumableType == "key" then
+                if (i.equipType == EQUIPTYPE.Ammunition and v.data.count > 1) or i.consumableType == "heal" or i.consumableType == "key" then
 
                     surface.DrawTexturedRect(w - EFGM.MenuScale(17), h - EFGM.MenuScale(31), EFGM.MenuScale(14), EFGM.MenuScale(14))
 
@@ -5551,21 +5561,31 @@ function Menu.ReloadStash(firstReload)
 
     table.sort(plyStashItems, function(a, b)
 
+        local a_def = EFGMITEMS[a.name]
+        local b_def = EFGMITEMS[b.name]
+
         if (a.data.pin or 0) != (b.data.pin or 0) then
 
             return (a.data.pin or 0) > (b.data.pin or 0)
 
-        elseif (EFGMITEMS[a.name].sizeX * EFGMITEMS[a.name].sizeY) != (EFGMITEMS[b.name].sizeX * EFGMITEMS[b.name].sizeY) then
+        elseif (a_def.sizeX * a_def.sizeY) != (b_def.sizeX * b_def.sizeY) then
 
-            return (EFGMITEMS[a.name].sizeX * EFGMITEMS[a.name].sizeY) > (EFGMITEMS[b.name].sizeX * EFGMITEMS[b.name].sizeY)
+            return (a_def.sizeX * a_def.sizeY) > (b_def.sizeX * b_def.sizeY)
 
-        elseif EFGMITEMS[a.name].displayName != EFGMITEMS[b.name].displayName then
+        elseif a_def.equipType != b_def.equipType then
 
-            return EFGMITEMS[a.name].displayName < EFGMITEMS[b.name].displayName
+            return a_def.equipType < b_def.equipType
 
-        elseif (tostring(a.data.tag or "")) != (tostring(b.data.tag or "")) then
+        elseif a_def.displayName != b_def.displayName then
 
-            return (tostring(a.data.tag or "")) < (tostring(b.data.tag or ""))
+            return a_def.displayName < b_def.displayName
+
+        elseif a.data.tag != b.data.tag then
+
+            if !a.data.tag then return false end
+            if !b.data.tag then return true end
+
+            return (string.upper(tostring(a.data.tag))) < (string.upper(tostring(b.data.tag)))
 
         else
 
@@ -5573,7 +5593,7 @@ function Menu.ReloadStash(firstReload)
 
                 return a.data.durability > b.data.durability
 
-            elseif a.data.count and b.data.count then
+            elseif a.data.count > 1 and b.data.count > 1 then
 
                 return a.data.count > b.data.count
 
@@ -5693,7 +5713,7 @@ function Menu.ReloadStash(firstReload)
                 local width, height = EFGM.MenuScale(17), EFGM.MenuScale(17)
 
                 if v.data.pin == 1 then width = width + EFGM.MenuScale(10) end
-                if i.equipType == EQUIPTYPE.Ammunition or i.consumableType == "heal" or i.consumableType == "key" then height = height + EFGM.MenuScale(14) end
+                if (i.equipType == EQUIPTYPE.Ammunition and v.data.count > 1) or i.consumableType == "heal" or i.consumableType == "key" then height = height + EFGM.MenuScale(14) end
 
                 surface.DrawTexturedRect(w - width, h - height, EFGM.MenuScale(14), EFGM.MenuScale(14))
 
@@ -6077,17 +6097,31 @@ function Menu.ReloadMarketStash()
 
     table.sort(marketPlyStashItems, function(a, b)
 
+        local a_def = EFGMITEMS[a.name]
+        local b_def = EFGMITEMS[b.name]
+
         if (a.data.pin or 0) != (b.data.pin or 0) then
 
             return (a.data.pin or 0) > (b.data.pin or 0)
 
-        elseif (EFGMITEMS[a.name].sizeX * EFGMITEMS[a.name].sizeY) != (EFGMITEMS[b.name].sizeX * EFGMITEMS[b.name].sizeY) then
+        elseif (a_def.sizeX * a_def.sizeY) != (b_def.sizeX * b_def.sizeY) then
 
-            return (EFGMITEMS[a.name].sizeX * EFGMITEMS[a.name].sizeY) > (EFGMITEMS[b.name].sizeX * EFGMITEMS[b.name].sizeY)
+            return (a_def.sizeX * a_def.sizeY) > (b_def.sizeX * b_def.sizeY)
 
-        elseif EFGMITEMS[a.name].displayName != EFGMITEMS[b.name].displayName then
+        elseif a_def.equipType != b_def.equipType then
 
-            return EFGMITEMS[a.name].displayName < EFGMITEMS[b.name].displayName
+            return a_def.equipType < b_def.equipType
+
+        elseif a_def.displayName != b_def.displayName then
+
+            return a_def.displayName < b_def.displayName
+
+        elseif a.data.tag != b.data.tag then
+
+            if !a.data.tag then return false end
+            if !b.data.tag then return true end
+
+            return (string.upper(tostring(a.data.tag))) < (string.upper(tostring(b.data.tag)))
 
         else
 
@@ -6095,7 +6129,7 @@ function Menu.ReloadMarketStash()
 
                 return a.data.durability > b.data.durability
 
-            elseif a.data.count and b.data.count then
+            elseif a.data.count > 1 and b.data.count > 1 then
 
                 return a.data.count > b.data.count
 
@@ -6232,7 +6266,7 @@ function Menu.ReloadMarketStash()
                 local width, height = EFGM.MenuScale(17), EFGM.MenuScale(17)
 
                 if v.data.pin == 1 then width = width + EFGM.MenuScale(10) end
-                if i.equipType == EQUIPTYPE.Ammunition or i.consumableType == "heal" or i.consumableType == "key" then height = height + EFGM.MenuScale(14) end
+                if (i.equipType == EQUIPTYPE.Ammunition and v.data.count > 1) or i.consumableType == "heal" or i.consumableType == "key" then height = height + EFGM.MenuScale(14) end
 
                 surface.DrawTexturedRect(w - width, h - height, EFGM.MenuScale(14), EFGM.MenuScale(14))
 
@@ -6416,17 +6450,27 @@ function Menu.ReloadContainer()
 
     table.sort(conItems, function(a, b)
 
-        if (EFGMITEMS[a.name].sizeX * EFGMITEMS[a.name].sizeY) != (EFGMITEMS[b.name].sizeX * EFGMITEMS[b.name].sizeY) then
+        local a_def = EFGMITEMS[a.name]
+        local b_def = EFGMITEMS[b.name]
 
-            return (EFGMITEMS[a.name].sizeX * EFGMITEMS[a.name].sizeY) > (EFGMITEMS[b.name].sizeX * EFGMITEMS[b.name].sizeY)
+        if (a_def.sizeX * a_def.sizeY) != (b_def.sizeX * b_def.sizeY) then
 
-        elseif EFGMITEMS[a.name].displayName != EFGMITEMS[b.name].displayName then
+            return (a_def.sizeX * a_def.sizeY) > (b_def.sizeX * b_def.sizeY)
 
-            return EFGMITEMS[a.name].displayName < EFGMITEMS[b.name].displayName
+        elseif a_def.equipType != b_def.equipType then
 
-        elseif (tostring(a.data.tag or "")) != (tostring(b.data.tag or "")) then
+            return a_def.equipType < b_def.equipType
 
-            return (tostring(a.data.tag or "")) < (tostring(b.data.tag or ""))
+        elseif a_def.displayName != b_def.displayName then
+
+            return a_def.displayName < b_def.displayName
+
+        elseif a.data.tag != b.data.tag then
+
+            if !a.data.tag then return false end
+            if !b.data.tag then return true end
+
+            return (string.upper(tostring(a.data.tag))) < (string.upper(tostring(b.data.tag)))
 
         else
 
@@ -6434,7 +6478,7 @@ function Menu.ReloadContainer()
 
                 return a.data.durability > b.data.durability
 
-            elseif a.data.count and b.data.count then
+            elseif a.data.count > 1 and b.data.count > 1 then
 
                 return a.data.count > b.data.count
 
@@ -6534,7 +6578,7 @@ function Menu.ReloadContainer()
                 surface.SetDrawColor(Colors.pureWhiteColor)
                 surface.SetMaterial(Mats.firIcon)
 
-                if i.equipType == EQUIPTYPE.Ammunition or i.consumableType == "heal" or i.consumableType == "key" then
+                if (i.equipType == EQUIPTYPE.Ammunition and v.data.count > 1) or i.consumableType == "heal" or i.consumableType == "key" then
 
                     surface.DrawTexturedRect(w - EFGM.MenuScale(17), h - EFGM.MenuScale(31), EFGM.MenuScale(14), EFGM.MenuScale(14))
 
