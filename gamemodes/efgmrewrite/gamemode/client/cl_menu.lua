@@ -3320,7 +3320,12 @@ function Menu.ReloadInventory()
 
         if itemSearchText then itemSearch = itemSearchText end
 
-        if itemSearch != "" and itemSearch != nil and !(string.find((i.fullName and i.fullName or i.displayName):lower(), itemSearch) or string.find((v.data.tag or ""):lower(), itemSearch) or string.find((ownerName or ""):lower(), itemSearch)) then continue end
+        if itemSearch != "" and itemSearch != nil and
+        !string.find((i.fullName):lower(), itemSearch, 1, true) and
+        !string.find((i.displayName):lower(), itemSearch, 1, true) and
+        !string.find((i.displayType):lower(), itemSearch, 1, true) and
+        !string.find((tostring(v.data.tag) or ""):lower(), itemSearch, 1, true) and
+        !string.find((ownerName or ""):lower(), itemSearch, 1, true) then continue end
 
         local item = playerItems:Add("DButton")
         item:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
@@ -6027,14 +6032,19 @@ function Menu.ReloadStash(firstReload)
         local i = EFGMITEMS[v.name]
         if i == nil then continue end
 
+        stashValue = stashValue + v.value
+
         local ownerName = nil
         if v.data.owner then steamworks.RequestPlayerInfo(v.data.owner, function(steamName) ownerName = steamName end) end
 
         if stashItemSearchText then itemSearch = stashItemSearchText end
 
-        if itemSearch != "" and itemSearch != nil and !(string.find((i.fullName and i.fullName or i.displayName):lower(), itemSearch) or string.find((v.data.tag or ""):lower(), itemSearch) or string.find((ownerName or ""):lower(), itemSearch)) then continue end
-
-        stashValue = stashValue + v.value
+        if itemSearch != "" and itemSearch != nil and
+        !string.find((i.fullName):lower(), itemSearch, 1, true) and
+        !string.find((i.displayName):lower(), itemSearch, 1, true) and
+        !string.find((i.displayType):lower(), itemSearch, 1, true) and
+        !string.find((tostring(v.data.tag) or ""):lower(), itemSearch, 1, true) and
+        !string.find((ownerName or ""):lower(), itemSearch, 1, true) then continue end
 
         LoadItem(i, v)
 
@@ -6154,7 +6164,12 @@ function Menu.ReloadMarketStash()
 
         if marketStashItemSearchText then itemSearch = marketStashItemSearchText end
 
-        if itemSearch != "" and itemSearch != nil and !(string.find((i.fullName and i.fullName or i.displayName):lower(), itemSearch) or string.find((v.data.tag or ""):lower(), itemSearch) or string.find((ownerName or ""):lower(), itemSearch)) then continue end
+        if itemSearch != "" and itemSearch != nil and
+        !string.find((i.fullName):lower(), itemSearch, 1, true) and
+        !string.find((i.displayName):lower(), itemSearch, 1, true) and
+        !string.find((i.displayType):lower(), itemSearch, 1, true) and
+        !string.find((tostring(v.data.tag) or ""):lower(), itemSearch, 1, true) and
+        !string.find((ownerName or ""):lower(), itemSearch, 1, true) then continue end
 
         local itemValue = v.value
 
@@ -7610,7 +7625,25 @@ function Menu.OpenTab.Inventory(container)
 
     searchBox.OnChange = function(self)
 
-        if !GetConVar("efgm_menu_search_automatic"):GetInt() then return end
+        local value = self:GetValue():lower()
+
+        if value:match("^%s+") then
+
+            self:SetText(value:match("^%s*(.-)$"))
+            return
+
+        end
+
+        if !GetConVar("efgm_menu_search_automatic"):GetBool() then return end
+
+        itemSearchText = value
+        Menu.ReloadInventory()
+
+    end
+
+    searchBox.OnEnter = function(self)
+
+        if GetConVar("efgm_menu_search_automatic"):GetBool() then return end
         itemSearchText = self:GetValue():lower()
         Menu.ReloadInventory()
 
@@ -7939,7 +7972,7 @@ function Menu.OpenTab.Inventory(container)
     stashSearchBox = vgui.Create("DTextEntry", stashHolder)
     stashSearchBox:SetSize(EFGM.MenuScale(593) - stashSearchButton:GetX() - stashSearchButton:GetWide(), EFGM.MenuScale(28))
     stashSearchBox:SetPos(stashSearchButton:GetX() + stashSearchButtonSize, 0)
-    stashSearchBox:SetPlaceholderText("search for items...")
+    stashSearchBox:SetPlaceholderText("search...")
     stashSearchBox:SetUpdateOnType(true)
     stashSearchBox:SetTextColor(Colors.whiteColor)
     stashSearchBox:SetCursorColor(Colors.whiteColor)
@@ -7961,7 +7994,25 @@ function Menu.OpenTab.Inventory(container)
 
     stashSearchBox.OnChange = function(self)
 
-        if !GetConVar("efgm_menu_search_automatic"):GetInt() then return end
+        local value = self:GetValue():lower()
+
+        if value:match("^%s+") then
+
+            self:SetText(value:match("^%s*(.-)$"))
+            return
+
+        end
+
+        if !GetConVar("efgm_menu_search_automatic"):GetBool() then return end
+
+        stashItemSearchText = value
+        Menu.ReloadStash()
+
+    end
+
+    stashSearchBox.OnEnter = function(self)
+
+        if GetConVar("efgm_menu_search_automatic"):GetBool() then return end
         stashItemSearchText = self:GetValue():lower()
         Menu.ReloadStash()
 
@@ -8174,7 +8225,7 @@ function Menu.OpenTab.Market()
     marketStashSearchBox = vgui.Create("DTextEntry", marketStashHolder)
     marketStashSearchBox:SetSize(EFGM.MenuScale(593) - marketStashSearchButton:GetX() - marketStashSearchButton:GetWide(), EFGM.MenuScale(28))
     marketStashSearchBox:SetPos(marketStashSearchButton:GetX() + marketStashSearchButtonSize, 0)
-    marketStashSearchBox:SetPlaceholderText("search for items...")
+    marketStashSearchBox:SetPlaceholderText("search...")
     marketStashSearchBox:SetUpdateOnType(true)
     marketStashSearchBox:SetTextColor(Colors.whiteColor)
     marketStashSearchBox:SetCursorColor(Colors.whiteColor)
@@ -8196,7 +8247,25 @@ function Menu.OpenTab.Market()
 
     marketStashSearchBox.OnChange = function(self)
 
-        if !GetConVar("efgm_menu_search_automatic"):GetInt() then return end
+        local value = self:GetValue():lower()
+
+        if value:match("^%s+") then
+
+            self:SetText(value:match("^%s*(.-)$"))
+            return
+
+        end
+
+        if !GetConVar("efgm_menu_search_automatic"):GetBool() then return end
+
+        marketStashItemSearchText = value
+        Menu.ReloadStash()
+
+    end
+
+    marketStashSearchBox.OnEnter = function(self)
+
+        if GetConVar("efgm_menu_search_automatic"):GetBool() then return end
         marketStashItemSearchText = self:GetValue():lower()
         Menu.ReloadStash()
 
@@ -9141,7 +9210,25 @@ function Menu.OpenTab.Market()
 
     marketSearchBox.OnChange = function(self)
 
-        if !GetConVar("efgm_menu_search_automatic"):GetInt() then return end
+        local value = self:GetValue():lower()
+
+        if value:match("^%s+") then
+
+            self:SetText(value:match("^%s*(.-)$"))
+            return
+
+        end
+
+        if !GetConVar("efgm_menu_search_automatic"):GetBool() then return end
+
+        marketSearchText = value
+        UpdateMarketList()
+
+    end
+
+    marketSearchBox.OnEnter = function(self)
+
+        if GetConVar("efgm_menu_search_automatic"):GetBool() then return end
         marketSearchText = self:GetValue():lower()
         UpdateMarketList()
 

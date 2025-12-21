@@ -111,7 +111,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 		tagData.count = 1
 		tagData.owner = victim:SteamID64()
 		tagData.timestamp = os.time()
-		tagData.tag = victim:GetNWInt("Level", 0)
+		tagData.tag = tostring(victim:GetNWInt("Level", 0))
 		tagData.tagLevel = victim:GetNWInt("Level", 0)
 		tagData.fir = true
 
