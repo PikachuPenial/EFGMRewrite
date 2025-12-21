@@ -200,9 +200,7 @@ if CLIENT then
     RunConsoleCommand("arc9_scope_r", "255")
     RunConsoleCommand("arc9_scope_g", "0")
     RunConsoleCommand("arc9_scope_b", "0")
-    RunConsoleCommand("arc9_cross_enable", "0")
     RunConsoleCommand("arc9_cross_a", "0")
-    RunConsoleCommand("arc9_cross_enable", "0")
     RunConsoleCommand("arc9_cross_size_mult", "0")
 
     -- attachments

@@ -299,9 +299,37 @@ local function GetInertia(ply)
     return ply:GetNW2Float("inertia", 0)
 end
 
+local SP = game.SinglePlayer()
+local LastAng = Angle()
+local LerpedSway_Y = 0
+local LerpedSway_X = 0
+local LerpedSway_Tilt = 0
+local LerpedAngX = 0
+
+local requestedmove = false
+local punchstop = false
+local VBPos, VBAng = Vector(), Angle()
+local VBPosCalc, VBAngCalc = Vector(), Angle()
+local VBPosPre, VBAngPre = Vector(), Angle()
+local VBPos2 = Vector()
+local LerpedInertia = 0
+local calcpos = Vector()
+
+local UCT = CurTime()
+local VBPosWeight, VBAngWeight = 1, 1
+
+VBSightChecks = {
+	["arc9_base"] = function(wep) return wep.dt and wep.dt.InSights end,
+	["arc9_eft_base"] = function(wep) return wep.dt and wep.dt.InSights end
+}
+local VBSightChecks = VBSightChecks
+
 hook.Add("CreateMove", "Inertia", function(cmd)
     local ply = LocalPlayer()
-    local inertia = ply:GetNW2Float("inertia", 0)
+	if SP then
+		requestedmove = math.abs(cmd:GetForwardMove()) + math.abs(cmd:GetSideMove()) > 0
+	end
+    local inertia = GetInertia(ply)
 
     if (ply:WaterLevel() < 2 or ply:OnGround()) then
         cmd:SetForwardMove(cmd:GetForwardMove() * (inertia + 0.06) * 0.09)
@@ -359,6 +387,8 @@ hook.Add("SetupMove", "VBSetupMove", function(ply, mv, cmd)
     else
         SetInertia(ply, math.Approach(GetInertia(ply), 0, FrameTime() * deductionMult))
     end
+
+    requestedmove = math.abs(cmd:GetForwardMove()) + math.abs(cmd:GetSideMove()) > 0
 
     local stept = ply:GetNW2Float("VMTime", 0) % 0.64
 
@@ -499,30 +529,6 @@ function meta:GetVBSpringAngles()
 	return self.VBSpringAngle
 end
 
-local LastAng = Angle()
-local LerpedSway_Y = 0
-local LerpedSway_X = 0
-local LerpedSway_Tilt = 0
-local LerpedAngX = 0
-
-local requestedmove = false
-local punchstop = false
-local VBPos, VBAng = Vector(), Angle()
-local VBPosCalc, VBAngCalc = Vector(), Angle()
-local VBPosPre, VBAngPre = Vector(), Angle()
-local VBPos2 = Vector()
-local LerpedInertia = 0
-local calcpos = Vector()
-
-local UCT = CurTime()
-local VBPosWeight, VBAngWeight = 1, 1
-
-VBSightChecks = {
-	["arc9_base"] = function(wep) return wep.dt and wep.dt.InSights end,
-	["arc9_eft_base"] = function(wep) return wep.dt and wep.dt.InSights end
-}
-local VBSightChecks = VBSightChecks
-
 local function GetSighted(wep)
 	local sightfunc = VBSightChecks[wep.Base]
 
@@ -589,7 +595,7 @@ hook.Add("CalcViewModelView", "VBCalcViewModelView", function(wep, vm, oldpos, o
 	end
 
 	LerpedInertia = Lerp(FT * 5, LerpedInertia, inertiamul)
-	VBAngCalc.x = VBAngCalc.x + 10 * LerpedInertia
+	-- VBAngCalc.x = VBAngCalc.x + 10 * LerpedInertia
 	VBAngCalc.z = VBAngCalc.z + 10 * LerpedInertia
 
     if !GetSighted(wep) then
@@ -634,7 +640,7 @@ hook.Add("CalcViewModelView", "VBCalcViewModelView", function(wep, vm, oldpos, o
 	VBPosCalc:Sub(f * math.sin(VMTime * 5) * 0.15)
 
 	VBAngCalc.z = VBAngCalc.z + math.sin(VMTime * 10) * 0.25
-	VBAngCalc.x = VBAngCalc.x + math.abs(math.sin(VMTime * 5) * 0.425)
+	-- VBAngCalc.x = VBAngCalc.x + math.abs(math.sin(VMTime * 5) * 0.425)
 
 	VBAngCalc.y = (!flipped and VBAngCalc.y - LerpedSway_Y + math.abs(LerpedSway_X * 0.25)) or VBAngCalc.y + LerpedSway_Y - math.abs(LerpedSway_X * 0.25)
 
@@ -643,7 +649,7 @@ hook.Add("CalcViewModelView", "VBCalcViewModelView", function(wep, vm, oldpos, o
 	VBPosCalc:Sub(r * LerpedSway_Y * 0.5)
 	VBPosCalc:Sub(up * LerpedSway_X * 0.5)
 
-	if (!requestedmove and punchstop) or requestedmove then
+	if (!requestedmove and punchstop) or requestedmove and !GetSighted(wep) then
 		local ang = VBAngCalc + ang
 		SpringMove1[1] = (ang.x - oldang.x + LerpedSway_X) * -0.01
 		SpringMove1[2] = (ang.y - oldang.y + LerpedSway_Y) * 0.1
@@ -651,7 +657,7 @@ hook.Add("CalcViewModelView", "VBCalcViewModelView", function(wep, vm, oldpos, o
 
 		SpringMove2[2] = math.sin(VMTime * 5) * -0.005
 		SpringMove2[3] = math.sin(VMTime * 5) * 0.0075 * (FT * 150)
-		ply:VBSpring(SpringMove2)
+		-- ply:VBSpring(SpringMove2)
 	end
 
 	VBPosCalc:Mul(VBPosWeight)
