@@ -7610,6 +7610,7 @@ function Menu.OpenTab.Inventory(container)
 
     searchBox.OnChange = function(self)
 
+        if !GetConVar("efgm_menu_search_automatic"):GetInt() then return end
         itemSearchText = self:GetValue():lower()
         Menu.ReloadInventory()
 
@@ -7960,6 +7961,7 @@ function Menu.OpenTab.Inventory(container)
 
     stashSearchBox.OnChange = function(self)
 
+        if !GetConVar("efgm_menu_search_automatic"):GetInt() then return end
         stashItemSearchText = self:GetValue():lower()
         Menu.ReloadStash()
 
@@ -8194,6 +8196,7 @@ function Menu.OpenTab.Market()
 
     marketStashSearchBox.OnChange = function(self)
 
+        if !GetConVar("efgm_menu_search_automatic"):GetInt() then return end
         marketStashItemSearchText = self:GetValue():lower()
         Menu.ReloadStash()
 
@@ -9138,6 +9141,7 @@ function Menu.OpenTab.Market()
 
     marketSearchBox.OnChange = function(self)
 
+        if !GetConVar("efgm_menu_search_automatic"):GetInt() then return end
         marketSearchText = self:GetValue():lower()
         UpdateMarketList()
 
@@ -12101,6 +12105,20 @@ function Menu.OpenTab.Settings()
     menuSellStackedPrompt:SetConVar("efgm_menu_sellprompt_stacked")
     menuSellStackedPrompt:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
 
+    local menuSearchModePanel = vgui.Create("DPanel", interface)
+    menuSearchModePanel:Dock(TOP)
+    menuSearchModePanel:SetSize(0, EFGM.MenuScale(50))
+    function menuSearchModePanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Auto Search On Search Box Text Change", "Purista18", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+
+    end
+
+    local menuSearchMode = vgui.Create("DCheckBox", menuSearchModePanel)
+    menuSearchMode:SetPos(EFGM.MenuScale(152), EFGM.MenuScale(30))
+    menuSearchMode:SetConVar("efgm_menu_search_automatic")
+    menuSearchMode:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+
     -- visuals
 
     local vmFOVPanel = vgui.Create("DPanel", visuals)
@@ -12108,7 +12126,7 @@ function Menu.OpenTab.Settings()
     vmFOVPanel:SetSize(0, EFGM.MenuScale(50))
     function vmFOVPanel:Paint(w, h)
 
-        draw.SimpleTextOutlined("Viewmodel FOV Scale", "Purista18", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined("Viewmodel FOV Scale [EXPERIMENTAL]", "Purista18", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
     end
 
@@ -12116,60 +12134,9 @@ function Menu.OpenTab.Settings()
     vmFOV:SetPos(EFGM.MenuScale(35), EFGM.MenuScale(30))
     vmFOV:SetSize(EFGM.MenuScale(200), EFGM.MenuScale(15))
     vmFOV:SetConVar("arc9_fov")
-    vmFOV:SetMin(-20)
-    vmFOV:SetMax(20)
+    vmFOV:SetMin(-10)
+    vmFOV:SetMax(30)
     vmFOV:SetDecimals(0)
-
-    local vmXPanel = vgui.Create("DPanel", visuals)
-    vmXPanel:Dock(TOP)
-    vmXPanel:SetSize(0, EFGM.MenuScale(50))
-    function vmXPanel:Paint(w, h)
-
-        draw.SimpleTextOutlined("Viewmodel X Position", "Purista18", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-
-    end
-
-    local vmX = vgui.Create("DNumSlider", vmXPanel)
-    vmX:SetPos(EFGM.MenuScale(35), EFGM.MenuScale(30))
-    vmX:SetSize(EFGM.MenuScale(200), EFGM.MenuScale(15))
-    vmX:SetConVar("arc9_vm_addx")
-    vmX:SetMin(-7)
-    vmX:SetMax(7)
-    vmX:SetDecimals(1)
-
-    local vmYPanel = vgui.Create("DPanel", visuals)
-    vmYPanel:Dock(TOP)
-    vmYPanel:SetSize(0, EFGM.MenuScale(50))
-    function vmYPanel:Paint(w, h)
-
-        draw.SimpleTextOutlined("Viewmodel Y Position", "Purista18", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-
-    end
-
-    local vmY = vgui.Create("DNumSlider", vmYPanel)
-    vmY:SetPos(EFGM.MenuScale(35), EFGM.MenuScale(30))
-    vmY:SetSize(EFGM.MenuScale(200), EFGM.MenuScale(15))
-    vmY:SetConVar("arc9_vm_addy")
-    vmY:SetMin(-7)
-    vmY:SetMax(7)
-    vmY:SetDecimals(1)
-
-    local vmZPanel = vgui.Create("DPanel", visuals)
-    vmZPanel:Dock(TOP)
-    vmZPanel:SetSize(0, EFGM.MenuScale(50))
-    function vmZPanel:Paint(w, h)
-
-        draw.SimpleTextOutlined("Viewmodel Z Position", "Purista18", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-
-    end
-
-    local vmZ = vgui.Create("DNumSlider", vmZPanel)
-    vmZ:SetPos(EFGM.MenuScale(35), EFGM.MenuScale(30))
-    vmZ:SetSize(EFGM.MenuScale(200), EFGM.MenuScale(15))
-    vmZ:SetConVar("arc9_vm_addz")
-    vmZ:SetMin(-7)
-    vmZ:SetMax(7)
-    vmZ:SetDecimals(1)
 
     local headBobPanel = vgui.Create("DPanel", visuals)
     headBobPanel:Dock(TOP)
@@ -12204,7 +12171,7 @@ function Menu.OpenTab.Settings()
     pmShadowPanel:SetSize(0, EFGM.MenuScale(50))
     function pmShadowPanel:Paint(w, h)
 
-        draw.SimpleTextOutlined("Render Player Model Shadow", "Purista18", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined("Render Own Player Model Shadow", "Purista18", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
     end
 
@@ -12246,7 +12213,7 @@ function Menu.OpenTab.Settings()
     tpikAllPanel:SetSize(0, EFGM.MenuScale(50))
     function tpikAllPanel:Paint(w, h)
 
-        draw.SimpleTextOutlined("TPP Animations For Other Players", "Purista18", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined("TPP Animations On Other Players", "Purista18", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
     end
 

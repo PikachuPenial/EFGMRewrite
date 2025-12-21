@@ -165,6 +165,9 @@ if CLIENT then
     RunConsoleCommand("arc9_vm_cambobintensity", "0.66")
     RunConsoleCommand("arc9_vm_camrollstrength", "0.66")
     RunConsoleCommand("arc9_vm_camstrength", "0.66")
+    RunConsoleCommand("arc9_vm_addx", "0")
+    RunConsoleCommand("arc9_vm_addy", "0")
+    RunConsoleCommand("arc9_vm_addz", "0")
 
     -- tpik
     RunConsoleCommand("arc9_tpik", "1")
