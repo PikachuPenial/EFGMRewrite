@@ -1284,12 +1284,7 @@ net.Receive("CreateDeathInformation", function()
             MapPanel:SetSize(EFGM.MenuScale(800), EFGM.MenuScale(800))
             MapPanel:SetPos(DeathPopup:GetWide() / 2 + EFGM.MenuScale(10), EFGM.MenuScale(140))
 
-            MapPanel.Paint = function(self, w, h)
-
-                surface.SetDrawColor(Colors.transparent)
-                surface.DrawRect(0, 0, w, h)
-
-            end
+            MapPanel.Paint = nil
 
             local mapRawName = game.GetMap()
             local mapOverhead = Material("maps/" .. mapRawName .. ".png", "smooth")
@@ -1640,12 +1635,7 @@ net.Receive("CreateExtractionInformation", function()
         MapPanel:SetSize(EFGM.MenuScale(800), EFGM.MenuScale(800))
         MapPanel:SetPos(ExtractionPopup:GetWide() / 2 + EFGM.MenuScale(10), EFGM.MenuScale(140))
 
-        MapPanel.Paint = function(self, w, h)
-
-            surface.SetDrawColor(Colors.transparent)
-            surface.DrawRect(0, 0, w, h)
-
-        end
+        MapPanel.Paint = nil
 
         local mapRawName = game.GetMap()
         local mapOverhead = Mats.curMapOverhad
@@ -2045,12 +2035,7 @@ function HUDInspectItem(item, data, panel)
     pullOutContent:Dock(FILL)
     pullOutContent:DockPadding(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10))
     pullOutContent:SetAlpha(0)
-    pullOutContent.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
+    pullOutContent.Paint = nil
 
     itemPullOutPanel.content = pullOutContent
 
@@ -2064,12 +2049,7 @@ function HUDInspectItem(item, data, panel)
         infoContent:Dock(FILL)
         infoContent:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
         infoContent:SetAlpha(0)
-        infoContent.Paint = function(s, w, h)
-
-            surface.SetDrawColor(Colors.transparent)
-            surface.DrawRect(0, 0, w, h)
-
-        end
+        infoContent.Paint = nil
 
         local infoContentText = vgui.Create("RichText", infoContent)
         infoContentText:Dock(FILL)
@@ -2153,12 +2133,7 @@ function HUDInspectItem(item, data, panel)
         wikiContent:Dock(FILL)
         wikiContent:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
         wikiContent:SetAlpha(0)
-        wikiContent.Paint = function(s, w, h)
-
-            surface.SetDrawColor(Colors.transparent)
-            surface.DrawRect(0, 0, w, h)
-
-        end
+        wikiContent.Paint = nil
 
         local wikiContentText = vgui.Create("RichText", wikiContent)
         wikiContentText:Dock(FILL)

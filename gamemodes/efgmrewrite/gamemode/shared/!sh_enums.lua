@@ -22,8 +22,9 @@ duelStatus = {
     ACTIVE = 1
 }
 
--- Tried to make shit adjustable, that way you could say fuck it and let everyone carry 100 grenades or knives or both or neither and it'd let them
--- That could even be added with like convars and shit
+-- tried to make shit adjustable, that way you could say fuck it and let everyone carry 100 grenades or knives or both or neither and it'd let them
+-- that could even be added with like convars and shit
+-- max of 4 bits yada yada yada you surely get it by now
 WEAPONSLOTS = {
     PRIMARY =   {ID = 1, COUNT = 2},
     HOLSTER =   {ID = 2, COUNT = 1},

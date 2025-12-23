@@ -8,7 +8,7 @@ function ITEM.Instantiate(name, type, data)
     local item = {}
 
     item.name = name or "ERROR"
-    item.type = type or -1
+    item.type = type or EQUIPTYPE.None
     item.data = data or {} -- instance data like count, attachments, durability, whatever the fuck
 
     return item

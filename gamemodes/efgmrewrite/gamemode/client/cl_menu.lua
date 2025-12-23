@@ -207,9 +207,6 @@ function Menu:Initialize(openTo, container)
 
         raidStatus = GetGlobalInt("RaidStatus", 0)
 
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-
         draw.SimpleTextOutlined(roubles, "PuristaBold32", w - EFGM.MenuScale(26), EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
         draw.SimpleTextOutlined(level, "PuristaBold32", w - roublesTextSize - EFGM.MenuScale(86), EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
         draw.SimpleTextOutlined(time, "PuristaBold32", w - roublesTextSize - levelTextSize - EFGM.MenuScale(146), EFGM.MenuScale(2), raidStatusTbl[raidStatus], TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
@@ -465,9 +462,6 @@ function Menu:Initialize(openTo, container)
             return
         end
 
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-
         if IsValid(Menu.MenuFrame) and Menu.MenuFrame.Closing then return end
 
         Menu.MouseX, Menu.MouseY = menuFrame:LocalCursorPos()
@@ -519,12 +513,7 @@ function Menu:Initialize(openTo, container)
     contents:Dock(FILL)
     contents:DockPadding(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10))
     contents:SetAlpha(0)
-    contents.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
+    contents.Paint = nil
 
     Menu.MenuFrame.LowerPanel.Contents = contents
 
@@ -1480,12 +1469,7 @@ function Menu.InspectItem(item, data)
     pullOutContent:Dock(FILL)
     pullOutContent:DockPadding(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10))
     pullOutContent:SetAlpha(0)
-    pullOutContent.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
+    pullOutContent.Paint = nil
 
     itemPullOutPanel.content = pullOutContent
 
@@ -1499,12 +1483,7 @@ function Menu.InspectItem(item, data)
         infoContent:Dock(FILL)
         infoContent:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
         infoContent:SetAlpha(0)
-        infoContent.Paint = function(s, w, h)
-
-            surface.SetDrawColor(Colors.transparent)
-            surface.DrawRect(0, 0, w, h)
-
-        end
+        infoContent.Paint = nil
 
         local infoContentText = vgui.Create("RichText", infoContent)
         infoContentText:Dock(FILL)
@@ -1594,12 +1573,7 @@ function Menu.InspectItem(item, data)
         wikiContent:Dock(FILL)
         wikiContent:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
         wikiContent:SetAlpha(0)
-        wikiContent.Paint = function(s, w, h)
-
-            surface.SetDrawColor(Colors.transparent)
-            surface.DrawRect(0, 0, w, h)
-
-        end
+        wikiContent.Paint = nil
 
         local wikiContentText = vgui.Create("RichText", wikiContent)
         wikiContentText:Dock(FILL)
@@ -3230,22 +3204,18 @@ function Menu.ReloadInventory()
         local i = EFGMITEMS[v.name]
         if i == nil then continue end
 
-        plyItems[k] = {}
-        plyItems[k].name = v.name
-        plyItems[k].id = k
-        plyItems[k].data = v.data
+        local consumableType = i.consumableType
+        local baseValue = i.value
 
-        if i.consumableType != "heal" and i.consumableType != "key" then
+        plyItems[k] = {
+            name = v.name,
+            id = k,
+            data = v.data,
+            value = (consumableType != "heal" and consumableType != "key") and (baseValue * math.min(math.max(v.data.count, 1), i.stackSize))
+            or math.floor(baseValue * (v.data.durability / i.consumableValue))
+        }
 
-            plyItems[k].value = (i.value * math.Clamp(v.data.count, 1, i.stackSize))
-
-        else
-
-            plyItems[k].value = math.floor(i.value * (v.data.durability / i.consumableValue))
-
-        end
-
-        if i.equipType == EQUIPTYPE.Weapon and v.data.att then
+        if v.data.att then
 
             local atts = GetPrefixedAttachmentListFromCode(v.data.att)
             if !atts then return end
@@ -3270,41 +3240,37 @@ function Menu.ReloadInventory()
         local a_def = EFGMITEMS[a.name]
         local b_def = EFGMITEMS[b.name]
 
-        if (a_def.sizeX * a_def.sizeY) != (b_def.sizeX * b_def.sizeY) then
+        local a_size = a_def.sizeX * a_def.sizeY
+        local b_size = b_def.sizeX * b_def.sizeY
 
-            return (a_def.sizeX * a_def.sizeY) > (b_def.sizeX * b_def.sizeY)
+        if a_size != b_size then
+            return a_size > b_size
+        end
 
-        elseif a_def.equipType != b_def.equipType then
-
+        if a_def.equipType != b_def.equipType then
             return a_def.equipType < b_def.equipType
+        end
 
-        elseif a_def.displayName != b_def.displayName then
-
+        if a_def.displayName != b_def.displayName then
             return a_def.displayName < b_def.displayName
+        end
 
-        elseif a.data.tag != b.data.tag then
-
+        if a.data.tag != b.data.tag then
             if !a.data.tag then return false end
             if !b.data.tag then return true end
+            return string.upper(a.data.tag) < string.upper(b.data.tag)
+        end
 
-            return (string.upper(tostring(a.data.tag))) < (string.upper(tostring(b.data.tag)))
+        if a.data.durability and b.data.durability then
+            return a.data.durability > b.data.durability
+        end
 
-        else
+        if a.data.count > 1 and b.data.count > 1 then
+            return a.data.count > b.data.count
+        end
 
-            if a.data.durability and b.data.durability then
-
-                return a.data.durability > b.data.durability
-
-            elseif a.data.count > 1 and b.data.count > 1 then
-
-                return a.data.count > b.data.count
-
-            elseif a.value and b.value then
-
-                return a.value > b.value
-
-            end
-
+        if a.value and b.value then
+            return a.value > b.value
         end
 
     end)
@@ -3370,7 +3336,7 @@ function Menu.ReloadInventory()
         local tagFont
         local tagH
 
-        if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18" tagFont = "PuristaBold14" tagH = EFGM.MenuScale(12)
+        if nameSize <= (EFGM.MenuScale(46.5 * i.sizeX)) then nameFont = "PuristaBold18" tagFont = "PuristaBold14" tagH = EFGM.MenuScale(12)
         else nameFont = "PuristaBold14" tagFont = "PuristaBold10" tagH = EFGM.MenuScale(10) end
 
         local duraSize = nil
@@ -3380,7 +3346,7 @@ function Menu.ReloadInventory()
         if i.consumableType == "heal" or i.consumableType == "key" then
             duraSize = surface.GetTextSize(i.consumableValue .. "/" .. i.consumableValue)
 
-            if duraSize <= (EFGM.MenuScale(49 * i.sizeX)) then duraFont = "PuristaBold18" duraSizeY = EFGM.MenuScale(19)
+            if duraSize <= (EFGM.MenuScale(46.5 * i.sizeX)) then duraFont = "PuristaBold18" duraSizeY = EFGM.MenuScale(19)
             else duraFont = "PuristaBold14" duraSizeY = EFGM.MenuScale(15) end
         end
 
@@ -3825,7 +3791,7 @@ function Menu.ReloadSlots()
         local tagFont
         local tagH
 
-        if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18" tagFont = "PuristaBold14" tagH = EFGM.MenuScale(12)
+        if nameSize <= (EFGM.MenuScale(46.5 * i.sizeX)) then nameFont = "PuristaBold18" tagFont = "PuristaBold14" tagH = EFGM.MenuScale(12)
         else nameFont = "PuristaBold14" tagFont = "PuristaBold10" tagH = EFGM.MenuScale(10) end
 
         local wep = Menu.Player:GetWeapon(playerWeaponSlots[1][1].name)
@@ -3860,7 +3826,7 @@ function Menu.ReloadSlots()
 
             if i.caliber then
 
-                draw.SimpleTextOutlined(i.caliber, "PuristaBold18", EFGM.MenuScale(3), h - EFGM.MenuScale(19), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+                draw.SimpleTextOutlined(i.caliber, magFont, EFGM.MenuScale(3), h - magSizeY, Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
             end
 
@@ -4197,7 +4163,7 @@ function Menu.ReloadSlots()
         local tagFont
         local tagH
 
-        if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18" tagFont = "PuristaBold14" tagH = EFGM.MenuScale(12)
+        if nameSize <= (EFGM.MenuScale(46.5 * i.sizeX)) then nameFont = "PuristaBold18" tagFont = "PuristaBold14" tagH = EFGM.MenuScale(12)
         else nameFont = "PuristaBold14" tagFont = "PuristaBold10" tagH = EFGM.MenuScale(10) end
 
         local wep = Menu.Player:GetWeapon(playerWeaponSlots[1][2].name)
@@ -4232,7 +4198,7 @@ function Menu.ReloadSlots()
 
             if i.caliber then
 
-                draw.SimpleTextOutlined(i.caliber, "PuristaBold18", EFGM.MenuScale(3), h - EFGM.MenuScale(19), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+                draw.SimpleTextOutlined(i.caliber, magFont, EFGM.MenuScale(3), h - magSizeY, Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
             end
 
@@ -4569,7 +4535,7 @@ function Menu.ReloadSlots()
         local tagFont
         local tagH
 
-        if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18" tagFont = "PuristaBold14" tagH = EFGM.MenuScale(12)
+        if nameSize <= (EFGM.MenuScale(46.5 * i.sizeX)) then nameFont = "PuristaBold18" tagFont = "PuristaBold14" tagH = EFGM.MenuScale(12)
         else nameFont = "PuristaBold14" tagFont = "PuristaBold10" tagH = EFGM.MenuScale(10) end
 
         local wep = Menu.Player:GetWeapon(playerWeaponSlots[2][1].name)
@@ -4604,7 +4570,7 @@ function Menu.ReloadSlots()
 
             if i.caliber then
 
-                draw.SimpleTextOutlined(i.caliber, "PuristaBold18", EFGM.MenuScale(3), h - EFGM.MenuScale(19), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+                draw.SimpleTextOutlined(i.caliber, magFont, EFGM.MenuScale(3), h - magSizeY, Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
             end
 
@@ -4941,7 +4907,7 @@ function Menu.ReloadSlots()
         local tagFont
         local tagH
 
-        if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18" tagFont = "PuristaBold14" tagH = EFGM.MenuScale(12)
+        if nameSize <= (EFGM.MenuScale(46.5 * i.sizeX)) then nameFont = "PuristaBold18" tagFont = "PuristaBold14" tagH = EFGM.MenuScale(12)
         else nameFont = "PuristaBold14" tagFont = "PuristaBold10" tagH = EFGM.MenuScale(10) end
 
         function meleeItem:PaintOver(w, h)
@@ -5240,7 +5206,7 @@ function Menu.ReloadSlots()
         local nameSize = surface.GetTextSize(i.displayName)
         local nameFont
 
-        if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18"
+        if nameSize <= (EFGM.MenuScale(46.5 * i.sizeX)) then nameFont = "PuristaBold18"
         else nameFont = "PuristaBold14" end
 
         function nadeItem:PaintOver(w, h)
@@ -5529,22 +5495,20 @@ function Menu.ReloadStash(firstReload)
         local i = EFGMITEMS[v.name]
         if i == nil then continue end
 
-        plyStashItems[k] = {}
-        plyStashItems[k].name = v.name
-        plyStashItems[k].id = k
-        plyStashItems[k].data = v.data
+        local consumableType = i.consumableType
+        local baseValue = i.value
 
-        if i.consumableType != "heal" and i.consumableType != "key" then
+        plyStashItems[k] = {
+            name = v.name,
+            id = k,
+            data = v.data,
+            value = (consumableType != "heal" and consumableType != "key") and (baseValue * math.min(math.max(v.data.count, 1), i.stackSize))
+            or math.floor(baseValue * (v.data.durability / i.consumableValue))
+        }
 
-            plyStashItems[k].value = (i.value * math.Clamp(v.data.count, 1, i.stackSize))
+        stashValue = stashValue + plyStashItems[k].value
 
-        else
-
-            plyStashItems[k].value = math.floor(i.value * (v.data.durability / i.consumableValue))
-
-        end
-
-        if i.equipType == EQUIPTYPE.Weapon and v.data.att then
+        if v.data.att then
 
             local atts = GetPrefixedAttachmentListFromCode(v.data.att)
             if !atts then return end
@@ -5555,6 +5519,7 @@ function Menu.ReloadStash(firstReload)
                 if att == nil then continue end
 
                 plyStashItems[k].value = plyStashItems[k].value + att.value
+                stashValue = stashValue + att.value
 
             end
 
@@ -5569,48 +5534,49 @@ function Menu.ReloadStash(firstReload)
         local a_def = EFGMITEMS[a.name]
         local b_def = EFGMITEMS[b.name]
 
-        if (a.data.pin or 0) != (b.data.pin or 0) then
+        local a_pin = a.data.pin or 0
+        local b_pin = b.data.pin or 0
 
-            return (a.data.pin or 0) > (b.data.pin or 0)
+        if a_pin != b_pin then
+            return a_pin > b_pin
+        end
 
-        elseif (a_def.sizeX * a_def.sizeY) != (b_def.sizeX * b_def.sizeY) then
+        local a_size = a_def.sizeX * a_def.sizeY
+        local b_size = b_def.sizeX * b_def.sizeY
 
-            return (a_def.sizeX * a_def.sizeY) > (b_def.sizeX * b_def.sizeY)
+        if a_size != b_size then
+            return a_size > b_size
+        end
 
-        elseif a_def.equipType != b_def.equipType then
-
+        if a_def.equipType != b_def.equipType then
             return a_def.equipType < b_def.equipType
+        end
 
-        elseif a_def.displayName != b_def.displayName then
-
+        if a_def.displayName != b_def.displayName then
             return a_def.displayName < b_def.displayName
+        end
 
-        elseif a.data.tag != b.data.tag then
-
+        if a.data.tag != b.data.tag then
             if !a.data.tag then return false end
             if !b.data.tag then return true end
+            return string.upper(a.data.tag) < string.upper(b.data.tag)
+        end
 
-            return (string.upper(tostring(a.data.tag))) < (string.upper(tostring(b.data.tag)))
+        if a.data.durability and b.data.durability then
+            return a.data.durability > b.data.durability
+        end
 
-        else
+        if a.data.count > 1 and b.data.count > 1 then
+            return a.data.count > b.data.count
+        end
 
-            if a.data.durability and b.data.durability then
-
-                return a.data.durability > b.data.durability
-
-            elseif a.data.count > 1 and b.data.count > 1 then
-
-                return a.data.count > b.data.count
-
-            elseif a.value and b.value then
-
-                return a.value > b.value
-
-            end
-
+        if a.value and b.value then
+            return a.value > b.value
         end
 
     end)
+
+    surface.SetFont("Purista18")
 
     local function LoadItem(i, v)
 
@@ -5648,14 +5614,12 @@ function Menu.ReloadStash(firstReload)
 
         end
 
-        surface.SetFont("Purista18")
-
         local nameSize = surface.GetTextSize(i.displayName)
         local nameFont
         local tagFont
         local tagH
 
-        if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18" tagFont = "PuristaBold14" tagH = EFGM.MenuScale(12)
+        if nameSize <= (EFGM.MenuScale(46.5 * i.sizeX)) then nameFont = "PuristaBold18" tagFont = "PuristaBold14" tagH = EFGM.MenuScale(12)
         else nameFont = "PuristaBold14" tagFont = "PuristaBold10" tagH = EFGM.MenuScale(10) end
 
         local duraSize = nil
@@ -5666,7 +5630,7 @@ function Menu.ReloadStash(firstReload)
 
             duraSize = surface.GetTextSize(i.consumableValue .. "/" .. i.consumableValue)
 
-            if duraSize <= (EFGM.MenuScale(49 * i.sizeX)) then duraFont = "PuristaBold18" duraSizeY = EFGM.MenuScale(19)
+            if duraSize <= (EFGM.MenuScale(46.5 * i.sizeX)) then duraFont = "PuristaBold18" duraSizeY = EFGM.MenuScale(19)
             else duraFont = "PuristaBold14" duraSizeY = EFGM.MenuScale(15) end
 
         end
@@ -6032,8 +5996,6 @@ function Menu.ReloadStash(firstReload)
         local i = EFGMITEMS[v.name]
         if i == nil then continue end
 
-        stashValue = stashValue + v.value
-
         local ownerName = nil
         if v.data.owner then steamworks.RequestPlayerInfo(v.data.owner, function(steamName) ownerName = steamName end) end
 
@@ -6067,24 +6029,23 @@ function Menu.ReloadMarketStash()
         local i = EFGMITEMS[v.name]
         if i == nil then continue end
 
-        marketPlyStashItems[k] = {}
-        marketPlyStashItems[k].name = v.name
-        marketPlyStashItems[k].id = k
-        marketPlyStashItems[k].data = v.data
+        local consumableType = i.consumableType
+        local consumableValue = i.consumableValue
+        local baseValue = i.value
+        local isConsumable = consumableType == "heal" or consumableType == "key"
 
-        if i.consumableType != "heal" and i.consumableType != "key" then
+        marketPlyStashItems[k] = {
+            name = v.name,
+            id = k,
+            data = v.data,
+            value = !isConsumable and math.floor((baseValue * sellMultiplier) * math.min(math.max(v.data.count, 1), i.stackSize))
+            or math.floor((baseValue * sellMultiplier) * (v.data.durability / consumableValue))
+        }
 
-            stashValue = stashValue + (i.value * math.Clamp(v.data.count, 1, i.stackSize))
-            marketPlyStashItems[k].value = math.floor(i.value * sellMultiplier) * math.Clamp(v.data.count, 1, i.stackSize)
+        stashValue = stashValue + (!isConsumable and (baseValue * math.min(math.max(v.data.count, 1), i.stackSize))
+        or math.floor(baseValue * (v.data.durability / consumableValue)))
 
-        else
-
-            stashValue = stashValue + math.floor(i.value * (v.data.durability / i.consumableValue))
-            marketPlyStashItems[k].value = math.floor((i.value * sellMultiplier) * (v.data.durability / i.consumableValue))
-
-        end
-
-        if i.equipType == EQUIPTYPE.Weapon and v.data.att then
+        if v.data.att then
 
             local atts = GetPrefixedAttachmentListFromCode(v.data.att)
             if !atts then return end
@@ -6094,8 +6055,8 @@ function Menu.ReloadMarketStash()
                 local att = EFGMITEMS[a]
                 if att == nil then continue end
 
-                stashValue = stashValue + att.value
                 marketPlyStashItems[k].value = marketPlyStashItems[k].value + math.floor(att.value * sellMultiplier)
+                stashValue = stashValue + att.value
 
             end
 
@@ -6110,45 +6071,44 @@ function Menu.ReloadMarketStash()
         local a_def = EFGMITEMS[a.name]
         local b_def = EFGMITEMS[b.name]
 
-        if (a.data.pin or 0) != (b.data.pin or 0) then
+        local a_pin = a.data.pin or 0
+        local b_pin = b.data.pin or 0
 
-            return (a.data.pin or 0) > (b.data.pin or 0)
+        if a_pin != b_pin then
+            return a_pin > b_pin
+        end
 
-        elseif (a_def.sizeX * a_def.sizeY) != (b_def.sizeX * b_def.sizeY) then
+        local a_size = a_def.sizeX * a_def.sizeY
+        local b_size = b_def.sizeX * b_def.sizeY
 
-            return (a_def.sizeX * a_def.sizeY) > (b_def.sizeX * b_def.sizeY)
+        if a_size != b_size then
+            return a_size > b_size
+        end
 
-        elseif a_def.equipType != b_def.equipType then
-
+        if a_def.equipType != b_def.equipType then
             return a_def.equipType < b_def.equipType
+        end
 
-        elseif a_def.displayName != b_def.displayName then
-
+        if a_def.displayName != b_def.displayName then
             return a_def.displayName < b_def.displayName
+        end
 
-        elseif a.data.tag != b.data.tag then
-
+        if a.data.tag != b.data.tag then
             if !a.data.tag then return false end
             if !b.data.tag then return true end
+            return string.upper(a.data.tag) < string.upper(b.data.tag)
+        end
 
-            return (string.upper(tostring(a.data.tag))) < (string.upper(tostring(b.data.tag)))
+        if a.data.durability and b.data.durability then
+            return a.data.durability > b.data.durability
+        end
 
-        else
+        if a.data.count > 1 and b.data.count > 1 then
+            return a.data.count > b.data.count
+        end
 
-            if a.data.durability and b.data.durability then
-
-                return a.data.durability > b.data.durability
-
-            elseif a.data.count > 1 and b.data.count > 1 then
-
-                return a.data.count > b.data.count
-
-            elseif a.value and b.value then
-
-                return a.value > b.value
-
-            end
-
+        if a.value and b.value then
+            return a.value > b.value
         end
 
     end)
@@ -6218,7 +6178,7 @@ function Menu.ReloadMarketStash()
         local tagFont
         local tagH
 
-        if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18" tagFont = "PuristaBold14" tagH = EFGM.MenuScale(12)
+        if nameSize <= (EFGM.MenuScale(46.5 * i.sizeX)) then nameFont = "PuristaBold18" tagFont = "PuristaBold14" tagH = EFGM.MenuScale(12)
         else nameFont = "PuristaBold14" tagFont = "PuristaBold10" tagH = EFGM.MenuScale(10) end
 
         local duraSize = nil
@@ -6229,7 +6189,7 @@ function Menu.ReloadMarketStash()
 
             duraSize = surface.GetTextSize(i.consumableValue .. "/" .. i.consumableValue)
 
-            if duraSize <= (EFGM.MenuScale(49 * i.sizeX)) then duraFont = "PuristaBold18" duraSizeY = EFGM.MenuScale(19)
+            if duraSize <= (EFGM.MenuScale(46.5 * i.sizeX)) then duraFont = "PuristaBold18" duraSizeY = EFGM.MenuScale(19)
             else duraFont = "PuristaBold14" duraSizeY = EFGM.MenuScale(15) end
 
         end
@@ -6428,22 +6388,18 @@ function Menu.ReloadContainer()
         local i = EFGMITEMS[v.name]
         if i == nil then continue end
 
-        conItems[k] = {}
-        conItems[k].name = v.name
-        conItems[k].id = k
-        conItems[k].data = v.data
+        local consumableType = i.consumableType
+        local baseValue = i.value
 
-        if i.consumableType != "heal" and i.consumableType != "key" then
+        conItems[k] = {
+            name = v.name,
+            id = k,
+            data = v.data,
+            value = (consumableType != "heal" and consumableType != "key") and (baseValue * math.min(math.max(v.data.count, 1), i.stackSize))
+            or math.floor(baseValue * (v.data.durability / i.consumableValue))
+        }
 
-            conItems[k].value = (i.value * math.Clamp(v.data.count, 1, i.stackSize))
-
-        else
-
-            conItems[k].value = math.floor(i.value * (v.data.durability / i.consumableValue))
-
-        end
-
-        if i.equipType == EQUIPTYPE.Weapon and v.data.att then
+        if v.data.att then
 
             local atts = GetPrefixedAttachmentListFromCode(v.data.att)
             if !atts then return end
@@ -6468,41 +6424,37 @@ function Menu.ReloadContainer()
         local a_def = EFGMITEMS[a.name]
         local b_def = EFGMITEMS[b.name]
 
-        if (a_def.sizeX * a_def.sizeY) != (b_def.sizeX * b_def.sizeY) then
+        local a_size = a_def.sizeX * a_def.sizeY
+        local b_size = b_def.sizeX * b_def.sizeY
 
-            return (a_def.sizeX * a_def.sizeY) > (b_def.sizeX * b_def.sizeY)
+        if a_size != b_size then
+            return a_size > b_size
+        end
 
-        elseif a_def.equipType != b_def.equipType then
-
+        if a_def.equipType != b_def.equipType then
             return a_def.equipType < b_def.equipType
+        end
 
-        elseif a_def.displayName != b_def.displayName then
-
+        if a_def.displayName != b_def.displayName then
             return a_def.displayName < b_def.displayName
+        end
 
-        elseif a.data.tag != b.data.tag then
-
+        if a.data.tag != b.data.tag then
             if !a.data.tag then return false end
             if !b.data.tag then return true end
+            return string.upper(a.data.tag) < string.upper(b.data.tag)
+        end
 
-            return (string.upper(tostring(a.data.tag))) < (string.upper(tostring(b.data.tag)))
+        if a.data.durability and b.data.durability then
+            return a.data.durability > b.data.durability
+        end
 
-        else
+        if a.data.count > 1 and b.data.count > 1 then
+            return a.data.count > b.data.count
+        end
 
-            if a.data.durability and b.data.durability then
-
-                return a.data.durability > b.data.durability
-
-            elseif a.data.count > 1 and b.data.count > 1 then
-
-                return a.data.count > b.data.count
-
-            elseif a.value and b.value then
-
-                return a.value > b.value
-
-            end
-
+        if a.value and b.value then
+            return a.value > b.value
         end
 
     end)
@@ -6552,7 +6504,7 @@ function Menu.ReloadContainer()
         local tagFont
         local tagH
 
-        if nameSize <= (EFGM.MenuScale(49 * i.sizeX)) then nameFont = "PuristaBold18" tagFont = "PuristaBold14" tagH = EFGM.MenuScale(12)
+        if nameSize <= (EFGM.MenuScale(46.5 * i.sizeX)) then nameFont = "PuristaBold18" tagFont = "PuristaBold14" tagH = EFGM.MenuScale(12)
         else nameFont = "PuristaBold14" tagFont = "PuristaBold10" tagH = EFGM.MenuScale(10) end
 
         local duraSize = nil
@@ -6562,7 +6514,7 @@ function Menu.ReloadContainer()
         if i.consumableType == "heal" or i.consumableType == "key" then
             duraSize = surface.GetTextSize(i.consumableValue .. "/" .. i.consumableValue)
 
-            if duraSize <= (EFGM.MenuScale(49 * i.sizeX)) then duraFont = "PuristaBold18" duraSizeY = EFGM.MenuScale(19)
+            if duraSize <= (EFGM.MenuScale(46.5 * i.sizeX)) then duraFont = "PuristaBold18" duraSizeY = EFGM.MenuScale(19)
             else duraFont = "PuristaBold14" duraSizeY = EFGM.MenuScale(15) end
         end
 
@@ -6778,12 +6730,7 @@ function Menu.OpenTab.Inventory(container)
     contents:Dock(FILL)
     contents:DockPadding(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10))
     contents:SetAlpha(0)
-    contents.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
+    contents.Paint = nil
 
     Menu.MenuFrame.LowerPanel.Contents = contents
 
@@ -6862,12 +6809,7 @@ function Menu.OpenTab.Inventory(container)
     equipmentHolder = vgui.Create("DPanel", playerPanel)
     equipmentHolder:SetPos(EFGM.MenuScale(153), EFGM.MenuScale(100))
     equipmentHolder:SetSize(EFGM.MenuScale(450), EFGM.MenuScale(850))
-    function equipmentHolder:Paint(w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
+    equipmentHolder.Paint = nil
 
     -- secondary slot
     secondaryWeaponHolder = vgui.Create("DPanel", equipmentHolder)
@@ -7352,12 +7294,7 @@ function Menu.OpenTab.Inventory(container)
     itemsHolder:Dock(FILL)
     itemsHolder:DockMargin(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(9))
     itemsHolder:SetSize(0, 0)
-    itemsHolder.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
+    itemsHolder.Paint = nil
 
     local itemsText = vgui.Create("DPanel", itemsHolder)
     itemsText:Dock(TOP)
@@ -7802,12 +7739,7 @@ function Menu.OpenTab.Inventory(container)
         containerHolder:Dock(FILL)
         containerHolder:DockMargin(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(9))
         containerHolder:SetSize(0, 0)
-        containerHolder.Paint = function(s, w, h)
-
-            surface.SetDrawColor(Colors.transparent)
-            surface.DrawRect(0, 0, w, h)
-
-        end
+        containerHolder.Paint = nil
 
         local containerItemsHolder = vgui.Create("DScrollPanel", containerHolder)
         containerItemsHolder:SetPos(0, EFGM.MenuScale(32))
@@ -7911,12 +7843,7 @@ function Menu.OpenTab.Inventory(container)
     stashHolder:Dock(FILL)
     stashHolder:DockMargin(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(9))
     stashHolder:SetSize(0, 0)
-    stashHolder.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
+    stashHolder.Paint = nil
 
     local stashInfoText = vgui.Create("DPanel", stashHolder)
     stashInfoText:Dock(TOP)
@@ -8121,12 +8048,7 @@ function Menu.OpenTab.Market()
     contents:Dock(FILL)
     contents:DockPadding(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10))
     contents:SetAlpha(0)
-    contents.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
+    contents.Paint = nil
 
     Menu.MenuFrame.LowerPanel.Contents = contents
 
@@ -8164,12 +8086,7 @@ function Menu.OpenTab.Market()
     marketStashHolder:Dock(FILL)
     marketStashHolder:DockMargin(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(9))
     marketStashHolder:SetSize(0, 0)
-    marketStashHolder.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
+    marketStashHolder.Paint = nil
 
     local marketStashInfoText = vgui.Create("DPanel", marketStashHolder)
     marketStashInfoText:Dock(TOP)
@@ -8376,12 +8293,7 @@ function Menu.OpenTab.Market()
     marketHolder:Dock(FILL)
     marketHolder:DockMargin(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(9))
     marketHolder:SetSize(0, 0)
-    marketHolder.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
+    marketHolder.Paint = nil
 
     local marketPageText = vgui.Create("DPanel", marketHolder)
     marketPageText:Dock(TOP)
@@ -8682,12 +8594,7 @@ function Menu.OpenTab.Market()
     marketItemHolder:SetPos(EFGM.MenuScale(216), 0)
     marketItemHolder:SetSize(EFGM.MenuScale(1003), EFGM.MenuScale(872))
     marketItemHolder:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
-    function marketItemHolder:Paint(w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
+    marketItemHolder.Paint = nil
 
     local marketItems = vgui.Create("DIconLayout", marketItemHolder)
     marketItems:Dock(TOP)
@@ -9362,12 +9269,7 @@ function Menu.OpenTab.Intel()
     contents:Dock(FILL)
     contents:DockPadding(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10))
     contents:SetAlpha(0)
-    contents.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
+    contents.Paint = nil
 
     Menu.MenuFrame.LowerPanel.Contents = contents
 
@@ -9399,10 +9301,7 @@ function Menu.OpenTab.Intel()
 
     local entryPanel = vgui.Create("DPanel", contents)
     entryPanel:Dock(FILL)
-    function entryPanel:Paint(w, h)
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-    end
+    entryPanel.Paint = nil
 
     local entryStats = vgui.Create("DPanel", entryPanel)
     entryStats:Dock(TOP)
@@ -9523,24 +9422,14 @@ function Menu.OpenTab.Match()
     contents:Dock(FILL)
     contents:DockPadding(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10))
     contents:SetAlpha(0)
-    contents.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
+    contents.Paint = nil
 
     Menu.MenuFrame.LowerPanel.Contents = contents
 
     local pmcPanel = vgui.Create("DScrollPanel", contents)
     pmcPanel:Dock(LEFT)
     pmcPanel:SetSize(EFGM.MenuScale(320), 0)
-    pmcPanel.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
+    pmcPanel.Paint = nil
 
     if Menu.Player:CompareStatus(0) then
 
@@ -9548,9 +9437,6 @@ function Menu.OpenTab.Match()
         pmcTitle:Dock(TOP)
         pmcTitle:SetSize(0, EFGM.MenuScale(32))
         function pmcTitle:Paint(w, h)
-
-            surface.SetDrawColor(Colors.transparent)
-            surface.DrawRect(0, 0, w, h)
 
             draw.SimpleTextOutlined("OPERATORS", "PuristaBold32", w / 2, 0, Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
@@ -9660,20 +9546,12 @@ function Menu.OpenTab.Match()
     local mapPanel = vgui.Create("DPanel", contents)
     mapPanel:Dock(LEFT)
     mapPanel:SetSize(EFGM.MenuScale(1230), 0)
-    mapPanel.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
+    mapPanel.Paint = nil
 
     local mapTitle = vgui.Create("DPanel", mapPanel)
     mapTitle:Dock(TOP)
     mapTitle:SetSize(0, EFGM.MenuScale(40))
     function mapTitle:Paint(w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
 
         draw.SimpleTextOutlined("MAP", "PuristaBold32", w / 2, 0, Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
@@ -9747,7 +9625,7 @@ function Menu.OpenTab.Match()
 
     local mapLegend = vgui.Create("DPanel", mapHolder)
     mapLegend:SetPos(mapHolder:GetWide() - math.max(mapNameTextSize + EFGM.MenuScale(30), EFGM.MenuScale(110)), EFGM.MenuScale(10))
-    mapLegend:SetSize(math.max(mapNameTextSize + EFGM.MenuScale(20), EFGM.MenuScale(100)), EFGM.MenuScale(145))
+    mapLegend:SetSize(math.max(mapNameTextSize + EFGM.MenuScale(20), EFGM.MenuScale(100)), EFGM.MenuScale(140))
     mapLegend.Paint = function(s, w, h)
 
         BlurPanel(s, EFGM.MenuScale(4))
@@ -9761,13 +9639,13 @@ function Menu.OpenTab.Match()
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
         surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
 
-        draw.SimpleTextOutlined(mapNameText, "PuristaBold50", w / 2, 0, Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined(mapNameText, "PuristaBold50", w / 2, EFGM.MenuScale(-5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
-        draw.SimpleTextOutlined("LEGEND", "PuristaBold24", w - EFGM.MenuScale(10), EFGM.MenuScale(50), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-        draw.SimpleTextOutlined("SPAWNS ■", "PuristaBold18", w - EFGM.MenuScale(10), EFGM.MenuScale(75), Colors.mapSpawn, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-        draw.SimpleTextOutlined("EXTRACTS ■", "PuristaBold18", w - EFGM.MenuScale(10), EFGM.MenuScale(90), Colors.mapExtract, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-        draw.SimpleTextOutlined("POIs ■", "PuristaBold18", w - EFGM.MenuScale(10), EFGM.MenuScale(105), Colors.mapLocation, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-        draw.SimpleTextOutlined("KEYS ■", "PuristaBold18", w - EFGM.MenuScale(10), EFGM.MenuScale(120), Colors.mapKey, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined("LEGEND", "PuristaBold24", w - EFGM.MenuScale(10), EFGM.MenuScale(45), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined("SPAWNS ■", "PuristaBold18", w - EFGM.MenuScale(10), EFGM.MenuScale(70), Colors.mapSpawn, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined("EXTRACTS ■", "PuristaBold18", w - EFGM.MenuScale(10), EFGM.MenuScale(85), Colors.mapExtract, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined("POIs ■", "PuristaBold18", w - EFGM.MenuScale(10), EFGM.MenuScale(100), Colors.mapLocation, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined("KEYS ■", "PuristaBold18", w - EFGM.MenuScale(10), EFGM.MenuScale(115), Colors.mapKey, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
     end
 
@@ -9778,12 +9656,7 @@ function Menu.OpenTab.Match()
         local squadPanel = vgui.Create("DPanel", contents)
         squadPanel:Dock(LEFT)
         squadPanel:SetSize(EFGM.MenuScale(320), 0)
-        squadPanel.Paint = function(s, w, h)
-
-            surface.SetDrawColor(Colors.transparent)
-            surface.DrawRect(0, 0, w, h)
-
-        end
+        squadPanel.Paint = nil
 
         local CreateSquadPlayerLimit
         local CreateSquadColor = {RED = 255, GREEN = 255, BLUE = 255}
@@ -9793,9 +9666,6 @@ function Menu.OpenTab.Match()
         createSquadTitle:SetSize(0, EFGM.MenuScale(32))
         function createSquadTitle:Paint(w, h)
 
-            surface.SetDrawColor(Colors.transparent)
-            surface.DrawRect(0, 0, w, h)
-
             draw.SimpleTextOutlined("CREATE SQUAD", "PuristaBold32", w / 2, 0, Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
         end
@@ -9804,9 +9674,6 @@ function Menu.OpenTab.Match()
         squadNamePanel:Dock(TOP)
         squadNamePanel:SetSize(0, EFGM.MenuScale(55))
         squadNamePanel.Paint = function(s, w, h)
-
-            surface.SetDrawColor(Colors.transparent)
-            surface.DrawRect(0, 0, w, h)
 
             draw.SimpleTextOutlined("Squad Name", "Purista18", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
@@ -9834,9 +9701,6 @@ function Menu.OpenTab.Match()
         squadPasswordPanel:Dock(TOP)
         squadPasswordPanel:SetSize(0, EFGM.MenuScale(55))
         squadPasswordPanel.Paint = function(s, w, h)
-
-            surface.SetDrawColor(Colors.transparent)
-            surface.DrawRect(0, 0, w, h)
 
             draw.SimpleTextOutlined("Squad Password (optional)", "Purista18", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
@@ -9960,9 +9824,6 @@ function Menu.OpenTab.Match()
         joinSquadTitle:SetSize(0, EFGM.MenuScale(32 + 10))
         function joinSquadTitle:Paint(w, h)
 
-            surface.SetDrawColor(Colors.transparent)
-            surface.DrawRect(0, 0, w, h)
-
             draw.SimpleTextOutlined("JOIN SQUAD", "PuristaBold32", w / 2, 0, Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
         end
@@ -9970,12 +9831,7 @@ function Menu.OpenTab.Match()
         local availableSquadsPanel = vgui.Create("DScrollPanel", squadPanel)
         availableSquadsPanel:Dock(TOP)
         availableSquadsPanel:SetSize(0, EFGM.MenuScale(220))
-        availableSquadsPanel.Paint = function(s, w, h)
-
-            surface.SetDrawColor(Colors.transparent)
-            surface.DrawRect(0, 0, w, h)
-
-        end
+        availableSquadsPanel.Paint = nil
 
         local availableSquadsPanelBar = availableSquadsPanel:GetVBar()
         availableSquadsPanelBar:SetHideButtons(true)
@@ -10214,12 +10070,7 @@ function Menu.OpenTab.Match()
         currentSquadPanel:Dock(TOP)
         currentSquadPanel:SetSize(EFGM.MenuScale(320), EFGM.MenuScale(320))
         currentSquadPanel:DockMargin(0, EFGM.MenuScale(50), 0, 0)
-        currentSquadPanel.Paint = function(s, w, h)
-
-            surface.SetDrawColor(Colors.transparent)
-            surface.DrawRect(0, 0, w, h)
-
-        end
+        currentSquadPanel.Paint = nil
 
         local function RenderCurrentSquad(array)
 
@@ -10682,32 +10533,19 @@ function Menu.OpenTab.Stats()
     contents:Dock(FILL)
     contents:DockPadding(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10))
     contents:SetAlpha(0)
-    contents.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
+    contents.Paint = nil
 
     Menu.MenuFrame.LowerPanel.Contents = contents
 
     local stats = vgui.Create("DScrollPanel", contents)
     stats:Dock(LEFT)
     stats:SetSize(EFGM.MenuScale(320), 0)
-    stats.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
+    stats.Paint = nil
 
     local statsTitle = vgui.Create("DPanel", stats)
     statsTitle:Dock(TOP)
     statsTitle:SetSize(0, EFGM.MenuScale(32))
     function statsTitle:Paint(w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
 
         draw.SimpleTextOutlined("STATISTICS", "PuristaBold32", w / 2, 0, Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
@@ -10726,12 +10564,7 @@ function Menu.OpenTab.Stats()
     local importantStats = vgui.Create("DPanel", stats)
     importantStats:Dock(TOP)
     importantStats:SetSize(0, EFGM.MenuScale(580))
-    importantStats.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
+    importantStats.Paint = nil
 
     -- only temporary, I gotta find a way to automate this shit
 
@@ -10784,9 +10617,6 @@ function Menu.OpenTab.Stats()
         statEntry:SetSize(0, EFGM.MenuScale(17))
         function statEntry:Paint(w, h)
 
-            surface.SetDrawColor(Colors.transparent)
-            surface.DrawRect(0, 0, w, h)
-
             draw.SimpleTextOutlined(k .. "", "Purista18", EFGM.MenuScale(5), 0, Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
             draw.SimpleTextOutlined(v, "Purista18", w - EFGM.MenuScale(5), 0, Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
@@ -10801,9 +10631,6 @@ function Menu.OpenTab.Stats()
     leaderboardTitle:Dock(TOP)
     leaderboardTitle:SetSize(0, EFGM.MenuScale(32))
     function leaderboardTitle:Paint(w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
 
         draw.SimpleTextOutlined("LEADERBOARDS", "PuristaBold32", w / 2, 0, Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
@@ -10854,9 +10681,6 @@ function Menu.OpenTab.Stats()
     leaderboardContents:Dock(TOP)
     leaderboardContents:SetSize(0, EFGM.MenuScale(380))
     leaderboardContents.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
 
         if selectedBoard == nil then return end
 
@@ -10929,31 +10753,18 @@ function Menu.OpenTab.Skills()
     contents:Dock(FILL)
     contents:DockPadding(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10))
     contents:SetAlpha(0)
-    contents.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
+    contents.Paint = nil
 
     Menu.MenuFrame.LowerPanel.Contents = contents
 
     local skills = vgui.Create("DScrollPanel", contents)
     skills:Dock(FILL)
-    skills.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
+    skills.Paint = nil
 
     local skillsTitle = vgui.Create("DPanel", skills)
     skillsTitle:Dock(TOP)
     skillsTitle:SetSize(0, EFGM.MenuScale(32))
     function skillsTitle:Paint(w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
 
         draw.SimpleTextOutlined("SKILLS", "PuristaBold32", 265, 0, Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
@@ -10974,12 +10785,7 @@ function Menu.OpenTab.Skills()
     skillsList:SetSize(EFGM.MenuScale(530), 0)
     skillsList:SetSpaceY(EFGM.MenuScale(20))
     skillsList:SetSpaceX(EFGM.MenuScale(20))
-    skillsList.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
+    skillsList.Paint = nil
 
     local skillTypeTbl = {
         ["Combat"] = Color(155, 75, 75), -- combat
@@ -11115,32 +10921,19 @@ function Menu.OpenTab.Settings()
     contents:Dock(FILL)
     contents:DockPadding(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10))
     contents:SetAlpha(0)
-    contents.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
+    contents.Paint = nil
 
     Menu.MenuFrame.LowerPanel.Contents = contents
 
     local gameplayHolder = vgui.Create("DPanel", contents)
     gameplayHolder:Dock(LEFT)
     gameplayHolder:SetSize(EFGM.MenuScale(320), 0)
-    gameplayHolder.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
+    gameplayHolder.Paint = nil
 
     local gameplayTitle = vgui.Create("DPanel", gameplayHolder)
     gameplayTitle:Dock(TOP)
     gameplayTitle:SetSize(0, EFGM.MenuScale(32))
     function gameplayTitle:Paint(w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
 
         draw.SimpleTextOutlined("GAMEPLAY", "PuristaBold32", w / 2, 0, Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
@@ -11149,12 +10942,7 @@ function Menu.OpenTab.Settings()
     local gameplay = vgui.Create("DScrollPanel", gameplayHolder)
     gameplay:Dock(LEFT)
     gameplay:SetSize(EFGM.MenuScale(320), 0)
-    gameplay.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
+    gameplay.Paint = nil
 
     local gameplayBar = gameplay:GetVBar()
     gameplayBar:SetHideButtons(true)
@@ -11169,20 +10957,12 @@ function Menu.OpenTab.Settings()
     local controlsHolder = vgui.Create("DPanel", contents)
     controlsHolder:Dock(LEFT)
     controlsHolder:SetSize(EFGM.MenuScale(320), 0)
-    controlsHolder.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
+    controlsHolder.Paint = nil
 
     local controlsTitle = vgui.Create("DPanel", controlsHolder)
     controlsTitle:Dock(TOP)
     controlsTitle:SetSize(0, EFGM.MenuScale(32))
     function controlsTitle:Paint(w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
 
         draw.SimpleTextOutlined("CONTROLS", "PuristaBold32", w / 2, 0, Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
@@ -11191,12 +10971,7 @@ function Menu.OpenTab.Settings()
     local controls = vgui.Create("DScrollPanel", controlsHolder)
     controls:Dock(LEFT)
     controls:SetSize(EFGM.MenuScale(320), 0)
-    controls.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
+    controls.Paint = nil
 
     local controlsBar = controls:GetVBar()
     controlsBar:SetHideButtons(true)
@@ -11205,20 +10980,12 @@ function Menu.OpenTab.Settings()
     local interfaceHolder = vgui.Create("DPanel", contents)
     interfaceHolder:Dock(LEFT)
     interfaceHolder:SetSize(EFGM.MenuScale(320), 0)
-    interfaceHolder.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
+    interfaceHolder.Paint = nil
 
     local interfaceTitle = vgui.Create("DPanel", interfaceHolder)
     interfaceTitle:Dock(TOP)
     interfaceTitle:SetSize(0, EFGM.MenuScale(32))
     function interfaceTitle:Paint(w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
 
         draw.SimpleTextOutlined("INTERFACE", "PuristaBold32", w / 2, 0, Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
@@ -11227,12 +10994,7 @@ function Menu.OpenTab.Settings()
     local interface = vgui.Create("DScrollPanel", interfaceHolder)
     interface:Dock(LEFT)
     interface:SetSize(EFGM.MenuScale(320), 0)
-    interface.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
+    interface.Paint = nil
 
     local interfaceBar = interface:GetVBar()
     interfaceBar:SetHideButtons(true)
@@ -11247,20 +11009,12 @@ function Menu.OpenTab.Settings()
     local visualsHolder = vgui.Create("DPanel", contents)
     visualsHolder:Dock(LEFT)
     visualsHolder:SetSize(EFGM.MenuScale(320), 0)
-    visualsHolder.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
+    visualsHolder.Paint = nil
 
     local visualsTitle = vgui.Create("DPanel", visualsHolder)
     visualsTitle:Dock(TOP)
     visualsTitle:SetSize(0, EFGM.MenuScale(32))
     function visualsTitle:Paint(w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
 
         draw.SimpleTextOutlined("VISUALS", "PuristaBold32", w / 2, 0, Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
@@ -11269,12 +11023,7 @@ function Menu.OpenTab.Settings()
     local visuals = vgui.Create("DScrollPanel", visualsHolder)
     visuals:Dock(LEFT)
     visuals:SetSize(EFGM.MenuScale(320), 0)
-    visuals.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
+    visuals.Paint = nil
 
     local visualsBar = visuals:GetVBar()
     visualsBar:SetHideButtons(true)
@@ -11289,20 +11038,12 @@ function Menu.OpenTab.Settings()
     local accountHolder = vgui.Create("DPanel", contents)
     accountHolder:Dock(LEFT)
     accountHolder:SetSize(EFGM.MenuScale(320), 0)
-    accountHolder.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
+    accountHolder.Paint = nil
 
     local accountTitle = vgui.Create("DPanel", accountHolder)
     accountTitle:Dock(TOP)
     accountTitle:SetSize(0, EFGM.MenuScale(32))
     function accountTitle:Paint(w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
 
         draw.SimpleTextOutlined("ACCOUNT", "PuristaBold32", w / 2, 0, Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
@@ -11311,12 +11052,7 @@ function Menu.OpenTab.Settings()
     local account = vgui.Create("DScrollPanel", accountHolder)
     account:Dock(LEFT)
     account:SetSize(EFGM.MenuScale(320), 0)
-    account.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
+    account.Paint = nil
 
     local accountBar = account:GetVBar()
     accountBar:SetHideButtons(true)
@@ -11331,20 +11067,12 @@ function Menu.OpenTab.Settings()
     local miscHolder = vgui.Create("DPanel", contents)
     miscHolder:Dock(LEFT)
     miscHolder:SetSize(EFGM.MenuScale(260), EFGM.MenuScale(353))
-    miscHolder.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
+    miscHolder.Paint = nil
 
     local miscTitle = vgui.Create("DPanel", miscHolder)
     miscTitle:Dock(TOP)
     miscTitle:SetSize(0, EFGM.MenuScale(32))
     function miscTitle:Paint(w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
 
         draw.SimpleTextOutlined("MISC.", "PuristaBold32", w / 2, 0, Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
@@ -11353,12 +11081,7 @@ function Menu.OpenTab.Settings()
     local misc = vgui.Create("DScrollPanel", miscHolder)
     misc:Dock(LEFT)
     misc:SetSize(EFGM.MenuScale(260), EFGM.MenuScale(353))
-    misc.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
+    misc.Paint = nil
 
     local miscBar = misc:GetVBar()
     miscBar:SetHideButtons(true)
@@ -11525,9 +11248,6 @@ function Menu.OpenTab.Settings()
     bindsControlsTitle:Dock(TOP)
     bindsControlsTitle:SetSize(0, EFGM.MenuScale(32))
     function bindsControlsTitle:Paint(w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
 
         draw.SimpleTextOutlined("KEYBINDS", "PuristaBold32", w / 2, 0, Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
@@ -11901,9 +11621,6 @@ function Menu.OpenTab.Settings()
     gmodControlsTitle:Dock(TOP)
     gmodControlsTitle:SetSize(0, EFGM.MenuScale(54))
     function gmodControlsTitle:Paint(w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
 
         draw.SimpleTextOutlined("GARRY'S MOD KEYBINDS", "PuristaBold32", w / 2, 0, Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
         draw.SimpleTextOutlined("[MUST BE CHANGED IN YOUR GAME OPTIONS]", "PuristaBold18", w / 2, EFGM.MenuScale(30), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
@@ -12484,12 +12201,7 @@ function Menu.OpenTab.Tasks()
     contents:Dock(FILL)
     contents:DockPadding(EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10), EFGM.MenuScale(10))
     contents:SetAlpha(0)
-    contents.Paint = function(s, w, h)
-
-        surface.SetDrawColor(Colors.transparent)
-        surface.DrawRect(0, 0, w, h)
-
-    end
+    contents.Paint = nil
 
     -- Task List
 

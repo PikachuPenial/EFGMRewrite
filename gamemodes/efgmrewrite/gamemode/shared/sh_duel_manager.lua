@@ -255,7 +255,7 @@ if SERVER then
 
     function ReinstantiateInventoryForDuel(ply)
 
-        for i = 1, 5 do
+        for i = 1, #table.GetKeys(WEAPONSLOTS) do
 
             if i == WEAPONSLOTS.MELEE.ID then continue end
 
@@ -292,7 +292,7 @@ if SERVER then
 
     function ReinstantiateInventoryAfterDuel(ply)
 
-        for i = 1, 5 do
+        for i = 1, #table.GetKeys(WEAPONSLOTS) do
 
             if i == WEAPONSLOTS.MELEE.ID then continue end
 
@@ -317,7 +317,7 @@ if SERVER then
 
         if !ply:Alive() then return end
 
-        for i = 1, 5 do
+        for i = 1, #table.GetKeys(WEAPONSLOTS) do
 
             for k, v in pairs(ply.weaponSlots[i]) do
 

@@ -292,7 +292,7 @@ function EquipItemFromInventory(itemIndex, equipSlot, primaryPref)
             net.Start("PlayerInventoryEquipItem", false)
                 net.WriteUInt(itemIndex, 16)
                 net.WriteUInt(equipSlot, 4)
-                net.WriteUInt(1, 16)
+                net.WriteUInt(1, 4)
             net.SendToServer()
 
             return true
@@ -304,7 +304,7 @@ function EquipItemFromInventory(itemIndex, equipSlot, primaryPref)
             net.Start("PlayerInventoryEquipItem", false)
                 net.WriteUInt(itemIndex, 16)
                 net.WriteUInt(equipSlot, 4)
-                net.WriteUInt(2, 16)
+                net.WriteUInt(2, 4)
             net.SendToServer()
 
             return true
@@ -322,7 +322,7 @@ function EquipItemFromInventory(itemIndex, equipSlot, primaryPref)
                 net.Start("PlayerInventoryEquipItem", false)
                     net.WriteUInt(itemIndex, 16)
                     net.WriteUInt(equipSlot, 4)
-                    net.WriteUInt(k, 16)
+                    net.WriteUInt(k, 4)
                 net.SendToServer()
 
                 return true
@@ -413,7 +413,7 @@ net.Receive("PlayerInventoryClearFIR", function(len, ply)
 
     end
 
-    for i = 1, 5 do
+    for i = 1, #table.GetKeys(WEAPONSLOTS) do
 
         for k, v in pairs(playerWeaponSlots[i]) do
 

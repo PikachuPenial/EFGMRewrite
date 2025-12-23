@@ -348,7 +348,7 @@ net.Receive("PlayerInventoryEquipItem", function(len, ply)
 
     itemIndex = net.ReadUInt(16)
     equipSlot = net.ReadUInt(4)
-    equipSubSlot = net.ReadUInt(16)
+    equipSubSlot = net.ReadUInt(4)
 
     local item = ply.inventory[itemIndex]
     if item == nil then return end
@@ -445,7 +445,7 @@ function UnequipAll(ply)
 
     if (ply:CompareFaction(false) and ply:CompareStatus(0)) then return end
 
-    for i = 1, 5 do
+    for i = 1, #table.GetKeys(WEAPONSLOTS) do
 
         if i == WEAPONSLOTS.MELEE.ID then continue end
 
@@ -529,7 +529,7 @@ function UnequipAllFirearms(ply)
 
     if (ply:CompareFaction(false) and ply:CompareStatus(0)) then return end
 
-    for i = 1, 5 do
+    for i = 1, #table.GetKeys(WEAPONSLOTS) do
 
         if i == WEAPONSLOTS.MELEE.ID or i == WEAPONSLOTS.UTILITY.ID then continue end
 
@@ -603,7 +603,7 @@ end
 
 function MatchWithEquippedAndUpdate(ply, itemName, attsTbl)
 
-    for i = 1, 5 do
+    for i = 1, #table.GetKeys(WEAPONSLOTS) do
 
         for k, v in pairs(ply.weaponSlots[i]) do
 
@@ -1086,7 +1086,7 @@ function CalculateInventoryWeight(ply)
 
     end
 
-    for i = 1, 5 do
+    for i = 1, #table.GetKeys(WEAPONSLOTS) do
 
         for k, v in pairs(ply.weaponSlots[i]) do
 
@@ -1130,7 +1130,7 @@ function RemoveFIRFromInventory(ply)
 
     end
 
-    for i = 1, 5 do
+    for i = 1, #table.GetKeys(WEAPONSLOTS) do
 
         for k, v in pairs(ply.weaponSlots[i]) do
 
@@ -1275,7 +1275,7 @@ hook.Add("PlayerSpawn", "GiveEquippedItemsOnSpawn", function(ply)
 
     ply.SpawnTimerVManip = CurTime() + 1 -- fuck off
 
-    for i = 1, 5 do
+    for i = 1, #table.GetKeys(WEAPONSLOTS) do
 
         for k, v in pairs(ply.weaponSlots[i]) do
 
