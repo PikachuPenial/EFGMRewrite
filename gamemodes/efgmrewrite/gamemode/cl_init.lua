@@ -43,65 +43,26 @@ end
 
 -- screen scale function, makes my life (penial) easier because i will most definently be doing most if not all of the user interface
 -- all interfaces and fonts are developed on a 1920x1080 monitor
-local efgm_hud_scale = GetConVar("efgm_hud_scale")
+local efgm_hud_scale = GetConVar("efgm_hud_scale"):GetFloat()
+cvars.AddChangeCallback("efgm_hud_scale", function(convar_name, value_old, value_new)
+    efgm_hud_scale = math.Round(tonumber(value_new), 2)
+end)
+
 EFGM.ScreenScale = function(size)
 
-	if ScrW() / ScrH() <= 1.8 then
-
-		if size > 0 then
-
-			return math.max(1, size / 3 * (ScrW() / 640) * efgm_hud_scale:GetFloat())
-
-		else
-
-			return math.min(-1, size / 3 * (ScrW() / 640) * efgm_hud_scale:GetFloat())
-
-		end
-
-	else
-
-		if size > 0 then
-
-			return math.max(1, size / 3 * (ScrH() / 360) * efgm_hud_scale:GetFloat())
-
-		else
-
-			return math.min(-1, size / 3 * (ScrH() / 360) * efgm_hud_scale:GetFloat())
-
-		end
-
-	end
+	local ratio = (ScrW() / ScrH() <= 1.8) and (ScrW() / 640) or (ScrH() / 360)
+	local scaled = size / 3 * ratio * efgm_hud_scale
+	return size > 0 and math.max(1, scaled) or math.min(-1, scaled)
 
 end
 
 -- i can't be asked to support player controlled menu scaling, way too problematic, so we will seperate the HUDs scale and the menus scale
 EFGM.MenuScale = function(size)
 
-	if ScrW() / ScrH() <= 1.8 then
-
-		if size > 0 then
-
-			return math.max(1, size / 3 * (ScrW() / 640))
-
-		else
-
-			return math.min(-1, size / 3 * (ScrW() / 640))
-
-		end
-
-	else
-
-		if size > 0 then
-
-			return math.max(1, size / 3 * (ScrH() / 360))
-
-		else
-
-			return math.min(-1, size / 3 * (ScrH() / 360))
-
-		end
-
-	end
+	local ratio = (ScrW() / ScrH() <= 1.8) and (ScrW() / 640) or (ScrH() / 360)
+	local scaled = size / 3 * ratio
+	print(size > 0 and math.max(1, scaled) or math.min(-1, scaled))
+	return size > 0 and math.max(1, scaled) or math.min(-1, scaled)
 
 end
 

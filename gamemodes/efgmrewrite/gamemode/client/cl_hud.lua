@@ -1722,8 +1722,8 @@ function CreateNotification(text, icon, snd)
     notif:MoveTo(ScrW() / 2 - (tw / 2), ScrH() - EFGM.ScreenScale(40), 0.25, 0.1, 1, nil)
     notif:AlphaTo(255, 0.3, 0.1, nil)
 
-    notif:AlphaTo(0, 0.2, 4, nil)
-    notif:MoveTo(ScrW() / 2 - (tw / 2), ScrH(), 0.25, 4, 1, function() notif:Remove() end)
+    notif:AlphaTo(0, 0.2, 4, function() notif:Remove() end)
+    notif:MoveTo(ScrW() / 2 - (tw / 2), ScrH(), 0.25, 4, 1, nil)
 
     notif:MoveToFront()
 
