@@ -1327,7 +1327,7 @@ net.Receive("CreateDeathInformation", function()
 
             if yDiff > xDiff and mapSizeX > mapSizeY then minZoom = math.min(xDiff, yDiff) end
 
-            local map = vgui.Create("EFGM_Map", MapHolder)
+            local map = vgui.Create("EFGMMap", MapHolder)
             map:SetSize(mapSizeX, mapSizeY)
             map:SetMouseInputEnabled(true)
             map:SetCursor("crosshair")
@@ -1678,7 +1678,7 @@ net.Receive("CreateExtractionInformation", function()
 
         if yDiff > xDiff and mapSizeX > mapSizeY then minZoom = math.min(xDiff, yDiff) end
 
-        local map = vgui.Create("EFGM_Map", MapHolder)
+        local map = vgui.Create("EFGMMap", MapHolder)
         map:SetSize(mapSizeX, mapSizeY)
         map:SetMouseInputEnabled(true)
         map:SetCursor("crosshair")
@@ -1875,7 +1875,9 @@ function HUDInspectItem(item, data, panel)
 
         firIcon.OnCursorEntered = function(s)
 
-            x, y = Menu.MouseX, Menu.MouseY
+            local x, y = Menu.MouseX, Menu.MouseY
+            local sideH, sideV
+
             surface.PlaySound("ui/element_hover_" .. math.random(1, 3) .. ".wav")
 
             if x <= (ScrW() / 2) then sideH = true else sideH = false end

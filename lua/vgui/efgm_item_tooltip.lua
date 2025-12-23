@@ -1,4 +1,3 @@
-
 local PANEL = {}
 
 function PANEL:Init()
@@ -23,21 +22,21 @@ end
 
 function PANEL:PositionTooltip()
 
-	if (!IsValid(self.TargetPanel)) then
-		self:Close()
-		return
-	end
+    if (!IsValid(self.TargetPanel)) then
+        self:Close()
+        return
+    end
 
-	self:InvalidateLayout(true)
+    self:InvalidateLayout(true)
 
-	local x, y = input.GetCursorPos()
-	local w, h = self:GetSize()
+    local x, y = input.GetCursorPos()
+    local w, h = self:GetSize()
 
-	y = y - h - EFGM.MenuScale(10)
+    y = y - h - EFGM.MenuScale(10)
 
-	if (y < 2) then y = EFGM.MenuScale(2) end
+    if (y < 2) then y = EFGM.MenuScale(2) end
 
-	self:SetPos(math.Clamp(x - w * 0.5, 0, ScrW() - self:GetWide()), math.Clamp(y, 0, ScrH() - self:GetTall()))
+    self:SetPos(math.Clamp(x - w * 0.5, 0, ScrW() - self:GetWide()), math.Clamp(y, 0, ScrH() - self:GetTall()))
 
 end
 
@@ -88,4 +87,4 @@ function PANEL:Close()
 
 end
 
-vgui.Register("EFGM_ItemTooltip", PANEL, "DTooltip")
+vgui.Register("EFGMItemTooltip", PANEL, "DTooltip")

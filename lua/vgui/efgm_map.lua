@@ -1,4 +1,3 @@
-
 local PANEL = {}
 
 PANEL.IsDragging = false
@@ -271,4 +270,4 @@ function PANEL:Paint(w, h)
 
 end
 
-vgui.Register("EFGM_Map", PANEL, "DPanel")
+vgui.Register("EFGMMap", PANEL, "DPanel")
