@@ -1,5 +1,6 @@
-HUD = {}
+hook.Add("InitPostEntity", "LocalPlayer", function() ply = LocalPlayer() end)
 
+HUD = {}
 HUD.InTransition = false
 
 local enabled = GetConVar("efgm_hud_enable"):GetBool()
@@ -7,7 +8,7 @@ cvars.AddChangeCallback("efgm_hud_enable", function(convar_name, value_old, valu
     enabled = tobool(value_new)
 end)
 
-local function RenderRaidTime(ply)
+local function RenderRaidTime()
     -- time logic
     local raidTime = string.FormattedTime(GetGlobalInt("RaidTimeLeft", 0), "%02i:%02i")
     local raidStatus = GetGlobalInt("RaidStatus", 0)
@@ -24,7 +25,7 @@ local function RenderRaidTime(ply)
 end
 
 -- players current weapon and ammo
-local function RenderPlayerWeapon(ply)
+local function RenderPlayerWeapon()
     local wep = ply:GetActiveWeapon()
     if wep == NULL then return end
 
@@ -64,7 +65,7 @@ local blurAmount = 0
 local maxBlur = 4
 local blurSpeed = 2
 local vignetteMaxAlpha = 255
-local function RenderOverlays(ply)
+local function RenderOverlays()
 
     if ply:Health() <= 0 then
 
@@ -107,7 +108,7 @@ local stand3 = Material("stances/stand3.png", "tarkovMaterial")
 local stand4 = Material("stances/stand4.png", "tarkovMaterial")
 local stand5 = Material("stances/stand5.png", "tarkovMaterial")
 local crouch = Material("stances/crouch.png", "tarkovMaterial")
-local function RenderPlayerStance(ply)
+local function RenderPlayerStance()
     -- variables
     local health = ply:Health()
     local maxHealth = ply:GetMaxHealth()
@@ -189,7 +190,7 @@ local function RenderPlayerStance(ply)
 end
 
 -- extracts
-function RenderExtracts(ply)
+function RenderExtracts()
     if IsValid(extracts) then return end
 
     local extractList
@@ -235,7 +236,7 @@ function RenderExtracts(ply)
 end
 
 -- intro
-function RenderRaidIntro(ply)
+function RenderRaidIntro()
     if IsValid(intro) then return end
 
     intro = vgui.Create("DPanel")
@@ -258,7 +259,7 @@ function RenderRaidIntro(ply)
 end
 
 -- compass
-function RenderCompass(ply)
+function RenderCompass()
     -- no need to create the compass panel if it already exists
     if IsValid(compass) then return end
 
@@ -318,7 +319,7 @@ function RenderCompass(ply)
     compass:AlphaTo(0, 1, 4.65, function() compass:Remove() end)
 end
 
-function RenderPlayerInfo(ply, ent)
+function RenderPlayerInfo(ent)
     if !ent:IsPlayer() then return end
     if hook.Run("ShouldDrawTargetID", ent) == false then return end
 
@@ -360,7 +361,7 @@ local function RenderVOIPIndicator()
 end
 
 -- invites
-function RenderInvite(ply)
+function RenderInvite()
     if IsValid(invite) then return end
 
     invite = vgui.Create("DPanel")
@@ -418,7 +419,7 @@ function RenderInvite(ply)
     invite:AlphaTo(0, 0.1, 10, function() invite:Remove() end)
 end
 
-function RenderDuelLoadout(ply)
+function RenderDuelLoadout()
 
     if IsValid(DuelLoadout) then DuelLoadout:Remove() end
 
@@ -539,14 +540,14 @@ function RenderDuelLoadout(ply)
 end
 
 local function DrawHUD()
-    ply = LocalPlayer()
-    if !ply:Alive() then RenderOverlays(ply) return end
+    ply = ply or LocalPlayer()
+    if !ply:Alive() then RenderOverlays() return end
     if !enabled then return end
 
-    RenderRaidTime(ply)
-    RenderPlayerWeapon(ply)
-    RenderPlayerStance(ply)
-    RenderOverlays(ply)
+    RenderRaidTime()
+    RenderPlayerWeapon()
+    RenderPlayerStance()
+    RenderOverlays()
 end
 hook.Add("HUDPaint", "DrawHUD", DrawHUD)
 
@@ -557,7 +558,7 @@ net.Receive("PlayerRaidTransition", function()
         hook.Run("efgm_raid_enter")
 
         timer.Simple(1.5, function()
-            RenderRaidIntro(ply)
+            RenderRaidIntro()
         end)
 
     end
@@ -585,7 +586,7 @@ net.Receive("PlayerRaidTransition", function()
     RaidTransition:AlphaTo(0, 0.35, 1, function() HUD.InTransition = false RaidTransition:Remove() end)
 
     timer.Simple(2.5, function()
-        RenderExtracts(ply)
+        RenderExtracts()
     end)
 
     if Menu.MenuFrame == nil then return end
@@ -607,7 +608,7 @@ net.Receive("PlayerDuelTransition", function()
     if LocalPlayer():GetNWInt("PlayerRaidStatus", 0) == 0 then
 
         timer.Simple(1, function()
-            RenderDuelLoadout(ply)
+            RenderDuelLoadout()
         end)
 
     end
@@ -687,15 +688,13 @@ net.Receive("SendExtractionStatus", function()
 
         ExtractPopup:AlphaTo(255, 0.1, 0, nil)
     else
-        if not IsValid(ExtractPopup) then return end
+        if !IsValid(ExtractPopup) then return end
 
         ExtractPopup:AlphaTo(0, 0.1, 0, function() ExtractPopup:Remove() timer.Remove("TimeToExit") hook.Remove("Think", "TimeToExit") end)
     end
 end)
 
 net.Receive("CreateDeathInformation", function()
-
-    local ply = LocalPlayer()
 
     hook.Run("efgm_raid_exit", false)
 
@@ -1354,8 +1353,6 @@ net.Receive("CreateDeathInformation", function()
 end)
 
 net.Receive("CreateExtractionInformation", function()
-
-    local ply = LocalPlayer()
 
     hook.Run("efgm_raid_exit", true)
 
@@ -2478,7 +2475,7 @@ local adsProg
 local sharpenIntensity = 5
 local sharpenDistance = 1
 hook.Add("RenderScreenspaceEffects", "Vignette", function()
-    if !IsValid(ply) then ply = LocalPlayer() return end
+    ply = ply or LocalPlayer()
     if !ply:Alive() then return end
 
     local weapon = ply:GetActiveWeapon()
@@ -2524,13 +2521,12 @@ local function default_trace()
 end
 
 function DrawTarget()
-    if !IsValid(ply) then ply = LocalPlayer() end
     if !ply:CompareStatus(0) then return false end
 
     local ent = (ply:Alive() and ply:GetEyeTrace() or default_trace()).Entity
 	if !IsValid(ent) then return end
 
-    RenderPlayerInfo(ply, ent)
+    RenderPlayerInfo(ent)
     return true
 end
 hook.Add("HUDDrawTargetID", "HidePlayerInfo", DrawTarget)

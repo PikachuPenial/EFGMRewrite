@@ -41,30 +41,55 @@ if GetConVar("efgm_derivesbox"):GetInt() == 0 then
 
 end
 
+EFGM.ScrW = ScrW()
+EFGM.ScrH = ScrH()
+
 -- screen scale function, makes my life (penial) easier because i will most definently be doing most if not all of the user interface
 -- all interfaces and fonts are developed on a 1920x1080 monitor
+local screenScaleCache = {}
 local efgm_hud_scale = GetConVar("efgm_hud_scale"):GetFloat()
 cvars.AddChangeCallback("efgm_hud_scale", function(convar_name, value_old, value_new)
+	screenScaleCache = {}
     efgm_hud_scale = math.Round(tonumber(value_new), 2)
 end)
 
 EFGM.ScreenScale = function(size)
 
-	local ratio = (ScrW() / ScrH() <= 1.8) and (ScrW() / 640) or (ScrH() / 360)
+	if screenScaleCache[size] then return screenScaleCache[size] end
+
+	local ratio = (EFGM.ScrW / EFGM.ScrH <= 1.8) and (EFGM.ScrW / 640) or (EFGM.ScrH / 360)
 	local scaled = size / 3 * ratio * efgm_hud_scale
-	return size > 0 and math.max(1, scaled) or math.min(-1, scaled)
+	local result = size > 0 and math.max(1, scaled) or math.min(-1, scaled)
+
+	screenScaleCache[size] = result
+	return result
 
 end
 
 -- i can't be asked to support player controlled menu scaling, way too problematic, so we will seperate the HUDs scale and the menus scale
+local menuScaleCache = {}
 EFGM.MenuScale = function(size)
 
-	local ratio = (ScrW() / ScrH() <= 1.8) and (ScrW() / 640) or (ScrH() / 360)
+	if menuScaleCache[size] then return menuScaleCache[size] end
+
+	local ratio = (EFGM.ScrW / EFGM.ScrH <= 1.8) and (EFGM.ScrW / 640) or (EFGM.ScrH / 360)
 	local scaled = size / 3 * ratio
-	print(size > 0 and math.max(1, scaled) or math.min(-1, scaled))
-	return size > 0 and math.max(1, scaled) or math.min(-1, scaled)
+	local result = size > 0 and math.max(1, scaled) or math.min(-1, scaled)
+
+	menuScaleCache[size] = result
+	return result
 
 end
+
+hook.Add("OnScreenSizeChanged", "ClearScalingCache", function()
+
+	EFGM.ScrW = ScrW()
+	EFGM.ScrH = ScrH()
+
+	screenScaleCache = {}
+	menuScaleCache = {}
+
+end)
 
 include("!config.lua")
 

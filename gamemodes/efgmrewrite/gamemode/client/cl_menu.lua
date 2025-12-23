@@ -1952,7 +1952,7 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
     local stashText = "STASH"
     local stashTextSize = surface.GetTextSize(stashText)
 
-    local transactionDestination = (ply:CompareFaction(false) and "stash") or sendTo or Menu.PerferredShopDestination or "stash"
+    local transactionDestination = (Menu.Player:CompareFaction(false) and "stash") or sendTo or Menu.PerferredShopDestination or "stash"
     Menu.PerferredShopDestination = transactionDestination
 
     surface.PlaySound("ui/market_select.wav")
@@ -2027,7 +2027,7 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
 
     end
 
-    if ply:CompareFaction(false) then sendToInventoryBox:SetEnabled(false) end
+    if Menu.Player:CompareFaction(false) then sendToInventoryBox:SetEnabled(false) end
 
     local sendToStashBox = vgui.Create("DCheckBox", confirmPanel)
     sendToStashBox:SetPos(confirmPanel:GetWide() / 2 + EFGM.MenuScale(15), confirmPanelHeight - EFGM.MenuScale(60))
@@ -2053,7 +2053,7 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
 
     function sendToInventoryBox:OnChange(bVal)
 
-        if ply:CompareFaction(false) then return end
+        if Menu.Player:CompareFaction(false) then return end
 
         if (bVal) then
 
@@ -2073,7 +2073,7 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
 
     function sendToStashBox:OnChange(bVal)
 
-        if ply:CompareFaction(false) then
+        if Menu.Player:CompareFaction(false) then
 
             sendToStashBox:SetChecked(true)
             transactionDestination = "stash"
@@ -6823,7 +6823,7 @@ function Menu.OpenTab.Inventory(container)
 
     function playerItemsHolder:PaintOver(w, h)
 
-        if ply:CompareFaction(false) then
+        if Menu.Player:CompareFaction(false) then
 
             surface.SetDrawColor(Colors.whiteBorderColor)
             surface.SetMaterial(Mats.blockedIcon)
@@ -11727,7 +11727,7 @@ function Menu.OpenTab.Tasks()
 
                     if curProgress != maxProgress and objInfo.type == OBJECTIVE.Pay and playerTasks[taskName].status == TASKSTATUS.InProgress and Menu.Player:CompareStatus(0) then
 
-                        local payAmount = math.Clamp(maxProgress - curProgress, 0, LocalPlayer():GetNWInt("Money", 0))
+                        local payAmount = math.Clamp(maxProgress - curProgress, 0, Menu.Player:GetNWInt("Money", 0))
 
                         local payButton = vgui.Create("DButton", objective)
                         payButton:SetSize(EFGM.MenuScale(120), EFGM.MenuScale(25))
@@ -11909,7 +11909,7 @@ concommand.Add("efgm_gamemenu", function(ply, cmd, args)
 
     local tab = args[1] -- tab currently does jack
 
-    if !ply:Alive() then return end
+    if !LocalPlayer():Alive() then return end
     if HUD.InTransition then return end
 
     Menu:Open(tab)
