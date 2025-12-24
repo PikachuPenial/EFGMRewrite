@@ -523,8 +523,8 @@ function SetupPlayerData(ply)
 	SendChunkedNet(ply, inventoryString, "PlayerNetworkInventory")
 	SendChunkedNet(ply, equippedString, "PlayerNetworkEquipped")
 
-	-- task system already networks on its own, change if you want idrc
-	UpdateTasks(ply)
+	local newTasks = TaskGetNewAvailable(ply)
+    TaskAssignFromTable(ply, newTasks)
 
 end
 

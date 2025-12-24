@@ -15,19 +15,6 @@ OBJECTIVE.Pay = 4
 OBJECTIVE.QuestItem = 5
 OBJECTIVE.VisitArea = 6
 
-OBJCONDITION = {}
--- General conditions
-OBJCONDITION.Map = 1
-OBJCONDITION.Area = 2
--- Kill Conditions
-OBJCONDITION.RangeMin = 3
-OBJCONDITION.RangeMax = 4
-OBJCONDITION.Headshot = 5
-OBJCONDITION.Weapon = 6
--- GiveItem Conditions
-OBJCONDITION.Item = 7
-OBJCONDITION.FIR = 8
-
 REWARD = {}
 REWARD.PlayerStat = 1
 REWARD.Item = 2
@@ -71,71 +58,81 @@ SAVEON.TaskComplete = 4
 
     NewObjective = {}
 
-    function NewObjective.Kill(count, mapName, areaName, areaDisplayName, whenToSave)
+    function NewObjective.Kill(count, mapName, areaName, areaDisplayName, weapon, useCategory, minRange, maxRange, reqHeadshot, whenToSave, customObjectiveText)
 
         local obj = {}
 
         obj.type = OBJECTIVE.Kill
         obj.count = count or 1
-        obj.info = mapName
-        obj.subInfo = areaName
-        obj.subInfoDisplay = areaDisplayName
+        obj.mapName = mapName
+        obj.areaName = areaName
+        obj.areaDisplayName = areaDisplayName
+        obj.weapon = weapon
+        obj.useCategory = useCategory
+        obj.minRange = minRange
+        obj.maxRange = maxRange
+        obj.reqHeadshot = reqHeadshot
         obj.whenToSave = whenToSave or SAVEON.Progress
+        obj.customObjectiveText = customObjectiveText
 
         return obj
 
     end
 
-    function NewObjective.Extract(count, mapName, extractName, extractDisplayName, whenToSave)
+    function NewObjective.Extract(count, mapName, extractName, extractDisplayName, whenToSave, customObjectiveText)
 
         local obj = {}
 
         obj.type = OBJECTIVE.Extract
         obj.count = count or 1
-        obj.info = mapName
-        obj.subInfo = extractName
-        obj.subInfoDisplay = extractDisplayName
+        obj.mapName = mapName
+        obj.extractName = extractName
+        obj.extractDisplayName = extractDisplayName
         obj.whenToSave = whenToSave or SAVEON.Progress
+        obj.customObjectiveText = customObjectiveText
 
         return obj
 
     end
 
-    function NewObjective.GiveItem(count, itemName, isFIR)
+    function NewObjective.GiveItem(count, itemName, isFIR, customObjectiveText)
 
         local obj = {}
 
         obj.type = OBJECTIVE.GiveItem
         obj.count = count or 1
-        obj.info = itemName
-        obj.subInfo = isFIR
+        obj.itemName = itemName
+        obj.isFIR = isFIR
         obj.whenToSave = SAVEON.Progress
+        obj.customObjectiveText = customObjectiveText
 
         return obj
 
     end
 
-    function NewObjective.Pay(count)
+    function NewObjective.Pay(count, customObjectiveText)
 
         local obj = {}
 
         obj.type = OBJECTIVE.Pay
         obj.count = count or 1
         obj.whenToSave = SAVEON.Progress
+        obj.customObjectiveText = customObjectiveText
 
         return obj
 
     end
 
-    function NewObjective.QuestItem(itemName, mapName)
+    function NewObjective.QuestItem(itemName, mapName, areaDisplayName, customObjectiveText)
 
         local obj = {}
 
         obj.type = OBJECTIVE.QuestItem
-        obj.count = 1
-        obj.info = mapName
-        obj.subInfo = itemName
+        obj.itemName = itemName
+        obj.mapName = mapName
+        obj.areaDisplayName = areaDisplayName
         obj.whenToSave = SAVEON.Extract
+        obj.customObjectiveText = customObjectiveText
 
         return obj
 
@@ -146,11 +143,11 @@ SAVEON.TaskComplete = 4
         local obj = {}
 
         obj.type = OBJECTIVE.VisitArea
-        obj.count = 1
-        obj.info = mapName
-        obj.subInfo = areaName
-        obj.subInfoDisplay = areaDisplayName
+        obj.mapName = mapName
+        obj.areaName = areaName
+        obj.areaDisplayName = areaDisplayName
         obj.whenToSave = whenToSave or SAVEON.Progress
+        obj.customObjectiveText = customObjectiveText
 
         return obj
 
