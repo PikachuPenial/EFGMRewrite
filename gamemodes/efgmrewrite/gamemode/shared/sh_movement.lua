@@ -448,8 +448,6 @@ local math = math
 local meta = FindMetaTable("Player")
 local metavec = FindMetaTable("Vector")
 
-local SP = game.SinglePlayer()
-
 local DAMPING = 5
 local SPRING_CONSTANT = 80
 
@@ -472,17 +470,17 @@ function metavec:Approach(x, y, z, speed)
 end
 
 local function VBSpringThink()
-	local self = LocalPlayer()
+	local ply = LocalPlayer()
 
-	if !self.VBSpringVelocity or !self.VBSpringAngle then
-		self.VBSpringVelocity = Angle()
-		self.VBSpringAngle = Angle()
+	if !ply.VBSpringVelocity or !ply.VBSpringAngle then
+		ply.VBSpringVelocity = Angle()
+		ply.VBSpringAngle = Angle()
 	end
 
-	local vpa = self.VBSpringAngle
-	local vpv = self.VBSpringVelocity
+	local vpa = ply.VBSpringAngle
+	local vpv = ply.VBSpringVelocity
 
-	if !self.VBSpringDone and lensqr(vpa) + lensqr(vpv) > 0.000001 then
+	if !ply.VBSpringDone and lensqr(vpa) + lensqr(vpv) > 0.000001 then
 		local FT = FrameTime()
 
 		vpa = vpa + (vpv * FT)
@@ -500,10 +498,10 @@ local function VBSpringThink()
 		vpa[2] = math.Clamp(vpa[2], -179.9, 179.9)
 		vpa[3] = math.Clamp(vpa[3], -89.9, 89.9)
 
-		self.VBSpringAngle = vpa
-		self.VBSpringVelocity = vpv
+		ply.VBSpringAngle = vpa
+		ply.VBSpringVelocity = vpv
 	else
-		self.VBSpringDone = true
+		ply.VBSpringDone = true
 	end
 end
 
@@ -650,14 +648,14 @@ hook.Add("CalcViewModelView", "VBCalcViewModelView", function(wep, vm, oldpos, o
 	VBPosCalc:Sub(up * LerpedSway_X * 0.5)
 
 	if (!requestedmove and punchstop) or requestedmove and !GetSighted(wep) then
-		local ang = VBAngCalc + ang
-		SpringMove1[1] = (ang.x - oldang.x + LerpedSway_X) * -0.01
-		SpringMove1[2] = (ang.y - oldang.y + LerpedSway_Y) * 0.1
+		local a = VBAngCalc + ang
+		SpringMove1[1] = (a.x - oldang.x + LerpedSway_X) * -0.01
+		SpringMove1[2] = (a.y - oldang.y + LerpedSway_Y) * 0.1
 		ply:VBSpring(SpringMove1)
 
-		SpringMove2[2] = math.sin(VMTime * 5) * -0.005
+		-- SpringMove2[2] = math.sin(VMTime * 5) * -0.005
 		SpringMove2[3] = math.sin(VMTime * 5) * 0.0075 * (FT * 150)
-		-- ply:VBSpring(SpringMove2)
+		ply:VBSpring(SpringMove2)
 	end
 
 	VBPosCalc:Mul(VBPosWeight)

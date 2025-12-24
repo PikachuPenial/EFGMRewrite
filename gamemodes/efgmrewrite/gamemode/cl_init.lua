@@ -91,6 +91,8 @@ hook.Add("OnScreenSizeChanged", "ClearScalingCache", function()
 
 end)
 
+EFGM.SteamNameCache = {}
+
 include("!config.lua")
 
 for _, v in ipairs(file.Find("gamemodes/efgmrewrite/gamemode/shared/*.lua", "GAME", "nameasc")) do

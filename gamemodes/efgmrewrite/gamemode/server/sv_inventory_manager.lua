@@ -1308,7 +1308,7 @@ end)
 
 if GetConVar("efgm_derivesbox"):GetInt() == 1 then
 
-    function GiveItem(ply, name, type)
+    function GiveItem(ply, name, count)
 
         local data = {}
         local def = EFGMITEMS[name]
@@ -1318,11 +1318,13 @@ if GetConVar("efgm_derivesbox"):GetInt() == 1 then
 
         end
 
-        AddItemToInventory(ply, name, def.equipType, data)
+        data.count = count or 1
+
+        FlowItemToInventory(ply, name, def.equipType, data)
         ReloadInventory(ply)
 
     end
-    concommand.Add("efgm_debug_giveitem", function(ply, cmd, args) GiveItem(ply, args[1]) end)
+    concommand.Add("efgm_debug_giveitem", function(ply, cmd, args) GiveItem(ply, args[1], args[2]) end)
 
     function WipeInventory(ply)
 

@@ -3204,18 +3204,19 @@ function Menu.ReloadInventory()
 
     for k, v in ipairs(playerInventory) do
 
-        local i = EFGMITEMS[v.name]
-        if i == nil then continue end
+        local def = EFGMITEMS[v.name]
+        if def == nil then continue end
 
-        local consumableType = i.consumableType
-        local baseValue = i.value
+        local consumableType = def.consumableType
+        local baseValue = def.value
 
         plyItems[k] = {
             name = v.name,
             id = k,
             data = v.data,
-            value = (consumableType != "heal" and consumableType != "key") and (baseValue * math.min(math.max(v.data.count, 1), i.stackSize))
-            or math.floor(baseValue * (v.data.durability / i.consumableValue))
+            value = (consumableType != "heal" and consumableType != "key") and (baseValue * math.min(math.max(v.data.count, 1), def.stackSize))
+            or math.floor(baseValue * (v.data.durability / def.consumableValue)),
+            def = def
         }
 
         if v.data.att then
@@ -3240,8 +3241,8 @@ function Menu.ReloadInventory()
 
     table.sort(plyItems, function(a, b)
 
-        local a_def = EFGMITEMS[a.name]
-        local b_def = EFGMITEMS[b.name]
+        local a_def = a.def or EFGMITEMS[a.name]
+        local b_def = b.def or EFGMITEMS[b.name]
 
         local a_size = a_def.sizeX * a_def.sizeY
         local b_size = b_def.sizeX * b_def.sizeY
@@ -3281,20 +3282,28 @@ function Menu.ReloadInventory()
     -- inventory item entry
     for k, v in ipairs(plyItems) do
 
-        local i = EFGMITEMS[v.name]
+        local i = v.def or EFGMITEMS[v.name]
         if i == nil then continue end
 
         local ownerName = nil
-        if v.data.owner then steamworks.RequestPlayerInfo(v.data.owner, function(steamName) ownerName = steamName end) end
+        if v.data.owner then
+            ownerName = EFGM.SteamNameCache[v.data.owner]
+            if !ownerName then
+                steamworks.RequestPlayerInfo(v.data.owner, function(steamName) EFGM.SteamNameCache[v.data.owner] = steamName or "" end)
+            end
+        end
 
         if itemSearchText then itemSearch = itemSearchText end
 
-        if itemSearch != "" and itemSearch != nil and
-        !string.find((i.fullName):lower(), itemSearch, 1, true) and
-        !string.find((i.displayName):lower(), itemSearch, 1, true) and
-        !string.find((i.displayType):lower(), itemSearch, 1, true) and
-        !string.find((tostring(v.data.tag) or ""):lower(), itemSearch, 1, true) and
-        !string.find((ownerName or ""):lower(), itemSearch, 1, true) then continue end
+        local searchFor = (itemSearch and itemSearch:lower()) or ""
+
+        if searchFor != "" and
+            !string.find((i.fullName):lower(), searchFor, 1, true) and
+            !string.find((i.displayName):lower(), searchFor, 1, true) and
+            !string.find((i.displayType):lower(), searchFor, 1, true) and
+            !string.find((tostring(v.data.tag) or ""):lower(), searchFor, 1, true) and
+            !string.find((ownerName or ""):lower(), searchFor, 1, true) then continue
+        end
 
         local item = playerItems:Add("DButton")
         item:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
@@ -4886,35 +4895,40 @@ function Menu.ReloadStash(firstReload)
 
     for k, v in ipairs(playerStash) do
 
-        local i = EFGMITEMS[v.name]
-        if i == nil then continue end
+        local def = EFGMITEMS[v.name]
+        if def == nil then continue end
 
-        local consumableType = i.consumableType
-        local baseValue = i.value
+        local baseValue = def.value
+        local isConsumable = (def.consumableType == "heal" or def.consumableType == "key")
+        local count = math.min(math.max(v.data.count or 1, 1), def.stackSize)
+
+        local value
+        if !isConsumable then
+            value = baseValue * count
+        else
+            value = math.floor(baseValue * ((v.data.durability or def.consumableValue) / def.consumableValue))
+        end
 
         plyStashItems[k] = {
             name = v.name,
             id = k,
             data = v.data,
-            value = (consumableType != "heal" and consumableType != "key") and (baseValue * math.min(math.max(v.data.count, 1), i.stackSize))
-            or math.floor(baseValue * (v.data.durability / i.consumableValue))
+            value = value,
+            def = def
         }
 
-        stashValue = stashValue + plyStashItems[k].value
+        stashValue = stashValue + value
 
         if v.data.att then
 
             local atts = GetPrefixedAttachmentListFromCode(v.data.att)
-            if !atts then return end
+            if !atts then continue end
 
             for _, a in ipairs(atts) do
-
                 local att = EFGMITEMS[a]
                 if att == nil then continue end
-
                 plyStashItems[k].value = plyStashItems[k].value + att.value
                 stashValue = stashValue + att.value
-
             end
 
         end
@@ -4925,8 +4939,8 @@ function Menu.ReloadStash(firstReload)
 
     table.sort(plyStashItems, function(a, b)
 
-        local a_def = EFGMITEMS[a.name]
-        local b_def = EFGMITEMS[b.name]
+        local a_def = a.def or EFGMITEMS[a.name]
+        local b_def = b.def or EFGMITEMS[b.name]
 
         local a_pin = a.data.pin or 0
         local b_pin = b.data.pin or 0
@@ -4972,7 +4986,9 @@ function Menu.ReloadStash(firstReload)
 
     surface.SetFont("Purista18")
 
-    local function LoadItem(i, v)
+    local function LoadItem(i, k, v)
+
+        local isConsumable = (i.consumableType == "heal" or i.consumableType == "key")
 
         local item = stashItems:Add("DButton")
         item:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
@@ -5020,7 +5036,7 @@ function Menu.ReloadStash(firstReload)
         local duraSizeY = nil
         local duraFont = nil
 
-        if i.consumableType == "heal" or i.consumableType == "key" then
+        if isConsumable then
 
             duraSize = surface.GetTextSize(i.consumableValue .. "/" .. i.consumableValue)
 
@@ -5035,7 +5051,7 @@ function Menu.ReloadStash(firstReload)
 
             if i.equipType == EQUIPTYPE.Ammunition and i.stackSize > 1 then
                 draw.SimpleTextOutlined(v.data.count, "PuristaBold18", w - EFGM.MenuScale(3), h - EFGM.MenuScale(19), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-            elseif i.consumableType == "heal" or i.consumableType == "key" then
+            elseif isConsumable then
                 draw.SimpleTextOutlined(v.data.durability .. "/" .. i.consumableValue, duraFont, w - EFGM.MenuScale(3), h - duraSizeY, Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
             end
 
@@ -5056,7 +5072,7 @@ function Menu.ReloadStash(firstReload)
                 surface.SetDrawColor(Colors.pureWhiteColor)
                 surface.SetMaterial(Mats.pinIcon)
 
-                if i.equipType == EQUIPTYPE.Ammunition or i.consumableType == "heal" or i.consumableType == "key" then
+                if i.equipType == EQUIPTYPE.Ammunition or isConsumable then
 
                     surface.DrawTexturedRect(w - EFGM.MenuScale(15), h - EFGM.MenuScale(32), EFGM.MenuScale(16), EFGM.MenuScale(16))
 
@@ -5076,7 +5092,7 @@ function Menu.ReloadStash(firstReload)
                 local width, height = EFGM.MenuScale(17), EFGM.MenuScale(17)
 
                 if v.data.pin == 1 then width = width + EFGM.MenuScale(10) end
-                if (i.equipType == EQUIPTYPE.Ammunition and v.data.count > 1) or i.consumableType == "heal" or i.consumableType == "key" then height = height + EFGM.MenuScale(14) end
+                if (i.equipType == EQUIPTYPE.Ammunition and v.data.count > 1) or isConsumable then height = height + EFGM.MenuScale(14) end
 
                 surface.DrawTexturedRect(w - width, h - height, EFGM.MenuScale(14), EFGM.MenuScale(14))
 
@@ -5272,22 +5288,30 @@ function Menu.ReloadStash(firstReload)
     -- stash item entry
     for k, v in ipairs(plyStashItems) do
 
-        local i = EFGMITEMS[v.name]
+        local i = v.def or EFGMITEMS[v.name]
         if i == nil then continue end
 
         local ownerName = nil
-        if v.data.owner then steamworks.RequestPlayerInfo(v.data.owner, function(steamName) ownerName = steamName end) end
+        if v.data.owner then
+            ownerName = EFGM.SteamNameCache[v.data.owner]
+            if !ownerName then
+                steamworks.RequestPlayerInfo(v.data.owner, function(steamName) EFGM.SteamNameCache[v.data.owner] = steamName or "" end)
+            end
+        end
 
         if stashItemSearchText then itemSearch = stashItemSearchText end
 
-        if itemSearch != "" and itemSearch != nil and
-        !string.find((i.fullName):lower(), itemSearch, 1, true) and
-        !string.find((i.displayName):lower(), itemSearch, 1, true) and
-        !string.find((i.displayType):lower(), itemSearch, 1, true) and
-        !string.find((tostring(v.data.tag) or ""):lower(), itemSearch, 1, true) and
-        !string.find((ownerName or ""):lower(), itemSearch, 1, true) then continue end
+        local searchFor = (itemSearch and itemSearch:lower()) or ""
 
-        LoadItem(i, v)
+        if searchFor != "" and
+            !string.find((i.fullName):lower(), itemSearch, 1, true) and
+            !string.find((i.displayName):lower(), itemSearch, 1, true) and
+            !string.find((i.displayType):lower(), itemSearch, 1, true) and
+            !string.find((tostring(v.data.tag) or ""):lower(), itemSearch, 1, true) and
+            !string.find((ownerName or ""):lower(), itemSearch, 1, true) then continue
+        end
+
+        LoadItem(i, k, v)
 
     end
 
@@ -5305,23 +5329,24 @@ function Menu.ReloadMarketStash()
 
     for k, v in ipairs(playerStash) do
 
-        local i = EFGMITEMS[v.name]
-        if i == nil then continue end
+        local def = EFGMITEMS[v.name]
+        if def == nil then continue end
 
-        local consumableType = i.consumableType
-        local consumableValue = i.consumableValue
-        local baseValue = i.value
+        local consumableType = def.consumableType
+        local consumableValue = def.consumableValue
+        local baseValue = def.value
         local isConsumable = consumableType == "heal" or consumableType == "key"
 
         marketPlyStashItems[k] = {
             name = v.name,
             id = k,
             data = v.data,
-            value = !isConsumable and math.floor((baseValue * sellMultiplier) * math.min(math.max(v.data.count, 1), i.stackSize))
-            or math.floor((baseValue * sellMultiplier) * (v.data.durability / consumableValue))
+            value = !isConsumable and math.floor((baseValue * sellMultiplier) * math.min(math.max(v.data.count, 1), def.stackSize))
+            or math.floor((baseValue * sellMultiplier) * (v.data.durability / consumableValue)),
+            def = def
         }
 
-        stashValue = stashValue + (!isConsumable and (baseValue * math.min(math.max(v.data.count, 1), i.stackSize))
+        stashValue = stashValue + (!isConsumable and (baseValue * math.min(math.max(v.data.count, 1), def.stackSize))
         or math.floor(baseValue * (v.data.durability / consumableValue)))
 
         if v.data.att then
@@ -5347,8 +5372,8 @@ function Menu.ReloadMarketStash()
 
     table.sort(marketPlyStashItems, function(a, b)
 
-        local a_def = EFGMITEMS[a.name]
-        local b_def = EFGMITEMS[b.name]
+        local a_def = a.def or EFGMITEMS[a.name]
+        local b_def = b.def or EFGMITEMS[b.name]
 
         local a_pin = a.data.pin or 0
         local b_pin = b.data.pin or 0
@@ -5395,20 +5420,28 @@ function Menu.ReloadMarketStash()
     -- stash item entry
     for k, v in ipairs(marketPlyStashItems) do
 
-        local i = EFGMITEMS[v.name]
+        local i = v.def or EFGMITEMS[v.name]
         if i == nil then continue end
 
         local ownerName = nil
-        if v.data.owner then steamworks.RequestPlayerInfo(v.data.owner, function(steamName) ownerName = steamName end) end
+        if v.data.owner then
+            ownerName = EFGM.SteamNameCache[v.data.owner]
+            if !ownerName then
+                steamworks.RequestPlayerInfo(v.data.owner, function(steamName) EFGM.SteamNameCache[v.data.owner] = steamName or "" end)
+            end
+        end
 
         if marketStashItemSearchText then itemSearch = marketStashItemSearchText end
 
-        if itemSearch != "" and itemSearch != nil and
-        !string.find((i.fullName):lower(), itemSearch, 1, true) and
-        !string.find((i.displayName):lower(), itemSearch, 1, true) and
-        !string.find((i.displayType):lower(), itemSearch, 1, true) and
-        !string.find((tostring(v.data.tag) or ""):lower(), itemSearch, 1, true) and
-        !string.find((ownerName or ""):lower(), itemSearch, 1, true) then continue end
+        local searchFor = (itemSearch and itemSearch:lower()) or ""
+
+        if searchFor != "" and
+            !string.find((i.fullName):lower(), searchFor, 1, true) and
+            !string.find((i.displayName):lower(), searchFor, 1, true) and
+            !string.find((i.displayType):lower(), searchFor, 1, true) and
+            !string.find((tostring(v.data.tag) or ""):lower(), searchFor, 1, true) and
+            !string.find((ownerName or ""):lower(), searchFor, 1, true) then continue
+        end
 
         local itemValue = v.value
 
@@ -5615,18 +5648,19 @@ function Menu.ReloadContainer()
     conItems = {}
     for k, v in ipairs(container.items) do
 
-        local i = EFGMITEMS[v.name]
-        if i == nil then continue end
+        local def = EFGMITEMS[v.name]
+        if def == nil then continue end
 
-        local consumableType = i.consumableType
-        local baseValue = i.value
+        local consumableType = def.consumableType
+        local baseValue = def.value
 
         conItems[k] = {
             name = v.name,
             id = k,
             data = v.data,
-            value = (consumableType != "heal" and consumableType != "key") and (baseValue * math.min(math.max(v.data.count, 1), i.stackSize))
-            or math.floor(baseValue * (v.data.durability / i.consumableValue))
+            value = (consumableType != "heal" and consumableType != "key") and (baseValue * math.min(math.max(v.data.count, 1), def.stackSize))
+            or math.floor(baseValue * (v.data.durability / def.consumableValue)),
+            def = def
         }
 
         if v.data.att then
@@ -5651,8 +5685,8 @@ function Menu.ReloadContainer()
 
     table.sort(conItems, function(a, b)
 
-        local a_def = EFGMITEMS[a.name]
-        local b_def = EFGMITEMS[b.name]
+        local a_def = a.def or EFGMITEMS[a.name]
+        local b_def = b.def or EFGMITEMS[b.name]
 
         local a_size = a_def.sizeX * a_def.sizeY
         local b_size = b_def.sizeX * b_def.sizeY
@@ -5691,7 +5725,7 @@ function Menu.ReloadContainer()
 
     for k, v in ipairs(conItems) do
 
-        local i = EFGMITEMS[v.name]
+        local i = v.def or EFGMITEMS[v.name]
         if i == nil then continue end
 
         local item = containerItems:Add("DButton")
