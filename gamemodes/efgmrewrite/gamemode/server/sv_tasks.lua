@@ -100,17 +100,123 @@ util.AddNetworkString("SendNotification")
 
     function TaskGetAllUnfinishedKillObjectives(ply, mapName, areaName, weapon, range, wasHeadshot)
 
+        local objTable = {}
+
+        for taskName, taskInstance in pairs(ply.tasks) do
+            
+            local taskInfo = EFGMTASKS[taskName]
+
+            for objIndex, obj in ipairs(taskInfo.objectives) do
+
+                -- im geniunely sorry for this
+
+                if obj.type == OBJECTIVE.Kill and
+                obj.mapname == mapName and 
+                    (obj.weapon == nil or 
+                    obj.useCategory == nil and obj.weapon == weapon or 
+                    obj.useCategory != nil and EFGMITEMS[weapon].displayType == weapon) and 
+                (obj.minRange == nil or obj.minRange <= range) and 
+                (obj.maxRange == nil or obj.maxRange >= range) and 
+                (obj.reqHeadshot == nil or wasHeadshot) then
+                    
+                    objTable[taskName] = objTable[taskName] or {}
+                    table.insert(objTable[taskName], objIndex)
+
+                end
+                
+            end
+
+        end
+
+        print(objTable)
+
+        return objTable
+
     end
 
     function TaskGetAllUnfinishedExtractObjectives(ply, mapName, extractName)
+
+        local objTable = {}
+
+        for taskName, taskInstance in pairs(ply.tasks) do
+            
+            local taskInfo = EFGMTASKS[taskName]
+
+            for objIndex, obj in ipairs(taskInfo.objectives) do
+
+                if obj.type == OBJECTIVE.Extract and
+                obj.mapname == mapName and 
+                obj.extractName == extractName then
+                    
+                    objTable[taskName] = objTable[taskName] or {}
+                    table.insert(objTable[taskName], objIndex)
+
+                end
+                
+            end
+
+        end
+
+        print(objTable)
+
+        return objTable
 
     end
 
     function TaskGetAllUnfinishedQuestItemObjectives(ply, itemName)
 
+        local objTable = {}
+
+        for taskName, taskInstance in pairs(ply.tasks) do
+            
+            local taskInfo = EFGMTASKS[taskName]
+
+            for objIndex, obj in ipairs(taskInfo.objectives) do
+
+                if obj.type == OBJECTIVE.QuestItem and
+                obj.itemName == itemName then
+                    
+                    objTable[taskName] = objTable[taskName] or {}
+                    table.insert(objTable[taskName], objIndex)
+
+                end
+                
+            end
+
+        end
+
+        print(objTable)
+
+        return objTable
+
     end
 
     function TaskGetAllUnfinishedVisitAreaObjectives(ply, mapName, areaName)
+
+        local objTable = {}
+
+        for taskName, taskInstance in pairs(ply.tasks) do
+            
+            local taskInfo = EFGMTASKS[taskName]
+
+            for objIndex, obj in ipairs(taskInfo.objectives) do
+
+                if obj.type == OBJECTIVE.VisitArea and
+                obj.mapname == mapName and 
+                obj.areaName == areaName then
+                    
+                    objTable[taskName] = objTable[taskName] or {}
+                    table.insert(objTable[taskName], objIndex)
+
+                end
+                
+            end
+
+        end
+
+        print(objTable)
+
+        return objTable
 
     end
 
