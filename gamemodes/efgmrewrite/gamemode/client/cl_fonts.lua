@@ -43,11 +43,6 @@ end
 
 CreateFonts()
 
--- reload fonts on resolution change
-hook.Add("OnScreenSizeChanged", "ResolutionChange", function()
-    CreateFonts()
-end)
-
 -- reload fonts on hud scale change
 cvars.AddChangeCallback("efgm_hud_scale", function()
     CreateFonts()

@@ -11,9 +11,9 @@ function PANEL:Paint(w, h)
 
     surface.SetDrawColor(Colors.contextBorder)
     surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-    surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+    surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
     surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-    surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+    surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
 end
 

@@ -89,6 +89,8 @@ hook.Add("OnScreenSizeChanged", "ClearScalingCache", function()
 	screenScaleCache = {}
 	menuScaleCache = {}
 
+	CreateFonts()
+
 end)
 
 EFGM.SteamNameCache = {}

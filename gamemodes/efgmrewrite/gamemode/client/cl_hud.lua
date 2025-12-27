@@ -869,9 +869,9 @@ net.Receive("CreateDeathInformation", function()
 
                 surface.SetDrawColor(Color(255, 255, 255, 25))
                 surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-                surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-                surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+                surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
             end
 
@@ -890,9 +890,9 @@ net.Receive("CreateDeathInformation", function()
 
                 surface.SetDrawColor(Color(255, 255, 255, 10))
                 surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-                surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-                surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+                surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
             end
 
@@ -947,9 +947,9 @@ net.Receive("CreateDeathInformation", function()
 
                 surface.SetDrawColor(Color(255, 255, 255, 10))
                 surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-                surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-                surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+                surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
             end
 
@@ -1001,7 +1001,7 @@ net.Receive("CreateDeathInformation", function()
                 draw.SimpleTextOutlined(ply:GetNWInt("Level", 1), "PuristaBold24", EFGM.MenuScale(5), h - EFGM.MenuScale(40), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
                 draw.SimpleTextOutlined(ply:GetNWInt("Level", 1) + 1, "PuristaBold24", w - EFGM.MenuScale(5), h - EFGM.MenuScale(40), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
-                draw.SimpleTextOutlined(ply:GetNWInt("Experience", 0) .. "/" .. ply:GetNWInt("ExperienceToNextLevel", 500), "PuristaBold16", EFGM.MenuScale(30), h - EFGM.MenuScale(33), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ATELIGN_TOP, 1, Colors.blackColor)
+                draw.SimpleTextOutlined(ply:GetNWInt("Experience", 0) .. "/" .. ply:GetNWInt("ExperienceToNextLevel", 500), "PuristaBold16", EFGM.MenuScale(30), h - EFGM.MenuScale(33), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
                 surface.SetDrawColor(30, 30, 30, 125)
                 surface.DrawRect(EFGM.MenuScale(5), h - EFGM.MenuScale(15), EFGM.MenuScale(470), EFGM.MenuScale(10))
@@ -1029,9 +1029,9 @@ net.Receive("CreateDeathInformation", function()
 
                 surface.SetDrawColor(Color(255, 255, 255, 25))
                 surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-                surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-                surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+                surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
             end
 
@@ -1050,9 +1050,9 @@ net.Receive("CreateDeathInformation", function()
 
                 surface.SetDrawColor(Color(255, 255, 255, 10))
                 surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-                surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-                surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+                surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
             end
 
@@ -1224,9 +1224,9 @@ net.Receive("CreateDeathInformation", function()
 
                     surface.SetDrawColor(Color(255, 255, 255, 2))
                     surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-                    surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                    surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
                     surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-                    surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+                    surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
                     surface.SetDrawColor(255, 255, 255, 255)
                     surface.SetMaterial(def.icon)
@@ -1313,9 +1313,9 @@ net.Receive("CreateDeathInformation", function()
 
                 surface.SetDrawColor(Color(255, 255, 255, 25))
                 surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-                surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-                surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+                surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
             end
 
@@ -1484,9 +1484,9 @@ net.Receive("CreateExtractionInformation", function()
 
         surface.SetDrawColor(Color(255, 255, 255, 25))
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
     end
 
@@ -1505,9 +1505,9 @@ net.Receive("CreateExtractionInformation", function()
 
         surface.SetDrawColor(Color(255, 255, 255, 10))
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
     end
 
@@ -1562,9 +1562,9 @@ net.Receive("CreateExtractionInformation", function()
 
         surface.SetDrawColor(Color(255, 255, 255, 10))
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
     end
 
@@ -1616,7 +1616,7 @@ net.Receive("CreateExtractionInformation", function()
         draw.SimpleTextOutlined(ply:GetNWInt("Level", 1), "PuristaBold24", EFGM.MenuScale(5), h - EFGM.MenuScale(40), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
         draw.SimpleTextOutlined(ply:GetNWInt("Level", 1) + 1, "PuristaBold24", w - EFGM.MenuScale(5), h - EFGM.MenuScale(40), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
-        draw.SimpleTextOutlined(ply:GetNWInt("Experience", 0) .. "/" .. ply:GetNWInt("ExperienceToNextLevel", 500), "PuristaBold16", EFGM.MenuScale(30), h - EFGM.MenuScale(33), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ATELIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined(ply:GetNWInt("Experience", 0) .. "/" .. ply:GetNWInt("ExperienceToNextLevel", 500), "PuristaBold16", EFGM.MenuScale(30), h - EFGM.MenuScale(33), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
         surface.SetDrawColor(30, 30, 30, 125)
         surface.DrawRect(EFGM.MenuScale(5), h - EFGM.MenuScale(15), EFGM.MenuScale(470), EFGM.MenuScale(10))
@@ -1662,9 +1662,9 @@ net.Receive("CreateExtractionInformation", function()
 
             surface.SetDrawColor(Color(255, 255, 255, 25))
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+            surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+            surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
         end
 
@@ -1837,9 +1837,9 @@ function HUDInspectItem(item, data, panel)
 
         surface.SetDrawColor(Color(255, 255, 255, 25))
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
         draw.SimpleTextOutlined(itemNameText, "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
         draw.SimpleTextOutlined(itemDescText, "PuristaBold18", EFGM.MenuScale(5), EFGM.MenuScale(25), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
@@ -1933,9 +1933,9 @@ function HUDInspectItem(item, data, panel)
 
                 surface.SetDrawColor(Colors.transparentWhiteColor)
                 surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-                surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-                surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+                surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
                 draw.SimpleTextOutlined("FOUND IN RAID", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
                 draw.SimpleTextOutlined("This item will lose its 'found in raid' status if brought into another raid.", "Purista18", EFGM.MenuScale(5), EFGM.MenuScale(25), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
@@ -1969,9 +1969,9 @@ function HUDInspectItem(item, data, panel)
 
         surface.SetDrawColor(Color(255, 255, 255, 25))
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
     end
 
@@ -2637,9 +2637,9 @@ net.Receive("VoteableMaps", function(len)
 
             surface.SetDrawColor(Color(255, 255, 255, 255))
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+            surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+            surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
             if belmontButton:IsHovered() then draw.SimpleTextOutlined("BELMONT", "PuristaBold64", w / 2, h / 2 - EFGM.MenuScale(32), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor) end
 
@@ -2678,9 +2678,9 @@ net.Receive("VoteableMaps", function(len)
 
             surface.SetDrawColor(Color(255, 255, 255, 255))
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+            surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+            surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
             if concreteButton:IsHovered() then draw.SimpleTextOutlined("CONCRETE", "PuristaBold64", w / 2, h / 2 - EFGM.MenuScale(32), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor) end
 
@@ -2719,9 +2719,9 @@ net.Receive("VoteableMaps", function(len)
 
             surface.SetDrawColor(Color(255, 255, 255, 255))
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+            surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+            surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
             if factoryButton:IsHovered() then draw.SimpleTextOutlined("FACTORY", "PuristaBold64", w / 2, h / 2 - EFGM.MenuScale(32), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor) end
 

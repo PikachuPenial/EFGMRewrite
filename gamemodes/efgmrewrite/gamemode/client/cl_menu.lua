@@ -327,9 +327,9 @@ function Menu:Initialize(openTo, container)
 
             surface.SetDrawColor(Colors.transparentWhiteColor)
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+            surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+            surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
             draw.SimpleTextOutlined("ROUBLES", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
             draw.SimpleTextOutlined("Your primary currency when purchasing goods, using services and trading with other operatives.", "Purista18", EFGM.MenuScale(5), EFGM.MenuScale(25), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
@@ -411,9 +411,9 @@ function Menu:Initialize(openTo, container)
 
             surface.SetDrawColor(Colors.transparentWhiteColor)
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+            surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+            surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
             draw.SimpleTextOutlined("LEVEL", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
             draw.SimpleTextOutlined("Your characters level, what seperates you from better services and reputation.", "Purista18", EFGM.MenuScale(5), EFGM.MenuScale(25), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
@@ -1279,9 +1279,9 @@ function Menu.InspectItem(item, data)
 
         surface.SetDrawColor(Colors.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
         draw.SimpleTextOutlined(itemNameText, "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
         draw.SimpleTextOutlined(itemDescText, "PuristaBold18", EFGM.MenuScale(5), EFGM.MenuScale(25), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
@@ -1375,9 +1375,9 @@ function Menu.InspectItem(item, data)
 
                 surface.SetDrawColor(Colors.transparentWhiteColor)
                 surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-                surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-                surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+                surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
                 draw.SimpleTextOutlined("FOUND IN RAID", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
                 draw.SimpleTextOutlined("This item will lose its 'found in raid' status if brought into another raid.", "Purista18", EFGM.MenuScale(5), EFGM.MenuScale(25), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
@@ -1411,9 +1411,9 @@ function Menu.InspectItem(item, data)
 
         surface.SetDrawColor(Colors.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
     end
 
@@ -1982,9 +1982,9 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
 
         surface.SetDrawColor(Colors.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
         draw.SimpleTextOutlined(confirmText, "PuristaBold24", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
@@ -2312,9 +2312,9 @@ function Menu.ConfirmSell(item, data, key)
 
         surface.SetDrawColor(Colors.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
         draw.SimpleTextOutlined(confirmText, "PuristaBold24", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
@@ -2504,9 +2504,9 @@ function Menu.ConfirmSplit(item, data, key, inv)
 
         surface.SetDrawColor(Colors.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
         draw.SimpleTextOutlined(confirmText, "PuristaBold24", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
@@ -2676,9 +2676,9 @@ function Menu.ConfirmDelete(item, key, inv, eID, eSlot)
 
         surface.SetDrawColor(Colors.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
         draw.SimpleTextOutlined(confirmText, "PuristaBold24", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
@@ -2813,9 +2813,9 @@ function Menu.ConfirmTag(item, key, inv, eID, eSlot)
 
         surface.SetDrawColor(Colors.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
         draw.SimpleTextOutlined(confirmText, "PuristaBold24", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
@@ -3035,9 +3035,9 @@ function Menu.ConfirmPreset(atts, presetName, presetID, closeMenu)
 
         surface.SetDrawColor(Colors.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
         draw.SimpleTextOutlined(confirmText, "PuristaBold24", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
@@ -3328,9 +3328,9 @@ function Menu.ReloadInventory()
 
             if !self:IsHovered() then surface.SetDrawColor(Colors.itemBackgroundColor) else surface.SetDrawColor(Colors.itemBackgroundColorHovered) end
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+            surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+            surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
             surface.SetDrawColor(i.iconColor or Colors.itemColor)
             surface.DrawRect(0, 0, w, h)
@@ -3645,9 +3645,9 @@ function Menu.ReloadSlots()
 
             if !self:IsHovered() then surface.SetDrawColor(Colors.itemBackgroundColor) else surface.SetDrawColor(Colors.itemBackgroundColorHovered) end
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+            surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+            surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
             surface.SetDrawColor(i.iconColor or Colors.itemColor)
             surface.DrawRect(0, 0, w, h)
@@ -3911,9 +3911,9 @@ function Menu.ReloadSlots()
 
             if !self:IsHovered() then surface.SetDrawColor(Colors.itemBackgroundColor) else surface.SetDrawColor(Colors.itemBackgroundColorHovered) end
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+            surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+            surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
             surface.SetDrawColor(i.iconColor or Colors.itemColor)
             surface.DrawRect(0, 0, w, h)
@@ -4178,9 +4178,9 @@ function Menu.ReloadSlots()
 
             if !self:IsHovered() then surface.SetDrawColor(Colors.itemBackgroundColor) else surface.SetDrawColor(Colors.itemBackgroundColorHovered) end
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+            surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+            surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
             surface.SetDrawColor(i.iconColor or Colors.itemColor)
             surface.DrawRect(0, 0, w, h)
@@ -4445,9 +4445,9 @@ function Menu.ReloadSlots()
 
             if !self:IsHovered() then surface.SetDrawColor(Colors.itemBackgroundColor) else surface.SetDrawColor(Colors.itemBackgroundColorHovered) end
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+            surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+            surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
             surface.SetDrawColor(i.iconColor or Colors.itemColor)
             surface.DrawRect(0, 0, w, h)
@@ -4665,9 +4665,9 @@ function Menu.ReloadSlots()
 
             if !self:IsHovered() then surface.SetDrawColor(Colors.itemBackgroundColor) else surface.SetDrawColor(Colors.itemBackgroundColorHovered) end
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+            surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+            surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
             surface.SetDrawColor(i.iconColor or Colors.itemColor)
             surface.DrawRect(0, 0, w, h)
@@ -5011,9 +5011,9 @@ function Menu.ReloadStash(firstReload)
 
             if !self:IsHovered() then surface.SetDrawColor(Colors.itemBackgroundColor) else surface.SetDrawColor(Colors.itemBackgroundColorHovered) end
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+            surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+            surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
             surface.SetDrawColor(i.iconColor or Colors.itemColor)
             surface.DrawRect(0, 0, w, h)
@@ -5470,9 +5470,9 @@ function Menu.ReloadMarketStash()
             if !self:IsHovered() then surface.SetDrawColor(Colors.itemBackgroundColor) else surface.SetDrawColor(Colors.itemBackgroundColorHovered) end
 
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+            surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+            surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
             surface.SetDrawColor(i.iconColor or Colors.itemColor)
             surface.DrawRect(0, 0, w, h)
@@ -5748,9 +5748,9 @@ function Menu.ReloadContainer()
 
             if !self:IsHovered() then surface.SetDrawColor(Colors.itemBackgroundColor) else surface.SetDrawColor(Colors.itemBackgroundColorHovered) end
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+            surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+            surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
             surface.SetDrawColor(i.iconColor or Colors.itemColor)
             surface.DrawRect(0, 0, w, h)
@@ -6036,9 +6036,9 @@ function Menu.OpenTab.Inventory(container)
 
         surface.SetDrawColor(Colors.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
     end
 
@@ -6077,9 +6077,9 @@ function Menu.OpenTab.Inventory(container)
 
         surface.SetDrawColor(Colors.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
     end
 
@@ -6118,9 +6118,9 @@ function Menu.OpenTab.Inventory(container)
 
         surface.SetDrawColor(Colors.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
     end
 
@@ -6159,9 +6159,9 @@ function Menu.OpenTab.Inventory(container)
 
         surface.SetDrawColor(Colors.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
     end
 
@@ -6200,9 +6200,9 @@ function Menu.OpenTab.Inventory(container)
 
         surface.SetDrawColor(Colors.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
     end
 
@@ -6344,9 +6344,9 @@ function Menu.OpenTab.Inventory(container)
 
         surface.SetDrawColor(Colors.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
         draw.SimpleTextOutlined(Menu.Player:Health() or "0", "PuristaBold50", w - EFGM.MenuScale(8), EFGM.MenuScale(0), Colors.healthGreenColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
@@ -6554,7 +6554,7 @@ function Menu.OpenTab.Inventory(container)
         surface.DrawRect(EFGM.MenuScale(30), EFGM.MenuScale(7), EFGM.MenuScale(180), EFGM.MenuScale(1))
         surface.DrawRect(EFGM.MenuScale(30), EFGM.MenuScale(23), EFGM.MenuScale(180), EFGM.MenuScale(1))
         surface.DrawRect(EFGM.MenuScale(30), EFGM.MenuScale(7), EFGM.MenuScale(1), EFGM.MenuScale(16))
-        surface.DrawRect(EFGM.MenuScale(210) - EFGM.MenuScale(1), EFGM.MenuScale(7), EFGM.MenuScale(1), EFGM.MenuScale(16))
+        surface.DrawRect(EFGM.MenuScale(210) - 1, EFGM.MenuScale(7), EFGM.MenuScale(1), EFGM.MenuScale(16))
 
     end
 
@@ -6633,9 +6633,9 @@ function Menu.OpenTab.Inventory(container)
 
             surface.SetDrawColor(Colors.transparentWhiteColor)
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+            surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+            surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
             draw.SimpleTextOutlined("WEIGHT", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
             draw.SimpleTextOutlined("Your carry weight can begin to negatively affect your character if it goes unchecked.", "Purista18", EFGM.MenuScale(5), EFGM.MenuScale(25), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
@@ -6841,9 +6841,9 @@ function Menu.OpenTab.Inventory(container)
 
         surface.SetDrawColor(Colors.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
     end
 
@@ -6966,9 +6966,9 @@ function Menu.OpenTab.Inventory(container)
 
             surface.SetDrawColor(Colors.whiteBorderColor)
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+            surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+            surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
         end
 
@@ -7200,9 +7200,9 @@ function Menu.OpenTab.Inventory(container)
 
         surface.SetDrawColor(Colors.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
     end
 
@@ -7443,9 +7443,9 @@ function Menu.OpenTab.Market()
 
         surface.SetDrawColor(Colors.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
     end
 
@@ -7581,9 +7581,9 @@ function Menu.OpenTab.Market()
 
         surface.SetDrawColor(Colors.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
     end
 
@@ -7601,7 +7601,7 @@ function Menu.OpenTab.Market()
         surface.DrawRect(0, 0, w, h)
 
         surface.SetDrawColor(Colors.whiteBorderColor)
-        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - 1, 0, 1, h)
 
     end
 
@@ -7834,9 +7834,9 @@ function Menu.OpenTab.Market()
                     if !self:IsHovered() then surface.SetDrawColor(Colors.itemBackgroundColor) else surface.SetDrawColor(Colors.itemBackgroundColorHovered) end
 
                     surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-                    surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                    surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
                     surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-                    surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+                    surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
                     surface.SetDrawColor(Colors.pureWhiteColor)
                     surface.SetMaterial(v.icon)
@@ -8731,9 +8731,9 @@ function Menu.OpenTab.Match()
 
         surface.SetDrawColor(Colors.pureWhiteColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
     end
 
@@ -8782,9 +8782,9 @@ function Menu.OpenTab.Match()
 
         surface.SetDrawColor(Colors.whiteBorderColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
         draw.SimpleTextOutlined(mapNameText, "PuristaBold50", w / 2, EFGM.MenuScale(-5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
@@ -9118,9 +9118,9 @@ function Menu.OpenTab.Match()
 
                         surface.SetDrawColor(Colors.transparentWhiteColor)
                         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-                        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                        surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
                         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-                        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+                        surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
                         draw.SimpleTextOutlined("MEMBERS", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
@@ -9453,9 +9453,9 @@ function Menu.OpenTab.Match()
 
                             surface.SetDrawColor(Colors.transparentWhiteColor)
                             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-                            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                            surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
                             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-                            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+                            surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
                             draw.SimpleTextOutlined(text, "Purista18", EFGM.MenuScale(5), EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
@@ -9548,9 +9548,9 @@ function Menu.OpenTab.Match()
 
                             surface.SetDrawColor(Colors.transparentWhiteColor)
                             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-                            surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                            surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
                             surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-                            surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+                            surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
                             draw.SimpleTextOutlined(text, "Purista18", EFGM.MenuScale(5), EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
@@ -9589,9 +9589,9 @@ function Menu.OpenTab.Match()
                 surface.DrawRect(0, 0, w, h)
 
                 surface.SetDrawColor(Colors.transparentWhiteColor)
-                surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-                surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+                surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
             end
 
@@ -10034,9 +10034,9 @@ function Menu.OpenTab.Skills()
 
                 surface.SetDrawColor(Colors.transparentWhiteColor)
                 surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-                surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-                surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+                surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
                 draw.SimpleTextOutlined(string.upper(v1.Name), "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
                 draw.SimpleTextOutlined(string.upper(v1.Category), "Purista18Italic", EFGM.MenuScale(5), EFGM.MenuScale(25), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
@@ -11427,9 +11427,9 @@ function Menu.OpenTab.Tasks()
 
                         surface.SetDrawColor(Colors.whiteBorderColor)
                         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-                        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                        surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
                         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-                        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+                        surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
                         draw.SimpleTextOutlined(string.upper(taskInfo.name), "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(7), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
@@ -11625,9 +11625,9 @@ function Menu.OpenTab.Tasks()
 
                     surface.SetDrawColor(Colors.whiteBorderColor)
                     surface.DrawRect(0, 0, EFGM.MenuScale(200), EFGM.MenuScale(1))
-                    surface.DrawRect(0, EFGM.MenuScale(200) - EFGM.MenuScale(1), EFGM.MenuScale(200), EFGM.MenuScale(1))
+                    surface.DrawRect(0, EFGM.MenuScale(200) - 1, EFGM.MenuScale(200), EFGM.MenuScale(1))
                     surface.DrawRect(0, 0, EFGM.MenuScale(1), EFGM.MenuScale(200))
-                    surface.DrawRect(EFGM.MenuScale(200) - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), EFGM.MenuScale(200))
+                    surface.DrawRect(EFGM.MenuScale(200) - 1, 0, EFGM.MenuScale(1), EFGM.MenuScale(200))
 
                 end
 
@@ -11753,9 +11753,9 @@ function Menu.OpenTab.Tasks()
 
                         surface.SetDrawColor(Colors.whiteBorderColor)
                         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-                        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                        surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
                         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-                        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+                        surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
                     end
 
@@ -11848,9 +11848,9 @@ function Menu.OpenTab.Tasks()
 
                         surface.SetDrawColor(Colors.whiteBorderColor)
                         surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-                        surface.DrawRect(0, h - EFGM.MenuScale(1), w, EFGM.MenuScale(1))
+                        surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
                         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-                        surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+                        surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
                     end
 
