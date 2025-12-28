@@ -57,8 +57,8 @@ EFGM.ScreenScale = function(size)
 
 	if screenScaleCache[size] then return screenScaleCache[size] end
 
-	local ratio = (EFGM.ScrW / EFGM.ScrH <= 1.8) and (EFGM.ScrW / 640) or (EFGM.ScrH / 360)
-	local scaled = size / 3 * ratio * efgm_hud_scale
+	local ratio = (EFGM.ScrW / EFGM.ScrH <= 1.8) and (EFGM.ScrW / 1920.0) or (EFGM.ScrH / 1080.0)
+	local scaled = size * ratio * efgm_hud_scale
 	local result = size > 0 and math.max(1, scaled) or math.min(-1, scaled)
 
 	screenScaleCache[size] = result
@@ -72,8 +72,8 @@ EFGM.MenuScale = function(size)
 
 	if menuScaleCache[size] then return menuScaleCache[size] end
 
-	local ratio = (EFGM.ScrW / EFGM.ScrH <= 1.8) and (EFGM.ScrW / 640) or (EFGM.ScrH / 360)
-	local scaled = size / 3 * ratio
+	local ratio = (EFGM.ScrW / EFGM.ScrH <= 1.8) and (EFGM.ScrW / 1920.0) or (EFGM.ScrH / 1080.0)
+	local scaled = size * ratio
 	local result = size > 0 and math.max(1, scaled) or math.min(-1, scaled)
 
 	menuScaleCache[size] = result

@@ -421,7 +421,7 @@ function Menu:Initialize(openTo, container)
             draw.SimpleTextOutlined(level, "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(50), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
             draw.SimpleTextOutlined(level + 1, "PuristaBold24", w - EFGM.MenuScale(5), EFGM.MenuScale(50), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
-            draw.SimpleTextOutlined(Menu.Player:GetNWInt("Experience", 0) .. "/" .. Menu.Player:GetNWInt("ExperienceToNextLevel", 500), "PuristaBold16", EFGM.MenuScale(30), EFGM.MenuScale(57), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+            draw.SimpleTextOutlined(Menu.Player:GetNWInt("Experience", 0) .. "/" .. Menu.Player:GetNWInt("ExperienceToNextLevel", 500), "PuristaBold16", EFGM.MenuScale(30), EFGM.MenuScale(55.5), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
             surface.SetDrawColor(Colors.transparentWhiteColor)
             surface.DrawRect(EFGM.MenuScale(5), EFGM.MenuScale(75), EFGM.MenuScale(505), EFGM.MenuScale(1))
@@ -1400,7 +1400,7 @@ function Menu.InspectItem(item, data)
 
     local itemPullOutPanel = vgui.Create("DPanel", inspectPanel)
     itemPullOutPanel:SetSize(inspectPanel:GetWide(), inspectPanel:GetTall() - EFGM.MenuScale(75))
-    itemPullOutPanel:SetPos(0, inspectPanel:GetTall() - EFGM.MenuScale(1))
+    itemPullOutPanel:SetPos(0, inspectPanel:GetTall() - 1)
     itemPullOutPanel:SetAlpha(255)
     itemPullOutPanel.Paint = function(s, w, h)
 
@@ -1422,12 +1422,12 @@ function Menu.InspectItem(item, data)
     local infoTextSize = surface.GetTextSize(infoText)
 
     local itemInfoButton = vgui.Create("DButton", inspectPanel)
-    itemInfoButton:SetPos(EFGM.MenuScale(1), itemPullOutPanel:GetY() - EFGM.MenuScale(28))
+    itemInfoButton:SetPos(EFGM.MenuScale(1), itemPullOutPanel:GetY() - EFGM.MenuScale(28) + 1)
     itemInfoButton:SetSize(infoTextSize + EFGM.MenuScale(10), EFGM.MenuScale(28))
     itemInfoButton:SetText("")
     itemInfoButton.Paint = function(s, w, h)
 
-        s:SetY(itemPullOutPanel:GetY() - EFGM.MenuScale(28))
+        s:SetY(itemPullOutPanel:GetY() - EFGM.MenuScale(28) + 1)
 
         surface.SetDrawColor(Colors.containerBackgroundColor)
         surface.DrawRect(0, 0, infoTextSize + EFGM.MenuScale(10), h)
@@ -1444,12 +1444,12 @@ function Menu.InspectItem(item, data)
     local wikiTextSize = surface.GetTextSize(wikiText)
 
     local itemWikiButton = vgui.Create("DButton", inspectPanel)
-    itemWikiButton:SetPos(itemInfoButton:GetWide() + EFGM.MenuScale(1), itemPullOutPanel:GetY() - EFGM.MenuScale(28))
+    itemWikiButton:SetPos(itemInfoButton:GetWide() + EFGM.MenuScale(1), itemPullOutPanel:GetY() - EFGM.MenuScale(28) + 1)
     itemWikiButton:SetSize(wikiTextSize + EFGM.MenuScale(10), EFGM.MenuScale(28))
     itemWikiButton:SetText("")
     itemWikiButton.Paint = function(s, w, h)
 
-        s:SetY(itemPullOutPanel:GetY() - EFGM.MenuScale(28))
+        s:SetY(itemPullOutPanel:GetY() - EFGM.MenuScale(28) + 1)
 
         surface.SetDrawColor(Colors.containerBackgroundColor)
         surface.DrawRect(0, 0, wikiTextSize + EFGM.MenuScale(10), h)
@@ -1866,23 +1866,23 @@ function Menu.InspectItem(item, data)
 
     inspectPanel.OnMousePressed = function(s)
 
-        itemPullOutPanel:MoveTo(0, inspectPanel:GetTall() - EFGM.MenuScale(1), 0.1, 0, 0.3)
+        itemPullOutPanel:MoveTo(0, inspectPanel:GetTall() - 1, 0.1, 0, 0.3)
 
         tab = nil
 
         itemPullOutPanel.content:AlphaTo(0, 0.05, 0, function() end)
 
-        local screenX, screenY = s:LocalToScreen( 0, 0 )
+        local screenX, screenY = s:LocalToScreen(0, 0)
 
-        if ( s.m_bSizable && gui.MouseX() > ( screenX + s:GetWide() - 20 ) && gui.MouseY() > ( screenY + s:GetTall() - 20 ) ) then
-            s.Sizing = { gui.MouseX() - s:GetWide(), gui.MouseY() - s:GetTall() }
-            s:MouseCapture( true )
+        if (s.m_bSizable and gui.MouseX() > (screenX + s:GetWide() - 20) and gui.MouseY() > (screenY + s:GetTall() - 20)) then
+            s.Sizing = {gui.MouseX() - s:GetWide(), gui.MouseY() - s:GetTall()}
+            s:MouseCapture(true)
             return
         end
 
-        if ( s:GetDraggable() && gui.MouseY() < ( screenY + 24 ) ) then
-            s.Dragging = { gui.MouseX() - s.x, gui.MouseY() - s.y }
-            s:MouseCapture( true )
+        if (s:GetDraggable() and gui.MouseY() < (screenY + 24)) then
+            s.Dragging = {gui.MouseX() - s.x, gui.MouseY() - s.y}
+            s:MouseCapture(true)
             return
         end
 
@@ -9252,7 +9252,7 @@ function Menu.OpenTab.Match()
                 surface.SetDrawColor(Colors.transparentWhiteColor)
                 surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-                surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+                surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
                 draw.SimpleTextOutlined(squad, "PuristaBold32", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
                 draw.SimpleTextOutlined(status, "PuristaBold18", w / 2, EFGM.MenuScale(37), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
@@ -9303,7 +9303,7 @@ function Menu.OpenTab.Match()
 
                 surface.SetDrawColor(Colors.transparentWhiteColor)
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-                surface.DrawRect(w - EFGM.MenuScale(1), 0, EFGM.MenuScale(1), h)
+                surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
                 draw.SimpleTextOutlined("MEMBERS", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(0), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
