@@ -469,33 +469,24 @@ function Menu:Initialize(openTo, container)
 
         if GetConVar("efgm_menu_parallax"):GetInt() == 1 then
 
-            Menu.ParallaxX = math.Clamp(((Menu.MouseX / math.Round(EFGM.MenuScale(1920), 1)) - 0.5) * EFGM.MenuScale(20), -10, 10)
-            Menu.ParallaxY = math.Clamp(((Menu.MouseY / math.Round(EFGM.MenuScale(1080), 1)) - 0.5) * EFGM.MenuScale(20), -10, 10)
-
-            if GetConVar("efgm_menu_scalingmethod"):GetInt() == 0 then
-
-                lowerPanel:SetPos(ScrW() / 2 - (EFGM.MenuScale(1880) / 2) + Menu.ParallaxX, 1060 / 2 - (920 / 2) + Menu.ParallaxY)
-
-            else
-
-                lowerPanel:SetPos(ScrW() / 2 - (EFGM.MenuScale(1880) / 2) + Menu.ParallaxX, EFGM.MenuScale(1060) / 2 - (920 / 2) + Menu.ParallaxY)
-
-            end
+            Menu.ParallaxX = math.Clamp(((Menu.MouseX / math.Round(EFGM.MenuScale(1920), 1)) - 0.5) * EFGM.MenuScale(20), EFGM.MenuScale(-10), EFGM.MenuScale(10))
+            Menu.ParallaxY = math.Clamp(((Menu.MouseY / math.Round(EFGM.MenuScale(1080), 1)) - 0.5) * EFGM.MenuScale(20), EFGM.MenuScale(-10), EFGM.MenuScale(10))
 
         else
 
             Menu.ParallaxX = 0
             Menu.ParallaxY = 0
 
-            if GetConVar("efgm_menu_scalingmethod"):GetInt() == 0 then
+        end
 
-                lowerPanel:SetPos(ScrW() / 2 - (EFGM.MenuScale(1880) / 2), 1060 / 2 - (920 / 2))
+        if GetConVar("efgm_menu_scalingmethod"):GetInt() == 0 then
 
-            else
+            -- lowerPanel:SetPos(ScrW() / 2 - (EFGM.MenuScale(1880) / 2) + Menu.ParallaxX, 1060 / 2 - (920 / 2) + Menu.ParallaxY)
+            lowerPanel:SetPos(ScrW() / 2 - (EFGM.MenuScale(1880) / 2) + Menu.ParallaxX, EFGM.MenuScale(70) + Menu.ParallaxY)
 
-                lowerPanel:SetPos(ScrW() / 2 - (EFGM.MenuScale(1880) / 2), EFGM.MenuScale(1060) / 2 - (920 / 2))
+        else
 
-            end
+            lowerPanel:SetPos(ScrW() / 2 - (EFGM.MenuScale(1880) / 2) + Menu.ParallaxX, EFGM.MenuScale(1060) / 2 - (920 / 2) + Menu.ParallaxY)
 
         end
 
