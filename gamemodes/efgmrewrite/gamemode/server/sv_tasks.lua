@@ -130,6 +130,42 @@ util.AddNetworkString("SendNotification")
 
     function TaskProgressObjectivesSpecific(ply, taskName, objIndex, count)
 
+        local taskInfo = EFGMTASKS[taskName]
+
+        if taskInfo == nil then return end
+
+        local objInfo = taskInfo.objectives[objIndex]
+
+        if objInfo == nil then return end
+
+        local canProgress = false
+
+        if objInfo.type == OBJECTIVE.Pay then
+
+            canProgress = TaskCheckCanProgressPay(ply, taskName, objIndex, count)
+
+        elseif objInfo.type == OBJECTIVE.GiveItem then
+
+            canProgress = TaskCheckCanProgressGiveItem(ply, taskName, objIndex, count)
+
+        else return end
+
+        if !canProgress then return end
+
+    end
+
+-- Task Check Can Progress Objective
+
+    function TaskCheckCanProgressPay(ply, objInfo, count)
+
+        return false
+
+    end
+
+    function TaskCheckCanProgressGiveItem(ply, taskName, objIndex, count)
+
+        return false
+
     end
 
 -- Task Temporary Progression Helpers
@@ -152,15 +188,13 @@ util.AddNetworkString("SendNotification")
 
         for objIndex, objInfo in ipairs(taskInfo.objectives) do
 
-            if ply.tasks[taskName].progress[objIndex] < objInfo.count or 1 then return end
+            if ply.tasks[taskName].progress[objIndex] < (objInfo.count or 1) then return end
 
         end
 
         hook.Run("efgm_task_" .. TASKSTATUS.CompletePending, ply, taskName)
 
         ply.tasks[taskName].status = TASKSTATUS.CompletePending
-
-        UpdateTasks(ply)
 
         NotifyTaskPendingComplete(ply, taskInfo.name)
 
@@ -207,7 +241,7 @@ util.AddNetworkString("SendNotification")
 
         NotifyTaskComplete(ply, taskInfo.name)
 
-        UpdateTasks(ply)
+        TaskUpdate(ply)
 
     end
 
@@ -220,6 +254,24 @@ util.AddNetworkString("SendNotification")
         if tasksToAssign == nil then return end
 
         TaskAssignFromTable(ply, tasksToAssign)
+
+        -- removes nonexistent tasks
+
+        for taskName, taskInstance in pairs(ply.tasks) do
+            
+            local taskInfo = EFGMTASKS[taskName]
+
+            if taskInfo == nil then
+                
+                ply.tasks[taskName] = nil
+
+            else
+                
+                TaskCheckComplete(ply, taskName)
+
+            end
+
+        end
 
     end
 
@@ -500,7 +552,11 @@ util.AddNetworkString("SendNotification")
 
         -- logic later
 
-        -- TaskProgressObjective(ply, OBJECTIVE.GiveItem, 1, game.GetMap(), areaName)
+        net.Start("SendNotification", false)
+        net.WriteString("Giving items isn't supported yet lmao")
+        net.WriteString("icons/skills/charisma.png")
+        net.WriteString("extract_failed.wav")
+        net.Send(ply)
 
     end)
 
@@ -509,9 +565,15 @@ util.AddNetworkString("SendNotification")
         local taskName = net.ReadString()
         local amount = net.ReadUInt(32)
 
-        if ply:GetNWInt("Money", 0) < amount then return end
+        -- if ply:GetNWInt("Money", 0) < amount then return end
 
-        TaskProgressObjective(ply, OBJECTIVE.Pay, amount, nil, nil, taskName)
+        -- TaskProgressObjective(ply, OBJECTIVE.Pay, amount, nil, nil, taskName)
+
+        net.Start("SendNotification", false)
+        net.WriteString("Paying rubles to tasks isn't supported yet lmao")
+        net.WriteString("icons/skills/charisma.png")
+        net.WriteString("extract_failed.wav")
+        net.Send(ply)
 
     end)
 
