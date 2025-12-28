@@ -7,7 +7,7 @@ BUTTON.OnClickSound = nil
 function BUTTON:Init()
 
     self:Dock(TOP)
-    self:SetFont("DermaDefault")
+    self:SetFont("PuristaBold16")
     self:SetTall(EFGM.MenuScale(25))
     self.Parent = self:GetParent()
     if self.OnClickSound == nil then self.OnClickSound = "ui/element_select.wav" end

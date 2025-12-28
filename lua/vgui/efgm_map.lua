@@ -129,7 +129,7 @@ function PANEL:Paint(w, h)
 
             surface.SetDrawColor(Colors.mapWhite)
             surface.SetMaterial(Mats.mapSpawn)
-            surface.DrawTexturedRect(posX - 16, posY - 16, 32, 32)
+            surface.DrawTexturedRect(posX - EFGM.MenuScale(16), posY - EFGM.MenuScale(16), EFGM.MenuScale(32), EFGM.MenuScale(32))
 
         end
 
@@ -141,10 +141,10 @@ function PANEL:Paint(w, h)
 
             surface.SetDrawColor(Colors.mapWhite)
             surface.SetMaterial(Mats.mapExtract)
-            surface.DrawTexturedRect(posX - 16, posY - 16, 32, 32)
+            surface.DrawTexturedRect(posX - EFGM.MenuScale(16), posY - EFGM.MenuScale(16), EFGM.MenuScale(32), EFGM.MenuScale(32))
 
             local text = v.name
-            draw.DrawText(text, "PuristaBold16", posX, posY - 36, Colors.mapExtract, TEXT_ALIGN_CENTER)
+            draw.DrawText(text, "PuristaBold16", posX, posY - EFGM.MenuScale(36), Colors.mapExtract, TEXT_ALIGN_CENTER)
 
         end
 
@@ -156,10 +156,10 @@ function PANEL:Paint(w, h)
 
             surface.SetDrawColor(Colors.mapWhite)
             surface.SetMaterial(Mats.mapLocation)
-            surface.DrawTexturedRect(posX - 32, posY - 32, 64, 64)
+            surface.DrawTexturedRect(posX - EFGM.MenuScale(32), posY - EFGM.MenuScale(32), EFGM.MenuScale(64), EFGM.MenuScale(64))
 
-            draw.DrawText( v.name, "PuristaBold16", posX, posY - 48, Colors.mapLocation, TEXT_ALIGN_CENTER)
-            draw.DrawText( "Loot: " .. v.loot .. "/5", "PuristaBold14", posX, posY + 32, Colors.mapLocation, TEXT_ALIGN_CENTER)
+            draw.DrawText( v.name, "PuristaBold16", posX, posY - EFGM.MenuScale(48), Colors.mapLocation, TEXT_ALIGN_CENTER)
+            draw.DrawText( "Loot: " .. v.loot .. "/5", "PuristaBold14", posX, posY + EFGM.MenuScale(32), Colors.mapLocation, TEXT_ALIGN_CENTER)
 
         end
 
@@ -171,9 +171,9 @@ function PANEL:Paint(w, h)
 
             surface.SetDrawColor(Colors.mapWhite)
             surface.SetMaterial(Mats.mapKey)
-            surface.DrawTexturedRect(posX - 16, posY - 16, 32, 32)
+            surface.DrawTexturedRect(posX - EFGM.MenuScale(16), posY - EFGM.MenuScale(16), EFGM.MenuScale(32), EFGM.MenuScale(32))
 
-            draw.DrawText( v.name, "PuristaBold16", posX, posY - 36, Colors.mapKey, TEXT_ALIGN_CENTER )
+            draw.DrawText( v.name, "PuristaBold16", posX, posY - EFGM.MenuScale(36), Colors.mapKey, TEXT_ALIGN_CENTER )
 
         end
 
@@ -234,7 +234,7 @@ function PANEL:Paint(w, h)
 
         surface.SetDrawColor(Colors.mapWhite)
         surface.SetMaterial(Mats.mapOverviewDeath)
-        surface.DrawTexturedRect(posX - 16, posY - 16, 32, 32)
+        surface.DrawTexturedRect(posX - EFGM.MenuScale(16), posY - EFGM.MenuScale(16), EFGM.MenuScale(32), EFGM.MenuScale(32))
 
     else
 
@@ -243,7 +243,7 @@ function PANEL:Paint(w, h)
 
         surface.SetDrawColor(Colors.mapWhite)
         surface.SetMaterial(Mats.mapOverviewExtract)
-        surface.DrawTexturedRect(posX - 16, posY - 16, 32, 32)
+        surface.DrawTexturedRect(posX - EFGM.MenuScale(16), posY - EFGM.MenuScale(16), EFGM.MenuScale(32), EFGM.MenuScale(32))
 
     end
 
@@ -260,13 +260,13 @@ function PANEL:Paint(w, h)
             surface.SetDrawColor(Colors.mapOverviewUnloadedKill)
         end
         surface.SetMaterial(Mats.mapOverviewKill)
-        surface.DrawTexturedRect(posX - 16, posY - 16, 32, 32)
+        surface.DrawTexturedRect(posX - EFGM.MenuScale(16), posY - EFGM.MenuScale(16), EFGM.MenuScale(32), EFGM.MenuScale(32))
 
     end
 
     surface.SetDrawColor(Colors.mapWhite)
     surface.SetMaterial(Mats.mapOverviewSpawn)
-    surface.DrawTexturedRect(startPos.x - 16, startPos.y - 26, 32, 32)
+    surface.DrawTexturedRect(startPos.x - EFGM.MenuScale(16), startPos.y - EFGM.MenuScale(26), EFGM.MenuScale(32), EFGM.MenuScale(32))
 
 end
 
