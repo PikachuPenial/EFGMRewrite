@@ -523,8 +523,8 @@ function SetupPlayerData(ply)
 	SendChunkedNet(ply, inventoryString, "PlayerNetworkInventory")
 	SendChunkedNet(ply, equippedString, "PlayerNetworkEquipped")
 
-	local newTasks = TaskGetNewAvailable(ply)
-    TaskAssignFromTable(ply, newTasks)
+	TaskUpdate(ply)
+
 
 end
 

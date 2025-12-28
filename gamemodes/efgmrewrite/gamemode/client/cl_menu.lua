@@ -11865,8 +11865,10 @@ end
 function GetObjectiveText(obj)
 
     if obj.type == OBJECTIVE.Kill then
-        if obj.info != nil then
-            return "Eliminate PMC's at "..MAPNAMES[obj.info]
+        if obj.areaName != nil then
+            return "Eliminate PMC's across "..MAPNAMES[obj.mapName].." at "..obj.areaDisplayName or obj.areaName
+        elseif obj.mapName != nil then
+            return "Eliminate PMC's across "..MAPNAMES[obj.mapName]
         else
             return "Eliminate PMC's across Garkov"
         end
@@ -11874,20 +11876,20 @@ function GetObjectiveText(obj)
 
 
     if obj.type == OBJECTIVE.Extract then
-        if obj.subInfo != nil then
-            return "Extract from " .. MAPNAMES[obj.info] .. " through " .. obj.subInfoDisplay
-        elseif obj.info != nil then
-            return "Extract from " .. MAPNAMES[obj.info]
+        if obj.extractName != nil then
+            return "Extract from " .. MAPNAMES[obj.mapName] .. " through " .. obj.extractDisplayName or obj.extractName
+        elseif obj.mapName != nil then
+            return "Extract from " .. MAPNAMES[obj.mapName]
         else
-            return "Extract from any map"
+            return "Extract from any location across Garkov"
         end
     end
 
     if obj.type == OBJECTIVE.GiveItem then
-        if obj.subInfo != nil then
-            return "Hand over found in raid " .. EFGMITEMS[obj.info].fullName
+        if obj.isFIR != nil then
+            return "Hand over found in raid " .. EFGMITEMS[obj.itemName].fullName
         else
-            return "Hand over " .. EFGMITEMS[obj.info].fullName
+            return "Hand over " .. EFGMITEMS[obj.itemName].fullName
         end
 
     end
@@ -11901,11 +11903,11 @@ function GetObjectiveText(obj)
     end
 
     if obj.type == OBJECTIVE.QuestItem then
-        return "Retrieve " .. EFGMQUESTITEM[obj.subInfo].name
+        return "Retrieve " .. EFGMQUESTITEM[obj.itemName].name
     end
 
     if obj.type == OBJECTIVE.VisitArea then
-        return "Scout out " .. obj.subInfoDisplay .. " at " .. MAPNAMES[obj.info]
+        return "Scout out " .. obj.areaDisplayName .. " at " .. MAPNAMES[obj.mapName]
     end
 
     return "Counting or not counting OBJECTIVE[" .. obj.type .. "]?"

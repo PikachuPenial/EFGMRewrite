@@ -22,12 +22,42 @@ util.AddNetworkString("SendNotification")
 
 -- Notification functions
 
+    local function NotifyTaskAccept(ply, taskName)
+
+        net.Start("SendNotification", false)
+        net.WriteString("Task " .. taskName .. " accepted!")
+        net.WriteString("icons/task_add_icon.png")
+        net.WriteString("storytask_started.wav")
+        net.Send(ply)
+
+    end
+
+    local function NotifyQuestItemPickup(ply, itemName)
+
+        net.Start("SendNotification", false)
+        net.WriteString(itemName .. " picked up, and will be lost on death!")
+        net.WriteString("icons/inventory_icon.png")
+        net.WriteString("subtaskcomplete.wav")
+        net.Send(ply)
+
+    end
+
     local function NotifyObjectiveComplete(ply, taskName)
 
         net.Start("SendNotification", false)
-        net.WriteString("Objective for " .. EFGMTASKS[taskName].name .. " completed!")
+        net.WriteString("Objective for " .. taskName .. " completed!")
         net.WriteString("icons/task_add_icon.png")
         net.WriteString("subtaskcomplete.wav")
+        net.Send(ply)
+
+    end
+
+    local function NotifyTaskPendingComplete(ply, taskName)
+
+        net.Start("SendNotification", false)
+        net.WriteString("Task " .. taskName .. " finished, completion pending!")
+        net.WriteString("icons/task_finished_icon.png")
+        net.WriteString("taskfinished.wav")
         net.Send(ply)
 
     end
@@ -35,30 +65,70 @@ util.AddNetworkString("SendNotification")
     local function NotifyTaskComplete(ply, taskName)
 
         net.Start("SendNotification", false)
-        net.WriteString("Completed task " .. taskInfo.name .. "!")
+        net.WriteString("Completed task " .. taskName .. "!")
         net.WriteString("icons/task_complete_icon.png")
         net.WriteString("taskcomplete.wav")
         net.Send(ply)
 
     end
 
-    local function NotifyTaskAccept(ply, taskName)
-
-        net.Start("SendNotification", false)
-        net.WriteString("Task " .. EFGMTASKS[taskName].name .. " accepted!")
-        net.WriteString("icons/task_add_icon.png")
-        net.WriteString("storytask_started.wav")
-        net.Send(ply)
-
-    end
-
 -- Task Objective Progression
 
-    function TaskProgressObjectivesFromTable(ply, objTable, amount)
+    function TaskProgressObjectivesFromTable(ply, objTable, count)
+
+        if objTable == nil then return end
+
+        -- objTable[taskName] = {objIndex, objIndex, ...}
+
+        for taskName, taskObjectives in pairs(objTable) do
+
+            local taskInfo = EFGMTASKS[taskName]
+
+            for _, objIndex in ipairs(taskObjectives) do
+
+                local objInfo = taskInfo.objectives[objIndex]
+                
+                if objInfo.whenToSave == SAVEON.Progress then
+                        
+                    if ply.tasks[taskName].progress[objIndex] + count < (objInfo.count or 1) then
+
+                        ply.tasks[taskName].progress[objIndex] = ply.tasks[taskName].progress[objIndex] + count
+
+                    elseif ply.tasks[taskName].progress[objIndex] + count >= (objInfo.count or 1) then
+
+                        ply.tasks[taskName].progress[objIndex] = (objInfo.count or 1)
+
+                        NotifyObjectiveComplete(ply, taskName)
+
+                        TaskCheckComplete(ply, taskName)
+                        
+                    end
+
+                else
+
+                    if ply.tasks[taskName].progress[objIndex] + ply.tasks[taskName].tempProgress[objIndex] + count < (objInfo.count or 1) then
+
+                        ply.tasks[taskName].tempProgress[objIndex] = ply.tasks[taskName].tempProgress[objIndex] + count
+
+                    elseif ply.tasks[taskName].progress[objIndex] + ply.tasks[taskName].tempProgress[objIndex] + count >= (objInfo.count or 1) then
+
+                        ply.tasks[taskName].tempProgress[objIndex] = (objInfo.count or 1) - ply.tasks[taskName].progress[objIndex]
+
+                        if objInfo.type == OBJECTIVE.QuestItem then NotifyQuestItemPickup(ply, EFGMQUESTITEM[objInfo.itemName].name) end
+
+                        TaskCheckComplete(ply, taskName)
+
+                    end
+
+                end
+
+            end
+            
+        end
 
     end
 
-    function TaskProgressObjectivesSpecific(ply, taskName, objIndex, amount)
+    function TaskProgressObjectivesSpecific(ply, taskName, objIndex, count)
 
     end
 
@@ -76,27 +146,148 @@ util.AddNetworkString("SendNotification")
 
     function TaskCheckComplete(ply, taskName)
 
+        local taskInfo = EFGMTASKS[taskName or nil]
+
+        if taskInfo == nil or table.IsEmpty(ply.tasks) or ply.tasks[taskName] == nil or ply.tasks[taskName].status != TASKSTATUS.InProgress then return end
+
+        for objIndex, objInfo in ipairs(taskInfo.objectives) do
+
+            if ply.tasks[taskName].progress[objIndex] < objInfo.count or 1 then return end
+
+        end
+
+        hook.Run("efgm_task_" .. TASKSTATUS.CompletePending, ply, taskName)
+
+        ply.tasks[taskName].status = TASKSTATUS.CompletePending
+
+        UpdateTasks(ply)
+
+        NotifyTaskPendingComplete(ply, taskInfo.name)
+
     end
 
     function TaskDoComplete(ply, taskName)
+
+        ply.tasks[taskName].status = TASKSTATUS.Complete
+
+        taskInfo = EFGMTASKS[taskName]
+
+        for rewardIndex, rewardInfo in ipairs(taskInfo.rewards) do
+
+            if rewardInfo.type == REWARD.PlayerStat and rewardInfo.info == "Experience" then
+
+                local exp = rewardInfo.count
+
+                ply:SetNWInt("Experience", ply:GetNWInt("Experience", 0) + exp)
+
+                local curExp = ply:GetNWInt("Experience")
+                local curLvl = ply:GetNWInt("Level")
+
+                while (curExp >= ply:GetNWInt("ExperienceToNextLevel")) do
+
+                    curExp = curExp - ply:GetNWInt("ExperienceToNextLevel")
+                    ply:SetNWInt("Level", curLvl + 1)
+                    ply:SetNWInt("Experience", curExp)
+
+                    for k, v in ipairs(levelArray) do
+
+                        if (curLvl + 1) == k then ply:SetNWInt("ExperienceToNextLevel", v) end
+
+                    end
+
+                end
+
+            elseif rewardInfo.type == REWARD.PlayerStat then
+
+                ply:SetNWInt(rewardInfo.info, ply:GetNWInt(rewardInfo.info) + rewardInfo.count)
+
+            end
+
+        end
+
+        NotifyTaskComplete(ply, taskInfo.name)
+
+        UpdateTasks(ply)
 
     end
 
 -- Task Assignment and Updating
 
-    function TaskAssignFromTable(ply, taskTable)
+    function TaskUpdate(ply)
+
+        local tasksToAssign = TaskGetNewAvailable(ply)
+
+        if tasksToAssign == nil then return end
+
+        TaskAssignFromTable(ply, tasksToAssign)
+
+    end
+
+    function TaskAssignFromTable(ply, tasksToAssign)
+
+        for k, taskName in ipairs(tasksToAssign) do
+
+            ply.tasks[taskName] = TASK.Instantiate(taskName)
+            
+        end
 
     end
 
     function TaskGetNewAvailable(ply)
 
-        -- return all tasks to assign
+        local tasksToAssign = {}
 
-        return nil
+        for taskName, taskInfo in pairs(EFGMTASKS) do
+
+            if taskInfo.requirements == nil then -- no requirements
+
+                table.insert(tasksToAssign, taskName)
+
+            else
+
+                local doAssignTask = true
+
+                if ply.tasks[taskName] == nil then
+
+                    for reqIndex, reqInfo in ipairs(taskInfo.requirements) do
+
+                        if reqInfo.type == REQUIREMENT.QuestCompletion and (table.IsEmpty(ply.tasks) or ply.tasks[reqInfo.info] == nil or ply.tasks[reqInfo.info].status != TASKSTATUS.Complete) then
+
+                            doAssignTask = false
+
+                        elseif reqInfo.type == REQUIREMENT.PlayerStat and ply:GetNWInt(reqInfo.info, 1) < reqInfo.count then
+
+                            doAssignTask = false
+
+                        end
+
+                    end
+
+                else
+
+                    doAssignTask = false
+
+                end
+
+                if doAssignTask then
+
+                    table.insert(tasksToAssign, taskName)
+
+                end
+
+            end
+
+        end
+
+        if table.IsEmpty(tasksToAssign) then return nil end
+
+        return tasksToAssign
 
     end
 
 -- Task Objective Getters
+
+    -- theres probably a less repetitive way to do this but what even is technical debt anyway
 
     function TaskGetAllUnfinishedKillObjectives(ply, mapName, areaName, weapon, range, wasHeadshot)
 
@@ -104,31 +295,40 @@ util.AddNetworkString("SendNotification")
 
         for taskName, taskInstance in pairs(ply.tasks) do
             
-            local taskInfo = EFGMTASKS[taskName]
+            if taskInstance.status == TASKSTATUS.InProgress then
 
-            for objIndex, obj in ipairs(taskInfo.objectives) do
+                print("task "..taskName.. " in progress")
 
-                -- im geniunely sorry for this
+                local taskInfo = EFGMTASKS[taskName]
 
-                if obj.type == OBJECTIVE.Kill and
-                obj.mapname == mapName and 
-                    (obj.weapon == nil or 
-                    obj.useCategory == nil and obj.weapon == weapon or 
-                    obj.useCategory != nil and EFGMITEMS[weapon].displayType == weapon) and 
-                (obj.minRange == nil or obj.minRange <= range) and 
-                (obj.maxRange == nil or obj.maxRange >= range) and 
-                (obj.reqHeadshot == nil or wasHeadshot) then
+                for objIndex, obj in ipairs(taskInfo.objectives) do
+
+                    -- im geniunely sorry for this
+
+                    if obj.type == OBJECTIVE.Kill and
+                    obj.mapName == mapName and 
+                        (obj.weapon == nil or 
+                        obj.useCategory == nil and obj.weapon == weapon or 
+                        obj.useCategory != nil and EFGMITEMS[weapon].displayType == weapon) and 
+                    (obj.minRange == nil or obj.minRange <= range) and 
+                    (obj.maxRange == nil or obj.maxRange >= range) and 
+                    (obj.reqHeadshot == nil or wasHeadshot) and
+                    (obj.count or 1 > taskInstance.progress[objIndex] + taskInstance.tempProgress[objIndex]) then
+
+                        print("counting objective")
+                        
+                        objTable[taskName] = objTable[taskName] or {}
+                        table.insert(objTable[taskName], objIndex)
+
+                    end
                     
-                    objTable[taskName] = objTable[taskName] or {}
-                    table.insert(objTable[taskName], objIndex)
-
                 end
-                
+
             end
 
         end
 
-        print(objTable)
+        if table.IsEmpty(objTable) then return nil end
 
         return objTable
 
@@ -140,24 +340,33 @@ util.AddNetworkString("SendNotification")
 
         for taskName, taskInstance in pairs(ply.tasks) do
             
-            local taskInfo = EFGMTASKS[taskName]
+            if taskInstance.status == TASKSTATUS.InProgress then
 
-            for objIndex, obj in ipairs(taskInfo.objectives) do
+                print("task "..taskName.. " in progress")
 
-                if obj.type == OBJECTIVE.Extract and
-                obj.mapname == mapName and 
-                obj.extractName == extractName then
+                local taskInfo = EFGMTASKS[taskName]
+
+                for objIndex, obj in ipairs(taskInfo.objectives) do
+
+                    if obj.type == OBJECTIVE.Extract and
+                    obj.mapName == mapName and 
+                    obj.extractName == extractName and
+                    (obj.count or 1 > taskInstance.progress[objIndex] + taskInstance.tempProgress[objIndex]) then
+                        
+                        print("counting objective")
+                        
+                        objTable[taskName] = objTable[taskName] or {}
+                        table.insert(objTable[taskName], objIndex)
+
+                    end
                     
-                    objTable[taskName] = objTable[taskName] or {}
-                    table.insert(objTable[taskName], objIndex)
-
                 end
-                
+
             end
 
         end
 
-        print(objTable)
+        if table.IsEmpty(objTable) then return nil end
 
         return objTable
 
@@ -169,23 +378,32 @@ util.AddNetworkString("SendNotification")
 
         for taskName, taskInstance in pairs(ply.tasks) do
             
-            local taskInfo = EFGMTASKS[taskName]
+            if taskInstance.status == TASKSTATUS.InProgress then
 
-            for objIndex, obj in ipairs(taskInfo.objectives) do
+                print("task "..taskName.. " in progress")
 
-                if obj.type == OBJECTIVE.QuestItem and
-                obj.itemName == itemName then
+                local taskInfo = EFGMTASKS[taskName]
+
+                for objIndex, obj in ipairs(taskInfo.objectives) do
+
+                    if obj.type == OBJECTIVE.QuestItem and
+                    obj.itemName == itemName and
+                    (1 > taskInstance.progress[objIndex] + taskInstance.tempProgress[objIndex]) then
+                        
+                        print("counting objective")
+                        
+                        objTable[taskName] = objTable[taskName] or {}
+                        table.insert(objTable[taskName], objIndex)
+
+                    end
                     
-                    objTable[taskName] = objTable[taskName] or {}
-                    table.insert(objTable[taskName], objIndex)
-
                 end
-                
+
             end
 
         end
 
-        print(objTable)
+        if table.IsEmpty(objTable) then return nil end
 
         return objTable
 
@@ -197,24 +415,33 @@ util.AddNetworkString("SendNotification")
 
         for taskName, taskInstance in pairs(ply.tasks) do
             
-            local taskInfo = EFGMTASKS[taskName]
+            if taskInstance.status == TASKSTATUS.InProgress then
 
-            for objIndex, obj in ipairs(taskInfo.objectives) do
+                print("task "..taskName.. " in progress")
 
-                if obj.type == OBJECTIVE.VisitArea and
-                obj.mapname == mapName and 
-                obj.areaName == areaName then
+                local taskInfo = EFGMTASKS[taskName]
+
+                for objIndex, obj in ipairs(taskInfo.objectives) do
+
+                    if obj.type == OBJECTIVE.VisitArea and
+                    obj.mapName == mapName and 
+                    obj.areaName == areaName and
+                    (1 > taskInstance.progress[objIndex] + taskInstance.tempProgress[objIndex]) then
+                        
+                        print("counting objective")
+                        
+                        objTable[taskName] = objTable[taskName] or {}
+                        table.insert(objTable[taskName], objIndex)
+
+                    end
                     
-                    objTable[taskName] = objTable[taskName] or {}
-                    table.insert(objTable[taskName], objIndex)
-
                 end
-                
+
             end
 
         end
 
-        print(objTable)
+        if table.IsEmpty(objTable) then return nil end
 
         return objTable
 
@@ -244,6 +471,8 @@ util.AddNetworkString("SendNotification")
         TaskProgressObjectivesFromTable(ply, objectivesToProgress, 1)
 
         TaskTempProgressSaveAll(ply, SAVEON.Extract)
+
+        TaskUpdate(ply)
 
     end)
 
@@ -304,7 +533,7 @@ util.AddNetworkString("SendNotification")
 
         if table.IsEmpty(ply.tasks) or ply.tasks[taskName] == nil or ply.tasks[taskName].status != TASKSTATUS.CompletePending then return end
 
-        CompleteTask(ply, taskName)
+        TaskDoComplete(ply, taskName)
 
     end)
 
