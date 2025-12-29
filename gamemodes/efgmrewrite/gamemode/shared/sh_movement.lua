@@ -559,6 +559,7 @@ hook.Add("CalcViewModelView", "VBCalcViewModelView", function(wep, vm, oldpos, o
     if type(wep.GetCustomize) == "function" and wep:GetCustomize() then return end
 
 	local FT = (SP and FrameTime()) or RealFrameTime()
+	local IFTP = (SP or IsFirstTimePredicted())
 
 	pos:Set(oldpos)
 	ang:Set(oldang)
@@ -606,11 +607,13 @@ hook.Add("CalcViewModelView", "VBCalcViewModelView", function(wep, vm, oldpos, o
 	local swayt_x = (sway_x == 0 and 6) or 4
 	local swayt_y = (sway_y == 0 and 6) or 4
 
-    LerpedSway_X = Lerp(FT * swayt_x, LerpedSway_X, sway_x)
-    LerpedSway_Y = Lerp(FT * swayt_y, LerpedSway_Y, sway_y)
-    SpringSway[1] = LerpedSway_X * -0.005
-    SpringSway[2] = LerpedSway_Y * -0.01
-    ply:VBSpring(SpringSway)
+	if IFTP and UCT != UnPredictedCurTime() then
+        LerpedSway_X = Lerp(FT * swayt_x, LerpedSway_X, sway_x)
+        LerpedSway_Y = Lerp(FT * swayt_y, LerpedSway_Y, sway_y)
+        SpringSway[1] = LerpedSway_X * -0.005
+        SpringSway[2] = LerpedSway_Y * -0.01
+        ply:VBSpring(SpringSway)
+	end
 
 	local r = ang:Right()
 	local up = ang:Up()
@@ -627,7 +630,7 @@ hook.Add("CalcViewModelView", "VBCalcViewModelView", function(wep, vm, oldpos, o
 	local sway_tilt = math.Clamp(r:Dot(LocalPlayer():GetVelocity() * 0.015), -10, 10)
 	local swayt_tilt = (sway_tilt == 0 and 12) or 8
 
-	if UCT != UnPredictedCurTime() then
+	if IFTP and UCT != UnPredictedCurTime() then
 		LerpedSway_Tilt = Lerp(FrameTime() * swayt_tilt, LerpedSway_Tilt, sway_tilt)
 		SpringTilt[3] = LerpedSway_Tilt * 0.01
 		ply:VBSpring(SpringTilt)

@@ -18,7 +18,7 @@ EQUIPTYPE.Consumable = 5
 EQUIPTYPE.Attachment = 6
 EQUIPTYPE.Key = 7
 EQUIPTYPE.Barter = 8
-EQUIPTYPE.Barter = 9
+EQUIPTYPE.None = 9
 
 EFGMITEMS = {}
 

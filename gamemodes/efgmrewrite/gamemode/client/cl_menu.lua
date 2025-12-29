@@ -7815,7 +7815,7 @@ function Menu.OpenTab.Market()
 
                 local item = marketItems:Add("DButton")
                 item:SetText("")
-                item:SetSize(EFGM.MenuScale(198), EFGM.MenuScale(216))
+                item:SetSize(EFGM.MenuScale(198.5), EFGM.MenuScale(215.5))
 
                 function item:Paint(w, h)
 
