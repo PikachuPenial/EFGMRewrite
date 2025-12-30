@@ -9659,7 +9659,7 @@ function Menu.OpenTab.Match()
 
             local currentSquadLeaveButton = vgui.Create("DButton", currentSquadLeavePanel)
             currentSquadLeaveButton:SetPos(EFGM.MenuScale(85), EFGM.MenuScale(5))
-            currentSquadLeaveButton:SetSize(EFGM.MenuScale(150), EFGM.MenuScale(25))
+            currentSquadLeaveButton:SetSize(EFGM.MenuScale(175), EFGM.MenuScale(25))
             currentSquadLeaveButton:SetText("")
             currentSquadLeaveButton.Paint = function(s, w, h)
 

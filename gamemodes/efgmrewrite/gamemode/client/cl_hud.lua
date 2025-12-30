@@ -370,7 +370,7 @@ function RenderInvite()
     invite:SetAlpha(0)
     invite:MoveToFront()
 
-    surface.PlaySound("ui/squad_ownership.wav")
+    surface.PlaySound("ui/invite_receive.wav")
 
     local time = CurTime() + 10
     local sentBy = Invites.invitedBy
@@ -606,6 +606,8 @@ end )
 net.Receive("PlayerDuelTransition", function()
 
     if LocalPlayer():GetNWInt("PlayerRaidStatus", 0) == 0 then
+
+        hook.Run("efgm_duel_enter")
 
         timer.Simple(1, function()
             RenderDuelLoadout()

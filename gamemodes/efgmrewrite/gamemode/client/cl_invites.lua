@@ -50,7 +50,7 @@ function InvitePlayerToSquad(ply, invitedPly)
     Invites.lastInviteSentTime = CurTime()
     Invites.lastSquadInviteSentTime = 0
 
-    CreateNotification("Invite Sent!", Mats.inviteSentIcon, "squad_disband.wav")
+    CreateNotification("Invite Sent!", Mats.inviteSentIcon, "ui/squad_disband.wav")
 
     net.Start("PlayerSendInvite")
     net.WriteEntity(invitedPly)
@@ -74,7 +74,7 @@ function InvitePlayerToDuel(ply, invitedPly)
 
     Invites.lastInviteSentTime = CurTime()
 
-    CreateNotification("Invite Sent!", Mats.inviteSentIcon, nil)
+    CreateNotification("Invite Sent!", Mats.inviteSentIcon, "ui/squad_disband.wav")
 
     net.Start("PlayerSendInvite")
     net.WriteEntity(invitedPly)
@@ -153,6 +153,14 @@ function DeclineInvite(ply)
 end
 
 hook.Add("efgm_raid_enter", "RemovePendingInviteIfRaidEnter", function()
+
+    Invites.invitedBy = nil
+    Invites.invitedType = nil
+    Invites.inviteData = nil
+
+end)
+
+hook.Add("efgm_duel_enter", "RemovePendingInviteIfDuelEnter", function()
 
     Invites.invitedBy = nil
     Invites.invitedType = nil

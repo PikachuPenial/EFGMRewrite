@@ -109,12 +109,19 @@ if SERVER then
         local r = net.ReadInt(9)
         local g = net.ReadInt(9)
         local b = net.ReadInt(9)
+        local faction = net.ReadInt(4)
 
-        SQUADS[name] = {OWNER = ply, PASSWORD = password, LIMIT = limit, COLOR = {RED = r, GREEN = g, BLUE = b}, MEMBERS = {ply}}
+        SQUADS[name] = {OWNER = ply, PASSWORD = password, LIMIT = limit, COLOR = {RED = r, GREEN = g, BLUE = b}, FACTION = faction, MEMBERS = {ply}}
 
         ply:SetNW2String("PlayerInSquad", name)
         ply:SetNW2String("TeamChatChannel", name)
         NetworkSquadInfoToClients()
+
+        net.Start("SendNotification", false)
+        net.WriteString("Successfully created squad!")
+        net.WriteString("icons/squad_create_icon.png")
+        net.WriteString("ui/squad_joined.wav")
+        net.Send(ply)
     end)
 
     net.Receive("PlayerJoinSquad", function(len, ply)
@@ -133,7 +140,14 @@ if SERVER then
         NetworkSquadInfoToClients()
 
         for k, v in pairs(SQUADS[squad].MEMBERS) do
-            if v == ply then return end
+            if v == ply then
+                net.Start("SendNotification", false)
+                net.WriteString("Successfully joined squad!")
+                net.WriteString("icons/squad_joined_icon.png")
+                net.WriteString("ui/squad_joined.wav")
+                net.Send(v)
+                return
+            end
 
             net.Start("SendNotification", false)
             net.WriteString(ply:GetName() .. " has joined your squad!")
@@ -166,6 +180,12 @@ if SERVER then
 
         NetworkSquadInfoToClients()
 
+        net.Start("SendNotification", false)
+        net.WriteString("Successfully left squad!")
+        net.WriteString("icons/squad_leave_icon.png")
+        net.WriteString("ui/squad_leave.wav")
+        net.Send(ply)
+
         for k, v in pairs(SQUADS[squad].MEMBERS) do
             net.Start("SendNotification", false)
             net.WriteString(ply:GetName() .. " has left your squad!")
@@ -193,7 +213,7 @@ if SERVER then
                 net.WriteString("icons/squad_owner_icon.png")
                 net.WriteString("ui/squad_ownership.wav")
                 net.Send(v)
-            elseif v != ply then
+            else
                 net.Start("SendNotification", false)
                 net.WriteString("Squad ownership transfered to " .. newOwner .. "!")
                 net.WriteString("icons/squad_owner_icon.png")
@@ -229,6 +249,14 @@ if SERVER then
         end
 
         NetworkSquadInfoToClients()
+
+        for k, v in pairs(SQUADS[squad].MEMBERS) do
+            net.Start("SendNotification", false)
+            net.WriteString(kickedPly .. " has been kicked from your squad!")
+            net.WriteString("icons/squad_kicked_icon.png")
+            net.WriteString("ui/squad_leave.wav")
+            net.Send(v)
+        end
     end)
 
     net.Receive("PlayerDisbandSquad", function(len, ply)
@@ -243,6 +271,12 @@ if SERVER then
             if v != ply then
                 net.Start("SendNotification", false)
                 net.WriteString("Your squad has been disbanded!")
+                net.WriteString("icons/squad_disband_icon.png")
+                net.WriteString("ui/squad_disband.wav")
+                net.Send(v)
+            else
+                net.Start("SendNotification", false)
+                net.WriteString("Successfully disbanded squad!")
                 net.WriteString("icons/squad_disband_icon.png")
                 net.WriteString("ui/squad_disband.wav")
                 net.Send(v)
@@ -293,6 +327,7 @@ if CLIENT then
         local red = math.Clamp(tonumber(args[4] or 255), 0, 255)
         local green = math.Clamp(tonumber(args[5] or 255), 0, 255)
         local blue = math.Clamp(tonumber(args[6] or 255), 0, 255)
+        local faction = (ply:CompareFaction(true) and playerStatus.PMC) or (ply:CompareFaction(false) and playerStatus.SCAV)
 
         net.Start("PlayerCreateSquad")
             net.WriteString(name)
@@ -301,6 +336,7 @@ if CLIENT then
             net.WriteInt(red, 9)
             net.WriteInt(green, 9)
             net.WriteInt(blue, 9)
+            net.WriteInt(faction, 4)
         net.SendToServer()
     end)
 
