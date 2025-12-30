@@ -91,9 +91,20 @@ if SERVER then
             end
         end
 
+        function RAID:GenerateSpawn(status)
+
+            local spawn = GetValidRaidSpawn(status)
+            local allSpawns = spawn.Spawns
+            return allSpawns, spawn.SpawnGroup
+
+        end
+
         function RAID:SpawnPlayers(plys, status, squad)
             if GetGlobalInt("RaidStatus") != raidStatus.ACTIVE then return end
             if #plys > 4 then print("too many fucking people in your team dumbass") return end
+
+            local spawns = {}
+            local spawnGroup = nil
 
             SQUADS[squad] = nil
             NetworkSquadInfoToClients()
@@ -102,12 +113,12 @@ if SERVER then
                 if !v:IsPlayer() then return end
 
                 if !v:CompareStatus(0) and !v:CompareStatus(3) then
-                    local curStatus, spawnGroup = v:GetRaidStatus()
+                    local curStatus, curSpawnGroup = v:GetRaidStatus()
                     print("Player " .. v:GetName() .. " tried to enter the raid with status " .. curStatus .. ", but they're probably fine to join anyway?")
                 end
 
                 if v:CompareStatus(3) then
-                    local curStatus, spawnGroup = v:GetRaidStatus()
+                    local curStatus, curSpawnGroup = v:GetRaidStatus()
                     print("Player " .. v:GetName() .. " tried to enter the raid with status " .. curStatus .. ", this means they are in a duel, this shouldn't be possible at all, let's not let them join!")
                     return
                 end
@@ -127,13 +138,16 @@ if SERVER then
                 end
 
                 timer.Create("Spawn" .. v:SteamID64(), 1, 1, function()
+                    if #spawns == 0 then spawns, spawnGroup = RAID:GenerateSpawn(status) end
+
+                    if #spawns == 0 then print("not enough spawn points for every squad member, this shouldn't be possible") return end
+                    if spawnGroup == nil then print("spawn group not set for chosen spawn, this shouldn't be possible") return end
+
                     v:Freeze(false)
-                    local spawn = GetValidRaidSpawn(v, status)
-                    local allSpawns = spawn.Spawns
-                    v:Teleport(allSpawns[k]:GetPos(), allSpawns[k]:GetAngles(), Vector(0, 0, 0))
+                    v:Teleport(spawns[k]:GetPos(), spawns[k]:GetAngles(), Vector(0, 0, 0))
 
                     local curTime = math.Round(CurTime(), 0) -- once players spawn, we make their team chat channel more specific, this is so others can create squads of the same name and not conflict with anything
-                    v:SetRaidStatus(status, spawn.SpawnGroup or "")
+                    v:SetRaidStatus(status, spawnGroup or "")
                     v:SetNWBool("PlayerIsPMC", true)
                     v:SetNW2String("PlayerInSquad", "nil")
                     v:SetNW2String("TeamChatChannel", squad .. "_" .. curTime)

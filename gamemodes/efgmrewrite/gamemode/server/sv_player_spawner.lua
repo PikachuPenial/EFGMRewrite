@@ -41,7 +41,7 @@ function BetterRandom(haystack) -- this is literally never used ever
 end
 
 -- raid
-function GetValidRaidSpawn(ply, status) -- status: 0 = lobby, 1 = pmc, 2 = scav (assuming 1)
+function GetValidRaidSpawn(status) -- status: 0 = lobby, 1 = pmc, 2 = scav (assuming 1)
 
     if status == 0 then return nil end
 
@@ -62,7 +62,7 @@ function GetValidRaidSpawn(ply, status) -- status: 0 = lobby, 1 = pmc, 2 = scav 
         for i = 0, size do
             local randomSpawn = math.random(#pmcSpawns)
 
-            if (hook.Call("IsSpawnpointSuitable", GAMEMODE, ply, pmcSpawns[randomSpawn], false)) then
+            if (hook.Call("IsSpawnpointSuitable", GAMEMODE, NULL, pmcSpawns[randomSpawn], false)) then
                 return pmcSpawns[randomSpawn]
             end
         end
@@ -87,7 +87,7 @@ function GetValidRaidSpawn(ply, status) -- status: 0 = lobby, 1 = pmc, 2 = scav 
         for i = 0, size do
             local randomSpawn = math.random(#scavSpawns)
 
-            if (hook.Call("IsSpawnpointSuitable", GAMEMODE, ply, scavSpawns[randomSpawn], false)) then
+            if (hook.Call("IsSpawnpointSuitable", GAMEMODE, NULL, scavSpawns[randomSpawn], false)) then
                 return scavSpawns[randomSpawn]
             end
         end
@@ -120,7 +120,7 @@ function GM:PlayerSelectSpawn(ply)
 end
 
 -- on extract (literally just a duplicate of the function above lololol!!1!)
-function GetValidHideoutSpawn(ply)
+function GetValidHideoutSpawn()
 
     local spawns = ents.FindByClass("info_player_start")
     local size = table.Count(spawns)
@@ -128,7 +128,7 @@ function GetValidHideoutSpawn(ply)
     for i = 0, size do
         local randomSpawn = math.random(#spawns)
 
-        if (hook.Call("IsSpawnpointSuitable", GAMEMODE, ply, spawns[randomSpawn], false)) then
+        if (hook.Call("IsSpawnpointSuitable", GAMEMODE, NULL, spawns[randomSpawn], false)) then
             return spawns[randomSpawn]
         end
     end
