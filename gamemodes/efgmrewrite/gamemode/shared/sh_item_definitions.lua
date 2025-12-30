@@ -4002,6 +4002,7 @@ EFGMITEMS = {}
         ["equipSlot"] = WEAPONSLOTS.GRENADE.ID,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
+        ["marketResetLimit"] = 7,
         ["icon"] = Material("items/grenades/f1.png", "smooth"),
 
         ["sizeX"] = 1,
@@ -4055,6 +4056,7 @@ EFGMITEMS = {}
         ["equipSlot"] = WEAPONSLOTS.GRENADE.ID,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
+        ["marketResetLimit"] = 7,
         ["icon"] = Material("items/grenades/m67.png", "smooth"),
 
         ["sizeX"] = 1,
@@ -4108,6 +4110,7 @@ EFGMITEMS = {}
         ["equipSlot"] = WEAPONSLOTS.GRENADE.ID,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
+        ["marketResetLimit"] = 7,
         ["icon"] = Material("items/grenades/rgd5.png", "smooth"),
 
         ["sizeX"] = 1,
@@ -4165,6 +4168,7 @@ EFGMITEMS = {}
         ["equipSlot"] = WEAPONSLOTS.GRENADE.ID,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
+        ["marketResetLimit"] = 7,
         ["icon"] = Material("items/grenades/v40.png", "smooth"),
 
         ["sizeX"] = 1,
@@ -4182,6 +4186,7 @@ EFGMITEMS = {}
         ["equipSlot"] = WEAPONSLOTS.GRENADE.ID,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
+        ["marketResetLimit"] = 7,
         ["icon"] = Material("items/grenades/vog17.png", "smooth"),
 
         ["sizeX"] = 1,
@@ -4199,6 +4204,7 @@ EFGMITEMS = {}
         ["equipSlot"] = WEAPONSLOTS.GRENADE.ID,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
+        ["marketResetLimit"] = 7,
         ["icon"] = Material("items/grenades/vog25.png", "smooth"),
 
         ["sizeX"] = 1,
@@ -4901,13 +4907,12 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
+        ["marketResetLimit"] = 3,
         ["icon"] = Material("items/ammo/40x46.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
-
-        ["canPurchase"] = false
     }
 
     EFGMITEMS["efgm_ammo_40x53"] = {
@@ -4920,13 +4925,12 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
+        ["marketResetLimit"] = 3,
         ["icon"] = Material("items/ammo/40x53.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
-
-        ["canPurchase"] = false
     }
 
     EFGMITEMS["efgm_ammo_725"] = {
@@ -4939,13 +4943,12 @@ EFGMITEMS = {}
         ["equipType"] = EQUIPTYPE.Ammunition,
         ["appearInInventory"] = true,
         ["stackSize"] = 1,
+        ["marketResetLimit"] = 2,
         ["icon"] = Material("items/ammo/725.png", "smooth"),
         ["iconColor"] = ICONCOLORS.Yellow,
 
         ["sizeX"] = 2,
         ["sizeY"] = 1,
-
-        ["canPurchase"] = false
     }
 
     -- flare cartirdges
