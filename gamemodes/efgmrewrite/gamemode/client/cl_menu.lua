@@ -218,49 +218,53 @@ function Menu:Initialize(openTo, container)
 
     self.MenuFrame.TabParentPanel = tabParentPanel
 
-    local roubleIcon = vgui.Create("DImageButton", self.MenuFrame.TabParentPanel)
+    local roubleIcon = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
     roubleIcon:SetPos(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(66) - roublesTextSize, EFGM.MenuScale(2))
     roubleIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
-    roubleIcon:SetImage("icons/rouble_icon.png")
-    roubleIcon:SetDepressImage(false)
+    roubleIcon:SetText("")
+    roubleIcon.Paint = function(s, w, h)
 
-    local levelIcon = vgui.Create("DImageButton", self.MenuFrame.TabParentPanel)
+        s:SetX(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(66) - roublesTextSize)
+        surface.SetDrawColor(Colors.pureWhiteColor)
+        surface.SetMaterial(Mats.roubleIcon)
+        surface.DrawTexturedRect(0, 0, EFGM.MenuScale(36), EFGM.MenuScale(36))
+
+    end
+
+    local levelIcon = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
     levelIcon:SetPos(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(127) - roublesTextSize - levelTextSize, EFGM.MenuScale(2))
     levelIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
-    levelIcon:SetImage("icons/level_icon.png")
-    levelIcon:SetDepressImage(false)
+    levelIcon:SetText("")
+    levelIcon.Paint = function(s, w, h)
 
-    local timeIcon = vgui.Create("DImage", self.MenuFrame.TabParentPanel)
+        s:SetX(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(127) - roublesTextSize - levelTextSize)
+        surface.SetDrawColor(Colors.pureWhiteColor)
+        surface.SetMaterial(Mats.levelIcon)
+        surface.DrawTexturedRect(0, 0, EFGM.MenuScale(36), EFGM.MenuScale(36))
+
+    end
+
+    local timeIcon = vgui.Create("DPanel", self.MenuFrame.TabParentPanel)
     timeIcon:SetPos(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(188) - roublesTextSize - levelTextSize - timeTextSize, EFGM.MenuScale(2))
     timeIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
-    timeIcon:SetImage("icons/time_icon.png")
+    timeIcon.Paint = function(s, w, h)
 
-    local plyCountIcon = vgui.Create("DImage", self.MenuFrame.TabParentPanel)
+        s:SetX(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(188) - roublesTextSize - levelTextSize - timeTextSize)
+        surface.SetDrawColor(Colors.pureWhiteColor)
+        surface.SetMaterial(Mats.timeIcon)
+        surface.DrawTexturedRect(0, 0, EFGM.MenuScale(36), EFGM.MenuScale(36))
+
+    end
+
+    local plyCountIcon = vgui.Create("DPanel", self.MenuFrame.TabParentPanel)
     plyCountIcon:SetPos(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(249) - roublesTextSize - levelTextSize - timeTextSize - plyCountTextSize, EFGM.MenuScale(2))
     plyCountIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
-    plyCountIcon:SetImage("icons/population_icon.png")
+    plyCountIcon.Paint = function(s, w, h)
 
-    roubleIcon.Think = function()
-
-        roubleIcon:SetX(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(66) - roublesTextSize)
-
-    end
-
-    levelIcon.Think = function()
-
-        levelIcon:SetX(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(127) - roublesTextSize - levelTextSize)
-
-    end
-
-    timeIcon.Think = function()
-
-        timeIcon:SetX(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(188) - roublesTextSize - levelTextSize - timeTextSize)
-
-    end
-
-    plyCountIcon.Think = function()
-
-        plyCountIcon:SetX(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(249) - roublesTextSize - levelTextSize - timeTextSize - plyCountTextSize)
+        s:SetX(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(249) - roublesTextSize - levelTextSize - timeTextSize - plyCountTextSize)
+        surface.SetDrawColor(Colors.pureWhiteColor)
+        surface.SetMaterial(Mats.populationIcon)
+        surface.DrawTexturedRect(0, 0, EFGM.MenuScale(36), EFGM.MenuScale(36))
 
     end
 
@@ -519,11 +523,18 @@ function Menu:Initialize(openTo, container)
             statsTab:Dock(LEFT)
             statsTab:SetSize(EFGM.MenuScale(38), 0)
 
-            local statsIcon = vgui.Create("DImageButton", statsTab)
+            local statsIcon = vgui.Create("DButton", statsTab)
             statsIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
             statsIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
-            statsIcon:SetImage("icons/profile_icon.png")
-            statsIcon:SetDepressImage(false)
+            statsIcon:SetText("")
+
+            statsIcon.Paint = function(s, w, h)
+
+                surface.SetDrawColor(Colors.pureWhiteColor)
+                surface.SetMaterial(Mats.profileIcon)
+                surface.DrawTexturedRect(0, 0, EFGM.MenuScale(36), EFGM.MenuScale(36))
+
+            end
 
             local statsBGColor = Colors.transparent
             local statsText = string.upper(Menu.Player:GetName())
@@ -589,11 +600,18 @@ function Menu:Initialize(openTo, container)
             matchTab:Dock(LEFT)
             matchTab:SetSize(EFGM.MenuScale(38), 0)
 
-            local matchIcon = vgui.Create("DImageButton", matchTab)
+            local matchIcon = vgui.Create("DButton", matchTab)
             matchIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
             matchIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
-            matchIcon:SetImage("icons/match_icon.png")
-            matchIcon:SetDepressImage(false)
+            matchIcon:SetText("")
+
+            matchIcon.Paint = function(s, w, h)
+
+                surface.SetDrawColor(Colors.pureWhiteColor)
+                surface.SetMaterial(Mats.matchIcon)
+                surface.DrawTexturedRect(0, 0, EFGM.MenuScale(36), EFGM.MenuScale(36))
+
+            end
 
             local matchBGColor = Colors.transparent
             local matchText = "#menu.tab.match"
@@ -659,11 +677,18 @@ function Menu:Initialize(openTo, container)
             inventoryTab:Dock(LEFT)
             inventoryTab:SetSize(EFGM.MenuScale(38), 0)
 
-            local inventoryIcon = vgui.Create("DImageButton", inventoryTab)
+            local inventoryIcon = vgui.Create("DButton", inventoryTab)
             inventoryIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
             inventoryIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
-            inventoryIcon:SetImage("icons/inventory_icon.png")
-            inventoryIcon:SetDepressImage(false)
+            inventoryIcon:SetText("")
+
+            inventoryIcon.Paint = function(s, w, h)
+
+                surface.SetDrawColor(Colors.pureWhiteColor)
+                surface.SetMaterial(Mats.inventoryIcon)
+                surface.DrawTexturedRect(0, 0, EFGM.MenuScale(36), EFGM.MenuScale(36))
+
+            end
 
             local inventoryBGColor = Colors.transparent
             local inventoryText = "#menu.tab.inventory"
@@ -731,11 +756,18 @@ function Menu:Initialize(openTo, container)
 
             if !Menu.Player:CompareStatus(0) then marketTab:Hide(true) end
 
-            local marketIcon = vgui.Create("DImageButton", marketTab)
+            local marketIcon = vgui.Create("DButton", marketTab)
             marketIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
             marketIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
-            marketIcon:SetImage("icons/market_icon.png")
-            marketIcon:SetDepressImage(false)
+            marketIcon:SetText("")
+
+            marketIcon.Paint = function(s, w, h)
+
+                surface.SetDrawColor(Colors.pureWhiteColor)
+                surface.SetMaterial(Mats.marketIcon)
+                surface.DrawTexturedRect(0, 0, EFGM.MenuScale(36), EFGM.MenuScale(36))
+
+            end
 
             local marketBGColor = Colors.transparent
             local marketText = "#menu.tab.market"
@@ -808,11 +840,18 @@ function Menu:Initialize(openTo, container)
             tasksTab:Dock(LEFT)
             tasksTab:SetSize(EFGM.MenuScale(38), 0)
 
-            local tasksIcon = vgui.Create("DImageButton", tasksTab)
+            local tasksIcon = vgui.Create("DButton", tasksTab)
             tasksIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
             tasksIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
-            tasksIcon:SetImage("icons/tasks_icon.png")
-            tasksIcon:SetDepressImage(false)
+            tasksIcon:SetText("")
+
+            tasksIcon.Paint = function(s, w, h)
+
+                surface.SetDrawColor(Colors.pureWhiteColor)
+                surface.SetMaterial(Mats.tasksIcon)
+                surface.DrawTexturedRect(0, 0, EFGM.MenuScale(36), EFGM.MenuScale(36))
+
+            end
 
             local tasksBGColor = Colors.transparent
             local tasksText = "#menu.tab.tasks"
@@ -881,11 +920,18 @@ function Menu:Initialize(openTo, container)
             skillsTab:SetSize(EFGM.MenuScale(38), 0)
             skillsTab:Hide(true)
 
-            local skillsIcon = vgui.Create("DImageButton", skillsTab)
+            local skillsIcon = vgui.Create("DButton", skillsTab)
             skillsIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
             skillsIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
-            skillsIcon:SetImage("icons/skills_icon.png")
-            skillsIcon:SetDepressImage(false)
+            skillsIcon:SetText("")
+
+            skillsIcon.Paint = function(s, w, h)
+
+                surface.SetDrawColor(Colors.pureWhiteColor)
+                surface.SetMaterial(Mats.skillsIcon)
+                surface.DrawTexturedRect(0, 0, EFGM.MenuScale(36), EFGM.MenuScale(36))
+
+            end
 
             local skillsBGColor = Colors.transparent
             local skillsText = "#menu.tab.skills"
@@ -952,11 +998,18 @@ function Menu:Initialize(openTo, container)
             intelTab:SetSize(EFGM.MenuScale(38), 0)
             intelTab:Hide(true)
 
-            local intelIcon = vgui.Create("DImageButton", intelTab)
+            local intelIcon = vgui.Create("DButton", intelTab)
             intelIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
             intelIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
-            intelIcon:SetImage("icons/intel_icon.png")
-            intelIcon:SetDepressImage(false)
+            intelIcon:SetText("")
+
+            intelIcon.Paint = function(s, w, h)
+
+                surface.SetDrawColor(Colors.pureWhiteColor)
+                surface.SetMaterial(Mats.intelIcon)
+                surface.DrawTexturedRect(0, 0, EFGM.MenuScale(36), EFGM.MenuScale(36))
+
+            end
 
             local intelBGColor = Colors.transparent
             local intelText = "#menu.tab.intel"
@@ -1023,11 +1076,18 @@ function Menu:Initialize(openTo, container)
             achievementsTab:SetSize(EFGM.MenuScale(38), 0)
             achievementsTab:Hide(true)
 
-            local achievementsIcon = vgui.Create("DImageButton", achievementsTab)
+            local achievementsIcon = vgui.Create("DButton", achievementsTab)
             achievementsIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
             achievementsIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
-            achievementsIcon:SetImage("icons/achievement_icon.png")
-            achievementsIcon:SetDepressImage(false)
+            achievementsIcon:SetText("")
+
+            achievementsIcon.Paint = function(s, w, h)
+
+                surface.SetDrawColor(Colors.pureWhiteColor)
+                surface.SetMaterial(Mats.achievementIcon)
+                surface.DrawTexturedRect(0, 0, EFGM.MenuScale(36), EFGM.MenuScale(36))
+
+            end
 
             local achievementsBGColor = Colors.transparent
             local achievementsText = "#menu.tab.achievements"
@@ -1078,27 +1138,24 @@ function Menu:Initialize(openTo, container)
 
             end
 
-            -- local contractsTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
-            -- contractsTab:Dock(LEFT)
-            -- contractsTab:SetSize(surface.GetTextSize("Contracts") + EFGM.MenuScale(50), 0)
-            -- contractsTab:SetText("Contracts")
-
-            -- local unlocksTab = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
-            -- unlocksTab:Dock(LEFT)
-            -- unlocksTab:SetSize(surface.GetTextSize("Unlocks") + EFGM.MenuScale(50), 0)
-            -- unlocksTab:SetText("Unlocks")
-
         -- SETTINGS
 
             local settingsTab = vgui.Create("DPanel", self.MenuFrame.TabParentPanel)
             settingsTab:Dock(LEFT)
             settingsTab:SetSize(EFGM.MenuScale(38), 0)
 
-            local settingsIcon = vgui.Create("DImageButton", settingsTab)
+            local settingsIcon = vgui.Create("DButton", settingsTab)
             settingsIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(2))
             settingsIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
-            settingsIcon:SetImage("icons/settings_icon.png")
-            settingsIcon:SetDepressImage(false)
+            settingsIcon:SetText("")
+
+            settingsIcon.Paint = function(s, w, h)
+
+                surface.SetDrawColor(Colors.pureWhiteColor)
+                surface.SetMaterial(Mats.settingsIcon)
+                surface.DrawTexturedRect(0, 0, EFGM.MenuScale(36), EFGM.MenuScale(36))
+
+            end
 
             local settingsBGColor = Colors.transparent
             local settingsText = "#menu.tab.settings"
@@ -1296,12 +1353,18 @@ function Menu.InspectItem(item, data)
 
     if data.fir then
 
-        local firIcon = vgui.Create("DImageButton", inspectPanel)
+        local firIcon = vgui.Create("DButton", inspectPanel)
         firIcon:SetPos(itemDescSize + EFGM.MenuScale(7), EFGM.MenuScale(29))
         firIcon:SetSize(EFGM.MenuScale(12), EFGM.MenuScale(12))
-        firIcon:SetImage("icons/fir_icon.png")
         firIcon:SetText("")
-        firIcon:SetDepressImage(false)
+
+        firIcon.Paint = function(s, w, h)
+
+            surface.SetDrawColor(Colors.pureWhiteColor)
+            surface.SetMaterial(Mats.firIcon)
+            surface.DrawTexturedRect(0, 0, EFGM.MenuScale(12), EFGM.MenuScale(12))
+
+        end
 
         firIcon.OnCursorEntered = function(s, w, h)
 
@@ -1887,7 +1950,7 @@ function Menu.InspectItem(item, data)
 
         surface.SetDrawColor(Colors.pureWhiteColor)
         surface.SetMaterial(Mats.closeButtonIcon)
-        surface.DrawTexturedRect(EFGM.MenuScale(0), EFGM.MenuScale(0), EFGM.MenuScale(32), EFGM.MenuScale(32))
+        surface.DrawTexturedRect(0, 0, EFGM.MenuScale(32), EFGM.MenuScale(32))
 
     end
 
@@ -3630,7 +3693,6 @@ function Menu.ReloadSlots()
         primaryItem.ORIGIN = "equipped"
 
         primaryWeaponHolder:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
-        primaryWeaponIcon:Hide()
 
         function primaryItem:Paint(w, h)
 
@@ -3875,7 +3937,6 @@ function Menu.ReloadSlots()
     else
 
         primaryWeaponHolder:SetSize(EFGM.MenuScale(285), EFGM.MenuScale(114))
-        primaryWeaponIcon:Show()
         if IsValid(primaryItem) then primaryItem:Remove() end
 
     end
@@ -3896,7 +3957,6 @@ function Menu.ReloadSlots()
         secondaryItem.ORIGIN = "equipped"
 
         secondaryWeaponHolder:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
-        secondaryWeaponIcon:Hide()
 
         function secondaryItem:Paint(w, h)
 
@@ -4141,7 +4201,6 @@ function Menu.ReloadSlots()
     else
 
         secondaryWeaponHolder:SetSize(EFGM.MenuScale(285), EFGM.MenuScale(114))
-        secondaryWeaponIcon:Show()
         if IsValid(secondaryItem) then secondaryItem:Remove() end
 
     end
@@ -4163,7 +4222,6 @@ function Menu.ReloadSlots()
         holsterItem.ORIGIN = "equipped"
 
         holsterWeaponHolder:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
-        holsterWeaponIcon:Hide()
 
         function holsterItem:Paint(w, h)
 
@@ -4408,7 +4466,6 @@ function Menu.ReloadSlots()
     else
 
         holsterWeaponHolder:SetSize(EFGM.MenuScale(114), EFGM.MenuScale(57))
-        holsterWeaponIcon:Show()
         if IsValid(holsterItem) then holsterItem:Remove() end
 
     end
@@ -4430,7 +4487,6 @@ function Menu.ReloadSlots()
         meleeItem.ORIGIN = "equipped"
 
         meleeWeaponHolder:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
-        meleeWeaponIcon:Hide()
 
         function meleeItem:Paint(w, h)
 
@@ -4627,7 +4683,6 @@ function Menu.ReloadSlots()
 
     else
 
-        meleeWeaponIcon:Show()
         meleeWeaponHolder:SetSize(EFGM.MenuScale(114), EFGM.MenuScale(57))
         if IsValid(meleeItem) then meleeItem:Remove() end
 
@@ -4650,7 +4705,6 @@ function Menu.ReloadSlots()
         nadeItem.ORIGIN = "equipped"
 
         nadeWeaponHolder:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
-        nadeWeaponIcon:Hide()
 
         function nadeItem:Paint(w, h)
 
@@ -4853,7 +4907,6 @@ function Menu.ReloadSlots()
 
     else
 
-        nadeWeaponIcon:Show()
         nadeWeaponHolder:SetSize(EFGM.MenuScale(57), EFGM.MenuScale(57))
         if IsValid(nadeItem) then nadeItem:Remove() end
 
@@ -5949,6 +6002,10 @@ function Menu.OpenTab.Inventory(container)
         surface.SetDrawColor(Colors.transparentWhiteColor)
         surface.DrawRect(0, 0, w, EFGM.MenuScale(6))
 
+        surface.SetDrawColor(Colors.itemBackgroundColor)
+        if Menu.Player:GetModel() == "models/eft/pmcs/usec_extended_pm.mdl" then surface.SetMaterial(Mats.factionUSECIcon) else surface.SetMaterial(Mats.factionBEARIcon) end
+        surface.DrawTexturedRect(EFGM.MenuScale(20), EFGM.MenuScale(50), EFGM.MenuScale(115), EFGM.MenuScale(119))
+
     end
 
     local playerText = vgui.Create("DPanel", playerPanel)
@@ -6031,6 +6088,12 @@ function Menu.OpenTab.Inventory(container)
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
         surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
+        if !table.IsEmpty(playerWeaponSlots[1][2]) then return end
+
+        surface.SetDrawColor(Colors.weaponSilhouetteColor)
+        surface.SetMaterial(Mats.invPrimaryIcon)
+        surface.DrawTexturedRect(EFGM.MenuScale(25), EFGM.MenuScale(15), EFGM.MenuScale(250), EFGM.MenuScale(80))
+
     end
 
     secondaryWeaponText = vgui.Create("DPanel", equipmentHolder)
@@ -6047,12 +6110,6 @@ function Menu.OpenTab.Inventory(container)
         draw.SimpleTextOutlined("SECONDARY", "PuristaBold24", w / 2, EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
     end
-
-    secondaryWeaponIcon = vgui.Create("DImage", secondaryWeaponHolder)
-    secondaryWeaponIcon:SetPos(EFGM.MenuScale(25), EFGM.MenuScale(15))
-    secondaryWeaponIcon:SetSize(EFGM.MenuScale(250), EFGM.MenuScale(80))
-    secondaryWeaponIcon:SetImage("icons/inventory_primary_icon.png")
-    secondaryWeaponIcon:SetImageColor(Colors.weaponSilhouetteColor)
 
     -- primary slot
     primaryWeaponHolder = vgui.Create("DPanel", equipmentHolder)
@@ -6072,6 +6129,12 @@ function Menu.OpenTab.Inventory(container)
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
         surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
+        if !table.IsEmpty(playerWeaponSlots[1][1]) then return end
+
+        surface.SetDrawColor(Colors.weaponSilhouetteColor)
+        surface.SetMaterial(Mats.invPrimaryIcon)
+        surface.DrawTexturedRect(EFGM.MenuScale(25), EFGM.MenuScale(15), EFGM.MenuScale(250), EFGM.MenuScale(80))
+
     end
 
     primaryWeaponText = vgui.Create("DPanel", equipmentHolder)
@@ -6088,12 +6151,6 @@ function Menu.OpenTab.Inventory(container)
         draw.SimpleTextOutlined("PRIMARY", "PuristaBold24", w / 2, EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
     end
-
-    primaryWeaponIcon = vgui.Create("DImage", primaryWeaponHolder)
-    primaryWeaponIcon:SetPos(EFGM.MenuScale(25), EFGM.MenuScale(15))
-    primaryWeaponIcon:SetSize(EFGM.MenuScale(250), EFGM.MenuScale(80))
-    primaryWeaponIcon:SetImage("icons/inventory_primary_icon.png")
-    primaryWeaponIcon:SetImageColor(Colors.weaponSilhouetteColor)
 
     -- holster slot
     holsterWeaponHolder = vgui.Create("DPanel", equipmentHolder)
@@ -6113,6 +6170,12 @@ function Menu.OpenTab.Inventory(container)
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
         surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
+        if !table.IsEmpty(playerWeaponSlots[2][1]) then return end
+
+        surface.SetDrawColor(Colors.weaponSilhouetteColor)
+        surface.SetMaterial(Mats.invHolsterIcon)
+        surface.DrawTexturedRect(EFGM.MenuScale(27), EFGM.MenuScale(8), EFGM.MenuScale(60), EFGM.MenuScale(40))
+
     end
 
     holsterWeaponText = vgui.Create("DPanel", equipmentHolder)
@@ -6129,12 +6192,6 @@ function Menu.OpenTab.Inventory(container)
         draw.SimpleTextOutlined("HOLSTER", "PuristaBold24", w / 2, EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
     end
-
-    holsterWeaponIcon = vgui.Create("DImage", holsterWeaponHolder)
-    holsterWeaponIcon:SetPos(EFGM.MenuScale(27), EFGM.MenuScale(8))
-    holsterWeaponIcon:SetSize(EFGM.MenuScale(60), EFGM.MenuScale(40))
-    holsterWeaponIcon:SetImage("icons/inventory_holster_icon.png")
-    holsterWeaponIcon:SetImageColor(Colors.weaponSilhouetteColor)
 
     -- melee slot
     meleeWeaponHolder = vgui.Create("DPanel", equipmentHolder)
@@ -6154,6 +6211,12 @@ function Menu.OpenTab.Inventory(container)
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
         surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
+        if !table.IsEmpty(playerWeaponSlots[3][1]) then return end
+
+        surface.SetDrawColor(Colors.weaponSilhouetteColor)
+        surface.SetMaterial(Mats.invMeleeIcon)
+        surface.DrawTexturedRect(EFGM.MenuScale(25), EFGM.MenuScale(8), EFGM.MenuScale(60), EFGM.MenuScale(40))
+
     end
 
     meleeWeaponText = vgui.Create("DPanel", equipmentHolder)
@@ -6170,12 +6233,6 @@ function Menu.OpenTab.Inventory(container)
         draw.SimpleTextOutlined("MELEE", "PuristaBold24", w / 2, EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
     end
-
-    meleeWeaponIcon = vgui.Create("DImage", meleeWeaponHolder)
-    meleeWeaponIcon:SetPos(EFGM.MenuScale(25), EFGM.MenuScale(8))
-    meleeWeaponIcon:SetSize(EFGM.MenuScale(60), EFGM.MenuScale(40))
-    meleeWeaponIcon:SetImage("icons/inventory_melee_icon.png")
-    meleeWeaponIcon:SetImageColor(Colors.weaponSilhouetteColor)
 
     -- nade slot
     nadeWeaponHolder = vgui.Create("DPanel", equipmentHolder)
@@ -6195,6 +6252,12 @@ function Menu.OpenTab.Inventory(container)
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
         surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
+        if !table.IsEmpty(playerWeaponSlots[4][1]) then return end
+
+        surface.SetDrawColor(Colors.weaponSilhouetteColor)
+        surface.SetMaterial(Mats.invNadeIcon)
+        surface.DrawTexturedRect(EFGM.MenuScale(2), 0, EFGM.MenuScale(57), EFGM.MenuScale(57))
+
     end
 
     nadeWeaponText = vgui.Create("DPanel", equipmentHolder)
@@ -6211,12 +6274,6 @@ function Menu.OpenTab.Inventory(container)
         draw.SimpleTextOutlined("NADE", "PuristaBold24", w / 2, EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
     end
-
-    nadeWeaponIcon = vgui.Create("DImage", nadeWeaponHolder)
-    nadeWeaponIcon:SetPos(EFGM.MenuScale(2), EFGM.MenuScale(0))
-    nadeWeaponIcon:SetSize(EFGM.MenuScale(57), EFGM.MenuScale(57))
-    nadeWeaponIcon:SetImage("icons/inventory_nade_icon.png")
-    nadeWeaponIcon:SetImageColor(Colors.weaponSilhouetteColor)
 
     Menu.ReloadSlots()
 
@@ -6339,7 +6396,11 @@ function Menu.OpenTab.Inventory(container)
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
         surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
-        draw.SimpleTextOutlined(Menu.Player:Health() or "0", "PuristaBold50", w - EFGM.MenuScale(8), EFGM.MenuScale(0), Colors.healthGreenColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined(Menu.Player:Health() or "0", "PuristaBold50", w - EFGM.MenuScale(8), 0, Colors.healthGreenColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+
+        surface.SetDrawColor(Colors.healthGreenColor)
+        surface.SetMaterial(Mats.healthIcon)
+        surface.DrawTexturedRect(0, 0, EFGM.MenuScale(53), EFGM.MenuScale(53))
 
     end
 
@@ -6357,18 +6418,6 @@ function Menu.OpenTab.Inventory(container)
         draw.SimpleTextOutlined("HEALTH", "PuristaBold24", w / 2, EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
     end
-
-    local healthIcon = vgui.Create("DImage", healthHolder)
-    healthIcon:SetPos(EFGM.MenuScale(0), EFGM.MenuScale(0))
-    healthIcon:SetSize(EFGM.MenuScale(53), EFGM.MenuScale(53))
-    healthIcon:SetImage("icons/health_icon.png")
-    healthIcon:SetImageColor(Colors.healthGreenColor)
-
-    local factionIcon = vgui.Create("DImage", playerPanel)
-    factionIcon:SetPos(EFGM.MenuScale(20), EFGM.MenuScale(50))
-    factionIcon:SetSize(EFGM.MenuScale(115), EFGM.MenuScale(119))
-    factionIcon:SetImageColor(Colors.itemBackgroundColor)
-    if Menu.Player:GetModel() == "models/eft/pmcs/usec_extended_pm.mdl" then factionIcon:SetImage("icons/usec_icon.png") else factionIcon:SetImage("icons/bear_icon.png") end
 
     if Menu.Player:CompareStatus(0) then
 
@@ -6539,7 +6588,7 @@ function Menu.OpenTab.Inventory(container)
         end
 
         surface.SetDrawColor(weightColor)
-        surface.DrawRect(EFGM.MenuScale(30), EFGM.MenuScale(7), math.min(EFGM.MenuScale((usedWeight / maxWeight) * 180), 180), EFGM.MenuScale(16))
+        surface.DrawRect(EFGM.MenuScale(30), EFGM.MenuScale(7), math.min((usedWeight / maxWeight) * EFGM.MenuScale(180), EFGM.MenuScale(180)), EFGM.MenuScale(16))
 
         surface.SetDrawColor(Colors.whiteBorderColor)
         surface.DrawRect(EFGM.MenuScale(30), EFGM.MenuScale(7), EFGM.MenuScale(180), EFGM.MenuScale(1))
@@ -6549,11 +6598,18 @@ function Menu.OpenTab.Inventory(container)
 
     end
 
-    local weightIcon = vgui.Create("DImageButton", itemsHolder)
-    weightIcon:SetPos(EFGM.MenuScale(0), EFGM.MenuScale(1))
+    local weightIcon = vgui.Create("DButton", itemsHolder)
+    weightIcon:SetPos(0, 0)
     weightIcon:SetSize(EFGM.MenuScale(28), EFGM.MenuScale(28))
-    weightIcon:SetImage("icons/weight_icon.png")
-    weightIcon:SetDepressImage(false)
+    weightIcon:SetText("")
+
+    weightIcon.Paint = function(s, w, h)
+
+        surface.SetDrawColor(Colors.pureWhiteColor)
+        surface.SetMaterial(Mats.weightIcon)
+        surface.DrawTexturedRect(0, EFGM.MenuScale(1), EFGM.MenuScale(28), EFGM.MenuScale(28))
+
+    end
 
     weightIcon.OnCursorEntered = function(s)
 
@@ -6654,7 +6710,7 @@ function Menu.OpenTab.Inventory(container)
             surface.DrawRect(EFGM.MenuScale(5), EFGM.MenuScale(150), EFGM.MenuScale(550), EFGM.MenuScale(10))
 
             surface.SetDrawColor(weightColor)
-            surface.DrawRect(EFGM.MenuScale(5), EFGM.MenuScale(150), math.min(EFGM.MenuScale((usedWeight / maxWeight) * 550), 550), EFGM.MenuScale(10))
+            surface.DrawRect(EFGM.MenuScale(5), EFGM.MenuScale(150), math.min(usedWeight / maxWeight * EFGM.MenuScale(550), EFGM.MenuScale(550)), EFGM.MenuScale(10))
 
         end
 
@@ -7524,7 +7580,7 @@ function Menu.OpenTab.Market()
     end
 
     local lastPageButton = vgui.Create("DButton", marketPageText)
-    lastPageButton:SetPos(EFGM.MenuScale(0), EFGM.MenuScale(2))
+    lastPageButton:SetPos(0, EFGM.MenuScale(2))
     lastPageButton:SetSize(EFGM.MenuScale(26), EFGM.MenuScale(26))
     lastPageButton:SetText("")
     lastPageButton.Paint = function(s, w, h)
@@ -7907,7 +7963,7 @@ function Menu.OpenTab.Market()
 
                     end
 
-                    draw.SimpleTextOutlined(v.name, "PuristaBold18", EFGM.MenuScale(5), EFGM.MenuScale(0), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+                    draw.SimpleTextOutlined(v.name, "PuristaBold18", EFGM.MenuScale(5), 0, Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
                     draw.SimpleTextOutlined(itemValueText, "PuristaBold22", (w / 2) + EFGM.MenuScale(12), h - EFGM.MenuScale(29), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
                     if EFGM.Favorites[v.id] then
@@ -9296,7 +9352,7 @@ function Menu.OpenTab.Match()
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
                 surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
-                draw.SimpleTextOutlined("MEMBERS", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(0), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+                draw.SimpleTextOutlined("MEMBERS", "PuristaBold24", EFGM.MenuScale(5), 0, Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
                 for k, v in SortedPairs(members) do
 
@@ -9377,11 +9433,17 @@ function Menu.OpenTab.Match()
 
                 if Menu.Player == owner and Menu.Player != v then
 
-                    local transferToMember = vgui.Create("DImageButton", currentSquadMembers)
+                    local transferToMember = vgui.Create("DButton", currentSquadMembers)
                     transferToMember:SetPos(EFGM.MenuScale(262), (k * EFGM.MenuScale(35)) - EFGM.MenuScale(2))
                     transferToMember:SetSize(EFGM.MenuScale(24), EFGM.MenuScale(24))
-                    transferToMember:SetImage("icons/squad_transfer_icon.png")
-                    transferToMember:SetDepressImage(false)
+                    transferToMember:SetText("")
+                    transferToMember.Paint = function(s, w, h)
+
+                        surface.SetDrawColor(Colors.pureWhiteColor)
+                        surface.SetMaterial(Mats.squadTransferIcon)
+                        surface.DrawTexturedRect(0, 0, EFGM.MenuScale(24), EFGM.MenuScale(24))
+
+                    end
 
                     transferToMember.OnCursorEntered = function(s)
 
@@ -9472,11 +9534,17 @@ function Menu.OpenTab.Match()
 
                     end
 
-                    local kickMember = vgui.Create("DImageButton", currentSquadMembers)
+                    local kickMember = vgui.Create("DButton", currentSquadMembers)
                     kickMember:SetPos(EFGM.MenuScale(291), (k * EFGM.MenuScale(35)) - EFGM.MenuScale(2))
                     kickMember:SetSize(EFGM.MenuScale(24), EFGM.MenuScale(24))
-                    kickMember:SetImage("icons/squad_kick_icon.png")
-                    kickMember:SetDepressImage(false)
+                    kickMember:SetText("")
+                    kickMember.Paint = function(s, w, h)
+
+                        surface.SetDrawColor(Colors.pureWhiteColor)
+                        surface.SetMaterial(Mats.squadKickIcon)
+                        surface.DrawTexturedRect(0, 0, EFGM.MenuScale(24), EFGM.MenuScale(24))
+
+                    end
 
                     kickMember.OnCursorEntered = function(s)
 
@@ -9936,21 +10004,19 @@ function Menu.OpenTab.Skills()
 
         local skillItem = skillsList:Add("DButton")
         skillItem:SetSize(EFGM.MenuScale(90), EFGM.MenuScale(90))
+
         skillItem.Paint = function(s, w, h)
 
             surface.SetDrawColor(Colors.whiteColor)
             surface.DrawRect(0, 0, w, h)
 
+            surface.SetDrawColor(Colors.pureWhiteColor)
+            surface.SetMaterial(v1.Icon)
+            surface.DrawTexturedRect(EFGM.MenuScale(3), EFGM.MenuScale(3), EFGM.MenuScale(84), EFGM.MenuScale(84))
+
         end
 
-        local skillIcon = vgui.Create("DImage", skillItem)
-        skillIcon:SetPos(EFGM.MenuScale(3), EFGM.MenuScale(3))
-        skillIcon:SetSize(EFGM.MenuScale(84), EFGM.MenuScale(84))
-        skillIcon:SetImage(v1.Icon)
-
-        local skillText = vgui.Create("DPanel", skillIcon)
-        skillText:Dock(FILL)
-        skillText.Paint = function(s, w, h)
+        skillItem.PaintOver = function(s, w, h)
 
             draw.SimpleTextOutlined("1", "PuristaBold32", EFGM.MenuScale(4), EFGM.MenuScale(52), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
             draw.SimpleTextOutlined("0/10", "Purista18", w - EFGM.MenuScale(4), EFGM.MenuScale(64), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
@@ -11304,6 +11370,7 @@ function Menu.OpenTab.Settings()
     local clearDecals = vgui.Create("DButton", misc)
     clearDecals:Dock(TOP)
     clearDecals:DockMargin(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), 0)
+    clearDecals:SetSize(0, EFGM.MenuScale(25))
     clearDecals:SetText("CLEAR ALL DECALS")
 
     function clearDecals:DoClick()
@@ -11316,6 +11383,7 @@ function Menu.OpenTab.Settings()
     local fixInvDesync = vgui.Create("DButton", misc)
     fixInvDesync:Dock(TOP)
     fixInvDesync:DockMargin(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), 0)
+    fixInvDesync:SetSize(0, EFGM.MenuScale(25))
     fixInvDesync:SetText("FIX INVENTORY DESYNC")
 
     function fixInvDesync:DoClick()

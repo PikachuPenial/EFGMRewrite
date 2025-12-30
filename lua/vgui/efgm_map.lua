@@ -198,7 +198,7 @@ function PANEL:Paint(w, h)
             local distance = math.sqrt((posX - previousPos.x) ^ 2 + (posY - previousPos.y) ^ 2)
 
             -- this line thickness thing took me like an hour to figure out with a pencil and paper, but shatgpt can lick my balls
-            local normal = {x = (posX - previousPos.x) / distance * 1.5, y = (posY - previousPos.y) / distance * 1.5}
+            local normal = {x = (posX - previousPos.x) / distance * EFGM.MenuScale(1.5), y = (posY - previousPos.y) / distance * EFGM.MenuScale(1.5)}
             local perpNormal = {x = normal.y, y = -normal.x}
 
             local thickenedLine = {

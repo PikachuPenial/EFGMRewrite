@@ -974,8 +974,8 @@ net.Receive("CreateDeathInformation", function()
                 surface.SetDrawColor(Color(0, 0, 0, 0))
                 surface.DrawRect(0, 0, w, h)
 
-                draw.SimpleTextOutlined("TIME: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(0), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-                draw.SimpleTextOutlined(xpTime .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(0), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+                draw.SimpleTextOutlined("TIME: ", "PuristaBold24", EFGM.MenuScale(3), 0, Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+                draw.SimpleTextOutlined(xpTime .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), 0, Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
                 draw.SimpleTextOutlined("COMBAT: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(22), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
                 draw.SimpleTextOutlined(xpCombat .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(22), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
@@ -1077,7 +1077,7 @@ net.Receive("CreateDeathInformation", function()
                 surface.SetDrawColor(Color(0, 0, 0, 0))
                 surface.DrawRect(0, 0, w, h)
 
-                draw.SimpleTextOutlined(killedBy:GetName(), "PuristaBold24", EFGM.MenuScale(90), EFGM.MenuScale(0), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+                draw.SimpleTextOutlined(killedBy:GetName(), "PuristaBold24", EFGM.MenuScale(90), 0, Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
                 if killedFrom != 0 then
 
@@ -1098,6 +1098,10 @@ net.Receive("CreateDeathInformation", function()
                     end
 
                 end
+
+                surface.SetDrawColor(Colors.healthGreenColor)
+                surface.SetMaterial(Mats.healthIcon)
+                surface.DrawTexturedRect(0, EFGM.MenuScale(90), EFGM.MenuScale(32), EFGM.MenuScale(32))
 
                 draw.SimpleTextOutlined(killedByHealth .. "HP", "PuristaBold24", EFGM.MenuScale(32), EFGM.MenuScale(93), Colors.healthGreenColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
@@ -1154,12 +1158,6 @@ net.Receive("CreateDeathInformation", function()
                 dropdown:Open()
 
             end
-
-            local healthIcon = vgui.Create("DImage", KillerHolder)
-            healthIcon:SetPos(EFGM.MenuScale(0), EFGM.MenuScale(90))
-            healthIcon:SetSize(EFGM.MenuScale(32), EFGM.MenuScale(32))
-            healthIcon:SetImage("icons/health_icon.png")
-            healthIcon:SetImageColor(Colors.healthGreenColor)
 
             local playerModel = vgui.Create("DModelPanel", KillerHolder)
             playerModel:SetAlpha(0)
@@ -1589,8 +1587,8 @@ net.Receive("CreateExtractionInformation", function()
         surface.SetDrawColor(Color(0, 0, 0, 0))
         surface.DrawRect(0, 0, w, h)
 
-        draw.SimpleTextOutlined("TIME: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(0), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-        draw.SimpleTextOutlined(xpTime .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(0), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined("TIME: ", "PuristaBold24", EFGM.MenuScale(3), 0, Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined(xpTime .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), 0, Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
         draw.SimpleTextOutlined("COMBAT: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(22), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
         draw.SimpleTextOutlined(xpCombat .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(22), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
@@ -1863,12 +1861,18 @@ function HUDInspectItem(item, data, panel)
 
     if data.fir then
 
-        local firIcon = vgui.Create("DImageButton", inspectPanel)
+        local firIcon = vgui.Create("DButton", inspectPanel)
         firIcon:SetPos(itemDescSize + EFGM.MenuScale(7), EFGM.MenuScale(29))
         firIcon:SetSize(EFGM.MenuScale(12), EFGM.MenuScale(12))
-        firIcon:SetImage("icons/fir_icon.png")
         firIcon:SetText("")
-        firIcon:SetDepressImage(false)
+
+        firIcon.Paint = function(s, w, h)
+
+            surface.SetDrawColor(Colors.pureWhiteColor)
+            surface.SetMaterial(Mats.firIcon)
+            surface.DrawTexturedRect(0, 0, EFGM.MenuScale(12), EFGM.MenuScale(12))
+
+        end
 
         firIcon.OnCursorEntered = function(s)
 
@@ -1987,7 +1991,7 @@ function HUDInspectItem(item, data, panel)
 
         s:SetY(itemPullOutPanel:GetY() - EFGM.MenuScale(28))
 
-        BlurPanel(s, EFGM.MenuScale(0))
+        BlurPanel(s, 0)
 
         surface.SetDrawColor(Color(80, 80, 80, 10))
         surface.DrawRect(0, 0, infoTextSize + EFGM.MenuScale(10), h)
@@ -2011,7 +2015,7 @@ function HUDInspectItem(item, data, panel)
 
         s:SetY(itemPullOutPanel:GetY() - EFGM.MenuScale(28))
 
-        BlurPanel(s, EFGM.MenuScale(0))
+        BlurPanel(s, 0)
 
         surface.SetDrawColor(Color(80, 80, 80, 10))
         surface.DrawRect(0, 0, wikiTextSize + EFGM.MenuScale(10), h)
@@ -2452,7 +2456,7 @@ function HUDInspectItem(item, data, panel)
 
         surface.SetDrawColor(255, 255, 255, 255)
         surface.SetMaterial(Mats.closeButtonIcon)
-        surface.DrawTexturedRect(EFGM.MenuScale(0), EFGM.MenuScale(0), EFGM.MenuScale(32), EFGM.MenuScale(32))
+        surface.DrawTexturedRect(0, 0, EFGM.MenuScale(32), EFGM.MenuScale(32))
 
     end
 

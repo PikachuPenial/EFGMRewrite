@@ -6,7 +6,7 @@ Skills.Endurance = {
 
     Description = "Endurance influences the amount of stamina and the rate of exhaustion while running or jumping, as well as holding and recovering breath.",
 
-    Icon = "icons/skills/endurance.png",
+    Icon = Material("icons/skills/endurance.png", "smooth"),
 
     Category = "Physical"
 
@@ -18,7 +18,7 @@ Skills.Strength = {
 
     Description = "Increasing strength allows you to jump higher, sprint faster, hit harder, throw farther, and carry more weight.",
 
-    Icon = "icons/skills/strength.png",
+    Icon = Material("icons/skills/strength.png", "smooth"),
 
     Category = "Physical"
 
@@ -30,7 +30,7 @@ Skills.Health = {
 
     Description = "Good health speeds up the recovery from the damage sustained in the raids, decreases the probability of fractures and lowers the energy and dehydration rate.",
 
-    Icon = "icons/skills/health.png",
+    Icon = Material("icons/skills/health.png", "smooth"),
 
     Category = "Physical"
 
@@ -42,7 +42,7 @@ Skills.Charisma = {
 
     Description = "Mastering the art of charisma allows to receive discounts on various services.",
 
-    Icon = "icons/skills/charisma.png",
+    Icon = Material("icons/skills/charisma.png", "smooth"),
 
     Category = "Mental"
 
@@ -54,7 +54,7 @@ Skills.Vitality = {
 
     Description = "Vitality improves your chances of surviving a wound by decreasing the possibility of bleeding and instant death through critical damage to a body part.",
 
-    Icon = "icons/skills/vitality.png",
+    Icon = Material("icons/skills/vitality.png", "smooth"),
 
     Category = "Physical"
 
@@ -66,7 +66,7 @@ Skills.CovertMovement = {
 
     Description = "Covert movement makes your steps quieter and reduces the sound radius.",
 
-    Icon = "icons/skills/covertmovement.png",
+    Icon = Material("icons/skills/covertmovement.png", "smooth"),
 
     Category = "Practical"
 
@@ -78,7 +78,7 @@ Skills.Troubleshooting = {
 
     Description = "Troubleshooting skill facilitates rectification of weapon malfunctions.",
 
-    Icon = "icons/skills/troubleshooting.png",
+    Icon = Material("icons/skills/troubleshooting.png", "smooth"),
 
     Category = "Combat"
 
@@ -90,7 +90,7 @@ Skills.AimDrills = {
 
     Description = "Aim drills will increase your aiming speed and will allow to perform aiming quieter.",
 
-    Icon = "icons/skills/aimdrills.png",
+    Icon = Material("icons/skills/aimdrills.png", "smooth"),
 
     Category = "Combat"
 
@@ -102,7 +102,7 @@ Skills.Attention = {
 
     Description = "Attention increases the looting speed of various containers.",
 
-    Icon = "icons/skills/attention.png",
+    Icon = Material("icons/skills/attention.png", "smooth"),
 
     Category = "Mental"
 
@@ -114,7 +114,7 @@ Skills.Barter = {
 
     Description = "Mastering the art of bartering allows to receive discounts and bonuses on operative to operative trading services.",
 
-    Icon = "icons/skills/barter.png",
+    Icon = Material("icons/skills/barter.png", "smooth"),
 
     Category = "Practical"
 
