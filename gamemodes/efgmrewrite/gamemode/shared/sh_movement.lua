@@ -627,7 +627,7 @@ hook.Add("CalcViewModelView", "VBCalcViewModelView", function(wep, vm, oldpos, o
 		LerpedSway_Y = 0
 	end
 
-	local sway_tilt = math.Clamp(r:Dot(LocalPlayer():GetVelocity() * 0.015), -10, 10)
+	local sway_tilt = math.Clamp(r:Dot(LocalPlayer():GetVelocity() * 0.02), -10, 10)
 	local swayt_tilt = (sway_tilt == 0 and 12) or 8
 
 	if IFTP and UCT != UnPredictedCurTime() then
@@ -638,10 +638,10 @@ hook.Add("CalcViewModelView", "VBCalcViewModelView", function(wep, vm, oldpos, o
 
 	VBPosCalc:Add(up * math.sin(VMTime * 10) * 0.1)
 	VBPosCalc:Add(r * math.sin(VMTime * 5) * 0.05)
-	VBPosCalc:Sub(f * math.sin(VMTime * 5) * 0.15)
+	VBPosCalc:Sub(f * math.sin(VMTime * 5) * 0.25)
 
-	VBAngCalc.z = VBAngCalc.z + math.sin(VMTime * 10) * 0.25
-	VBAngCalc.x = VBAngCalc.x + math.abs(math.sin(VMTime * 5) * 0.035)
+	VBAngCalc.z = VBAngCalc.z + math.sin(VMTime * 10) * 0.375
+	-- VBAngCalc.x = VBAngCalc.x + math.abs(math.sin(VMTime * 5) * 0.035)
 
 	VBAngCalc.y = (!flipped and VBAngCalc.y - LerpedSway_Y + math.abs(LerpedSway_X * 0.25)) or VBAngCalc.y + LerpedSway_Y - math.abs(LerpedSway_X * 0.25)
 
