@@ -541,7 +541,7 @@ end
 
 local function DrawHUD()
     ply = ply or LocalPlayer()
-    if !ply:Alive() then RenderOverlays() return end
+    if !ply:Alive() or Menu.IsOpen then RenderOverlays() return end
     if !enabled then return end
 
     RenderRaidTime()
@@ -1989,15 +1989,15 @@ function HUDInspectItem(item, data, panel)
     itemInfoButton:SetText("")
     itemInfoButton.Paint = function(s, w, h)
 
-        s:SetY(itemPullOutPanel:GetY() - EFGM.MenuScale(28))
+        BlurPanel(s, 0.5)
 
-        BlurPanel(s, 0)
+        s:SetY(itemPullOutPanel:GetY() - EFGM.MenuScale(28))
 
         surface.SetDrawColor(Color(80, 80, 80, 10))
         surface.DrawRect(0, 0, infoTextSize + EFGM.MenuScale(10), h)
 
         surface.SetDrawColor(Colors.transparentWhiteColor)
-        surface.DrawRect(0, 0, infoTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
+        if !s:IsHovered() then surface.DrawRect(0, 0, infoTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2)) else surface.DrawRect(0, 0, infoTextSize + EFGM.MenuScale(10), EFGM.MenuScale(3)) end
 
         draw.SimpleTextOutlined(infoText, "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
@@ -2013,15 +2013,15 @@ function HUDInspectItem(item, data, panel)
     itemWikiButton:SetText("")
     itemWikiButton.Paint = function(s, w, h)
 
-        s:SetY(itemPullOutPanel:GetY() - EFGM.MenuScale(28))
+        BlurPanel(s, 0.5)
 
-        BlurPanel(s, 0)
+        s:SetY(itemPullOutPanel:GetY() - EFGM.MenuScale(28))
 
         surface.SetDrawColor(Color(80, 80, 80, 10))
         surface.DrawRect(0, 0, wikiTextSize + EFGM.MenuScale(10), h)
 
         surface.SetDrawColor(Colors.transparentWhiteColor)
-        surface.DrawRect(0, 0, wikiTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
+        if !s:IsHovered() then surface.DrawRect(0, 0, infoTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2)) else surface.DrawRect(0, 0, infoTextSize + EFGM.MenuScale(10), EFGM.MenuScale(3)) end
 
         draw.SimpleTextOutlined(wikiText, "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
@@ -2551,7 +2551,7 @@ end
 hook.Add("HUDItemPickedUp", "ItemPickedUp", DrawItemInfo)
 
 function HideHud(name)
-    for k, v in pairs({"CHudHealth", "CHudBattery", "CHudAmmo", "CHudSecondaryAmmo", "CHudZoom", "CHudVoiceStatus", "CHudDamageIndicator", "CHUDQuickInfo", "CHudCrosshair", "CHudWeaponSelection"}) do
+    for k, v in pairs({"CHudHealth", "CHudBattery", "CHudAmmo", "CHudSecondaryAmmo", "CHudZoom", "CHudVoiceStatus", "CHudDamageIndicator", "CHUDQuickInfo", "CHudWeaponSelection"}) do
         if name == v then
             return false
         end

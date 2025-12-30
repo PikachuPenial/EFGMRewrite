@@ -97,19 +97,17 @@ function Menu:Initialize(openTo, container)
     menuFrame:NoClipping(true)
     menuFrame:MouseCapture(false)
 
-    menuFrame:AlphaTo(255, 0.2, 0, nil)
+    menuFrame:AlphaTo(255, 0.2, 0, function() self.IsOpen = true end)
 
     self.Unblur = false
     self.Closing = false
 
     function menuFrame:Paint(w, h)
+        if Menu.Unblur then return end -- hide the blur when customizing certain settings and whatnot
 
         surface.SetDrawColor(Colors.frameColor)
         surface.DrawRect(0, 0, ScrW(), ScrH())
-
-        if self.Unblur then return end -- hide the blur when customizing certain settings and whatnot
         BlurPanel(menuFrame, 4)
-
     end
 
     -- close menu with the game menu keybind
@@ -1481,13 +1479,15 @@ function Menu.InspectItem(item, data)
     itemInfoButton:SetText("")
     itemInfoButton.Paint = function(s, w, h)
 
+        BlurPanel(s, 0.5)
+
         s:SetY(itemPullOutPanel:GetY() - EFGM.MenuScale(28) + 1)
 
         surface.SetDrawColor(Colors.containerBackgroundColor)
         surface.DrawRect(0, 0, infoTextSize + EFGM.MenuScale(10), h)
 
         surface.SetDrawColor(Colors.transparentWhiteColor)
-        surface.DrawRect(0, 0, infoTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
+        if !s:IsHovered() then surface.DrawRect(0, 0, infoTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2)) else surface.DrawRect(0, 0, infoTextSize + EFGM.MenuScale(10), EFGM.MenuScale(3)) end
 
         draw.SimpleTextOutlined(infoText, "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
@@ -1503,13 +1503,15 @@ function Menu.InspectItem(item, data)
     itemWikiButton:SetText("")
     itemWikiButton.Paint = function(s, w, h)
 
+        BlurPanel(s, 0.5)
+
         s:SetY(itemPullOutPanel:GetY() - EFGM.MenuScale(28) + 1)
 
         surface.SetDrawColor(Colors.containerBackgroundColor)
         surface.DrawRect(0, 0, wikiTextSize + EFGM.MenuScale(10), h)
 
         surface.SetDrawColor(Colors.transparentWhiteColor)
-        surface.DrawRect(0, 0, wikiTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2))
+        if !s:IsHovered() then surface.DrawRect(0, 0, infoTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2)) else surface.DrawRect(0, 0, infoTextSize + EFGM.MenuScale(10), EFGM.MenuScale(3)) end
 
         draw.SimpleTextOutlined(wikiText, "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
@@ -8769,6 +8771,7 @@ function Menu.OpenTab.Match()
     mapHolder:SetSize(EFGM.MenuScale(1210), EFGM.MenuScale(920))
     function mapHolder:Paint(w, h)
 
+        BlurPanel(self, EFGM.MenuScale(5))
         surface.SetDrawColor(Colors.containerBackgroundColor)
         surface.DrawRect(0, 0, w, h)
 
@@ -11380,6 +11383,19 @@ function Menu.OpenTab.Settings()
 
     end
 
+    local flushAudio = vgui.Create("DButton", misc)
+    flushAudio:Dock(TOP)
+    flushAudio:DockMargin(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), 0)
+    flushAudio:SetSize(0, EFGM.MenuScale(25))
+    flushAudio:SetText("FLUSH AUDIO ENGINE")
+
+    function flushAudio:DoClick()
+
+        RunConsoleCommand("snd_restart")
+        RunConsoleCommand("snd_async_flush")
+
+    end
+
     local fixInvDesync = vgui.Create("DButton", misc)
     fixInvDesync:Dock(TOP)
     fixInvDesync:DockMargin(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), 0)
@@ -12008,7 +12024,6 @@ concommand.Add("efgm_gamemenu", function(ply, cmd, args)
     if HUD.InTransition then return end
 
     Menu:Open(tab)
-    Menu.IsOpen = true
 
 end)
 
@@ -12022,6 +12037,5 @@ net.Receive("PlayerOpenContainer", function(len, ply)
     container.items = net.ReadTable(true)
 
     Menu:Open(tab, container)
-    Menu.IsOpen = true
 
 end )

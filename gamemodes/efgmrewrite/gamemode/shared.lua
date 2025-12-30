@@ -315,6 +315,17 @@ function GetAttachmentListFromCode(str)
     local cleanAttTbl = GetAttachmentList(tbl)
     local cleanAttStr = ""
 
+    table.sort(cleanAttTbl, function(a, b)
+
+        local a_value = EFGMITEMS["arc9_att_" .. a].value or 0
+        local b_value = EFGMITEMS["arc9_att_" .. b].value or 0
+
+        if a_value and b_value then
+            return a_value > b_value
+        end
+
+    end)
+
     for i = 0, #cleanAttTbl do
         if !cleanAttTbl[i] then continue end
         cleanAttStr = cleanAttStr .. i .. ": " .. "\t" .. EFGMITEMS["arc9_att_" .. cleanAttTbl[i]].fullName .. ", " .. EFGMITEMS["arc9_att_" .. cleanAttTbl[i]].weight .. "kg, ₽" .. comma_value(EFGMITEMS["arc9_att_" .. cleanAttTbl[i]].value) .. "\n"
