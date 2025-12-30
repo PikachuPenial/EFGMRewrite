@@ -135,6 +135,8 @@ if SERVER then
 
         table.insert(SQUADS[squad].MEMBERS, ply)
 
+        ply:SetFaction((SQUADS[squad].FACTION == 1 and true) or (SQUADS[squad].FACTION == 2 and false))
+
         ply:SetNW2String("PlayerInSquad", squad)
         ply:SetNW2String("TeamChatChannel", squad)
         NetworkSquadInfoToClients()
@@ -323,7 +325,7 @@ if CLIENT then
         end
 
         local password = tostring(args[2] or "") -- the 'or' just sets the value if nil, bc a password of nil will just be "nil" instead of ""
-        local limit = math.Clamp(tonumber(args[3] or 1), 1, 4)
+        local limit = math.Clamp(tonumber(args[3] or 4), 2, 4)
         local red = math.Clamp(tonumber(args[4] or 255), 0, 255)
         local green = math.Clamp(tonumber(args[5] or 255), 0, 255)
         local blue = math.Clamp(tonumber(args[6] or 255), 0, 255)

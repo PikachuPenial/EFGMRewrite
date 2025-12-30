@@ -8686,7 +8686,7 @@ function Menu.OpenTab.Match()
                 local gameProfile = dropdown:AddOption("Open Game Profile", function() CreateNotification("I do not work yet LOL!", Mats.dontEvenAsk, "ui/boo.wav") end)
                 gameProfile:SetIcon("icon16/chart_bar.png")
 
-                if v != Menu.Player and status then
+                if v != Menu.Player and v:CompareStatus(0) then
 
                     dropdown:AddSpacer()
 
@@ -8926,14 +8926,14 @@ function Menu.OpenTab.Match()
         squadMemberLimitPanel:SetSize(0, EFGM.MenuScale(55))
         function squadMemberLimitPanel:Paint(w, h)
 
-            draw.SimpleTextOutlined("Squad Member Limit (1 to 4)", "Purista18", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+            draw.SimpleTextOutlined("Squad Member Limit (2 to 4)", "Purista18", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
         end
 
         local squadMemberLimit = vgui.Create("DNumberWang", squadMemberLimitPanel)
         squadMemberLimit:SetPos(EFGM.MenuScale(135), EFGM.MenuScale(30))
         squadMemberLimit:SetSize(EFGM.MenuScale(50), EFGM.MenuScale(20))
-        squadMemberLimit:SetMin(1)
+        squadMemberLimit:SetMin(2)
         squadMemberLimit:SetMax(4)
 
         squadMemberLimit.OnValueChanged = function(self)
@@ -9055,6 +9055,7 @@ function Menu.OpenTab.Match()
                 local password = v.PASSWORD
                 local limit = v.LIMIT
                 local members = v.MEMBERS
+                local faction = v.FACTION
                 local memberCount = table.Count(members)
                 local open = limit != memberCount
                 local protected = string.len(password) != 0
@@ -9074,7 +9075,7 @@ function Menu.OpenTab.Match()
                     surface.DrawRect(0, 0, w, h)
 
                     draw.SimpleTextOutlined(name, "PuristaBold24", w / 2, EFGM.MenuScale(5), Color(color.RED, color.GREEN, color.BLUE), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-                    draw.SimpleTextOutlined(table.Count(members) .. " / " .. limit .. "   |   " .. status, "PuristaBold18", w / 2, EFGM.MenuScale(30), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+                    draw.SimpleTextOutlined(table.Count(members) .. " / " .. limit .. " | " .. status .. " | " .. (faction == 1 and "PMCs" or faction == 2 and "SCAVs"), "PuristaBold18", w / 2, EFGM.MenuScale(30), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
                 end
 
@@ -9273,13 +9274,13 @@ function Menu.OpenTab.Match()
             if array == nil then return end
             if squad == "nil" then return end
 
-            local name = squad
             local color = array[squad].COLOR
             local owner = array[squad].OWNER
             local status
             local password = array[squad].PASSWORD
             local limit = array[squad].LIMIT
             local members = array[squad].MEMBERS
+            local faction = array[squad].FACTION
             local memberCount = table.Count(array[squad].MEMBERS)
             local protected = string.len(password) != 0
 
@@ -9305,7 +9306,7 @@ function Menu.OpenTab.Match()
                 surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
                 draw.SimpleTextOutlined(squad, "PuristaBold32", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-                draw.SimpleTextOutlined(status, "PuristaBold18", w / 2, EFGM.MenuScale(37), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+                draw.SimpleTextOutlined(status .. " | " .. (faction == 1 and "PMCs" or faction == 2 and "SCAVs"), "PuristaBold18", w / 2, EFGM.MenuScale(37), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
             end
 
@@ -9355,7 +9356,7 @@ function Menu.OpenTab.Match()
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
                 surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
-                draw.SimpleTextOutlined("MEMBERS", "PuristaBold24", EFGM.MenuScale(5), 0, Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+                draw.SimpleTextOutlined("MEMBERS [" .. memberCount .. "/" .. limit .. "]", "PuristaBold24", EFGM.MenuScale(5), 0, Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
                 for k, v in SortedPairs(members) do
 

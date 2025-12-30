@@ -106,6 +106,13 @@ if SERVER then
             local spawns = {}
             local spawnGroup = nil
 
+            local faction
+            if #plys <= 1 then
+                status = (plys[1]:CompareFaction(true) and playerStatus.PMC) or (plys[1]:CompareFaction(false) and playerStatus.SCAV)
+            else
+                status = SQUADS[squad].FACTION
+            end
+
             SQUADS[squad] = nil
             NetworkSquadInfoToClients()
 
@@ -123,9 +130,7 @@ if SERVER then
                     return
                 end
 
-                if status == "nil" then -- automatically set status depending on players faction
-                    status = (v:CompareFaction(true) and playerStatus.PMC) or (v:CompareFaction(false) and playerStatus.SCAV)
-                end
+                if status == "nil" then status = faction end -- automatically set status depending on players faction
 
                 net.Start("PlayerRaidTransition")
                 net.Send(v)
@@ -377,6 +382,17 @@ if SERVER then
 
         function plyMeta:SetFaction(fac)
             if !self:CompareStatus(0) then return end
+            if self:GetNW2String("PlayerInSquad", "nil") != "nil" then
+                net.Start("SendNotification", false)
+                net.WriteString("Can not change factions while in a squad!")
+                net.WriteString("icons/exclamation_icon.png")
+                net.WriteString("ui/squad_joined.wav")
+                net.Send(self)
+                return
+            end
+
+            if fac == self:GetNWBool("PlayerIsPMC", true) then return end
+
             fac = fac or !self:GetNWBool("PlayerIsPMC", true) -- switches if faction isn't specified
 
             if fac == false then -- scav
@@ -501,7 +517,6 @@ if SERVER then
             end
 
             if plySquad == "nil" then RAID:SpawnPlayers({ply}, "nil", "nil") return end
-
             if table.Count(SQUADS[plySquad].MEMBERS) <= 1 then RAID:SpawnPlayers({ply}, "nil", plySquad) return end
 
             local plys = {}
