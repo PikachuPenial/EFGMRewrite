@@ -3485,14 +3485,6 @@ function Menu.ReloadInventory()
 
         function item:DoDoubleClick()
 
-            if GetConVar("efgm_menu_doubleclick_consume"):GetInt() == 1 and !Menu.Player:CompareStatus(0) and i.equipType == EQUIPTYPE.Consumable then
-
-                ConsumeItemFromInventory(v.id)
-                surface.PlaySound("ui/element_consume.wav")
-                return
-
-            end
-
             Menu.InspectItem(v.name, v.data)
             surface.PlaySound("ui/element_select.wav")
 
@@ -4924,6 +4916,8 @@ function Menu.ReloadSlots()
     meleeWeaponText:SetPos(equipmentHolder:GetWide() - meleeWeaponText:GetWide(), meleeWeaponHolder:GetY() - EFGM.MenuScale(30))
     nadeWeaponHolder:SetPos(equipmentHolder:GetWide() - nadeWeaponHolder:GetWide(), meleeWeaponHolder:GetY() - nadeWeaponHolder:GetTall() - EFGM.MenuScale(40))
     nadeWeaponText:SetPos(equipmentHolder:GetWide() - nadeWeaponText:GetWide(), nadeWeaponHolder:GetY() - EFGM.MenuScale(30))
+    consumableItemHolder:SetPos(0, consumableHolder:GetTall() - consumableItemHolder:GetTall())
+    consumableItemText:SetPos(0, consumableItemHolder:GetY() - EFGM.MenuScale(30))
 
 end
 
@@ -6072,6 +6066,11 @@ function Menu.OpenTab.Inventory(container)
     equipmentHolder:SetSize(EFGM.MenuScale(450), EFGM.MenuScale(850))
     equipmentHolder.Paint = nil
 
+    consumableHolder = vgui.Create("DPanel", playerPanel)
+    consumableHolder:SetPos(EFGM.MenuScale(10), EFGM.MenuScale(655))
+    consumableHolder:SetSize(EFGM.MenuScale(125), EFGM.MenuScale(200))
+    consumableHolder.Paint = nil
+
     -- secondary slot
     secondaryWeaponHolder = vgui.Create("DPanel", equipmentHolder)
     secondaryWeaponHolder:SetSize(EFGM.MenuScale(285), EFGM.MenuScale(114))
@@ -6274,6 +6273,47 @@ function Menu.OpenTab.Inventory(container)
         surface.DrawRect(0, 0, EFGM.MenuScale(220), EFGM.MenuScale(2))
 
         draw.SimpleTextOutlined("NADE", "PuristaBold24", w / 2, EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+
+    end
+
+    -- nade slot
+    consumableItemHolder = vgui.Create("DPanel", consumableHolder)
+    consumableItemHolder:SetSize(EFGM.MenuScale(57), EFGM.MenuScale(57))
+    consumableItemHolder:SetPos(0, consumableHolder:GetTall() - consumableItemHolder:GetTall())
+
+    function consumableItemHolder:Paint(w, h)
+
+        BlurPanel(consumableItemHolder, EFGM.MenuScale(3))
+
+        surface.SetDrawColor(Colors.containerBackgroundColor)
+        surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(Colors.whiteBorderColor)
+        surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+        surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
+        surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+        surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
+
+        if !table.IsEmpty(playerWeaponSlots[5][1]) then return end
+
+        surface.SetDrawColor(Colors.weaponSilhouetteColor)
+        surface.SetMaterial(Mats.invMedicalIcon)
+        surface.DrawTexturedRect(0, 0, EFGM.MenuScale(57), EFGM.MenuScale(57))
+
+    end
+
+    consumableItemText = vgui.Create("DPanel", consumableHolder)
+    consumableItemText:SetSize(EFGM.MenuScale(85), EFGM.MenuScale(30))
+    consumableItemText:SetPos(0, consumableItemHolder:GetY() - EFGM.MenuScale(30))
+    consumableItemText.Paint = function(s, w, h)
+
+        surface.SetDrawColor(Colors.containerBackgroundColor)
+        surface.DrawRect(0, 0, w, h)
+
+        surface.SetDrawColor(Colors.transparentWhiteColor)
+        surface.DrawRect(0, 0, EFGM.MenuScale(220), EFGM.MenuScale(2))
+
+        draw.SimpleTextOutlined("MEDICAL", "PuristaBold24", w / 2, EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
     end
 
@@ -10810,7 +10850,7 @@ function Menu.OpenTab.Settings()
     utilityThrowablePanel:SetSize(0, EFGM.MenuScale(55))
     function utilityThrowablePanel:Paint(w, h)
 
-        draw.SimpleTextOutlined("Throwable", "Purista18", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined("Throwable Weapon", "Purista18", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
     end
 
@@ -10821,6 +10861,25 @@ function Menu.OpenTab.Settings()
     function utilityThrowable:OnChange(num)
 
         RunConsoleCommand("efgm_bind_equip_utility", utilityThrowable:GetSelectedNumber())
+
+    end
+
+    local medicalItemPanel = vgui.Create("DPanel", controls)
+    medicalItemPanel:Dock(TOP)
+    medicalItemPanel:SetSize(0, EFGM.MenuScale(55))
+    function medicalItemPanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Medical Item", "Purista18", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+
+    end
+
+    local medicalItem = vgui.Create("DBinder", medicalItemPanel)
+    medicalItem:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(30))
+    medicalItem:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
+    medicalItem:SetSelectedNumber(GetConVar("efgm_bind_equip_medical"):GetInt())
+    function medicalItem:OnChange(num)
+
+        RunConsoleCommand("efgm_bind_equip_medical", medicalItem:GetSelectedNumber())
 
     end
 
@@ -11059,20 +11118,6 @@ function Menu.OpenTab.Settings()
     menuScalingMethod.OnSelect = function(self, value)
         RunConsoleCommand("efgm_menu_scalingmethod", value - 1)
     end
-
-    local menuDoubleConsumePanel = vgui.Create("DPanel", interface)
-    menuDoubleConsumePanel:Dock(TOP)
-    menuDoubleConsumePanel:SetSize(0, EFGM.MenuScale(50))
-    function menuDoubleConsumePanel:Paint(w, h)
-
-        draw.SimpleTextOutlined("Consume Item On Double Click", "Purista18", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-
-    end
-
-    local menuDoubleConsume = vgui.Create("DCheckBox", menuDoubleConsumePanel)
-    menuDoubleConsume:SetPos(EFGM.MenuScale(152), EFGM.MenuScale(30))
-    menuDoubleConsume:SetConVar("efgm_menu_doubleclick_consume")
-    menuDoubleConsume:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
 
     local menuDeletePromptPanel = vgui.Create("DPanel", interface)
     menuDeletePromptPanel:Dock(TOP)

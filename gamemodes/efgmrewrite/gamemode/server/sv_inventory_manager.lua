@@ -531,7 +531,7 @@ function UnequipAllFirearms(ply)
 
     for i = 1, #table.GetKeys(WEAPONSLOTS) do
 
-        if i == WEAPONSLOTS.MELEE.ID or i == WEAPONSLOTS.UTILITY.ID then continue end
+        if i == WEAPONSLOTS.MELEE.ID then continue end
 
         for k, v in pairs(ply.weaponSlots[i]) do
 

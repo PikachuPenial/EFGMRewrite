@@ -23,6 +23,7 @@ if CLIENT then
     CreateClientConVar("efgm_bind_equip_secondary", KEY_3, true, true, "Determines the keybind that equips your secondary")
     CreateClientConVar("efgm_bind_equip_melee", KEY_4, true, true, "Determines the keybind that equips your melee")
     CreateClientConVar("efgm_bind_equip_utility", KEY_5, true, true, "Determines the keybind that equips your grenade")
+    CreateClientConVar("efgm_bind_equip_medical", KEY_H, true, true, "Determines the keybind that equips your medical item")
 end
 
 -- toggle crouch
@@ -203,6 +204,12 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
             return
         end
 
+        -- equip medical
+        if button == ply:GetInfoNum("efgm_bind_equip_medical", KEY_H) then
+            ply:ConCommand("efgm_inventory_equip " .. WEAPONSLOTS.MEDICAL.ID)
+            return
+        end
+
     end
 
     -- SHARED (for networking/prediction)
@@ -370,6 +377,11 @@ if game.SinglePlayer() then
         -- equip grenade
         if button == ply:GetInfoNum("efgm_bind_equip_utility", KEY_5) then
             ply:ConCommand("efgm_inventory_equip " .. WEAPONSLOTS.GRENADE.ID)
+            return
+        end
+
+        if button == ply:GetInfoNum("efgm_bind_equip_medical", KEY_H) then
+            ply:ConCommand("efgm_inventory_equip " .. WEAPONSLOTS.MEDICAL.ID)
             return
         end
 

@@ -415,7 +415,7 @@ hook.Add("SetupMove", "VBSetupMove", function(ply, mv, cmd)
 
     if ply:OnGround() and ply:GetMoveType() == MOVETYPE_WALK then
         if mv:KeyDown(IN_SPEED) then
-            FT = FT * 0.9
+            FT = FT * 1.08
         end
 
         local runspeed = ply:GetWalkSpeed()
@@ -593,6 +593,8 @@ hook.Add("CalcViewModelView", "VBCalcViewModelView", function(wep, vm, oldpos, o
 		ply:VBSpring(SpringStop)
 	end
 
+    local isSprinting = ply:KeyDown(IN_SPEED) and requestedmove and !GetSighted(wep)
+
 	LerpedInertia = Lerp(FT * 5, LerpedInertia, inertiamul)
 	-- VBAngCalc.x = VBAngCalc.x + 10 * LerpedInertia
 	VBAngCalc.z = VBAngCalc.z + 10 * LerpedInertia
@@ -607,13 +609,13 @@ hook.Add("CalcViewModelView", "VBCalcViewModelView", function(wep, vm, oldpos, o
 	local swayt_x = (sway_x == 0 and 6) or 4
 	local swayt_y = (sway_y == 0 and 6) or 4
 
-	if IFTP and UCT != UnPredictedCurTime() then
-        LerpedSway_X = Lerp(FT * swayt_x, LerpedSway_X, sway_x)
-        LerpedSway_Y = Lerp(FT * swayt_y, LerpedSway_Y, sway_y)
-        SpringSway[1] = LerpedSway_X * -0.005
-        SpringSway[2] = LerpedSway_Y * -0.01
-        ply:VBSpring(SpringSway)
-	end
+	-- if IFTP and UCT != UnPredictedCurTime() then
+        -- LerpedSway_X = Lerp(FT * swayt_x, LerpedSway_X, sway_x)
+        -- LerpedSway_Y = Lerp(FT * swayt_y, LerpedSway_Y, sway_y)
+        -- SpringSway[1] = LerpedSway_X * -0.005
+        -- SpringSway[2] = LerpedSway_Y * -0.01
+        -- ply:VBSpring(SpringSway)
+	-- end
 
 	local r = ang:Right()
 	local up = ang:Up()
@@ -632,13 +634,13 @@ hook.Add("CalcViewModelView", "VBCalcViewModelView", function(wep, vm, oldpos, o
 
 	if IFTP and UCT != UnPredictedCurTime() then
 		LerpedSway_Tilt = Lerp(FrameTime() * swayt_tilt, LerpedSway_Tilt, sway_tilt)
-		SpringTilt[3] = LerpedSway_Tilt * 0.01
+		SpringTilt[3] = LerpedSway_Tilt * (!isSprinting and 0.01 or (SP and 0.05 or 0.15))
 		ply:VBSpring(SpringTilt)
 	end
 
 	VBPosCalc:Add(up * math.sin(VMTime * 10) * 0.1)
-	VBPosCalc:Add(r * math.sin(VMTime * 5) * 0.05)
-	VBPosCalc:Sub(f * math.sin(VMTime * 5) * 0.25)
+	VBPosCalc:Add(r * math.sin(VMTime * 5) * (!isSprinting and 0.05 or 0.1))
+	VBPosCalc:Sub(f * math.sin(VMTime * 5) * 0.5)
 
 	VBAngCalc.z = VBAngCalc.z + math.sin(VMTime * 10) * 0.375
 	-- VBAngCalc.x = VBAngCalc.x + math.abs(math.sin(VMTime * 5) * 0.035)

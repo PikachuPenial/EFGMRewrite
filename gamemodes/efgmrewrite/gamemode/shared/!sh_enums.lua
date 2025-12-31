@@ -30,7 +30,7 @@ WEAPONSLOTS = {
     HOLSTER =   {ID = 2, COUNT = 1},
     MELEE =     {ID = 3, COUNT = 1},
     GRENADE =   {ID = 4, COUNT = 1},
-    UTILITY =   {ID = 5, COUNT = 3}
+    MEDICAL =   {ID = 5, COUNT = 1}
 }
 
 HITGROUPS = {
