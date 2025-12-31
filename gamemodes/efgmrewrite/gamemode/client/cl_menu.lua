@@ -3369,12 +3369,13 @@ function Menu.ReloadInventory()
         item.SLOT = i.equipSlot
         item.ORIGIN = "inventory"
 
-        if i.equipType == EQUIPTYPE.Weapon then
+        if i.equipType == EQUIPTYPE.Weapon or i.equipType == EQUIPTYPE.Consumable then
 
             if item.SLOT == WEAPONSLOTS.PRIMARY.ID then item:Droppable("slot_primary") end
             if item.SLOT == WEAPONSLOTS.HOLSTER.ID then item:Droppable("slot_holster") end
             if item.SLOT == WEAPONSLOTS.MELEE.ID then item:Droppable("slot_melee") end
             if item.SLOT == WEAPONSLOTS.GRENADE.ID then item:Droppable("slot_grenade") end
+            if item.SLOT == WEAPONSLOTS.MEDICAL.ID then item:Droppable("slot_consumable") end
 
         end
 
@@ -3474,7 +3475,7 @@ function Menu.ReloadInventory()
 
             end
 
-            if input.IsKeyDown(KEY_LALT) and (i.equipType == EQUIPTYPE.Weapon) then
+            if input.IsKeyDown(KEY_LALT) and (i.equipType == EQUIPTYPE.Weapon or i.equipType == EQUIPTYPE.Consumable) then
 
                 surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
                 EquipItemFromInventory(v.id, i.equipSlot)
@@ -4906,6 +4907,200 @@ function Menu.ReloadSlots()
 
     end
 
+    if !table.IsEmpty(playerWeaponSlots[5][1]) then
+
+        -- CONSUMABLES
+
+        local i = EFGMITEMS[playerWeaponSlots[5][1].name]
+
+        if IsValid(consumableItem) then consumableItem:Remove() end
+        consumableItem = vgui.Create("DButton", consumableItemHolder)
+        consumableItem:Dock(FILL)
+        consumableItem:SetText("")
+        consumableItem:Droppable("items")
+        consumableItem:Droppable("slot_consumable")
+        consumableItem.SLOTID = 5
+        consumableItem.SLOT = 1
+        consumableItem.ORIGIN = "equipped"
+
+        consumableItemHolder:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
+
+        function consumableItem:Paint(w, h)
+
+            if !self:IsHovered() then surface.SetDrawColor(Colors.itemBackgroundColor) else surface.SetDrawColor(Colors.itemBackgroundColorHovered) end
+            surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+            surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
+            surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+            surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
+
+            surface.SetDrawColor(i.iconColor or Colors.itemColor)
+            surface.DrawRect(0, 0, w, h)
+
+            surface.SetDrawColor(Colors.pureWhiteColor)
+            surface.SetMaterial(i.icon)
+            surface.DrawTexturedRect(0, 0, w, h)
+
+        end
+
+        surface.SetFont("Purista18")
+
+        local nameSize = surface.GetTextSize(i.displayName)
+        local nameFont
+
+        if nameSize <= (EFGM.MenuScale(46.5 * i.sizeX)) then nameFont = "PuristaBold18"
+        else nameFont = "PuristaBold14" end
+
+        local duraSize = surface.GetTextSize(i.consumableValue .. "/" .. i.consumableValue)
+        local duraSizeY = nil
+        local duraFont = nil
+
+        if duraSize <= (EFGM.MenuScale(46.5 * i.sizeX)) then duraFont = "PuristaBold18" duraSizeY = EFGM.MenuScale(19)
+        else duraFont = "PuristaBold14" duraSizeY = EFGM.MenuScale(15) end
+
+        function consumableItem:PaintOver(w, h)
+
+            draw.SimpleTextOutlined(i.displayName, nameFont, w - EFGM.MenuScale(3), EFGM.MenuScale(-1), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+
+            if playerWeaponSlots[5][1].data and playerWeaponSlots[5][1].data.durability then
+
+                draw.SimpleTextOutlined(playerWeaponSlots[5][1].data.durability .. "/" .. i.consumableValue, duraFont, w - EFGM.MenuScale(3), h - duraSizeY, Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+
+            end
+
+            if playerWeaponSlots[5][1].data and playerWeaponSlots[5][1].data.fir then
+
+                surface.SetDrawColor(Colors.pureWhiteColor)
+                surface.SetMaterial(Mats.firIcon)
+                surface.DrawTexturedRect(w - EFGM.MenuScale(16), h - EFGM.MenuScale(16), EFGM.MenuScale(14), EFGM.MenuScale(14))
+
+            end
+
+        end
+
+        consumableItem.OnCursorEntered = function(s)
+
+            surface.PlaySound("ui/inv_item_hover_" .. math.random(1, 3) .. ".wav")
+
+        end
+
+        function consumableItem:DoClick()
+
+            if input.IsKeyDown(KEY_LSHIFT) then
+
+                surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
+                UnEquipItemFromInventory(consumableItem.SLOTID, consumableItem.SLOT)
+
+            end
+
+        end
+
+        function consumableItem:DoDoubleClick()
+
+            Menu.InspectItem(playerWeaponSlots[5][1].name, playerWeaponSlots[5][1].data)
+            surface.PlaySound("ui/element_select.wav")
+
+        end
+
+        function consumableItem:DoRightClick()
+
+            local x, y = consumableHolder:LocalCursorPos()
+            local sideH, sideV
+
+            surface.PlaySound("ui/context.wav")
+
+            if x <= (consumableHolder:GetWide() / 2) then sideH = true else sideH = false end
+            if y <= (consumableHolder:GetTall() / 2) then sideV = true else sideV = false end
+
+            if IsValid(contextMenu) then contextMenu:Remove() end
+            contextMenu = vgui.Create("EFGMContextMenu", consumableHolder)
+            contextMenu:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(10))
+            contextMenu:DockPadding(EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5), EFGM.MenuScale(5))
+            contextMenu:SetAlpha(0)
+            contextMenu:AlphaTo(255, 0.1, 0, nil)
+            contextMenu:RequestFocus()
+
+            local inspectButton = vgui.Create("EFGMContextButton", contextMenu)
+            inspectButton:SetText("INSPECT")
+            inspectButton.OnClickEvent = function()
+
+                Menu.InspectItem(playerWeaponSlots[5][1].name, playerWeaponSlots[5][1].data)
+
+            end
+
+            if Menu.Player:CompareStatus(0) and table.IsEmpty(Menu.Container) then
+
+                local stashButton = vgui.Create("EFGMContextButton", contextMenu)
+                stashButton:SetText("STASH")
+                stashButton.OnClickSound = "ui/equip_" .. math.random(1, 6) .. ".wav"
+                stashButton.OnClickEvent = function()
+
+                    StashItemFromEquipped(consumableItem.SLOTID, consumableItem.SLOT)
+
+                end
+
+            end
+
+            local unequipButton = vgui.Create("EFGMContextButton", contextMenu)
+            unequipButton:SetText("UNEQUIP")
+            unequipButton.OnClickSound = "ui/equip_" .. math.random(1, 6) .. ".wav"
+            unequipButton.OnClickEvent = function()
+
+                UnEquipItemFromInventory(consumableItem.SLOTID, consumableItem.SLOT)
+
+            end
+
+            local dropButton = vgui.Create("EFGMContextButton", contextMenu)
+            dropButton:SetText("DROP")
+            dropButton.OnClickEvent = function()
+
+                DropEquippedItem(consumableItem.SLOTID, consumableItem.SLOT)
+
+            end
+
+            if Menu.Player:CompareStatus(0) then
+
+                local deleteButton = vgui.Create("EFGMContextButton", contextMenu)
+                deleteButton:SetText("DELETE")
+                deleteButton.OnClickSound = "nil"
+                deleteButton.OnClickEvent = function()
+
+                    Menu.ConfirmDelete(playerWeaponSlots[5][1].name, 0, "equipped", consumableItem.SLOTID, consumableItem.SLOT)
+
+                end
+
+            end
+
+            contextMenu:SetTallAfterCTX()
+
+            if sideH == true then
+
+                contextMenu:SetX(math.Clamp(x + EFGM.MenuScale(5), EFGM.MenuScale(5), consumableHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+            else
+
+                contextMenu:SetX(math.Clamp(x - contextMenu:GetWide() - EFGM.MenuScale(5), EFGM.MenuScale(5), consumableHolder:GetWide() - contextMenu:GetWide() - EFGM.MenuScale(5)))
+
+            end
+
+            if sideV == true then
+
+                contextMenu:SetY(math.Clamp(y + EFGM.MenuScale(5), EFGM.MenuScale(5), consumableHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
+
+            else
+
+                contextMenu:SetY(math.Clamp(y - contextMenu:GetTall() + EFGM.MenuScale(5), EFGM.MenuScale(5), consumableHolder:GetTall() - contextMenu:GetTall() - EFGM.MenuScale(5)))
+
+            end
+
+        end
+
+    else
+
+        consumableItemHolder:SetSize(EFGM.MenuScale(57), EFGM.MenuScale(57))
+        if IsValid(consumableItem) then consumableItem:Remove() end
+
+    end
+
     secondaryWeaponHolder:SetPos(equipmentHolder:GetWide() - secondaryWeaponHolder:GetWide(), equipmentHolder:GetTall() - secondaryWeaponHolder:GetTall())
     secondaryWeaponText:SetPos(equipmentHolder:GetWide() - secondaryWeaponText:GetWide(), secondaryWeaponHolder:GetY() - EFGM.MenuScale(30))
     primaryWeaponHolder:SetPos(equipmentHolder:GetWide() - primaryWeaponHolder:GetWide(), secondaryWeaponHolder:GetY() - primaryWeaponHolder:GetTall() - EFGM.MenuScale(40))
@@ -5038,12 +5233,13 @@ function Menu.ReloadStash(firstReload)
         item.SLOT = i.equipSlot
         item.ORIGIN = "stash"
 
-        if i.equipType == EQUIPTYPE.Weapon then
+        if i.equipType == EQUIPTYPE.Weapon or i.equipType == EQUIPTYPE.Consumable then
 
             if item.SLOT == WEAPONSLOTS.PRIMARY.ID then item:Droppable("slot_primary") end
             if item.SLOT == WEAPONSLOTS.HOLSTER.ID then item:Droppable("slot_holster") end
             if item.SLOT == WEAPONSLOTS.MELEE.ID then item:Droppable("slot_melee") end
             if item.SLOT == WEAPONSLOTS.GRENADE.ID then item:Droppable("slot_grenade") end
+            if item.SLOT == WEAPONSLOTS.MEDICAL.ID then item:Droppable("slot_consumable") end
 
         end
 
@@ -5155,7 +5351,7 @@ function Menu.ReloadStash(firstReload)
 
             end
 
-            if input.IsKeyDown(KEY_LALT) and (i.equipType == EQUIPTYPE.Weapon) then
+            if input.IsKeyDown(KEY_LALT) and (i.equipType == EQUIPTYPE.Weapon or i.equipType == EQUIPTYPE.Consumable) then
 
                 surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
                 EquipItemFromStash(v.id, i.equipSlot)
@@ -5493,12 +5689,13 @@ function Menu.ReloadMarketStash()
         item.SLOT = i.equipSlot
         item.ORIGIN = "stash"
 
-        if i.equipType == EQUIPTYPE.Weapon then
+        if i.equipType == EQUIPTYPE.Weapon or i.equipType == EQUIPTYPE.Consumable then
 
             if item.SLOT == WEAPONSLOTS.PRIMARY.ID then item:Droppable("slot_primary") end
             if item.SLOT == WEAPONSLOTS.HOLSTER.ID then item:Droppable("slot_holster") end
             if item.SLOT == WEAPONSLOTS.MELEE.ID then item:Droppable("slot_melee") end
             if item.SLOT == WEAPONSLOTS.GRENADE.ID then item:Droppable("slot_grenade") end
+            if item.SLOT == WEAPONSLOTS.MEDICAL.ID then item:Droppable("slot_consumable") end
 
         end
 
@@ -5775,12 +5972,13 @@ function Menu.ReloadContainer()
         item.ID = v.id
         item.ORIGIN = "container"
 
-        if i.equipType == EQUIPTYPE.Weapon then
+        if i.equipType == EQUIPTYPE.Weapon or i.equipType == EQUIPTYPE.Consumable then
 
             if item.SLOT == WEAPONSLOTS.PRIMARY.ID then item:Droppable("slot_primary") end
             if item.SLOT == WEAPONSLOTS.HOLSTER.ID then item:Droppable("slot_holster") end
             if item.SLOT == WEAPONSLOTS.MELEE.ID then item:Droppable("slot_melee") end
             if item.SLOT == WEAPONSLOTS.GRENADE.ID then item:Droppable("slot_grenade") end
+            if item.SLOT == WEAPONSLOTS.MEDICAL.ID then item:Droppable("slot_consumable") end
 
         end
 
@@ -6068,7 +6266,7 @@ function Menu.OpenTab.Inventory(container)
 
     consumableHolder = vgui.Create("DPanel", playerPanel)
     consumableHolder:SetPos(EFGM.MenuScale(10), EFGM.MenuScale(655))
-    consumableHolder:SetSize(EFGM.MenuScale(125), EFGM.MenuScale(200))
+    consumableHolder:SetSize(EFGM.MenuScale(300), EFGM.MenuScale(200))
     consumableHolder.Paint = nil
 
     -- secondary slot
@@ -6276,7 +6474,7 @@ function Menu.OpenTab.Inventory(container)
 
     end
 
-    -- nade slot
+    -- medical slot
     consumableItemHolder = vgui.Create("DPanel", consumableHolder)
     consumableItemHolder:SetSize(EFGM.MenuScale(57), EFGM.MenuScale(57))
     consumableItemHolder:SetPos(0, consumableHolder:GetTall() - consumableItemHolder:GetTall())
@@ -6407,6 +6605,27 @@ function Menu.OpenTab.Inventory(container)
 
         if !dropped then return end
         if !table.IsEmpty(playerWeaponSlots[4][1]) then return end
+
+        if panels[1].ORIGIN == "inventory" then
+
+            surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
+            EquipItemFromInventory(panels[1].ID, panels[1].SLOT)
+
+        end
+
+        if panels[1].ORIGIN == "stash" then
+
+            surface.PlaySound("ui/equip_" .. math.random(1, 6) .. ".wav")
+            EquipItemFromStash(panels[1].ID, panels[1].SLOT)
+
+        end
+
+    end)
+
+    consumableItemHolder:Receiver("slot_consumable", function(self, panels, dropped, _, x, y)
+
+        if !dropped then return end
+        if !table.IsEmpty(playerWeaponSlots[5][1]) then return end
 
         if panels[1].ORIGIN == "inventory" then
 

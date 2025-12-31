@@ -640,7 +640,7 @@ hook.Add("CalcViewModelView", "VBCalcViewModelView", function(wep, vm, oldpos, o
 
 	VBPosCalc:Add(up * math.sin(VMTime * 10) * 0.1)
 	VBPosCalc:Add(r * math.sin(VMTime * 5) * (!isSprinting and 0.05 or 0.1))
-	VBPosCalc:Sub(f * math.sin(VMTime * 5) * 0.5)
+	VBPosCalc:Sub(f * math.sin(VMTime * 5) * 0.25)
 
 	VBAngCalc.z = VBAngCalc.z + math.sin(VMTime * 10) * 0.375
 	-- VBAngCalc.x = VBAngCalc.x + math.abs(math.sin(VMTime * 5) * 0.035)
