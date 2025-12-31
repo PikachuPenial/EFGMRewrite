@@ -593,7 +593,7 @@ hook.Add("CalcViewModelView", "VBCalcViewModelView", function(wep, vm, oldpos, o
 		ply:VBSpring(SpringStop)
 	end
 
-    local isSprinting = ply:KeyDown(IN_SPEED) and requestedmove and !GetSighted(wep)
+    local isSprinting = ply:KeyDown(IN_SPEED) and ply:KeyDown(IN_FORWARD) and requestedmove and !GetSighted(wep) and ply:IsOnGround()
 
 	LerpedInertia = Lerp(FT * 5, LerpedInertia, inertiamul)
 	-- VBAngCalc.x = VBAngCalc.x + 10 * LerpedInertia
