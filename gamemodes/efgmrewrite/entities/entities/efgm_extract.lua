@@ -43,7 +43,6 @@ function ENT:KeyValue(key, value)
 		self.RequiredItem = value
 	end
 
-
 	if key == "OnPlayerExtract" then
 		self:StoreOutput(key, value)
 	end
@@ -70,6 +69,7 @@ function ENT:Initialize()
 end
 
 function ENT:AcceptInput(name, ply, caller, data)
+
 	if name == "EnableExtract" then
         self.IsDisabled = false
         self:TriggerOutput( "OnExtractEnabled", ply, data )
@@ -100,6 +100,12 @@ function ENT:AcceptInput(name, ply, caller, data)
 		if self.IsDisabled then -- disabled
 			net.Start("SendNotification", false)
 			net.WriteString(self.DisabledMessage)
+			net.WriteString("icons/extract_disabled_icon.png")
+			net.WriteString("ui/squad_leave.wav")
+			net.Send(ply)
+		elseif self.Accessibility != 0 && self.Accessibility != ply:GetNWInt("PlayerRaidStatus", 0) then
+			net.Start("SendNotification", false)
+			net.WriteString("This extract can not be used by your faction!")
 			net.WriteString("icons/extract_disabled_icon.png")
 			net.WriteString("ui/squad_leave.wav")
 			net.Send(ply)

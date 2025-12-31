@@ -199,8 +199,7 @@ if SERVER then
             local extracts = {}
 
             for k, v in pairs(ents.FindByClass("efgm_extract")) do
-
-                if ply:CompareSpawnGroup(v.ExtractGroup) then
+                if ply:CompareSpawnGroup(v.ExtractGroup) and (v.Accessibility == 0 or ply:GetNWInt("PlayerRaidStatus", 0) == v.Accessibility) then
                     local tbl = {}
                     tbl.ExtractName = v.ExtractName
                     tbl.ExtractTime = v.ExtractTime
@@ -574,7 +573,7 @@ if SERVER then
     net.Receive("GrabExtractList", function(len, ply)
         local extracts = RAID.GetCurrentExtracts(ply)
 
-        if not istable(extracts) then return end
+        if !istable(extracts) then return end
 
         net.Start("SendExtractList")
         net.WriteTable(extracts)

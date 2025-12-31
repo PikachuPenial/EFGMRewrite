@@ -113,7 +113,7 @@ if GetConVar("efgm_derivesbox"):GetInt() == 1 then
         landmark2X:SetMax(mapSizeX)
         landmark2X:SetMin(0)
         landmark2X:SetDecimals(2)
-        
+
         local landmark2Y = vgui.Create("DNumSlider", dbmapFrame)
         landmark2Y:Dock(TOP)
         landmark2Y:SetText("Landmark 2 Y Pos")
@@ -121,11 +121,11 @@ if GetConVar("efgm_derivesbox"):GetInt() == 1 then
         landmark2Y:SetMin(0)
         landmark2Y:SetDecimals(2)
 
-        local mapInfo = util.JSONToTable( file.Read(mapName.."_mapreport.json", "DATA") )
+        local mapInfo = util.JSONToTable(file.Read(mapName .. "_mapreport.json", "DATA"))
 
         local generateInfo = vgui.Create("DButton", dbmapFrame)
         generateInfo:Dock(TOP)
-        generateInfo:SetText("Generate Final "..mapName.." Map JSON")
+        generateInfo:SetText("Generate Final " .. mapName .. " Map JSON")
 
         function generateInfo:DoClick()
 
@@ -142,7 +142,7 @@ if GetConVar("efgm_derivesbox"):GetInt() == 1 then
         function mapPanel:Paint(w, h)
 
             surface.SetDrawColor(255, 255, 255, 255)
-            surface.SetMaterial(Material("maps/"..mapName..".png", "smooth"))
+            surface.SetMaterial(Material("maps/" .. mapName .. ".png", "smooth"))
             surface.DrawTexturedRect(0, 0, w, h)
 
             surface.SetDrawColor(52, 124, 218, 240)
@@ -155,7 +155,9 @@ if GetConVar("efgm_derivesbox"):GetInt() == 1 then
                 local offsetY = landmark1Y:GetValue() - (factorY * wsLandmark1Y)
 
                 surface.DrawCircle( (v.pos.x * factorX) + offsetX, (v.pos.y * factorY) + offsetY, 5 )
-                draw.DrawText( "PMC Spawn", "DermaDefault", (v.pos.x * factorX) + offsetX, (v.pos.y * factorY) + offsetY - 20, Color(52, 124, 218, 240), TEXT_ALIGN_CENTER )
+                if v.type == 1 then draw.DrawText( "PMC Spawn", "DermaDefault", (v.pos.x * factorX) + offsetX, (v.pos.y * factorY) + offsetY - 20, Color(52, 124, 218, 240), TEXT_ALIGN_CENTER )
+                elseif v.type == 2 then draw.DrawText( "SCAV Spawn", "DermaDefault", (v.pos.x * factorX) + offsetX, (v.pos.y * factorY) + offsetY - 20, Color(52, 124, 218, 240), TEXT_ALIGN_CENTER )
+                else draw.DrawText( "Global Spawn", "DermaDefault", (v.pos.x * factorX) + offsetX, (v.pos.y * factorY) + offsetY - 20, Color(52, 124, 218, 240), TEXT_ALIGN_CENTER ) end
 
             end
 
@@ -169,7 +171,7 @@ if GetConVar("efgm_derivesbox"):GetInt() == 1 then
                 local offsetY = landmark1Y:GetValue() - (factorY * wsLandmark1Y)
 
                 surface.DrawCircle( (v.pos.x * factorX) + offsetX, (v.pos.y * factorY) + offsetY, 5 )
-                surface.SetTextPos( (v.pos.x * factorX) + offsetX, (v.pos.y * factorY) + offsetY ) 
+                surface.SetTextPos( (v.pos.x * factorX) + offsetX, (v.pos.y * factorY) + offsetY )
                 draw.DrawText( v.name, "DermaDefault", (v.pos.x * factorX) + offsetX, (v.pos.y * factorY) + offsetY - 20, Color(19, 196, 34, 240), TEXT_ALIGN_CENTER )
 
             end

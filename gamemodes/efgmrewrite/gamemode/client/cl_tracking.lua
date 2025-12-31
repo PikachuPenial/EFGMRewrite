@@ -1,7 +1,7 @@
 
 -- TODO: Find better name for this file
 
-local interval = 0.1
+local interval = 0.2
 
 local raidPositions = {}
 local killPositions = {}

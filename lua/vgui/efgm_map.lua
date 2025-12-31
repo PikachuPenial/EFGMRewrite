@@ -122,19 +122,24 @@ function PANEL:Paint(w, h)
     if self.DrawFullInfo then
 
         surface.SetDrawColor(Colors.mapSpawn)
-        for k, v in pairs(self.MapInfo.spawns) do
+        for k, v in ipairs(self.MapInfo.spawns) do
 
             local posX = (v.pos.x * self.MapSizeX * self.Zoom) + self.PanOffset.x
             local posY = (v.pos.y * self.MapSizeY * self.Zoom) + self.PanOffset.y
 
             surface.SetDrawColor(Colors.mapWhite)
             surface.SetMaterial(Mats.mapSpawn)
-            surface.DrawTexturedRect(posX - EFGM.MenuScale(16), posY - EFGM.MenuScale(16), EFGM.MenuScale(32), EFGM.MenuScale(32))
+            surface.DrawTexturedRect(posX - EFGM.MenuScale(12), posY - EFGM.MenuScale(12), EFGM.MenuScale(24), EFGM.MenuScale(24))
+
+            local text = "ANY"
+            if v.type == 1 then text = "PMC" elseif v.type == 2 then text = "SCAV" end
+
+            draw.SimpleTextOutlined(text, "PuristaBold12", posX, posY + EFGM.MenuScale(8), Colors.pureWhiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
         end
 
         surface.SetDrawColor(Colors.mapExtract)
-        for k, v in pairs(self.MapInfo.extracts) do
+        for k, v in ipairs(self.MapInfo.extracts) do
 
             local posX = (v.pos.x * self.MapSizeX * self.Zoom) + self.PanOffset.x
             local posY = (v.pos.y * self.MapSizeY * self.Zoom) + self.PanOffset.y
@@ -144,36 +149,41 @@ function PANEL:Paint(w, h)
             surface.DrawTexturedRect(posX - EFGM.MenuScale(16), posY - EFGM.MenuScale(16), EFGM.MenuScale(32), EFGM.MenuScale(32))
 
             local text = v.name
-            draw.DrawText(text, "PuristaBold16", posX, posY - EFGM.MenuScale(36), Colors.mapExtract, TEXT_ALIGN_CENTER)
+            draw.SimpleTextOutlined(text, "PuristaBold16", posX, posY - EFGM.MenuScale(36), Colors.mapExtract, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+
+            local factionText = "ANY"
+            if v.accessibility == 1 then factionText = "PMC" elseif v.accessibility == 2 then factionText = "SCAV" end
+
+            draw.SimpleTextOutlined(factionText, "PuristaBold12", posX, posY + EFGM.MenuScale(16), Colors.pureWhiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
         end
 
         surface.SetDrawColor(Colors.mapLocation)
-        for k, v in pairs(self.MapInfo.locations) do
+        for k, v in ipairs(self.MapInfo.locations) do
 
             local posX = (v.pos.x * self.MapSizeX * self.Zoom) + self.PanOffset.x
             local posY = (v.pos.y * self.MapSizeY * self.Zoom) + self.PanOffset.y
 
             surface.SetDrawColor(Colors.mapWhite)
             surface.SetMaterial(Mats.mapLocation)
-            surface.DrawTexturedRect(posX - EFGM.MenuScale(32), posY - EFGM.MenuScale(32), EFGM.MenuScale(64), EFGM.MenuScale(64))
+            surface.DrawTexturedRect(posX - EFGM.MenuScale(24), posY - EFGM.MenuScale(24), EFGM.MenuScale(48), EFGM.MenuScale(48))
 
-            draw.DrawText( v.name, "PuristaBold16", posX, posY - EFGM.MenuScale(48), Colors.mapLocation, TEXT_ALIGN_CENTER)
-            draw.DrawText( "Loot: " .. v.loot .. "/5", "PuristaBold14", posX, posY + EFGM.MenuScale(32), Colors.mapLocation, TEXT_ALIGN_CENTER)
+            draw.SimpleTextOutlined(v.name, "PuristaBold16", posX, posY - EFGM.MenuScale(42), Colors.mapLocation, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+            draw.SimpleTextOutlined("LOOT: " .. v.loot .. "/5", "PuristaBold12", posX, posY + EFGM.MenuScale(24), Colors.pureWhiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
         end
 
         surface.SetDrawColor(Colors.mapKey)
-        for k, v in pairs(self.MapInfo.keys) do
+        for k, v in ipairs(self.MapInfo.keys) do
 
             local posX = (v.pos.x * self.MapSizeX * self.Zoom) + self.PanOffset.x
             local posY = (v.pos.y * self.MapSizeY * self.Zoom) + self.PanOffset.y
 
             surface.SetDrawColor(Colors.mapWhite)
             surface.SetMaterial(Mats.mapKey)
-            surface.DrawTexturedRect(posX - EFGM.MenuScale(16), posY - EFGM.MenuScale(16), EFGM.MenuScale(32), EFGM.MenuScale(32))
+            surface.DrawTexturedRect(posX - EFGM.MenuScale(12), posY - EFGM.MenuScale(12), EFGM.MenuScale(24), EFGM.MenuScale(24))
 
-            draw.DrawText( v.name, "PuristaBold16", posX, posY - EFGM.MenuScale(36), Colors.mapKey, TEXT_ALIGN_CENTER )
+            draw.SimpleTextOutlined(v.name, "PuristaBold16", posX, posY - EFGM.MenuScale(32), Colors.mapKey, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
         end
 
@@ -188,7 +198,7 @@ function PANEL:Paint(w, h)
     local previousPos = {}
     local startPos = {}
 
-    for k, v in pairs(RaidPositions) do
+    for k, v in ipairs(RaidPositions) do
 
         local posX = (v.x * self.MapSizeX * self.Zoom) + self.PanOffset.x
         local posY = (v.y * self.MapSizeY * self.Zoom) + self.PanOffset.y
@@ -249,7 +259,7 @@ function PANEL:Paint(w, h)
 
 
     surface.SetDrawColor(Colors.mapOverviewLine)
-    for k, v in pairs(KillPositions) do
+    for k, v in ipairs(KillPositions) do
 
         local posX = (v.x * self.MapSizeX * self.Zoom) + self.PanOffset.x
         local posY = (v.y * self.MapSizeY * self.Zoom) + self.PanOffset.y
