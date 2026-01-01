@@ -97,7 +97,7 @@ function Menu:Initialize(openTo, container)
     menuFrame:NoClipping(true)
     menuFrame:MouseCapture(false)
 
-    menuFrame:AlphaTo(255, 0.2, 0, function() self.IsOpen = true end)
+    menuFrame:AlphaTo(255, 0.2, 0, function() if menuFrame:IsActive() then self.IsOpen = true end end)
 
     self.Unblur = false
     self.Closing = false
@@ -1862,6 +1862,55 @@ function Menu.InspectItem(item, data)
 
         end
 
+        if i.equipType == EQUIPTYPE.Consumable and wep != nil then
+
+            wikiContentText:AppendText("\n")
+
+            local delay = wep["ConsumableDelay"] or nil
+            local time = wep["ConsumableTime"] or nil
+            local value = wep["ConsumableValue"] or nil
+            local ticks = wep["ConsumableTicks"] or nil
+            local range = wep["ConsumableRange"] or nil
+            local dmgCancel = wep["DamageCancel"] or false
+
+            if delay then
+
+                wikiContentText:AppendText("DELAY: " ..  delay .. "\n")
+
+            end
+
+            if time then
+
+                wikiContentText:AppendText("USE TIME: " ..  time .. "\n")
+
+            end
+
+            if value then
+
+                wikiContentText:AppendText("USAGE PER USE: " ..  value .. "\n")
+
+            end
+
+            if ticks then
+
+                wikiContentText:AppendText("TICKS PER USE: " ..  ticks .. "\n")
+
+            end
+
+            if range then
+
+                wikiContentText:AppendText("APPLICATION RANGE ON OTHER PLAYERS: " ..  range .. "\n")
+
+            end
+
+            if dmgCancel != nil then
+
+                wikiContentText:AppendText("CANCELLED ON DAMAGE TAKEN: " ..  string.upper(tostring(dmgCancel)) .. "\n")
+
+            end
+
+        end
+
         function wikiContentText:PerformLayout()
 
             wikiContentText:SetFontInternal("PuristaBold18")
@@ -3375,7 +3424,7 @@ function Menu.ReloadInventory()
             if item.SLOT == WEAPONSLOTS.HOLSTER.ID then item:Droppable("slot_holster") end
             if item.SLOT == WEAPONSLOTS.MELEE.ID then item:Droppable("slot_melee") end
             if item.SLOT == WEAPONSLOTS.GRENADE.ID then item:Droppable("slot_grenade") end
-            if item.SLOT == WEAPONSLOTS.MEDICAL.ID then item:Droppable("slot_consumable") end
+            if item.SLOT == WEAPONSLOTS.CONSUMABLE.ID then item:Droppable("slot_consumable") end
 
         end
 
@@ -3583,19 +3632,6 @@ function Menu.ReloadInventory()
                 tagButton.OnClickEvent = function()
 
                     Menu.ConfirmTag(v.name, v.id, "inv", 0, 0)
-
-                end
-
-            end
-
-            if actions.consumable then
-
-                local consumeButton = vgui.Create("EFGMContextButton", contextMenu)
-                consumeButton:SetText("USE")
-                consumeButton.OnClickSound = "ui/element_consume.wav"
-                consumeButton.OnClickEvent = function()
-
-                    ConsumeItemFromInventory(v.id)
 
                 end
 
@@ -5239,7 +5275,7 @@ function Menu.ReloadStash(firstReload)
             if item.SLOT == WEAPONSLOTS.HOLSTER.ID then item:Droppable("slot_holster") end
             if item.SLOT == WEAPONSLOTS.MELEE.ID then item:Droppable("slot_melee") end
             if item.SLOT == WEAPONSLOTS.GRENADE.ID then item:Droppable("slot_grenade") end
-            if item.SLOT == WEAPONSLOTS.MEDICAL.ID then item:Droppable("slot_consumable") end
+            if item.SLOT == WEAPONSLOTS.CONSUMABLE.ID then item:Droppable("slot_consumable") end
 
         end
 
@@ -5695,7 +5731,7 @@ function Menu.ReloadMarketStash()
             if item.SLOT == WEAPONSLOTS.HOLSTER.ID then item:Droppable("slot_holster") end
             if item.SLOT == WEAPONSLOTS.MELEE.ID then item:Droppable("slot_melee") end
             if item.SLOT == WEAPONSLOTS.GRENADE.ID then item:Droppable("slot_grenade") end
-            if item.SLOT == WEAPONSLOTS.MEDICAL.ID then item:Droppable("slot_consumable") end
+            if item.SLOT == WEAPONSLOTS.CONSUMABLE.ID then item:Droppable("slot_consumable") end
 
         end
 
@@ -5978,7 +6014,7 @@ function Menu.ReloadContainer()
             if item.SLOT == WEAPONSLOTS.HOLSTER.ID then item:Droppable("slot_holster") end
             if item.SLOT == WEAPONSLOTS.MELEE.ID then item:Droppable("slot_melee") end
             if item.SLOT == WEAPONSLOTS.GRENADE.ID then item:Droppable("slot_grenade") end
-            if item.SLOT == WEAPONSLOTS.MEDICAL.ID then item:Droppable("slot_consumable") end
+            if item.SLOT == WEAPONSLOTS.CONSUMABLE.ID then item:Droppable("slot_consumable") end
 
         end
 
@@ -6474,7 +6510,7 @@ function Menu.OpenTab.Inventory(container)
 
     end
 
-    -- medical slot
+    -- consumable slot
     consumableItemHolder = vgui.Create("DPanel", consumableHolder)
     consumableItemHolder:SetSize(EFGM.MenuScale(57), EFGM.MenuScale(57))
     consumableItemHolder:SetPos(0, consumableHolder:GetTall() - consumableItemHolder:GetTall())
@@ -11088,17 +11124,17 @@ function Menu.OpenTab.Settings()
     medicalItemPanel:SetSize(0, EFGM.MenuScale(55))
     function medicalItemPanel:Paint(w, h)
 
-        draw.SimpleTextOutlined("Medical Item", "Purista18", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined("Consumable Item", "Purista18", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
     end
 
     local medicalItem = vgui.Create("DBinder", medicalItemPanel)
     medicalItem:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(30))
     medicalItem:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
-    medicalItem:SetSelectedNumber(GetConVar("efgm_bind_equip_medical"):GetInt())
+    medicalItem:SetSelectedNumber(GetConVar("efgm_bind_equip_consumable"):GetInt())
     function medicalItem:OnChange(num)
 
-        RunConsoleCommand("efgm_bind_equip_medical", medicalItem:GetSelectedNumber())
+        RunConsoleCommand("efgm_bind_equip_consumable", medicalItem:GetSelectedNumber())
 
     end
 

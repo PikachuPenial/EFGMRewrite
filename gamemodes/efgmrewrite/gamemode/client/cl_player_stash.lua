@@ -213,16 +213,6 @@ function EquipItemFromStash(itemIndex, equipSlot, primaryPref)
 
 end
 
-function ConsumeItemFromStash(itemIndex)
-
-    if !ply:CompareStatus(0) then return end
-
-    net.Start("PlayerStashConsumeItem", false)
-    net.WriteUInt(itemIndex, 16)
-    net.SendToServer()
-
-end
-
 function PinItemFromStash(itemIndex)
 
     if !ply:CompareStatus(0) then return end

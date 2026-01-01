@@ -8,7 +8,6 @@ util.AddNetworkString("PlayerStashAddItemFromEquipped")
 util.AddNetworkString("PlayerStashAddAllFromInventory")
 util.AddNetworkString("PlayerStashTakeItemToInventory")
 util.AddNetworkString("PlayerStashEquipItem")
-util.AddNetworkString("PlayerStashConsumeItem")
 util.AddNetworkString("PlayerStashPinItem")
 
 function ReloadStash(ply)
@@ -394,58 +393,12 @@ net.Receive("PlayerStashEquipItem", function(len, ply)
 
         end
 
-        GiveWepWithPresetFromCode(ply, item.name, item.data.att)
+        GiveWepWithPresetFromCode(ply, item.name, item.data)
 
         ReloadStash(ply)
         ReloadSlots(ply)
 
     end
-
-end)
-
-net.Receive("PlayerStashConsumeItem", function(len, ply)
-
-    if !ply:CompareStatus(0) then return end
-
-    local itemIndex = net.ReadUInt(16)
-    local item = ply.stash[itemIndex]
-    local durability = item.data.durability
-
-    local i = EFGMITEMS[item.name]
-
-    -- heal
-    if i.consumableType == "heal" then
-
-        local healAmount = ply:GetMaxHealth() - ply:Health()
-
-        if durability < healAmount then healAmount = durability end
-
-        ply:SetHealth(math.min(ply:Health() + healAmount, 100))
-        ply.stash[itemIndex].data.durability = durability - healAmount
-
-        if ply.stash[itemIndex].data.durability > 0 then
-
-            net.Start("PlayerStashUpdateItem", false)
-            net.WriteTable(item.data)
-            net.WriteUInt(itemIndex, 16)
-            net.Send(ply)
-
-        else
-
-            net.Start("PlayerStashDeleteItem", false)
-            net.WriteUInt(itemIndex, 16)
-            net.Send(ply)
-
-            table.remove(ply.stash, itemIndex)
-
-            RemoveWeightFromPlayer(ply, item.name, item.data.count)
-
-        end
-
-    end
-
-    ReloadStash(ply)
-    ply:SetNWInt("StashCount", #ply.stash)
 
 end)
 

@@ -13,12 +13,12 @@ util.AddNetworkString("PlayerInventoryUnEquipAllCL")
 util.AddNetworkString("PlayerInventoryUpdateEquipped")
 util.AddNetworkString("PlayerInventoryDropEquippedItem")
 util.AddNetworkString("PlayerInventoryDeleteEquippedItem")
-util.AddNetworkString("PlayerInventoryConsumeItem")
 util.AddNetworkString("PlayerInventoryLootItemFromContainer")
 util.AddNetworkString("PlayerInventorySplit")
 util.AddNetworkString("PlayerInventoryDelete")
 util.AddNetworkString("PlayerInventoryTag")
 util.AddNetworkString("PlayerInventoryConsumeGrenade")
+util.AddNetworkString("PlayerInventoryRemoveConsumable")
 util.AddNetworkString("PlayerInventoryClearFIR")
 util.AddNetworkString("PlayerInventoryFixDesyncCL")
 util.AddNetworkString("efgm_sendpreset")
@@ -367,7 +367,7 @@ net.Receive("PlayerInventoryEquipItem", function(len, ply)
         DeleteItemFromInventory(ply, itemIndex, true)
         ply.weaponSlots[equipSlot][equipSubSlot] = item
 
-        GiveWepWithPresetFromCode(ply, item.name, item.data.att)
+        GiveWepWithPresetFromCode(ply, item.name, item.data)
 
     end
 
@@ -713,51 +713,6 @@ net.Receive("PlayerInventoryDropEquippedItem", function(len, ply)
 
 end)
 
-net.Receive("PlayerInventoryConsumeItem", function(len, ply)
-
-    local itemIndex = net.ReadUInt(16)
-    local item = ply.inventory[itemIndex]
-    local durability = item.data.durability
-
-    local i = EFGMITEMS[item.name]
-
-    -- heal
-    if i.consumableType == "heal" then
-
-        local healAmount = ply:GetMaxHealth() - ply:Health()
-
-        if durability < healAmount then healAmount = durability end
-
-        ply:SetHealth(math.min(ply:Health() + healAmount, 100))
-        ply:SetNWInt("HealthHealed", ply:GetNWInt("HealthHealed") + healAmount)
-        ply:SetNWInt("RaidHealthHealed", ply:GetNWInt("RaidHealthHealed") + healAmount)
-        ply.inventory[itemIndex].data.durability = math.Clamp(durability - healAmount, 0, i.consumableValue)
-
-        if ply.inventory[itemIndex].data.durability > 0 then
-
-            net.Start("PlayerInventoryUpdateItem", false)
-            net.WriteTable(item.data)
-            net.WriteUInt(itemIndex, 16)
-            net.Send(ply)
-
-        else
-
-            net.Start("PlayerInventoryDeleteItem", false)
-            net.WriteUInt(itemIndex, 16)
-            net.Send(ply)
-
-            table.remove(ply.inventory, itemIndex)
-
-            RemoveWeightFromPlayer(ply, item.name, item.data.count)
-
-        end
-
-    end
-
-    ReloadInventory(ply)
-
-end)
-
 net.Receive("PlayerInventoryLootItemFromContainer", function(len, ply)
 
     local container = net.ReadEntity()
@@ -1009,6 +964,20 @@ function ConsumeGrenade(ply)
 
 end
 
+function RemoveConsumable(ply)
+
+    local item = ply.weaponSlots[5][1].name
+
+    table.Empty(ply.weaponSlots[5][1])
+
+    RemoveWeightFromPlayer(ply, item, 1)
+    ply:StripWeapon(item)
+
+    net.Start("PlayerInventoryRemoveConsumable", false)
+    net.Send(ply)
+
+end
+
 function UpdateInventoryString(ply)
 
     local inventoryStr = util.TableToJSON(ply.inventory)
@@ -1199,73 +1168,93 @@ local function GiveAttsFromList(ply, tbl)
 
 end
 
-function GiveWepWithPresetFromCode(ply, classname, preset)
+function GiveWepWithPresetFromCode(ply, classname, data)
 
     if !ply:IsPlayer() then return end
 
-	local swep = list.Get("Weapon")[classname]
-	if swep == nil then return end
+    local swep = list.Get("Weapon")[classname]
+    if swep == nil then return end
 
-    if !isstring(preset) then
+    local dataType = "none"
+    if data.att then dataType = "att" elseif data.durability then dataType = "consumable" end
+
+    if dataType == "none" then
 
         ply:Give(classname)
         return
 
-    end
+    elseif dataType == "consumable" then
 
-    if !GetConVar("arc9_free_atts"):GetBool() then
+        local item = ply:Give(classname)
+        local def = EFGMITEMS[classname]
 
-        local atts = GetAttsFromPreset(preset)
+        if !def then return end
 
-        if !atts then
+        if def.equipType == EQUIPTYPE.Consumable then
 
-            ply:Give(classname)
-            return
-
-        end
-
-        GiveAttsFromList(ply, atts)
-
-    end
-
-    if ply:HasWeapon(classname) then
-
-        local wpn = ply:GetWeapon(classname)
-
-        if IsValid(wpn) then
-
-            ply.givingPreset = true
-            wpn:SetNoPresets(true)
-
-            net.Start("efgm_sendpreset")
-            net.WriteEntity(wpn)
-            net.WriteString(preset)
-            net.Send(ply)
-
-            wpn:PostModify()
+            item:SetDurability(data.durability)
 
         end
+
+        return
 
     else
 
-        local wpn = ply:Give(classname)
+        if !GetConVar("arc9_free_atts"):GetBool() then
 
-        wpn:SetNoPresets(true)
+            local atts = GetAttsFromPreset(data.att)
 
-        timer.Simple(0.1, function()
+            if !atts then
+
+                ply:Give(classname)
+                return
+
+            end
+
+            GiveAttsFromList(ply, atts)
+
+        end
+
+        if ply:HasWeapon(classname) then
+
+            local wpn = ply:GetWeapon(classname)
 
             if IsValid(wpn) then
 
                 ply.givingPreset = true
+                wpn:SetNoPresets(true)
 
                 net.Start("efgm_sendpreset")
                 net.WriteEntity(wpn)
-                net.WriteString(preset)
+                net.WriteString(data.att)
                 net.Send(ply)
+
+                wpn:PostModify()
 
             end
 
-        end)
+        else
+
+            local wpn = ply:Give(classname)
+
+            wpn:SetNoPresets(true)
+
+            timer.Simple(0.1, function()
+
+                if IsValid(wpn) then
+
+                    ply.givingPreset = true
+
+                    net.Start("efgm_sendpreset")
+                    net.WriteEntity(wpn)
+                    net.WriteString(data.att)
+                    net.Send(ply)
+
+                end
+
+            end)
+
+        end
 
     end
 
@@ -1284,7 +1273,7 @@ hook.Add("PlayerSpawn", "GiveEquippedItemsOnSpawn", function(ply)
                 local item = table.Copy(v)
                 if item == nil then return end
 
-                GiveWepWithPresetFromCode(ply, item.name, item.data.att)
+                GiveWepWithPresetFromCode(ply, item.name, item.data)
 
             end
 

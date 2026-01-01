@@ -166,7 +166,7 @@ if SERVER then
     function DUEL:EquipPrimary(ply, item)
 
         ply.weaponSlots[1][1] = item
-        GiveWepWithPresetFromCode(ply, item.name, item.data.att)
+        GiveWepWithPresetFromCode(ply, item.name, item.data)
         ply:SelectWeapon(item.name)
 
     end
@@ -174,7 +174,7 @@ if SERVER then
     function DUEL:EquipHolster(ply, item, doEquip)
 
         ply.weaponSlots[2][1] = item
-        GiveWepWithPresetFromCode(ply, item.name, item.data.att)
+        GiveWepWithPresetFromCode(ply, item.name, item.data)
         if doEquip then ply:SelectWeapon(item.name) end
 
     end
@@ -326,7 +326,7 @@ if SERVER then
                     local item = table.Copy(v)
                     if item == nil then return end
 
-                    GiveWepWithPresetFromCode(ply, item.name, item.data.att)
+                    GiveWepWithPresetFromCode(ply, item.name, item.data)
 
                 end
 

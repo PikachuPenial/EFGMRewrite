@@ -1,4 +1,7 @@
 hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
+    local base = swep.Base
+    if !string.find(base, "arc9") then return end
+
     local sp = game.SinglePlayer()
 
     -- arc9 determines a player as sprinting if they are holding IN_SPEED, not when they are actually sprinting, breaking animations with EFGM's sprinting system

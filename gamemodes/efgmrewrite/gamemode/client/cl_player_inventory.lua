@@ -373,17 +373,33 @@ function DropEquippedItem(equipID, equipSlot)
 
 end
 
-function ConsumeItemFromInventory(itemIndex)
-
-    net.Start("PlayerInventoryConsumeItem", false)
-    net.WriteUInt(itemIndex, 16)
-    net.SendToServer()
-
-end
-
 net.Receive("PlayerInventoryConsumeGrenade", function(len, ply)
 
     table.Empty(playerWeaponSlots[4][1])
+    Menu.ReloadSlots()
+
+    if !table.IsEmpty(playerWeaponSlots[1][1]) then
+
+        local weapon = LocalPlayer():GetWeapon(playerWeaponSlots[1][1].name)
+        if weapon != NULL then input.SelectWeapon(weapon) end
+
+    elseif !table.IsEmpty(playerWeaponSlots[1][2]) then
+
+        local weapon = LocalPlayer():GetWeapon(playerWeaponSlots[1][2].name)
+        if weapon != NULL then input.SelectWeapon(weapon) end
+
+    elseif !table.IsEmpty(playerWeaponSlots[2][1]) then
+
+        local weapon = LocalPlayer():GetWeapon(playerWeaponSlots[2][1].name)
+        if weapon != NULL then input.SelectWeapon(weapon) end
+
+    end
+
+end)
+
+net.Receive("PlayerInventoryRemoveConsumable", function(len, ply)
+
+    table.Empty(playerWeaponSlots[5][1])
     Menu.ReloadSlots()
 
     if !table.IsEmpty(playerWeaponSlots[1][1]) then

@@ -2368,6 +2368,55 @@ function HUDInspectItem(item, data, panel)
 
         end
 
+        if i.equipType == EQUIPTYPE.Consumable and wep != nil then
+
+            wikiContentText:AppendText("\n")
+
+            local delay = wep["ConsumableDelay"] or nil
+            local time = wep["ConsumableTime"] or nil
+            local value = wep["ConsumableValue"] or nil
+            local ticks = wep["ConsumableTicks"] or nil
+            local range = wep["ConsumableRange"] or nil
+            local dmgCancel = wep["DamageCancel"] or false
+
+            if delay then
+
+                wikiContentText:AppendText("DELAY: " ..  delay .. "\n")
+
+            end
+
+            if time then
+
+                wikiContentText:AppendText("USE TIME: " ..  time .. "\n")
+
+            end
+
+            if value then
+
+                wikiContentText:AppendText("USAGE PER USE: " ..  value .. "\n")
+
+            end
+
+            if ticks then
+
+                wikiContentText:AppendText("TICKS PER USE: " ..  ticks .. "\n")
+
+            end
+
+            if range then
+
+                wikiContentText:AppendText("APPLICATION RANGE ON OTHER PLAYERS: " ..  range .. "\n")
+
+            end
+
+            if dmgCancel != nil then
+
+                wikiContentText:AppendText("CANCELLED ON DAMAGE TAKEN: " ..  string.upper(tostring(dmgCancel)) .. "\n")
+
+            end
+
+        end
+
         function wikiContentText:PerformLayout()
 
             wikiContentText:SetFontInternal("PuristaBold18")
