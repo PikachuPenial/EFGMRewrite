@@ -30,6 +30,10 @@ local function RenderPlayerWeapon()
     if wep == NULL then return end
 
     local name = wep:GetPrintName()
+
+    -- weapon name
+    draw.DrawText(name, "BenderWeaponName", ScrW() - EFGM.ScreenScale(20), ScrH() - EFGM.ScreenScale(40), Colors.whiteColor, TEXT_ALIGN_RIGHT)
+
     local ammo = wep:Clip1()
     local ammoMax = wep:GetMaxClip1()
     local magstatus
@@ -42,7 +46,7 @@ local function RenderPlayerWeapon()
     elseif ammo >= ammoMax * 0.2 then magstatus = "Less than half"
     elseif ammo >= ammoMax * 0.01 then magstatus = "Almost empty"
     else magstatus = "Empty" end
-    if ammo == -1 then magstatus = "∞" end
+    if ammo == -1 or ammoMax <= 0 then magstatus = "∞" end
 
     surface.SetFont("BenderAmmoCount")
     local ammoTextSize = surface.GetTextSize(magstatus) + EFGM.ScreenScale(10)
@@ -54,9 +58,6 @@ local function RenderPlayerWeapon()
     surface.SetDrawColor(Colors.hudBackground)
     surface.DrawRect(ScrW() - EFGM.ScreenScale(37) - ammoTextSize, ScrH() - EFGM.ScreenScale(75), ammoTextSize + EFGM.ScreenScale(17), EFGM.ScreenScale(35))
     draw.DrawText(tostring(magstatus), "BenderAmmoCount", ScrW() - EFGM.ScreenScale(34), ScrH() - EFGM.ScreenScale(74), wepColor, TEXT_ALIGN_RIGHT)
-
-    -- weapon name
-    draw.DrawText(name, "BenderWeaponName", ScrW() - EFGM.ScreenScale(20), ScrH() - EFGM.ScreenScale(40), Colors.whiteColor, TEXT_ALIGN_RIGHT)
 end
 
 -- assorted overlays

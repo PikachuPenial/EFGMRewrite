@@ -25,30 +25,33 @@ function SWEP:Initialize()
 
     self:SetHoldType(self.HoldType or "slam")
     self.Durability = self.ConsumableDurability
+    self.Primary.ClipSize = self.ConsumableDurability
 
 end
 
 function SWEP:SetupDataTables()
 
-	self:NetworkVar("Float", 0, "NextIdle")
+    self:NetworkVar("Float", 0, "NextIdle")
 
 end
 
 function SWEP:SetDurability(val)
 
-    self.ConsumableDurability = val
+    self.Durability = val
+    self:SetClip1(val)
 
 end
 
-function SWEP:UpdateDurability(val, timerStr)
+function SWEP:UpdateDurability(val)
 
     local owner = self:GetOwner()
 
-    self.ConsumableDurability = self.ConsumableDurability - val
+    self.Durability = self.Durability - val
+    self:SetClip1(self.Durability)
 
-    if self.ConsumableDurability > 0 then
+    if self.Durability > 0 then
 
-        owner.weaponSlots[5][1].data.durability = self.ConsumableDurability
+        owner.weaponSlots[5][1].data.durability = self.Durability
 
         net.Start("PlayerInventoryUpdateEquipped", false)
         net.WriteTable(owner.weaponSlots[5][1].data)
@@ -59,22 +62,40 @@ function SWEP:UpdateDurability(val, timerStr)
     else
 
         RemoveConsumable(owner)
-        if timerStr then timer.Remove(timerStr) end
+        timer.Remove("Consume" .. owner:SteamID64())
 
     end
 
 end
 
+function SWEP:Deploy()
+
+    return true
+
+end
+
+function SWEP:Reload()
+
+    return true
+
+end
+
+function SWEP:Think()
+
+    self:Idle()
+
+end
+
 function SWEP:Idle()
 
-	local curtime = CurTime()
+    local curtime = CurTime()
 
-	if (curtime < self:GetNextIdle()) then return false end
+    if (curtime < self:GetNextIdle()) then return false end
 
-	self:SendWeaponAnim(ACT_VM_IDLE)
-	self:SetNextIdle(curtime + self:SequenceDuration())
+    self:SendWeaponAnim(ACT_VM_IDLE)
+    self:SetNextIdle(curtime + self:SequenceDuration())
 
-	return true
+    return true
 
 end
 
@@ -101,17 +122,17 @@ function SWEP:TriggerConsumable(ent, type, ct)
             ent:SetHealth(amount)
             ent:SetNWInt("HealthHealed", ent:GetNWInt("HealthHealed") + amount)
             ent:SetNWInt("RaidHealthHealed", ent:GetNWInt("RaidHealthHealed") + amount)
-            self:UpdateDurability(amount, nil)
+            self:UpdateDurability(amount)
 
         else
 
             local amountPerTick = self.ConsumableValue / self.ConsumableTicks
 
-            timer.Create("Consume" .. ct, self.ConsumableTime / self.ConsumableTicks, self.ConsumableTicks, function()
+            timer.Create("Consume" .. owner:SteamID(), self.ConsumableTime / self.ConsumableTicks, self.ConsumableTicks, function()
 
-                if !ent:IsValid() or !ent:Alive() then timer.Remove("Consume" .. ct) return end
+                if !self:IsValid() or !ent:IsValid() or !ent:Alive() then timer.Remove("Consume" .. owner:SteamID()) return end
 
-                local tickAmount = math.min(maxHealth - (maxHealth - amountPerTick), maxHealth - ent:Health(), self.ConsumableDurability)
+                local tickAmount = math.min(maxHealth - (maxHealth - amountPerTick), maxHealth - ent:Health(), self.Durability)
 
                 ent:SetHealth(ent:Health() + tickAmount)
                 ent:SetNWInt("HealthHealed", ent:GetNWInt("HealthHealed") + tickAmount)
@@ -119,11 +140,11 @@ function SWEP:TriggerConsumable(ent, type, ct)
 
                 if ent:Health() < maxHealth then
 
-                    self:UpdateDurability(tickAmount, "Consume" .. ct)
+                    self:UpdateDurability(tickAmount)
 
                 else
 
-                    timer.Remove("Consume" .. ct)
+                    timer.Remove("Consume" .. owner:SteamID())
 
                 end
 
