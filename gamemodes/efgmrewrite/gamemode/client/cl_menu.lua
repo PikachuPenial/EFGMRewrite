@@ -3307,6 +3307,9 @@ function Menu.ReloadInventory()
     if !IsValid(playerItems) then return end
 
     playerItems:Clear()
+    playerItemsHolder.AllowLayoutUpdate = false
+    playerItems.AllowLayoutUpdate = false
+
     plyItems = {}
 
     for k, v in ipairs(playerInventory) do
@@ -3386,6 +3389,8 @@ function Menu.ReloadInventory()
 
     end)
 
+    surface.SetFont("Purista18")
+
     -- inventory item entry
     for k, v in ipairs(plyItems) do
 
@@ -3412,7 +3417,7 @@ function Menu.ReloadInventory()
             !string.find((ownerName or ""):lower(), searchFor, 1, true) then continue
         end
 
-        local item = playerItems:Add("DButton")
+        local item = playerItems:Add("EFGMInventoryEntry")
         item:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
         item:SetText("")
         item:Droppable("items")
@@ -3448,8 +3453,6 @@ function Menu.ReloadInventory()
             surface.DrawTexturedRect(0, 0, w, h)
 
         end
-
-        surface.SetFont("Purista18")
 
         local nameSize = surface.GetTextSize(i.displayName)
         local nameFont
@@ -3702,6 +3705,11 @@ function Menu.ReloadInventory()
         end
 
     end
+
+    playerItemsHolder.AllowLayoutUpdate = true
+    playerItemsHolder:InvalidateLayout(true)
+    playerItems.AllowLayoutUpdate = true
+    playerItems:InvalidateLayout(true)
 
 end
 
@@ -5156,14 +5164,17 @@ end
 
 local stashItemSearchText = ""
 
-function Menu.ReloadStash(firstReload)
+function Menu.ReloadStash()
 
     Menu.ReloadMarketStash()
 
     if !IsValid(stashItems) then return end
 
-    stashValue = 0
     stashItems:Clear()
+    stashItemsHolder.AllowLayoutUpdate = false
+    stashItems.AllowLayoutUpdate = false
+
+    stashValue = 0
     plyStashItems = {}
 
     for k, v in ipairs(playerStash) do
@@ -5259,11 +5270,35 @@ function Menu.ReloadStash(firstReload)
 
     surface.SetFont("Purista18")
 
-    local function LoadItem(i, k, v)
+    -- stash item entry
+    for k, v in ipairs(plyStashItems) do
+
+        local i = v.def or EFGMITEMS[v.name]
+        if i == nil then continue end
+
+        local ownerName = nil
+        if v.data.owner then
+            ownerName = EFGM.SteamNameCache[v.data.owner]
+            if !ownerName then
+                steamworks.RequestPlayerInfo(v.data.owner, function(steamName) EFGM.SteamNameCache[v.data.owner] = steamName or "" end)
+            end
+        end
+
+        if stashItemSearchText then itemSearch = stashItemSearchText end
+
+        local searchFor = (itemSearch and itemSearch:lower()) or ""
+
+        if searchFor != "" and
+            !string.find((i.fullName):lower(), itemSearch, 1, true) and
+            !string.find((i.displayName):lower(), itemSearch, 1, true) and
+            !string.find((i.displayType):lower(), itemSearch, 1, true) and
+            !string.find((tostring(v.data.tag) or ""):lower(), itemSearch, 1, true) and
+            !string.find((ownerName or ""):lower(), itemSearch, 1, true) then continue
+        end
 
         local isConsumable = (i.consumableType == "heal" or i.consumableType == "key")
 
-        local item = stashItems:Add("DButton")
+        local item = stashItems:Add("EFGMInventoryEntry")
         item:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
         item:SetText("")
         item:Droppable("items")
@@ -5559,35 +5594,10 @@ function Menu.ReloadStash(firstReload)
 
     end
 
-    -- stash item entry
-    for k, v in ipairs(plyStashItems) do
-
-        local i = v.def or EFGMITEMS[v.name]
-        if i == nil then continue end
-
-        local ownerName = nil
-        if v.data.owner then
-            ownerName = EFGM.SteamNameCache[v.data.owner]
-            if !ownerName then
-                steamworks.RequestPlayerInfo(v.data.owner, function(steamName) EFGM.SteamNameCache[v.data.owner] = steamName or "" end)
-            end
-        end
-
-        if stashItemSearchText then itemSearch = stashItemSearchText end
-
-        local searchFor = (itemSearch and itemSearch:lower()) or ""
-
-        if searchFor != "" and
-            !string.find((i.fullName):lower(), itemSearch, 1, true) and
-            !string.find((i.displayName):lower(), itemSearch, 1, true) and
-            !string.find((i.displayType):lower(), itemSearch, 1, true) and
-            !string.find((tostring(v.data.tag) or ""):lower(), itemSearch, 1, true) and
-            !string.find((ownerName or ""):lower(), itemSearch, 1, true) then continue
-        end
-
-        LoadItem(i, k, v)
-
-    end
+    stashItemsHolder.AllowLayoutUpdate = true
+    stashItemsHolder:InvalidateLayout(true)
+    stashItems.AllowLayoutUpdate = true
+    stashItems:InvalidateLayout(true)
 
 end
 
@@ -5597,8 +5607,11 @@ function Menu.ReloadMarketStash()
 
     if !IsValid(marketStashItems) then return end
 
-    stashValue = 0
     marketStashItems:Clear()
+    marketStashItemsHolder.AllowLayoutUpdate = false
+    marketStashItems.AllowLayoutUpdate = false
+
+    stashValue = 0
     marketPlyStashItems = {}
 
     for k, v in ipairs(playerStash) do
@@ -5719,7 +5732,7 @@ function Menu.ReloadMarketStash()
 
         local itemValue = v.value
 
-        local item = marketStashItems:Add("DButton")
+        local item = marketStashItems:Add("EFGMInventoryEntry")
         item:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
         item:SetText("")
         item:Droppable("items")
@@ -5911,6 +5924,11 @@ function Menu.ReloadMarketStash()
 
     end
 
+    marketStashItemsHolder.AllowLayoutUpdate = true
+    marketStashItemsHolder:InvalidateLayout(true)
+    marketStashItems.AllowLayoutUpdate = true
+    marketStashItems:InvalidateLayout(true)
+
 end
 
 function Menu.ReloadContainer()
@@ -5920,7 +5938,11 @@ function Menu.ReloadContainer()
     if !IsValid(containerItems) then return end
 
     containerItems:Clear()
+    containerItemsHolder.AllowLayoutUpdate = false
+    containerItems.AllowLayoutUpdate = false
+
     conItems = {}
+
     for k, v in ipairs(container.items) do
 
         local def = EFGMITEMS[v.name]
@@ -6003,7 +6025,7 @@ function Menu.ReloadContainer()
         local i = v.def or EFGMITEMS[v.name]
         if i == nil then continue end
 
-        local item = containerItems:Add("DButton")
+        local item = containerItems:Add("EFGMInventoryEntry")
         item:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
         item:SetText("")
         item:Droppable("items")
@@ -6208,6 +6230,11 @@ function Menu.ReloadContainer()
         end
 
     end
+
+    containerItemsHolder.AllowLayoutUpdate = true
+    containerItemsHolder:InvalidateLayout(true)
+    containerItems.AllowLayoutUpdate = true
+    containerItems:InvalidateLayout(true)
 
 end
 
@@ -7175,7 +7202,7 @@ function Menu.OpenTab.Inventory(container)
 
     end
 
-    local playerItemsHolder = vgui.Create("DScrollPanel", itemsHolder)
+    playerItemsHolder = vgui.Create("EFGMInventoryHolderScroller", itemsHolder)
     playerItemsHolder:SetPos(0, EFGM.MenuScale(32))
     playerItemsHolder:SetSize(EFGM.MenuScale(593), EFGM.MenuScale(872))
     function playerItemsHolder:Paint(w, h)
@@ -7247,7 +7274,7 @@ function Menu.OpenTab.Inventory(container)
 
     end)
 
-    playerItems = vgui.Create("DIconLayout", playerItemsHolder)
+    playerItems = vgui.Create("EFGMInventoryHolder", playerItemsHolder)
     playerItems:Dock(TOP)
     playerItems:SetSpaceY(0)
     playerItems:SetSpaceX(0)
@@ -7300,7 +7327,7 @@ function Menu.OpenTab.Inventory(container)
         containerHolder:SetSize(0, 0)
         containerHolder.Paint = nil
 
-        local containerItemsHolder = vgui.Create("DScrollPanel", containerHolder)
+        containerItemsHolder = vgui.Create("EFGMInventoryHolderScroller", containerHolder)
         containerItemsHolder:SetPos(0, EFGM.MenuScale(32))
         containerItemsHolder:SetSize(EFGM.MenuScale(593), EFGM.MenuScale(872))
         function containerItemsHolder:Paint(w, h)
@@ -7326,7 +7353,7 @@ function Menu.OpenTab.Inventory(container)
 
         end
 
-        containerItems = vgui.Create("DIconLayout", containerItemsHolder)
+        containerItems = vgui.Create("EFGMInventoryHolder", containerItemsHolder)
         containerItems:Dock(TOP)
         containerItems:SetSpaceY(0)
         containerItems:SetSpaceX(0)
@@ -7534,7 +7561,7 @@ function Menu.OpenTab.Inventory(container)
 
     end
 
-    local stashItemsHolder = vgui.Create("DScrollPanel", stashHolder)
+    stashItemsHolder = vgui.Create("EFGMInventoryHolderScroller", stashHolder)
     stashItemsHolder:SetPos(0, EFGM.MenuScale(32))
     stashItemsHolder:SetSize(EFGM.MenuScale(593), EFGM.MenuScale(872))
     function stashItemsHolder:Paint(w, h)
@@ -7582,7 +7609,7 @@ function Menu.OpenTab.Inventory(container)
 
     end)
 
-    stashItems = vgui.Create("DIconLayout", stashItemsHolder)
+    stashItems = vgui.Create("EFGMInventoryHolder", stashItemsHolder)
     stashItems:Dock(TOP)
     stashItems:SetSpaceY(0)
     stashItems:SetSpaceX(0)
@@ -7777,7 +7804,7 @@ function Menu.OpenTab.Market()
 
     end
 
-    local marketStashItemsHolder = vgui.Create("DScrollPanel", marketStashHolder)
+    marketStashItemsHolder = vgui.Create("EFGMInventoryHolderScroller", marketStashHolder)
     marketStashItemsHolder:SetPos(0, EFGM.MenuScale(32))
     marketStashItemsHolder:SetSize(EFGM.MenuScale(593), EFGM.MenuScale(872))
     function marketStashItemsHolder:Paint(w, h)
@@ -7803,7 +7830,7 @@ function Menu.OpenTab.Market()
 
     end
 
-    marketStashItems = vgui.Create("DIconLayout", marketStashItemsHolder)
+    marketStashItems = vgui.Create("EFGMInventoryHolder", marketStashItemsHolder)
     marketStashItems:Dock(TOP)
     marketStashItems:SetSpaceY(0)
     marketStashItems:SetSpaceX(0)
