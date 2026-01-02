@@ -198,7 +198,7 @@ if SERVER then
 
             local extracts = {}
 
-            for k, v in pairs(ents.FindByClass("efgm_extract")) do
+            for k, v in ipairs(ents.FindByClass("efgm_extract")) do
                 if ply:CompareSpawnGroup(v.ExtractGroup) and (v.Accessibility == 0 or ply:GetNWInt("PlayerRaidStatus", 0) == v.Accessibility) then
                     local tbl = {}
                     tbl.ExtractName = v.ExtractName
@@ -516,12 +516,12 @@ if SERVER then
             end
 
             if plySquad == "nil" then RAID:SpawnPlayers({ply}, "nil", "nil") return end
-            if table.Count(SQUADS[plySquad].MEMBERS) <= 1 then RAID:SpawnPlayers({ply}, "nil", plySquad) return end
+            if #SQUADS[plySquad].MEMBERS <= 1 then RAID:SpawnPlayers({ply}, "nil", plySquad) return end
 
             local plys = {}
             local spawnBool = true
 
-            for k, v in pairs(SQUADS[plySquad].MEMBERS) do
+            for k, v in ipairs(SQUADS[plySquad].MEMBERS) do
                 table.insert(plys, v)
                 if v:GetNWBool("RaidReady", false) == false then spawnBool = false end
             end

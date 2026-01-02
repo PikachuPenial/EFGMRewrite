@@ -488,7 +488,7 @@ if SERVER then
             if !attacker:IsPlayer() then return end
             if attacker:CompareStatus(0) or attacker:CompareStatus(3) then return end
 
-            for k, v in pairs(player.GetHumans()) do
+            for k, v in ipairs(player.GetHumans()) do
 
                 if v:CompareStatus(0) or v:CompareStatus(3) then return end
 
@@ -541,7 +541,7 @@ if SERVER then
             if cal == nil then return end
             if attacker:CompareStatus(0) or attacker:CompareStatus(3) then return end
 
-            for k, v in pairs(player.GetHumans()) do
+            for k, v in ipairs(player.GetHumans()) do
 
                 if v:CompareStatus(0) or v:CompareStatus(3) then return end
                 if shotCaliber[cal] == nil then return end

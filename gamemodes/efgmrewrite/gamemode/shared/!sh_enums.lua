@@ -26,11 +26,11 @@ duelStatus = {
 -- that could even be added with like convars and shit
 -- max of 4 bits yada yada yada you surely get it by now
 WEAPONSLOTS = {
-    PRIMARY =   {ID = 1, COUNT = 2},
-    HOLSTER =   {ID = 2, COUNT = 1},
-    MELEE =     {ID = 3, COUNT = 1},
-    GRENADE =   {ID = 4, COUNT = 1},
-    CONSUMABLE =   {ID = 5, COUNT = 1}
+    PRIMARY =       {ID = 1, COUNT = 2},
+    HOLSTER =       {ID = 2, COUNT = 1},
+    MELEE =         {ID = 3, COUNT = 1},
+    GRENADE =       {ID = 4, COUNT = 1},
+    CONSUMABLE =    {ID = 5, COUNT = 1}
 }
 
 CONSUMABLETYPES = {

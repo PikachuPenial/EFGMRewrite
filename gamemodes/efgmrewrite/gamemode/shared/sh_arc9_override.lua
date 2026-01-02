@@ -2083,7 +2083,7 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
             local attacker = self:GetOwner()
             if attacker:CompareStatus(0) or attacker:CompareStatus(3) then return end
 
-            for k, v in pairs(player.GetHumans()) do
+            for k, v in ipairs(player.GetHumans()) do
                 if v:CompareStatus(0) or v:CompareStatus(3) then return end
                 if shotCaliber[ammo] == nil then return end
 

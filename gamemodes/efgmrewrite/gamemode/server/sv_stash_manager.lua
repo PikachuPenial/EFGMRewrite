@@ -475,6 +475,7 @@ function UpdateStashString(ply)
     stashStr = util.Compress(stashStr)
     stashStr = util.Base64Encode(stashStr, true)
     ply.stashStr = stashStr
+    return stashStr
 
 end
 

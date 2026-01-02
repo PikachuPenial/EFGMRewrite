@@ -421,14 +421,37 @@ function SendChunkedNet(ply, str, netStr)
 
 	for i, c in ipairs(chunks) do
 
-        net.Start(netStr)
-        net.WriteFloat(uID)
-        net.WriteUInt(i, 16)
-        net.WriteUInt(chunkCount, 16)
-        net.WriteString(c)
-        net.Send(ply)
+		net.Start(netStr)
+		net.WriteFloat(uID)
+		net.WriteUInt(i, 16)
+		net.WriteUInt(chunkCount, 16)
+		net.WriteString(c)
+		net.Send(ply)
 
-    end
+	end
+
+end
+
+function EquippedIsInEnumScope(ply)
+
+	for k, v in pairs(WEAPONSLOTS) do
+
+		local subSlotCount = table.Count(ply.weaponSlots[v.ID])
+		local subSlotCountLimit = v.COUNT
+
+		if subSlotCount > subSlotCountLimit then
+
+			for i = subSlotCountLimit, subSlotCount do
+
+				ply.weaponSlots[v.ID][i] = nil
+
+			end
+
+		end
+
+	end
+
+	return UpdateEquippedString(ply)
 
 end
 
@@ -521,10 +544,12 @@ function SetupPlayerData(ply)
 
 	SendChunkedNet(ply, stashString, "PlayerNetworkStash")
 	SendChunkedNet(ply, inventoryString, "PlayerNetworkInventory")
+
+	equippedString = EquippedIsInEnumScope(ply) -- holy fuck dude
+
 	SendChunkedNet(ply, equippedString, "PlayerNetworkEquipped")
 
 	TaskUpdate(ply)
-
 
 end
 

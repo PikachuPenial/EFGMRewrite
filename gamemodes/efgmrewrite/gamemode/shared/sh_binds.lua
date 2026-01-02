@@ -181,6 +181,7 @@ hook.Add("PlayerButtonDown", "EFGMBinds", function(ply, button)
             return
         end
 
+        -- equip secondary
         if button == ply:GetInfoNum("efgm_bind_equip_primary2", KEY_2) then
             ply:ConCommand("efgm_inventory_equip " .. WEAPONSLOTS.PRIMARY.ID .. " 2")
             return
@@ -357,6 +358,7 @@ if game.SinglePlayer() then
             return
         end
 
+        -- equip secondary
         if button == ply:GetInfoNum("efgm_bind_equip_primary2", KEY_2) then
             ply:ConCommand("efgm_inventory_equip " .. WEAPONSLOTS.PRIMARY.ID .. " 2")
             return

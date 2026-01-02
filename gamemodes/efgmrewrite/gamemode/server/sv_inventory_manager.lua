@@ -449,7 +449,7 @@ function UnequipAll(ply)
 
         if i == WEAPONSLOTS.MELEE.ID then continue end
 
-        for k, v in pairs(ply.weaponSlots[i]) do
+        for k, v in ipairs(ply.weaponSlots[i]) do
 
             if !table.IsEmpty(v) then
 
@@ -533,7 +533,7 @@ function UnequipAllFirearms(ply)
 
         if i == WEAPONSLOTS.MELEE.ID then continue end
 
-        for k, v in pairs(ply.weaponSlots[i]) do
+        for k, v in ipairs(ply.weaponSlots[i]) do
 
             if !table.IsEmpty(v) then
 
@@ -605,7 +605,7 @@ function MatchWithEquippedAndUpdate(ply, itemName, attsTbl)
 
     for i = 1, #table.GetKeys(WEAPONSLOTS) do
 
-        for k, v in pairs(ply.weaponSlots[i]) do
+        for k, v in ipairs(ply.weaponSlots[i]) do
 
             if table.IsEmpty(v) then continue end
 
@@ -984,6 +984,7 @@ function UpdateInventoryString(ply)
     inventoryStr = util.Compress(inventoryStr)
     inventoryStr = util.Base64Encode(inventoryStr, true)
     ply.invStr = inventoryStr
+    return inventoryStr
 
 end
 
@@ -993,6 +994,7 @@ function UpdateEquippedString(ply)
     equippedStr = util.Compress(equippedStr)
     equippedStr = util.Base64Encode(equippedStr, true)
     ply.equStr = equippedStr
+    return equippedStr
 
 end
 
@@ -1057,7 +1059,7 @@ function CalculateInventoryWeight(ply)
 
     for i = 1, #table.GetKeys(WEAPONSLOTS) do
 
-        for k, v in pairs(ply.weaponSlots[i]) do
+        for k, v in ipairs(ply.weaponSlots[i]) do
 
             if table.IsEmpty(v) then continue end
 
@@ -1101,7 +1103,7 @@ function RemoveFIRFromInventory(ply)
 
     for i = 1, #table.GetKeys(WEAPONSLOTS) do
 
-        for k, v in pairs(ply.weaponSlots[i]) do
+        for k, v in ipairs(ply.weaponSlots[i]) do
 
             if table.IsEmpty(v) then continue end
 
@@ -1266,7 +1268,7 @@ hook.Add("PlayerSpawn", "GiveEquippedItemsOnSpawn", function(ply)
 
     for i = 1, #table.GetKeys(WEAPONSLOTS) do
 
-        for k, v in pairs(ply.weaponSlots[i]) do
+        for k, v in ipairs(ply.weaponSlots[i]) do
 
             if !table.IsEmpty(v) then
 
@@ -1326,6 +1328,24 @@ if GetConVar("efgm_derivesbox"):GetInt() == 1 then
 
     end
     concommand.Add("efgm_debug_wipeinventory", function(ply, cmd, args) WipeInventory(ply) end)
+
+    function WipeEquipped(ply)
+
+        ply.weaponSlots = {}
+        for k, v in pairs(WEAPONSLOTS) do
+
+            ply.weaponSlots[v.ID] = {}
+            for i = 1, v.COUNT, 1 do ply.weaponSlots[v.ID][i] = {} end
+
+        end
+        UpdateEquippedString(ply)
+
+        SendChunkedNet(ply, ply.equStr, "PlayerNetworkEquipped")
+
+        CalculateInventoryWeight(ply)
+
+    end
+    concommand.Add("efgm_debug_wipeequipped", function(ply, cmd, args) WipeEquipped(ply) end)
 
     function PrintInventoryString(ply)
 

@@ -46,9 +46,6 @@ hook.Add("OnEquippedChunked", "NetworkEquipped", function(str, uID)
 
     end
 
-    playerEquippedSlot = 0
-    playerEquippedSubSlot = 0
-
 end)
 
 net.Receive("PlayerNetworkInventory", function(len, ply)
@@ -149,9 +146,6 @@ function ReinstantiateInventory()
     end
 
     if equMelee != nil then playerWeaponSlots[WEAPONSLOTS.MELEE.ID] = equMelee end
-
-    playerEquippedSlot = 0
-    playerEquippedSubSlot = 0
 
 end
 
@@ -431,7 +425,7 @@ net.Receive("PlayerInventoryClearFIR", function(len, ply)
 
     for i = 1, #table.GetKeys(WEAPONSLOTS) do
 
-        for k, v in pairs(playerWeaponSlots[i]) do
+        for k, v in ipairs(playerWeaponSlots[i]) do
 
             if table.IsEmpty(v) then continue end
 
@@ -468,37 +462,9 @@ concommand.Add("efgm_inventory_equip", function(ply, cmd, args)
 
     if equipSubSlot == nil then
 
-        if playerEquippedSlot == equipSlot then
+        local subSlotCount = #playerWeaponSlots[equipSlot]
 
-            local subSlotCount = #playerWeaponSlots[equipSlot]
-
-            if subSlotCount == 1 or playerEquippedSubSlot == subSlotCount then -- selecting first subslot
-
-                local item = playerWeaponSlots[equipSlot][1]
-                if !istable(item) then return end
-                if table.IsEmpty(item) then return end
-
-                weapon = LocalPlayer():GetWeapon(item.name)
-                if weapon != NULL then input.SelectWeapon(weapon) end
-
-                playerEquippedSlot = equipSlot
-                playerEquippedSubSlot = 1
-
-            else -- cycling to next subslot
-
-                local item = playerWeaponSlots[equipSlot][playerEquippedSubSlot + 1]
-                if !istable(item) then return end
-                if table.IsEmpty(item) then return end
-
-                weapon = LocalPlayer():GetWeapon(item.name)
-                if weapon != NULL then input.SelectWeapon(weapon) end
-
-                playerEquippedSlot = equipSlot
-                playerEquippedSubSlot = playerEquippedSubSlot + 1
-
-            end
-
-        else -- selecting first subslot
+        if subSlotCount == 1 then -- selecting first subslot
 
             local item = playerWeaponSlots[equipSlot][1]
             if !istable(item) then return end
@@ -507,8 +473,18 @@ concommand.Add("efgm_inventory_equip", function(ply, cmd, args)
             weapon = LocalPlayer():GetWeapon(item.name)
             if weapon != NULL then input.SelectWeapon(weapon) end
 
-            playerEquippedSlot = equipSlot
-            playerEquippedSubSlot = 1
+        else -- cycling to next subslot
+
+            for i = 1, subSlotCount do
+
+                local item = playerWeaponSlots[equipSlot][i]
+                if !istable(item) then return end
+                if table.IsEmpty(item) then return end
+
+                weapon = LocalPlayer():GetWeapon(item.name)
+                if weapon != NULL then input.SelectWeapon(weapon) end
+
+            end
 
         end
 
@@ -521,9 +497,6 @@ concommand.Add("efgm_inventory_equip", function(ply, cmd, args)
 
         weapon = LocalPlayer():GetWeapon(item.name)
         if weapon != NULL then input.SelectWeapon(weapon) end
-
-        playerEquippedSlot = equipSlot
-        playerEquippedSubSlot = equipSubSlot
 
     end
 

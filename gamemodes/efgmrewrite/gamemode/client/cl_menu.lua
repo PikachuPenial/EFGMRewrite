@@ -8947,9 +8947,7 @@ function Menu.OpenTab.Match()
         pmcList:Dock(TOP)
         pmcList:SetSize(EFGM.MenuScale(320), 0)
 
-        local onlinePlayers = player.GetAll()
-
-        for k, v in pairs(onlinePlayers) do
+        for k, v in ipairs(player.GetAll()) do
 
             local name = v:GetName()
             local ping = v:Ping()
@@ -9351,7 +9349,7 @@ function Menu.OpenTab.Match()
                 local limit = v.LIMIT
                 local members = v.MEMBERS
                 local faction = v.FACTION
-                local memberCount = table.Count(members)
+                local memberCount = #members
                 local open = limit != memberCount
                 local protected = string.len(password) != 0
 
@@ -9370,7 +9368,7 @@ function Menu.OpenTab.Match()
                     surface.DrawRect(0, 0, w, h)
 
                     draw.SimpleTextOutlined(name, "PuristaBold24", w / 2, EFGM.MenuScale(5), Color(color.RED, color.GREEN, color.BLUE), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-                    draw.SimpleTextOutlined(table.Count(members) .. " / " .. limit .. " | " .. status .. " | " .. (faction == 1 and "PMCs" or faction == 2 and "SCAVs"), "PuristaBold18", w / 2, EFGM.MenuScale(30), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+                    draw.SimpleTextOutlined(memberCount .. " / " .. limit .. " | " .. status .. " | " .. (faction == 1 and "PMCs" or faction == 2 and "SCAVs"), "PuristaBold18", w / 2, EFGM.MenuScale(30), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
                 end
 
@@ -9576,7 +9574,7 @@ function Menu.OpenTab.Match()
             local limit = array[squad].LIMIT
             local members = array[squad].MEMBERS
             local faction = array[squad].FACTION
-            local memberCount = table.Count(array[squad].MEMBERS)
+            local memberCount = #array[squad].MEMBERS
             local protected = string.len(password) != 0
 
             if !protected then status = "PUBLIC" else status = "PRIVATE" end
@@ -11119,22 +11117,22 @@ function Menu.OpenTab.Settings()
 
     end
 
-    local medicalItemPanel = vgui.Create("DPanel", controls)
-    medicalItemPanel:Dock(TOP)
-    medicalItemPanel:SetSize(0, EFGM.MenuScale(55))
-    function medicalItemPanel:Paint(w, h)
+    local consumableItemBindPanel = vgui.Create("DPanel", controls)
+    consumableItemBindPanel:Dock(TOP)
+    consumableItemBindPanel:SetSize(0, EFGM.MenuScale(55))
+    function consumableItemBindPanel:Paint(w, h)
 
         draw.SimpleTextOutlined("Consumable Item", "Purista18", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
 
     end
 
-    local medicalItem = vgui.Create("DBinder", medicalItemPanel)
-    medicalItem:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(30))
-    medicalItem:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
-    medicalItem:SetSelectedNumber(GetConVar("efgm_bind_equip_consumable"):GetInt())
-    function medicalItem:OnChange(num)
+    local consumableItemBind = vgui.Create("DBinder", consumableItemBindPanel)
+    consumableItemBind:SetPos(EFGM.MenuScale(110), EFGM.MenuScale(30))
+    consumableItemBind:SetSize(EFGM.MenuScale(100), EFGM.MenuScale(20))
+    consumableItemBind:SetSelectedNumber(GetConVar("efgm_bind_equip_consumable"):GetInt())
+    function consumableItemBind:OnChange(num)
 
-        RunConsoleCommand("efgm_bind_equip_consumable", medicalItem:GetSelectedNumber())
+        RunConsoleCommand("efgm_bind_equip_consumable", consumableItemBind:GetSelectedNumber())
 
     end
 

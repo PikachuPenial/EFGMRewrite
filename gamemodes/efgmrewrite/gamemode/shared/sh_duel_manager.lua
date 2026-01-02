@@ -259,7 +259,7 @@ if SERVER then
 
             if i == WEAPONSLOTS.MELEE.ID then continue end
 
-            for k, v in pairs(ply.weaponSlots[i]) do
+            for k, v in ipairs(ply.weaponSlots[i]) do
 
                 if !table.IsEmpty(v) then
 
@@ -296,7 +296,7 @@ if SERVER then
 
             if i == WEAPONSLOTS.MELEE.ID then continue end
 
-            for k, v in pairs(ply.weaponSlots[i]) do
+            for k, v in ipairs(ply.weaponSlots[i]) do
 
                 if !table.IsEmpty(v) then
 
@@ -319,7 +319,7 @@ if SERVER then
 
         for i = 1, #table.GetKeys(WEAPONSLOTS) do
 
-            for k, v in pairs(ply.weaponSlots[i]) do
+            for k, v in ipairs(ply.weaponSlots[i]) do
 
                 if !table.IsEmpty(v) then
 

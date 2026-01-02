@@ -73,7 +73,7 @@ if SERVER then
     end
 
     local function DisbandSquad(squad)
-        for k, v in pairs(SQUADS[squad].MEMBERS) do
+        for k, v in ipairs(SQUADS[squad].MEMBERS) do
             v:SetNW2String("PlayerInSquad", "nil")
             v:SetNW2String("TeamChatChannel", "nil")
         end
@@ -130,7 +130,7 @@ if SERVER then
 
         if PlayerInSquad(ply) then return end
         if !ply:CompareStatus(0) then return end
-        if table.Count(SQUADS[squad].MEMBERS) >= SQUADS[squad].LIMIT then return end
+        if #SQUADS[squad].MEMBERS >= SQUADS[squad].LIMIT then return end
         if !PasswordCheck(ply, squad, password) then return end
 
         table.insert(SQUADS[squad].MEMBERS, ply)
@@ -141,7 +141,7 @@ if SERVER then
         ply:SetNW2String("TeamChatChannel", squad)
         NetworkSquadInfoToClients()
 
-        for k, v in pairs(SQUADS[squad].MEMBERS) do
+        for k, v in ipairs(SQUADS[squad].MEMBERS) do
             if v == ply then
                 net.Start("SendNotification", false)
                 net.WriteString("Successfully joined squad!")
@@ -169,14 +169,14 @@ if SERVER then
         ply:SetNW2String("PlayerInSquad", "nil")
         ply:SetNW2String("TeamChatChannel", "nil")
 
-        if table.Count(SQUADS[squad].MEMBERS) == 0 then
+        if #SQUADS[squad].MEMBERS == 0 then
             DisbandSquad(squad)
             NetworkSquadInfoToClients()
             return
         end
 
         if ply == SQUADS[squad].OWNER then
-            local newOwner = table.Random(SQUADS[squad].MEMBERS)
+            local newOwner = BetterRandom(SQUADS[squad].MEMBERS)
             ReplaceSquadOwner(newOwner, squad)
         end
 
@@ -188,7 +188,7 @@ if SERVER then
         net.WriteString("ui/squad_leave.wav")
         net.Send(ply)
 
-        for k, v in pairs(SQUADS[squad].MEMBERS) do
+        for k, v in ipairs(SQUADS[squad].MEMBERS) do
             net.Start("SendNotification", false)
             net.WriteString(ply:GetName() .. " has left your squad!")
             net.WriteString("icons/squad_leave_icon.png")
@@ -206,7 +206,7 @@ if SERVER then
 
         if ply != SQUADS[squad].OWNER then return end
 
-        for k, v in pairs(SQUADS[squad].MEMBERS) do
+        for k, v in ipairs(SQUADS[squad].MEMBERS) do
             if string.lower(v:GetName()) == string.lower(newOwner) then
                 ReplaceSquadOwner(v, squad)
                 newOwnerEnt = v
@@ -236,7 +236,7 @@ if SERVER then
 
         if ply != SQUADS[squad].OWNER then return end
 
-        for k, v in pairs(SQUADS[squad].MEMBERS) do
+        for k, v in ipairs(SQUADS[squad].MEMBERS) do
             if string.lower(v:GetName()) == string.lower(kickedPly) then
                 table.RemoveByValue(SQUADS[squad].MEMBERS, v)
                 v:SetNW2String("PlayerInSquad", "nil")
@@ -252,7 +252,7 @@ if SERVER then
 
         NetworkSquadInfoToClients()
 
-        for k, v in pairs(SQUADS[squad].MEMBERS) do
+        for k, v in ipairs(SQUADS[squad].MEMBERS) do
             net.Start("SendNotification", false)
             net.WriteString(kickedPly .. " has been kicked from your squad!")
             net.WriteString("icons/squad_kicked_icon.png")
@@ -269,7 +269,7 @@ if SERVER then
 
         if ply != SQUADS[squad].OWNER then return end
 
-        for k, v in pairs(SQUADS[squad].MEMBERS) do
+        for k, v in ipairs(SQUADS[squad].MEMBERS) do
             if v != ply then
                 net.Start("SendNotification", false)
                 net.WriteString("Your squad has been disbanded!")
@@ -298,14 +298,14 @@ if SERVER then
 
         table.RemoveByValue(SQUADS[squad].MEMBERS, ply)
 
-        if table.Count(SQUADS[squad].MEMBERS) == 0 then
+        if #SQUADS[squad].MEMBERS == 0 then
             DisbandSquad(squad)
             NetworkSquadInfoToClients()
             return
         end
 
         if ply == SQUADS[squad].OWNER then
-            local newOwner = table.Random(SQUADS[squad].MEMBERS)
+            local newOwner = BetterRandom(SQUADS[squad].MEMBERS)
             ReplaceSquadOwner(newOwner, squad)
         end
 
