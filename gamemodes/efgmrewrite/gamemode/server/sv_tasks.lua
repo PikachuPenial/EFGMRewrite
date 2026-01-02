@@ -128,6 +128,8 @@ util.AddNetworkString("SendNotification")
 
     end
 
+    -- i dont think this works yet lmao
+
     function TaskProgressObjectivesSpecific(ply, taskName, objIndex, count)
 
         local taskInfo = EFGMTASKS[taskName]
@@ -172,10 +174,36 @@ util.AddNetworkString("SendNotification")
 
     function TaskTempProgressWipeAll(ply)
 
+        if table.IsEmpty(ply.tasks) then return end
+
+        for taskName, taskInstance in pairs(ply.tasks) do
+            
+            for k, v in ipairs(taskInstance.tempProgress) do
+                
+                ply.tasks[taskName].tempProgress[k] = 0
+
+            end
+
+        end
+
     end
 
     function TaskTempProgressSaveAll(ply, progressType)
 
+        if table.IsEmpty(ply.tasks) then return end
+
+        for taskName, taskInstance in pairs(ply.tasks) do
+
+            local taskInfo = EFGMTASKS[taskName]
+            
+            for k, v in ipairs(taskInstance.progress) do
+                
+                ply.tasks[taskName].progress[k] = math.min( v + ply.tasks[taskName].tempProgress[k], taskInfo.objectives[k].count or 1 )
+                ply.tasks[taskName].tempProgress[k] = 0
+
+            end
+
+        end
     end
 
 -- Task Completion
