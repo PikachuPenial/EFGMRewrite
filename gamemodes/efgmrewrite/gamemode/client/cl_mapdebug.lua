@@ -4,11 +4,13 @@
 
 -- Take picture of map overhead:
 
--- Run "sv_cheats 1; cl_drawhud 0; r_drawviewmodel 0; hidepanel all; net_graph 0; r_skybox 0; fog_override 1; fog_enable 0; efgm_hud_enable 0"
+-- Run "sv_cheats 1; r_drawviewmodel 0; r_skybox 0; fog_override 1; fog_enable 0; mat_bloom_scalefactor_scalar 0; mat_specular 0;"
 -- and
 -- "cl_leveloverview [size]"
 
--- Take screenshot, put image under materials/maps in the addon folder, and use its exact name [map name] through the rest of the process
+-- Take screenshot using the "poster #" command, I use 2 on a 2560x1440p monitor
+
+-- put image under materials/maps in the addon folder, and use its exact name [map name] through the rest of the process
 
 -- Run "cl_leveloverview 0" or reload map
 
@@ -25,7 +27,7 @@
 -- Then go to second position, and run "efgm_debug_setlandmark2"
 -- The order you do that in doesn't matter, but copy the numbers from the last command
 
--- Then run "efgm_debug_drawmap [window width] [window height] [map name] [copied numbers]"
+-- Then run "efgm_debug_drawmap [map name] [copied numbers]"
 
 -- Using the sliders, line up the yellow circle to the first landmark, and the purple to the second
 
@@ -66,16 +68,16 @@ if GetConVar("efgm_derivesbox"):GetInt() == 1 then
 
     concommand.Add("efgm_debug_drawmap", function(ply, cmd, args)
 
-        local mapSizeX = tonumber( args[1] )
-        local mapSizeY = tonumber( args[2] )
+        local mapSizeX = ScrW()
+        local mapSizeY = ScrH()
 
-        local mapName = args[3]
+        local mapName = args[1]
 
-        local wsLandmark1X = tonumber( args[4] )
-        local wsLandmark1Y = tonumber( args[5] )
+        local wsLandmark1X = tonumber( args[2] )
+        local wsLandmark1Y = tonumber( args[3] )
 
-        local wsLandmark2X = tonumber( args[6] )
-        local wsLandmark2Y = tonumber( args[7] )
+        local wsLandmark2X = tonumber( args[4] )
+        local wsLandmark2Y = tonumber( args[5] )
 
         local dbmapFrame = vgui.Create("DFrame")
         dbmapFrame:SetSize(mapSizeX, mapSizeY)

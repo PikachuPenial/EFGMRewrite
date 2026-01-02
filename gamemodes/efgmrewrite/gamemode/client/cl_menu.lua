@@ -1453,7 +1453,7 @@ function Menu.InspectItem(item, data)
     local itemPullOutPanel = vgui.Create("DPanel", inspectPanel)
     itemPullOutPanel:SetSize(inspectPanel:GetWide(), inspectPanel:GetTall() - EFGM.MenuScale(75))
     itemPullOutPanel:SetPos(0, inspectPanel:GetTall() - 1)
-    itemPullOutPanel:SetAlpha(255)
+    itemPullOutPanel:Hide()
     itemPullOutPanel.Paint = function(s, w, h)
 
         BlurPanel(s, EFGM.MenuScale(1))
@@ -1933,6 +1933,7 @@ function Menu.InspectItem(item, data)
 
         surface.PlaySound("ui/element_select.wav")
 
+        itemPullOutPanel:Show()
         itemPullOutPanel:MoveTo(0, EFGM.MenuScale(75), 0.1, 0, 0.3)
 
         itemPullOutPanel.content:AlphaTo(0, 0.05, 0, function()
@@ -1957,6 +1958,7 @@ function Menu.InspectItem(item, data)
 
         surface.PlaySound("ui/element_select.wav")
 
+        itemPullOutPanel:Show()
         itemPullOutPanel:MoveTo(0, EFGM.MenuScale(75), 0.1, 0, 0.3)
 
         itemPullOutPanel.content:AlphaTo(0, 0.05, 0, function()
@@ -1971,11 +1973,11 @@ function Menu.InspectItem(item, data)
 
     inspectPanel.OnMousePressed = function(s)
 
-        itemPullOutPanel:MoveTo(0, inspectPanel:GetTall() - 1, 0.1, 0, 0.3)
+        itemPullOutPanel:MoveTo(0, inspectPanel:GetTall() - 1, 0.1, 0, 0.3, function() itemPullOutPanel:Hide() end)
 
         tab = nil
 
-        itemPullOutPanel.content:AlphaTo(0, 0.05, 0, function() end)
+        itemPullOutPanel.content:AlphaTo(0, 0.05, 0, nil)
 
         local screenX, screenY = s:LocalToScreen(0, 0)
 

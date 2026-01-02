@@ -19,25 +19,27 @@ if GetConVar("efgm_derivesbox"):GetInt() == 1 then
 
         end
 
+        local hiddenExtracts = 0
         for k, v in ipairs(ents.FindByClass("efgm_extract")) do
 
-            if v.ShowOnMap == false then continue end
-            mapReport.extracts[k] = {}
-            mapReport.extracts[k].group = v.ExtractGroup
-            mapReport.extracts[k].name = v.ExtractName
-            mapReport.extracts[k].accessibility = v.Accessibility
+            if v.ShowOnMap == false then hiddenExtracts = hiddenExtracts + 1 continue end
+            mapReport.extracts[k - hiddenExtracts] = {}
+            mapReport.extracts[k - hiddenExtracts].group = v.ExtractGroup
+            mapReport.extracts[k - hiddenExtracts].name = v.ExtractName
+            mapReport.extracts[k - hiddenExtracts].accessibility = v.Accessibility
             local pos = v:GetPos()
-            mapReport.extracts[k].pos = {x = pos.x, y = pos.y}
+            mapReport.extracts[k - hiddenExtracts].pos = {x = pos.x, y = pos.y}
 
         end
 
+        local hiddenKeys = 0
         for k, v in ipairs(ents.FindByClass("efgm_key_checker")) do
 
-            if v.ShowOnMap == false then continue end
-            mapReport.keys[k] = {}
-            mapReport.keys[k].name = EFGMITEMS[v.KeyName].fullName
+            if v.ShowOnMap == false then hiddenKeys = hiddenKeys + 1 continue end
+            mapReport.keys[k - hiddenKeys] = {}
+            mapReport.keys[k - hiddenKeys].name = EFGMITEMS[v.KeyName].fullName
             local pos = v:GetPos()
-            mapReport.keys[k].pos = {x = pos.x, y = pos.y}
+            mapReport.keys[k - hiddenKeys].pos = {x = pos.x, y = pos.y}
 
         end
 
@@ -83,25 +85,27 @@ if GetConVar("efgm_derivesbox"):GetInt() == 1 then
 
         end
 
+        local hiddenExtracts = 0
         for k, v in ipairs(ents.FindByClass("efgm_extract")) do
 
-            if v.ShowOnMap == false then continue end
-            mapReport.extracts[k] = {}
-            mapReport.extracts[k].group = v.ExtractGroup
-            mapReport.extracts[k].name = v.ExtractName
-            mapReport.extracts[k].accessibility = v.Accessibility
+            if v.ShowOnMap == false then hiddenExtracts = hiddenExtracts + 1 continue end
+            mapReport.extracts[k - hiddenExtracts] = {}
+            mapReport.extracts[k - hiddenExtracts].group = v.ExtractGroup
+            mapReport.extracts[k - hiddenExtracts].name = v.ExtractName
+            mapReport.extracts[k - hiddenExtracts].accessibility = v.Accessibility
             local pos = v:GetPos()
-            mapReport.extracts[k].pos = {x = (pos.x * factorX) + offsetX, y = (pos.y * factorY) + offsetY}
+            mapReport.extracts[k - hiddenExtracts].pos = {x = (pos.x * factorX) + offsetX, y = (pos.y * factorY) + offsetY}
 
         end
 
+        local hiddenKeys = 0
         for k, v in ipairs(ents.FindByClass("efgm_key_checker")) do
 
-            if v.ShowOnMap == false then continue end
-            mapReport.keys[k] = {}
-            mapReport.keys[k].name = EFGMITEMS[v.KeyName].fullName
+            if v.ShowOnMap == false then hiddenKeys = hiddenKeys + 1 continue end
+            mapReport.keys[k - hiddenKeys] = {}
+            mapReport.keys[k - hiddenKeys].name = EFGMITEMS[v.KeyName].fullName
             local pos = v:GetPos()
-            mapReport.keys[k].pos = {x = (pos.x * factorX) + offsetX, y = (pos.y * factorY) + offsetY}
+            mapReport.keys[k - hiddenKeys].pos = {x = (pos.x * factorX) + offsetX, y = (pos.y * factorY) + offsetY}
 
         end
 
