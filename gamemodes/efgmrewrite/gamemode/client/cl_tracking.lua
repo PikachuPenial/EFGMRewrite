@@ -14,13 +14,15 @@ KillPositions = {}
 
 local function UpdateTrackedPosition(trackRegardless)
 
-    if (LocalPlayer():GetNWInt("PlayerRaidStatus", 0) == 0) and !trackRegardless then return end
+    if ( (LocalPlayer():GetNWInt("PlayerRaidStatus", 0) == 0) and !trackRegardless ) or MAPINFO[game.GetMap()] == nil then return end
 
     table.insert(raidPositions, WorldToMapSpace(LocalPlayer():GetPos()))
 
 end
 
 hook.Add("efgm_raid_enter", "efgm_tracker_start", function()
+
+    if MAPINFO[game.GetMap()] == nil then return end
 
     UpdateTrackedPosition(false)
 
@@ -36,6 +38,8 @@ hook.Add("efgm_raid_enter", "efgm_tracker_start", function()
 end)
 
 hook.Add("efgm_raid_exit", "efgm_tracker_stop", function(wasExtract)
+
+    if MAPINFO[game.GetMap()] == nil then return end
 
     if enterRaidTime == nil then
 
@@ -70,6 +74,8 @@ end)
 
 hook.Add("entity_killed", "efgm_tracker_kill", function(data) 
 
+    if MAPINFO[game.GetMap()] == nil then return end
+    
 	local attacker = data.entindex_attacker
 
     if attacker != LocalPlayer():EntIndex() then return end
