@@ -3357,35 +3357,48 @@ function Menu.ReloadInventory()
         local a_size = a_def.sizeX * a_def.sizeY
         local b_size = b_def.sizeX * b_def.sizeY
 
-        if a_size != b_size then
-            return a_size > b_size
+        if a_size != b_size then return a_size > b_size end
+
+        local a_type = a_def.equipType
+        local b_type = b_def.equipType
+
+        if a_type != b_type then return a_type < b_type end
+
+        local a_name = a_def.displayName
+        local b_name = b_def.displayName
+
+        if a_name != b_name then return a_name < b_name end
+
+        local a_tag = a.data.tag
+        local b_tag = b.data.tag
+
+        if a_tag != b_tag then
+
+            if !a_tag then return false end
+            if !b_tag then return true end
+            return string.upper(a_tag) < string.upper(b_tag)
+
         end
 
-        if a_def.equipType != b_def.equipType then
-            return a_def.equipType < b_def.equipType
-        end
+        local a_durability = a.data.durability
+        local b_durability = b.data.durability
 
-        if a_def.displayName != b_def.displayName then
-            return a_def.displayName < b_def.displayName
-        end
+        if a_durability != b_durability then return a_durability > b_durability end
 
-        if a.data.tag != b.data.tag then
-            if !a.data.tag then return false end
-            if !b.data.tag then return true end
-            return string.upper(a.data.tag) < string.upper(b.data.tag)
-        end
+        local a_count = a.data.count
+        local b_count = b.data.count
 
-        if a.data.durability and b.data.durability then
-            return a.data.durability > b.data.durability
-        end
+        if a_count > 1 and b_count > 1 and a_count != b_count then return a_count > b_count end
 
-        if a.data.count > 1 and b.data.count > 1 then
-            return a.data.count > b.data.count
-        end
+        local a_value = a.value
+        local b_value = b.value
 
-        if a.value and b.value then
-            return a.value > b.value
-        end
+        if a_value != b_value then return a_value > b_value end
+
+        local a_fir = (a.data.fir == true and 1) or 0
+        local b_fir = (b.data.fir == true and 1) or 0
+
+        if a_fir and b_fir then return a_fir > b_fir end
 
     end)
 
@@ -5229,42 +5242,53 @@ function Menu.ReloadStash()
         local a_pin = a.data.pin or 0
         local b_pin = b.data.pin or 0
 
-        if a_pin != b_pin then
-            return a_pin > b_pin
-        end
+        if a_pin != b_pin then return a_pin > b_pin end
 
         local a_size = a_def.sizeX * a_def.sizeY
         local b_size = b_def.sizeX * b_def.sizeY
 
-        if a_size != b_size then
-            return a_size > b_size
+        if a_size != b_size then return a_size > b_size end
+
+        local a_type = a_def.equipType
+        local b_type = b_def.equipType
+
+        if a_type != b_type then return a_type < b_type end
+
+        local a_name = a_def.displayName
+        local b_name = b_def.displayName
+
+        if a_name != b_name then return a_name < b_name end
+
+        local a_tag = a.data.tag
+        local b_tag = b.data.tag
+
+        if a_tag != b_tag then
+
+            if !a_tag then return false end
+            if !b_tag then return true end
+            return string.upper(a_tag) < string.upper(b_tag)
+
         end
 
-        if a_def.equipType != b_def.equipType then
-            return a_def.equipType < b_def.equipType
-        end
+        local a_durability = a.data.durability
+        local b_durability = b.data.durability
 
-        if a_def.displayName != b_def.displayName then
-            return a_def.displayName < b_def.displayName
-        end
+        if a_durability != b_durability then return a_durability > b_durability end
 
-        if a.data.tag != b.data.tag then
-            if !a.data.tag then return false end
-            if !b.data.tag then return true end
-            return string.upper(a.data.tag) < string.upper(b.data.tag)
-        end
+        local a_count = a.data.count
+        local b_count = b.data.count
 
-        if a.data.durability and b.data.durability then
-            return a.data.durability > b.data.durability
-        end
+        if a_count > 1 and b_count > 1 and a_count != b_count then return a_count > b_count end
 
-        if a.data.count > 1 and b.data.count > 1 then
-            return a.data.count > b.data.count
-        end
+        local a_value = a.value
+        local b_value = b.value
 
-        if a.value and b.value then
-            return a.value > b.value
-        end
+        if a_value != b_value then return a_value > b_value end
+
+        local a_fir = (a.data.fir == true and 1) or 0
+        local b_fir = (b.data.fir == true and 1) or 0
+
+        if a_fir and b_fir then return a_fir > b_fir end
 
     end)
 
@@ -5665,42 +5689,53 @@ function Menu.ReloadMarketStash()
         local a_pin = a.data.pin or 0
         local b_pin = b.data.pin or 0
 
-        if a_pin != b_pin then
-            return a_pin > b_pin
-        end
+        if a_pin != b_pin then return a_pin > b_pin end
 
         local a_size = a_def.sizeX * a_def.sizeY
         local b_size = b_def.sizeX * b_def.sizeY
 
-        if a_size != b_size then
-            return a_size > b_size
+        if a_size != b_size then return a_size > b_size end
+
+        local a_type = a_def.equipType
+        local b_type = b_def.equipType
+
+        if a_type != b_type then return a_type < b_type end
+
+        local a_name = a_def.displayName
+        local b_name = b_def.displayName
+
+        if a_name != b_name then return a_name < b_name end
+
+        local a_tag = a.data.tag
+        local b_tag = b.data.tag
+
+        if a_tag != b_tag then
+
+            if !a_tag then return false end
+            if !b_tag then return true end
+            return string.upper(a_tag) < string.upper(b_tag)
+
         end
 
-        if a_def.equipType != b_def.equipType then
-            return a_def.equipType < b_def.equipType
-        end
+        local a_durability = a.data.durability
+        local b_durability = b.data.durability
 
-        if a_def.displayName != b_def.displayName then
-            return a_def.displayName < b_def.displayName
-        end
+        if a_durability != b_durability then return a_durability > b_durability end
 
-        if a.data.tag != b.data.tag then
-            if !a.data.tag then return false end
-            if !b.data.tag then return true end
-            return string.upper(a.data.tag) < string.upper(b.data.tag)
-        end
+        local a_count = a.data.count
+        local b_count = b.data.count
 
-        if a.data.durability and b.data.durability then
-            return a.data.durability > b.data.durability
-        end
+        if a_count > 1 and b_count > 1 and a_count != b_count then return a_count > b_count end
 
-        if a.data.count > 1 and b.data.count > 1 then
-            return a.data.count > b.data.count
-        end
+        local a_value = a.value
+        local b_value = b.value
 
-        if a.value and b.value then
-            return a.value > b.value
-        end
+        if a_value != b_value then return a_value > b_value end
+
+        local a_fir = (a.data.fir == true and 1) or 0
+        local b_fir = (b.data.fir == true and 1) or 0
+
+        if a_fir and b_fir then return a_fir > b_fir end
 
     end)
 
@@ -5988,35 +6023,48 @@ function Menu.ReloadContainer()
         local a_size = a_def.sizeX * a_def.sizeY
         local b_size = b_def.sizeX * b_def.sizeY
 
-        if a_size != b_size then
-            return a_size > b_size
+        if a_size != b_size then return a_size > b_size end
+
+        local a_type = a_def.equipType
+        local b_type = b_def.equipType
+
+        if a_type != b_type then return a_type < b_type end
+
+        local a_name = a_def.displayName
+        local b_name = b_def.displayName
+
+        if a_name != b_name then return a_name < b_name end
+
+        local a_tag = a.data.tag
+        local b_tag = b.data.tag
+
+        if a_tag != b_tag then
+
+            if !a_tag then return false end
+            if !b_tag then return true end
+            return string.upper(a_tag) < string.upper(b_tag)
+
         end
 
-        if a_def.equipType != b_def.equipType then
-            return a_def.equipType < b_def.equipType
-        end
+        local a_durability = a.data.durability
+        local b_durability = b.data.durability
 
-        if a_def.displayName != b_def.displayName then
-            return a_def.displayName < b_def.displayName
-        end
+        if a_durability != b_durability then return a_durability > b_durability end
 
-        if a.data.tag != b.data.tag then
-            if !a.data.tag then return false end
-            if !b.data.tag then return true end
-            return string.upper(a.data.tag) < string.upper(b.data.tag)
-        end
+        local a_count = a.data.count
+        local b_count = b.data.count
 
-        if a.data.durability and b.data.durability then
-            return a.data.durability > b.data.durability
-        end
+        if a_count > 1 and b_count > 1 and a_count != b_count then return a_count > b_count end
 
-        if a.data.count > 1 and b.data.count > 1 then
-            return a.data.count > b.data.count
-        end
+        local a_value = a.value
+        local b_value = b.value
 
-        if a.value and b.value then
-            return a.value > b.value
-        end
+        if a_value != b_value then return a_value > b_value end
+
+        local a_fir = (a.data.fir == true and 1) or 0
+        local b_fir = (b.data.fir == true and 1) or 0
+
+        if a_fir and b_fir then return a_fir > b_fir end
 
     end)
 

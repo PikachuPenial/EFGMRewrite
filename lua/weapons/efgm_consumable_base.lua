@@ -5,12 +5,12 @@ SWEP.Spawnable = false
 SWEP.Primary.ClipSize = -1
 SWEP.Primary.DefaultClip = -1
 SWEP.Primary.Automatic = true
-SWEP.Primary.Ammo = "none"
+SWEP.Primary.Ammo = nil
 
 SWEP.Secondary.ClipSize = -1
 SWEP.Secondary.DefaultClip = -1
 SWEP.Secondary.Automatic = true
-SWEP.Secondary.Ammo = "none"
+SWEP.Secondary.Ammo = nil
 
 SWEP.ConsumableType = nil       -- type of consumable
 SWEP.ConsumableDurability = 100 -- default durability of the consumable, used mostly as a failsafe
@@ -26,6 +26,13 @@ function SWEP:Initialize()
     self:SetHoldType(self.HoldType or "slam")
     self.Durability = self.ConsumableDurability
     self.Primary.ClipSize = self.ConsumableDurability
+
+    if CLIENT then
+        self.AmmoDisplay = {
+            Draw = true,
+            PrimaryClip = 0
+        }
+    end
 
 end
 
@@ -211,5 +218,14 @@ function SWEP:SecondaryAttack()
         self:SetNextSecondaryFire(CurTime())
 
     end
+
+end
+
+function SWEP:CustomAmmoDisplay()
+
+    local display = self.AmmoDisplay
+    display.PrimaryClip = self.Durability
+
+    return display
 
 end

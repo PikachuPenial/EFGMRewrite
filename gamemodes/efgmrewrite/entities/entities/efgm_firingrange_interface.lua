@@ -13,28 +13,36 @@ function ENT:AcceptInput(name, ply, caller, data)
 
         if enteredRange then
 
-            for k, v in ipairs(ply:GetWeapons()) do
+            for _, wep in ipairs(ply:GetWeapons()) do
 
-                local clip1 = v:Clip1()
-                if clip1 != -1 and clip1 != 0 then
+                local def = EFGMITEMS[wep:GetClass()]
+
+                if !def then continue end
+                if def.equipType != EQUIPTYPE.Weapon then continue end
+
+                local clip1 = wep:Clip1()
+                local clip2 = wep:Clip2()
+                local maxClip1 = wep:GetMaxClip1()
+                local maxClip2 = wep:GetMaxClip2()
+
+                if clip1 > 0 and maxClip1 > 0 then
 
                     local itemData = {}
-                    itemData.count = v:Clip1()
-                    FlowItemToInventory(ply, v.Ammo, EQUIPTYPE.Ammunition, itemData)
+                    itemData.count = wep:Clip1()
+                    FlowItemToInventory(ply, wep.Ammo, EQUIPTYPE.Ammunition, itemData)
 
                 end
 
-                local clip2 = v:Clip2()
-                if clip2 != -1 and clip2 != 0 then
+                if clip2 > 0 and maxClip2 > 0 then
 
                     local itemData = {}
-                    itemData.count = v:Clip2()
-                    FlowItemToInventory(ply, v.UBGLAmmo, EQUIPTYPE.Ammunition, itemData)
+                    itemData.count = wep:Clip2()
+                    FlowItemToInventory(ply, wep.UBGLAmmo, EQUIPTYPE.Ammunition, itemData)
 
                 end
 
-                v:SetClip1(v:GetMaxClip1())
-                v:SetClip2(v:GetMaxClip2())
+                if maxClip1 > 0 then wep:SetClip1(wep:GetMaxClip1()) end
+                if maxClip2 > 0 then wep:SetClip2(wep:GetMaxClip2()) end
 
             end
 
@@ -51,10 +59,18 @@ function ENT:AcceptInput(name, ply, caller, data)
 
             if ply:CompareStatus(3) then return end
 
-            for k, v in ipairs(ply:GetWeapons()) do
+            for _, wep in ipairs(ply:GetWeapons()) do
 
-                v:SetClip1(0)
-                v:SetClip2(0)
+                local def = EFGMITEMS[wep:GetClass()]
+
+                if !def then continue end
+                if def.equipType != EQUIPTYPE.Weapon then continue end
+
+                local maxClip1 = wep:GetMaxClip1()
+                local maxClip2 = wep:GetMaxClip2()
+
+                if maxClip1 > 0 then wep:SetClip1(0) end
+                if maxClip2 > 0 then wep:SetClip2(0) end
 
             end
 
