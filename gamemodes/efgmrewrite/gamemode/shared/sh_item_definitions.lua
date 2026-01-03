@@ -5100,6 +5100,7 @@ EFGMITEMS = {}
 
 -- KEYS
 
+-- CONCRETE KEYS
     EFGMITEMS["efgm_key_workshop_office"] = {
         ["fullName"] = "Workshop Office Key",
         ["displayName"] = "W. Office",
@@ -5341,6 +5342,7 @@ EFGMITEMS = {}
         ["lootWeight"] = 20
     }
 
+-- BELMONT KEYS
     EFGMITEMS["efgm_key_breakroom"] = {
         ["fullName"] = "Parking Garage Break Room Key",
         ["displayName"] = "Break R.",
@@ -5401,6 +5403,28 @@ EFGMITEMS = {}
         ["canPurchase"] = false
     }
 
+    EFGMITEMS["efgm_key_parking_marked"] = {
+        ["fullName"] = "Parking Marked Room Key",
+        ["displayName"] = "Parking mrk.",
+        ["displayType"] = "Belmont Key",
+        ["weight"] = 0.2,
+        ["value"] = 1350000,
+        ["equipType"] = EQUIPTYPE.Key,
+        ["consumableType"] = "key",
+        ["consumableValue"] = 5,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/keys/bloody_marked.png", "smooth"),
+        ["iconColor"] = ICONCOLORS.Green,
+
+        ["sizeX"] = 1,
+        ["sizeY"] = 1,
+
+        ["canPurchase"] = false,
+        ["lootWeight"] = 25
+    }
+
+-- FACTORY KEYS
     EFGMITEMS["efgm_key_office_marked"] = {
         ["fullName"] = "Office Marked Room Key",
         ["displayName"] = "Office mrk.",
