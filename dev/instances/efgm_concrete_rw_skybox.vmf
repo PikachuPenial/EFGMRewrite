@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "8870"
-	"mapversion" "93"
+	"mapversion" "94"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -89,7 +89,7 @@ bgimages_plus
 world
 {
 	"id" "1"
-	"mapversion" "93"
+	"mapversion" "94"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -4610,7 +4610,7 @@ entity
 	"model" "models/props_canal/refinery_02_skybox.mdl"
 	"skin" "0"
 	"solid" "6"
-	"origin" "-228 1728 -62"
+	"origin" "-228 1728 -128"
 	editor
 	{
 		"color" "255 255 0"
