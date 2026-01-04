@@ -103,7 +103,7 @@ function Menu:Initialize(openTo, container)
     self.Closing = false
 
     function menuFrame:Paint(w, h)
-        if Menu.Unblur then return end -- hide the blur when customizing certain settings and whatnot
+        if self.Unblur then return end -- hide the blur when customizing certain settings and whatnot
 
         surface.SetDrawColor(Colors.frameColor)
         surface.DrawRect(0, 0, ScrW(), ScrH())
@@ -116,7 +116,7 @@ function Menu:Initialize(openTo, container)
             self.Closing = true
             menuFrame:SetKeyboardInputEnabled(false)
             menuFrame:SetMouseInputEnabled(false)
-            Menu.IsOpen = false
+            self.IsOpen = false
 
             menuFrame:AlphaTo(0, 0.1, 0, function()
                 menuFrame:Close()
@@ -148,6 +148,8 @@ function Menu:Initialize(openTo, container)
     function menuFrame:OnClose()
 
         Menu.PerferredShopDestination = nil
+        Menu.Closing = true
+        Menu.IsOpen = false
 
         if Menu.ActiveTab == "Match" then
 

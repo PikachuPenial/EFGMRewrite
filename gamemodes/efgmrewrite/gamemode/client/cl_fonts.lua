@@ -32,6 +32,7 @@ local function CreateFonts()
 
     -- HUD
     surface.CreateFont("Bender24", {font = "Bender", size = math.ceil(EFGM.ScreenScale(24)), weight = 500, antialias = true, extended = true})
+    surface.CreateFont("Bender18", {font = "Bender", size = math.ceil(EFGM.ScreenScale(18)), weight = 500, antialias = true, extended = true})
     surface.CreateFont("BenderAmmoCount", { font = "Bender", size = math.ceil(EFGM.ScreenScale(32)), weight = 500, antialias = true, extended = false })
     surface.CreateFont("BenderExfilList", { font = "BenderBold", size = math.ceil(EFGM.ScreenScale(40)), weight = 550, antialias = true, extended = true })
     surface.CreateFont("BenderExfilTimer", { font = "BenderBold", size = math.ceil(EFGM.ScreenScale(60)), weight = 550, antialias = true, extended = true })

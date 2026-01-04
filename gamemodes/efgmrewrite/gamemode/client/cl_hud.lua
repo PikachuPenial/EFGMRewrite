@@ -337,23 +337,23 @@ function RenderPlayerInfo(ent)
 
     local inviteText = string.upper("[" .. squadBind .. "] INVITE TO SQUAD" .. "   " .. "[" .. duelBind .. "] INVITE TO DUEL" .. "   " .. "[" .. profileBind .. "] VIEW PROFILE")
     if (CurTime() - Invites.lastInviteSentTime < 10) or Invites.invitedBy != nil or Invites.invitedType != nil then inviteText = string.upper("[" .. profileBind .. "] VIEW PROFILE") end
-    surface.SetFont("Bender24Menu")
+    surface.SetFont("Bender24")
     local inviteTextSize = surface.GetTextSize(inviteText) + EFGM.ScreenScale(10)
 
     local infoSize = math.max(nameTextSize, inviteTextSize)
-    local infoSizeY = EFGM.MenuScale(90)
-    if !inHideout then infoSize = nameTextSize infoSizeY = EFGM.MenuScale(65) end
+    local infoSizeY = EFGM.ScreenScale(90)
+    if !inHideout then infoSize = nameTextSize infoSizeY = EFGM.ScreenScale(65) end
 
     surface.SetDrawColor(Colors.hudBackground)
-    surface.DrawRect(ScrW() / 2 - (infoSize / 2), ScrH() - infoSizeY - EFGM.MenuScale(20), infoSize, infoSizeY)
+    surface.DrawRect(ScrW() / 2 - (infoSize / 2), ScrH() - infoSizeY - EFGM.ScreenScale(20), infoSize, infoSizeY)
 
     surface.SetDrawColor(Colors.transparentWhiteColor)
-    surface.DrawRect(ScrW() / 2 - (infoSize / 2), ScrH() - infoSizeY - EFGM.MenuScale(20), infoSize, EFGM.MenuScale(1))
+    surface.DrawRect(ScrW() / 2 - (infoSize / 2), ScrH() - infoSizeY - EFGM.ScreenScale(20), infoSize, EFGM.ScreenScale(1))
 
-    draw.DrawText(name, "BenderExfilTimerMenu", ScrW() / 2, ScrH() - infoSizeY - EFGM.MenuScale(20), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+    draw.DrawText(name, "BenderExfilTimer", ScrW() / 2, ScrH() - infoSizeY - EFGM.ScreenScale(20), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 
     if !inHideout or !Invites.allow then return end
-    draw.DrawText(inviteText, "Bender24Menu", ScrW() / 2, ScrH() - infoSizeY + EFGM.MenuScale(40), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+    draw.DrawText(inviteText, "Bender24", ScrW() / 2, ScrH() - infoSizeY + EFGM.ScreenScale(40), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 end
 
 local function RenderVOIPIndicator()
@@ -389,14 +389,14 @@ function RenderInvite()
 
     end
 
-    surface.SetFont("BenderExfilTimerMenu")
+    surface.SetFont("BenderExfilTimer")
     local textSize = surface.GetTextSize(text) + EFGM.ScreenScale(10)
 
     local acceptBind = string.upper(input.GetKeyName(GetConVar("efgm_bind_invites_accept"):GetInt()) or "N/A")
     local declineBind = string.upper(input.GetKeyName(GetConVar("efgm_bind_invites_decline"):GetInt()) or "N/A")
 
     local bindsText = string.upper("[" .. acceptBind .. "] ACCEPT" .. "   " .. "[" .. declineBind .. "] IGNORE")
-    surface.SetFont("Bender24Menu")
+    surface.SetFont("Bender24")
     local bindsTextSize = surface.GetTextSize(bindsText) + EFGM.ScreenScale(10)
 
     invite.Paint = function(self, w, h)
@@ -413,8 +413,8 @@ function RenderInvite()
         surface.SetDrawColor(Colors.transparentWhiteColor)
         surface.DrawRect(EFGM.ScreenScale(20), EFGM.ScreenScale(20), ((time - CurTime()) / 10) * math.max(textSize, bindsTextSize), EFGM.ScreenScale(1))
 
-        draw.SimpleText(text, "BenderExfilTimerMenu", EFGM.ScreenScale(25), EFGM.ScreenScale(21), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-        draw.SimpleText(bindsText, "Bender24Menu", EFGM.ScreenScale(25), EFGM.ScreenScale(81), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+        draw.SimpleText(text, "BenderExfilTimer", EFGM.ScreenScale(25), EFGM.ScreenScale(21), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+        draw.SimpleText(bindsText, "Bender24", EFGM.ScreenScale(25), EFGM.ScreenScale(81), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
     end
 
     invite:AlphaTo(255, 0.1, 0, nil)
@@ -456,84 +456,84 @@ function RenderDuelLoadout()
     local holsterMode
     local holsterModeSize = 0
 
-    surface.SetFont("Bender24Menu")
+    surface.SetFont("Bender24")
 
     if hasPrimary then
         primaryDef = EFGMITEMS[primary.name]
 
         primaryName = primaryDef.displayName
-        primaryNameSize = surface.GetTextSize(primaryName) + EFGM.MenuScale(140)
+        primaryNameSize = surface.GetTextSize(primaryName) + EFGM.ScreenScale(140)
         primaryCal = primaryDef.caliber or ""
 
         primaryEnt = ply:GetWeapon(primary.name)
         primaryMax = tostring(primaryEnt:GetMaxClip1() or 0)
         primaryMode = string.upper(string.sub(primaryEnt:GetFiremodeName() or "", 1, 1))
-        primaryModeSize = surface.GetTextSize(primaryMode) + EFGM.MenuScale(5)
+        primaryModeSize = surface.GetTextSize(primaryMode) + EFGM.ScreenScale(5)
     end
 
     if hasHolster then
         holsterDef = EFGMITEMS[holster.name]
 
         holsterName = holsterDef.displayName
-        holsterNameSize = surface.GetTextSize(holsterName) + EFGM.MenuScale(140)
+        holsterNameSize = surface.GetTextSize(holsterName) + EFGM.ScreenScale(140)
 
         holsterCal = holsterDef.caliber or ""
 
         holsterEnt = ply:GetWeapon(holster.name)
         holsterMax = tostring(holsterEnt:GetMaxClip1() or 0)
         holsterMode = string.upper(string.sub(holsterEnt:GetFiremodeName() or "", 1, 1))
-        holsterModeSize = surface.GetTextSize(holsterMode) + EFGM.MenuScale(5)
+        holsterModeSize = surface.GetTextSize(holsterMode) + EFGM.ScreenScale(5)
     end
 
     local loadoutSize = math.max(primaryNameSize, holsterNameSize)
-    local loadoutSizeY = EFGM.MenuScale(43)
-    local holsterY = EFGM.MenuScale(-18)
-    if hasPrimary then loadoutSizeY = EFGM.MenuScale(90) holsterY = EFGM.MenuScale(25) end
+    local loadoutSizeY = EFGM.ScreenScale(43)
+    local holsterY = EFGM.ScreenScale(-18)
+    if hasPrimary then loadoutSizeY = EFGM.ScreenScale(90) holsterY = EFGM.ScreenScale(25) end
 
     DuelLoadout.Paint = function(self, w, h)
         if !ply:Alive() then return end
         if !ply:CompareStatus(3) then return end
 
         surface.SetDrawColor(Colors.hudBackground)
-        surface.DrawRect(ScrW() / 2 - (loadoutSize / 2), ScrH() - loadoutSizeY - EFGM.MenuScale(20), loadoutSize, loadoutSizeY)
+        surface.DrawRect(ScrW() / 2 - (loadoutSize / 2), ScrH() - loadoutSizeY - EFGM.ScreenScale(20), loadoutSize, loadoutSizeY)
 
         surface.SetDrawColor(Colors.transparentWhiteColor)
-        surface.DrawRect(ScrW() / 2 - (loadoutSize / 2), ScrH() - loadoutSizeY - EFGM.MenuScale(20), loadoutSize, EFGM.MenuScale(1))
+        surface.DrawRect(ScrW() / 2 - (loadoutSize / 2), ScrH() - loadoutSizeY - EFGM.ScreenScale(20), loadoutSize, EFGM.ScreenScale(1))
 
         if hasPrimary then
             primaryMax = tostring(primaryEnt:GetMaxClip1() or 0)
-            draw.DrawText(primaryName, "Bender24Menu", ScrW() / 2 - (loadoutSize / 2) + EFGM.MenuScale(5), ScrH() - loadoutSizeY - EFGM.MenuScale(15), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-            draw.DrawText(primaryCal, "Bender18Menu", ScrW() / 2 - (loadoutSize / 2) + EFGM.MenuScale(5), ScrH() - loadoutSizeY + EFGM.MenuScale(5), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+            draw.DrawText(primaryName, "Bender24", ScrW() / 2 - (loadoutSize / 2) + EFGM.ScreenScale(5), ScrH() - loadoutSizeY - EFGM.ScreenScale(15), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+            draw.DrawText(primaryCal, "Bender18", ScrW() / 2 - (loadoutSize / 2) + EFGM.ScreenScale(5), ScrH() - loadoutSizeY + EFGM.ScreenScale(5), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
 
             surface.SetMaterial(Mats.switchIcon)
             surface.SetDrawColor(Colors.pureWhiteColor)
-            surface.DrawTexturedRect(ScrW() / 2 + (loadoutSize / 2) - EFGM.MenuScale(31), ScrH() - loadoutSizeY - EFGM.MenuScale(15), EFGM.MenuScale(24), EFGM.MenuScale(24))
+            surface.DrawTexturedRect(ScrW() / 2 + (loadoutSize / 2) - EFGM.ScreenScale(31), ScrH() - loadoutSizeY - EFGM.ScreenScale(15), EFGM.ScreenScale(24), EFGM.ScreenScale(24))
 
-            draw.DrawText(primaryMode, "Bender24Menu", ScrW() / 2 + (loadoutSize / 2) - EFGM.MenuScale(36), ScrH() - loadoutSizeY - EFGM.MenuScale(15), Color(255, 255, 255), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
+            draw.DrawText(primaryMode, "Bender24", ScrW() / 2 + (loadoutSize / 2) - EFGM.ScreenScale(36), ScrH() - loadoutSizeY - EFGM.ScreenScale(15), Color(255, 255, 255), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
 
             surface.SetMaterial(Mats.bulletsIcon)
             surface.SetDrawColor(Colors.pureWhiteColor)
-            surface.DrawTexturedRect(ScrW() / 2 + (loadoutSize / 2) - EFGM.MenuScale(65) - primaryModeSize, ScrH() - loadoutSizeY - EFGM.MenuScale(15), EFGM.MenuScale(24), EFGM.MenuScale(24))
+            surface.DrawTexturedRect(ScrW() / 2 + (loadoutSize / 2) - EFGM.ScreenScale(65) - primaryModeSize, ScrH() - loadoutSizeY - EFGM.ScreenScale(15), EFGM.ScreenScale(24), EFGM.ScreenScale(24))
 
-            draw.DrawText(primaryMax, "Bender24Menu", ScrW() / 2 + (loadoutSize / 2) - EFGM.MenuScale(70) - primaryModeSize, ScrH() - loadoutSizeY - EFGM.MenuScale(15), Color(255, 255, 255), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
+            draw.DrawText(primaryMax, "Bender24", ScrW() / 2 + (loadoutSize / 2) - EFGM.ScreenScale(70) - primaryModeSize, ScrH() - loadoutSizeY - EFGM.ScreenScale(15), Color(255, 255, 255), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
         end
 
         if hasHolster then
             holsterMax = tostring(holsterEnt:GetMaxClip1() or 0)
-            draw.DrawText(holsterName, "Bender24Menu", ScrW() / 2 - (loadoutSize / 2) + EFGM.MenuScale(5), ScrH() - loadoutSizeY + holsterY, Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-            draw.DrawText(holsterCal, "Bender18Menu", ScrW() / 2 - (loadoutSize / 2) + EFGM.MenuScale(5), ScrH() - loadoutSizeY + holsterY + EFGM.MenuScale(20), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+            draw.DrawText(holsterName, "Bender24", ScrW() / 2 - (loadoutSize / 2) + EFGM.ScreenScale(5), ScrH() - loadoutSizeY + holsterY, Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+            draw.DrawText(holsterCal, "Bender18", ScrW() / 2 - (loadoutSize / 2) + EFGM.ScreenScale(5), ScrH() - loadoutSizeY + holsterY + EFGM.ScreenScale(20), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
 
             surface.SetMaterial(Mats.switchIcon)
             surface.SetDrawColor(Colors.pureWhiteColor)
-            surface.DrawTexturedRect(ScrW() / 2 + (loadoutSize / 2) - EFGM.MenuScale(31), ScrH() - loadoutSizeY + holsterY, EFGM.MenuScale(24), EFGM.MenuScale(24))
+            surface.DrawTexturedRect(ScrW() / 2 + (loadoutSize / 2) - EFGM.ScreenScale(31), ScrH() - loadoutSizeY + holsterY, EFGM.ScreenScale(24), EFGM.ScreenScale(24))
 
-            draw.DrawText(holsterMode, "Bender24Menu", ScrW() / 2 + (loadoutSize / 2) - EFGM.MenuScale(36), ScrH() - loadoutSizeY + holsterY, Color(255, 255, 255), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
+            draw.DrawText(holsterMode, "Bender24", ScrW() / 2 + (loadoutSize / 2) - EFGM.ScreenScale(36), ScrH() - loadoutSizeY + holsterY, Color(255, 255, 255), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
 
             surface.SetMaterial(Mats.bulletsIcon)
             surface.SetDrawColor(Colors.pureWhiteColor)
-            surface.DrawTexturedRect(ScrW() / 2 + (loadoutSize / 2) - EFGM.MenuScale(65) - holsterModeSize, ScrH() - loadoutSizeY + holsterY, EFGM.MenuScale(24), EFGM.MenuScale(24))
+            surface.DrawTexturedRect(ScrW() / 2 + (loadoutSize / 2) - EFGM.ScreenScale(65) - holsterModeSize, ScrH() - loadoutSizeY + holsterY, EFGM.ScreenScale(24), EFGM.ScreenScale(24))
 
-            draw.DrawText(holsterMax, "Bender24Menu", ScrW() / 2 + (loadoutSize / 2) - EFGM.MenuScale(70) - holsterModeSize, ScrH() - loadoutSizeY + holsterY, Color(255, 255, 255), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
+            draw.DrawText(holsterMax, "Bender24", ScrW() / 2 + (loadoutSize / 2) - EFGM.ScreenScale(70) - holsterModeSize, ScrH() - loadoutSizeY + holsterY, Color(255, 255, 255), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
         end
     end
 
@@ -577,8 +577,8 @@ net.Receive("PlayerRaidTransition", function()
 
     RaidTransition.Paint = function(self, w, h)
         if !RaidTransition:IsValid() then return end
-        BlurPanel(RaidTransition, EFGM.MenuScale(13))
-        BlurPanel(RaidTransition, EFGM.MenuScale(13))
+        BlurPanel(RaidTransition, EFGM.ScreenScale(13))
+        BlurPanel(RaidTransition, EFGM.ScreenScale(13))
 
         surface.SetDrawColor(0, 0, 0, 255)
         surface.DrawRect(0, 0, ScrW(), ScrH())
@@ -629,8 +629,8 @@ net.Receive("PlayerDuelTransition", function()
 
     RaidTransition.Paint = function(self, w, h)
         if !RaidTransition:IsValid() then return end
-        BlurPanel(RaidTransition, EFGM.MenuScale(13))
-        BlurPanel(RaidTransition, EFGM.MenuScale(13))
+        BlurPanel(RaidTransition, EFGM.ScreenScale(13))
+        BlurPanel(RaidTransition, EFGM.ScreenScale(13))
 
         surface.SetDrawColor(0, 0, 0, 255)
         surface.DrawRect(0, 0, ScrW(), ScrH())
@@ -1729,7 +1729,7 @@ function CreateNotification(text, icon, snd)
     if snd then surface.PlaySound(snd) end
 
     notif.Paint = function(s, w, h)
-        BlurPanel(s, EFGM.MenuScale(3))
+        BlurPanel(s, EFGM.ScreenScale(3))
         surface.SetDrawColor(0, 0, 0, 200)
         surface.DrawRect(0, 0, w, h)
         surface.SetDrawColor(Colors.transparentWhiteColor)
@@ -2657,7 +2657,7 @@ net.Receive("VoteableMaps", function(len)
         local time = CurTime() + 20
 
         local text = "VOTE FOR THE NEXT MAP!"
-        surface.SetFont("BenderExfilTimerMenu")
+        surface.SetFont("BenderExfilTimer")
         local textSize = surface.GetTextSize(text) + EFGM.ScreenScale(10)
 
         local acceptBind = string.upper(input.GetKeyName(GetConVar("efgm_bind_invites_accept"):GetInt()) or "N/A")
@@ -2678,12 +2678,12 @@ net.Receive("VoteableMaps", function(len)
             surface.SetDrawColor(Colors.transparentWhiteColor)
             surface.DrawRect(EFGM.ScreenScale(20), EFGM.ScreenScale(20), ((time - CurTime()) / 20) * textSize, EFGM.ScreenScale(1))
 
-            draw.SimpleText(text, "BenderExfilTimerMenu", EFGM.ScreenScale(25), EFGM.ScreenScale(21), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-            draw.SimpleText(string.upper("[" .. acceptBind .. "] " .. map1Name), "Bender24Menu", EFGM.ScreenScale(25), EFGM.ScreenScale(241), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-            draw.SimpleText(string.upper("[" .. declineBind .. "] " .. map2Name), "Bender24Menu", EFGM.ScreenScale(185), EFGM.ScreenScale(241), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+            draw.SimpleText(text, "BenderExfilTimer", EFGM.ScreenScale(25), EFGM.ScreenScale(21), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+            draw.SimpleText(string.upper("[" .. acceptBind .. "] " .. map1Name), "Bender24", EFGM.ScreenScale(25), EFGM.ScreenScale(241), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+            draw.SimpleText(string.upper("[" .. declineBind .. "] " .. map2Name), "Bender24", EFGM.ScreenScale(185), EFGM.ScreenScale(241), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
 
-            draw.SimpleText(map1Votes .. "%", "Bender18Menu", EFGM.ScreenScale(25), EFGM.ScreenScale(225), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-            draw.SimpleText(map2Votes .. "%", "Bender18Menu", EFGM.ScreenScale(185), EFGM.ScreenScale(225), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+            draw.SimpleText(map1Votes .. "%", "Bender18", EFGM.ScreenScale(25), EFGM.ScreenScale(225), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+            draw.SimpleText(map2Votes .. "%", "Bender18", EFGM.ScreenScale(185), EFGM.ScreenScale(225), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
 
             surface.SetMaterial(map1Icon)
             surface.SetDrawColor(Colors.pureWhiteColor)
