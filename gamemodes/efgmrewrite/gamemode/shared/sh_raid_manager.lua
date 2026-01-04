@@ -138,28 +138,90 @@ if SERVER then
                 v:Freeze(true)
                 v:SetMoveType(MOVETYPE_NOCLIP)
 
-                if status == playerStatus.SCAV then
-                    timer.Create("ScavLoadout" .. v:SteamID64(), 0.5, 1, function() RAID:GenerateScavLoadout(v) end)
+
+                local introAnimString, introSpaceIndex = IntroGetFreeSpace()
+
+                if introAnimString != nil then
+
+                    IntroSpaces[introSpaceIndex].occupied = true
+
+                    timer.Create("Intro" .. v:SteamID64(), 1, 1, function()
+                        
+                        if #spawns == 0 then spawns, spawnGroup = RAID:GenerateSpawn(status) end -- i feel like spawns should always be empty so the if statement is meaningless but i dont wanna break a playtest by tempting it
+
+                        if #spawns == 0 then print("not enough spawn points for every squad member, this shouldn't be possible") return end
+                        if spawnGroup == nil then print("spawn group not set for chosen spawn, this shouldn't be possible") return end
+
+                        
+                        if status == playerStatus.SCAV then
+                            timer.Create("ScavLoadout" .. v:SteamID64(), 0.5, 1, function() RAID:GenerateScavLoadout(v) end)
+                        end
+
+                        local curTime = math.Round(CurTime(), 0) -- once players spawn, we make their team chat channel more specific, this is so others can create squads of the same name and not conflict with anything
+                        v:SetRaidStatus(status, spawnGroup or "")
+                        v:SetNWBool("PlayerIsPMC", true)
+                        v:SetNW2String("PlayerInSquad", "nil")
+                        v:SetNW2String("TeamChatChannel", squad .. "_" .. curTime)
+                        v:SetNWInt("RaidsPlayed", v:GetNWInt("RaidsPlayed") + 1)
+                        RemoveFIRFromInventory(v)
+                        ResetRaidStats(v)
+
+                        local tempPos = ents.FindByName("TP_" .. introAnimString)[1]
+                        v:Teleport(tempPos:GetPos(), tempPos:GetAngles(), Vector(0, 0, 0)) -- just so the player isnt clogging the lobby or getting beamed in raid
+
+                        local animModel = ents.FindByName(introAnimString)[1]
+                        animModel:Fire("SetAnimation", "sequence", 0, v, v)
+
+                        local viewController = ents.FindByName("VIEW_" .. introAnimString)[1]
+                        viewController:Fire("Enable", "", 0, v, v)
+
+
+                        timer.Create("FadeBetweenIntro" .. v:SteamID64(), 9, 1, function()
+                            net.Start("PlayerRaidTransition")
+                            net.Send(v)
+                        end)
+
+                        timer.Create("Spawn" .. v:SteamID64(), 10, 1, function()
+
+                            v:Freeze(false)
+                            v:Teleport(spawns[k]:GetPos(), spawns[k]:GetAngles(), Vector(0, 0, 0))
+
+                            IntroSpaces[introSpaceIndex].occupied = false
+
+                            animModel:Fire("SetAnimation", "ref", 0, v, v)
+                            viewController:Fire("Disable", "", 0, v, v)
+
+                        end)
+
+                    end)
+
+                else
+
+                    timer.Create("Spawn" .. v:SteamID64(), 1, 1, function()
+                        if #spawns == 0 then spawns, spawnGroup = RAID:GenerateSpawn(status) end -- i feel like spawns should always be empty so the if statement is meaningless but i dont wanna break a playtest by tempting it
+
+                        if #spawns == 0 then print("not enough spawn points for every squad member, this shouldn't be possible") return end
+                        if spawnGroup == nil then print("spawn group not set for chosen spawn, this shouldn't be possible") return end
+
+                        if status == playerStatus.SCAV then
+                            timer.Create("ScavLoadout" .. v:SteamID64(), 0.5, 1, function() RAID:GenerateScavLoadout(v) end)
+                        end
+
+                        v:Freeze(false)
+                        v:Teleport(spawns[k]:GetPos(), spawns[k]:GetAngles(), Vector(0, 0, 0))
+
+                        local curTime = math.Round(CurTime(), 0) -- once players spawn, we make their team chat channel more specific, this is so others can create squads of the same name and not conflict with anything
+                        v:SetRaidStatus(status, spawnGroup or "")
+                        v:SetNWBool("PlayerIsPMC", true)
+                        v:SetNW2String("PlayerInSquad", "nil")
+                        v:SetNW2String("TeamChatChannel", squad .. "_" .. curTime)
+                        v:SetNWInt("RaidsPlayed", v:GetNWInt("RaidsPlayed") + 1)
+                        RemoveFIRFromInventory(v)
+                        ResetRaidStats(v)
+                    end)
+
                 end
 
-                timer.Create("Spawn" .. v:SteamID64(), 1, 1, function()
-                    if #spawns == 0 then spawns, spawnGroup = RAID:GenerateSpawn(status) end
-
-                    if #spawns == 0 then print("not enough spawn points for every squad member, this shouldn't be possible") return end
-                    if spawnGroup == nil then print("spawn group not set for chosen spawn, this shouldn't be possible") return end
-
-                    v:Freeze(false)
-                    v:Teleport(spawns[k]:GetPos(), spawns[k]:GetAngles(), Vector(0, 0, 0))
-
-                    local curTime = math.Round(CurTime(), 0) -- once players spawn, we make their team chat channel more specific, this is so others can create squads of the same name and not conflict with anything
-                    v:SetRaidStatus(status, spawnGroup or "")
-                    v:SetNWBool("PlayerIsPMC", true)
-                    v:SetNW2String("PlayerInSquad", "nil")
-                    v:SetNW2String("TeamChatChannel", squad .. "_" .. curTime)
-                    v:SetNWInt("RaidsPlayed", v:GetNWInt("RaidsPlayed") + 1)
-                    RemoveFIRFromInventory(v)
-                    ResetRaidStats(v)
-                end)
             end
         end
 
