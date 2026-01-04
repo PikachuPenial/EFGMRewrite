@@ -23,7 +23,7 @@ if SERVER then
     RunConsoleCommand("arc9_mod_bodydamagecancel", "1")
     RunConsoleCommand("arc9_mod_damage", "1")
     RunConsoleCommand("arc9_mod_damagerand", "1")
-    RunConsoleCommand("arc9_mod_headshotdamage", "5")
+    RunConsoleCommand("arc9_mod_headshotdamage", GetConVar("efgm_oneshotheadshot"):GetInt() == 1 and "5" or "1")
     RunConsoleCommand("arc9_mod_malfunction", "0.15")
     RunConsoleCommand("arc9_mod_muzzlevelocity", "1.2")
     RunConsoleCommand("arc9_mod_recoil", "0.75")
@@ -108,6 +108,14 @@ if SERVER then
         RunConsoleCommand("arc9_precache_wepmodels_onstartup", "0")
 
     end
+
+    cvars.AddChangeCallback("efgm_oneshotheadshot", function(convar_name, value_old, value_new)
+        if value_new == "1" then
+            RunConsoleCommand("arc9_mod_headshotdamage", "5")
+        else
+            RunConsoleCommand("arc9_mod_headshotdamage", "1")
+        end
+    end)
 end
 
 -- variables for ARC9 multipliers and range, used for modifications that I will make directly in SWEPS
