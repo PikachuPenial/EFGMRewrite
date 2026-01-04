@@ -149,18 +149,26 @@ if SERVER then
                 v:Freeze(true)
                 v:SetMoveType(MOVETYPE_NOCLIP)
 
-                local introAnimString, introSpaceIndex = IntroGetFreeSpace()
+                if #spawns == 0 then spawns, spawnGroup = RAID:GenerateSpawn(status) end
+
+                if #spawns == 0 then print("not enough spawn points for every squad member, this shouldn't be possible") return end
+                if spawnGroup == nil then print("spawn group not set for chosen spawn, this shouldn't be possible") return end
+
+                local introAnimString, introSpaceIndex = IntroGetFreeSpace(spawnGroup)
 
                 if introAnimString != nil then
 
                     IntroSpaces[introSpaceIndex].occupied = true
 
+                    local animModel = ents.FindByName(introAnimString)[1]
+                    local viewController = ents.FindByName("VIEW_" .. introAnimString)[1]
+
+                    -- the animation sometimes gets stuck on the last frame, idk either, this seems to fix it
+
+                    animModel:Fire("SetAnimation", "ref", 0, v, v)
+                    viewController:Fire("Disable", "", 0, v, v)
+
                     timer.Create("Intro" .. v:SteamID64(), 1, 1, function()
-
-                        if #spawns == 0 then spawns, spawnGroup = RAID:GenerateSpawn(status) end
-
-                        if #spawns == 0 then print("not enough spawn points for every squad member, this shouldn't be possible") return end
-                        if spawnGroup == nil then print("spawn group not set for chosen spawn, this shouldn't be possible") return end
 
                         if status == playerStatus.SCAV then
                             timer.Create("ScavLoadout" .. v:SteamID64(), 0.5, 1, function() RAID:GenerateScavLoadout(v) end)
@@ -178,10 +186,7 @@ if SERVER then
                         local tempPos = ents.FindByName("TP_" .. introAnimString)[1]
                         v:Teleport(tempPos:GetPos(), tempPos:GetAngles(), Vector(0, 0, 0)) -- just so the player isnt clogging the lobby or getting beamed in raid
 
-                        local animModel = ents.FindByName(introAnimString)[1]
                         animModel:Fire("SetAnimation", "sequence", 0, v, v)
-
-                        local viewController = ents.FindByName("VIEW_" .. introAnimString)[1]
                         viewController:Fire("Enable", "", 0, v, v)
 
                         timer.Create("FadeBetweenIntro" .. v:SteamID64(), 9, 1, function()

@@ -4,29 +4,36 @@
 IntroSpaces = {}
 
 hook.Add( "InitPostEntity", "IntroInit", function()
-    
-    if !table.IsEmpty(ents.FindByName("INTRO*")) then
-    
-        for k, v in ipairs(ents.FindByName("INTRO*")) do
-            
-            IntroSpaces[k] = {animName = v:GetName(), occupied = false}
 
-        end
+    local introModels = ents.FindByName("INTRO*")
+
+    if table.IsEmpty(introModels) then return end
+
+    for k, v in ipairs(introModels) do
+        
+        IntroSpaces[k] = {animName = v:GetName(), occupied = false}
 
     end
 
+    PrintTable(IntroSpaces)
+
 end )
 
-function IntroGetFreeSpace()
+function IntroGetFreeSpace(spawnGroup)
 
     if #IntroSpaces == 0 then
         return nil
     end
 
-    for k, v in ipairs(IntroSpaces) do
+    local shuffledIntroSpaces = IntroSpaces
+    table.Shuffle(shuffledIntroSpaces) -- whoever decided this didnt need to return a value needs to be studied
+
+    for k, spaceInfo in ipairs(shuffledIntroSpaces) do
         
-        if !v.occupied then
-            return v.animName, k
+        local spaceSpawnGroup = string.Explode("_", spaceInfo.animName)[2]
+
+        if !spaceInfo.occupied && spaceSpawnGroup == spawnGroup then
+            return spaceInfo.animName, k
         end
 
     end
