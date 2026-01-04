@@ -246,9 +246,19 @@ if SERVER then
 
     end)
 
+    hook.Add("PlayerDisconnected", "EndDuelOnDisconnect", function(ply)
+
+        if !ply:CompareStatus(3) then return end -- the player wasn't a part of the duel
+
+    	UnequipAll(ply)
+        ReinstantiateInventoryAfterDuel(ply)
+        DUEL:CancelDuel()
+
+    end)
+
     hook.Add("EndedRaid", "EndDuelOnMapChange", function(time)
 
-        timer.Simple(time - 15, function() DUEL.Allowed = false end) -- disable any new duels
+        timer.Simple(time - 20, function() DUEL.Allowed = false end) -- disable any new duels
         timer.Simple(time - 3, function() DUEL:CancelDuel() end)    -- force cancel current duel
 
     end)

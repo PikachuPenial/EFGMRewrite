@@ -2,6 +2,7 @@ hook.Add("InitPostEntity", "LocalPlayer", function() ply = LocalPlayer() end)
 
 HUD = {}
 HUD.InTransition = false
+HUD.VotedMap = nil
 
 local enabled = GetConVar("efgm_hud_enable"):GetBool()
 cvars.AddChangeCallback("efgm_hud_enable", function(convar_name, value_old, value_new)
@@ -351,7 +352,7 @@ function RenderPlayerInfo(ent)
 
     draw.DrawText(name, "BenderExfilTimerMenu", ScrW() / 2, ScrH() - infoSizeY - EFGM.MenuScale(20), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 
-    if !inHideout then return end
+    if !inHideout or !Invites.allow then return end
     draw.DrawText(inviteText, "Bender24Menu", ScrW() / 2, ScrH() - infoSizeY + EFGM.MenuScale(40), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 end
 
@@ -391,8 +392,8 @@ function RenderInvite()
     surface.SetFont("BenderExfilTimerMenu")
     local textSize = surface.GetTextSize(text) + EFGM.ScreenScale(10)
 
-    local acceptBind = string.upper(input.GetKeyName(GetConVar("efgm_bind_invites_accept"):GetInt()) or "NONE")
-    local declineBind = string.upper(input.GetKeyName(GetConVar("efgm_bind_invites_decline"):GetInt()) or "NONE")
+    local acceptBind = string.upper(input.GetKeyName(GetConVar("efgm_bind_invites_accept"):GetInt()) or "N/A")
+    local declineBind = string.upper(input.GetKeyName(GetConVar("efgm_bind_invites_decline"):GetInt()) or "N/A")
 
     local bindsText = string.upper("[" .. acceptBind .. "] ACCEPT" .. "   " .. "[" .. declineBind .. "] IGNORE")
     surface.SetFont("Bender24Menu")
@@ -401,16 +402,16 @@ function RenderInvite()
     invite.Paint = function(self, w, h)
         if !ply:Alive() then return end
         if !ply:CompareStatus(0) then return end
-        if Invites.invitedBy == nil or Invites.invitedType == nil then invite:AlphaTo(0, 0.1, 9.9, function() invite:Remove() end) return end
+        if Invites.invitedBy == nil or Invites.invitedType == nil or !Invites.allow then invite:AlphaTo(0, 0.1, 9.9, function() invite:Remove() end) return end
 
         surface.SetDrawColor(Colors.hudBackground)
         surface.DrawRect(EFGM.ScreenScale(20), EFGM.ScreenScale(20), math.max(textSize, bindsTextSize), EFGM.ScreenScale(90))
 
         surface.SetDrawColor(Colors.hudBackground)
-        surface.DrawRect(EFGM.ScreenScale(20), EFGM.ScreenScale(20), math.max(textSize, bindsTextSize), EFGM.MenuScale(1))
+        surface.DrawRect(EFGM.ScreenScale(20), EFGM.ScreenScale(20), math.max(textSize, bindsTextSize), EFGM.ScreenScale(1))
 
         surface.SetDrawColor(Colors.transparentWhiteColor)
-        surface.DrawRect(EFGM.ScreenScale(20), EFGM.ScreenScale(20), ((time - CurTime()) / 10) * math.max(textSize, bindsTextSize), EFGM.MenuScale(1))
+        surface.DrawRect(EFGM.ScreenScale(20), EFGM.ScreenScale(20), ((time - CurTime()) / 10) * math.max(textSize, bindsTextSize), EFGM.ScreenScale(1))
 
         draw.SimpleText(text, "BenderExfilTimerMenu", EFGM.ScreenScale(25), EFGM.ScreenScale(21), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
         draw.SimpleText(bindsText, "Bender24Menu", EFGM.ScreenScale(25), EFGM.ScreenScale(81), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
@@ -2629,175 +2630,71 @@ end)
 
 net.Receive("VoteableMaps", function(len)
 
-    timer.Simple(20, function()
+    local maps = net.ReadTable(true)
 
-        if IsValid(VotePopup) then VotePopup:Remove() end
+    local map1 = maps[1]
+    local map2 = maps[2]
 
-        VotePopup = vgui.Create("DPanel")
-        VotePopup:SetSize(ScrW(), ScrH())
-        VotePopup:SetPos(0, 0)
-        VotePopup:SetAlpha(0)
-        VotePopup:MakePopup()
-        VotePopup:SetMouseInputEnabled(true)
-        VotePopup:SetKeyboardInputEnabled(true)
+    local map1Name = MAPNAMES[map1.name]
+    local map2Name = MAPNAMES[map2.name]
+    local map1Icon = Material("maps/icon_" .. map1.name .. "_" .. math.random(1, 5) .. ".png")
+    local map2Icon = Material("maps/icon_" .. map2.name .. "_" .. math.random(1, 5) .. ".png")
+    local map1Votes = 0
+    local map2Votes = 0
 
-        VotePopup.Paint = function(self, w, h)
+    timer.Simple(40, function()
 
-            BlurPanel(VotePopup, EFGM.MenuScale(5))
+        if IsValid(mapVote) then mapVote:Remove() end
 
-            surface.SetDrawColor(Color(10, 10, 10, 155))
-            surface.DrawRect(0, 0, w, h)
+        mapVote = vgui.Create("DPanel")
+        mapVote:SetSize(ScrW(), ScrH())
+        mapVote:SetPos(0, 0)
+        mapVote:SetAlpha(0)
+        mapVote:MoveToFront()
 
-            draw.SimpleTextOutlined("VOTE FOR THE NEXT MAP", "PuristaBold64", w / 2, EFGM.MenuScale(35), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        surface.PlaySound("ui/invite_receive.wav")
 
-            VotePopup.MouseX, VotePopup.MouseY = VotePopup:LocalCursorPos()
+        local time = CurTime() + 20
 
-            if GetConVar("efgm_menu_parallax"):GetInt() == 1 then
+        local text = "VOTE FOR THE NEXT MAP!"
+        surface.SetFont("BenderExfilTimerMenu")
+        local textSize = surface.GetTextSize(text) + EFGM.ScreenScale(10)
 
-                VotePopup.ParallaxX = math.Clamp(((VotePopup.MouseX / math.Round(EFGM.MenuScale(1920), 1)) - 0.5) * EFGM.MenuScale(20), -10, 10)
-                VotePopup.ParallaxY = math.Clamp(((VotePopup.MouseY / math.Round(EFGM.MenuScale(1080), 1)) - 0.5) * EFGM.MenuScale(20), -10, 10)
+        local acceptBind = string.upper(input.GetKeyName(GetConVar("efgm_bind_invites_accept"):GetInt()) or "N/A")
+        local declineBind = string.upper(input.GetKeyName(GetConVar("efgm_bind_invites_decline"):GetInt()) or "N/A")
 
-                VotePopup:SetPos(0 + VotePopup.ParallaxX, 0 + VotePopup.ParallaxY)
-
-            else
-
-                VotePopup.ParallaxX = 0
-                VotePopup.ParallaxY = 0
-
-                VotePopup:SetPos(0, 0)
-
+        mapVote.Paint = function(self, w, h)
+            if GetGlobalInt("MapVotes_1", 0) != 0 or GetGlobalInt("MapVotes_2", 0) != 0 then
+                map1Votes = math.Round(GetGlobalInt("MapVotes_1", 0) / (GetGlobalInt("MapVotes_1", 0) + GetGlobalInt("MapVotes_2", 0)) * 100)
+                map2Votes = math.Round(GetGlobalInt("MapVotes_2", 0) / (GetGlobalInt("MapVotes_2", 0) + GetGlobalInt("MapVotes_1", 0)) * 100)
             end
 
+            surface.SetDrawColor(Colors.hudBackground)
+            surface.DrawRect(EFGM.ScreenScale(20), EFGM.ScreenScale(20), textSize, EFGM.ScreenScale(250))
+
+            surface.SetDrawColor(Colors.hudBackground)
+            surface.DrawRect(EFGM.ScreenScale(20), EFGM.ScreenScale(20), textSize, EFGM.ScreenScale(1))
+
+            surface.SetDrawColor(Colors.transparentWhiteColor)
+            surface.DrawRect(EFGM.ScreenScale(20), EFGM.ScreenScale(20), ((time - CurTime()) / 20) * textSize, EFGM.ScreenScale(1))
+
+            draw.SimpleText(text, "BenderExfilTimerMenu", EFGM.ScreenScale(25), EFGM.ScreenScale(21), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+            draw.SimpleText(string.upper("[" .. acceptBind .. "] " .. map1Name), "Bender24Menu", EFGM.ScreenScale(25), EFGM.ScreenScale(241), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+            draw.SimpleText(string.upper("[" .. declineBind .. "] " .. map2Name), "Bender24Menu", EFGM.ScreenScale(185), EFGM.ScreenScale(241), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+
+            draw.SimpleText(map1Votes .. "%", "Bender18Menu", EFGM.ScreenScale(25), EFGM.ScreenScale(225), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+            draw.SimpleText(map2Votes .. "%", "Bender18Menu", EFGM.ScreenScale(185), EFGM.ScreenScale(225), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+
+            surface.SetMaterial(map1Icon)
+            surface.SetDrawColor(Colors.pureWhiteColor)
+            surface.DrawTexturedRect(EFGM.ScreenScale(25), EFGM.ScreenScale(75), EFGM.ScreenScale(150), EFGM.ScreenScale(150))
+
+            surface.SetMaterial(map2Icon)
+            surface.SetDrawColor(Colors.pureWhiteColor)
+            surface.DrawTexturedRect(EFGM.ScreenScale(185), EFGM.ScreenScale(75), EFGM.ScreenScale(150), EFGM.ScreenScale(150))
         end
 
-        VotePopup:AlphaTo(255, 0.2, 0, nil)
-
-        local belmontIcon = Material("maps/icon_efgm_belmont_" .. math.random(1, 5) .. ".png")
-        local concreteIcon = Material("maps/icon_efgm_concrete_" .. math.random(1, 5) .. ".png")
-        local factoryIcon = Material("maps/icon_efgm_factory_" .. math.random(1, 5) .. ".png")
-
-        local belmontButton = vgui.Create("DButton", VotePopup)
-        belmontButton:SetSize(EFGM.MenuScale(500), EFGM.MenuScale(500))
-        belmontButton:SetPos(VotePopup:GetWide() / 2 - EFGM.MenuScale(775), VotePopup:GetTall() / 2 - EFGM.MenuScale(250))
-        belmontButton:SetText("")
-        belmontButton.Paint = function(s, w, h)
-
-            surface.SetDrawColor(Color(80, 80, 80, 10))
-            surface.DrawRect(0, 0, w, h)
-
-            surface.SetDrawColor(255, 255, 255, 255)
-            surface.SetMaterial(belmontIcon)
-            surface.DrawTexturedRect(0, 0, w, h)
-
-        end
-
-        function belmontButton:PaintOver(w, h)
-
-            surface.SetDrawColor(Color(255, 255, 255, 255))
-            surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-            surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
-            surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-            surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
-
-            if belmontButton:IsHovered() then draw.SimpleTextOutlined("BELMONT", "PuristaBold64", w / 2, h / 2 - EFGM.MenuScale(32), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor) end
-
-        end
-
-        belmontButton.OnCursorEntered = function(s)
-
-            surface.PlaySound("ui/element_hover.wav")
-
-        end
-
-        function belmontButton:DoClick()
-
-            surface.PlaySound("ui/element_select.wav")
-            RunConsoleCommand("efgm_vote", "efgm_belmont")
-            VotePopup:AlphaTo(0, 0.1, 0, function() VotePopup:Remove() end)
-
-        end
-
-        local concreteButton = vgui.Create("DButton", VotePopup)
-        concreteButton:SetSize(EFGM.MenuScale(500), EFGM.MenuScale(500))
-        concreteButton:SetPos(VotePopup:GetWide() / 2 - EFGM.MenuScale(250), VotePopup:GetTall() / 2 - EFGM.MenuScale(250))
-        concreteButton:SetText("")
-        concreteButton.Paint = function(s, w, h)
-
-            surface.SetDrawColor(Color(80, 80, 80, 10))
-            surface.DrawRect(0, 0, w, h)
-
-            surface.SetDrawColor(255, 255, 255, 255)
-            surface.SetMaterial(concreteIcon)
-            surface.DrawTexturedRect(0, 0, w, h)
-
-        end
-
-        function concreteButton:PaintOver(w, h)
-
-            surface.SetDrawColor(Color(255, 255, 255, 255))
-            surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-            surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
-            surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-            surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
-
-            if concreteButton:IsHovered() then draw.SimpleTextOutlined("CONCRETE", "PuristaBold64", w / 2, h / 2 - EFGM.MenuScale(32), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor) end
-
-        end
-
-        concreteButton.OnCursorEntered = function(s)
-
-            surface.PlaySound("ui/element_hover.wav")
-
-        end
-
-        function concreteButton:DoClick()
-
-            surface.PlaySound("ui/element_select.wav")
-            RunConsoleCommand("efgm_vote", "efgm_concrete")
-            VotePopup:AlphaTo(0, 0.1, 0, function() VotePopup:Remove() end)
-
-        end
-
-        local factoryButton = vgui.Create("DButton", VotePopup)
-        factoryButton:SetSize(EFGM.MenuScale(500), EFGM.MenuScale(500))
-        factoryButton:SetPos(VotePopup:GetWide() / 2 + EFGM.MenuScale(275), VotePopup:GetTall() / 2 - EFGM.MenuScale(250))
-        factoryButton:SetText("")
-        factoryButton.Paint = function(s, w, h)
-
-            surface.SetDrawColor(Color(80, 80, 80, 10))
-            surface.DrawRect(0, 0, w, h)
-
-            surface.SetDrawColor(255, 255, 255, 255)
-            surface.SetMaterial(factoryIcon)
-            surface.DrawTexturedRect(0, 0, w, h)
-
-        end
-
-        function factoryButton:PaintOver(w, h)
-
-            surface.SetDrawColor(Color(255, 255, 255, 255))
-            surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
-            surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
-            surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
-            surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
-
-            if factoryButton:IsHovered() then draw.SimpleTextOutlined("FACTORY", "PuristaBold64", w / 2, h / 2 - EFGM.MenuScale(32), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor) end
-
-        end
-
-        factoryButton.OnCursorEntered = function(s)
-
-            surface.PlaySound("ui/element_hover.wav")
-
-        end
-
-        function factoryButton:DoClick()
-
-            surface.PlaySound("ui/element_select.wav")
-            RunConsoleCommand("efgm_vote", "efgm_factory")
-            VotePopup:AlphaTo(0, 0.1, 0, function() VotePopup:Remove() end)
-
-        end
+        mapVote:AlphaTo(255, 0.1, 0, nil)
 
     end)
 

@@ -6,8 +6,8 @@ if not plyMeta then Error("Could not find player table") return end
 local function DecrementTimer()
     SetGlobalInt("RaidTimeLeft", GetGlobalInt("RaidTimeLeft") - 1)
 
-    if GetGlobalInt("RaidTimeLeft") <= 0 && GetGlobalInt("RaidStatus") == raidStatus.ACTIVE then RAID:EndRaid() return end
-    if GetGlobalInt("RaidTimeLeft") <= 0 && GetGlobalInt("RaidStatus") == raidStatus.ENDED then RAID:EndVote() return end
+    if GetGlobalInt("RaidTimeLeft") <= 0 and GetGlobalInt("RaidStatus") == raidStatus.ACTIVE then RAID:EndRaid() return end
+    if GetGlobalInt("RaidTimeLeft") <= 0 and GetGlobalInt("RaidStatus") == raidStatus.ENDED then RAID:EndVote() return end
 
     hook.Run("RaidTimerTick", GetGlobalInt("RaidTimeLeft"))
 end
@@ -26,7 +26,17 @@ if SERVER then
 
     RAID.VoteTime = 60
 
-    RAID.MapPool = {["efgm_belmont"] = 0, ["efgm_concrete"] = 0, ["efgm_factory"] = 0} -- map, number of votes
+    RAID.MapCount = 2 -- number of maps to have in the vote
+    RAID.MapPool = { -- map, number of votes
+        [1] = {name = "efgm_belmont", votes = 0},
+        [2] = {name = "efgm_concrete", votes = 0},
+        [3] = {name = "efgm_factory", votes = 0},
+    }
+
+    table.Shuffle(RAID.MapPool)
+
+    for i = #RAID.MapPool, RAID.MapCount + 1, -1 do table.remove(RAID.MapPool, i) end
+    for i = 1, RAID.MapCount do SetGlobalInt("MapVotes_" .. tostring(i), 0) end
 
     if GetGlobalInt("RaidStatus") != raidStatus.ACTIVE then -- fuck you fuck you fuck you fuck you
         SetGlobalInt("RaidTimeLeft", -1)
@@ -68,7 +78,7 @@ if SERVER then
             if #player.GetHumans() == 0 then
                 local tbl = {}
 
-                for k, v in pairs(self.MapPool) do table.insert(tbl, k) end
+                for k, v in ipairs(self.MapPool) do table.insert(tbl, v.name) end
 
                 RunConsoleCommand("changelevel", tbl[math.random(#tbl)])
 
@@ -78,6 +88,7 @@ if SERVER then
             timer.Adjust("RaidTimerDecrement", 1, self.VoteTime) -- fuck you timer.Adjust
 
             net.Start("VoteableMaps")
+            net.WriteTable(RAID.MapPool, true)
             net.Broadcast()
 
             net.Start("SendNotification")
@@ -138,7 +149,6 @@ if SERVER then
                 v:Freeze(true)
                 v:SetMoveType(MOVETYPE_NOCLIP)
 
-
                 local introAnimString, introSpaceIndex = IntroGetFreeSpace()
 
                 if introAnimString != nil then
@@ -146,13 +156,12 @@ if SERVER then
                     IntroSpaces[introSpaceIndex].occupied = true
 
                     timer.Create("Intro" .. v:SteamID64(), 1, 1, function()
-                        
-                        if #spawns == 0 then spawns, spawnGroup = RAID:GenerateSpawn(status) end -- i feel like spawns should always be empty so the if statement is meaningless but i dont wanna break a playtest by tempting it
+
+                        if #spawns == 0 then spawns, spawnGroup = RAID:GenerateSpawn(status) end
 
                         if #spawns == 0 then print("not enough spawn points for every squad member, this shouldn't be possible") return end
                         if spawnGroup == nil then print("spawn group not set for chosen spawn, this shouldn't be possible") return end
 
-                        
                         if status == playerStatus.SCAV then
                             timer.Create("ScavLoadout" .. v:SteamID64(), 0.5, 1, function() RAID:GenerateScavLoadout(v) end)
                         end
@@ -174,7 +183,6 @@ if SERVER then
 
                         local viewController = ents.FindByName("VIEW_" .. introAnimString)[1]
                         viewController:Fire("Enable", "", 0, v, v)
-
 
                         timer.Create("FadeBetweenIntro" .. v:SteamID64(), 9, 1, function()
                             net.Start("PlayerRaidTransition")
@@ -229,15 +237,15 @@ if SERVER then
             local maxVote = 0
             local mapTable = {}
 
-            for k, v in pairs(self.MapPool) do -- getting the max vote
-                if v > maxVote then
-                    maxVote = v
+            for k, v in ipairs(self.MapPool) do -- getting the max vote
+                if v.votes > maxVote then
+                    maxVote = v.votes
                 end
             end
 
-            for k, v in pairs(self.MapPool) do -- getting every map with the max vote into a table
-                if v == maxVote then
-                    table.insert(mapTable, k)
+            for k, v in ipairs(self.MapPool) do -- getting every map with the max vote into a table
+                if v.votes == maxVote then
+                    table.insert(mapTable, v.name)
                 end
             end
 
@@ -245,14 +253,34 @@ if SERVER then
         end
 
         function RAID:SubmitVote(ply, vote)
-            if ply:GetNWBool("HasVoted", false) then ply:PrintMessage(HUD_PRINTTALK, "You have already voted!") return end
+            local revote = false
+            if ply:GetNWInt("HasVoted", 0) > 0 then revote = true end
             if GetGlobalInt("RaidStatus") != raidStatus.ENDED then ply:PrintMessage(HUD_PRINTTALK, "The raid is still ongoing, your vote has not been counted.") return end
-            if self.MapPool[vote] == nil then return end
 
-            self.MapPool[vote] = self.MapPool[vote] + 1
+            local index = tonumber(vote)
+            local map = self.MapPool[tonumber(vote)]
+            if map == nil then -- try with name instead of index
+                for k, v in ipairs(self.MapPool) do
+                    if v.name == vote then
+                        index = k
+                        map = self.MapPool[k]
+                    end
+                end
+            end
 
-            ply:SetNWBool("HasVoted", true)
-            ply:PrintMessage(HUD_PRINTTALK, "Your vote of ".. vote .." has been counted!")
+            if map == nil then return end
+            if index == ply:GetNWInt("HasVoted", 0) then return end
+
+            map.votes = map.votes + 1
+            SetGlobalInt("MapVotes_" .. tostring(index), GetGlobalInt("MapVotes_" .. tostring(index), 0) + 1)
+
+            if revote then
+                local prevIndex = ply:GetNWInt("HasVoted", 0)
+                self.MapPool[prevIndex].votes = self.MapPool[prevIndex].votes - 1
+                SetGlobalInt("MapVotes_" .. tostring(prevIndex), GetGlobalInt("MapVotes_" .. tostring(prevIndex), 0) - 1)
+            end
+
+            ply:SetNWInt("HasVoted", index)
         end
 
         function RAID.GetCurrentExtracts(ply)

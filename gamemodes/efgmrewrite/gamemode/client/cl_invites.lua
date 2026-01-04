@@ -3,6 +3,8 @@ Invites = {}
 Invites.inviteCD = 0
 Invites.lastInviteSentTime = 0
 Invites.lastSquadInviteSentTime = 0
+Invites.allow = true
+Invites.mapVoting = false
 
 function InvitePlayerToSquad(ply, invitedPly)
 
@@ -12,6 +14,7 @@ function InvitePlayerToSquad(ply, invitedPly)
     Invites.inviteCD = CurTime()
 
     if !IsValid(invitedPly) then return end
+    if !Invites.allow then CreateNotification("Invites are now disabled!", Mats.inviteErrorIcon, "ui/error.wav") return end
     if invitedPly:GetNW2String("PlayerInSquad", "nil") != "nil" then CreateNotification("This player is already in a squad!", Mats.inviteErrorIcon, "ui/error.wav") return end
     if !invitedPly:CompareStatus(0) then CreateNotification("This player is currently busy!", Mats.inviteErrorIcon, "ui/error.wav") return end
     if CurTime() - Invites.lastInviteSentTime < 10 then CreateNotification("You can send invites again in " .. 10 - math.Round(CurTime() - Invites.lastInviteSentTime, 1) .. " seconds!", Mats.inviteErrorIcon, "ui/error.wav") return end
@@ -66,6 +69,7 @@ function InvitePlayerToDuel(ply, invitedPly)
     Invites.inviteCD = CurTime()
 
     if !IsValid(invitedPly) then return end
+    if !Invites.allow then CreateNotification("Invites are now disabled!", Mats.inviteErrorIcon, "ui/error.wav") return end
     if GetGlobalInt("DuelStatus") != duelStatus.PENDING then CreateNotification("Another duel is already taking place, please wait for it to end!", Mats.inviteErrorIcon, "ui/error.wav") return end
     if Invites.invitedType == "duel" and Invites.invitedBy == invitedPly then AcceptInvite(ply) return end
     if CurTime() - Invites.lastInviteSentTime < 10 then CreateNotification("You can send invites again in " .. 10 - math.Round(CurTime() - Invites.lastInviteSentTime, 1) .. " seconds!", Mats.inviteErrorIcon, "ui/error.wav") return end
@@ -127,6 +131,13 @@ end)
 
 function AcceptInvite(ply)
 
+    if Invites.mapVoting then -- map vote is happening
+
+        ply:ConCommand("efgm_vote 1")
+        return
+
+    end
+
     if !ply:CompareStatus(0) then return end
     if Invites.invitedBy == nil or Invites.invitedType == nil then return end
 
@@ -143,6 +154,13 @@ function AcceptInvite(ply)
 end
 
 function DeclineInvite(ply)
+
+    if Invites.mapVoting then -- map vote is happening
+
+        ply:ConCommand("efgm_vote 2")
+        return
+
+    end
 
     if Invites.invitedBy == nil or Invites.invitedType == nil then return end
 
@@ -161,6 +179,17 @@ hook.Add("efgm_raid_enter", "RemovePendingInviteIfRaidEnter", function()
 end)
 
 hook.Add("efgm_duel_enter", "RemovePendingInviteIfDuelEnter", function()
+
+    Invites.invitedBy = nil
+    Invites.invitedType = nil
+    Invites.inviteData = nil
+
+end)
+
+net.Receive("PlayerDisableInvites", function(len, ply)
+
+    Invites.allow = false
+    Invites.mapVoting = true
 
     Invites.invitedBy = nil
     Invites.invitedType = nil
