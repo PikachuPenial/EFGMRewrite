@@ -5,6 +5,8 @@ IntroSpaces = {}
 
 hook.Add( "InitPostEntity", "IntroInit", function()
 
+    if true then return end
+
     local introModels = ents.FindByName("INTRO*")
 
     if table.IsEmpty(introModels) then return end
@@ -28,9 +30,11 @@ function IntroGetFreeSpace(spawnGroup)
     local shuffledIntroSpaces = IntroSpaces
     table.Shuffle(shuffledIntroSpaces) -- whoever decided this didnt need to return a value needs to be studied
 
+    if spawnGroup != nil then spawnGroup = string.lower(spawnGroup) end
+
     for k, spaceInfo in ipairs(shuffledIntroSpaces) do
         
-        local spaceSpawnGroup = string.Explode("_", spaceInfo.animName)[2]
+        local spaceSpawnGroup = string.lower(string.Explode("_", spaceInfo.animName)[2])
 
         if !spaceInfo.occupied && spaceSpawnGroup == spawnGroup then
             return spaceInfo.animName, k
