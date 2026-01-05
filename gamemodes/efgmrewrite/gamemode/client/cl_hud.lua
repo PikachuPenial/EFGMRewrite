@@ -556,7 +556,7 @@ hook.Add("HUDPaint", "DrawHUD", DrawHUD)
 IsInIntro = false
 IntroCameraEnt = nil
 
-local function SetCameraToIntro(ply, pos, angles, fov)
+hook.Add("CalcView", "SetIntroView", function(ply, pos, angles, fov)
 
     if IntroCameraEnt != nil && IsInIntro then
 
@@ -573,17 +573,7 @@ local function SetCameraToIntro(ply, pos, angles, fov)
 
     end
 
-    local view = {
-        origin = pos,
-        angles = angles,
-        fov = fov,
-        drawviewer = false
-    }
-
-    return view
-
-end
-hook.Add("CalcView", "SetIntroView", SetCameraToIntro) -- bc i think hudpaint gets removed? sometimes? im not sure tbh
+end)
 
 net.Receive("SendIntroCamera", function()
 
@@ -602,6 +592,10 @@ net.Receive("PlayerRaidTransition", function()
         timer.Simple(1, function() IsInIntro = false end)
         timer.Simple(1.5, function() RenderRaidIntro() end)
         timer.Simple(2.5, function() RenderExtracts() end)
+
+    else
+
+        timer.Simple(1, function() IsInIntro = true end)
 
     end
 
