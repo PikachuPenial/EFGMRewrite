@@ -428,7 +428,7 @@ function RenderDuelLoadout()
     DuelLoadout = vgui.Create("DPanel")
     DuelLoadout:SetSize(ScrW(), ScrH())
     DuelLoadout:SetPos(0, 0)
-    DuelLoadout:SetAlpha(255)
+    DuelLoadout:SetAlpha(0)
     DuelLoadout:MoveToFront()
 
     local primary = playerWeaponSlots[1][1] or {}
@@ -559,7 +559,7 @@ IntroCameraEnt = nil
 local function SetCameraToIntro(ply, pos, angles, fov)
 
     if IntroCameraEnt != nil && IsInIntro then
-        
+
         local camera = IntroCameraEnt:GetAttachment(1)
 
         local view = {
@@ -593,22 +593,15 @@ end)
 
 net.Receive("PlayerRaidTransition", function()
 
-    local readIsInIntro = net.ReadBool()
-    IsInIntro = IsInIntro or readIsInIntro
-    
-    if !readIsInIntro then
-        timer.Simple(1, function()
-            IsInIntro = false
-        end)
-    end
+    local status = net.ReadUInt(1)
 
-    if LocalPlayer():GetNWInt("PlayerRaidStatus", 0) == 0 then
+    if status == 1 then
 
         hook.Run("efgm_raid_enter")
 
-        timer.Simple(1.5, function()
-            RenderRaidIntro()
-        end)
+        timer.Simple(1, function() IsInIntro = false end)
+        timer.Simple(1.5, function() RenderRaidIntro() end)
+        timer.Simple(2.5, function() RenderExtracts() end)
 
     end
 
@@ -634,17 +627,10 @@ net.Receive("PlayerRaidTransition", function()
     RaidTransition:AlphaTo(255, 0.5, 0, nil)
     RaidTransition:AlphaTo(0, 0.35, 1, function() HUD.InTransition = false RaidTransition:Remove() end)
 
-    timer.Simple(2.5, function()
-        RenderExtracts()
-    end)
-
     if Menu.MenuFrame == nil then return end
     if Menu.MenuFrame:IsActive() != true then return end
 
-    Menu.Closing = true
-    Menu.MenuFrame:SetKeyboardInputEnabled(false)
-    Menu.MenuFrame:SetMouseInputEnabled(false)
-    Menu.IsOpen = false
+    Menu:RunOnClose()
 
     Menu.MenuFrame:AlphaTo(0, 0.1, 0, function()
         Menu.MenuFrame:Close()
@@ -654,13 +640,13 @@ end )
 
 net.Receive("PlayerDuelTransition", function()
 
-    if LocalPlayer():GetNWInt("PlayerRaidStatus", 0) == 0 then
+    local status = net.ReadUInt(1)
+
+    if status == 1 then
 
         hook.Run("efgm_duel_enter")
 
-        timer.Simple(1, function()
-            RenderDuelLoadout()
-        end)
+        timer.Simple(1, function() RenderDuelLoadout() end)
 
     end
 
@@ -689,10 +675,7 @@ net.Receive("PlayerDuelTransition", function()
     if Menu.MenuFrame == nil then return end
     if Menu.MenuFrame:IsActive() != true then return end
 
-    Menu.Closing = true
-    Menu.MenuFrame:SetKeyboardInputEnabled(false)
-    Menu.MenuFrame:SetMouseInputEnabled(false)
-    Menu.IsOpen = false
+    Menu:RunOnClose()
 
     Menu.MenuFrame:AlphaTo(0, 0.1, 0, function()
         Menu.MenuFrame:Close()

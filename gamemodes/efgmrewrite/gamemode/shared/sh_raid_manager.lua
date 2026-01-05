@@ -145,21 +145,21 @@ if SERVER then
 
                 if status == "nil" then status = faction end -- automatically set status depending on players faction
 
-                net.Start("PlayerRaidTransition")
-                net.WriteBool(true)
-                net.Send(v)
-
-                v:Freeze(true)
-                v:SetMoveType(MOVETYPE_NOCLIP)
-
                 if #spawns == 0 then spawns, spawnGroup = RAID:GenerateSpawn(status) end
 
                 if #spawns == 0 then print("not enough spawn points for every squad member, this shouldn't be possible") return end
                 if spawnGroup == nil then print("spawn group not set for chosen spawn, this shouldn't be possible") return end
 
+                v:Freeze(true)
+                v:SetMoveType(MOVETYPE_NOCLIP)
+
                 local introAnimString, introSpaceIndex = IntroGetFreeSpace(spawnGroup)
 
                 if introAnimString != nil then
+
+                    net.Start("PlayerRaidTransition")
+                    net.WriteUInt(0, 1)
+                    net.Send(v)
 
                     IntroSpaces[introSpaceIndex].occupied = true
 
@@ -195,7 +195,7 @@ if SERVER then
 
                         timer.Create("FadeBetweenIntro" .. v:SteamID64(), 9, 1, function()
                             net.Start("PlayerRaidTransition")
-                            net.WriteBool(false)
+                            net.WriteUInt(1, 1)
                             net.Send(v)
                         end)
 
@@ -213,6 +213,10 @@ if SERVER then
                     end)
 
                 else
+
+                    net.Start("PlayerRaidTransition")
+                    net.WriteUInt(1, 1)
+                    net.Send(v)
 
                     timer.Create("Spawn" .. v:SteamID64(), 1, 1, function()
                         if #spawns == 0 then spawns, spawnGroup = RAID:GenerateSpawn(status) end -- i feel like spawns should always be empty so the if statement is meaningless but i dont wanna break a playtest by tempting it
@@ -543,7 +547,7 @@ if SERVER then
             local randomSpawn = BetterRandom(possibleSpawns)
 
             net.Start("PlayerRaidTransition")
-            net.WriteBool(false) -- doesnt matter in this case
+            net.WriteUInt(0, 1)
             net.Send(ply)
 
             ply:Lock()

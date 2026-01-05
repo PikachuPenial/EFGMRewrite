@@ -28,6 +28,7 @@ if SERVER then
         hook.Run("StartedDuel")
 
         net.Start("PlayerDuelTransition")
+        net.WriteUInt(1, 1)
         net.Send(DUEL.Players)
 
         local randLoadoutNum = math.random(1, #DUEL_PRIMARY)
@@ -115,6 +116,7 @@ if SERVER then
         randomSpawn = BetterRandom(possibleSpawns)
 
         net.Start("PlayerDuelTransition")
+        net.WriteUInt(0, 1)
         net.Send(winningPly)
 
         winningPly:GodEnable()

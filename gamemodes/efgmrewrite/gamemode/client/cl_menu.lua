@@ -9,6 +9,8 @@ Menu.ActiveTab = ""
 Menu.MouseX = 0
 Menu.MouseY = 0
 Menu.Player = LocalPlayer()
+Menu.PlayerHealth = 0
+Menu.Closing = false
 Menu.IsOpen = false
 Menu.PerferredShopDestination = nil
 
@@ -62,10 +64,7 @@ hook.Add("OnPauseMenuShow", "DisableMenu", function()
     if Menu.MenuFrame == nil then return true end
     if Menu.MenuFrame:IsActive() == true then
 
-        Menu.Closing = true
-        Menu.MenuFrame:SetKeyboardInputEnabled(false)
-        Menu.MenuFrame:SetMouseInputEnabled(false)
-        Menu.IsOpen = false
+        Menu:RunOnClose()
 
         Menu.MenuFrame:AlphaTo(0, 0.1, 0, function()
 
@@ -78,6 +77,17 @@ hook.Add("OnPauseMenuShow", "DisableMenu", function()
     end
 
 end )
+
+function Menu:RunOnClose()
+
+    self.Closing = true
+    if IsValid(self.MenuFrame) then
+        self.MenuFrame:SetKeyboardInputEnabled(false)
+        self.MenuFrame:SetMouseInputEnabled(false)
+    end
+    self.IsOpen = false
+
+end
 
 -- called non-globally to initialize the menu, that way it can only be initialized once by Menu:Open()
 -- also openTab is the name of the tab it should open to
@@ -93,7 +103,6 @@ function Menu:Initialize(openTo, container)
     menuFrame:ShowCloseButton(false)
     menuFrame:MakePopup()
     menuFrame:SetAlpha(0)
-    -- menuFrame:SetBackgroundBlur(true)
     menuFrame:NoClipping(true)
     menuFrame:MouseCapture(false)
 
@@ -101,6 +110,7 @@ function Menu:Initialize(openTo, container)
 
     self.Unblur = false
     self.Closing = false
+    self.PlayerHealth = Menu.Player:Health()
 
     function menuFrame:Paint(w, h)
         if self.Unblur then return end -- hide the blur when customizing certain settings and whatnot
@@ -113,10 +123,7 @@ function Menu:Initialize(openTo, container)
     -- close menu with the game menu keybind
     function menuFrame:OnKeyCodeReleased(key)
         if key == menuBind then
-            self.Closing = true
-            menuFrame:SetKeyboardInputEnabled(false)
-            menuFrame:SetMouseInputEnabled(false)
-            self.IsOpen = false
+            Menu:RunOnClose()
 
             menuFrame:AlphaTo(0, 0.1, 0, function()
                 menuFrame:Close()
@@ -139,7 +146,21 @@ function Menu:Initialize(openTo, container)
 
             end
 
+            Menu:RunOnClose()
             menuFrame:Close()
+
+        end
+
+        if GetConVar("efgm_menu_closeonhit"):GetInt() == 0 then return end
+
+        if Menu.Player:Health() > Menu.PlayerHealth then Menu.PlayerHealth = Menu.Player:Health()
+        elseif Menu.Player:Health() < Menu.PlayerHealth then
+
+            Menu:RunOnClose()
+
+            menuFrame:AlphaTo(0, 0.1, 0, function()
+                menuFrame:Close()
+            end)
 
         end
 
@@ -460,15 +481,14 @@ function Menu:Initialize(openTo, container)
     function lowerPanel:Paint(w, h)
 
         if !Menu.Player:Alive() then
-            Menu.IsOpen = false
+            Menu:RunOnClose()
             menuFrame:AlphaTo(0, 0.1, 0, function()
                 menuFrame:Close()
             end)
             return
         end
 
-        if IsValid(Menu.MenuFrame) and Menu.MenuFrame.Closing then return end
-
+        if Menu.Closing then return end
         Menu.MouseX, Menu.MouseY = menuFrame:LocalCursorPos()
 
         if GetConVar("efgm_menu_parallax"):GetInt() == 1 then
@@ -485,7 +505,6 @@ function Menu:Initialize(openTo, container)
 
         if GetConVar("efgm_menu_scalingmethod"):GetInt() == 0 then
 
-            -- lowerPanel:SetPos(ScrW() / 2 - (EFGM.MenuScale(1880) / 2) + Menu.ParallaxX, 1060 / 2 - (920 / 2) + Menu.ParallaxY)
             lowerPanel:SetPos(ScrW() / 2 - (EFGM.MenuScale(1880) / 2) + Menu.ParallaxX, EFGM.MenuScale(70) + Menu.ParallaxY)
 
         else
@@ -2111,10 +2130,7 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
 
             if closeMenu == true then
 
-                Menu.MenuFrame.Closing = true
-                Menu.MenuFrame:SetKeyboardInputEnabled(false)
-                Menu.MenuFrame:SetMouseInputEnabled(false)
-                Menu.IsOpen = false
+                Menu:RunOnClose()
 
                 Menu.MenuFrame:AlphaTo(0, 0.1, 0, function()
                     Menu.MenuFrame:Close()
@@ -2295,10 +2311,7 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
 
         if closeMenu == true then
 
-            Menu.MenuFrame.Closing = true
-            Menu.MenuFrame:SetKeyboardInputEnabled(false)
-            Menu.MenuFrame:SetMouseInputEnabled(false)
-            Menu.IsOpen = false
+            Menu:RunOnClose()
 
             Menu.MenuFrame:AlphaTo(0, 0.1, 0, function()
                 Menu.MenuFrame:Close()
@@ -2329,10 +2342,7 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
 
         if closeMenu == true then
 
-            Menu.MenuFrame.Closing = true
-            Menu.MenuFrame:SetKeyboardInputEnabled(false)
-            Menu.MenuFrame:SetMouseInputEnabled(false)
-            Menu.IsOpen = false
+            Menu:RunOnClose()
 
             Menu.MenuFrame:AlphaTo(0, 0.1, 0, function()
                 Menu.MenuFrame:Close()
@@ -3075,10 +3085,7 @@ function Menu.ConfirmPreset(atts, presetName, presetID, closeMenu)
 
         if closeMenu == true then
 
-            Menu.MenuFrame.Closing = true
-            Menu.MenuFrame:SetKeyboardInputEnabled(false)
-            Menu.MenuFrame:SetMouseInputEnabled(false)
-            Menu.IsOpen = false
+            Menu:RunOnClose()
 
             Menu.MenuFrame:AlphaTo(0, 0.1, 0, function()
                 Menu.MenuFrame:Close()
@@ -3096,10 +3103,7 @@ function Menu.ConfirmPreset(atts, presetName, presetID, closeMenu)
 
         if closeMenu == true then
 
-            Menu.MenuFrame.Closing = true
-            Menu.MenuFrame:SetKeyboardInputEnabled(false)
-            Menu.MenuFrame:SetMouseInputEnabled(false)
-            Menu.IsOpen = false
+            Menu:RunOnClose()
 
             Menu.MenuFrame:AlphaTo(0, 0.1, 0, function()
                 Menu.MenuFrame:Close()
@@ -3173,10 +3177,7 @@ function Menu.ConfirmPreset(atts, presetName, presetID, closeMenu)
 
             if closeMenu == true then
 
-                Menu.MenuFrame.Closing = true
-                Menu.MenuFrame:SetKeyboardInputEnabled(false)
-                Menu.MenuFrame:SetMouseInputEnabled(false)
-                Menu.IsOpen = false
+                Menu:RunOnClose()
 
                 Menu.MenuFrame:AlphaTo(0, 0.1, 0, function()
                     Menu.MenuFrame:Close()
@@ -3249,10 +3250,7 @@ function Menu.ConfirmPreset(atts, presetName, presetID, closeMenu)
 
         if closeMenu == true then
 
-            Menu.MenuFrame.Closing = true
-            Menu.MenuFrame:SetKeyboardInputEnabled(false)
-            Menu.MenuFrame:SetMouseInputEnabled(false)
-            Menu.IsOpen = false
+            Menu:RunOnClose()
 
             Menu.MenuFrame:AlphaTo(0, 0.1, 0, function()
                 Menu.MenuFrame:Close()
@@ -3285,10 +3283,7 @@ function Menu.ConfirmPreset(atts, presetName, presetID, closeMenu)
 
         if closeMenu == true then
 
-            Menu.MenuFrame.Closing = true
-            Menu.MenuFrame:SetKeyboardInputEnabled(false)
-            Menu.MenuFrame:SetMouseInputEnabled(false)
-            Menu.IsOpen = false
+            Menu:RunOnClose()
 
             Menu.MenuFrame:AlphaTo(0, 0.1, 0, function()
                 Menu.MenuFrame:Close()
@@ -7412,10 +7407,7 @@ function Menu.OpenTab.Inventory(container)
 
             if !IsValid(container.entity) then
 
-                Menu.Closing = true
-                Menu.MenuFrame:SetKeyboardInputEnabled(false)
-                Menu.MenuFrame:SetMouseInputEnabled(false)
-                Menu.IsOpen = false
+                Menu:RunOnClose()
 
                 Menu.MenuFrame:AlphaTo(0, 0.1, 0, function()
 
@@ -11410,6 +11402,20 @@ function Menu.OpenTab.Settings()
     hudScale:SetMin(0.5)
     hudScale:SetMax(2)
     hudScale:SetDecimals(2)
+
+    local menuAutoClosePanel = vgui.Create("DPanel", interface)
+    menuAutoClosePanel:Dock(TOP)
+    menuAutoClosePanel:SetSize(0, EFGM.MenuScale(50))
+    function menuAutoClosePanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("Close Menu When Taking Damage", "Purista18", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+
+    end
+
+    local menuAutoClose = vgui.Create("DCheckBox", menuAutoClosePanel)
+    menuAutoClose:SetPos(EFGM.MenuScale(152), EFGM.MenuScale(30))
+    menuAutoClose:SetConVar("efgm_menu_closeonhit")
+    menuAutoClose:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
 
     local menuParallaxPanel = vgui.Create("DPanel", interface)
     menuParallaxPanel:Dock(TOP)

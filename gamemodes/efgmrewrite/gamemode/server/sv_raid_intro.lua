@@ -10,7 +10,7 @@ hook.Add( "InitPostEntity", "IntroInit", function()
     if table.IsEmpty(introModels) then return end
 
     for k, v in ipairs(introModels) do
-        
+
         IntroSpaces[k] = {animName = v:GetName(), occupied = false}
 
     end
@@ -29,7 +29,7 @@ function IntroGetFreeSpace(spawnGroup)
     if spawnGroup != nil then spawnGroup = string.lower(spawnGroup) end
 
     for k, spaceInfo in ipairs(shuffledIntroSpaces) do
-        
+
         local spaceSpawnGroup = string.lower(string.Explode("_", spaceInfo.animName)[2])
 
         if !spaceInfo.occupied && spaceSpawnGroup == spawnGroup then

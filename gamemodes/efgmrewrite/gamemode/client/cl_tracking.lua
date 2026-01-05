@@ -22,22 +22,18 @@ end
 
 hook.Add("efgm_raid_enter", "efgm_tracker_start", function()
 
-    timer.Simple(11, function() -- to account for intro cinematic
+    if MAPINFO[game.GetMap()] == nil then return end
 
-        if MAPINFO[game.GetMap()] == nil then return end
+    UpdateTrackedPosition(false)
 
-        UpdateTrackedPosition(false)
+    InsideRaidLength = nil
+    RaidPositions = {}
+    DeathPosition = {}
+    KillPositions = {}
 
-        InsideRaidLength = nil
-        RaidPositions = {}
-        DeathPosition = {}
-        KillPositions = {}
+    enterRaidTime = SysTime()
 
-        enterRaidTime = SysTime()
-
-        timer.Create("efgm_tracker", interval, 0, function() UpdateTrackedPosition(false) end)
-
-    end)
+    timer.Create("efgm_tracker", interval, 0, function() UpdateTrackedPosition(false) end)
 
 end)
 
