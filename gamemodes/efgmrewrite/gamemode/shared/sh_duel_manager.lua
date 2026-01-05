@@ -98,23 +98,6 @@ if SERVER then
         local winningPly = DUEL.Players[1]
         DUEL.Players = {}
 
-        local lobbySpawns = ents.FindByClass("efgm_lobby_spawn") or {}
-        local possibleSpawns = {}
-        if #ents.FindByClass("efgm_duel_end_spawn") != 0 then lobbySpawns = ents.FindByClass("efgm_duel_end_spawn") end
-
-        if table.IsEmpty(lobbySpawns) then error("no lobby spawns eat shit") return end
-
-        for k, v in ipairs(lobbySpawns) do
-
-            if v:CanSpawn(winningPly) then table.insert(possibleSpawns, v) end
-
-        end
-
-        local randomSpawn
-
-        if #possibleSpawns == 0 then randomSpawn = BetterRandom(lobbySpawns) end
-        randomSpawn = BetterRandom(possibleSpawns)
-
         net.Start("PlayerDuelTransition")
         net.WriteUInt(0, 1)
         net.Send(winningPly)
@@ -131,7 +114,9 @@ if SERVER then
             winningPly:GodDisable()
             winningPly:Freeze(false)
 
-            winningPly:Teleport(randomSpawn:GetPos(), randomSpawn:GetAngles(), Vector(0, 0, 0))
+            local spawn = GetValidHideoutSpawn(2)
+
+            winningPly:Teleport(spawn:GetPos(), spawn:GetAngles(), Vector(0, 0, 0))
             winningPly:SetHealth(winningPly:GetMaxHealth())
             winningPly:SendLua("RunConsoleCommand('r_cleardecals')")
 

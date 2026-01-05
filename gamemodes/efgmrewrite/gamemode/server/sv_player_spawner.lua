@@ -2,141 +2,85 @@
 -- i mean genuinely who needs 600 lines for a fucking script jesus christ
 -- yooo the fuckings on 1 and 2 lined up lets fucking goooooo
 
-hook.Add("IsSpawnpointSuitable", "CheckSpawnPoint", function(ply, spawnpointent, bMakeSuitable)
-
-    local pos = spawnpointent:GetPos()
-    local name = spawnpointent:GetName()
-
-    if name == "efgm_duel_spawn" or name == "efgm_duel_end_spawn" then return true end -- surely this doesn't happen
-
-    local checkScale = 1280
-    if name == "info_player_start" then checkScale = 64 end
-
-    local entities = ents.FindInBox(pos + Vector(checkScale * -1, checkScale * -1, checkScale * -1), pos + Vector(checkScale, checkScale, checkScale))
-    local entsBlocking = 0
-
-    if name == "info_player_start" then
-        for _, v in ipairs(entities) do
-            if v:IsPlayer() and v:CompareStatus(0) then
-                entsBlocking = entsBlocking + 1
-            end
-        end
-    else
-        for _, v in ipairs(entities) do
-            if v:IsPlayer() and !v:CompareStatus(0) and !v:CompareStatus(3) then
-                entsBlocking = entsBlocking + 1
-            end
-        end
-    end
-
-    if (entsBlocking > 0) then return false end
-    return true
-
-end )
-
-function BetterRandom(haystack) -- this is literally never used ever
-
-    return haystack[math.random(#haystack)]
-
-end
-
 -- raid
 function GetValidRaidSpawn(status) -- status: 0 = lobby, 1 = pmc, 2 = scav (assuming 1)
 
-    if status == 0 then return nil end
+    if status == 0 then status = 1 end -- shouldn't be possible but i am going to play it safe
 
     local spawns = ents.FindByClass("efgm_raid_spawn")
+    table.Shuffle(spawns)
 
-    if status == 1 then
+    local radius = MAPS[game.GetMap()].spawnProt or 1000
 
-        local pmcSpawns = {}
+    for _, spawn in ipairs(spawns) do
 
-        for k, v in ipairs(spawns) do
-            if v.SpawnType != 2 then
-                table.insert(pmcSpawns, v)
+        if status == 1 and spawn.SpawnType == 2 then continue end
+        if status == 2 and spawn.SpawnType == 1 then continue end
+
+        local entities = ents.FindInSphere(spawn:GetPos(), radius)
+        local blocked = false
+
+        for _, e in ipairs(entities) do
+
+            if e:IsPlayer() and e:Alive() and !e:CompareStatus(0) and !e:CompareStatus(3) then
+
+                blocked = true
+                break
+
             end
+
         end
 
-        local size = table.Count(pmcSpawns)
-
-        for i = 0, size do
-            local randomSpawn = math.random(#pmcSpawns)
-
-            if (hook.Call("IsSpawnpointSuitable", GAMEMODE, NULL, pmcSpawns[randomSpawn], false)) then
-                return pmcSpawns[randomSpawn]
-            end
-        end
-
-        local randomSpawn = math.random(#pmcSpawns)
-        return pmcSpawns[randomSpawn]
+        if !blocked then return spawn end
 
     end
 
-    if status == 2 then
-
-        local scavSpawns = {}
-
-        for k, v in ipairs(spawns) do
-            if v.SpawnType != 1 then
-                table.insert(scavSpawns, v)
-            end
-        end
-
-        local size = table.Count(scavSpawns)
-
-        for i = 0, size do
-            local randomSpawn = math.random(#scavSpawns)
-
-            if (hook.Call("IsSpawnpointSuitable", GAMEMODE, NULL, scavSpawns[randomSpawn], false)) then
-                return scavSpawns[randomSpawn]
-            end
-        end
-
-        local randomSpawn = math.random(#scavSpawns)
-        return scavSpawns[randomSpawn]
-
-    end
+    return BetterRandom(spawns) -- yes, this can spawn someone at another factions spawn, it should never happen anyways so i cant be bothered
 
 end
 
 -- hideout
+-- on extract
+function GetValidHideoutSpawn(spawnType)
+
+    -- 0: normal spawn
+    -- 1: extracted from raid
+    -- 2: won duel
+
+    local spawns
+    if spawnType == 1 then spawns = ents.FindByClass("efgm_lobby_spawn") elseif spawnType == 2 then spawns = (ents.FindByClass("efgm_duel_end_spawn") or ents.FindByClass("efgm_lobby_spawn")) else spawns = ents.FindByClass("info_player_start") end
+    table.Shuffle(spawns)
+
+    for _, spawn in ipairs(spawns) do
+
+        local entities = ents.FindInSphere(spawn:GetPos(), 32)
+        local blocked = false
+
+        for _, e in ipairs(entities) do
+
+            if e:IsPlayer() and e:Alive() and !e:CompareStatus(1) and !e:CompareStatus(2) then
+
+                blocked = true
+                break
+
+            end
+
+        end
+
+        if !blocked then return spawn end
+
+    end
+
+    return BetterRandom(spawns)
+
+end
+
 -- on a normal spawn
-function GM:PlayerSelectSpawn(ply)
+hook.Add("PlayerSelectSpawn", "HideoutSpawning", function(ply)
 
-    local spawns = ents.FindByClass("info_player_start")
-    local size = table.Count(spawns)
+    return GetValidHideoutSpawn(0)
 
-    for i = 0, size do
-        local randomSpawn = math.random(#spawns)
-
-        if (hook.Call("IsSpawnpointSuitable", GAMEMODE, ply, spawns[randomSpawn], false)) then
-            return spawns[randomSpawn]
-        end
-    end
-
-    local randomSpawn = math.random(#spawns)
-    return spawns[randomSpawn]
-
-end
-
--- on extract (literally just a duplicate of the function above lololol!!1!)
-function GetValidHideoutSpawn()
-
-    local spawns = ents.FindByClass("info_player_start")
-    local size = table.Count(spawns)
-
-    for i = 0, size do
-        local randomSpawn = math.random(#spawns)
-
-        if (hook.Call("IsSpawnpointSuitable", GAMEMODE, NULL, spawns[randomSpawn], false)) then
-            return spawns[randomSpawn]
-        end
-    end
-
-    local randomSpawn = math.random(#spawns)
-    return spawns[randomSpawn]
-
-end
+end)
 
 -- duels
 function RandomDuelSpawns()

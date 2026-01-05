@@ -111,6 +111,12 @@ function generate_rand_string(l)
 
 end
 
+function BetterRandom(haystack) -- for seq. tables
+
+    return haystack[math.random(#haystack)]
+
+end
+
 -- works with raw vectors too
 function EntitiesWithinBounds(ent1, ent2, dist)
 

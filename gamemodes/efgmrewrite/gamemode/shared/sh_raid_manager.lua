@@ -29,11 +29,11 @@ if SERVER then
     RAID.VoteTime = 60
 
     RAID.MapCount = 2 -- number of maps to have in the vote
-    RAID.MapPool = { -- map, number of votes
-        [1] = {name = "efgm_belmont", votes = 0},
-        [2] = {name = "efgm_concrete", votes = 0},
-        [3] = {name = "efgm_factory", votes = 0},
-    }
+
+    RAID.MapPool = {}
+    for id, _ in pairs(MAPS) do
+        table.insert(RAID.MapPool, {name = id, votes = 0})
+    end
 
     table.Shuffle(RAID.MapPool)
 
@@ -529,23 +529,6 @@ if SERVER then
     --{ HOOKS
         util.AddNetworkString("CreateExtractionInformation")
         hook.Add("PlayerExtraction", "RaidExtract", function(ply, extractTime, isExtractGuranteed)
-            local lobbySpawns = ents.FindByClass("efgm_lobby_spawn") or {}
-
-            local possibleSpawns = {}
-
-            if table.IsEmpty(lobbySpawns) then error("no lobby spawns eat shit") return end
-
-            -- all this is done so that players spawn in random spots bc yeah it was really that important
-            for k, v in ipairs(lobbySpawns) do
-                if v:CanSpawn(ply) then
-                    table.insert(possibleSpawns, v)
-                end
-            end
-
-            if #possibleSpawns == 0 then return end
-
-            local randomSpawn = BetterRandom(possibleSpawns)
-
             net.Start("PlayerRaidTransition")
             net.WriteUInt(2, 2)
             net.Send(ply)
@@ -554,7 +537,8 @@ if SERVER then
             ply:SetMoveType(MOVETYPE_NOCLIP)
 
             timer.Create("Extract" .. ply:SteamID64(), 1, 1, function()
-                ply:Teleport(randomSpawn:GetPos(), randomSpawn:GetAngles(), Vector(0, 0, 0))
+                local spawn = GetValidHideoutSpawn(1)
+                ply:Teleport(spawn:GetPos(), spawn:GetAngles(), Vector(0, 0, 0))
                 ply:SetHealth(ply:GetMaxHealth()) -- heals the player to full so dumb shit like quitting and rejoining to get max hp doesn't happen
                 ply:SendLua("RunConsoleCommand('r_cleardecals')") -- clear decals for that extra 2 fps
 
