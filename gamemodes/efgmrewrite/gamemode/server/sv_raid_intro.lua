@@ -5,8 +5,6 @@ IntroSpaces = {}
 
 hook.Add( "InitPostEntity", "IntroInit", function()
 
-    if true then return end
-
     local introModels = ents.FindByName("INTRO*")
 
     if table.IsEmpty(introModels) then return end
@@ -16,8 +14,6 @@ hook.Add( "InitPostEntity", "IntroInit", function()
         IntroSpaces[k] = {animName = v:GetName(), occupied = false}
 
     end
-
-    PrintTable(IntroSpaces)
 
 end )
 

@@ -21,6 +21,8 @@ if SERVER then
     util.AddNetworkString("PlayerRaidTransition")
     util.AddNetworkString("PlayerSwitchFactions")
 
+    util.AddNetworkString("SendIntroCamera")
+
     util.AddNetworkString("GrabExtractList")
     util.AddNetworkString("SendExtractList")
 
@@ -144,6 +146,7 @@ if SERVER then
                 if status == "nil" then status = faction end -- automatically set status depending on players faction
 
                 net.Start("PlayerRaidTransition")
+                net.WriteBool(true)
                 net.Send(v)
 
                 v:Freeze(true)
@@ -161,12 +164,10 @@ if SERVER then
                     IntroSpaces[introSpaceIndex].occupied = true
 
                     local animModel = ents.FindByName(introAnimString)[1]
-                    local viewController = ents.FindByName("VIEW_" .. introAnimString)[1]
 
                     -- the animation sometimes gets stuck on the last frame, idk either, this seems to fix it
 
                     animModel:Fire("SetAnimation", "ref", 0, v, v)
-                    viewController:Fire("Disable", "", 0, v, v)
 
                     timer.Create("Intro" .. v:SteamID64(), 1, 1, function()
 
@@ -183,14 +184,18 @@ if SERVER then
                         RemoveFIRFromInventory(v)
                         ResetRaidStats(v)
 
+                        net.Start("SendIntroCamera")
+                        net.WriteEntity(animModel)
+                        net.Send(v)
+
                         local tempPos = ents.FindByName("TP_" .. introAnimString)[1]
                         v:Teleport(tempPos:GetPos(), tempPos:GetAngles(), Vector(0, 0, 0)) -- just so the player isnt clogging the lobby or getting beamed in raid
 
                         animModel:Fire("SetAnimation", "sequence", 0, v, v)
-                        viewController:Fire("Enable", "", 0, v, v)
 
                         timer.Create("FadeBetweenIntro" .. v:SteamID64(), 9, 1, function()
                             net.Start("PlayerRaidTransition")
+                            net.WriteBool(false)
                             net.Send(v)
                         end)
 
@@ -202,7 +207,6 @@ if SERVER then
                             IntroSpaces[introSpaceIndex].occupied = false
 
                             animModel:Fire("SetAnimation", "ref", 0, v, v)
-                            viewController:Fire("Disable", "", 0, v, v)
 
                         end)
 
@@ -539,6 +543,7 @@ if SERVER then
             local randomSpawn = BetterRandom(possibleSpawns)
 
             net.Start("PlayerRaidTransition")
+            net.WriteBool(false) -- doesnt matter in this case
             net.Send(ply)
 
             ply:Lock()

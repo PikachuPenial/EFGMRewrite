@@ -553,7 +553,54 @@ local function DrawHUD()
 end
 hook.Add("HUDPaint", "DrawHUD", DrawHUD)
 
+IsInIntro = false
+IntroCameraEnt = nil
+
+local function SetCameraToIntro(ply, pos, angles, fov)
+
+    if IntroCameraEnt != nil && IsInIntro then
+        
+        local camera = IntroCameraEnt:GetAttachment(1)
+
+        local view = {
+            origin = camera.Pos,
+            angles = camera.Ang,
+            fov = 90,
+            drawviewer = false
+        }
+
+        return view
+
+    end
+
+    local view = {
+        origin = pos,
+        angles = angles,
+        fov = fov,
+        drawviewer = false
+    }
+
+    return view
+
+end
+hook.Add("CalcView", "SetIntroView", SetCameraToIntro) -- bc i think hudpaint gets removed? sometimes? im not sure tbh
+
+net.Receive("SendIntroCamera", function()
+
+    IntroCameraEnt = net.ReadEntity()
+
+end)
+
 net.Receive("PlayerRaidTransition", function()
+
+    local readIsInIntro = net.ReadBool()
+    IsInIntro = IsInIntro or readIsInIntro
+    
+    if !readIsInIntro then
+        timer.Simple(1, function()
+            IsInIntro = false
+        end)
+    end
 
     if LocalPlayer():GetNWInt("PlayerRaidStatus", 0) == 0 then
 
