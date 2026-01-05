@@ -558,7 +558,7 @@ IntroCameraEnt = nil
 
 hook.Add("CalcView", "SetIntroView", function(ply, pos, angles, fov)
 
-    if IntroCameraEnt != nil && IsInIntro then
+    if IntroCameraEnt != nil and IsInIntro then
 
         local camera = IntroCameraEnt:GetAttachment(1)
 
@@ -583,7 +583,7 @@ end)
 
 net.Receive("PlayerRaidTransition", function()
 
-    local status = net.ReadUInt(1)
+    local status = net.ReadUInt(2)
 
     if status == 1 then
 
@@ -593,7 +593,7 @@ net.Receive("PlayerRaidTransition", function()
         timer.Simple(1.5, function() RenderRaidIntro() end)
         timer.Simple(2.5, function() RenderExtracts() end)
 
-    else
+    elseif status == 0 then
 
         timer.Simple(1, function() IsInIntro = true end)
 

@@ -158,7 +158,7 @@ if SERVER then
                 if introAnimString != nil then
 
                     net.Start("PlayerRaidTransition")
-                    net.WriteUInt(0, 1)
+                    net.WriteUInt(0, 2)
                     net.Send(v)
 
                     IntroSpaces[introSpaceIndex].occupied = true
@@ -195,7 +195,7 @@ if SERVER then
 
                         timer.Create("FadeBetweenIntro" .. v:SteamID64(), 9, 1, function()
                             net.Start("PlayerRaidTransition")
-                            net.WriteUInt(1, 1)
+                            net.WriteUInt(1, 2)
                             net.Send(v)
                         end)
 
@@ -215,7 +215,7 @@ if SERVER then
                 else
 
                     net.Start("PlayerRaidTransition")
-                    net.WriteUInt(1, 1)
+                    net.WriteUInt(1, 2)
                     net.Send(v)
 
                     timer.Create("Spawn" .. v:SteamID64(), 1, 1, function()
@@ -547,7 +547,7 @@ if SERVER then
             local randomSpawn = BetterRandom(possibleSpawns)
 
             net.Start("PlayerRaidTransition")
-            net.WriteUInt(0, 1)
+            net.WriteUInt(2, 2)
             net.Send(ply)
 
             ply:Lock()

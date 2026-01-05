@@ -108,6 +108,7 @@ function Menu:Initialize(openTo, container)
 
     menuFrame:AlphaTo(255, 0.2, 0, function() if menuFrame:IsActive() then self.IsOpen = true end end)
 
+    self.Player = LocalPlayer()
     self.Unblur = false
     self.Closing = false
     self.PlayerHealth = Menu.Player:Health()
@@ -181,7 +182,6 @@ function Menu:Initialize(openTo, container)
 
     end
 
-    self.Player = LocalPlayer()
     self.MenuFrame = menuFrame
     self.Container = container
 
