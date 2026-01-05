@@ -121,7 +121,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 
 		else
 
-			tagData.tagCauseOfDeath = attacker:GetActiveWeapon():GetClass()
+			tagData.tagCauseOfDeath = attacker:GetActiveWeapon():GetClass() or "Unknown"
 			tagData.tagWoundOrigin = victim:LastHitGroup()
 			tagData.tagKiller = attacker:GetName()
 
@@ -260,7 +260,7 @@ hook.Add("GetFallDamage", "FallDmgCalc", function(ply, speed)
 
 	local dmg = speed / 7
 
-	ply:SetNWInt("RaidDamageRecievedFalling", ply:GetNWInt("RaidDamageRecievedFalling") + math.min(dmg, 100))
+	ply:SetNWInt("RaidDamageRecievedFalling", ply:GetNWInt("RaidDamageRecievedFalling") + math.min(dmg, ply:Health() or 100))
 	return dmg
 
 end)

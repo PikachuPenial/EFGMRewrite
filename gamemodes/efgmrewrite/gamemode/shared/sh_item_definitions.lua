@@ -1476,6 +1476,9 @@ EFGMITEMS = {}
         ["sizeX"] = 2,
         ["sizeY"] = 1,
 
+        ["canPurchase"] = false,
+        ["lootWeight"] = 50,
+
         ["caliber"] = "20x1",
         ["ammoID"] = "efgm_ammo_20x1",
         ["defAtts"] = "XQAAAQAXAAAAAAAAAAA9iIIiM7hMNz0dkAd2RJ793J7f29M/CuuhAA=="

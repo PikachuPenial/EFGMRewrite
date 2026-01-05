@@ -3304,8 +3304,6 @@ function Menu.ReloadInventory()
     if !IsValid(playerItems) then return end
 
     playerItems:Clear()
-    playerItemsHolder.AllowLayoutUpdate = false
-    playerItems.AllowLayoutUpdate = false
 
     plyItems = {}
 
@@ -3345,6 +3343,9 @@ function Menu.ReloadInventory()
     end
 
     if plyItems[1] == nil then return end
+
+    playerItemsHolder.AllowLayoutUpdate = false
+    playerItems.AllowLayoutUpdate = false
 
     table.sort(plyItems, function(a, b)
 
@@ -3743,6 +3744,8 @@ function Menu.ReloadSlots()
         primaryItem.SLOT = 1
         primaryItem.ORIGIN = "equipped"
 
+        if i == nil then return end
+
         primaryWeaponHolder:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
 
         function primaryItem:Paint(w, h)
@@ -4006,6 +4009,8 @@ function Menu.ReloadSlots()
         secondaryItem.SLOTID = 1
         secondaryItem.SLOT = 2
         secondaryItem.ORIGIN = "equipped"
+
+        if i == nil then return end
 
         secondaryWeaponHolder:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
 
@@ -4272,6 +4277,8 @@ function Menu.ReloadSlots()
         holsterItem.SLOT = 1
         holsterItem.ORIGIN = "equipped"
 
+        if i == nil then return end
+
         holsterWeaponHolder:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
 
         function holsterItem:Paint(w, h)
@@ -4537,6 +4544,8 @@ function Menu.ReloadSlots()
         meleeItem.SLOT = 1
         meleeItem.ORIGIN = "equipped"
 
+        if i == nil then return end
+
         meleeWeaponHolder:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
 
         function meleeItem:Paint(w, h)
@@ -4754,6 +4763,8 @@ function Menu.ReloadSlots()
         nadeItem.SLOTID = 4
         nadeItem.SLOT = 1
         nadeItem.ORIGIN = "equipped"
+
+        if i == nil then return end
 
         nadeWeaponHolder:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
 
@@ -4979,6 +4990,8 @@ function Menu.ReloadSlots()
         consumableItem.SLOT = 1
         consumableItem.ORIGIN = "equipped"
 
+        if i == nil then return end
+
         consumableItemHolder:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
 
         function consumableItem:Paint(w, h)
@@ -5181,8 +5194,6 @@ function Menu.ReloadStash()
     if !IsValid(stashItems) then return end
 
     stashItems:Clear()
-    stashItemsHolder.AllowLayoutUpdate = false
-    stashItems.AllowLayoutUpdate = false
 
     stashValue = 0
     plyStashItems = {}
@@ -5230,6 +5241,9 @@ function Menu.ReloadStash()
     end
 
     if plyStashItems[1] == nil then return end
+
+    stashItemsHolder.AllowLayoutUpdate = false
+    stashItems.AllowLayoutUpdate = false
 
     table.sort(plyStashItems, function(a, b)
 
@@ -5629,8 +5643,6 @@ function Menu.ReloadMarketStash()
     if !IsValid(marketStashItems) then return end
 
     marketStashItems:Clear()
-    marketStashItemsHolder.AllowLayoutUpdate = false
-    marketStashItems.AllowLayoutUpdate = false
 
     stashValue = 0
     marketPlyStashItems = {}
@@ -5677,6 +5689,9 @@ function Menu.ReloadMarketStash()
     end
 
     if marketPlyStashItems[1] == nil then return end
+
+    marketStashItemsHolder.AllowLayoutUpdate = false
+    marketStashItems.AllowLayoutUpdate = false
 
     table.sort(marketPlyStashItems, function(a, b)
 
@@ -5970,8 +5985,6 @@ function Menu.ReloadContainer()
     if !IsValid(containerItems) then return end
 
     containerItems:Clear()
-    containerItemsHolder.AllowLayoutUpdate = false
-    containerItems.AllowLayoutUpdate = false
 
     conItems = {}
 
@@ -6011,6 +6024,9 @@ function Menu.ReloadContainer()
     end
 
     if conItems[1] == nil then return end
+
+    containerItemsHolder.AllowLayoutUpdate = false
+    containerItems.AllowLayoutUpdate = false
 
     table.sort(conItems, function(a, b)
 

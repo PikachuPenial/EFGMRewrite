@@ -513,4 +513,26 @@ if GetConVar("efgm_derivesbox"):GetInt() == 1 then
     end
     concommand.Add("efgm_debug_printstashstring", function(ply, cmd, args) PrintStashString(ply) end)
 
+    -- for save editing and whatnot
+    function PrintCleanStashString(ply)
+
+        local cleanTbl = {}
+        cleanTbl = table.Copy(ply.stash)
+
+        for k, v in ipairs(ply.stash) do
+
+            v.data.fir = nil
+            v.data.owner = nil
+            v.data.timestamp = nil
+
+        end
+
+        local stashStr = util.TableToJSON(cleanTbl)
+        stashStr = util.Compress(stashStr)
+        stashStr = util.Base64Encode(stashStr, true)
+        print(stashStr)
+
+    end
+    concommand.Add("efgm_debug_printstashstring_clean", function(ply, cmd, args) PrintCleanStashString(ply) end)
+
 end

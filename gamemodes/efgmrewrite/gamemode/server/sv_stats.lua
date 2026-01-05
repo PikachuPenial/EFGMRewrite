@@ -6,6 +6,7 @@ function ResetRaidStats(ply)
     ply:SetNWInt("RaidDamageDealt", 0)
     ply:SetNWInt("RaidDamageRecievedPlayers", 0)
     ply:SetNWInt("RaidDamageRecievedFalling", 0)
+    ply:SetNWInt("RaidDamageRecievedSelf", 0)
     ply:SetNWInt("RaidHealthHealed", 0)
     ply:SetNWInt("RaidItemsLooted", 0)
     ply:SetNWInt("RaidContainersLooted", 0)
@@ -51,21 +52,25 @@ hook.Add("EntityTakeDamage", "DamageUpdateStats", function(ply, damageInfo)
     local attacker = damageInfo:GetAttacker()
 
     if !attacker:IsPlayer() then return end
-    if attacker == ply then return end
 
-    local damageAmount = math.Round(damageInfo:GetDamage())
+    local selfDamage = false
+    if attacker == ply then selfDamage = true end
+
+    local health = ply:Health() or 100
+    local damageAmount = math.min(math.Round(damageInfo:GetDamage()), health)
 
     if damageAmount > 0 then
 
-        ply:SetNWInt("DamageRecieved", ply:GetNWInt("DamageRecieved") + math.min(damageAmount, 100))
-        ply:SetNWInt("RaidDamageRecievedPlayers", ply:GetNWInt("RaidDamageRecievedPlayers") + math.min(damageAmount, 100))
+        ply:SetNWInt("DamageRecieved", ply:GetNWInt("DamageRecieved") + damageAmount)
+        if !selfDamage then ply:SetNWInt("RaidDamageRecievedPlayers", ply:GetNWInt("RaidDamageRecievedPlayers") + damageAmount)
+        else ply:SetNWInt("RaidDamageRecievedSelf", ply:GetNWInt("RaidDamageRecievedSelf") + damageAmount) end
 
     end
 
-    if damageAmount > 0 then
+    if damageAmount > 0 and !selfDamage then
 
-        attacker:SetNWInt("DamageDealt", attacker:GetNWInt("DamageDealt") + math.min(damageAmount, 100))
-        attacker:SetNWInt("RaidDamageDealt", attacker:GetNWInt("RaidDamageDealt") + math.min(damageAmount, 100))
+        attacker:SetNWInt("DamageDealt", attacker:GetNWInt("DamageDealt") + damageAmount)
+        attacker:SetNWInt("RaidDamageDealt", attacker:GetNWInt("RaidDamageDealt") + damageAmount)
 
     end
 

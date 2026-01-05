@@ -501,9 +501,11 @@ function SetupPlayerData(ply)
 	InitializeNetworkInt(ply, query, "BestKillStreak", 0)
 	InitializeNetworkInt(ply, query, "CurrentExtractionStreak", 0)
 	InitializeNetworkInt(ply, query, "BestExtractionStreak", 0)
+	InitializeNetworkInt(ply, query, "CurrentDuelWinStreak", 0)
+	InitializeNetworkInt(ply, query, "BestDuelWinStreak", 0)
 
 	-- stash/inventory
-	InitializeNetworkInt(ply, query, "StashMax", 1600)
+	InitializeNetworkInt(ply, query, "StashMax", 2000)
 
 	for k, v in ipairs(levelArray) do
 
@@ -518,11 +520,11 @@ function SetupPlayerData(ply)
 	ply:SetNWInt("StashCount", #ply.stash)
 
 	-- inventory
-	local inventoryString = InitializeInventoryString(ply, query, "XQAAAQA6AgAAAAAAAAAtnsBHRAlDnI+0YTROtE2yTNKO569j8mi1Et/q/uECjdsdxxd3c0HmsSaGc5J0KYVdul7xuF9CS7Bg8WgMcSbZzt9jkNR37v71cg/ZwFe2ZEHjQHu2BTZvxM2MB2S3/qPNr4L4JL04")
+	local inventoryString = InitializeInventoryString(ply, query, "XQAAAQDBAgAAAAAAAAAtnsBHRAlDnI+0YTROtE2yTNKO569j8mi1Et/q/uD6XoR8aAKYh4+i0E43RHwCTGGK1Ufk5ZnamNm+qFP2TG/4QauCin2hqeXjQafGUo91uqfd77g8/tUBPE6ntJHIITVBqMYHTEM3luulBGmv0wUzGyxSC3QSo4M7QrajX58FiDKJgao59N2F+uJeZifcnqgxtBJhXpgVGpUbJwgA")
 	ply.inventory = DecodeStash(ply, inventoryString) -- yes this works ignore function name
 	if ply.inventory == nil then ply.inventory = {} end
 
-	local equippedString = InitializeEquippedString(ply, query, "XQAAAQBqBAAAAAAAAAAt4ehEdDypZhc/rwkz9T5cWFAkvV80LpgNDXdx7ZcvkQ48bkdcTutVcWuPD0bqkTF+KkwCN8nqsm1zvwXl/kQisCj8IJUkgeglLVQV8bNl6qnBAVU8ruTCWtetVqm/AD3l73wmh7lmusqMPoOiQ/oduDT7MYdUZJptKYfeTze26uzQzMhqHS3hMj6Ud7Uf7lxjGQUavA1uCPWxU9EGEiqTpLuo8g4B3CUHZ8IUWDYG6MFb5+adM3GFESABCq5FpkiTkeNgi1kYt/LyasBDxUTI3P3wKs+WRja0y/WryNajLrNj3kQR0K7CAlfUm40B2Mpri37eYp0XJJaRTSOVQsEK4cmMaCKWoUdQO05QsCpHHCVwbed/UBcc4gvw+0AEVmGea40wI6GWL1rlv9rMjLCdWxtvfygcQJw7Lrpa4NHOKo0xNrpm1FYD4moD+0ahVa6SsFxlzxJzTgxcQ8mbyzcewLKHnN2aBFsEkkV+yPMdvcQQeSg8TkhfA9vaTNH0ZjjLMGPN570+IPQOLRjior5Ua+wq7T7iDcoR9zoiDBTQ3TM/AFgkRaqmVUE4SmBUEf0KWxJ4KWIiK2Qthr52VWwZGpqYswwiYv4/D3ozGV1SrDrvFJid9nDrcz9j0kijzwmi/SdvZna2czvc4I25wDCzUUTdumYjp4z08pJbF07HRpuKA+PegTF56RqAPNptXAkxuwfK7MhxwC5XOi4fv6AJuIsedDNgtkvNn0VjDEuHlX+HJvxrVHRVM+pkF1IzxcIKVlDOOzSb8YZ2DBtZkxHDfuEwP4ROp9QU4nYLooD3Fl2iwIne63otanp9n77SDlsJQ2Hc0uBsjDpwWKHV8tPUApTyvge8/IRrIpLSNq+WRbBtmg0gcgtbAvhkOe+nT8hrjuBpAATPtq9O+IrsSi+j4kUjdBxcH/U+uM0CBbNJuHUbTXo2chhTa8wxuJBMdcoBfPQA")
+	local equippedString = InitializeEquippedString(ply, query, "XQAAAQACBAAAAAAAAAAt4ehEdDypZhc/rwkz9T5cWFAkvV80LpgNDXdx7ZcvkQ48bkdcTutVcWuPY6g9iYL4pId4H/c6huobRq6wio3vn/D6wsHmjv0jX5jFArouQrXAp7Nqcp9jReC2mZi57kUSWOCls/HcNJsu+E4r/MGO2d0iYZu31u1dL6JGl8qKQFul37F2giNouXIR6Bo9Er8glK7bmOM5f0G/93foF8f4Z/80WcWF40H0xGKWimgkoS6BpeZtleGDcMvszg+0RApZr5GbjGmLHzKk7cZrERaVn4AO2hEGwVvLRmirCVvKgNLLJQFHsTljH9sMB0hNqyITlyWxazalOa2IhrGw5IkNyPMcVxJoRwL+eM3HTGcsSdqMYTtDBzV7UuYRRI/hO/YYZuWOkTcGSso+6YMN1BQVs3S+3zpwmwdN42mvPz16aHfhsg6szAqj6v5eS5MKLPK4BNV1lVHI8t5XQApM41MbnDaMjrSIn8MwEUSLHHnyAKJC74NH5g1KvaVO7mlf6y03+swUw1r1B5+/5vsy+XVOfSmR0hmt/yyNIKvc19x51JsnjruWN7OuT8Hn5gJncgSdNL+9nZg+F8a771zUE1NmrYyaC3C1Ju0pAJNWHyaJH1prnfyOXdyPvBvMCzdx8Mk4A2H/uuwBm8TAK1H4tt9vgTLYN4UZDDRirx9sGyXo7HqPq+NfULb1YjR124WYsbCeMkFy6G5fdv0pRJmZhsbOE1WfKpFdHA8p2orsj1mrY9ZPjjEyFVJ7urEOPrB5TLsLUmZFxwAnSOm3//aWYGFZsQEz0sfE0u5OvJn2qP7XbgePkkMNQ3ceM2Ne1kJxfx4GgczKa9lg2OHpMo7OwOLdpV2OTzChb/lPh81A8QDOdbkSoXIXp2wrYf5Pr81sRZU=")
 	ply.weaponSlots = DecodeStash(ply, equippedString)
 	if ply.weaponSlots == nil then
 

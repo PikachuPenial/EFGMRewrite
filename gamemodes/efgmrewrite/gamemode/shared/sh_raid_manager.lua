@@ -586,28 +586,6 @@ if SERVER then
         hook.Add("CheckRaidAddPlayers", "MaybeAddPeople", function(ply)
             local plySquad = ply:GetNW2String("PlayerInSquad", "nil")
 
-            if #ply:GetWeapons() == 0 and ply:CompareFaction(true) then
-
-                net.Start("SendNotification", false)
-                net.WriteString("Can not enter a raid while having no equipped weapons!")
-                net.WriteString("icons/exclamation_icon.png")
-                net.WriteString("ui/squad_joined.wav")
-                net.Send(ply)
-                return
-
-            end
-
-            if ply:GetActiveWeapon() != NULL and ply:GetActiveWeapon():Clip1() == 0 and ply:GetActiveWeapon():GetMaxClip1() != -1 and ply:CompareFaction(true) then
-
-                net.Start("SendNotification", false)
-                net.WriteString("Can not enter a raid while your held weapon is not loaded!")
-                net.WriteString("icons/renew_icon.png")
-                net.WriteString("ui/squad_joined.wav")
-                net.Send(ply)
-                return
-
-            end
-
             if ply:GetInfoNum("efgm_infil_nearend_block", 1) == 1 and ply:GetInfoNum("efgm_infil_nearend_limit", 60) >= GetGlobalInt("RaidTimeLeft") then
 
                 net.Start("SendNotification", false)

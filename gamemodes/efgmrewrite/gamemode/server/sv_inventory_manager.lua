@@ -1363,4 +1363,54 @@ if GetConVar("efgm_derivesbox"):GetInt() == 1 then
     end
     concommand.Add("efgm_debug_printequippedstring", function(ply, cmd, args) PrintEquippedString(ply) end)
 
+    -- for save editing and whatnot
+    function PrintCleanInventoryString(ply)
+
+        local cleanTbl = {}
+        cleanTbl = table.Copy(ply.inventory)
+
+        for k, v in ipairs(ply.inventory) do
+
+            v.data.fir = nil
+            v.data.owner = nil
+            v.data.timestamp = nil
+
+        end
+
+        local inventoryStr = util.TableToJSON(cleanTbl)
+        inventoryStr = util.Compress(inventoryStr)
+        inventoryStr = util.Base64Encode(inventoryStr, true)
+        print(inventoryStr)
+
+    end
+    concommand.Add("efgm_debug_printinventorystring_clean", function(ply, cmd, args) PrintCleanInventoryString(ply) end)
+
+    function PrintCleanEquippedString(ply)
+
+        local cleanTbl = {}
+        cleanTbl = table.Copy(ply.weaponSlots)
+
+        for i = 1, #table.GetKeys(WEAPONSLOTS) do
+
+            for k, v in ipairs(cleanTbl[i]) do
+
+                if table.IsEmpty(v) then continue end
+
+                v.data.fir = nil
+                v.data.owner = nil
+                v.data.timestamp = nil
+
+            end
+
+        end
+
+        local equippedStr = util.TableToJSON(cleanTbl)
+        equippedStr = util.Compress(equippedStr)
+        equippedStr = util.Base64Encode(equippedStr, true)
+        print(equippedStr)
+
+    end
+    concommand.Add("efgm_debug_printequippedstring_clean", function(ply, cmd, args) PrintCleanEquippedString(ply) end)
+
+
 end
