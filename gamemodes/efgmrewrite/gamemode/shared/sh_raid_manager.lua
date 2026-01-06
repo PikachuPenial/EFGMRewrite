@@ -196,7 +196,7 @@ if SERVER then
                         net.WriteEntity(animModel)
                         net.Send(v)
 
-                        local tempPos = ents.FindByName("TP_" .. introAnimString)[1]
+                        local tempPos = ents.FindByName("TP_" .. string.Explode("|", introAnimString)[1])[1]
                         v:Teleport(tempPos:GetPos(), tempPos:GetAngles(), Vector(0, 0, 0)) -- just so the player isnt clogging the lobby or getting beamed in raid
 
                         animModel:Fire("SetAnimation", "sequence", 0, v, v)

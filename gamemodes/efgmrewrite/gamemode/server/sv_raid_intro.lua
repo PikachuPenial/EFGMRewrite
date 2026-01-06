@@ -8,7 +8,26 @@ hook.Add("InitPostEntity", "IntroInit", function()
 
     if table.IsEmpty(introModels) then return end
 
+    -- copying entities
+
     for k, v in ipairs(introModels) do
+
+        for i = 1, 15 do
+
+            local newIntro = ents.Create("prop_dynamic")
+            newIntro:SetModel(v:GetModel())
+            newIntro:SetRenderMode(RENDERMODE_NONE)
+            newIntro:SetName(v:GetName() .. "|" .. i)
+            newIntro:SetPos(v:GetPos())
+            newIntro:SetAngles(v:GetAngles())
+            newIntro:Spawn()
+            newIntro:Activate()
+            
+        end
+
+    end
+    
+    for k, v in ipairs(ents.FindByName("INTRO*")) do
 
         IntroSpaces[k] = {animName = v:GetName(), occupied = false}
 

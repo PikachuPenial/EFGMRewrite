@@ -1,0 +1,7 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/efgm/props/frame_window_84x56"
+	"$normalmap" "models/efgm/props/frame_window_84x56_normal"
+	"$surfaceprop" "Metal"
+	"$model" 1
+}
