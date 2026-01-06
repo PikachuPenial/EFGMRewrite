@@ -12,6 +12,7 @@ if CLIENT then
     CreateClientConVar("efgm_musicvolume", 1, true, true, "Increase or lower the volume of the music", 0, 2)
     CreateClientConVar("efgm_hud_enable", 1, true, true, "Adjust the visibility of the user interface", 0, 1)
     CreateClientConVar("efgm_hud_scale", 1, true, true, "Adjust the scale for all user interface items", 0.5, 2)
+    CreateClientConVar("efgm_hud_padding", 0, true, true, "Adjust the horizontal padding for all user interface items", 0, 100)
     CreateClientConVar("efgm_menu_parallax", 1, true, true, "Adjust the main menu parallax/jiggle when moving your cursor", 0, 1)
     CreateClientConVar("efgm_menu_scalingmethod", 0, true, true, "Adjust the method at which the menu positions itself after scaling", 0, 1)
     CreateClientConVar("efgm_menu_deleteprompt", 1, true, true, "Adjust if a confirmation prompt appears when deleting an item", 0, 1)

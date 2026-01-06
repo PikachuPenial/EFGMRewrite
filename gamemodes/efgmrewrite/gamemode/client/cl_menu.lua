@@ -11421,6 +11421,23 @@ function Menu.OpenTab.Settings()
     hudScale:SetMax(2)
     hudScale:SetDecimals(2)
 
+    local hudPaddingPanel = vgui.Create("DPanel", interface)
+    hudPaddingPanel:Dock(TOP)
+    hudPaddingPanel:SetSize(0, EFGM.MenuScale(50))
+    function hudPaddingPanel:Paint(w, h)
+
+        draw.SimpleTextOutlined("HUD Padding", "Purista18", w / 2, EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+
+    end
+
+    local hudPadding = vgui.Create("DNumSlider", hudPaddingPanel)
+    hudPadding:SetPos(EFGM.MenuScale(35), EFGM.MenuScale(30))
+    hudPadding:SetSize(EFGM.MenuScale(200), EFGM.MenuScale(15))
+    hudPadding:SetConVar("efgm_hud_padding")
+    hudPadding:SetMin(0)
+    hudPadding:SetMax(100)
+    hudPadding:SetDecimals(0)
+
     local menuAutoClosePanel = vgui.Create("DPanel", interface)
     menuAutoClosePanel:Dock(TOP)
     menuAutoClosePanel:SetSize(0, EFGM.MenuScale(50))

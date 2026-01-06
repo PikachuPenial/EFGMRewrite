@@ -89,6 +89,8 @@ hook.Add("OnScreenSizeChanged", "ClearScalingCache", function()
 	screenScaleCache = {}
 	menuScaleCache = {}
 
+	HUD.Padding = GetConVar("efgm_hud_padding"):GetInt() * (4 * (EFGM.ScrW / 1920.0))
+
 	CreateFonts()
 
 end)

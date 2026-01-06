@@ -1,14 +1,19 @@
 hook.Add("InitPostEntity", "LocalPlayer", function() ply = LocalPlayer() end)
 
 HUD = {}
+HUD.Enabled = GetConVar("efgm_hud_enable"):GetBool()
+HUD.Padding = GetConVar("efgm_hud_padding"):GetInt() * (4 * (ScrW() / 1920.0))
 HUD.InTransition = false
 HUD.InIntro = false
 HUD.IntroEnt = NULL
 HUD.VotedMap = nil
 
-local enabled = GetConVar("efgm_hud_enable"):GetBool()
 cvars.AddChangeCallback("efgm_hud_enable", function(convar_name, value_old, value_new)
-    enabled = tobool(value_new)
+    HUD.Enabled = tobool(value_new)
+end)
+
+cvars.AddChangeCallback("efgm_hud_padding", function(convar_name, value_old, value_new)
+    HUD.Padding = tonumber(value_new) * (4 * (ScrW() / 1920.0))
 end)
 
 local function RenderRaidTime()
@@ -23,8 +28,8 @@ local function RenderRaidTime()
     }
 
     surface.SetDrawColor(raidStatusTbl[raidStatus])
-    surface.DrawRect(ScrW() - EFGM.ScreenScale(120), EFGM.ScreenScale(20), EFGM.ScreenScale(100), EFGM.ScreenScale(36))
-    draw.DrawText(raidTime, "BenderExfilList", ScrW() - EFGM.ScreenScale(70), EFGM.ScreenScale(19), Colors.whiteColor, TEXT_ALIGN_CENTER)
+    surface.DrawRect(ScrW() - EFGM.ScreenScale(120) - HUD.Padding, EFGM.ScreenScale(20), EFGM.ScreenScale(100), EFGM.ScreenScale(36))
+    draw.DrawText(raidTime, "BenderExfilList", ScrW() - EFGM.ScreenScale(70) - HUD.Padding, EFGM.ScreenScale(19), Colors.whiteColor, TEXT_ALIGN_CENTER)
 end
 
 -- players current weapon and ammo
@@ -35,7 +40,7 @@ local function RenderPlayerWeapon()
     local name = wep:GetPrintName()
 
     -- weapon name
-    draw.DrawText(name, "BenderWeaponName", ScrW() - EFGM.ScreenScale(20), ScrH() - EFGM.ScreenScale(40), Colors.whiteColor, TEXT_ALIGN_RIGHT)
+    draw.DrawText(name, "BenderWeaponName", ScrW() - EFGM.ScreenScale(20) - HUD.Padding, ScrH() - EFGM.ScreenScale(40), Colors.whiteColor, TEXT_ALIGN_RIGHT)
 
     local ammo = wep:Clip1()
     local ammoMax = wep:GetMaxClip1()
@@ -59,8 +64,8 @@ local function RenderPlayerWeapon()
     if wep.Hook_RedPrintName then status = wep:RunHook("Hook_RedPrintName") end
     if status then wepColor = Colors.deadColor end
     surface.SetDrawColor(Colors.hudBackground)
-    surface.DrawRect(ScrW() - EFGM.ScreenScale(37) - ammoTextSize, ScrH() - EFGM.ScreenScale(75), ammoTextSize + EFGM.ScreenScale(17), EFGM.ScreenScale(35))
-    draw.DrawText(tostring(magstatus), "BenderAmmoCount", ScrW() - EFGM.ScreenScale(34), ScrH() - EFGM.ScreenScale(74), wepColor, TEXT_ALIGN_RIGHT)
+    surface.DrawRect(ScrW() - EFGM.ScreenScale(37) - ammoTextSize - HUD.Padding, ScrH() - EFGM.ScreenScale(75), ammoTextSize + EFGM.ScreenScale(17), EFGM.ScreenScale(35))
+    draw.DrawText(tostring(magstatus), "BenderAmmoCount", ScrW() - EFGM.ScreenScale(34) - HUD.Padding, ScrH() - EFGM.ScreenScale(74), wepColor, TEXT_ALIGN_RIGHT)
 end
 
 -- assorted overlays
@@ -102,16 +107,16 @@ end
 
 -- players current stance and health
 local playerStance = 0
-local healthMat = Material("stances/sprint_panel.png", "tarkovMaterial")
-local healthSliderMat = Material("stances/sprint_slider.png", "tarkovMaterial")
-local healthLowSliderMat = Material("stances/sprint_slider_exh.png", "tarkovMaterial")
-local stand = Material("stances/stand0.png", "tarkovMaterial")
-local stand1 = Material("stances/stand1.png", "tarkovMaterial")
-local stand2 = Material("stances/stand2.png", "tarkovMaterial")
-local stand3 = Material("stances/stand3.png", "tarkovMaterial")
-local stand4 = Material("stances/stand4.png", "tarkovMaterial")
-local stand5 = Material("stances/stand5.png", "tarkovMaterial")
-local crouch = Material("stances/crouch.png", "tarkovMaterial")
+local healthMat = Material("stances/sprint_panel.png", "smooth")
+local healthSliderMat = Material("stances/sprint_slider.png", "smooth")
+local healthLowSliderMat = Material("stances/sprint_slider_exh.png", "smooth")
+local stand = Material("stances/stand0.png", "smooth")
+local stand1 = Material("stances/stand1.png", "smooth")
+local stand2 = Material("stances/stand2.png", "smooth")
+local stand3 = Material("stances/stand3.png", "smooth")
+local stand4 = Material("stances/stand4.png", "smooth")
+local stand5 = Material("stances/stand5.png", "smooth")
+local crouch = Material("stances/crouch.png", "smooth")
 local function RenderPlayerStance()
     -- variables
     local health = ply:Health()
@@ -138,13 +143,13 @@ local function RenderPlayerStance()
     -- draw health
     surface.SetDrawColor(Colors.pureWhiteColor)
     surface.SetMaterial(healthMat)
-    surface.DrawTexturedRect(EFGM.ScreenScale(20), ScrH() - EFGM.ScreenScale(29), EFGM.ScreenScale(156), EFGM.ScreenScale(13))
+    surface.DrawTexturedRect(EFGM.ScreenScale(20) + HUD.Padding, ScrH() - EFGM.ScreenScale(29), EFGM.ScreenScale(156), EFGM.ScreenScale(13))
     surface.SetDrawColor(255, 255, 255, healthAlpha)
     surface.SetMaterial(healthSliderMat)
-    surface.DrawTexturedRect(EFGM.ScreenScale(25), ScrH() - EFGM.ScreenScale(25), EFGM.ScreenScale(hpBarPercent), EFGM.ScreenScale(3))
+    surface.DrawTexturedRect(EFGM.ScreenScale(25) + HUD.Padding, ScrH() - EFGM.ScreenScale(25), EFGM.ScreenScale(hpBarPercent), EFGM.ScreenScale(3))
     surface.SetDrawColor(255, 255, 255, lowHealthAlpha)
     surface.SetMaterial(healthLowSliderMat)
-    surface.DrawTexturedRect(EFGM.ScreenScale(25), ScrH() - EFGM.ScreenScale(25), EFGM.ScreenScale(hpBarPercent), EFGM.ScreenScale(3))
+    surface.DrawTexturedRect(EFGM.ScreenScale(25) + HUD.Padding, ScrH() - EFGM.ScreenScale(25), EFGM.ScreenScale(hpBarPercent), EFGM.ScreenScale(3))
 
     -- stance check
     if ply:Crouching() then
@@ -172,25 +177,25 @@ local function RenderPlayerStance()
     -- draw stance
     surface.SetDrawColor(255, 255, 255, Standing0Alpha)
     surface.SetMaterial(stand)
-    surface.DrawTexturedRect(EFGM.ScreenScale(25), ScrH() - EFGM.ScreenScale(200), EFGM.ScreenScale(126), EFGM.ScreenScale(166))
+    surface.DrawTexturedRect(EFGM.ScreenScale(25) + HUD.Padding, ScrH() - EFGM.ScreenScale(200), EFGM.ScreenScale(126), EFGM.ScreenScale(166))
     surface.SetDrawColor(255, 255, 255, Standing1Alpha)
     surface.SetMaterial(stand1)
-    surface.DrawTexturedRect(EFGM.ScreenScale(25), ScrH() - EFGM.ScreenScale(195), EFGM.ScreenScale(126), EFGM.ScreenScale(160))
+    surface.DrawTexturedRect(EFGM.ScreenScale(25) + HUD.Padding, ScrH() - EFGM.ScreenScale(195), EFGM.ScreenScale(126), EFGM.ScreenScale(160))
     surface.SetDrawColor(255, 255, 255, Standing2Alpha)
     surface.SetMaterial(stand2)
-    surface.DrawTexturedRect(EFGM.ScreenScale(25), ScrH() - EFGM.ScreenScale(191), EFGM.ScreenScale(127), EFGM.ScreenScale(154))
+    surface.DrawTexturedRect(EFGM.ScreenScale(25) + HUD.Padding, ScrH() - EFGM.ScreenScale(191), EFGM.ScreenScale(127), EFGM.ScreenScale(154))
     surface.SetDrawColor(255, 255, 255, Standing3Alpha)
     surface.SetMaterial(stand3)
-    surface.DrawTexturedRect(EFGM.ScreenScale(25), ScrH() - EFGM.ScreenScale(184), EFGM.ScreenScale(127), EFGM.ScreenScale(148))
+    surface.DrawTexturedRect(EFGM.ScreenScale(25) + HUD.Padding, ScrH() - EFGM.ScreenScale(184), EFGM.ScreenScale(127), EFGM.ScreenScale(148))
     surface.SetDrawColor(255, 255, 255, Standing4Alpha)
     surface.SetMaterial(stand4)
-    surface.DrawTexturedRect(EFGM.ScreenScale(25), ScrH() - EFGM.ScreenScale(179), EFGM.ScreenScale(127), EFGM.ScreenScale(143))
+    surface.DrawTexturedRect(EFGM.ScreenScale(25) + HUD.Padding, ScrH() - EFGM.ScreenScale(179), EFGM.ScreenScale(127), EFGM.ScreenScale(143))
     surface.SetDrawColor(255, 255, 255, Standing5Alpha)
     surface.SetMaterial(stand5)
-    surface.DrawTexturedRect(EFGM.ScreenScale(25), ScrH() - EFGM.ScreenScale(174), EFGM.ScreenScale(127), EFGM.ScreenScale(138))
+    surface.DrawTexturedRect(EFGM.ScreenScale(25) + HUD.Padding, ScrH() - EFGM.ScreenScale(174), EFGM.ScreenScale(127), EFGM.ScreenScale(138))
     surface.SetDrawColor(255, 255, 255, CrouchingAlpha)
     surface.SetMaterial(crouch)
-    surface.DrawTexturedRect(EFGM.ScreenScale(25), ScrH() - EFGM.ScreenScale(151), EFGM.ScreenScale(127), EFGM.ScreenScale(114))
+    surface.DrawTexturedRect(EFGM.ScreenScale(25) + HUD.Padding, ScrH() - EFGM.ScreenScale(151), EFGM.ScreenScale(127), EFGM.ScreenScale(114))
 end
 
 -- extracts
@@ -221,16 +226,16 @@ function RenderExtracts()
         if extractList == nil then return end
 
         surface.SetDrawColor(Colors.hudBackground)
-        surface.DrawRect(ScrW() - EFGM.ScreenScale(515), EFGM.ScreenScale(20), EFGM.ScreenScale(390), EFGM.ScreenScale(36))
-        draw.SimpleTextOutlined("FIND AN EXTRACTION POINT", "BenderAmmoCount", ScrW() - EFGM.ScreenScale(320), EFGM.ScreenScale(21), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 100, 0, 128))
+        surface.DrawRect(ScrW() - EFGM.ScreenScale(515) - HUD.Padding, EFGM.ScreenScale(20), EFGM.ScreenScale(390), EFGM.ScreenScale(36))
+        draw.SimpleTextOutlined("FIND AN EXTRACTION POINT", "BenderAmmoCount", ScrW() - EFGM.ScreenScale(320) - HUD.Padding, EFGM.ScreenScale(21), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 100, 0, 128))
 
         for k, v in ipairs(extractList) do
 
-            surface.DrawRect(ScrW() - EFGM.ScreenScale(515), EFGM.ScreenScale(61) + ((k - 1) * EFGM.ScreenScale(41)), EFGM.ScreenScale(390), EFGM.ScreenScale(36))
-            surface.DrawRect(ScrW() - EFGM.ScreenScale(120), EFGM.ScreenScale(61) + ((k - 1) * EFGM.ScreenScale(41)), EFGM.ScreenScale(100), EFGM.ScreenScale(36))
+            surface.DrawRect(ScrW() - EFGM.ScreenScale(515) - HUD.Padding, EFGM.ScreenScale(61) + ((k - 1) * EFGM.ScreenScale(41)), EFGM.ScreenScale(390), EFGM.ScreenScale(36))
+            surface.DrawRect(ScrW() - EFGM.ScreenScale(120) - HUD.Padding, EFGM.ScreenScale(61) + ((k - 1) * EFGM.ScreenScale(41)), EFGM.ScreenScale(100), EFGM.ScreenScale(36))
 
-            draw.DrawText("EXFIL0" .. k, "BenderExfilList", ScrW() - EFGM.ScreenScale(505), EFGM.ScreenScale(60) + ((k - 1) * EFGM.ScreenScale(41)), exitStatusTbl[v.IsDisabled], TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-            draw.DrawText(string.sub(v.ExtractName, 1, 18), "BenderExfilName", ScrW() - EFGM.ScreenScale(380), EFGM.ScreenScale(65) + ((k - 1) * EFGM.ScreenScale(41)), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+            draw.DrawText("EXFIL0" .. k, "BenderExfilList", ScrW() - EFGM.ScreenScale(505) - HUD.Padding, EFGM.ScreenScale(60) + ((k - 1) * EFGM.ScreenScale(41)), exitStatusTbl[v.IsDisabled], TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+            draw.DrawText(string.sub(v.ExtractName, 1, 18), "BenderExfilName", ScrW() - EFGM.ScreenScale(380) - HUD.Padding, EFGM.ScreenScale(65) + ((k - 1) * EFGM.ScreenScale(41)), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
 
         end
     end
@@ -252,10 +257,10 @@ function RenderRaidIntro()
     intro.Paint = function(self, w, h)
         if !ply:Alive() then return end
 
-        draw.DrawText("Raid #" .. ply:GetNWInt("RaidsPlayed", 0), "BenderAmmoCount", EFGM.ScreenScale(20), EFGM.ScreenScale(21), Color(255, 255, 255, 200), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-        draw.DrawText(os.date("%H:%M:%S"), "BenderAmmoCount", EFGM.ScreenScale(20), EFGM.ScreenScale(50), Color(255, 255, 255, 200), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-        draw.DrawText("Level " .. ply:GetNWInt("Level", 0) .. ", Operator " .. ply:GetName(), "BenderAmmoCount", EFGM.ScreenScale(20), EFGM.ScreenScale(80), Color(255, 255, 255, 200), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-        draw.DrawText("Garkov, " .. MAPNAMES[game.GetMap()] or "", "BenderAmmoCount", EFGM.ScreenScale(20), EFGM.ScreenScale(110), Color(255, 255, 255, 200), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+        draw.DrawText("Raid #" .. ply:GetNWInt("RaidsPlayed", 0), "BenderAmmoCount", EFGM.ScreenScale(20) + HUD.Padding, EFGM.ScreenScale(21), Color(255, 255, 255, 200), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+        draw.DrawText(os.date("%H:%M:%S"), "BenderAmmoCount", EFGM.ScreenScale(20) + HUD.Padding, EFGM.ScreenScale(50), Color(255, 255, 255, 200), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+        draw.DrawText("Level " .. ply:GetNWInt("Level", 0) .. ", Operator " .. ply:GetName(), "BenderAmmoCount", EFGM.ScreenScale(20) + HUD.Padding, EFGM.ScreenScale(80), Color(255, 255, 255, 200), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+        draw.DrawText("Garkov, " .. MAPNAMES[game.GetMap()] or "", "BenderAmmoCount", EFGM.ScreenScale(20) + HUD.Padding, EFGM.ScreenScale(110), Color(255, 255, 255, 200), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
     end
 
     intro:AlphaTo(255, 0.35, 0, nil)
@@ -361,7 +366,7 @@ end
 local function RenderVOIPIndicator()
     surface.SetDrawColor(175, 255, 0)
     surface.SetMaterial(Mats.voipIcon)
-    surface.DrawTexturedRect(EFGM.ScreenScale(121), ScrH() - EFGM.ScreenScale(90), EFGM.ScreenScale(60), EFGM.ScreenScale(60))
+    surface.DrawTexturedRect(EFGM.ScreenScale(121) + HUD.Padding, ScrH() - EFGM.ScreenScale(90), EFGM.ScreenScale(60), EFGM.ScreenScale(60))
 end
 
 -- invites
@@ -407,16 +412,16 @@ function RenderInvite()
         if Invites.invitedBy == nil or Invites.invitedType == nil or !Invites.allow then invite:AlphaTo(0, 0.1, 9.9, function() invite:Remove() end) return end
 
         surface.SetDrawColor(Colors.hudBackground)
-        surface.DrawRect(EFGM.ScreenScale(20), EFGM.ScreenScale(20), math.max(textSize, bindsTextSize), EFGM.ScreenScale(90))
+        surface.DrawRect(EFGM.ScreenScale(20) + HUD.Padding, EFGM.ScreenScale(20), math.max(textSize, bindsTextSize), EFGM.ScreenScale(90))
 
         surface.SetDrawColor(Colors.hudBackground)
-        surface.DrawRect(EFGM.ScreenScale(20), EFGM.ScreenScale(20), math.max(textSize, bindsTextSize), EFGM.ScreenScale(1))
+        surface.DrawRect(EFGM.ScreenScale(20) + HUD.Padding, EFGM.ScreenScale(20), math.max(textSize, bindsTextSize), EFGM.ScreenScale(1))
 
         surface.SetDrawColor(Colors.transparentWhiteColor)
-        surface.DrawRect(EFGM.ScreenScale(20), EFGM.ScreenScale(20), ((time - CurTime()) / 10) * math.max(textSize, bindsTextSize), EFGM.ScreenScale(1))
+        surface.DrawRect(EFGM.ScreenScale(20) + HUD.Padding, EFGM.ScreenScale(20), ((time - CurTime()) / 10) * math.max(textSize, bindsTextSize), EFGM.ScreenScale(1))
 
-        draw.SimpleText(text, "BenderExfilTimer", EFGM.ScreenScale(25), EFGM.ScreenScale(21), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-        draw.SimpleText(bindsText, "Bender24", EFGM.ScreenScale(25), EFGM.ScreenScale(81), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+        draw.SimpleText(text, "BenderExfilTimer", EFGM.ScreenScale(25) + HUD.Padding, EFGM.ScreenScale(21), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+        draw.SimpleText(bindsText, "Bender24", EFGM.ScreenScale(25) + HUD.Padding, EFGM.ScreenScale(81), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
     end
 
     invite:AlphaTo(255, 0.1, 0, nil)
@@ -546,7 +551,7 @@ end
 local function DrawHUD()
     ply = ply or LocalPlayer()
     if !ply:Alive() or Menu.IsOpen or HUD.InIntro then RenderOverlays() return end
-    if !enabled then return end
+    if !HUD.Enabled then return end
 
     RenderRaidTime()
     RenderPlayerWeapon()
@@ -564,7 +569,7 @@ hook.Add("CalcView", "SetIntroView", function(ply, pos, angles, fov)
         local view = {
             origin = camera.Pos,
             angles = camera.Ang,
-            fov = 90,
+            fov = fov,
             drawviewer = false
         }
 
@@ -2694,28 +2699,28 @@ net.Receive("VoteableMaps", function(len)
             end
 
             surface.SetDrawColor(Colors.hudBackground)
-            surface.DrawRect(EFGM.ScreenScale(20), EFGM.ScreenScale(20), textSize, EFGM.ScreenScale(250))
+            surface.DrawRect(EFGM.ScreenScale(20) + HUD.Padding, EFGM.ScreenScale(20), textSize, EFGM.ScreenScale(250))
 
             surface.SetDrawColor(Colors.hudBackground)
-            surface.DrawRect(EFGM.ScreenScale(20), EFGM.ScreenScale(20), textSize, EFGM.ScreenScale(1))
+            surface.DrawRect(EFGM.ScreenScale(20) + HUD.Padding, EFGM.ScreenScale(20), textSize, EFGM.ScreenScale(1))
 
             surface.SetDrawColor(Colors.transparentWhiteColor)
-            surface.DrawRect(EFGM.ScreenScale(20), EFGM.ScreenScale(20), ((time - CurTime()) / 20) * textSize, EFGM.ScreenScale(1))
+            surface.DrawRect(EFGM.ScreenScale(20) + HUD.Padding, EFGM.ScreenScale(20), ((time - CurTime()) / 20) * textSize, EFGM.ScreenScale(1))
 
-            draw.SimpleText(text, "BenderExfilTimer", EFGM.ScreenScale(25), EFGM.ScreenScale(21), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-            draw.SimpleText(string.upper("[" .. acceptBind .. "] " .. map1Name), "Bender24", EFGM.ScreenScale(25), EFGM.ScreenScale(241), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-            draw.SimpleText(string.upper("[" .. declineBind .. "] " .. map2Name), "Bender24", EFGM.ScreenScale(185), EFGM.ScreenScale(241), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+            draw.SimpleText(text, "BenderExfilTimer", EFGM.ScreenScale(25) + HUD.Padding, EFGM.ScreenScale(21), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+            draw.SimpleText(string.upper("[" .. acceptBind .. "] " .. map1Name), "Bender24", EFGM.ScreenScale(25) + HUD.Padding, EFGM.ScreenScale(241), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+            draw.SimpleText(string.upper("[" .. declineBind .. "] " .. map2Name), "Bender24", EFGM.ScreenScale(185) + HUD.Padding, EFGM.ScreenScale(241), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
 
-            draw.SimpleText(map1Votes .. "%", "Bender18", EFGM.ScreenScale(25), EFGM.ScreenScale(225), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-            draw.SimpleText(map2Votes .. "%", "Bender18", EFGM.ScreenScale(185), EFGM.ScreenScale(225), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+            draw.SimpleText(map1Votes .. "%", "Bender18", EFGM.ScreenScale(25) + HUD.Padding, EFGM.ScreenScale(225), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+            draw.SimpleText(map2Votes .. "%", "Bender18", EFGM.ScreenScale(185) + HUD.Padding, EFGM.ScreenScale(225), Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
 
             surface.SetMaterial(map1Icon)
             surface.SetDrawColor(Colors.pureWhiteColor)
-            surface.DrawTexturedRect(EFGM.ScreenScale(25), EFGM.ScreenScale(75), EFGM.ScreenScale(150), EFGM.ScreenScale(150))
+            surface.DrawTexturedRect(EFGM.ScreenScale(25) + HUD.Padding, EFGM.ScreenScale(75), EFGM.ScreenScale(150), EFGM.ScreenScale(150))
 
             surface.SetMaterial(map2Icon)
             surface.SetDrawColor(Colors.pureWhiteColor)
-            surface.DrawTexturedRect(EFGM.ScreenScale(185), EFGM.ScreenScale(75), EFGM.ScreenScale(150), EFGM.ScreenScale(150))
+            surface.DrawTexturedRect(EFGM.ScreenScale(185) + HUD.Padding, EFGM.ScreenScale(75), EFGM.ScreenScale(150), EFGM.ScreenScale(150))
         end
 
         mapVote:AlphaTo(255, 0.1, 0, nil)
