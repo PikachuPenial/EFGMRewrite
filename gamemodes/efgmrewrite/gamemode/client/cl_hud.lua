@@ -227,7 +227,7 @@ function RenderExtracts()
 
         surface.SetDrawColor(Colors.hudBackground)
         surface.DrawRect(ScrW() - EFGM.ScreenScale(515) - HUD.Padding, EFGM.ScreenScale(20), EFGM.ScreenScale(390), EFGM.ScreenScale(36))
-        draw.SimpleTextOutlined("FIND AN EXTRACTION POINT", "BenderAmmoCount", ScrW() - EFGM.ScreenScale(320) - HUD.Padding, EFGM.ScreenScale(21), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0, 100, 0, 128))
+        draw.SimpleTextOutlined("FIND AN EXTRACTION POINT", "BenderAmmoCount", ScrW() - EFGM.ScreenScale(320) - HUD.Padding, EFGM.ScreenScale(21), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, EFGM.ScreenScaleRounded(1), Color(0, 100, 0, 128))
 
         for k, v in ipairs(extractList) do
 
@@ -816,9 +816,9 @@ net.Receive("CreateDeathInformation", function()
 
             BlurPanel(DeathPopup, EFGM.MenuScale(5))
 
-            draw.SimpleTextOutlined("KILLED IN ACTION", "PuristaBold64", w / 2, EFGM.MenuScale(35), Color(255, 0, 0, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.whiteColor)
-            draw.SimpleTextOutlined(string.format("%02d:%02d", minutes, seconds) .. " TIME IN RAID", "PuristaBold22", w / 2, EFGM.MenuScale(90), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-            draw.SimpleTextOutlined(quote, "Purista18Italic", w / 2, EFGM.MenuScale(108), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+            draw.SimpleTextOutlined("KILLED IN ACTION", "PuristaBold64", w / 2, EFGM.MenuScale(35), Color(255, 0, 0, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.whiteColor)
+            draw.SimpleTextOutlined(string.format("%02d:%02d", minutes, seconds) .. " TIME IN RAID", "PuristaBold22", w / 2, EFGM.MenuScale(90), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+            draw.SimpleTextOutlined(quote, "Purista18Italic", w / 2, EFGM.MenuScale(108), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
             DeathPopup.MouseX, DeathPopup.MouseY = DeathPopup:LocalCursorPos()
 
@@ -893,7 +893,7 @@ net.Receive("CreateDeathInformation", function()
             surface.SetDrawColor(Colors.transparentWhiteColor)
             surface.DrawRect(0, 0, respawnButton:GetWide(), EFGM.MenuScale(2))
 
-            draw.SimpleTextOutlined("RETURN TO HIDEOUT", "PuristaBold32", w / 2, EFGM.MenuScale(7), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+            draw.SimpleTextOutlined("RETURN TO HIDEOUT", "PuristaBold32", w / 2, EFGM.MenuScale(7), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
         end
 
@@ -957,7 +957,7 @@ net.Receive("CreateDeathInformation", function()
                 surface.SetDrawColor(Color(155, 155, 155, 10))
                 surface.DrawRect(0, 0, w, h)
 
-                draw.SimpleTextOutlined("STATS", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+                draw.SimpleTextOutlined("STATS", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
             end
 
@@ -976,8 +976,8 @@ net.Receive("CreateDeathInformation", function()
 
                     if v == 0 then continue end
 
-                    draw.SimpleTextOutlined(k, "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(22) * num, Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-                    draw.SimpleTextOutlined(v, "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(22) * num, Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+                    draw.SimpleTextOutlined(k, "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(22) * num, Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+                    draw.SimpleTextOutlined(v, "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(22) * num, Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
                     num = num + 1
 
@@ -1014,7 +1014,7 @@ net.Receive("CreateDeathInformation", function()
                 surface.SetDrawColor(Color(155, 155, 155, 10))
                 surface.DrawRect(0, 0, w, h)
 
-                draw.SimpleTextOutlined("LEVELING", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+                draw.SimpleTextOutlined("LEVELING", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
             end
 
@@ -1027,34 +1027,34 @@ net.Receive("CreateDeathInformation", function()
                 surface.SetDrawColor(Color(0, 0, 0, 0))
                 surface.DrawRect(0, 0, w, h)
 
-                draw.SimpleTextOutlined("TIME: ", "PuristaBold24", EFGM.MenuScale(3), 0, Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-                draw.SimpleTextOutlined(xpTime .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), 0, Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+                draw.SimpleTextOutlined("TIME: ", "PuristaBold24", EFGM.MenuScale(3), 0, Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+                draw.SimpleTextOutlined(xpTime .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), 0, Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
-                draw.SimpleTextOutlined("COMBAT: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(22), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-                draw.SimpleTextOutlined(xpCombat .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(22), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+                draw.SimpleTextOutlined("COMBAT: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(22), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+                draw.SimpleTextOutlined(xpCombat .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(22), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
-                draw.SimpleTextOutlined("EXPLORATION: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(44), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-                draw.SimpleTextOutlined(xpExploration .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(44), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+                draw.SimpleTextOutlined("EXPLORATION: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(44), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+                draw.SimpleTextOutlined(xpExploration .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(44), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
-                draw.SimpleTextOutlined("LOOTING: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(66), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-                draw.SimpleTextOutlined(xpLooting .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(66), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+                draw.SimpleTextOutlined("LOOTING: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(66), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+                draw.SimpleTextOutlined(xpLooting .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(66), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
-                draw.SimpleTextOutlined("BONUS: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(88), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-                draw.SimpleTextOutlined(xpBonus .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(88), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+                draw.SimpleTextOutlined("BONUS: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(88), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+                draw.SimpleTextOutlined(xpBonus .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(88), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
-                draw.SimpleTextOutlined("TOTAL: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(120), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-                draw.SimpleTextOutlined(totalXPRaw .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(120), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+                draw.SimpleTextOutlined("TOTAL: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(120), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+                draw.SimpleTextOutlined(totalXPRaw .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(120), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
-                draw.SimpleTextOutlined("MULTIPLIER: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(142), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-                draw.SimpleTextOutlined(xpMult .. "x", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(142), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+                draw.SimpleTextOutlined("MULTIPLIER: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(142), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+                draw.SimpleTextOutlined(xpMult .. "x", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(142), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
-                draw.SimpleTextOutlined("FINAL XP: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(174), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-                draw.SimpleTextOutlined("+" .. totalXPReal .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(174), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+                draw.SimpleTextOutlined("FINAL XP: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(174), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+                draw.SimpleTextOutlined("+" .. totalXPReal .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(174), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
-                draw.SimpleTextOutlined(ply:GetNWInt("Level", 1), "PuristaBold24", EFGM.MenuScale(5), h - EFGM.MenuScale(40), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-                draw.SimpleTextOutlined(ply:GetNWInt("Level", 1) + 1, "PuristaBold24", w - EFGM.MenuScale(5), h - EFGM.MenuScale(40), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+                draw.SimpleTextOutlined(ply:GetNWInt("Level", 1), "PuristaBold24", EFGM.MenuScale(5), h - EFGM.MenuScale(40), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+                draw.SimpleTextOutlined(ply:GetNWInt("Level", 1) + 1, "PuristaBold24", w - EFGM.MenuScale(5), h - EFGM.MenuScale(40), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
-                draw.SimpleTextOutlined(ply:GetNWInt("Experience", 0) .. "/" .. ply:GetNWInt("ExperienceToNextLevel", 500), "PuristaBold16", EFGM.MenuScale(30), h - EFGM.MenuScale(33), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+                draw.SimpleTextOutlined(ply:GetNWInt("Experience", 0) .. "/" .. ply:GetNWInt("ExperienceToNextLevel", 500), "PuristaBold16", EFGM.MenuScale(30), h - EFGM.MenuScale(33), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
                 surface.SetDrawColor(30, 30, 30, 125)
                 surface.DrawRect(EFGM.MenuScale(5), h - EFGM.MenuScale(15), EFGM.MenuScale(470), EFGM.MenuScale(10))
@@ -1117,7 +1117,7 @@ net.Receive("CreateDeathInformation", function()
                 surface.SetDrawColor(Color(155, 155, 155, 10))
                 surface.DrawRect(0, 0, w, h)
 
-                draw.SimpleTextOutlined("KILLED BY", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+                draw.SimpleTextOutlined("KILLED BY", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
             end
 
@@ -1130,11 +1130,11 @@ net.Receive("CreateDeathInformation", function()
                 surface.SetDrawColor(Color(0, 0, 0, 0))
                 surface.DrawRect(0, 0, w, h)
 
-                draw.SimpleTextOutlined(killedBy:GetName(), "PuristaBold24", EFGM.MenuScale(90), 0, Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+                draw.SimpleTextOutlined(killedBy:GetName(), "PuristaBold24", EFGM.MenuScale(90), 0, Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
                 if killedFrom != 0 then
 
-                    draw.SimpleTextOutlined("from " .. killedFrom .. "m away", "PuristaBold16", EFGM.MenuScale(90), EFGM.MenuScale(18), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+                    draw.SimpleTextOutlined("from " .. killedFrom .. "m away", "PuristaBold16", EFGM.MenuScale(90), EFGM.MenuScale(18), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
                 end
 
@@ -1142,11 +1142,11 @@ net.Receive("CreateDeathInformation", function()
 
                     if killedFrom != 0 then
 
-                        draw.SimpleTextOutlined("in the " .. HITGROUPS[hitGroup], "PuristaBold16", EFGM.MenuScale(90), EFGM.MenuScale(30), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+                        draw.SimpleTextOutlined("in the " .. HITGROUPS[hitGroup], "PuristaBold16", EFGM.MenuScale(90), EFGM.MenuScale(30), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
                     else
 
-                        draw.SimpleTextOutlined("in the " .. HITGROUPS[hitGroup], "PuristaBold16", EFGM.MenuScale(90), EFGM.MenuScale(18), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+                        draw.SimpleTextOutlined("in the " .. HITGROUPS[hitGroup], "PuristaBold16", EFGM.MenuScale(90), EFGM.MenuScale(18), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
                     end
 
@@ -1156,7 +1156,7 @@ net.Receive("CreateDeathInformation", function()
                 surface.SetMaterial(Mats.healthIcon)
                 surface.DrawTexturedRect(0, EFGM.MenuScale(90), EFGM.MenuScale(32), EFGM.MenuScale(32))
 
-                draw.SimpleTextOutlined(killedByHealth .. "HP", "PuristaBold24", EFGM.MenuScale(32), EFGM.MenuScale(93), Colors.healthGreenColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+                draw.SimpleTextOutlined(killedByHealth .. "HP", "PuristaBold24", EFGM.MenuScale(32), EFGM.MenuScale(93), Colors.healthGreenColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
             end
 
@@ -1311,7 +1311,7 @@ net.Receive("CreateDeathInformation", function()
                     surface.SetDrawColor(Color(5, 5, 5, 100))
                     surface.DrawRect(EFGM.MenuScale(1), h - EFGM.MenuScale(31), w - EFGM.MenuScale(2), EFGM.MenuScale(30))
 
-                    draw.SimpleTextOutlined(def.displayName, "PuristaBold22", w / 2, h - EFGM.MenuScale(29), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+                    draw.SimpleTextOutlined(def.displayName, "PuristaBold22", w / 2, h - EFGM.MenuScale(29), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
                 end
 
@@ -1459,8 +1459,8 @@ net.Receive("CreateExtractionInformation", function()
         surface.SetDrawColor(Color(10, 10, 10, 155))
         surface.DrawRect(0, 0, w, h)
 
-        draw.SimpleTextOutlined("EXTRACTED", "PuristaBold64", w / 2, EFGM.MenuScale(35), Color(0, 255, 0, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.whiteColor)
-        draw.SimpleTextOutlined(string.format("%02d:%02d", minutes, seconds) .. " TIME IN RAID", "PuristaBold22", w / 2, EFGM.MenuScale(90), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined("EXTRACTED", "PuristaBold64", w / 2, EFGM.MenuScale(35), Color(0, 255, 0, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.whiteColor)
+        draw.SimpleTextOutlined(string.format("%02d:%02d", minutes, seconds) .. " TIME IN RAID", "PuristaBold22", w / 2, EFGM.MenuScale(90), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
         ExtractionPopup.MouseX, ExtractionPopup.MouseY = ExtractionPopup:LocalCursorPos()
 
@@ -1512,7 +1512,7 @@ net.Receive("CreateExtractionInformation", function()
         surface.SetDrawColor(Colors.transparentWhiteColor)
         surface.DrawRect(0, 0, respawnButton:GetWide(), EFGM.MenuScale(2))
 
-        draw.SimpleTextOutlined("CLOSE", "PuristaBold32", w / 2, EFGM.MenuScale(7), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined("CLOSE", "PuristaBold32", w / 2, EFGM.MenuScale(7), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
     end
 
@@ -1571,7 +1571,7 @@ net.Receive("CreateExtractionInformation", function()
         surface.SetDrawColor(Color(155, 155, 155, 10))
         surface.DrawRect(0, 0, w, h)
 
-        draw.SimpleTextOutlined("STATS", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined("STATS", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
     end
 
@@ -1590,8 +1590,8 @@ net.Receive("CreateExtractionInformation", function()
 
             if v == 0 then continue end
 
-            draw.SimpleTextOutlined(k, "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(22) * num, Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-            draw.SimpleTextOutlined(v, "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(22) * num, Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+            draw.SimpleTextOutlined(k, "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(22) * num, Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+            draw.SimpleTextOutlined(v, "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(22) * num, Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
             num = num + 1
 
@@ -1628,7 +1628,7 @@ net.Receive("CreateExtractionInformation", function()
         surface.SetDrawColor(Color(155, 155, 155, 10))
         surface.DrawRect(0, 0, w, h)
 
-        draw.SimpleTextOutlined("LEVELING", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined("LEVELING", "PuristaBold32", EFGM.MenuScale(5), EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
     end
 
@@ -1641,34 +1641,34 @@ net.Receive("CreateExtractionInformation", function()
         surface.SetDrawColor(Color(0, 0, 0, 0))
         surface.DrawRect(0, 0, w, h)
 
-        draw.SimpleTextOutlined("TIME: ", "PuristaBold24", EFGM.MenuScale(3), 0, Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-        draw.SimpleTextOutlined(xpTime .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), 0, Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined("TIME: ", "PuristaBold24", EFGM.MenuScale(3), 0, Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+        draw.SimpleTextOutlined(xpTime .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), 0, Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
-        draw.SimpleTextOutlined("COMBAT: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(22), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-        draw.SimpleTextOutlined(xpCombat .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(22), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined("COMBAT: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(22), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+        draw.SimpleTextOutlined(xpCombat .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(22), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
-        draw.SimpleTextOutlined("EXPLORATION: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(44), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-        draw.SimpleTextOutlined(xpExploration .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(44), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined("EXPLORATION: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(44), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+        draw.SimpleTextOutlined(xpExploration .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(44), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
-        draw.SimpleTextOutlined("LOOTING: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(66), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-        draw.SimpleTextOutlined(xpLooting .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(66), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined("LOOTING: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(66), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+        draw.SimpleTextOutlined(xpLooting .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(66), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
-        draw.SimpleTextOutlined("BONUS: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(88), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-        draw.SimpleTextOutlined(xpBonus .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(88), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined("BONUS: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(88), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+        draw.SimpleTextOutlined(xpBonus .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(88), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
-        draw.SimpleTextOutlined("TOTAL: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(120), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-        draw.SimpleTextOutlined(totalXPRaw .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(120), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined("TOTAL: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(120), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+        draw.SimpleTextOutlined(totalXPRaw .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(120), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
-        draw.SimpleTextOutlined("MULTIPLIER: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(142), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-        draw.SimpleTextOutlined(xpMult .. "x", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(142), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined("MULTIPLIER: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(142), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+        draw.SimpleTextOutlined(xpMult .. "x", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(142), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
-        draw.SimpleTextOutlined("FINAL XP: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(174), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-        draw.SimpleTextOutlined("+" .. totalXPReal .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(174), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined("FINAL XP: ", "PuristaBold24", EFGM.MenuScale(3), EFGM.MenuScale(174), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+        draw.SimpleTextOutlined("+" .. totalXPReal .. "XP", "PuristaBold24", w - EFGM.MenuScale(3), EFGM.MenuScale(174), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
-        draw.SimpleTextOutlined(ply:GetNWInt("Level", 1), "PuristaBold24", EFGM.MenuScale(5), h - EFGM.MenuScale(40), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-        draw.SimpleTextOutlined(ply:GetNWInt("Level", 1) + 1, "PuristaBold24", w - EFGM.MenuScale(5), h - EFGM.MenuScale(40), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined(ply:GetNWInt("Level", 1), "PuristaBold24", EFGM.MenuScale(5), h - EFGM.MenuScale(40), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+        draw.SimpleTextOutlined(ply:GetNWInt("Level", 1) + 1, "PuristaBold24", w - EFGM.MenuScale(5), h - EFGM.MenuScale(40), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
-        draw.SimpleTextOutlined(ply:GetNWInt("Experience", 0) .. "/" .. ply:GetNWInt("ExperienceToNextLevel", 500), "PuristaBold16", EFGM.MenuScale(30), h - EFGM.MenuScale(33), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined(ply:GetNWInt("Experience", 0) .. "/" .. ply:GetNWInt("ExperienceToNextLevel", 500), "PuristaBold16", EFGM.MenuScale(30), h - EFGM.MenuScale(33), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
         surface.SetDrawColor(30, 30, 30, 125)
         surface.DrawRect(EFGM.MenuScale(5), h - EFGM.MenuScale(15), EFGM.MenuScale(470), EFGM.MenuScale(10))
@@ -1893,12 +1893,12 @@ function HUDInspectItem(item, data, panel)
         surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
         surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
-        draw.SimpleTextOutlined(itemNameText, "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-        draw.SimpleTextOutlined(itemDescText, "PuristaBold18", EFGM.MenuScale(5), EFGM.MenuScale(25), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined(itemNameText, "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+        draw.SimpleTextOutlined(itemDescText, "PuristaBold18", EFGM.MenuScale(5), EFGM.MenuScale(25), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
         if data.tag then
 
-            draw.SimpleTextOutlined(data.tag, "PuristaBold14", EFGM.MenuScale(5), EFGM.MenuScale(40), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+            draw.SimpleTextOutlined(data.tag, "PuristaBold14", EFGM.MenuScale(5), EFGM.MenuScale(40), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
         end
 
@@ -1995,8 +1995,8 @@ function HUDInspectItem(item, data, panel)
                 surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
                 surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
-                draw.SimpleTextOutlined("FOUND IN RAID", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-                draw.SimpleTextOutlined("This item will lose its 'found in raid' status if brought into another raid.", "Purista18", EFGM.MenuScale(5), EFGM.MenuScale(25), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+                draw.SimpleTextOutlined("FOUND IN RAID", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(5), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+                draw.SimpleTextOutlined("This item will lose its 'found in raid' status if brought into another raid.", "Purista18", EFGM.MenuScale(5), EFGM.MenuScale(25), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
             end
 
@@ -2053,7 +2053,7 @@ function HUDInspectItem(item, data, panel)
         surface.SetDrawColor(Colors.transparentWhiteColor)
         if !s:IsHovered() then surface.DrawRect(0, 0, infoTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2)) else surface.DrawRect(0, 0, infoTextSize + EFGM.MenuScale(10), EFGM.MenuScale(3)) end
 
-        draw.SimpleTextOutlined(infoText, "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined(infoText, "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
     end
 
@@ -2077,7 +2077,7 @@ function HUDInspectItem(item, data, panel)
         surface.SetDrawColor(Colors.transparentWhiteColor)
         if !s:IsHovered() then surface.DrawRect(0, 0, infoTextSize + EFGM.MenuScale(10), EFGM.MenuScale(2)) else surface.DrawRect(0, 0, infoTextSize + EFGM.MenuScale(10), EFGM.MenuScale(3)) end
 
-        draw.SimpleTextOutlined(wikiText, "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+        draw.SimpleTextOutlined(wikiText, "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
     end
 

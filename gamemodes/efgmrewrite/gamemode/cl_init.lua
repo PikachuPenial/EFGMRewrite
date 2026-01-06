@@ -47,9 +47,11 @@ EFGM.ScrH = ScrH()
 -- screen scale function, makes my life (penial) easier because i will most definently be doing most if not all of the user interface
 -- all interfaces and fonts are developed on a 1920x1080 monitor
 local screenScaleCache = {}
+local screenScaleRoundedCache = {}
 local efgm_hud_scale = GetConVar("efgm_hud_scale"):GetFloat()
 cvars.AddChangeCallback("efgm_hud_scale", function(convar_name, value_old, value_new)
 	screenScaleCache = {}
+	screenScaleRoundedCache = {}
     efgm_hud_scale = math.Round(tonumber(value_new), 2)
 end)
 
@@ -62,6 +64,19 @@ EFGM.ScreenScale = function(size)
 	local result = size > 0 and math.max(1, scaled) or math.min(-1, scaled)
 
 	screenScaleCache[size] = result
+	return result
+
+end
+
+EFGM.ScreenScaleRounded = function(size) -- we are actually gonna floor but this is named better imo
+
+	if screenScaleRoundedCache[size] then return screenScaleRoundedCache[size] end
+
+	local ratio = (EFGM.ScrW / EFGM.ScrH <= 1.8) and (EFGM.ScrW / 1920.0) or (EFGM.ScrH / 1080.0)
+	local scaled = size * ratio * efgm_hud_scale
+	local result = size > 0 and math.max(1, math.floor(scaled)) or math.min(-1, math.floor(scaled))
+
+	screenScaleRoundedCache[size] = result
 	return result
 
 end
@@ -81,13 +96,29 @@ EFGM.MenuScale = function(size)
 
 end
 
+local menuScaleRoundedCache = {}
+EFGM.MenuScaleRounded = function(size)
+
+	if menuScaleRoundedCache[size] then return menuScaleRoundedCache[size] end
+
+	local ratio = (EFGM.ScrW / EFGM.ScrH <= 1.8) and (EFGM.ScrW / 1920.0) or (EFGM.ScrH / 1080.0)
+	local scaled = size * ratio
+	local result = size > 0 and math.max(1, math.floor(scaled)) or math.min(-1, math.floor(scaled))
+
+	menuScaleRoundedCache[size] = result
+	return result
+
+end
+
 hook.Add("OnScreenSizeChanged", "ClearScalingCache", function()
 
 	EFGM.ScrW = ScrW()
 	EFGM.ScrH = ScrH()
 
 	screenScaleCache = {}
+	screenScaleRoundedCache = {}
 	menuScaleCache = {}
+	menuScaleRoundedCache = {}
 
 	HUD.Padding = GetConVar("efgm_hud_padding"):GetInt() * (4 * (EFGM.ScrW / 1920.0))
 

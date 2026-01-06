@@ -134,7 +134,7 @@ function PANEL:Paint(w, h)
             local text = "ANY"
             if v.type == 1 then text = "PMC" elseif v.type == 2 then text = "SCAV" end
 
-            draw.SimpleTextOutlined(text, "PuristaBold12", posX, posY + EFGM.MenuScale(8), Colors.pureWhiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+            draw.SimpleTextOutlined(text, "PuristaBold12", posX, posY + EFGM.MenuScale(8), Colors.pureWhiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
         end
 
@@ -149,12 +149,12 @@ function PANEL:Paint(w, h)
             surface.DrawTexturedRect(posX - EFGM.MenuScale(16), posY - EFGM.MenuScale(16), EFGM.MenuScale(32), EFGM.MenuScale(32))
 
             local text = v.name
-            draw.SimpleTextOutlined(text, "PuristaBold16", posX, posY - EFGM.MenuScale(36), Colors.mapExtract, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+            draw.SimpleTextOutlined(text, "PuristaBold16", posX, posY - EFGM.MenuScale(36), Colors.mapExtract, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
             local factionText = "ANY"
             if v.accessibility == 1 then factionText = "PMC" elseif v.accessibility == 2 then factionText = "SCAV" end
 
-            draw.SimpleTextOutlined(factionText, "PuristaBold12", posX, posY + EFGM.MenuScale(16), Colors.pureWhiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+            draw.SimpleTextOutlined(factionText, "PuristaBold12", posX, posY + EFGM.MenuScale(16), Colors.pureWhiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
         end
 
@@ -168,8 +168,8 @@ function PANEL:Paint(w, h)
             surface.SetMaterial(Mats.mapLocation)
             surface.DrawTexturedRect(posX - EFGM.MenuScale(24), posY - EFGM.MenuScale(24), EFGM.MenuScale(48), EFGM.MenuScale(48))
 
-            draw.SimpleTextOutlined(v.name, "PuristaBold16", posX, posY - EFGM.MenuScale(42), Colors.mapLocation, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-            draw.SimpleTextOutlined("LOOT: " .. v.loot .. "/5", "PuristaBold12", posX, posY + EFGM.MenuScale(24), Colors.pureWhiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+            draw.SimpleTextOutlined(v.name, "PuristaBold16", posX, posY - EFGM.MenuScale(42), Colors.mapLocation, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+            draw.SimpleTextOutlined("LOOT: " .. v.loot .. "/5", "PuristaBold12", posX, posY + EFGM.MenuScale(24), Colors.pureWhiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
         end
 
@@ -183,7 +183,7 @@ function PANEL:Paint(w, h)
             surface.SetMaterial(Mats.mapKey)
             surface.DrawTexturedRect(posX - EFGM.MenuScale(12), posY - EFGM.MenuScale(12), EFGM.MenuScale(24), EFGM.MenuScale(24))
 
-            draw.SimpleTextOutlined(v.name, "PuristaBold16", posX, posY - EFGM.MenuScale(32), Colors.mapKey, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Colors.blackColor)
+            draw.SimpleTextOutlined(v.name, "PuristaBold16", posX, posY - EFGM.MenuScale(32), Colors.mapKey, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
         end
 
