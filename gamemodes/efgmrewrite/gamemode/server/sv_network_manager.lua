@@ -667,6 +667,14 @@ hook.Add("PlayerDisconnected", "PlayerUninitializeStats", function(ply)
 
 	end
 
+	-- in duel
+	if ply:CompareStatus(3) then -- the player wasn't a part of the duel
+
+		ReinstantiateInventoryAfterDuel(ply)
+		DUEL:EndDuel(ply)
+
+	end
+
 	UnequipAllFirearms(ply)
 
 	UpdateStashString(ply)
@@ -680,22 +688,28 @@ hook.Add("PlayerDisconnected", "PlayerUninitializeStats", function(ply)
 
 end)
 
-hook.Add("ShutDown", "ServerUninitializeStats", function(ply)
+hook.Add("ShutDown", "ServerUninitializeStats", function()
 
-	for k, v in ipairs(player.GetHumans()) do
+	for _, ply in ipairs(player.GetHumans()) do
 
-		v:SetNWBool("FreshWipe", false)
+		ply:SetNWBool("FreshWipe", false)
 
-		UnequipAllFirearms(v)
+		if ply:CompareStatus(3) then
 
-		UpdateStashString(v)
-		UpdateInventoryString(v)
-		UpdateEquippedString(v)
-		UpdateTaskString(v)
+			ReinstantiateInventoryAfterDuel(ply)
 
-		CalculateStashValue(v)
+		end
 
-		SavePlayerData(v)
+		UnequipAllFirearms(ply)
+
+		UpdateStashString(ply)
+		UpdateInventoryString(ply)
+		UpdateEquippedString(ply)
+		UpdateTaskString(ply)
+
+		CalculateStashValue(ply)
+
+		SavePlayerData(ply)
 
 	end
 

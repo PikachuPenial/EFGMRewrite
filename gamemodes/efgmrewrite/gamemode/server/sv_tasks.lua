@@ -377,7 +377,7 @@ util.AddNetworkString("SendNotification")
             
             if taskInstance.status == TASKSTATUS.InProgress then
 
-                print("task "..taskName.. " in progress")
+                -- print("task "..taskName.. " in progress")
 
                 local taskInfo = EFGMTASKS[taskName]
 
@@ -395,7 +395,7 @@ util.AddNetworkString("SendNotification")
                     (obj.reqHeadshot == nil or wasHeadshot) and
                     (obj.count or 1 > taskInstance.progress[objIndex] + taskInstance.tempProgress[objIndex]) then
 
-                        print("counting objective")
+                        -- print("counting objective")
                         
                         objTable[taskName] = objTable[taskName] or {}
                         table.insert(objTable[taskName], objIndex)
@@ -422,7 +422,7 @@ util.AddNetworkString("SendNotification")
             
             if taskInstance.status == TASKSTATUS.InProgress then
 
-                print("task "..taskName.. " in progress")
+                -- print("task "..taskName.. " in progress")
 
                 local taskInfo = EFGMTASKS[taskName]
 
@@ -433,7 +433,7 @@ util.AddNetworkString("SendNotification")
                     obj.extractName == extractName and
                     (obj.count or 1 > taskInstance.progress[objIndex] + taskInstance.tempProgress[objIndex]) then
                         
-                        print("counting objective")
+                        -- print("counting objective")
                         
                         objTable[taskName] = objTable[taskName] or {}
                         table.insert(objTable[taskName], objIndex)
@@ -460,7 +460,7 @@ util.AddNetworkString("SendNotification")
             
             if taskInstance.status == TASKSTATUS.InProgress then
 
-                print("task "..taskName.. " in progress")
+                -- print("task "..taskName.. " in progress")
 
                 local taskInfo = EFGMTASKS[taskName]
 
@@ -470,7 +470,7 @@ util.AddNetworkString("SendNotification")
                     obj.itemName == itemName and
                     (1 > taskInstance.progress[objIndex] + taskInstance.tempProgress[objIndex]) then
                         
-                        print("counting objective")
+                        -- print("counting objective")
                         
                         objTable[taskName] = objTable[taskName] or {}
                         table.insert(objTable[taskName], objIndex)
@@ -497,7 +497,7 @@ util.AddNetworkString("SendNotification")
             
             if taskInstance.status == TASKSTATUS.InProgress then
 
-                print("task "..taskName.. " in progress")
+                -- print("task "..taskName.. " in progress")
 
                 local taskInfo = EFGMTASKS[taskName]
 
@@ -508,7 +508,7 @@ util.AddNetworkString("SendNotification")
                     obj.areaName == areaName and
                     (1 > taskInstance.progress[objIndex] + taskInstance.tempProgress[objIndex]) then
                         
-                        print("counting objective")
+                        -- print("counting objective")
                         
                         objTable[taskName] = objTable[taskName] or {}
                         table.insert(objTable[taskName], objIndex)

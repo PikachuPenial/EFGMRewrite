@@ -206,6 +206,7 @@ hook.Add("PreRegisterSWEP", "ARC9Override", function(swep, class)
                 end
 
                 timer.Simple(0, function()
+                    if !IsValid(client) or !client:IsPlayer() then return end
                     if self.LastAmmo != self:GetValue("Ammo") or self.LastClipSize != self:GetValue("ClipSize") then
                         if self.AlreadyGaveAmmo then
                             self:Unload()

@@ -42,8 +42,8 @@ if SERVER then
             v:SetNWBool("PlayerIsPMC", true)
 
             UnequipAll(v)
-            UpdateInventoryString(v)
-            UpdateEquippedString(v)
+            UpdatePreDuelInventoryString(v)
+            UpdatePreDuelEquippedString(v)
 
             ReinstantiateInventoryForDuel(v)
             net.Start("PlayerReinstantiateInventory", false)
@@ -133,6 +133,8 @@ if SERVER then
     function DUEL:CancelDuel()
 
         if GetGlobalInt("DuelStatus") != duelStatus.ACTIVE then return end
+
+        SetGlobalInt("DuelStatus", duelStatus.PENDING)
 
         hook.Run("CancelledDuel")
 
@@ -233,16 +235,6 @@ if SERVER then
 
     end)
 
-    hook.Add("PlayerDisconnected", "EndDuelOnDisconnect", function(ply)
-
-        if !ply:CompareStatus(3) then return end -- the player wasn't a part of the duel
-
-    	UnequipAll(ply)
-        ReinstantiateInventoryAfterDuel(ply)
-        DUEL:CancelDuel()
-
-    end)
-
     hook.Add("EndedRaid", "EndDuelOnMapChange", function(time)
 
         timer.Simple(time - 20, function() DUEL.Allowed = false end) -- disable any new duels
@@ -291,8 +283,6 @@ if SERVER then
 
         for i = 1, #table.GetKeys(WEAPONSLOTS) do
 
-            if i == WEAPONSLOTS.MELEE.ID then continue end
-
             for k, v in ipairs(ply.weaponSlots[i]) do
 
                 if !table.IsEmpty(v) then
@@ -306,11 +296,11 @@ if SERVER then
 
         end
 
-        ply.inventory = DecodeStash(ply, ply.invStr)
-        ply.weaponSlots = DecodeStash(ply, ply.equStr)
+        ply.inventory = DecodeStash(ply, ply.preDuelInvStr)
+        ply.weaponSlots = DecodeStash(ply, ply.preDuelEquStr)
 
-        SendChunkedNet(ply, ply.invStr, "PlayerNetworkInventory")
-        SendChunkedNet(ply, ply.equStr, "PlayerNetworkEquipped")
+        SendChunkedNet(ply, ply.preDuelInvStr, "PlayerNetworkInventory")
+        SendChunkedNet(ply, ply.preDuelEquStr, "PlayerNetworkEquipped")
 
         if !ply:Alive() then return end
 
@@ -332,6 +322,26 @@ if SERVER then
         end
 
         CalculateInventoryWeight(ply)
+
+    end
+
+    function UpdatePreDuelInventoryString(ply)
+
+        local inventoryStr = util.TableToJSON(ply.inventory)
+        inventoryStr = util.Compress(inventoryStr)
+        inventoryStr = util.Base64Encode(inventoryStr, true)
+        ply.preDuelInvStr = inventoryStr
+        return inventoryStr
+
+    end
+
+    function UpdatePreDuelEquippedString(ply)
+
+        local equippedStr = util.TableToJSON(ply.weaponSlots)
+        equippedStr = util.Compress(equippedStr)
+        equippedStr = util.Base64Encode(equippedStr, true)
+        ply.preDuelEquStr = equippedStr
+        return equippedStr
 
     end
 

@@ -274,6 +274,7 @@ hook.Add("PlayerFootstep", "CustomFootstepVolume", function(ply, pos, foot, soun
         ply:EmitSound("mfwmvmt.gear_accent" .. math.random(1,20))
 
         timer.Simple(0.25, function()
+            if !IsValid(ply) then return end
             ply:EmitSound("mfw.ladder_foot_" .. step .. "_0" .. math.random(1,5))
         end)
 
@@ -354,6 +355,7 @@ if SERVER then
 
             timer.Simple(0.25,function()
 
+                if !IsValid(ply) then return end
                 ply:EmitSound("rattle_" .. math.random(1, 5), 85, math.random(95,105), 0.35, CHAN_AUTO)
                 ply:EmitSound("rotate_" .. math.random(1, 7), 85, math.random(95,105), 0.35, CHAN_AUTO)
 
