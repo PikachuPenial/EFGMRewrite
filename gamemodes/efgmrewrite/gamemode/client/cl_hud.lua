@@ -579,6 +579,27 @@ hook.Add("CalcView", "SetIntroView", function(ply, pos, angles, fov)
 
 end)
 
+hook.Add("PreDrawViewModel", "SetIntroViewVM", function(viewModel, weapon)
+
+    if HUD.IntroEnt != NULL and HUD.InIntro then return true end
+
+end)
+
+hook.Add("RenderScreenspaceEffects", "IntroScreenspace", function()
+
+    if HUD.IntroEnt == NULL or !HUD.InIntro then return end
+
+    DrawBloom(0.75, 2.25, 9, 9, 1, 1, 1, 1, 1)
+
+    local texture = surface.GetTextureID("overlays/vignette")
+    local mult = 1 + (1 * (-0.66 * 1))
+
+    surface.SetTexture(texture)
+    surface.SetDrawColor(255, 255, 255, 255)
+    surface.DrawTexturedRect(0 - (ScrW() * mult), 0 - (ScrH() * mult), ScrW() * (1 + 2 * mult), ScrH() * (1 + 2 * mult))
+
+end)
+
 net.Receive("SendIntroCamera", function()
 
     local ent = net.ReadEntity()
