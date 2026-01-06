@@ -2581,7 +2581,7 @@ end
 
 -- ads vignette
 local adsProg
-local sharpenIntensity = 5
+local sharpenIntensity = 10
 local sharpenDistance = 1
 hook.Add("RenderScreenspaceEffects", "Vignette", function()
     ply = ply or LocalPlayer()
@@ -2607,7 +2607,7 @@ hook.Add("RenderScreenspaceEffects", "Vignette", function()
     if hp <= 0 or maxHP <= 0 then return end
 
     -- sharpening begins at 25hp
-    local intensity = 1 - math.Clamp(hp / maxHP * 4, 0.66, 1)
+    local intensity = 1 - math.Clamp((hp / maxHP) * 4, 0.66, 1)
 
     if intensity > 0 then
 

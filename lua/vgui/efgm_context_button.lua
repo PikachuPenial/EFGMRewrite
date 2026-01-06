@@ -25,6 +25,7 @@ function BUTTON:DoClick()
 
     if !isfunction(self.OnClickEvent) then surface.PlaySound("ui/element_deselect.wav") return end
 
+    if Menu.Closing then return end
     if self.OnClickSound != "nil" then surface.PlaySound(self.OnClickSound) end
     if self.Parent then self.Parent:KillFocus() end
 

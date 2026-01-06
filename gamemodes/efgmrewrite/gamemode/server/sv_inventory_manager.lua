@@ -14,6 +14,7 @@ util.AddNetworkString("PlayerInventoryUpdateEquipped")
 util.AddNetworkString("PlayerInventoryDropEquippedItem")
 util.AddNetworkString("PlayerInventoryDeleteEquippedItem")
 util.AddNetworkString("PlayerInventoryLootItemFromContainer")
+util.AddNetworkString("PlayerInventoryEquipItemFromContainer")
 util.AddNetworkString("PlayerInventorySplit")
 util.AddNetworkString("PlayerInventoryDelete")
 util.AddNetworkString("PlayerInventoryTag")
@@ -722,6 +723,7 @@ net.Receive("PlayerInventoryLootItemFromContainer", function(len, ply)
     if container == nil then return end
 
     local newItem = table.Copy(container.Inventory[index])
+    if newItem == nil then return end
 
     local def = EFGMITEMS[newItem.name]
 
@@ -744,6 +746,43 @@ net.Receive("PlayerInventoryLootItemFromContainer", function(len, ply)
     end
 
     table.remove(container.Inventory, index)
+
+    if table.IsEmpty(container.Inventory) then container:Remove() end
+
+end)
+
+net.Receive("PlayerInventoryEquipItemFromContainer", function(len, ply)
+
+    local container = net.ReadEntity()
+    local index = net.ReadUInt(16)
+    local equipSlot = net.ReadUInt(4)
+    local equipSubSlot = net.ReadUInt(4)
+
+    if !ply:Alive() then return end
+    if container == nil then return end
+
+    local newItem = table.Copy(container.Inventory[index])
+    if newItem == nil then return end
+
+    if AmountInInventory(ply.weaponSlots[equipSlot], newItem.name) > 0 then return end -- can't have multiple of the same item
+
+    if table.IsEmpty(ply.weaponSlots[equipSlot][equipSubSlot]) then
+
+        if !newItem.data.owner or !newItem.data.timestamp then
+
+            newItem.data.owner = ply:SteamID64()
+            newItem.data.timestamp = os.time()
+
+        end
+
+        table.remove(container.Inventory, index)
+        ply.weaponSlots[equipSlot][equipSubSlot] = newItem
+
+        GiveWepWithPresetFromCode(ply, newItem.name, newItem.data)
+
+    end
+
+    ReloadSlots(ply)
 
     if table.IsEmpty(container.Inventory) then container:Remove() end
 
