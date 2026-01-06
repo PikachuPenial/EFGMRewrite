@@ -6,6 +6,7 @@ ENT.Base = "base_point"
 ENT.SpawnType = 0 -- 0 = any, 1 = pmc, 2 = scav
 ENT.SpawnGroup = ""
 ENT.SpawnName = ""
+ENT.Pending = false -- if someone is intended to spawn there
 
 ENT.Spawns = {}
 

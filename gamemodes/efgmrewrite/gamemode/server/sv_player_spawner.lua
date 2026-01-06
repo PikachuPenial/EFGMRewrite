@@ -16,6 +16,7 @@ function GetValidRaidSpawn(status) -- status: 0 = lobby, 1 = pmc, 2 = scav (assu
 
         if status == 1 and spawn.SpawnType == 2 then continue end
         if status == 2 and spawn.SpawnType == 1 then continue end
+        if spawn.Pending == true then continue end
 
         local entities = ents.FindInSphere(spawn:GetPos(), radius)
         local blocked = false

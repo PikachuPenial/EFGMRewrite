@@ -108,6 +108,10 @@ if SERVER then
 
             local spawn = GetValidRaidSpawn(status)
             local allSpawns = spawn.Spawns
+
+            spawn.Pending = true
+            timer.Simple(15, function() spawn.Pending = false end)
+
             return allSpawns, spawn.SpawnGroup
 
         end
