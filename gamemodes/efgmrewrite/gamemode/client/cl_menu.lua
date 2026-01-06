@@ -185,9 +185,11 @@ function Menu:Initialize(openTo, container)
     self.MenuFrame = menuFrame
     self.Container = container
 
+    local ultrawide = (ScrW() / ScrH() <= 1.8) and false or true
+
     local tabParentPanel = vgui.Create("DPanel", self.MenuFrame)
-    tabParentPanel:SetPos(EFGM.MenuScale(10), EFGM.MenuScale(10))
-    tabParentPanel:SetSize(ScrW(), EFGM.MenuScale(41))
+    tabParentPanel:SetPos(!ultrawide and EFGM.MenuScale(10) or ((ScrW() - EFGM.MenuScale(1920)) / 2) + EFGM.MenuScale(10), EFGM.MenuScale(10))
+    tabParentPanel:SetSize(!ultrawide and ScrW() or EFGM.MenuScale(1920), EFGM.MenuScale(41))
 
     surface.SetFont("PuristaBold32")
 
