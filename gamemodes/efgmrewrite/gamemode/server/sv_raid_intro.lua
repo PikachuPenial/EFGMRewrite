@@ -1,9 +1,8 @@
 -- manages some parts of raid intros, which now that i think about it are really unnecessary but fuck it i ball
--- remove it if you want, nothing will unfuck the efgm codebase
 
 IntroSpaces = {}
 
-hook.Add( "InitPostEntity", "IntroInit", function()
+hook.Add("InitPostEntity", "IntroInit", function()
 
     local introModels = ents.FindByName("INTRO*")
 
@@ -15,7 +14,7 @@ hook.Add( "InitPostEntity", "IntroInit", function()
 
     end
 
-end )
+end)
 
 function IntroGetFreeSpace(spawnGroup)
 

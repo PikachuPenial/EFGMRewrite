@@ -2,6 +2,8 @@ hook.Add("InitPostEntity", "LocalPlayer", function() ply = LocalPlayer() end)
 
 HUD = {}
 HUD.InTransition = false
+HUD.InIntro = false
+HUD.IntroEnt = NULL
 HUD.VotedMap = nil
 
 local enabled = GetConVar("efgm_hud_enable"):GetBool()
@@ -543,7 +545,7 @@ end
 
 local function DrawHUD()
     ply = ply or LocalPlayer()
-    if !ply:Alive() or Menu.IsOpen then RenderOverlays() return end
+    if !ply:Alive() or Menu.IsOpen or HUD.InIntro then RenderOverlays() return end
     if !enabled then return end
 
     RenderRaidTime()
@@ -553,14 +555,11 @@ local function DrawHUD()
 end
 hook.Add("HUDPaint", "DrawHUD", DrawHUD)
 
-IsInIntro = false
-IntroCameraEnt = nil
-
 hook.Add("CalcView", "SetIntroView", function(ply, pos, angles, fov)
 
-    if IntroCameraEnt != nil and IsInIntro then
+    if HUD.IntroEnt != NULL and HUD.InIntro then
 
-        local camera = IntroCameraEnt:GetAttachment(1)
+        local camera = HUD.IntroEnt:GetAttachment(1)
 
         local view = {
             origin = camera.Pos,
@@ -577,7 +576,8 @@ end)
 
 net.Receive("SendIntroCamera", function()
 
-    IntroCameraEnt = net.ReadEntity()
+    local ent = net.ReadEntity()
+    HUD.IntroEnt = ent or NULL
 
 end)
 
@@ -589,13 +589,13 @@ net.Receive("PlayerRaidTransition", function()
 
         hook.Run("efgm_raid_enter")
 
-        timer.Simple(1, function() IsInIntro = false end)
+        timer.Simple(1, function() HUD.InIntro = false end)
         timer.Simple(1.5, function() RenderRaidIntro() end)
         timer.Simple(2.5, function() RenderExtracts() end)
 
     elseif status == 0 then
 
-        timer.Simple(1, function() IsInIntro = true end)
+        timer.Simple(1, function() HUD.InIntro = true end)
 
     end
 

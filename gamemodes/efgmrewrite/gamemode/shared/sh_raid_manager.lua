@@ -165,8 +165,12 @@ if SERVER then
 
                     local animModel = ents.FindByName(introAnimString)[1]
 
-                    -- the animation sometimes gets stuck on the last frame, idk either, this seems to fix it
+                    -- hey porty entities do not exist on clients if it is not in their PVS
+                    hook.Add("SetupPlayerVisibility", "ForceAnimInPVS" .. v:SteamID64(), function(ply, viewEnt)
+                        if IsValid(animModel) then AddOriginToPVS(animModel:GetPos()) end
+                    end)
 
+                    -- the animation sometimes gets stuck on the last frame, idk either, this seems to fix it
                     animModel:Fire("SetAnimation", "ref", 0, v, v)
 
                     timer.Create("Intro" .. v:SteamID64(), 1, 1, function()
@@ -207,6 +211,8 @@ if SERVER then
                             IntroSpaces[introSpaceIndex].occupied = false
 
                             animModel:Fire("SetAnimation", "ref", 0, v, v)
+
+                            hook.Remove("SetupPlayerVisibility", "ForceAnimInPVS" .. v:SteamID64())
 
                         end)
 
