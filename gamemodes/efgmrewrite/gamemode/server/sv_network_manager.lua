@@ -505,7 +505,7 @@ function SetupPlayerData(ply)
 	InitializeNetworkInt(ply, query, "BestDuelWinStreak", 0)
 
 	-- stash/inventory
-	InitializeNetworkInt(ply, query, "StashMax", 2000)
+	InitializeNetworkInt(ply, query, "StashMax", 2400)
 
 	for k, v in ipairs(levelArray) do
 
