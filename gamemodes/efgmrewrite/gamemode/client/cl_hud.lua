@@ -587,9 +587,7 @@ net.Receive("PlayerRaidTransition", function()
 
     if status == 1 then
 
-        hook.Run("efgm_raid_enter")
-
-        timer.Simple(1, function() HUD.InIntro = false end)
+        timer.Simple(1, function() hook.Run("efgm_raid_enter") HUD.InIntro = false end)
         timer.Simple(1.5, function() RenderRaidIntro() end)
         timer.Simple(2.5, function() RenderExtracts() end)
 
