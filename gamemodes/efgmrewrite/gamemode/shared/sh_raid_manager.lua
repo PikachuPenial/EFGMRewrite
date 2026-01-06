@@ -201,13 +201,13 @@ if SERVER then
 
                         animModel:Fire("SetAnimation", "sequence", 0, v, v)
 
-                        timer.Create("FadeBetweenIntro" .. v:SteamID64(), 9, 1, function()
+                        timer.Create("FadeBetweenIntro" .. v:SteamID64(), 5, 1, function()
                             net.Start("PlayerRaidTransition")
                             net.WriteUInt(1, 2)
                             net.Send(v)
                         end)
 
-                        timer.Create("Spawn" .. v:SteamID64(), 10, 1, function()
+                        timer.Create("Spawn" .. v:SteamID64(), 6, 1, function()
 
                             v:Freeze(false)
                             v:Teleport(spawns[k]:GetPos(), spawns[k]:GetAngles(), Vector(0, 0, 0))
