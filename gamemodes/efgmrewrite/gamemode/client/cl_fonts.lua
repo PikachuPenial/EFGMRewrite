@@ -29,6 +29,8 @@ local function CreateFonts()
     surface.CreateFont("DermaDefault", {font = "PuristaBold", size = EFGM.MenuScale(13), weight = 500, antialias = true, extended = true})
     surface.CreateFont("DermaDefaultBold", {font = "PuristaBold", size = EFGM.MenuScale(13), weight = 550, antialias = true, extended = true})
     surface.CreateFont("Default", {font = "Purista", size = EFGM.MenuScale(12), weight = 500, antialias = true, extended = true})
+    surface.CreateFont("Trebuchet18", {font = "Bender", size = EFGM.ScreenScale(18), weight = 500, antialias = true, extended = true})
+    surface.CreateFont("Trebuchet24", {font = "Bender", size = EFGM.ScreenScale(24), weight = 500, antialias = true, extended = true})
 
     -- HUD
     surface.CreateFont("Bender24", {font = "Bender", size = math.ceil(EFGM.ScreenScale(24)), weight = 500, antialias = true, extended = true})

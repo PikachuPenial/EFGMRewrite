@@ -5815,31 +5815,15 @@ function Menu.ReloadMarketStash()
             !string.find((ownerName or ""):lower(), searchFor, 1, true) then continue
         end
 
-        local itemValue = v.value
+        local isConsumable = (i.consumableType == "heal" or i.consumableType == "key")
 
         local item = marketStashItems:Add("EFGMInventoryEntry")
         item:SetSize(EFGM.MenuScale(57 * i.sizeX), EFGM.MenuScale(57 * i.sizeY))
         item:SetText("")
-        item:Droppable("items")
         item.ID = v.id
-        item.SLOT = i.equipSlot
-        item.ORIGIN = "stash"
-
-        if i.equipType == EQUIPTYPE.Weapon or i.equipType == EQUIPTYPE.Consumable then
-
-            if item.SLOT == WEAPONSLOTS.PRIMARY.ID then item:Droppable("slot_primary") end
-            if item.SLOT == WEAPONSLOTS.HOLSTER.ID then item:Droppable("slot_holster") end
-            if item.SLOT == WEAPONSLOTS.MELEE.ID then item:Droppable("slot_melee") end
-            if item.SLOT == WEAPONSLOTS.GRENADE.ID then item:Droppable("slot_grenade") end
-            if item.SLOT == WEAPONSLOTS.CONSUMABLE.ID then item:Droppable("slot_consumable") end
-
-        end
-
-        local costColor
 
         function item:Paint(w, h)
 
-            costColor = Colors.whiteColor
             if !self:IsHovered() then surface.SetDrawColor(Colors.itemBackgroundColor) else surface.SetDrawColor(Colors.itemBackgroundColorHovered) end
 
             surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
@@ -5870,7 +5854,7 @@ function Menu.ReloadMarketStash()
         local duraSizeY = nil
         local duraFont = nil
 
-        if i.consumableType == "heal" or i.consumableType == "key" then
+        if isConsumable then
 
             duraSize = surface.GetTextSize(i.consumableValue .. "/" .. i.consumableValue)
 
@@ -5885,7 +5869,7 @@ function Menu.ReloadMarketStash()
 
             if i.equipType == EQUIPTYPE.Ammunition and i.stackSize > 1 then
                 draw.SimpleTextOutlined(v.data.count, "PuristaBold18", w - EFGM.MenuScale(3), h - EFGM.MenuScale(19), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
-            elseif i.consumableType == "heal" or i.consumableType == "key" then
+            elseif isConsumable then
                 draw.SimpleTextOutlined(v.data.durability .. "/" .. i.consumableValue, duraFont, w - EFGM.MenuScale(3), h - duraSizeY, Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
             end
 
@@ -5906,7 +5890,7 @@ function Menu.ReloadMarketStash()
                 surface.SetDrawColor(Colors.pureWhiteColor)
                 surface.SetMaterial(Mats.pinIcon)
 
-                if i.equipType == EQUIPTYPE.Ammunition or i.consumableType == "heal" or i.consumableType == "key" then
+                if i.equipType == EQUIPTYPE.Ammunition or isConsumable then
 
                     surface.DrawTexturedRect(w - EFGM.MenuScale(15), h - EFGM.MenuScale(32), EFGM.MenuScale(16), EFGM.MenuScale(16))
 
@@ -5926,14 +5910,14 @@ function Menu.ReloadMarketStash()
                 local width, height = EFGM.MenuScale(17), EFGM.MenuScale(17)
 
                 if v.data.pin == 1 then width = width + EFGM.MenuScale(10) end
-                if (i.equipType == EQUIPTYPE.Ammunition and v.data.count > 1) or i.consumableType == "heal" or i.consumableType == "key" then height = height + EFGM.MenuScale(14) end
+                if (i.equipType == EQUIPTYPE.Ammunition and v.data.count > 1) or isConsumable then height = height + EFGM.MenuScale(14) end
 
                 surface.DrawTexturedRect(w - width, h - height, EFGM.MenuScale(14), EFGM.MenuScale(14))
 
             end
 
-            if i.sizeX > 1 then draw.SimpleTextOutlined("₽" .. itemValue, "PuristaBold18", w / 2, h / 2 - EFGM.MenuScale(9), costColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
-            else draw.SimpleTextOutlined("₽" .. itemValue, "PuristaBold14", w / 2, h / 2 - EFGM.MenuScale(7), costColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor) end
+            if i.sizeX > 1 then draw.SimpleTextOutlined("₽" .. v.value, "PuristaBold18", w / 2, h / 2 - EFGM.MenuScale(9), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+            else draw.SimpleTextOutlined("₽" .. v.value, "PuristaBold14", w / 2, h / 2 - EFGM.MenuScale(7), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor) end
 
         end
 
