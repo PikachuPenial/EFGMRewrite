@@ -947,6 +947,7 @@ net.Receive("PlayerInventoryTag", function(len, ply)
 
         if ply.inventory[key].data.tag != nil then return end
         ply.inventory[key].data.tag = tag
+        ply.inventory[key].data.taggedBy = ply:SteamID64()
 
         net.Start("PlayerInventoryUpdateItem", false)
         net.WriteTable(ply.inventory[key].data)
@@ -961,6 +962,7 @@ net.Receive("PlayerInventoryTag", function(len, ply)
 
         if ply.stash[key].data.tag != nil then return end
         ply.stash[key].data.tag = tag
+        ply.stash[key].data.taggedBy = ply:SteamID64()
 
         net.Start("PlayerStashUpdateItem", false)
         net.WriteTable(ply.stash[key].data)
@@ -976,6 +978,7 @@ net.Receive("PlayerInventoryTag", function(len, ply)
 
         if ply.weaponSlots[equipID][equipSlot].data.tag != nil then return end
         ply.weaponSlots[equipID][equipSlot].data.tag = tag
+        ply.weaponSlots[equipID][equipSlot].data.taggedBy = ply:SteamID64()
 
         net.Start("PlayerInventoryUpdateEquipped", false)
         net.WriteTable(ply.weaponSlots[equipID][equipSlot].data)

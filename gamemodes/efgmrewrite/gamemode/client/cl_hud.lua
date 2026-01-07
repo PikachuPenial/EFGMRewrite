@@ -1838,7 +1838,20 @@ function HUDInspectItem(item, data, panel)
     end
 
     local ownerName = nil
-    if data.owner then steamworks.RequestPlayerInfo(data.owner, function(steamName) ownerName = steamName end) end
+    if data.owner then
+        ownerName = EFGM.SteamNameCache[data.owner]
+        if !ownerName then
+            steamworks.RequestPlayerInfo(data.owner, function(steamName) ownerName = steamName or "" EFGM.SteamNameCache[data.owner] = steamName or "" end)
+        end
+    end
+
+    local taggedByName = nil
+    if data.taggedBy then
+        taggedByName = EFGM.SteamNameCache[data.taggedBy]
+        if !taggedByName then
+            steamworks.RequestPlayerInfo(data.taggedBy, function(steamName) taggedByName = steamName or "" EFGM.SteamNameCache[data.taggedBy] = steamName or "" end)
+        end
+    end
 
     surface.SetFont("PuristaBold18")
     local itemDescText = string.upper(i.displayType) .. " / " .. string.upper(weight) .. "KG" .. " / ₽" .. string.upper(comma_value(value))
@@ -2134,6 +2147,12 @@ function HUDInspectItem(item, data, panel)
         if data.tag and !data.tagLevel then
 
             infoContentText:AppendText("NAME TAG: " .. data.tag .. "\n")
+
+            if data.taggedBy then
+
+                infoContentText:AppendText("NAME TAG SET BY: " .. taggedByName .. "\n")
+
+            end
 
         end
 

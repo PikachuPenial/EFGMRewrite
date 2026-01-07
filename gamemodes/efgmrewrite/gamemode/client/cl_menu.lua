@@ -1297,7 +1297,20 @@ function Menu.InspectItem(item, data)
     end
 
     local ownerName = nil
-    if data.owner then steamworks.RequestPlayerInfo(data.owner, function(steamName) ownerName = steamName end) end
+    if data.owner then
+        ownerName = EFGM.SteamNameCache[data.owner]
+        if !ownerName then
+            steamworks.RequestPlayerInfo(data.owner, function(steamName) ownerName = steamName or "" EFGM.SteamNameCache[data.owner] = steamName or "" end)
+        end
+    end
+
+    local taggedByName = nil
+    if data.taggedBy then
+        taggedByName = EFGM.SteamNameCache[data.taggedBy]
+        if !taggedByName then
+            steamworks.RequestPlayerInfo(data.taggedBy, function(steamName) taggedByName = steamName or "" EFGM.SteamNameCache[data.taggedBy] = steamName or "" end)
+        end
+    end
 
     surface.SetFont("PuristaBold18")
     local itemDescText = string.upper(i.displayType) .. " / " .. string.upper(weight) .. "KG" .. " / ₽" .. string.upper(comma_value(value))
@@ -1599,6 +1612,12 @@ function Menu.InspectItem(item, data)
         if data.tag and !data.tagLevel then
 
             infoContentText:AppendText("NAME TAG: " .. data.tag .. "\n")
+
+            if data.taggedBy then
+
+                infoContentText:AppendText("NAME TAG SET BY: " .. taggedByName .. "\n")
+
+            end
 
         end
 
@@ -3415,7 +3434,7 @@ function Menu.ReloadInventory()
         if v.data.owner then
             ownerName = EFGM.SteamNameCache[v.data.owner]
             if !ownerName then
-                steamworks.RequestPlayerInfo(v.data.owner, function(steamName) EFGM.SteamNameCache[v.data.owner] = steamName or "" end)
+                steamworks.RequestPlayerInfo(v.data.owner, function(steamName) ownerName = steamName or "" EFGM.SteamNameCache[v.data.owner] = steamName or "" end)
             end
         end
 
@@ -5332,7 +5351,7 @@ function Menu.ReloadStash()
         if v.data.owner then
             ownerName = EFGM.SteamNameCache[v.data.owner]
             if !ownerName then
-                steamworks.RequestPlayerInfo(v.data.owner, function(steamName) EFGM.SteamNameCache[v.data.owner] = steamName or "" end)
+                steamworks.RequestPlayerInfo(v.data.owner, function(steamName) ownerName = steamName or "" EFGM.SteamNameCache[v.data.owner] = steamName or "" end)
             end
         end
 
@@ -5780,7 +5799,7 @@ function Menu.ReloadMarketStash()
         if v.data.owner then
             ownerName = EFGM.SteamNameCache[v.data.owner]
             if !ownerName then
-                steamworks.RequestPlayerInfo(v.data.owner, function(steamName) EFGM.SteamNameCache[v.data.owner] = steamName or "" end)
+                steamworks.RequestPlayerInfo(v.data.owner, function(steamName) ownerName = steamName or "" EFGM.SteamNameCache[v.data.owner] = steamName or "" end)
             end
         end
 
@@ -10629,8 +10648,10 @@ function Menu.OpenTab.Stats()
 
         for k, v in ipairs(selectedBoard) do
 
-            local name = ""
-            steamworks.RequestPlayerInfo(v.SteamID, function(steamName) name = steamName end)
+            local name = EFGM.SteamNameCache[v.SteamID] or nil
+            if !name then
+                steamworks.RequestPlayerInfo(v.SteamID, function(steamName) name = steamName or "" EFGM.SteamNameCache[v.SteamID] = steamName or "" end)
+            end
 
             timer.Simple(k * 0.01, function()
 
