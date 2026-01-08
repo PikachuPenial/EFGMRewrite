@@ -14,6 +14,9 @@ Menu.Closing = false
 Menu.IsOpen = false
 Menu.PerferredShopDestination = nil
 
+Menu.LastStashScroll = 0
+Menu.LastMarketStashScroll = 0
+
 local holdtypes = {
     "idle_revolver",
     "idle_dual",
@@ -7929,7 +7932,7 @@ function Menu.OpenTab.Inventory(container)
 
     end
 
-    stashItemsHolder = vgui.Create("EFGMInventoryHolderScroller", stashHolder)
+    stashItemsHolder = vgui.Create("EFGMStashHolderScroller", stashHolder)
     stashItemsHolder:SetPos(0, EFGM.MenuScale(32))
     stashItemsHolder:SetSize(EFGM.MenuScale(593), EFGM.MenuScale(872))
     function stashItemsHolder:Paint(w, h)
@@ -7984,8 +7987,9 @@ function Menu.OpenTab.Inventory(container)
 
     local stashItemsBar = stashItemsHolder:GetVBar()
     stashItemsBar:SetHideButtons(true)
-    stashItemsBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+    stashItemsBar:SetSize(EFGM.MenuScale(15), 0)
     function stashItemsBar:Paint(w, h)
+        if self:GetScroll() != 0 then Menu.LastStashScroll = self:GetOffset() end
         draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Colors.scrollerColor)
     end
     function stashItemsBar.btnGrip:Paint(w, h)
@@ -8172,7 +8176,7 @@ function Menu.OpenTab.Market()
 
     end
 
-    marketStashItemsHolder = vgui.Create("EFGMInventoryHolderScroller", marketStashHolder)
+    marketStashItemsHolder = vgui.Create("EFGMMarketStashHolderScroller", marketStashHolder)
     marketStashItemsHolder:SetPos(0, EFGM.MenuScale(32))
     marketStashItemsHolder:SetSize(EFGM.MenuScale(593), EFGM.MenuScale(872))
     function marketStashItemsHolder:Paint(w, h)
@@ -8207,6 +8211,7 @@ function Menu.OpenTab.Market()
     marketStashItemsBar:SetHideButtons(true)
     marketStashItemsBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
     function marketStashItemsBar:Paint(w, h)
+        if self:GetScroll() != 0 then Menu.LastMarketStashScroll = self:GetOffset() end
         draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Colors.scrollerColor)
     end
     function marketStashItemsBar.btnGrip:Paint(w, h)
