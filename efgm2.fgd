@@ -93,6 +93,8 @@
     "For instance, a player spawning at a raid spawn with the group 'west' can only extract at extracts with the group 'west'."+
     "Leave blank to make the player spawned here be able to extract anywhere."
 
+    spawn_radius_override(integer) : "Spawn Radius Override" : 0 : "Override the map default when checking for entities near the spawn in a sphere, a vaule of 0 will use the maps default radius value"
+
 ]
 
 @PointClass base(Targetname, PlayerClass, Angles) studio("models/editor/playerstart.mdl") = efgm_team_spawn : "Team Spawn"

@@ -2,9 +2,9 @@
 
 -- maps
 MAPS = {
-    ["efgm_belmont"] = {name = "Belmont", spawnProt = 1996},
-    ["efgm_concrete"] = {name = "Concrete", spawnProt = 1664},
-    ["efgm_factory"] = {name = "Factory", spawnProt = 998},
+    ["efgm_belmont"] = {name = "Belmont", spawnProt = 2196},
+    ["efgm_concrete"] = {name = "Concrete", spawnProt = 1830},
+    ["efgm_factory"] = {name = "Factory", spawnProt = 1098},
 }
 
 -- player status

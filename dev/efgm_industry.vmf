@@ -91,7 +91,6 @@ world
 	"id" "1"
 	"mapversion" "26"
 	"classname" "worldspawn"
-	"comment" "Decompiled by BSPSource v1.4.0 from efgm_industry_newandimprovedWEEWOOWEEWOO"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
 	"maxpropscreenwidth" "-1"

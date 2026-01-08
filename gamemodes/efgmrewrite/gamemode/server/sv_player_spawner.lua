@@ -36,6 +36,7 @@ function GetValidRaidSpawn(status) -- status: 0 = lobby, 1 = pmc, 2 = scav (assu
 
     end
 
+    print("no valid spawns have been rolled, selecting a spawn at random!")
     return BetterRandom(spawns) -- yes, this can spawn someone at another factions spawn, it should never happen anyways so i cant be bothered
 
 end

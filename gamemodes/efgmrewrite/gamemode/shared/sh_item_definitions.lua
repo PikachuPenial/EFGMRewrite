@@ -196,6 +196,7 @@ EFGMITEMS = {}
         ["sizeX"] = 3,
         ["sizeY"] = 2,
 
+        ["canPurchase"] = false,
         ["lootWeight"] = 65,
 
         ["caliber"] = "9x39",
@@ -955,7 +956,7 @@ EFGMITEMS = {}
         ["displayType"] = "Assault Rifle",
         ["weight"] = 3.8,
         ["value"] = 139000,
-        ["levelReq"] = 29,
+        ["levelReq"] = 37,
         ["equipType"] = EQUIPTYPE.Weapon,
         ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
         ["appearInInventory"] = true,
@@ -1118,7 +1119,7 @@ EFGMITEMS = {}
         ["displayType"] = "Assault Rifle",
         ["weight"] = 2.7,
         ["value"] = 97000,
-        ["levelReq"] = 21,
+        ["levelReq"] = 26,
         ["equipType"] = EQUIPTYPE.Weapon,
         ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
         ["appearInInventory"] = true,
@@ -3914,6 +3915,8 @@ EFGMITEMS = {}
         ["sizeX"] = 4,
         ["sizeY"] = 2,
 
+        ["lootWeight"] = 25,
+
         ["canPurchase"] = false
     }
 
@@ -5125,6 +5128,8 @@ EFGMITEMS = {}
         ["sizeX"] = 1,
         ["sizeY"] = 1,
 
+        ["lootWeight"] = 50,
+
         ["canPurchase"] = false
     }
 
@@ -5144,6 +5149,8 @@ EFGMITEMS = {}
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
+
+        ["lootWeight"] = 50,
 
         ["canPurchase"] = false
     }
@@ -5165,8 +5172,9 @@ EFGMITEMS = {}
         ["sizeX"] = 1,
         ["sizeY"] = 1,
 
-        ["canPurchase"] = false,
-        ["lootWeight"] = 25
+        ["lootWeight"] = 10,
+
+        ["canPurchase"] = false
     }
 
     EFGMITEMS["efgm_key_bigred_meeting"] = {
@@ -5185,6 +5193,8 @@ EFGMITEMS = {}
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
+
+        ["lootWeight"] = 50,
 
         ["canPurchase"] = false
     }
@@ -5206,6 +5216,8 @@ EFGMITEMS = {}
         ["sizeX"] = 1,
         ["sizeY"] = 1,
 
+        ["lootWeight"] = 50,
+
         ["canPurchase"] = false
     }
 
@@ -5226,6 +5238,8 @@ EFGMITEMS = {}
     --     ["sizeX"] = 1,
     --     ["sizeY"] = 1,
 
+    --     ["lootWeight"] = 50,
+
     --     ["canPurchase"] = false
     -- }
 
@@ -5245,6 +5259,9 @@ EFGMITEMS = {}
 
     --     ["sizeX"] = 1,
     --     ["sizeY"] = 1,
+
+    --     ["lootWeight"] = 50,
+
     --     ["canPurchase"] = false
     -- }
 
@@ -5264,6 +5281,9 @@ EFGMITEMS = {}
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
+
+        ["lootWeight"] = 33,
+
         ["canPurchase"] = false
     }
 
@@ -5283,6 +5303,8 @@ EFGMITEMS = {}
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
+
+        ["lootWeight"] = 33,
 
         ["canPurchase"] = false
     }
@@ -5304,6 +5326,8 @@ EFGMITEMS = {}
         ["sizeX"] = 1,
         ["sizeY"] = 1,
 
+        ["lootWeight"] = 50,
+
         ["canPurchase"] = false
     }
 
@@ -5323,6 +5347,8 @@ EFGMITEMS = {}
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
+
+        ["lootWeight"] = 50,
 
         ["canPurchase"] = false
     }
@@ -5344,9 +5370,10 @@ EFGMITEMS = {}
         ["sizeX"] = 1,
         ["sizeY"] = 1,
 
+        ["lootWeight"] = 20,
+
         ["canPurchase"] = false,
-        ["canSpawn"] = false,
-        ["lootWeight"] = 20
+        ["canSpawn"] = false
     }
 
 -- BELMONT KEYS
@@ -5366,6 +5393,8 @@ EFGMITEMS = {}
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
+
+        ["lootWeight"] = 50,
 
         ["canPurchase"] = false
     }
@@ -5387,6 +5416,8 @@ EFGMITEMS = {}
         ["sizeX"] = 1,
         ["sizeY"] = 1,
 
+        ["lootWeight"] = 50,
+
         ["canPurchase"] = false
     }
 
@@ -5406,6 +5437,8 @@ EFGMITEMS = {}
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
+
+        ["lootWeight"] = 50,
 
         ["canPurchase"] = false
     }
@@ -5427,8 +5460,9 @@ EFGMITEMS = {}
         ["sizeX"] = 1,
         ["sizeY"] = 1,
 
-        ["canPurchase"] = false,
-        ["lootWeight"] = 25
+        ["lootWeight"] = 10,
+
+        ["canPurchase"] = false
     }
 
 -- FACTORY KEYS
@@ -5449,8 +5483,9 @@ EFGMITEMS = {}
         ["sizeX"] = 1,
         ["sizeY"] = 1,
 
-        ["canPurchase"] = false,
-        ["lootWeight"] = 25
+        ["lootWeight"] = 10,
+
+        ["canPurchase"] = false
     }
 
     EFGMITEMS["efgm_key_servers"] = {
@@ -5469,6 +5504,8 @@ EFGMITEMS = {}
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
+
+        ["lootWeight"] = 50,
 
         ["canPurchase"] = false
     }
@@ -5489,6 +5526,8 @@ EFGMITEMS = {}
 
         ["sizeX"] = 1,
         ["sizeY"] = 1,
+
+        ["lootWeight"] = 50,
 
         ["canPurchase"] = false
     }
