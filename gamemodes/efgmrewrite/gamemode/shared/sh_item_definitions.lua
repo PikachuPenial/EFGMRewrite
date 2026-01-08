@@ -759,6 +759,30 @@ EFGMITEMS = {}
         }
     }
 
+    EFGMITEMS["arc9_eft_asval_mod4"] = {
+        ["fullName"] = "AS VAL MOD.4 9x39 special assault rifle",
+        ["displayName"] = "AS VAL MOD.4",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 3.2,
+        ["value"] = 205995,
+        ["levelReq"] = 42,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/weapons/mod4.png", "smooth"),
+
+        ["sizeX"] = 4,
+        ["sizeY"] = 2,
+
+        ["canPurchase"] = false,
+        ["lootWeight"] = 40,
+
+        ["caliber"] = "9x39",
+        ["ammoID"] = "efgm_ammo_9x39",
+        ["defAtts"] = "XQAAAQCWAwAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8OwmVgLLwn60go9YKpsb1JVrL/h3Xevw6mnN/6OS/oJb2ojGdpKv2/tBaHVCasNlAHaYjQtGqqKD/Hr4egToQ0nEUxzYfuQpT8zMM/Q3XXkKlHLMSDg4XP3CqkgmPmlDFvlFPcj1m7zy2taXJzlL5INbzn8ywoACSbGKzMheWhi3n8SV9PpnR6G9wBIWJcTU+0xEJer6Gj+452hmyoPOBQrEOn/K/pAeyc8u8GnbHZ9AKdWYihQ3ZLQovK4hEOlxlAiwjpMHoRhWz6ULCn9fjl5MFUalk6otSGflB3GGQtwhug5mJdYqo2fw==",
+    }
+
     EFGMITEMS["arc9_eft_ash12"] = {
         ["fullName"] = "ASh-12 12.7x55 assault rifle",
         ["displayName"] = "ASh-12",
@@ -785,6 +809,48 @@ EFGMITEMS = {}
             "XQAAAQC1AQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8Lcjh5PiK/llZGDr7oa+unZPJfG1TnZ2rozQkEXAo4yaBMo4D0bzO99vWZUuIOfpSFqtw2iBfPv/Y2xHWvLIac4h+KrvN/u1cQw545eHPVTuU1HNC+IOoM5qyc6NIYAy5KVg+h7gcKZTHX60Jxh/UBFuPwqajQxzrmA1aXW9ADtsDkK7JAqAzmXPM5BWsGYg7D6AKEwrXMO6LauycMYKmwad/LsFsziuk5XKA=",
             "XQAAAQCrAQAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8Lcjh5PiK/llZGDr7oa+u0gaZ5EJru7gxOqJdvNbXpy5tlU3umU1ADwHlh7gVClFsTvHgWS2bHtpC7V1a+K6/Ajr85zZNpZYE7nhXiZv7oDOLUEQo1gWYgyNxVOaV/pOZvCbne+Y/LP/nGRRKMcDlxyMAaGzjvzQI18PggVugXn2Frf+HP9fEhpM02NHR231K275euPLvFof2GZMWvZk0A"
         }
+    }
+
+    EFGMITEMS["arc9_eft_m16a1"] = {
+        ["fullName"] = "Colt M16A1 5.56x45 assault rifle",
+        ["displayName"] = "M16A1",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 3.4,
+        ["value"] = 77995,
+        ["levelReq"] = 8,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/weapons/m16a1.png", "smooth"),
+
+        ["sizeX"] = 6,
+        ["sizeY"] = 2,
+
+        ["caliber"] = "5.56x45",
+        ["ammoID"] = "efgm_ammo_556x45",
+        ["defAtts"] = "XQAAAQBdAgAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8ONwzg/TnvSdOuZ9WE4oxqVw3XZEYFvFcEdtm5qOzYxNLowNfwy4eSacSGLiFCAHWu88H2+KBGh765kEOQ1vzYpNKgCzslqeCICPLhuvXtKp96nAxeoZrFcqxYnotUlJV6LlEWIqA11mIzBC8NdT5ColNiDGcqWCqd84Jwe7767AcBdN16CnvrdeJIk9lt0xNa5VyXEY/nn7/gDcFMVGQi08exzdURfqzv7EFyEACwkiCGMwsLBhBJpy+5U2Hdehgv8ByrUnP+7Oc6qBPjOJnyH9+OP8+KvH7q",
+    }
+
+    EFGMITEMS["arc9_eft_m16a2"] = {
+        ["fullName"] = "Colt M16A2 5.56x45 assault rifle",
+        ["displayName"] = "M16A2",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 3.4,
+        ["value"] = 53685,
+        ["levelReq"] = 1,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/weapons/m16a2.png", "smooth"),
+
+        ["sizeX"] = 6,
+        ["sizeY"] = 2,
+
+        ["caliber"] = "5.56x45",
+        ["ammoID"] = "efgm_ammo_556x45",
+        ["defAtts"] = "XQAAAQC6AgAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8ONwzg/TnvSdOuZ9WE580sJey/V1F22OvnbeBNZbUIf/OJctSQ2ZA7E5/Nak3R9rzICL0SEX2S857hcxApWwqa2Ygot5H2wyPnTOd29VSG72MHv8SNnTiK0cYqzmtu8PqzfR0nYOdi/gGJIGW3bhJV0Z0zAPX+J98fcI+mjHdd91XZavvEjMjp8U1jM2Mtpi9naI3BToFUT57/TFjFXZ6d2xxmIDOIGdh17FyOTg1Y5d5iwS8NVCIbwcC8+bBXirxW4ZFnYNSAQhToeL3+jU0DbEakuftZ5La0K/7ED4XyI6VrAA==",
     }
 
     EFGMITEMS["arc9_eft_m4a1"] = {
@@ -1057,6 +1123,75 @@ EFGMITEMS = {}
             "XQAAAQBVBAAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8Lchzpvw0LefC8hv59A4CQeaGlaPJjqs5VnIN0AFBsBso51IxEtxO+V9oI/mkTrB6WdzgxxgkQEKpLSWpMvbFUuv4BwX0ACVYk58M2LzfZZDOBiLjVelpsIUVA8m9RX3aN6dnrFg8i7GGgN1sZw9s3KIWVOhH1mHn6tA/IW6OGHbeeh4HAB3zMZZ08PmnAl/UjlcHyIPyUPgtEsDa5Q31GDibmF9JD4niq7ed341bhYSuhgFGblLoyDIp3xYO8R99TH5ltgZbZYIPwkEVBEzMiNhSmBoWJ/F/lMyqr5Ntpd8NEfMnGT8WtEtq0xHtKWgXh65/qzHSlCQrY2EEza8lSjN2ZOG0oLF1y7Kp1Fhk7Y3CdnqRYuh/d3hPM/ep/QWtpLzgdi0nQ2j5kSyOFpFKzhYyJjG33QJMqLDC5z/AA",
             "XQAAAQAtBAAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8Lchzpvw0LefC8fUEtghrfk/qB9rIoG2QfmAbSBUGWf3tTTtifknJxejVHIQWDXPxv2VGd7QbZVkjGP+OLM5x1smWJWpJtIH5F3vGQma6e4ftDgSsjx2wj698u6pVhBzR0Sfoh0kQwNYYUWtiDVOXFEpEfq6FVClWqQoCFuI3DbY/6BLF0EtbRTSL2lEi1IK57Pz1pgiPFhwa7vTR0eUnc9WUAhx5CEXniF0YDTe3vGNC5z7FPuWr15j/sI46x+DAap0Pz37D+fEnFB9nKVG+k7GAsBUQBnPNAwCaBvWeDeGNAyR9CBIYz/CWlIn6hAsgVG+rTVUGoZrAOHXVNySKdQtWuOoix0fUGdOxKunGdFy8ArxqxLjjFMUDe6zK23sus3DQC08/XbGmZuSb+2TGTwQ=="
         }
+    }
+
+    EFGMITEMS["arc9_eft_nl545_di"] = {
+        ["fullName"] = "Custom Guns NL545 (DI) 5.45x39 assault rifle",
+        ["displayName"] = "NL545 DI",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 2.9,
+        ["value"] = 131995,
+        ["levelReq"] = 31,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/weapons/nl545di.png", "smooth"),
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2,
+
+        ["lootWeight"] = 75,
+
+        ["caliber"] = "5.45x39",
+        ["ammoID"] = "efgm_ammo_545x39",
+        ["defAtts"] = "XQAAAQAyAwAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8Lchzpvw0LefC8dSpQqrQDF2MfjGnoOQsnSL0vCvs77Cy0ErXO1lKguQB/z/XkrZI086bfgnnFSH5rln2N+rSswOIUUFViElmXefaKWjZoFreK613LCdU4U04gmf07640DuGIHTkI/65KfhLWI5JnsOrrpY/34vlehSrbJ3W85hk21rSXekme/IZ1qwKsa7XXX5Gfd8KFN0inqRmtoCY6C49Llyf9gLG89JQkh9+J8H6lABwreklRi1WcpNm2c/8e9NW74OhEN0pOvzl5KUUHzbIcOQz28YCofoxkK56b5bP5jaIM0x1GBQwYxJa9PgPKRSxtMd3L91A==",
+    }
+
+    EFGMITEMS["arc9_eft_nl545_gp"] = {
+        ["fullName"] = "Custom Guns NL545 (GP) 5.45x39 assault rifle",
+        ["displayName"] = "NL545 GP",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 3.0,
+        ["value"] = 183495,
+        ["levelReq"] = 39,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/weapons/nl545gp.png", "smooth"),
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2,
+
+        ["lootWeight"] = 55,
+
+        ["caliber"] = "5.45x39",
+        ["ammoID"] = "efgm_ammo_545x39",
+        ["defAtts"] = "XQAAAQDrAwAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8Lchzpvw0LefC8dSpQqrQDuMCuok0UVGk40yaLUZk9YT27bGP2oMBpagjhIA6hQCIbWUEkNKSy9pJMOBi5d2Eg5/zAsnK8U0J6HYUEIizcju/Ob9IaGco+evgBt5UTYOcVJhrzLrPlyVkg0nA0cTMhTJkOuy1mthZOx9bFpkbmL47SZwm68F+Z7Q6cuDSJGMR5zRJZehUe9zce2ZNgkkdrPWmknHYMU4uRkTkBi9Td53DNa+0qvonnxmYIw+jad3G4WdxlytBCCi5D9/2g6gYRT39wXW0Cj2rojgYYIIeUHSQ2d0RRa83jXp7u+xhUTCmUxAX8hAT95rPmfaZGJXe0iOMA/xPXK8CVKzobglDeoJV1rjQ/pAas2dEXAA==",
+    }
+
+    EFGMITEMS["arc9_eft_radian"] = {
+        ["fullName"] = "Radian Weapons Model 1 FA 5.56x45 assault rifle",
+        ["displayName"] = "Radian Model 1",
+        ["displayType"] = "Assault Rifle",
+        ["weight"] = 3,
+        ["value"] = 119725,
+        ["levelReq"] = 33,
+        ["equipType"] = EQUIPTYPE.Weapon,
+        ["equipSlot"] = WEAPONSLOTS.PRIMARY.ID,
+        ["appearInInventory"] = true,
+        ["stackSize"] = 1,
+        ["icon"] = Material("items/weapons/model1.png", "smooth"),
+
+        ["sizeX"] = 5,
+        ["sizeY"] = 2,
+
+        ["lootWeight"] = 65,
+
+        ["caliber"] = "5.56x45",
+        ["ammoID"] = "efgm_ammo_556x45",
+        ["defAtts"] = "XQAAAQCUAwAAAAAAAAA9iIIiM7tupQCpjrtGalANz5MWYz8ONwzg/TnvSdQbkZBRAEFOMVfGsRe7r2/3lQnqMUQsIhiYTafQ0NBWropbCRQYAcEtv0nr1Ax4vqwfjqYIivElRu+X+PUuc4gzDxYZlZpUTAlG3/rPLVd3kwo6UEsEvJmm87xYfDqUxaVfwNmKVyoZ/P7IAhOMfUBFTpqb2J42Fg9Vj8y6dl+pqVOvR3zNCd2M+g/YkCpw1+qMJOekUxmze2VyPvhMvE5HyJZzGvypmdenvzRFfXnHppUFf8Azf9eGZ67ie5VGg/qbYwkbCc4Orh6zy8bqDemZCUO0xK5GJnXghKgTVxMpCGON//4gGi3Jcqd6/JUv/tp/Dpxh+3bOAArd2qbhkso/nZfwR3IObAA=",
     }
 
     EFGMITEMS["arc9_eft_rd704"] = {
