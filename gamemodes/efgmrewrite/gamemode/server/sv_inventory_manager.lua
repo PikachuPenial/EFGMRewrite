@@ -662,6 +662,28 @@ function MatchWithEquippedAndUpdate(ply, itemName, attsTbl)
 
 end
 
+function MatchClassWithEquipped(ply, itemName)
+
+    for i = 1, #table.GetKeys(WEAPONSLOTS) do
+
+        for k, v in ipairs(ply.weaponSlots[i]) do
+
+            if table.IsEmpty(v) then continue end
+
+            if v.name == itemName then
+
+                return v
+
+            end
+
+        end
+
+    end
+
+    return nil
+
+end
+
 net.Receive("PlayerInventoryDropEquippedItem", function(len, ply)
 
     local equipID = net.ReadUInt(4)

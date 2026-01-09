@@ -192,7 +192,7 @@ function Menu:Initialize(openTo, container)
 
     local tabParentPanel = vgui.Create("DPanel", self.MenuFrame)
     tabParentPanel:SetPos(!ultrawide and EFGM.MenuScale(10) or ((ScrW() - EFGM.MenuScale(1920)) / 2) + EFGM.MenuScale(10), EFGM.MenuScale(10))
-    tabParentPanel:SetSize(!ultrawide and ScrW() or EFGM.MenuScale(1920), EFGM.MenuScale(41))
+    tabParentPanel:SetSize(!ultrawide and (ScrW() - EFGM.MenuScale(20)) or EFGM.MenuScale(1900), EFGM.MenuScale(41))
 
     surface.SetFont("PuristaBold32")
 
@@ -233,10 +233,10 @@ function Menu:Initialize(openTo, container)
 
         raidStatus = GetGlobalInt("RaidStatus", 0)
 
-        draw.SimpleTextOutlined(roubles, "PuristaBold32", w - EFGM.MenuScale(26), EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
-        draw.SimpleTextOutlined(level, "PuristaBold32", w - roublesTextSize - EFGM.MenuScale(86), EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
-        draw.SimpleTextOutlined(time, "PuristaBold32", w - roublesTextSize - levelTextSize - EFGM.MenuScale(146), EFGM.MenuScale(2), raidStatusTbl[raidStatus], TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
-        draw.SimpleTextOutlined(plyCount, "PuristaBold32", w - roublesTextSize - levelTextSize - timeTextSize - EFGM.MenuScale(206), EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+        draw.SimpleTextOutlined(roubles, "PuristaBold32", w - EFGM.MenuScale(5), EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+        draw.SimpleTextOutlined(level, "PuristaBold32", w - roublesTextSize - EFGM.MenuScale(65), EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+        draw.SimpleTextOutlined(time, "PuristaBold32", w - roublesTextSize - levelTextSize - EFGM.MenuScale(125), EFGM.MenuScale(2), raidStatusTbl[raidStatus], TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+        draw.SimpleTextOutlined(plyCount, "PuristaBold32", w - roublesTextSize - levelTextSize - timeTextSize - EFGM.MenuScale(185), EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
         draw.DrawText("EFGM", "PuristaBold32", w / 2, EFGM.MenuScale(2), Colors.itemBackgroundColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 
@@ -245,12 +245,12 @@ function Menu:Initialize(openTo, container)
     self.MenuFrame.TabParentPanel = tabParentPanel
 
     local roubleIcon = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
-    roubleIcon:SetPos(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(66) - roublesTextSize, EFGM.MenuScale(2))
+    roubleIcon:SetPos(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(45) - roublesTextSize, EFGM.MenuScale(2))
     roubleIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
     roubleIcon:SetText("")
     roubleIcon.Paint = function(s, w, h)
 
-        s:SetX(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(66) - roublesTextSize)
+        s:SetX(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(45) - roublesTextSize)
         surface.SetDrawColor(Colors.pureWhiteColor)
         surface.SetMaterial(Mats.roubleIcon)
         surface.DrawTexturedRect(0, 0, EFGM.MenuScale(36), EFGM.MenuScale(36))
@@ -258,12 +258,12 @@ function Menu:Initialize(openTo, container)
     end
 
     local levelIcon = vgui.Create("DButton", self.MenuFrame.TabParentPanel)
-    levelIcon:SetPos(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(127) - roublesTextSize - levelTextSize, EFGM.MenuScale(2))
+    levelIcon:SetPos(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(105) - roublesTextSize - levelTextSize, EFGM.MenuScale(2))
     levelIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
     levelIcon:SetText("")
     levelIcon.Paint = function(s, w, h)
 
-        s:SetX(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(127) - roublesTextSize - levelTextSize)
+        s:SetX(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(105) - roublesTextSize - levelTextSize)
         surface.SetDrawColor(Colors.pureWhiteColor)
         surface.SetMaterial(Mats.levelIcon)
         surface.DrawTexturedRect(0, 0, EFGM.MenuScale(36), EFGM.MenuScale(36))
@@ -271,11 +271,11 @@ function Menu:Initialize(openTo, container)
     end
 
     local timeIcon = vgui.Create("DPanel", self.MenuFrame.TabParentPanel)
-    timeIcon:SetPos(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(188) - roublesTextSize - levelTextSize - timeTextSize, EFGM.MenuScale(2))
+    timeIcon:SetPos(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(165) - roublesTextSize - levelTextSize - timeTextSize, EFGM.MenuScale(2))
     timeIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
     timeIcon.Paint = function(s, w, h)
 
-        s:SetX(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(188) - roublesTextSize - levelTextSize - timeTextSize)
+        s:SetX(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(165) - roublesTextSize - levelTextSize - timeTextSize)
         surface.SetDrawColor(Colors.pureWhiteColor)
         surface.SetMaterial(Mats.timeIcon)
         surface.DrawTexturedRect(0, 0, EFGM.MenuScale(36), EFGM.MenuScale(36))
@@ -283,11 +283,11 @@ function Menu:Initialize(openTo, container)
     end
 
     local plyCountIcon = vgui.Create("DPanel", self.MenuFrame.TabParentPanel)
-    plyCountIcon:SetPos(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(249) - roublesTextSize - levelTextSize - timeTextSize - plyCountTextSize, EFGM.MenuScale(2))
+    plyCountIcon:SetPos(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(225) - roublesTextSize - levelTextSize - timeTextSize - plyCountTextSize, EFGM.MenuScale(2))
     plyCountIcon:SetSize(EFGM.MenuScale(36), EFGM.MenuScale(36))
     plyCountIcon.Paint = function(s, w, h)
 
-        s:SetX(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(249) - roublesTextSize - levelTextSize - timeTextSize - plyCountTextSize)
+        s:SetX(self.MenuFrame.TabParentPanel:GetWide() - EFGM.MenuScale(225) - roublesTextSize - levelTextSize - timeTextSize - plyCountTextSize)
         surface.SetDrawColor(Colors.pureWhiteColor)
         surface.SetMaterial(Mats.populationIcon)
         surface.DrawTexturedRect(0, 0, EFGM.MenuScale(36), EFGM.MenuScale(36))
@@ -536,6 +536,11 @@ function Menu:Initialize(openTo, container)
     contents.Paint = nil
 
     Menu.MenuFrame.LowerPanel.Contents = contents
+
+    local bottomPanel = vgui.Create("DPanel", self.MenuFrame)
+    bottomPanel:SetPos(!ultrawide and EFGM.MenuScale(10) or ((ScrW() - EFGM.MenuScale(1920)) / 2) + EFGM.MenuScale(10), ScrH() - EFGM.MenuScale(25))
+    bottomPanel:SetSize(!ultrawide and ScrW() - EFGM.MenuScale(20) or EFGM.MenuScale(1900), EFGM.MenuScale(20))
+    bottomPanel.Paint = nil
 
     -- MENU TABS
         -- STATS
@@ -3753,7 +3758,7 @@ end
 
 function Menu.ReloadSlots()
 
-    if !IsValid(primaryWeaponHolder) then return end
+    if !IsValid(meleeWeaponHolder) then return end
 
     if !table.IsEmpty(playerWeaponSlots[1][1]) then
 
@@ -8012,7 +8017,6 @@ function Menu.OpenTab.Market()
 
     local marketStashPanel = vgui.Create("DPanel", contents)
     marketStashPanel:Dock(LEFT)
-    marketStashPanel:DockMargin(EFGM.MenuScale(13), 0, 0, 0)
     marketStashPanel:SetSize(EFGM.MenuScale(613), 0)
     marketStashPanel.Paint = function(s, w, h)
 

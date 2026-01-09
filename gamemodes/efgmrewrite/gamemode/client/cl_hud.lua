@@ -781,7 +781,7 @@ net.Receive("CreateDeathInformation", function()
 
     local killedBy = net.ReadEntity()
     local killedByHealth = net.ReadInt(8)
-    local killedByWeapon = net.ReadString()
+    local killedByWeapon = net.ReadTable()
     local killedFrom = net.ReadInt(16)
     local hitGroup = net.ReadInt(5)
 
@@ -1257,69 +1257,100 @@ net.Receive("CreateDeathInformation", function()
 
             end
 
-            if killedByWeapon != nil and killedByWeapon != "" then
+            if killedByWeapon.name then
 
-                local def = EFGMITEMS[killedByWeapon]
+                local def = EFGMITEMS[killedByWeapon.name]
                 if def == nil then return end
 
-                local KilledWithButton = vgui.Create("DButton", KillerPanel)
-                KilledWithButton:SetPos(EFGM.MenuScale(5), EFGM.MenuScale(569))
-                KilledWithButton:SetSize(EFGM.MenuScale(198), EFGM.MenuScale(216))
-                KilledWithButton:SetText("")
-                function KilledWithButton:Paint(w, h)
+                local weaponHolder = vgui.Create("DButton", KillerHolder)
+                weaponHolder:SetText("")
+                weaponHolder:SetSize(EFGM.MenuScale(57 * def.sizeX), EFGM.MenuScale(57 * def.sizeY))
+                weaponHolder:SetPos(EFGM.MenuScale(5), EFGM.MenuScale(746) - weaponHolder:GetTall() - EFGM.MenuScale(5))
 
-                    BlurPanel(KilledWithButton, EFGM.MenuScale(3))
+                function weaponHolder:Paint(w, h)
 
-                    surface.SetDrawColor(Color(5, 5, 5, 20))
+                    BlurPanel(weaponHolder, EFGM.MenuScale(3))
+
+                    surface.SetDrawColor(Colors.containerBackgroundColor)
                     surface.DrawRect(0, 0, w, h)
 
-                    surface.SetDrawColor(Color(255, 255, 255, 2))
+                    surface.SetDrawColor(Colors.whiteBorderColor)
                     surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
                     surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
                     surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
                     surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
 
-                    surface.SetDrawColor(255, 255, 255, 255)
+                    if !self:IsHovered() then surface.SetDrawColor(Colors.itemBackgroundColor) else surface.SetDrawColor(Colors.itemBackgroundColorHovered) end
+                    surface.DrawRect(0, 0, w, EFGM.MenuScale(1))
+                    surface.DrawRect(0, h - 1, w, EFGM.MenuScale(1))
+                    surface.DrawRect(0, 0, EFGM.MenuScale(1), h)
+                    surface.DrawRect(w - 1, 0, EFGM.MenuScale(1), h)
+
+                    surface.SetDrawColor(def.iconColor or Colors.itemColor)
+                    surface.DrawRect(0, 0, w, h)
+
+                    surface.SetDrawColor(Colors.pureWhiteColor)
                     surface.SetMaterial(def.icon)
+                    surface.DrawTexturedRect(0, 0, w, h)
 
-                    local originalWidth, originalHeight = EFGM.MenuScale(57 * def.sizeX), EFGM.MenuScale(57 * def.sizeY)
-                    local scaleFactor
-                    local targetMaxDimension = EFGM.MenuScale(158)
+                end
 
-                    if originalWidth > originalHeight then
+                surface.SetFont("Purista18")
 
-                        scaleFactor = targetMaxDimension / originalWidth
+                local nameSize = surface.GetTextSize(def.displayName)
+                local nameFont
+                local tagFont
+                local tagH
 
-                    else
+                if nameSize <= (EFGM.MenuScale(46.5 * def.sizeX)) then nameFont = "PuristaBold18" tagFont = "PuristaBold14" tagH = EFGM.MenuScale(12)
+                else nameFont = "PuristaBold14" tagFont = "PuristaBold10" tagH = EFGM.MenuScale(10) end
 
-                        scaleFactor = targetMaxDimension / originalHeight
+                local magFont = "PuristaBold18"
+                local magSizeY = EFGM.MenuScale(19)
+                if def.sizeX <= 2 then magFont = "PuristaBold14" magSizeY = EFGM.MenuScale(15) end
+
+                function weaponHolder:PaintOver(w, h)
+
+                    draw.SimpleTextOutlined(def.displayName, nameFont, w - EFGM.MenuScale(3), EFGM.MenuScale(-1), Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+
+                    if def.caliber then
+
+                        draw.SimpleTextOutlined(def.caliber, magFont, EFGM.MenuScale(3), h - magSizeY, Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
                     end
 
-                    newWidth = math.Round(originalWidth * scaleFactor)
-                    newHeight = math.Round(originalHeight * scaleFactor)
+                    if killedByWeapon.data and killedByWeapon.data.tag then
 
-                    local x = (EFGM.MenuScale(198) / 2) - (newWidth / 2)
-                    local y = (EFGM.MenuScale(216) / 2) - (newHeight / 2)
+                        draw.SimpleTextOutlined(killedByWeapon.data.tag, tagFont, w - EFGM.MenuScale(3), tagH, Colors.whiteColor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
-                    surface.DrawTexturedRect(x, y - EFGM.MenuScale(20), newWidth, newHeight)
+                    end
 
                 end
 
-                function KilledWithButton:PaintOver(w, h)
+                local weaponText = vgui.Create("DPanel", KillerHolder)
+                weaponText:SetSize(EFGM.MenuScale(120), EFGM.MenuScale(30))
+                weaponText:SetPos(EFGM.MenuScale(5), weaponHolder:GetY() - EFGM.MenuScale(30))
+                weaponText.Paint = function(s, w, h)
 
-                    surface.SetDrawColor(Color(5, 5, 5, 100))
-                    surface.DrawRect(EFGM.MenuScale(1), h - EFGM.MenuScale(31), w - EFGM.MenuScale(2), EFGM.MenuScale(30))
+                    surface.SetDrawColor(Colors.containerBackgroundColor)
+                    surface.DrawRect(0, 0, w, h)
 
-                    draw.SimpleTextOutlined(def.displayName, "PuristaBold22", w / 2, h - EFGM.MenuScale(29), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+                    surface.SetDrawColor(Colors.transparentWhiteColor)
+                    surface.DrawRect(0, 0, EFGM.MenuScale(220), EFGM.MenuScale(2))
+
+                    draw.SimpleTextOutlined("KILLED WITH", "PuristaBold24", w / 2, EFGM.MenuScale(2), Colors.whiteColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
                 end
 
-                function KilledWithButton:DoClick()
+                weaponHolder.OnCursorEntered = function(s)
 
-                    local data = {}
-                    data.att = def.defAtts
-                    HUDInspectItem(killedByWeapon, data, DeathPopup)
+                    surface.PlaySound("ui/inv_item_hover_" .. math.random(1, 3) .. ".wav")
+
+                end
+
+                function weaponHolder:DoClick()
+
+                    HUDInspectItem(killedByWeapon.name, killedByWeapon.data, DeathPopup)
                     surface.PlaySound("ui/element_select.wav")
 
                 end
