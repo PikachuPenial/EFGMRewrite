@@ -12,7 +12,7 @@ hook.Add("InitPostEntity", "IntroInit", function()
 
     for k, v in ipairs(introModels) do
 
-        for i = 1, 15 do
+        for i = 1, game.MaxPlayers() do
 
             local newIntro = ents.Create("prop_dynamic")
             newIntro:SetModel(v:GetModel())
@@ -22,11 +22,11 @@ hook.Add("InitPostEntity", "IntroInit", function()
             newIntro:SetAngles(v:GetAngles())
             newIntro:Spawn()
             newIntro:Activate()
-            
+
         end
 
     end
-    
+
     for k, v in ipairs(ents.FindByName("INTRO*")) do
 
         IntroSpaces[k] = {animName = v:GetName(), occupied = false}

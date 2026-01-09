@@ -38,8 +38,11 @@ if SERVER then
 
             v:Freeze(true)
             v:SetMoveType(MOVETYPE_NOCLIP)
+            v:SetRaidStatus(3, "")
+            v:SetNWInt("DuelsPlayed", v:GetNWInt("DuelsPlayed") + 1)
             v:SetNWBool("RaidReady", false)
             v:SetNWBool("PlayerIsPMC", true)
+            v:SetNWBool("InRange", true)
 
             UnequipAll(v)
             UpdatePreDuelInventoryString(v)
@@ -48,8 +51,6 @@ if SERVER then
             ReinstantiateInventoryForDuel(v)
             net.Start("PlayerReinstantiateInventory", false)
             net.Send(v)
-
-            v:SetNWBool("InRange", true)
 
             local holsterEquDelay = 0.3
             if primaryItem == nil then holsterEquDelay = 0.6 end
@@ -62,6 +63,8 @@ if SERVER then
             net.WriteTable(secondaryItem or {})
             net.Send(v)
 
+            ResetRaidStats(v) -- because im lazy and won't make a special death overview
+
             timer.Simple(1, function()
 
                 v:Freeze(false)
@@ -69,10 +72,6 @@ if SERVER then
                 v:SetHealth(v:GetMaxHealth())
 
                 timer.Simple(0.2, function() DUEL:ReloadLoadoutItems(v) end) -- ughhhhhhh
-
-                v:SetRaidStatus(3, "")
-                v:SetNWInt("DuelsPlayed", v:GetNWInt("DuelsPlayed") + 1)
-                ResetRaidStats(v) -- because im lazy and won't make a special death overview
 
             end)
 
@@ -98,6 +97,11 @@ if SERVER then
         local winningPly = DUEL.Players[1]
         DUEL.Players = {}
 
+        winningPly:SetRaidStatus(0, "")
+        winningPly:SetNWInt("DuelsWon", winningPly:GetNWInt("DuelsWon") + 1)
+        winningPly:SetNWInt("CurrentDuelWinStreak", winningPly:GetNWInt("CurrentDuelWinStreak") + 1)
+        if winningPly:GetNWInt("CurrentDuelWinStreak") >= winningPly:GetNWInt("BestDuelWinStreak") then winningPly:SetNWInt("BestDuelWinStreak", winningPly:GetNWInt("CurrentDuelWinStreak")) end
+
         net.Start("PlayerDuelTransition")
         net.WriteUInt(0, 1)
         net.Send(winningPly)
@@ -119,11 +123,6 @@ if SERVER then
             winningPly:Teleport(spawn:GetPos(), spawn:GetAngles(), Vector(0, 0, 0))
             winningPly:SetHealth(winningPly:GetMaxHealth())
             winningPly:SendLua("RunConsoleCommand('r_cleardecals')")
-
-            winningPly:SetRaidStatus(0, "")
-            winningPly:SetNWInt("DuelsWon", winningPly:GetNWInt("DuelsWon") + 1)
-            winningPly:SetNWInt("CurrentDuelWinStreak", winningPly:GetNWInt("CurrentDuelWinStreak") + 1)
-            if winningPly:GetNWInt("CurrentDuelWinStreak") >= winningPly:GetNWInt("BestDuelWinStreak") then winningPly:SetNWInt("BestDuelWinStreak", winningPly:GetNWInt("CurrentDuelWinStreak")) end
 
         end)
 

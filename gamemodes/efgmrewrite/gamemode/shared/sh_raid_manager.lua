@@ -104,15 +104,12 @@ if SERVER then
             end
         end
 
-        function RAID:GenerateSpawn(status)
+        function RAID:GenerateSpawn(status, timeToEnable)
 
             local spawn = GetValidRaidSpawn(status)
             local allSpawns = spawn.Spawns
 
-            spawn.Pending = true
-            timer.Simple(15, function() spawn.Pending = false end)
-
-            return allSpawns, spawn.SpawnGroup
+            return spawn, allSpawns, spawn.SpawnGroup
 
         end
 
@@ -149,17 +146,34 @@ if SERVER then
 
                 if status == "nil" then status = faction end -- automatically set status depending on players faction
 
-                if #spawns == 0 then spawns, spawnGroup = RAID:GenerateSpawn(status) end
+                if #spawns == 0 then masterSpawn, spawns, spawnGroup = RAID:GenerateSpawn(status) end
 
                 if #spawns == 0 then print("not enough spawn points for every squad member, this shouldn't be possible") return end
                 if spawnGroup == nil then print("spawn group not set for chosen spawn, this shouldn't be possible") return end
 
+                local introAnimString, introSpaceIndex = IntroGetFreeSpace(spawnGroup)
+
                 v:Freeze(true)
                 v:SetMoveType(MOVETYPE_NOCLIP)
 
-                local introAnimString, introSpaceIndex = IntroGetFreeSpace(spawnGroup)
+                v:SetRaidStatus(status, spawnGroup or "")
+                v:SetNWBool("PlayerIsPMC", true)
+
+                local curTime = math.Round(CurTime(), 0) -- once players spawn, we make their team chat channel more specific, this is so others can create squads of the same name and not conflict with anything
+                v:SetNW2String("PlayerInSquad", "nil")
+                v:SetNW2String("TeamChatChannel", squad .. "_" .. curTime)
+                v:SetNWInt("RaidsPlayed", v:GetNWInt("RaidsPlayed") + 1)
+                RemoveFIRFromInventory(v)
+                ResetRaidStats(v)
+
+                if status == playerStatus.SCAV then
+                    timer.Create("ScavLoadout" .. v:SteamID64(), 0.5, 1, function() RAID:GenerateScavLoadout(v) end)
+                end
 
                 if introAnimString != nil then
+
+                    masterSpawn.Pending = true
+                    timer.Simple(16, function() masterSpawn.Pending = false end)
 
                     net.Start("PlayerRaidTransition")
                     net.WriteUInt(0, 2)
@@ -179,19 +193,6 @@ if SERVER then
 
                     timer.Create("Intro" .. v:SteamID64(), 1, 1, function()
 
-                        if status == playerStatus.SCAV then
-                            timer.Create("ScavLoadout" .. v:SteamID64(), 0.5, 1, function() RAID:GenerateScavLoadout(v) end)
-                        end
-
-                        local curTime = math.Round(CurTime(), 0) -- once players spawn, we make their team chat channel more specific, this is so others can create squads of the same name and not conflict with anything
-                        v:SetRaidStatus(status, spawnGroup or "")
-                        v:SetNWBool("PlayerIsPMC", true)
-                        v:SetNW2String("PlayerInSquad", "nil")
-                        v:SetNW2String("TeamChatChannel", squad .. "_" .. curTime)
-                        v:SetNWInt("RaidsPlayed", v:GetNWInt("RaidsPlayed") + 1)
-                        RemoveFIRFromInventory(v)
-                        ResetRaidStats(v)
-
                         net.Start("SendIntroCamera")
                         net.WriteEntity(animModel)
                         net.Send(v)
@@ -205,50 +206,33 @@ if SERVER then
                             net.Start("PlayerRaidTransition")
                             net.WriteUInt(1, 2)
                             net.Send(v)
-                        end)
 
-                        timer.Create("Spawn" .. v:SteamID64(), 6, 1, function()
+                            timer.Create("Spawn" .. v:SteamID64(), 1, 1, function()
+                                v:Freeze(false)
+                                v:Teleport(spawns[k]:GetPos(), spawns[k]:GetAngles(), Vector(0, 0, 0))
 
-                            v:Freeze(false)
-                            v:Teleport(spawns[k]:GetPos(), spawns[k]:GetAngles(), Vector(0, 0, 0))
+                                IntroSpaces[introSpaceIndex].occupied = false
 
-                            IntroSpaces[introSpaceIndex].occupied = false
+                                animModel:Fire("SetAnimation", "ref", 0, v, v)
 
-                            animModel:Fire("SetAnimation", "ref", 0, v, v)
-
-                            hook.Remove("SetupPlayerVisibility", "ForceAnimInPVS" .. v:SteamID64())
-
+                                hook.Remove("SetupPlayerVisibility", "ForceAnimInPVS" .. v:SteamID64())
+                            end)
                         end)
 
                     end)
 
                 else
 
+                    masterSpawn.Pending = true
+                    timer.Simple(10, function() masterSpawn.Pending = false end)
+
                     net.Start("PlayerRaidTransition")
                     net.WriteUInt(1, 2)
                     net.Send(v)
 
                     timer.Create("Spawn" .. v:SteamID64(), 1, 1, function()
-                        if #spawns == 0 then spawns, spawnGroup = RAID:GenerateSpawn(status) end -- i feel like spawns should always be empty so the if statement is meaningless but i dont wanna break a playtest by tempting it
-
-                        if #spawns == 0 then print("not enough spawn points for every squad member, this shouldn't be possible") return end
-                        if spawnGroup == nil then print("spawn group not set for chosen spawn, this shouldn't be possible") return end
-
-                        if status == playerStatus.SCAV then
-                            timer.Create("ScavLoadout" .. v:SteamID64(), 0.5, 1, function() RAID:GenerateScavLoadout(v) end)
-                        end
-
                         v:Freeze(false)
                         v:Teleport(spawns[k]:GetPos(), spawns[k]:GetAngles(), Vector(0, 0, 0))
-
-                        local curTime = math.Round(CurTime(), 0) -- once players spawn, we make their team chat channel more specific, this is so others can create squads of the same name and not conflict with anything
-                        v:SetRaidStatus(status, spawnGroup or "")
-                        v:SetNWBool("PlayerIsPMC", true)
-                        v:SetNW2String("PlayerInSquad", "nil")
-                        v:SetNW2String("TeamChatChannel", squad .. "_" .. curTime)
-                        v:SetNWInt("RaidsPlayed", v:GetNWInt("RaidsPlayed") + 1)
-                        RemoveFIRFromInventory(v)
-                        ResetRaidStats(v)
                     end)
 
                 end
@@ -475,6 +459,7 @@ if SERVER then
 
             end
 
+            ReloadInventory(ply)
             CalculateInventoryWeight(ply)
 
         end
@@ -546,6 +531,9 @@ if SERVER then
             ply:Lock()
             ply:SetMoveType(MOVETYPE_NOCLIP)
 
+            local prevStatus = ply:GetNWInt("PlayerRaidStatus", 0)
+            ply:SetRaidStatus(0, "")
+
             timer.Create("Extract" .. ply:SteamID64(), 1, 1, function()
                 local spawn = GetValidHideoutSpawn(1)
                 ply:Teleport(spawn:GetPos(), spawn:GetAngles(), Vector(0, 0, 0))
@@ -558,7 +546,7 @@ if SERVER then
 
                 ply:SetNWInt("ExperienceBonus", ply:GetNWInt("ExperienceBonus") + 200)
 
-                local xpMult = (ply:CompareStatus(2) and 0.5) or 1
+                local xpMult = (prevStatus == 2 and 0.5) or 1
 
                 net.Start("CreateExtractionInformation")
                 net.WriteFloat(xpMult)
@@ -572,8 +560,6 @@ if SERVER then
 
                 ply:SetNWInt("RaidTime", 0)
                 ApplyPlayerExperience(ply, xpMult)
-
-                ply:SetRaidStatus(0, "")
             end)
         end)
 
