@@ -7655,12 +7655,12 @@ function Menu.OpenTab.Inventory(container)
 
     local playerItemsBar = playerItemsHolder:GetVBar()
     playerItemsBar:SetHideButtons(true)
-    playerItemsBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+    playerItemsBar:SetSize(EFGM.MenuScale(5), 0)
     function playerItemsBar:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Colors.scrollerColor)
+        draw.RoundedBox(0, 0, 0, EFGM.MenuScale(5), h, Colors.scrollerColor)
     end
     function playerItemsBar.btnGrip:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Colors.transparentWhiteColor)
+        draw.RoundedBox(0, 0, 0, EFGM.MenuScale(5), h, Colors.transparentWhiteColor)
     end
 
     Menu.ReloadInventory()
@@ -7750,12 +7750,12 @@ function Menu.OpenTab.Inventory(container)
 
         local containerItemsBar = containerItemsHolder:GetVBar()
         containerItemsBar:SetHideButtons(true)
-        containerItemsBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+        containerItemsBar:SetSize(EFGM.MenuScale(5), 0)
         function containerItemsBar:Paint(w, h)
-            draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Colors.scrollerColor)
+            draw.RoundedBox(0, 0, 0, EFGM.MenuScale(5), h, Colors.scrollerColor)
         end
         function containerItemsBar.btnGrip:Paint(w, h)
-            draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Colors.transparentWhiteColor)
+            draw.RoundedBox(0, 0, 0, EFGM.MenuScale(5), h, Colors.transparentWhiteColor)
         end
 
         Menu.ReloadContainer()
@@ -7987,13 +7987,13 @@ function Menu.OpenTab.Inventory(container)
 
     local stashItemsBar = stashItemsHolder:GetVBar()
     stashItemsBar:SetHideButtons(true)
-    stashItemsBar:SetSize(EFGM.MenuScale(15), 0)
+    stashItemsBar:SetSize(EFGM.MenuScale(5), 0)
     function stashItemsBar:Paint(w, h)
         if self:GetScroll() != 0 then Menu.LastStashScroll = self:GetOffset() end
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Colors.scrollerColor)
+        draw.RoundedBox(0, 0, 0, EFGM.MenuScale(5), h, Colors.scrollerColor)
     end
     function stashItemsBar.btnGrip:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Colors.transparentWhiteColor)
+        draw.RoundedBox(0, 0, 0, EFGM.MenuScale(5), h, Colors.transparentWhiteColor)
     end
 
     Menu.ReloadStash(true)
@@ -8209,13 +8209,13 @@ function Menu.OpenTab.Market()
 
     local marketStashItemsBar = marketStashItemsHolder:GetVBar()
     marketStashItemsBar:SetHideButtons(true)
-    marketStashItemsBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+    marketStashItemsBar:SetSize(EFGM.MenuScale(5), 0)
     function marketStashItemsBar:Paint(w, h)
         if self:GetScroll() != 0 then Menu.LastMarketStashScroll = self:GetOffset() end
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Colors.scrollerColor)
+        draw.RoundedBox(0, 0, 0, EFGM.MenuScale(5), h, Colors.scrollerColor)
     end
     function marketStashItemsBar.btnGrip:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Colors.transparentWhiteColor)
+        draw.RoundedBox(0, 0, 0, EFGM.MenuScale(5), h, Colors.transparentWhiteColor)
     end
 
     Menu.ReloadMarketStash()
@@ -8407,16 +8407,15 @@ function Menu.OpenTab.Market()
     local marketCategoryEntryList = vgui.Create("DCategoryList", marketCategoryHolder)
     marketCategoryEntryList:Dock(FILL)
     marketCategoryEntryList:SetBackgroundColor(Colors.transparent)
-    marketCategoryEntryList:GetVBar():SetSize(0, 0)
 
     local categoryBar = marketCategoryEntryList:GetVBar()
     categoryBar:SetHideButtons(true)
-    categoryBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+    categoryBar:SetSize(EFGM.MenuScale(5), 0)
     function categoryBar:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Colors.scrollerColor)
+        draw.RoundedBox(0, 0, 0, EFGM.MenuScale(5), h, Colors.scrollerColor)
     end
     function categoryBar.btnGrip:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Colors.transparentWhiteColor)
+        draw.RoundedBox(0, 0, 0, EFGM.MenuScale(5), h, Colors.transparentWhiteColor)
     end
 
     -- market categories
@@ -9170,11 +9169,10 @@ function Menu.OpenTab.Intel()
     mainEntryList:Dock(LEFT)
     mainEntryList:SetSize(EFGM.MenuScale(180), 0)
     mainEntryList:SetBackgroundColor(Colors.transparent)
-    mainEntryList:GetVBar():SetSize(0, 0)
 
     local entryBar = mainEntryList:GetVBar()
     entryBar:SetHideButtons(true)
-    entryBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+    entryBar:SetSize(EFGM.MenuScale(15), 0)
     function entryBar:Paint(w, h)
         draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Colors.scrollerColor)
     end
@@ -9337,7 +9335,7 @@ function Menu.OpenTab.Match()
 
         local pmcPanelBar = pmcPanel:GetVBar()
         pmcPanelBar:SetHideButtons(true)
-        pmcPanelBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+        pmcPanelBar:SetSize(EFGM.MenuScale(15), 0)
         function pmcPanelBar:Paint(w, h)
             draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Colors.scrollerColor)
         end
@@ -9727,7 +9725,7 @@ function Menu.OpenTab.Match()
 
         local availableSquadsPanelBar = availableSquadsPanel:GetVBar()
         availableSquadsPanelBar:SetHideButtons(true)
-        availableSquadsPanelBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+        availableSquadsPanelBar:SetSize(EFGM.MenuScale(15), 0)
         function availableSquadsPanelBar:Paint(w, h)
             draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Colors.scrollerColor)
         end
@@ -10458,7 +10456,7 @@ function Menu.OpenTab.Stats()
 
     local statsBar = stats:GetVBar()
     statsBar:SetHideButtons(true)
-    statsBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+    statsBar:SetSize(EFGM.MenuScale(15), 0)
     function statsBar:Paint(w, h)
         draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Colors.scrollerColor)
     end
@@ -10679,7 +10677,7 @@ function Menu.OpenTab.Skills()
 
     local skillsBar = skills:GetVBar()
     skillsBar:SetHideButtons(true)
-    skillsBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+    skillsBar:SetSize(EFGM.MenuScale(15), 0)
     function skillsBar:Paint(w, h)
         draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Colors.scrollerColor)
     end
@@ -10850,7 +10848,7 @@ function Menu.OpenTab.Settings()
 
     local gameplayBar = gameplay:GetVBar()
     gameplayBar:SetHideButtons(true)
-    gameplayBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+    gameplayBar:SetSize(EFGM.MenuScale(15), 0)
     function gameplayBar:Paint(w, h)
         draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Colors.scrollerColor)
     end
@@ -10879,7 +10877,7 @@ function Menu.OpenTab.Settings()
 
     local controlsBar = controls:GetVBar()
     controlsBar:SetHideButtons(true)
-    controlsBar:SetSize(EFGM.MenuScale(1), EFGM.MenuScale(15))
+    controlsBar:SetSize(EFGM.MenuScale(1), 0)
 
     local interfaceHolder = vgui.Create("DPanel", contents)
     interfaceHolder:Dock(LEFT)
@@ -10902,13 +10900,7 @@ function Menu.OpenTab.Settings()
 
     local interfaceBar = interface:GetVBar()
     interfaceBar:SetHideButtons(true)
-    interfaceBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
-    function interfaceBar:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Colors.scrollerColor)
-    end
-    function interfaceBar.btnGrip:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Colors.transparentWhiteColor)
-    end
+    interfaceBar:SetSize(EFGM.MenuScale(1), 0)
 
     local visualsHolder = vgui.Create("DPanel", contents)
     visualsHolder:Dock(LEFT)
@@ -10931,13 +10923,7 @@ function Menu.OpenTab.Settings()
 
     local visualsBar = visuals:GetVBar()
     visualsBar:SetHideButtons(true)
-    visualsBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
-    function visualsBar:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Colors.scrollerColor)
-    end
-    function visualsBar.btnGrip:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Colors.transparentWhiteColor)
-    end
+    visualsBar:SetSize(EFGM.MenuScale(1), 0)
 
     local accountHolder = vgui.Create("DPanel", contents)
     accountHolder:Dock(LEFT)
@@ -10960,13 +10946,7 @@ function Menu.OpenTab.Settings()
 
     local accountBar = account:GetVBar()
     accountBar:SetHideButtons(true)
-    accountBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
-    function accountBar:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Colors.scrollerColor)
-    end
-    function accountBar.btnGrip:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Colors.transparentWhiteColor)
-    end
+    accountBar:SetSize(EFGM.MenuScale(1), 0)
 
     local miscHolder = vgui.Create("DPanel", contents)
     miscHolder:Dock(LEFT)
@@ -10989,15 +10969,7 @@ function Menu.OpenTab.Settings()
 
     local miscBar = misc:GetVBar()
     miscBar:SetHideButtons(true)
-    miscBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
-    function miscBar:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Colors.scrollerColor)
-    end
-    function miscBar.btnGrip:Paint(w, h)
-        draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Colors.transparentWhiteColor)
-    end
-
-    -- settings go below
+    miscBar:SetSize(EFGM.MenuScale(1), 0)
 
     -- gameplay
 
@@ -12196,7 +12168,7 @@ function Menu.OpenTab.Tasks()
 
             local taskListBar = taskListScroller:GetVBar()
             taskListBar:SetHideButtons(true)
-            taskListBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+            taskListBar:SetSize(EFGM.MenuScale(15), 0)
             function taskListBar:Paint(w, h)
                 draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Colors.scrollerColor)
             end
@@ -12447,7 +12419,7 @@ function Menu.OpenTab.Tasks()
 
                 local messageBar = messageScroller:GetVBar()
                 messageBar:SetHideButtons(true)
-                messageBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+                messageBar:SetSize(EFGM.MenuScale(15), 0)
                 function messageBar:Paint(w, h)
                     draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Colors.scrollerColor)
                 end
@@ -12492,7 +12464,7 @@ function Menu.OpenTab.Tasks()
 
                 local objectiveBar = objectiveScroller:GetVBar()
                 objectiveBar:SetHideButtons(true)
-                objectiveBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+                objectiveBar:SetSize(EFGM.MenuScale(15), 0)
                 function objectiveBar:Paint(w, h)
                     draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Colors.scrollerColor)
                 end
@@ -12622,7 +12594,7 @@ function Menu.OpenTab.Tasks()
 
                 local rewardBar = rewardScroller:GetVBar()
                 rewardBar:SetHideButtons(true)
-                rewardBar:SetSize(EFGM.MenuScale(15), EFGM.MenuScale(15))
+                rewardBar:SetSize(EFGM.MenuScale(15), 0)
                 function rewardBar:Paint(w, h)
                     draw.RoundedBox(0, EFGM.MenuScale(5), EFGM.MenuScale(8), EFGM.MenuScale(5), h - EFGM.MenuScale(16), Colors.scrollerColor)
                 end
