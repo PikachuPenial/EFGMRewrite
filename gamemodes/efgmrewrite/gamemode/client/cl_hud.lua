@@ -260,7 +260,7 @@ function RenderRaidIntro()
         draw.DrawText("Raid #" .. ply:GetNWInt("RaidsPlayed", 0), "BenderAmmoCount", EFGM.ScreenScale(20) + HUD.Padding, EFGM.ScreenScale(21), Color(255, 255, 255, 200), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
         draw.DrawText(os.date("%H:%M:%S"), "BenderAmmoCount", EFGM.ScreenScale(20) + HUD.Padding, EFGM.ScreenScale(50), Color(255, 255, 255, 200), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
         draw.DrawText("Level " .. ply:GetNWInt("Level", 0) .. ", Operator " .. ply:GetName(), "BenderAmmoCount", EFGM.ScreenScale(20) + HUD.Padding, EFGM.ScreenScale(80), Color(255, 255, 255, 200), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-        draw.DrawText("Garkov, " .. MAPNAMES[game.GetMap()] or "", "BenderAmmoCount", EFGM.ScreenScale(20) + HUD.Padding, EFGM.ScreenScale(110), Color(255, 255, 255, 200), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+        draw.DrawText("Garkov, " .. (MAPNAMES[game.GetMap()] or game.GetMap()), "BenderAmmoCount", EFGM.ScreenScale(20) + HUD.Padding, EFGM.ScreenScale(110), Color(255, 255, 255, 200), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
     end
 
     intro:AlphaTo(255, 0.35, 0, nil)

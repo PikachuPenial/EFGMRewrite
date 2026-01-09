@@ -3,14 +3,15 @@
 -- yooo the fuckings on 1 and 2 lined up lets fucking goooooo
 
 -- raid
-function GetValidRaidSpawn(status) -- status: 0 = lobby, 1 = pmc, 2 = scav (assuming 1)
+function GetValidRaidSpawn(status)
 
-    if status == 0 then status = 1 end -- shouldn't be possible but i am going to play it safe
+    if status == 0 or status == 3 then status = 1 end -- shouldn't be possible but i am going to play it safe
 
     local spawns = ents.FindByClass("efgm_raid_spawn")
     table.Shuffle(spawns)
 
-    local radius = MAPS[game.GetMap()].spawnProt or 1000
+    local radius = tonumber(MAPS[game.GetMap()].spawnProt) or 1000
+    print(radius)
 
     for _, spawn in ipairs(spawns) do
 
@@ -18,12 +19,15 @@ function GetValidRaidSpawn(status) -- status: 0 = lobby, 1 = pmc, 2 = scav (assu
         if status == 2 and spawn.SpawnType == 1 then continue end
         if spawn.Pending == true then continue end
 
-        local entities = ents.FindInSphere(spawn:GetPos(), radius)
+        local spawnRad = (spawn.SpawnRadiusOverride > 0 and spawn.SpawnRadiusOverride) or radius
+
+        local entities = ents.FindInSphere(spawn:GetPos(), spawnRad)
         local blocked = false
 
         for _, e in ipairs(entities) do
 
-            if e:IsPlayer() and e:Alive() and !e:CompareStatus(0) and !e:CompareStatus(3) then
+            if !e:IsPlayer() then continue end
+            if e:Alive() and (e:CompareStatus(1) or e:CompareStatus(2)) and !e:GetNWBool("PlayerInIntro", false) then
 
                 blocked = true
                 break
@@ -37,7 +41,16 @@ function GetValidRaidSpawn(status) -- status: 0 = lobby, 1 = pmc, 2 = scav (assu
     end
 
     print("no valid spawns have been rolled, selecting a spawn at random!")
-    return BetterRandom(spawns) -- yes, this can spawn someone at another factions spawn, it should never happen anyways so i cant be bothered
+
+    for _, spawn in ipairs(spawns) do
+
+        if status == 1 and spawn.SpawnType == 2 then continue end
+        if status == 2 and spawn.SpawnType == 1 then continue end
+        if spawn.Pending == true then continue end
+
+        return spawn
+
+    end
 
 end
 
@@ -60,7 +73,8 @@ function GetValidHideoutSpawn(spawnType)
 
         for _, e in ipairs(entities) do
 
-            if e:IsPlayer() and e:Alive() and !e:CompareStatus(1) and !e:CompareStatus(2) then
+            if !e:IsPlayer() then continue end
+            if e:Alive() and (e:CompareStatus(0) or e:CompareStatus(3)) then
 
                 blocked = true
                 break
@@ -90,5 +104,23 @@ function RandomDuelSpawns()
     local spawns = ents.FindByClass("efgm_duel_spawn")
     table.Shuffle(spawns)
     return spawns
+
+end
+
+if GetConVar("efgm_derivesbox"):GetInt() == 1 then
+
+    function PrintSpawnStatuses()
+
+        local spawns = ents.FindByClass("efgm_raid_spawn")
+        for _, spawn in ipairs(spawns) do
+
+            print("[" .. string.upper(spawn.SpawnName) .. "]")
+            print("pending: " .. tostring(spawn.Pending))
+            print("type: " .. spawn.SpawnType)
+
+        end
+
+    end
+    concommand.Add("efgm_debug_printspawns", function(ply, cmd, args) PrintSpawnStatuses() end)
 
 end

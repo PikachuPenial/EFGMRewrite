@@ -80,7 +80,7 @@ function ENT:AcceptInput(name, ply, caller, data)
 
     if name == "SetRaidTime" then
         if RAID.Status != raidStatus.ACTIVE then return end
-        
+
         RAID.CurrentTime = tonumber(data)
     end
 

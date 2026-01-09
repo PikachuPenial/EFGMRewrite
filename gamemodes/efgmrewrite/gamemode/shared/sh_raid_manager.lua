@@ -172,6 +172,8 @@ if SERVER then
 
                 if introAnimString != nil then
 
+                    v:SetNWBool("PlayerInIntro", true)
+
                     masterSpawn.Pending = true
                     timer.Simple(16, function() masterSpawn.Pending = false end)
 
@@ -208,6 +210,7 @@ if SERVER then
                             net.Send(v)
 
                             timer.Create("Spawn" .. v:SteamID64(), 1, 1, function()
+                                v:SetNWBool("PlayerInIntro", false)
                                 v:Freeze(false)
                                 v:Teleport(spawns[k]:GetPos(), spawns[k]:GetAngles(), Vector(0, 0, 0))
 
@@ -231,6 +234,7 @@ if SERVER then
                     net.Send(v)
 
                     timer.Create("Spawn" .. v:SteamID64(), 1, 1, function()
+                        v:SetNWBool("PlayerInIntro", false)
                         v:Freeze(false)
                         v:Teleport(spawns[k]:GetPos(), spawns[k]:GetAngles(), Vector(0, 0, 0))
                     end)
