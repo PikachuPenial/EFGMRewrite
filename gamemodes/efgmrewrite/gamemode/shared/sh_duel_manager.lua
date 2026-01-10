@@ -67,9 +67,9 @@ if SERVER then
 
             timer.Simple(1, function()
 
-                v:Freeze(false)
-                v:Teleport(spawns[k]:GetPos(), spawns[k]:GetAngles(), Vector(0, 0, 0))
                 v:SetHealth(v:GetMaxHealth())
+                v:Teleport(spawns[k]:GetPos(), spawns[k]:GetAngles(), Vector(0, 0, 0))
+                v:Freeze(false)
 
                 timer.Simple(0.2, function() DUEL:ReloadLoadoutItems(v) end) -- ughhhhhhh
 
@@ -116,13 +116,13 @@ if SERVER then
             ReinstantiateInventoryAfterDuel(winningPly)
 
             winningPly:GodDisable()
-            winningPly:Freeze(false)
 
             local spawn = GetValidHideoutSpawn(2)
 
-            winningPly:Teleport(spawn:GetPos(), spawn:GetAngles(), Vector(0, 0, 0))
             winningPly:SetHealth(winningPly:GetMaxHealth())
             winningPly:SendLua("RunConsoleCommand('r_cleardecals')")
+            winningPly:Teleport(spawn:GetPos(), spawn:GetAngles(), Vector(0, 0, 0))
+            winningPly:Freeze(false)
 
         end)
 

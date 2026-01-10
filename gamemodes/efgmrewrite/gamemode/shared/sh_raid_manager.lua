@@ -194,6 +194,7 @@ if SERVER then
 
                         local tempPos = ents.FindByName("TP_" .. string.Explode("|", introAnimString)[1])[1]
                         v:Teleport(tempPos:GetPos(), tempPos:GetAngles(), Vector(0, 0, 0)) -- just so the player isnt clogging the lobby or getting beamed in raid
+                        v:SetMoveType(MOVETYPE_NOCLIP)
 
                         animModel:Fire("SetAnimation", "sequence", 0, v, v)
 
@@ -207,8 +208,8 @@ if SERVER then
 
                                 v:SetRaidStatus(status, spawnGroup)
                                 v:SetNWBool("PlayerInIntro", false)
-                                v:Freeze(false)
                                 v:Teleport(spawns[k]:GetPos(), spawns[k]:GetAngles(), Vector(0, 0, 0))
+                                v:Freeze(false)
 
                                 masterSpawn.Pending = true
                                 timer.Simple(10, function() masterSpawn.Pending = false end)
@@ -234,8 +235,8 @@ if SERVER then
 
                         v:SetRaidStatus(status, spawnGroup)
                         v:SetNWBool("PlayerInIntro", false)
-                        v:Freeze(false)
                         v:Teleport(spawns[k]:GetPos(), spawns[k]:GetAngles(), Vector(0, 0, 0))
+                        v:Freeze(false)
 
                         masterSpawn.Pending = true
                         timer.Simple(10, function() masterSpawn.Pending = false end)
@@ -297,7 +298,7 @@ if SERVER then
         end
 
         function RAID.GetCurrentExtracts(ply)
-            if ply:CompareStatus(0) or ply:CompareStatus(3) then return nil end
+            if ply:CompareStatus(0) or ply:CompareStatus(3) or ply:GetNWBool("PlayerInIntro", false) then return nil end
 
             local extracts = {}
 

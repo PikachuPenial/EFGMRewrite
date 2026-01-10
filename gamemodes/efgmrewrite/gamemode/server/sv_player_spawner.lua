@@ -11,7 +11,6 @@ function GetValidRaidSpawn(status)
     table.Shuffle(spawns)
 
     local radius = tonumber(MAPS[game.GetMap()].spawnProt) or 1000
-    print(radius)
 
     for _, spawn in ipairs(spawns) do
 
@@ -26,8 +25,8 @@ function GetValidRaidSpawn(status)
 
         for _, e in ipairs(entities) do
 
-            if !e:IsPlayer() then continue end
-            if e:Alive() and (e:CompareStatus(1) or e:CompareStatus(2)) and !e:GetNWBool("PlayerInIntro", false) then
+            -- player
+            if e:IsPlayer() and e:Alive() and (e:CompareStatus(1) or e:CompareStatus(2)) and !e:GetNWBool("PlayerInIntro", false) then
 
                 blocked = true
                 break
@@ -40,7 +39,12 @@ function GetValidRaidSpawn(status)
 
     end
 
-    print("no valid spawns have been rolled, selecting a spawn at random!")
+    -- fallback if no spawn is suitable
+    local plys = player.GetHumans()
+    local safestSpawn = nil
+    local maxMinDistance = -1
+
+    table.Shuffle(spawns)
 
     for _, spawn in ipairs(spawns) do
 
@@ -48,9 +52,29 @@ function GetValidRaidSpawn(status)
         if status == 2 and spawn.SpawnType == 1 then continue end
         if spawn.Pending == true then continue end
 
-        return spawn
+        local minDistance = math.huge
+
+        for _, ply in ipairs(plys) do
+
+            if ply:Alive() and (ply:CompareStatus(1) or ply:CompareStatus(2)) and !ply:GetNWBool("PlayerInIntro", false) then
+
+                local distance = spawn:GetPos():DistToSqr(ply:GetPos())
+                minDistance = math.min(minDistance, distance)
+
+            end
+
+        end
+
+        if minDistance > maxMinDistance then
+
+            maxMinDistance = minDistance
+            safestSpawn = spawn
+
+        end
 
     end
+
+    return safestSpawn
 
 end
 

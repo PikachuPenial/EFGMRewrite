@@ -88,7 +88,7 @@ function ENT:SelectItems()
 
         end
 
-        if data.count > 1  then data.fir = true end
+        if data.count <= 1 then data.fir = true end
 
         local item = ITEM.Instantiate(itemKey, def.equipType, data)
         table.insert(containerLoot, item)
