@@ -33,6 +33,14 @@ function GetValidRaidSpawn(status)
 
             end
 
+            -- grenades
+            if e.Base == "arc9_eft_grenade_ent_base" and e.harmless != true then
+
+                blocked = true
+                break
+
+            end
+
         end
 
         if !blocked then return spawn end

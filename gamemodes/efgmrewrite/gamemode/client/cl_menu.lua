@@ -2097,7 +2097,7 @@ function Menu.ConfirmPurchase(item, sendTo, closeMenu)
     if i.equipSlot == WEAPONSLOTS.PRIMARY.ID or i.equipSlot == WEAPONSLOTS.HOLSTER.ID or i.equipSlot == WEAPONSLOTS.MELEE.ID or i.equipType == EQUIPTYPE.Attachment then maxTransactionCount = 1 end
 
     surface.SetFont("PuristaBold24")
-    local confirmText = "Purchase " .. transactionCount .. "x " .. i.fullName .. " (" .. i.displayName .. ") for ₽" .. comma_value(transactionCost) .. "?"
+    local confirmText = "Purchase " .. math.Clamp(transactionCount, 1, maxTransactionCount) .. "x " .. i.fullName .. " (" .. i.displayName .. ") for ₽" .. comma_value(transactionCost) .. "?"
     local confirmTextSize = math.max(EFGM.MenuScale(300), surface.GetTextSize(confirmText))
 
     local confirmPanelHeight = EFGM.MenuScale(110)
@@ -7392,11 +7392,11 @@ function Menu.OpenTab.Inventory(container)
             draw.SimpleTextOutlined("Your carry weight can begin to negatively affect your character if it goes unchecked.", "Purista18", EFGM.MenuScale(5), EFGM.MenuScale(25), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
             draw.SimpleTextOutlined("EFFECTS", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(50), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-            draw.SimpleTextOutlined("MOVEMENT SPEED: -" .. math.max(0, math.min(maxLossMove, math.Round(math.max(0, Menu.Player:GetNWFloat("InventoryWeight", 0.000) - underweightLimit) * 0.818, 3))) .. "u/s", "PuristaBold16", EFGM.MenuScale(5), EFGM.MenuScale(70), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
-            draw.SimpleTextOutlined("MOVEMENT INERTIA: +" .. math.max(0, math.min(maxLossInertia, math.Round(math.max(0, Menu.Player:GetNWFloat("InventoryWeight", 0.000) - underweightLimit) * 0.0136, 3))) * 100 .. "%", "PuristaBold16", EFGM.MenuScale(5), EFGM.MenuScale(83), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
-            draw.SimpleTextOutlined("AIM DOWN SIGHTS TIME: +" .. math.max(1, 1 + math.min(maxLossADS, math.Round((math.max(0, Menu.Player:GetNWFloat("InventoryWeight", 0.000) - underweightLimit) * 0.011) * 5, 3))) * 100 .. "%", "PuristaBold16", EFGM.MenuScale(5), EFGM.MenuScale(96), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
-            draw.SimpleTextOutlined("WEAPON SWAY: +" .. math.max(1, 1 + math.min(maxLossSway, math.Round((math.max(0, Menu.Player:GetNWFloat("InventoryWeight", 0.000) - underweightLimit) * 0.011) * 2, 3))) * 100 .. "%", "PuristaBold16", EFGM.MenuScale(5), EFGM.MenuScale(109), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
-            draw.SimpleTextOutlined("LEANING SPEED: -" .. 100 - math.min(1, 1 - math.min(maxLossLean, math.Round(math.max(0, Menu.Player:GetNWFloat("InventoryWeight", 0.000) - underweightLimit) * 0.0109, 3))) * 100 .. "%", "PuristaBold16", EFGM.MenuScale(5), EFGM.MenuScale(122), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+            draw.SimpleTextOutlined("MOVEMENT SPEED: -" .. math.max(0, math.min(maxLossMove, math.Round(math.max(0, Menu.Player:GetNWFloat("InventoryWeight", 0.000) - underweightLimit) * 0.818, 2))) .. "u/s", "PuristaBold16", EFGM.MenuScale(5), EFGM.MenuScale(70), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+            draw.SimpleTextOutlined("MOVEMENT INERTIA: +" .. math.max(0, math.min(maxLossInertia, math.Round(math.max(0, Menu.Player:GetNWFloat("InventoryWeight", 0.000) - underweightLimit) * 0.0136, 2))) * 100 .. "%", "PuristaBold16", EFGM.MenuScale(5), EFGM.MenuScale(83), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+            draw.SimpleTextOutlined("AIM DOWN SIGHTS TIME: +" .. math.max(1, 1 + math.min(maxLossADS, math.Round((math.max(0, Menu.Player:GetNWFloat("InventoryWeight", 0.000) - underweightLimit) * 0.011) * 5, 2))) * 100 .. "%", "PuristaBold16", EFGM.MenuScale(5), EFGM.MenuScale(96), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+            draw.SimpleTextOutlined("WEAPON SWAY: +" .. math.max(1, 1 + math.min(maxLossSway, math.Round((math.max(0, Menu.Player:GetNWFloat("InventoryWeight", 0.000) - underweightLimit) * 0.011) * 2, 2))) * 100 .. "%", "PuristaBold16", EFGM.MenuScale(5), EFGM.MenuScale(109), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+            draw.SimpleTextOutlined("LEANING SPEED: -" .. 100 - math.min(1, 1 - math.min(maxLossLean, math.Round(math.max(0, Menu.Player:GetNWFloat("InventoryWeight", 0.000) - underweightLimit) * 0.0109, 2))) * 100 .. "%", "PuristaBold16", EFGM.MenuScale(5), EFGM.MenuScale(122), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
             surface.SetDrawColor(Colors.transparentWhiteColor)
             surface.DrawRect(EFGM.MenuScale(5), EFGM.MenuScale(150), EFGM.MenuScale(550), EFGM.MenuScale(1))
@@ -7405,7 +7405,7 @@ function Menu.OpenTab.Inventory(container)
             surface.DrawRect(EFGM.MenuScale(554), EFGM.MenuScale(150), EFGM.MenuScale(1), EFGM.MenuScale(10))
 
             surface.SetDrawColor(Color(255, 255, 0, 55))
-            surface.DrawRect(EFGM.MenuScale(202), EFGM.MenuScale(150), EFGM.MenuScale(10), EFGM.MenuScale(10))
+            surface.DrawRect(EFGM.MenuScale(198), EFGM.MenuScale(150), EFGM.MenuScale(10), EFGM.MenuScale(10))
 
             surface.SetDrawColor(Color(255, 0, 0, 55))
             surface.DrawRect(EFGM.MenuScale(545), EFGM.MenuScale(150), EFGM.MenuScale(10), EFGM.MenuScale(10))
