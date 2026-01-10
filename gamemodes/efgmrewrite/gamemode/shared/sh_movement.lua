@@ -132,7 +132,7 @@ hook.Add("SetupMove", "Leaning", function(ply, mv, cmd)
     local leaning_left = ply:GetNW2Bool("leaning_left")
     local leaning_right = ply:GetNW2Bool("leaning_right")
 
-    local speed = leanSpeed * math.min(1, 1 - math.min(maxLossLean, math.Round(math.max(0, ply:GetNWFloat("InventoryWeight", 0.00) - underweightLimit) * 0.0109, 2)))
+    local speed = leanSpeed * math.min(1, 1 - math.min(maxLossLean, math.Round(math.max(0, ply:GetNWFloat("InventoryWeight", 0.000) - underweightLimit) * 0.0109, 3)))
 
     if !ply:IsSprinting() then
         if leaning_left then fraction = Lerp(FrameTime() * 5 * speed + FrameTime(), fraction, -1) end
@@ -347,7 +347,7 @@ hook.Add("Move", "MovementWeight", function(ply, mv)
 
     if !ply:Alive() then return end
 
-    local deduction = math.max(0, math.min(maxLossMove, math.Round(math.max(0, ply:GetNWFloat("InventoryWeight", 0.00) - underweightLimit) * 0.818, 2)))
+    local deduction = math.max(0, math.min(maxLossMove, math.Round(math.max(0, ply:GetNWFloat("InventoryWeight", 0.000) - underweightLimit) * 0.818, 3)))
 
     ply:SetRunSpeed(220 - deduction)
     ply:SetWalkSpeed(135 - deduction)
@@ -377,7 +377,7 @@ hook.Add("SetupMove", "VBSetupMove", function(ply, mv, cmd)
         SetInertia(ply, 0.06)
     end
 
-    local deductionMult = 1 - math.max(0, math.min(maxLossInertiaMult, math.Round(math.max(0, ply:GetNWFloat("InventoryWeight", 0.00) - underweightLimit) * 0.0136, 2)))
+    local deductionMult = 1 - math.max(0, math.min(maxLossInertiaMult, math.Round(math.max(0, ply:GetNWFloat("InventoryWeight", 0.000) - underweightLimit) * 0.0136, 3)))
 
     if math.abs(cmd:GetForwardMove()) + math.abs(cmd:GetSideMove()) > 0 then
         local target = (cmd:KeyDown(IN_WALK) and 0.04) or math.min(1 - 0.15 + 0.25, 1)

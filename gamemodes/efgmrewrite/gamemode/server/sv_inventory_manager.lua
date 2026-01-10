@@ -1069,8 +1069,10 @@ function AddWeightToPlayer(ply, item, count)
     if count == 0 then count = 1 end
     if def.weight == nil then return false end
 
-    local curWeight = ply:GetNWFloat("InventoryWeight", 0.00)
-    local newWeight = math.Round(curWeight + (def.weight * count), 2)
+    local itemWeight = math.Round(def.weight, 3)
+
+    local curWeight = ply:GetNWFloat("InventoryWeight", 0.000)
+    local newWeight = curWeight + math.Round(itemWeight * count, 3)
 
     ply:SetNWFloat("InventoryWeight", newWeight)
     return newWeight
@@ -1084,10 +1086,12 @@ function RemoveWeightFromPlayer(ply, item, count)
     if count == 0 then count = 1 end
     if def.weight == nil then return false end
 
-    local curWeight = ply:GetNWFloat("InventoryWeight", 0.00)
-    local newWeight = math.Round(curWeight - (def.weight * count), 2)
+    local itemWeight = math.Round(def.weight, 3)
 
-    ply:SetNWFloat("InventoryWeight", math.max(0.00, newWeight))
+    local curWeight = ply:GetNWFloat("InventoryWeight", 0.000)
+    local newWeight = curWeight - math.Round(itemWeight * count, 3)
+
+    ply:SetNWFloat("InventoryWeight", math.max(0.000, newWeight))
     return newWeight
 
 end
@@ -1101,7 +1105,8 @@ function CalculateInventoryWeight(ply)
         local def = EFGMITEMS[v.name]
         local count = v.data.count or 1
 
-        newWeight = newWeight + math.Round(def.weight * count, 2)
+        local itemWeight = math.Round(def.weight, 3)
+        newWeight = newWeight + math.Round(itemWeight * count, 3)
 
         if v.data.att then
 
@@ -1113,7 +1118,7 @@ function CalculateInventoryWeight(ply)
                 local att = EFGMITEMS[a]
                 if att == nil then continue end
 
-                newWeight = newWeight + math.Round(att.weight, 2)
+                newWeight = newWeight + math.Round(att.weight, 3)
 
             end
 
@@ -1130,7 +1135,8 @@ function CalculateInventoryWeight(ply)
             local def = EFGMITEMS[v.name]
             local count = v.data.count or 1
 
-            newWeight = newWeight + math.Round(def.weight * count, 2)
+            local itemWeight = math.Round(def.weight, 3)
+            newWeight = newWeight + math.Round(itemWeight * count, 3)
 
             if v.data.att then
 
@@ -1142,7 +1148,7 @@ function CalculateInventoryWeight(ply)
                     local att = EFGMITEMS[a]
                     if att == nil then continue end
 
-                    newWeight = newWeight + math.Round(att.weight, 2)
+                    newWeight = newWeight + math.Round(att.weight, 3)
 
                 end
 
@@ -1152,7 +1158,7 @@ function CalculateInventoryWeight(ply)
 
     end
 
-    ply:SetNWFloat("InventoryWeight", newWeight)
+    ply:SetNWFloat("InventoryWeight", math.max(0.000, newWeight))
     return newWeight
 
 end

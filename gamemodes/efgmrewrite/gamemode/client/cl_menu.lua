@@ -7255,7 +7255,7 @@ function Menu.OpenTab.Inventory(container)
     itemsText:Dock(TOP)
     itemsText:SetSize(0, EFGM.MenuScale(28))
     surface.SetFont("PuristaBold24")
-    local usedWeight = string.format("%04.2f", Menu.Player:GetNWFloat("InventoryWeight", 0.00))
+    local usedWeight = string.format("%04.2f", Menu.Player:GetNWFloat("InventoryWeight", 0.000))
     local maxWeight = 85
     local weightText = usedWeight .. " / " .. maxWeight .. "KG"
     local weightTextSize = surface.GetTextSize(weightText)
@@ -7263,7 +7263,7 @@ function Menu.OpenTab.Inventory(container)
     itemsText.Paint = function(s, w, h)
 
         surface.SetFont("PuristaBold24")
-        usedWeight = string.format("%04.2f", Menu.Player:GetNWFloat("InventoryWeight", 0.00))
+        usedWeight = string.format("%04.2f", Menu.Player:GetNWFloat("InventoryWeight", 0.000))
         maxWeight = 85
         weightText = usedWeight .. " / " .. maxWeight .. "KG"
         weightTextSize = surface.GetTextSize(weightText)
@@ -7283,11 +7283,11 @@ function Menu.OpenTab.Inventory(container)
         surface.DrawRect(EFGM.MenuScale(30), EFGM.MenuScale(7), EFGM.MenuScale(180), EFGM.MenuScale(16))
 
         -- used weight capacity
-        if Menu.Player:GetNWFloat("InventoryWeight", 0.00) < 30 then
+        if Menu.Player:GetNWFloat("InventoryWeight", 0.000) < 30 then
             weightColor = Colors.weightUnderColor
-        elseif Menu.Player:GetNWFloat("InventoryWeight", 0.00) >= 30 and Menu.Player:GetNWFloat("InventoryWeight", 0.00) < 85 then
+        elseif Menu.Player:GetNWFloat("InventoryWeight", 0.000) >= 30 and Menu.Player:GetNWFloat("InventoryWeight", 0.000) < 85 then
             weightColor = Colors.weightWarningColor
-        elseif Menu.Player:GetNWFloat("InventoryWeight", 0.00) >= 85 then
+        elseif Menu.Player:GetNWFloat("InventoryWeight", 0.000) >= 85 then
             weightColor = Colors.weightMaxColor
         end
 
@@ -7392,11 +7392,11 @@ function Menu.OpenTab.Inventory(container)
             draw.SimpleTextOutlined("Your carry weight can begin to negatively affect your character if it goes unchecked.", "Purista18", EFGM.MenuScale(5), EFGM.MenuScale(25), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
             draw.SimpleTextOutlined("EFFECTS", "PuristaBold24", EFGM.MenuScale(5), EFGM.MenuScale(50), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Colors.blackColor)
-            draw.SimpleTextOutlined("MOVEMENT SPEED: -" .. math.max(0, math.min(maxLossMove, math.Round(math.max(0, Menu.Player:GetNWFloat("InventoryWeight", 0.00) - underweightLimit) * 0.818, 2))) .. "u/s", "PuristaBold16", EFGM.MenuScale(5), EFGM.MenuScale(70), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
-            draw.SimpleTextOutlined("MOVEMENT INERTIA: +" .. math.max(0, math.min(maxLossInertia, math.Round(math.max(0, Menu.Player:GetNWFloat("InventoryWeight", 0.00) - underweightLimit) * 0.0136, 2))) * 100 .. "%", "PuristaBold16", EFGM.MenuScale(5), EFGM.MenuScale(83), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
-            draw.SimpleTextOutlined("AIM DOWN SIGHTS TIME: +" .. math.max(1, 1 + math.min(maxLossADS, math.Round((math.max(0, Menu.Player:GetNWFloat("InventoryWeight", 0.00) - underweightLimit) * 0.011) * 5, 2))) * 100 .. "%", "PuristaBold16", EFGM.MenuScale(5), EFGM.MenuScale(96), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
-            draw.SimpleTextOutlined("WEAPON SWAY: +" .. math.max(1, 1 + math.min(maxLossSway, math.Round((math.max(0, Menu.Player:GetNWFloat("InventoryWeight", 0.00) - underweightLimit) * 0.011) * 2, 2))) * 100 .. "%", "PuristaBold16", EFGM.MenuScale(5), EFGM.MenuScale(109), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
-            draw.SimpleTextOutlined("LEANING SPEED: -" .. 100 - math.min(1, 1 - math.min(maxLossLean, math.Round(math.max(0, Menu.Player:GetNWFloat("InventoryWeight", 0.00) - underweightLimit) * 0.0109, 2))) * 100 .. "%", "PuristaBold16", EFGM.MenuScale(5), EFGM.MenuScale(122), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+            draw.SimpleTextOutlined("MOVEMENT SPEED: -" .. math.max(0, math.min(maxLossMove, math.Round(math.max(0, Menu.Player:GetNWFloat("InventoryWeight", 0.000) - underweightLimit) * 0.818, 3))) .. "u/s", "PuristaBold16", EFGM.MenuScale(5), EFGM.MenuScale(70), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+            draw.SimpleTextOutlined("MOVEMENT INERTIA: +" .. math.max(0, math.min(maxLossInertia, math.Round(math.max(0, Menu.Player:GetNWFloat("InventoryWeight", 0.000) - underweightLimit) * 0.0136, 3))) * 100 .. "%", "PuristaBold16", EFGM.MenuScale(5), EFGM.MenuScale(83), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+            draw.SimpleTextOutlined("AIM DOWN SIGHTS TIME: +" .. math.max(1, 1 + math.min(maxLossADS, math.Round((math.max(0, Menu.Player:GetNWFloat("InventoryWeight", 0.000) - underweightLimit) * 0.011) * 5, 3))) * 100 .. "%", "PuristaBold16", EFGM.MenuScale(5), EFGM.MenuScale(96), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+            draw.SimpleTextOutlined("WEAPON SWAY: +" .. math.max(1, 1 + math.min(maxLossSway, math.Round((math.max(0, Menu.Player:GetNWFloat("InventoryWeight", 0.000) - underweightLimit) * 0.011) * 2, 3))) * 100 .. "%", "PuristaBold16", EFGM.MenuScale(5), EFGM.MenuScale(109), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
+            draw.SimpleTextOutlined("LEANING SPEED: -" .. 100 - math.min(1, 1 - math.min(maxLossLean, math.Round(math.max(0, Menu.Player:GetNWFloat("InventoryWeight", 0.000) - underweightLimit) * 0.0109, 3))) * 100 .. "%", "PuristaBold16", EFGM.MenuScale(5), EFGM.MenuScale(122), Colors.whiteColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, EFGM.MenuScaleRounded(1), Colors.blackColor)
 
             surface.SetDrawColor(Colors.transparentWhiteColor)
             surface.DrawRect(EFGM.MenuScale(5), EFGM.MenuScale(150), EFGM.MenuScale(550), EFGM.MenuScale(1))
