@@ -463,7 +463,6 @@ function SetupPlayerData(ply)
 	if query == nil then query = "new" end
 
 	-- stats
-	InitializeNetworkBool(ply, query, "FreshWipe", true) -- false if player has logged on once this wipe
 	InitializeNetworkInt(ply, query, "Level", 1)
 	InitializeNetworkInt(ply, query, "Experience", 0)
 	InitializeNetworkInt(ply, query, "Money", 100000000)
@@ -568,7 +567,6 @@ function SavePlayerData(ply)
 	sql.Begin()
 
 	-- stats
-	UninitializeNetworkBool(ply, query, "FreshWipe")
 	UninitializeNetworkInt(ply, query, "Level")
 	UninitializeNetworkInt(ply, query, "Experience")
 	UninitializeNetworkInt(ply, query, "Money")
@@ -642,8 +640,6 @@ end)
 
 hook.Add("PlayerDisconnected", "PlayerUninitializeStats", function(ply)
 
-	ply:SetNWBool("FreshWipe", false)
-
 	-- in raid
 	if !ply:CompareStatus(0) and !ply:CompareStatus(3) then
 
@@ -691,8 +687,6 @@ end)
 hook.Add("ShutDown", "ServerUninitializeStats", function()
 
 	for _, ply in ipairs(player.GetHumans()) do
-
-		ply:SetNWBool("FreshWipe", false)
 
 		if ply:CompareStatus(3) then
 
