@@ -48,9 +48,10 @@ function IntroGetFreeSpace(spawnGroup)
 
     for k, spaceInfo in ipairs(shuffledIntroSpaces) do
 
-        local spaceSpawnGroup = string.lower(string.Explode("_", spaceInfo.animName)[2])
+        --local spaceSpawnGroup = string.lower(string.Explode("_", spaceInfo.animName)[2])
 
-        if !spaceInfo.occupied && spaceSpawnGroup == spawnGroup then
+        --if !spaceInfo.occupied && spaceSpawnGroup == spawnGroup then
+        if !spaceInfo.occupied then
             return spaceInfo.animName, k
         end
 

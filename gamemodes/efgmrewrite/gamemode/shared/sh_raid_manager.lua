@@ -117,6 +117,7 @@ if SERVER then
             if GetGlobalInt("RaidStatus") != raidStatus.ACTIVE then return end
             if #plys > 4 then print("too many fucking people in your team dumbass") return end
 
+            local masterSpawn = nil
             local spawns = {}
             local spawnGroup = nil
 
@@ -134,29 +135,24 @@ if SERVER then
                 if !v:IsPlayer() then return end
 
                 if !v:CompareStatus(0) and !v:CompareStatus(3) then
-                    local curStatus, curSpawnGroup = v:GetRaidStatus()
+                    local curStatus, _ = v:GetRaidStatus()
                     print("Player " .. v:GetName() .. " tried to enter the raid with status " .. curStatus .. ", but they're probably fine to join anyway?")
                 end
 
                 if v:CompareStatus(3) then
-                    local curStatus, curSpawnGroup = v:GetRaidStatus()
+                    local curStatus, _ = v:GetRaidStatus()
                     print("Player " .. v:GetName() .. " tried to enter the raid with status " .. curStatus .. ", this means they are in a duel, this shouldn't be possible at all, let's not let them join!")
                     return
                 end
 
                 if status == "nil" then status = faction end -- automatically set status depending on players faction
 
-                if #spawns == 0 then masterSpawn, spawns, spawnGroup = RAID:GenerateSpawn(status) end
-
-                if #spawns == 0 then print("not enough spawn points for every squad member, this shouldn't be possible") return end
-                if spawnGroup == nil then print("spawn group not set for chosen spawn, this shouldn't be possible") return end
-
-                local introAnimString, introSpaceIndex = IntroGetFreeSpace(spawnGroup)
+                local introAnimString, introSpaceIndex = IntroGetFreeSpace()
 
                 v:Freeze(true)
                 v:SetMoveType(MOVETYPE_NOCLIP)
 
-                v:SetRaidStatus(status, spawnGroup or "")
+                v:SetRaidStatus(status, "")
                 v:SetNWBool("PlayerIsPMC", true)
 
                 local curTime = math.Round(CurTime(), 0) -- once players spawn, we make their team chat channel more specific, this is so others can create squads of the same name and not conflict with anything
@@ -173,9 +169,6 @@ if SERVER then
                 if introAnimString != nil then
 
                     v:SetNWBool("PlayerInIntro", true)
-
-                    masterSpawn.Pending = true
-                    timer.Simple(16, function() masterSpawn.Pending = false end)
 
                     net.Start("PlayerRaidTransition")
                     net.WriteUInt(0, 2)
@@ -210,9 +203,15 @@ if SERVER then
                             net.Send(v)
 
                             timer.Create("Spawn" .. v:SteamID64(), 1, 1, function()
+                                if #spawns == 0 then masterSpawn, spawns, spawnGroup = RAID:GenerateSpawn(status) end
+
+                                v:SetRaidStatus(status, spawnGroup)
                                 v:SetNWBool("PlayerInIntro", false)
                                 v:Freeze(false)
                                 v:Teleport(spawns[k]:GetPos(), spawns[k]:GetAngles(), Vector(0, 0, 0))
+
+                                masterSpawn.Pending = true
+                                timer.Simple(10, function() masterSpawn.Pending = false end)
 
                                 IntroSpaces[introSpaceIndex].occupied = false
 
@@ -226,17 +225,20 @@ if SERVER then
 
                 else
 
-                    masterSpawn.Pending = true
-                    timer.Simple(10, function() masterSpawn.Pending = false end)
-
                     net.Start("PlayerRaidTransition")
                     net.WriteUInt(1, 2)
                     net.Send(v)
 
                     timer.Create("Spawn" .. v:SteamID64(), 1, 1, function()
+                        if #spawns == 0 then masterSpawn, spawns, spawnGroup = RAID:GenerateSpawn(status) end
+
+                        v:SetRaidStatus(status, spawnGroup)
                         v:SetNWBool("PlayerInIntro", false)
                         v:Freeze(false)
                         v:Teleport(spawns[k]:GetPos(), spawns[k]:GetAngles(), Vector(0, 0, 0))
+
+                        masterSpawn.Pending = true
+                        timer.Simple(10, function() masterSpawn.Pending = false end)
                     end)
 
                 end
