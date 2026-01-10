@@ -59,7 +59,7 @@ function ENT:SelectItems()
 
     while chance >= chanceRand do
 
-        local itemVal, itemKey = table.Random(LOOT[self.LootType])
+        local _, itemKey = table.Random(LOOT[self.LootType])
         local def = EFGMITEMS[itemKey]
 
         local itemChance = def.lootWeight or 100
@@ -88,7 +88,7 @@ function ENT:SelectItems()
 
         end
 
-        data.fir = true
+        if data.count > 1  then data.fir = true end
 
         local item = ITEM.Instantiate(itemKey, def.equipType, data)
         table.insert(containerLoot, item)
@@ -99,7 +99,7 @@ function ENT:SelectItems()
 
             local ammoData = {}
             ammoData.count = math.Clamp(math.random(math.Round(ammoDef.stackSize / 6), ammoDef.stackSize / 2), 1, ammoDef.stackSize / 2)
-            ammoData.fir = true
+            if ammoData.count > 1 then ammoData.fir = true end
 
             local ammoItem = ITEM.Instantiate(def.ammoID, ammoDef.equipType, ammoData)
             table.insert(containerLoot, ammoItem)
